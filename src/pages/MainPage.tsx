@@ -4,6 +4,7 @@ import Stats from '../components/Stats.tsx';
 import Try from '../components/Try.tsx';
 import Info from '../components/Info.tsx';
 import { Testimonials } from '@/components/Testimonials';
+import { TryMore } from '@/components/TryMore3D';
 
 const MainPage = () => {
   return (
@@ -13,6 +14,7 @@ const MainPage = () => {
       <Stats />
       <Testimonials />
       <Try />
+      <TryMore />
       <Footer />
     </>
   );

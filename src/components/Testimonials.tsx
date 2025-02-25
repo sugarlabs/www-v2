@@ -51,16 +51,49 @@ export function Testimonials() {
 
   return (
     <div className="w-full bg-gradient-to-b from-white-800 to-[#F5DDC8] p-6">
-      {/* Heading */}
-      <h2 className="font-bold tracking-wider font-Caveat text-6xl text-gray-800 mb-6 text-center">
-        <span className="text-black">
-          Words of appreciation and
-          <br /> admiration from others.
-        </span>
-      </h2>
+      {/* Heading Section with Hearts */}
+      <div className="flex items-center justify-center gap-4 md:gap-6">
+        {/* Left Heart */}
+        <img
+          src={stats.leftHeart}
+          alt="Heart Left"
+          className="w-8 md:w-12 lg:w-16 fill-current text-red-500 border-none shadow-none"
+        />
+
+        <div className="relative flex items-center justify-center gap-4 md:gap-6 lg:gap-8">
+          {/* Left Apostrophe (Hidden Below 400px) */}
+          <img
+            src={stats.apostrophie}
+            alt="Apostrophe Left"
+            className="w-8 md:w-12 lg:w-16 -translate-y-2 block max-[400px]:hidden"
+          />
+
+          {/* Heading */}
+          <h2 className="font-bold tracking-wider font-Caveat text-3xl md:text-5xl lg:text-6xl text-gray-800 text-center">
+            <span className="text-black">
+              Words of appreciation and
+              <br /> admiration from others.
+            </span>
+          </h2>
+
+          {/* Right Apostrophe (Flipped, Hidden Below 400px) */}
+          <img
+            src={stats.apostrophie}
+            alt="Apostrophe Right"
+            className="w-8 md:w-12 lg:w-16 -translate-y-2 scale-x-[-1] block max-[400px]:hidden"
+          />
+        </div>
+
+        {/* Right Heart */}
+        <img
+          src={stats.rightHeart}
+          alt="Heart Right"
+          className="w-8 md:w-12 lg:w-16 fill-current text-red-500 border-none shadow-none"
+        />
+      </div>
 
       {/* Testimonials Section */}
-      <div className="relative flex flex-col items-center justify-center w-full overflow-hidden">
+      <div className="relative flex flex-col items-center justify-center w-full overflow-hidden mt-6">
         {/* First Row (left to right) */}
         <Marquee pauseOnHover className="w-full">
           {firstRow.map((review) => (
