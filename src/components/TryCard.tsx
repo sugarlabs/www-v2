@@ -28,7 +28,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
 }) => (
   <div className="bg-white rounded-3xl p-8 flex flex-col items-center text-center shadow-lg transition-transform hover:scale-105">
     <img
-      src={icon} 
+      src={icon}
       alt={title}
       className="w-24 h-24 mb-4"
       width={96}

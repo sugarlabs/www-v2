@@ -74,10 +74,10 @@ const Info: React.FC = () => {
                 src={images.main.src}
                 alt={images.main.alt}
                 className="w-full h-[500px] md:h-[700px] object-cover"
-								width={1920}
-								height={700}
-								loading="eager"
-								fetchPriority="high"
+                width={1920}
+                height={700}
+                loading="eager"
+                fetchPriority="high"
               />
               <div
                 className="absolute inset-0 bg-gradient-to-r from-black/70 
@@ -200,9 +200,9 @@ const Info: React.FC = () => {
                   className="w-full rounded-2xl transform hover:scale-105 
                    transition-all duration-500 ease-out"
                   loading="lazy"
-									width={800}
-									height={600}
-									decoding="async"
+                  width={800}
+                  height={600}
+                  decoding="async"
                 />
 
                 {/* Card on Bottom Right */}
