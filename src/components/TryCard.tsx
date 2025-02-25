@@ -27,7 +27,15 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   href,
 }) => (
   <div className="bg-white rounded-3xl p-8 flex flex-col items-center text-center shadow-lg transition-transform hover:scale-105">
-    <img src={icon} alt={title} className="w-24 h-24 mb-4" />
+    <img
+      src={icon} 
+      alt={title}
+      className="w-24 h-24 mb-4"
+      width={96}
+      height={96}
+      loading="lazy"
+      decoding="async"
+    />
     <h3 className="text-3xl font-bold mb-2">{title}</h3>
     <p className="text-gray-600 mb-6">{description}</p>
     <a href={href} className="w-full">
@@ -98,6 +106,10 @@ export const TryCard: React.FC<TryCardProps> = ({
           alt={title}
           className="w-full h-48 object-cover transform transition-all duration-700 
                      group-hover:scale-110 group-hover:rotate-1"
+          width={800}
+          height={600}
+          loading="lazy"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
       </div>

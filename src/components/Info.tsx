@@ -12,14 +12,17 @@ const Info: React.FC = () => {
     <div
       key={key}
       className="group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl 
-                 transition-all duration-500 bg-white"
+									transition-all duration-500 bg-white"
     >
       <img
         src={image.src}
         alt={image.alt}
         className="w-full max-h-80 md:h-96 object-cover transform group-hover:scale-105 
-                   transition-all duration-700 ease-out"
+										transition-all duration-700 ease-out"
         loading="lazy"
+        width={800}
+        height={600}
+        decoding="async"
       />
       {image.caption && (
         <div
@@ -41,6 +44,9 @@ const Info: React.FC = () => {
         alt={image.alt}
         className="w-full h-64 object-cover"
         loading="lazy"
+        width={800}
+        height={600}
+        decoding="async"
       />
       {image.caption && (
         <div
@@ -68,6 +74,10 @@ const Info: React.FC = () => {
                 src={images.main.src}
                 alt={images.main.alt}
                 className="w-full h-[500px] md:h-[700px] object-cover"
+								width={1920}
+								height={700}
+								loading="eager"
+								fetchPriority="high"
               />
               <div
                 className="absolute inset-0 bg-gradient-to-r from-black/70 
@@ -190,6 +200,9 @@ const Info: React.FC = () => {
                   className="w-full rounded-2xl transform hover:scale-105 
                    transition-all duration-500 ease-out"
                   loading="lazy"
+									width={800}
+									height={600}
+									decoding="async"
                 />
 
                 {/* Card on Bottom Right */}
