@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Caveat';
-  src: url('../fonts/Caveat-Regular.ttf');
+  src: url('/fonts/Caveat-Regular.ttf');
 }
 
 @plugin 'tailwindcss-animate';
@@ -8,19 +8,19 @@
 @custom-variant dark (&:is(.dark *));
 @font-face {
   font-family: 'Roboto';
-  src: url('../fonts/Roboto-Regular.ttf');
+  src: url('/fonts/Roboto-Regular.ttf');
 }
 @font-face {
   font-family: 'Pacifico';
-  src: url('../fonts/Pacifico-Regular.ttf');
+  src: url('/fonts/Pacifico-Regular.ttf');
 }
 @font-face {
   font-family: 'AnonymousPro';
-  src: url('../fonts/AnonymousPro-Regular.ttf');
+  src: url('/fonts/AnonymousPro-Regular.ttf');
 }
 @font-face {
   font-family: 'Inter';
-  src: url('../fonts/Inter_28pt-Regular.ttf');
+  src: url('/fonts/Inter_28pt-Regular.ttf');
 }
 
 @import 'tailwindcss';
