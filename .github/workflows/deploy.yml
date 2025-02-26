@@ -5,18 +5,14 @@ name: Continuous Deployment
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    types: [closed]
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   deploy:
-    name: Build and Deploy app to GitHub Pages
+    name: Build and Deploy to GH-Pages
 
     runs-on: ubuntu-latest
-
-    if: github.event.pull_request.merged == true || github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout the code base
