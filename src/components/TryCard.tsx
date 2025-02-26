@@ -92,7 +92,7 @@ export const TryCard: React.FC<TryCardProps> = ({
             active:scale-95 relative overflow-hidden
             before:absolute before:inset-0 before:bg-gray-400/20 before:translate-x-[-150%] before:skew-x-[45deg]
             hover:before:translate-x-[150%] before:transition-transform before:duration-700"
- >
+          >
             {learnMoreText}
           </a>
         </div>
