@@ -74,38 +74,38 @@ export const TryCard: React.FC<TryCardProps> = ({
         <div className="space-y-2.5 flex flex-col items-center pt-3">
           <a
             href={tryNowHref}
-            className={`w-full text-white font-bold px-5 py-3 rounded-2xl 
-                       transition-all duration-500 hover:scale-[1.02] hover:shadow-lg 
-                       active:scale-95 text-sm backdrop-blur-sm relative overflow-hidden
-                       ${gradientClass || 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800'}
-                       before:absolute before:inset-0 before:bg-white/20 before:translate-x-[-150%] before:skew-x-[45deg]
-                       hover:before:translate-x-[150%] before:transition-transform before:duration-700
-                       `}
+            className={`w-full text-white font-bold px-5 py-3 rounded-2xl
+              transition-all duration-500 hover:scale-[1.02] hover:shadow-lg 
+              active:scale-95 text-sm backdrop-blur-sm relative overflow-hidden 
+              ${gradientClass || 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800'} 
+              before:absolute before:inset-0 before:bg-white/20 before:translate-x-[-150%] before:skew-x-[45deg] 
+              hover:before:translate-x-[150%] before:transition-transform before:duration-700
+              `}
           >
             {tryNowText}
           </a>
           <a
             href={learnMoreHref}
             className="w-full bg-gray-50/80 backdrop-blur-sm border-[1.5px] border-gray-100 rounded-2xl px-5 py-3 
-                     font-bold transition-all duration-500 hover:scale-[1.02] 
-                     hover:bg-gray-100/80 hover:border-gray-200 text-gray-700 text-sm
-                     active:scale-95 relative overflow-hidden
-                     before:absolute before:inset-0 before:bg-gray-400/20 before:translate-x-[-150%] before:skew-x-[45deg]
-                     hover:before:translate-x-[150%] before:transition-transform before:duration-700"
-          >
+            font-bold transition-all duration-500 hover:scale-[1.02] 
+            hover:bg-gray-100/80 hover:border-gray-200 text-gray-700 text-sm
+            active:scale-95 relative overflow-hidden
+            before:absolute before:inset-0 before:bg-gray-400/20 before:translate-x-[-150%] before:skew-x-[45deg]
+            hover:before:translate-x-[150%] before:transition-transform before:duration-700"
+ >
             {learnMoreText}
           </a>
         </div>
       </div>
 
       {/* Image Section */}
-      <div className="-mx-6 -mb-6 mt-6 relative overflow-hidden">
+      <div className="mx-auto mb-4 mt-6 relative overflow-hidden aspect-video">
         <div className="absolute inset-0 bg-gradient-to-b from-white via-white/50 to-transparent h-12 z-10" />
         <img
           src={imagePath}
           alt={title}
-          className="w-full h-48 object-cover transform transition-all duration-700 
-                     group-hover:scale-110 group-hover:rotate-1"
+          className="w-full h-full object-cover transform transition-all duration-700 
+          group-hover:scale-110 group-hover:rotate-1 !opacity-100"
           width={800}
           height={600}
           loading="lazy"
