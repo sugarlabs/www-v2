@@ -1,8 +1,8 @@
-import teachImage from '../assets/Images/teach.jpg';
-import teach1Image from '../assets/Images/teach1.jpg';
-import discussImage from '../assets/Images/discuss.jpeg';
-import teach2Image from '../assets/Images/teach2.jpeg';
-import learnImage from '../assets/Images/learn.jpg';
+import teachImage from '/assets/Images/teach.jpg';
+import teach1Image from '/assets/Images/teach1.jpg';
+import discussImage from '/assets/Images/discuss.jpeg';
+import teach2Image from '/assets/Images/teach2.jpeg';
+import learnImage from '/assets/Images/learn.jpg';
 
 export interface ImageConfig {
   src: string;

@@ -1,11 +1,11 @@
-import GithubIcon from '../assets/social/github.svg';
-import XIcon from '../assets/social/x.svg';
-import InstagramIcon from '../assets/social/instagram.svg';
-import LinkedinIcon from '../assets/social/linkedin.svg';
-import FacebookIcon from '../assets/social/facebook.svg';
-import YoutubeIcon from '../assets/social/youtube.svg';
-import MastodonIcon from '../assets/social/mastodon.svg';
-import MediumIcon from '../assets/social/medium.svg';
+import GithubIcon from '/assets/social/github.svg';
+import XIcon from '/assets/social/x.svg';
+import InstagramIcon from '/assets/social/instagram.svg';
+import LinkedinIcon from '/assets/social/linkedin.svg';
+import FacebookIcon from '/assets/social/facebook.svg';
+import YoutubeIcon from '/assets/social/youtube.svg';
+import MastodonIcon from '/assets/social/mastodon.svg';
+import MediumIcon from '/assets/social/medium.svg';
 
 export const socialLinks = [
   {

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import GithubIcon from '../assets/social/github.svg';
+import GithubIcon from '/assets/social/github.svg';
 import {
   socialLinks,
   resourceLinks,

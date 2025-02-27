@@ -1,38 +1,65 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Report a bug to help us improve
 title: ''
-labels: ''
+labels: 'bug'
 assignees: ''
-
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Description
 
-**To Reproduce**
-Steps to reproduce the behavior:
+<!-- Provide a clear and concise description of the bug. -->
+
+## How To Reproduce
+
+<!-- Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
-4. See error
+4. See error -->
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## Expected behavior
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+<!-- Describe what you expected to happen. -->
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+## Screenshots
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+<!-- If applicable, add screenshots to help explain the issue -->
 
-**Additional context**
-Add any other context about the problem here.
+## Environment
+
+### Desktop
+
+- **Operating System:** [e.g., Windows, macOS, Linux]
+- **Browser:** [e.g., Chrome, Safari, Firefox]
+- **Version:** [e.g., v1.0.0]
+
+### Smartphone
+
+- **Device:** [e.g., iPhone 6]
+- **OS:** [e.g., iOS 8.1]
+- **Browser:** [e.g., stock browser, Safari]
+- **Version:** [e.g., v1.0.0]
+
+## Console Errors
+
+<!-- Attach screenshots of console errors if available to provide more context. -->
+
+## Additional context (if any)
+
+<!-- Add any other context about the problem here. -->
+
+## Checklist
+
+- [ ] I have read and followed the project's Code of Conduct.
+- [ ] I have searched for similar issues before creating this one.
+- [ ] I have provided sufficient details to understand and reproduce the issue.I have provided all the necessary information to understand and reproduce the issue.
+- [ ] I am willing to help resolve this issue.
+
+---
+
+Thank you for reporting this issue! Your contributions help us improve the project.
+
+📚 **See:** [Contributing Guide](https://github.com/sugarlabs/www-v2/blob/main/docs/CONTRIBUTING.md).
+
+🙋🏾🙋🏼 Need help? Join our [Community Matrix Server](https://matrix.to/#/#sugarlabs-web:matrix.org).

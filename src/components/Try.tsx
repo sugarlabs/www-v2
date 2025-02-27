@@ -50,7 +50,7 @@ const Try: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow bg-[#F6DEC9] p-4 md:p-16 mt-10">
+      <main className="flex-grow bg-[#F6DEC9] p-4 md:p-16">
         <div className="max-w-6xl mx-auto space-y-8">
           <header className="space-y-6">
             <h1 className="text-5xl md:text-7xl font-bold flex flex-col sm:flex-row items-start sm:items-center">

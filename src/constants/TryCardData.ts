@@ -1,19 +1,19 @@
-import MusicBlocksImg from '../assets/Cards/MusicBlocks.png';
-import TurtleBlocksImg from '../assets/Cards/TurtleBlocks.png';
-import SugarizerImg from '../assets/Cards/Sugarizer.png';
-import BootableDriveImg from '../assets/Cards/BootableDrive.png';
-import DesktopInitializationImg from '../assets/Cards/DesktopInitialization.png';
-import TriquelImg from '../assets/Cards/Triquel.png';
-import RaspberryPiImg from '../assets/Cards/RaspberryPi.png';
-import FlatpackImg from '../assets/Cards/Flatpack.png';
-import Finance from '../assets/Cards/activity-finance.svg';
-import Maze from '../assets/Cards/activity-maze.svg';
-import Measure from '../assets/Cards/activity-measure.svg';
-import Turtle3D from '../assets/Cards/activity-turtle3d.svg';
-import Words from '../assets/Cards/activity-words.svg';
-import Ruler from '../assets/Cards/activity-ruler.svg';
-import StarChart from '../assets/Cards/activity-star-chart.svg';
-import Recall from '../assets/Cards/activity-recall.svg';
+import MusicBlocksImg from '/assets/Cards/MusicBlocks.png';
+import TurtleBlocksImg from '/assets/Cards/TurtleBlocks.png';
+import SugarizerImg from '/assets/Cards/Sugarizer.png';
+import BootableDriveImg from '/assets/Cards/BootableDrive.png';
+import DesktopInitializationImg from '/assets/Cards/DesktopInitialization.png';
+import TriquelImg from '/assets/Cards/Triquel.png';
+import RaspberryPiImg from '/assets/Cards/RaspberryPi.png';
+import FlatpackImg from '/assets/Cards/Flatpack.png';
+import Finance from '/assets/Cards/activity-finance.svg';
+import Maze from '/assets/Cards/activity-maze.svg';
+import Measure from '/assets/Cards/activity-measure.svg';
+import Turtle3D from '/assets/Cards/activity-turtle3d.svg';
+import Words from '/assets/Cards/activity-words.svg';
+import Ruler from '/assets/Cards/activity-ruler.svg';
+import StarChart from '/assets/Cards/activity-star-chart.svg';
+import Recall from '/assets/Cards/activity-recall.svg';
 
 interface CardDataType {
   title: string;
