@@ -59,6 +59,10 @@ const Header: React.FC = () => {
                 src={logo}
                 alt="Sugar Labs"
                 className="h-12 w-auto transition-transform hover:scale-105"
+                width={128}
+                height={48}
+                loading="eager"
+                fetchPriority="high"
               />
             </Link>
 

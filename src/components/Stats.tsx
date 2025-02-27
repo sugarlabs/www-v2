@@ -42,6 +42,9 @@ const Stats = () => {
                 src={stats.kidlaptop}
                 alt="Student with laptop"
                 className="w-full h-48 md:h-64 object-cover rounded-lg"
+                width={800}
+                height={600}
+                decoding="async"
               />
             </div>
 
@@ -61,6 +64,10 @@ const Stats = () => {
                 src={stats.studentsCollaborating}
                 alt="Students collaborating"
                 className="w h-36 object-cover rounded-lg"
+                loading="lazy"
+                width={400}
+                height={300}
+                decoding="async"
               />
             </div>
 
@@ -78,6 +85,10 @@ const Stats = () => {
                 src={stats.studentMobile}
                 alt="Student with mobile device"
                 className="w h-36 object-cover rounded-lg"
+                loading="lazy"
+                width={400}
+                height={300}
+                decoding="async"
               />
             </div>
 
