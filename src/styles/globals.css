@@ -33,6 +33,24 @@
   --font-Inter: 'Inter', sans-serif;
 }
 
+.react-flow__node {
+  width: auto !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  min-width: 150px !important;
+}
+
+.react-flow__edge-path {
+  stroke-width: 2 !important;
+  stroke: #666 !important;
+}
+
+@media (max-width: 768px) {
+  .react-flow__node {
+    min-width: 120px !important;
+  }
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);

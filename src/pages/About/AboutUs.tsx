@@ -1,19 +1,51 @@
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
+import NavigationLinks from '@/components/shared/NavigationLinks';
+import HeroSection from '@/components/AboutUs/HeroSection';
+import TextMaskSection from '@/components/AboutUs/TextMaskSection';
+import MissionSection from '@/components/AboutUs/MissionSection';
+import PrinciplesSection from '@/components/AboutUs/PrinciplesSection';
+import GoalsSection from '@/components/AboutUs/GoalsSection';
+import ProjectsSection from '@/components/AboutUs/ProjectSection';
+import RoadmapSection from '@/components/AboutUs/RoadmapSection';
+import { ReactFlowProvider } from 'reactflow';
 
 const AboutUs = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setIsLoaded(true), 100);
+  }, []);
+
   return (
-    <div>
+    <div className="bg-gradient-to-b from-gray-50 to-orange-50">
       <Header />
-      <main className="container mx-auto p-4">
-        <h1 className="text-4xl font-bold text-center my-8">About Us</h1>
-        <p className="text-lg text-gray-700">
-          SugarLabs is a non-profit organization dedicated to providing children
-          with access to free and open-source software for learning. Our goal is
-          to empower children to explore, create, and share knowledge through
-          technology.
-        </p>
-      </main>
+      <div className="min-h-screen font-sans">
+        <motion.div
+          initial="hidden"
+          animate={isLoaded ? 'visible' : 'hidden'}
+          variants={{
+            visible: { transition: { staggerChildren: 0.2 } },
+          }}
+          className="container mx-auto px-4 py-16 max-w-6xl"
+        >
+          <HeroSection />
+          <NavigationLinks />
+          <TextMaskSection />
+
+          <div className="space-y-32 my-24">
+            <MissionSection />
+            <PrinciplesSection />
+            <GoalsSection />
+            <ProjectsSection />
+            <ReactFlowProvider>
+            <RoadmapSection/>
+            </ReactFlowProvider>
+          </div>
+        </motion.div>
+      </div>
       <Footer />
     </div>
   );
