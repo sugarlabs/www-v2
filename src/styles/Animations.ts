@@ -572,56 +572,57 @@ export const projectsSectionAnimations = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { 
+      transition: {
         staggerChildren: 0.15,
-        delayChildren: 0.1
-      }
-    }
+        delayChildren: 0.1,
+      },
+    },
   },
-  
+
   projectCard: {
     hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { 
-        delay: i * 0.1, 
+      transition: {
+        delay: i * 0.1,
         duration: 0.5,
-        ease: 'easeOut' 
-      }
+        ease: 'easeOut',
+      },
     }),
     hover: {
       y: -8,
-      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-      transition: { duration: 0.3 }
-    }
+      boxShadow:
+        '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+      transition: { duration: 0.3 },
+    },
   },
-  
+
   learnMoreButton: {
     hidden: { opacity: 0.9 },
-    hover: { 
+    hover: {
       x: 5,
-      transition: { duration: 0.2 }
-    }
+      transition: { duration: 0.2 },
+    },
   },
-  
+
   title: {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, delay: 0.1 }
-    }
+      transition: { duration: 0.5, delay: 0.1 },
+    },
   },
-  
+
   imageContainer: {
     hidden: { opacity: 0, scale: 0.95 },
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.4 }
-    }
-  }
+      transition: { duration: 0.4 },
+    },
+  },
 };
 
 export const roadmapSectionAnimations = {
@@ -630,10 +631,10 @@ export const roadmapSectionAnimations = {
     hidden: { width: 0 },
     visible: {
       width: '100%',
-      transition: { duration: 1.2, ease: 'easeInOut' }
-    }
+      transition: { duration: 1.2, ease: 'easeInOut' },
+    },
   },
-  
+
   // Individual roadmap items/cards
   roadmapCard: {
     hidden: { opacity: 0, y: 20 },
@@ -643,29 +644,29 @@ export const roadmapSectionAnimations = {
       transition: {
         duration: 0.6,
         delay: i * 0.3,
-      }
-    })
+      },
+    }),
   },
-  
+
   // Section title
   title: {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   },
-  
+
   // Description paragraph
   description: {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { delay: 0.8, duration: 0.5 }
-    }
+      transition: { delay: 0.8, duration: 0.5 },
+    },
   },
-  
+
   // Number indicator
   stepNumber: {
     hidden: { scale: 0 },
@@ -675,15 +676,16 @@ export const roadmapSectionAnimations = {
         type: 'spring',
         stiffness: 300,
         damping: 10,
-        delay: i * 0.3 + 0.3
-      }
-    })
+        delay: i * 0.3 + 0.3,
+      },
+    }),
   },
-  
+
   // Card hover effect
   cardHover: {
     scale: 1.03,
-    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-    transition: { duration: 0.3 }
-  }
+    boxShadow:
+      '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+    transition: { duration: 0.3 },
+  },
 };

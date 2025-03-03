@@ -41,7 +41,7 @@ const AboutUs = () => {
             <GoalsSection />
             <ProjectsSection />
             <ReactFlowProvider>
-            <RoadmapSection/>
+              <RoadmapSection />
             </ReactFlowProvider>
           </div>
         </motion.div>
