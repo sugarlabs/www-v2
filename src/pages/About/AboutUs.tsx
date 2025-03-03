@@ -10,7 +10,6 @@ import PrinciplesSection from '@/components/AboutUs/PrinciplesSection';
 import GoalsSection from '@/components/AboutUs/GoalsSection';
 import ProjectsSection from '@/components/AboutUs/ProjectSection';
 import RoadmapSection from '@/components/AboutUs/RoadmapSection';
-import { ReactFlowProvider } from 'reactflow';
 
 const AboutUs = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -40,9 +39,7 @@ const AboutUs = () => {
             <PrinciplesSection />
             <GoalsSection />
             <ProjectsSection />
-            <ReactFlowProvider>
-              <RoadmapSection />
-            </ReactFlowProvider>
+            <RoadmapSection />
           </div>
         </motion.div>
       </div>
