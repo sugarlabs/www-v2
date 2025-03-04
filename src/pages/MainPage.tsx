@@ -6,6 +6,7 @@ import Info from '@/components/Info.tsx';
 import { Testimonials } from '@/components/Testimonials';
 import { TryMore } from '@/components/TryMore3D';
 import Donation from '@/components/Donation.tsx';
+import QuotesCarousel from '@/components/QuotesCarousel';
 
 const MainPage = () => {
   return (
@@ -13,6 +14,7 @@ const MainPage = () => {
       <Header />
       <Info />
       <Stats />
+      <QuotesCarousel />
       <Testimonials />
       <Try />
       <TryMore />
