@@ -12,6 +12,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true
   }
 }
