@@ -3,6 +3,7 @@ import Footer from '@/sections/Footer';
 import { useState } from 'react';
 import { stats } from '@/constants/Stats';
 import faqs from '@/constants/aboutUs/faqs.ts';
+import { quickAnswers } from '@/constants/aboutUs/quickanswers';
 
 const FAQs = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -45,29 +46,20 @@ const FAQs = () => {
           <section className="my-10">
             <h2 className="text-3xl font-bold mb-6">Quick Answers</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-              {Array(6)
-                .fill(0)
-                .map((_, index) => (
-                  <div
-                    key={index}
-                    className="bg-white shadow-lg rounded-2xl p-6 flex flex-col items-center border border-gray-200"
-                  >
-                    <div className="w-12 h-12 bg-gray-100 flex items-center justify-center rounded-lg mb-4">
-                      <img
-                        src="/faq-icon.svg"
-                        alt="FAQ Icon"
-                        className="w-6 h-6"
-                      />
-                    </div>
-                    <h3 className="font-semibold text-center">
-                      Is Music Blocks Free?
-                    </h3>
-                    <p className="text-gray-600 text-sm text-center mt-2">
-                      Yes! It is absolutely free to use, just visit the Music
-                      Blocks webpage to access it for free.
-                    </p>
+              {quickAnswers.map((qa, index) => (
+                <div
+                  key={index}
+                  className="bg-white shadow-lg rounded-2xl p-6 flex flex-col items-center border border-gray-200"
+                >
+                  <div className="w-12 h-12 bg-white flex items-center justify-center rounded-lg mb-4">
+                    <img src={qa.image} alt={qa.question} className="w-6 h-6" />
                   </div>
-                ))}
+                  <h3 className="font-semibold text-center">{qa.question}</h3>
+                  <p className="text-gray-600 text-sm text-center mt-2">
+                    {qa.answer}
+                  </p>
+                </div>
+              ))}
             </div>
           </section>
 
