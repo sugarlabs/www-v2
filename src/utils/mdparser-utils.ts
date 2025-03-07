@@ -165,6 +165,12 @@ export const renderMarkdown = (markdown: string): string => {
     '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">$1</code>',
   );
 
+  // Convert code blocks
+  html = html.replace(/```(.*?)\n([\s\S]*?)```/g, function (_, lang, code) {
+    const languageClass = lang ? `language-${lang}` : '';
+    return `<pre class="bg-gray-900 text-white p-4 rounded-md overflow-auto"><code class="${languageClass}">${escapeHtml(code)}</code></pre>`;
+  });
+
   // Improved table handling
   const tableRegex = /^\|(.+)\|(\r?\n\|[-|\s]+\|)(\r?\n\|.+\|)+/gm;
   html = html.replace(tableRegex, function (match) {
