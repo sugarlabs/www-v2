@@ -1,25 +1,9 @@
 ---
-title: School Administrators
+title: Sugar Labs For School Administrators
 slug: school-admin
 author: Sugar Labs Team
 lastUpdated: 2025-03-07
 category: Education
----
-
-# SUGAR LABS FOR SCHOOL ADMINISTRATORS
-
-## Welcome to the Sugar school administrators site.
-Here you will find all you need to know on how Sugar can help your students and teachers.
-
----
-
-## Navigation
-
-- [Student and teacher agency](#student-and-teacher-agency)
-- [What can Sugar do?](#what-using-sugar-can-do-for-your-students-and-school)
-- [Reflection and assessment](#reflection-and-assessment-in-the-context-of-sugar)
-- [Where to get resources?](#where-to-get-resources)
-
 ---
 
 ## Student and teacher agency
@@ -55,7 +39,7 @@ Sugar equally promotes cultures of **expression and reflection**. With Sugar, we
 3. **Discovering:**  
    Sugar tries to accommodate a wide variety of users with different levels of skill in terms of reading and language and different levels of experience with computing by providing activities with a "low floor" and, where possible, "no ceiling."
 
-> **“The only time collaboration is called cheating is when you are in school.” – Walter Bender**
+>>> **“The only time collaboration is called cheating is when you are in school.” – Walter Bender**
 
 Sugar drew inspiration for its activities and the fluid interface between activities from observing how the **free software community** collaborates. Software developers chat, socialize, play games, share media, and collaborate on media creation and programming in both formal and informal settings.
 
@@ -86,7 +70,3 @@ The primary function of the journal is as a **time-based view** of the activitie
 ## Where to get resources?
 
 For more information, visit the **official Sugar Labs website** and explore its resources on **collaborative learning, development tools, and community support**.
-
----
-
-Sugar provides **powerful tools for collaboration and productivity** while respecting the **privacy of children and their teachers**.

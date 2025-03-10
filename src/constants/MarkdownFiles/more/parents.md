@@ -1,20 +1,9 @@
 ---
-title: Parents
+title: Sugar Labs For Parents
 slug: parents
 author: Sugar Labs Team
 lastUpdated: 2025-03-07
 category: Education
----
-
-# SUGAR LABS FOR PARENTS  
-
-## Welcome to the Sugar parents' site  
-Here you will find all you need to know more about Sugar.  
-
-## Navigation  
-- [Background](#background)  
-- [Sugar Pedagogy](#sugar-pedagogy)  
-
 ---
 
 ## Background  
@@ -29,9 +18,8 @@ In 1971, Papert and Solomon published *“20 Things to do with a Computer”*, a
 ---
 
 ## Sugar Pedagogy  
-> **“Learning is hard fun.”** – Marvin Minsky  
->  
-> **“A six-year-old child can become an expert.”** – Marvin Minsky  
+>>> **“Learning is hard fun.”** – Marvin Minsky  
+>>> **“A six-year-old child can become an expert.”** – Marvin Minsky  
 
 In a 2008 essay questioning “general” education, Marvin Minsky proposed that we *“re-aim our schools towards encouraging children to pursue more focused hobbies and specialties—to provide them with more time for (and earlier experience with) developing more powerful sets of mental skills, which they later can extend to more academic activities.”*  
 
@@ -54,8 +42,4 @@ This aligns with research by Daniel Pink, who reviewed four decades of studies s
 2. **Mastery** – confidence and space to develop expertise  
 3. **Purpose** – authentic problem-solving opportunities  
 
-A key insight of Minsky, Papert, and Solomon is to give children tools they can explore, master, and apply to problems they care about. Children using Sugar are **motivated learners**, pursuing meaningful goals that help them build their own “cognitive towers.”  
-
----
-
-## [Return to main page]({{ site.baseurl }}/)
+A key insight of Minsky, Papert, and Solomon is to give children tools they can explore, master, and apply to problems they care about. Children using Sugar are **motivated learners**, pursuing meaningful goals that help them build their own “cognitive towers.”

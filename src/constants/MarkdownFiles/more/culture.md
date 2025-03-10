@@ -6,9 +6,6 @@ lastUpdated: 2025-03-07
 category: Education
 ---
 
-# SUGAR LABS  
-## CULTURE AND PEDAGOGY  
-
 ## What makes Sugar different?  
 It would be nice to define what we are talking about when we say "Sugar," since we have multiple platforms. For example, is this page dedicated to Sugar as a desktop environment, or do we want to make this broader to include web apps, Sugarizer, etc.?  
 
@@ -61,6 +58,4 @@ Plus, cross-community collaboration between technologists and teachers ensures t
 ## The Free (Libre) Software culture  
 The Sugar pedagogy is embodied in the culture of Free/Libre Software; teachers and students are empowered with both the freedom to actively participate and the freedom to be critical.  
 
-Criticism of ideas is a powerful force in learning, as well as in fostering economic development; unleashing this potential is an important part of our mission.  
-
-## [Return to main page]({{ site.baseurl }}/)
+Criticism of ideas is a powerful force in learning, as well as in fostering economic development; unleashing this potential is an important part of our mission.
