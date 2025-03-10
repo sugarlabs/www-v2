@@ -6,135 +6,61 @@ lastUpdated: 2025-03-07
 category: Education
 ---
 
-<!-- markdownlint-disable -->
+# SUGAR LABS  
+## CULTURE AND PEDAGOGY  
 
-# The Ultimate Markdown Test Document (NOTE: THIS IS AI GENERATED)
+## What makes Sugar different?  
+It would be nice to define what we are talking about when we say "Sugar," since we have multiple platforms. For example, is this page dedicated to Sugar as a desktop environment, or do we want to make this broader to include web apps, Sugarizer, etc.?  
 
-This document demonstrates all the features of our custom Markdown renderer. The first paragraph has special styling with a drop cap first letter. Let's explore everything this renderer can do!
+- **Sugar facilitates sharing and collaboration**: children can write articles, share books, or make music together with a single mouse click.  
+- **Activities, not applications**: Sugar activities are applicable beyond the scope of the classroom and even Sugar itself.  
+- **Automatic backup of Activity work**: No worrying about files or folders. Sugar’s Journal makes it almost impossible to lose any data.  
+- **The Journal records everything you do**: It is a place to reflect upon and evaluate your work.  
+- **Sugar runs on most computer hardware**, including slower machines.  
+- **Sugar is Free (Libre) Software**: It is written in Python and easily customized.  
+- **Sugar is documented by its users**: It is easy to use, and teachers worldwide have created a wealth of pedagogical materials for it.  
+- **Sugar is written by its users**: 50% of the updates to our latest release came directly from our users.  
+  - It would be nice to have a link here, for reference.  
 
-## Basic Formatting
+## What are the benefits of using Sugar?  
+- **Hundreds of tools for discovery**: Exploring, expressing, and sharing through online research, writing, coding, and more.  
+- **Built-in collaboration system**: Peer-to-peer learning; always-on support; and single-click sharing.  
+  - What is "always-on support"?  
+- **A built-in portfolio assessment tool** called Journal that serves as a forum for discussion between children, parents, and teachers.  
+- **A discoverable learning platform**: It uses simple means to reach complex ends.  
+  - What do we mean by "discoverable"? That we can use the platform to discover ideas?  
+- **Designed for local appropriation**: Sugar has built-in tools for making changes and improvements and a growing global community of support.  
+  - Twenty-five languages are currently available.  
+- **An emphasis on learning through doing and debugging**: Engages learners better to tackle authentic problems.  
+- **Available in a wide variety of forms**: As part of GNU/Linux distributions, as well as LiveCD, LiveUSB, and in a virtual machine for Windows and Mac machines.  
 
-This text is **bold** and this is _italic_. You can also have ~~strikethrough text~~ and ==highlighted text== for emphasis.
+## What are the Sugar advantages?  
+- **Pedagogical framework** centered around Constructionism learning and founded on student empowerment.  
+- **Collaboration and journaling features**, uniquely designed by educators for educators and learners.  
+- **Hundreds of activities**.  
+- **Large and committed community** of developers, teachers, and learners from all around the globe.  
+  - Perhaps it would be nice to have numbers here, if possible.  
+- **24/7 community support**.  
+  - What do we mean by this? That we are available by Matrix/IRC?  
+- **Online and in-person training and workshops available**.  
+- **Handouts available to use in the classroom**.  
+- **Teacher-driven development**, rapidly expanding every day.  
+- **Easily localizable and customizable**.  
+- **Free/Libre software**: No licensing fees.  
+- **A global project**: No single point of dependency or failure.  
 
-You can add super^script^ and sub~script~ text when needed.
+## A *learning-centric* approach  
+At Sugar Labs, we strive for a *learning-centric* approach, where teachers mentor students as they engage with powerful ideas, or *instructing less and learning more*.  
 
-## Links and Code
+At Sugar Labs, we give children access to *knowledge*—through media such as electronic books, the world-wide web, and multimedia—but, more importantly, we give them the tools they need to *create*, to learn about learning, to put knowledge to use, and engage in reflection and critical dialogue.  
 
-Visit [our website](https://example.com) for more information.
+With Sugar, we help learners *acquire knowledge* so that they grow as active consumers, critics, and *creators of knowledge*; Sugar welcomes them as members of a vibrant learning community.  
 
-Here's some `inline code` within a paragraph.
+Plus, cross-community collaboration between technologists and teachers ensures that the ideals of student empowerment, freedom, sharing, open critique, and transparency will remain an integral part of Sugar—one that touches the lives of children and their communities all across the world’s classrooms.  
 
-## Lists
+## The Free (Libre) Software culture  
+The Sugar pedagogy is embodied in the culture of Free/Libre Software; teachers and students are empowered with both the freedom to actively participate and the freedom to be critical.  
 
-### Unordered Lists
+Criticism of ideas is a powerful force in learning, as well as in fostering economic development; unleashing this potential is an important part of our mission.  
 
-- First item
-- Second item
-
-### Ordered Lists
-
-1. First ordered item
-2. Second ordered item
-
-### Task Lists
-
-- [ ] Uncompleted task
-- [x] Completed task
-- [ ] Another pending task
-
-## Tables
-
-| Feature     | Support | Notes                     |
-| ----------- | ------- | ------------------------- |
-| Headers     | ✅      | With anchor links         |
-| Bold/Italic | ✅      | Basic formatting          |
-| Code blocks | ✅      | With language support     |
-| Tables      | ✅      | This one!                 |
-| Lists       | ✅      | Ordered, unordered, tasks |
-
-## Blockquotes with Proper Nesting
-
-> This is a simple blockquote
->
-> With multiple paragraphs
-
->> This is a second-level blockquote
->> Which continues on a second line
-
->>> And this is a third-level blockquote
->>> With another line
-
-> This is a multi-line blockquote
-> that continues on the next line
->
-> And even has an empty line in between
-
-## Images with Captions
-
-![A beautiful landscape](https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600 'Beautiful mountain landscape')
-
-## Horizontal Rules
-
-Above this text is regular content.
-
----
-
-Below this is separated by a horizontal rule.
-
-## Special Features
-
-### Collapsible Sections
-
-:::details Click to see hidden content
-This content is hidden by default until the user clicks on the summary.
-
-- You can include lists
-- And other formatting inside
-  ![A beautiful landscape](https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600)
-  :::
-
-### YouTube Embed
-
-[youtube: MM-H69cHYMk]
-
-### Emoji Support
-
-:smile: I'm happy to see this working!
-:rocket: Let's launch this feature!
-:warning: Be careful with this syntax.
-:thumbsup: Looks good to me!
-:heart: Love this feature!
-:fire: This is awesome!
-:star: Five-star quality!
-:info: Here's some information.
-:check: This is correct.
-:x: This is wrong.
-
-## Combined Examples
-
-> This blockquote contains **bold text**.
-> It also has a [link](https://example.com).
-
-- List item with **bold** and _italic_ text
-- Item with a [link](https://example.com) and `inline code`
-- Item with ==highlighted text== that stands out
-
-## Advanced Typography Test
-
-H~2~O is water and 5^th^ is an ordinal number.
-
-This paragraph has ~~strikethrough text~~ to show deleted content and ==highlighted text== to show important information.
-
-## Paragraphs with Line Breaks
-
-This is a paragraph with
-line breaks that should be
-preserved as spaces within
-the paragraph.
-
-This is another paragraph
-after a blank line.
-
----
-
-Thanks for reviewing this Markdown test document! :heart:
+## [Return to main page]({{ site.baseurl }}/)
