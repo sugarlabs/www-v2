@@ -16,10 +16,83 @@ export function escapeHtml(unsafe: string): string {
 }
 
 /**
+ * Escape special characters in a string for use in a regular expression
+ */
+function escapeRegExp(string: string): string {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Process code blocks in markdown text
+ */
+function processCodeBlocks(markdown: string): { html: string; codeBlocks: { [key: string]: string } } {
+  const codeBlocks: { [key: string]: string } = {};
+  let codeBlockCounter = 0;
+
+  // Replace code blocks with placeholders
+  const processedHtml = markdown.replace(
+    /```([\w-]*)\n([\s\S]*?)```/gm,
+    (match, language, code) => {
+      // Create a unique placeholder that won't appear in normal text
+      const placeholder = `__CODEBLOCK_${Math.random().toString(36).substring(2)}_${codeBlockCounter}__`;
+      const escapedCode = escapeHtml(code.trim());
+      const langClass = language ? `language-${language}` : '';
+      const codeId = `code-${Math.random().toString(36).substring(2, 9)}`;
+
+      // Only add the language label if a language is specified
+      const languageLabel = language ? `<span class="text-xs font-mono">${language}</span>` : '';
+
+      // Log the code content being set in the data-code attribute
+      console.log('Setting data-code attribute with code:', code);
+
+      codeBlocks[placeholder] = `<div class="relative my-6 rounded-lg overflow-hidden bg-gray-800 shadow-lg">
+        <button class="copy-code-button absolute top-2 right-2 text-gray-400 hover:text-white transition-colors px-2 py-1 rounded text-sm flex items-center" data-code="${code.replace(/"/g, '&quot;')}" aria-label="Copy code to clipboard">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+        </button>
+        <pre id="${codeId}" class="p-4 overflow-x-auto text-gray-300 text-sm"><code class="${langClass}">${escapedCode}</code></pre>
+      </div>`;
+      codeBlockCounter++;
+      return placeholder;
+    }
+  );
+
+  return { html: processedHtml, codeBlocks };
+}
+
+/**
+ * Process inline code in markdown text
+ */
+function processInlineCode(markdown: string): { html: string; inlineCode: { [key: string]: string } } {
+  const inlineCode: { [key: string]: string } = {};
+  let inlineCounter = 0;
+
+  // Replace inline code with placeholders
+  const processedHtml = markdown.replace(/(?<!`)`([^`\n]+?)`(?!`)/g, (match, code) => {
+    const placeholder = `__INLINE_${Math.random().toString(36).substring(2)}_${inlineCounter}__`;
+    inlineCode[placeholder] = `<code class="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">${escapeHtml(code)}</code>`;
+    inlineCounter++;
+    return placeholder;
+  });
+
+  return { html: processedHtml, inlineCode };
+}
+
+/**
  * Renders markdown text into styled HTML
  */
 export const renderMarkdown = (markdown: string): string => {
-  let html = markdown;
+  // Normalize line endings to \n
+  markdown = markdown.replace(/\r\n/g, '\n');
+
+  // First, process code blocks and store them safely
+  const { html: htmlWithCodeBlockPlaceholders, codeBlocks } = processCodeBlocks(markdown);
+
+  // Then, process inline code and store them safely
+  const { html: htmlWithAllPlaceholders, inlineCode } = processInlineCode(htmlWithCodeBlockPlaceholders);
+
+  let html = htmlWithAllPlaceholders;
 
   // Create IDs for headers to enable anchor links
   const headerToId = (text: string) => {
@@ -29,60 +102,7 @@ export const renderMarkdown = (markdown: string): string => {
       .replace(/(^-|-$)/g, '');
   };
 
-  // Process blockquotes
-  html = html.replace(/(^>.*(\n>.*)*)/gm, function (match) {
-    const lines = match.split('\n');
-    let content = '';
-
-    lines.forEach((line) => {
-      const match = line.match(/^>(>*)\s?(.*)$/);
-      if (match) {
-        const nestedChars = match[1];
-        const lineContent = match[2];
-        const nestLevel = nestedChars.length + 1;
-
-        const borderColorClasses = [
-          'border-blue-300 bg-blue-50',
-          'border-purple-300 bg-purple-50',
-          'border-green-300 bg-green-50',
-          'border-orange-300 bg-orange-50',
-        ];
-
-        const borderClass =
-          borderColorClasses[(nestLevel - 1) % borderColorClasses.length];
-        const marginClass = nestLevel > 1 ? 'ml-4' : '';
-        const contentToAdd = lineContent.trim() === '' ? '<br>' : lineContent;
-        if (content === '') {
-          content = `<blockquote class="border-l-4 ${borderClass} ${marginClass} pl-4 py-2 my-4 italic text-gray-700 rounded-r-md">${contentToAdd}`;
-        } else {
-          content += `<br>${contentToAdd}`;
-        }
-      }
-    });
-    if (content !== '') {
-      content += '</blockquote>';
-    }
-
-    return content;
-  });
-
-  html = html.replace(
-    /!\[(.*?)\]\((.*?)(?:\s"(.*?)")?\)/gim,
-    function (_, alt, src, title) {
-      const caption = title
-        ? `<figcaption class="text-center text-sm text-gray-600 mt-2">${title}</figcaption>`
-        : '';
-
-      return `<figure class="flex flex-col items-center my-6">
-        <div class="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-          <img src="${src}" alt="${alt}" class="max-w-full sm:max-w-md md:max-w-lg rounded-lg object-contain max-h-80 hover:scale-105 transition-transform duration-300" loading="lazy" data-zoomable="true" />
-        </div>
-        ${caption}
-      </figure>`;
-    },
-  );
-
-  // Convert headers with anchor links
+  // Process headers
   html = html.replace(/^### (.*$)/gim, (_, title) => {
     const id = headerToId(title);
     return `<h3 id="${id}" class="text-xl font-bold my-4 text-gray-800 group flex items-center">
@@ -116,7 +136,7 @@ export const renderMarkdown = (markdown: string): string => {
                 <a aria-hidden="true" tabindex="-1" href="#${id}" class="ml-2 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                     <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
-                    <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+                    <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83-2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
                   </svg>
                 </a>
               </h1>`;
@@ -159,12 +179,6 @@ export const renderMarkdown = (markdown: string): string => {
     '<a href="$2" class="text-blue-600 hover:underline transition-colors duration-200">$1</a>',
   );
 
-  // Convert inline code
-  html = html.replace(
-    /`(.*?)`/gim,
-    '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">$1</code>',
-  );
-
   // Improved table handling
   const tableRegex = /^\|(.+)\|(\r?\n\|[-|\s]+\|)(\r?\n\|.+\|)+/gm;
   html = html.replace(tableRegex, function (match) {
@@ -203,6 +217,7 @@ export const renderMarkdown = (markdown: string): string => {
     tableHtml += '</tbody></table></div>';
     return tableHtml;
   });
+
   html = html.replace(
     /^\s*- \[([ xX])\] (.+)$/gim,
     function (_, checked, content) {
@@ -296,6 +311,15 @@ export const renderMarkdown = (markdown: string): string => {
     '<p class="my-4 text-gray-700 leading-relaxed">$1</p>',
   );
 
+  // After processing all other elements, restore code blocks and inline code
+  Object.entries(codeBlocks).forEach(([placeholder, codeHtml]) => {
+    html = html.replace(new RegExp(escapeRegExp(placeholder), 'g'), codeHtml);
+  });
+
+  Object.entries(inlineCode).forEach(([placeholder, codeHtml]) => {
+    html = html.replace(new RegExp(escapeRegExp(placeholder), 'g'), codeHtml);
+  });
+
   // Style first paragraph's first letter (if it exists)
   html = html.replace(
     /<p class="my-4 text-gray-700 leading-relaxed">(\w)/,
@@ -329,3 +353,50 @@ export const renderMarkdown = (markdown: string): string => {
 
   return html;
 };
+
+/**
+ * Initialize syntax highlighting for code blocks if a syntax highlighting library is available
+ * This function should be called after the DOM is loaded
+ */
+export function initializeSyntaxHighlighting(): void {
+  // Check if Prism or Highlight.js is available
+  const hasPrism = typeof (window as any).Prism !== 'undefined';
+  const hasHighlightJs = typeof (window as any).hljs !== 'undefined';
+
+  if (hasPrism) {
+    // If Prism is available, let it automatically highlight all code blocks
+    // Prism does this automatically for elements with language-* classes
+    try {
+      (window as any).Prism.highlightAll();
+    } catch (error) {
+      console.error('Error initializing Prism syntax highlighting:', error);
+    }
+  } else if (hasHighlightJs) {
+    // If Highlight.js is available, manually highlight each code block
+    try {
+      document.querySelectorAll('pre code').forEach((block) => {
+        (window as any).hljs.highlightBlock(block);
+      });
+    } catch (error) {
+      console.error('Error initializing Highlight.js syntax highlighting:', error);
+    }
+  }
+}
+
+/**
+ * Initialize all markdown-related features
+ * This function should be called after the DOM is loaded
+ */
+export function initializeMarkdownFeatures(): void {
+  // Import and initialize code copy functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    import('./copy-code').then(({ initializeCodeCopy }) => {
+      initializeCodeCopy();
+    }).catch(error => {
+      console.error('Error initializing code copy functionality:', error);
+    });
+
+    // Initialize syntax highlighting
+    initializeSyntaxHighlighting();
+  });
+}
