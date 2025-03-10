@@ -5,6 +5,7 @@ author: Sugar Labs Team
 lastUpdated: 2025-03-07
 category: Education
 ---
+<!-- markdownlint-disable -->
 
 ## Student and teacher agency
 

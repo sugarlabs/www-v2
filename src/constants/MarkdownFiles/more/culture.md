@@ -5,6 +5,7 @@ author: Sugar Labs Team
 lastUpdated: 2025-03-07
 category: Education
 ---
+<!-- markdownlint-disable -->
 
 ## What makes Sugar different?  
 It would be nice to define what we are talking about when we say "Sugar," since we have multiple platforms. For example, is this page dedicated to Sugar as a desktop environment, or do we want to make this broader to include web apps, Sugarizer, etc.?  

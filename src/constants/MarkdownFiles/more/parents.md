@@ -5,6 +5,7 @@ author: Sugar Labs Team
 lastUpdated: 2025-03-07
 category: Education
 ---
+<!-- markdownlint-disable -->
 
 ## Background  
 The Sugar Learning Platform (Sugar) was first developed as the software platform for the One Laptop per Child (OLPC) program, a spin-off project from the MIT Media Lab in 2006.  
