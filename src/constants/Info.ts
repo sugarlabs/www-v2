@@ -4,6 +4,11 @@ import discussImage from '/assets/Images/discuss.jpeg';
 import teach2Image from '/assets/Images/teach2.jpeg';
 import learnImage from '/assets/Images/learn.jpg';
 
+import merch1 from '/assets/Images/sugarTshirtBlue.jpeg';
+import merch2 from '/assets/Images/sugarTshirtWhite.jpeg';
+import merch3 from '/assets/Images/sugarTshirtPurple.jpeg';
+import flash from '/assets/Images/sugarlabsUsb.jpeg';
+
 export interface ImageConfig {
   src: string;
   alt: string;
@@ -13,6 +18,13 @@ export interface ImageConfig {
 interface HeroContent {
   title: string;
   description: string;
+}
+
+interface ProductContent {
+  name: string;
+  description: string;
+  images: string[];
+  buyNowLink: string;
 }
 
 export const heroContent: HeroContent = {
@@ -48,3 +60,19 @@ export const images: Record<string, ImageConfig> = {
 export const mission = {
   learnImage,
 };
+
+export const ProductConstants: ProductContent[] = [
+  {
+    name: 'Sugarlabs Merch',
+    description: 'Sweet merch that supports our unique cause.',
+    images: [merch1, merch2, merch3],
+    buyNowLink: 'https://www.bonfire.com/sugar-labs-education/',
+  },
+  {
+    name: 'Sugarlabs USB Flash Drive',
+    description:
+      'Easily install Fedora Sugar On A Stick (SOAS) to your device directly from this USB flash drive.',
+    images: [flash],
+    buyNowLink: 'https://www.usbmemorydirect.com/store/novelty/sugarlabs/',
+  },
+];
