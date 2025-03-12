@@ -225,7 +225,7 @@ const Header: React.FC = () => {
                             flex flex-col h-screen overflow-y-auto"
                 >
                   <div className="h-20" />
-                  <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-6">
+                  <div style={{flexGrow:'0.7'}} className="overflow-y-auto overscroll-contain px-4 py-6">
                     <div className="space-y-6">
                       {Object.entries(dropdowns).map(
                         ([key, { label, items }]) => (
@@ -312,7 +312,7 @@ const Header: React.FC = () => {
                       onClick={closeMenu}
                       className="flex items-center justify-center px-6 py-3 rounded-xl font-semibold
                               text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700
-                              hover:to-blue-800 transition-all duration-300 w-full"
+                              hover:to-blue-800 transition-all duration-300 w-full sticky bottom-0 bg-white shadow-inner"
                     >
                       TRY NOW
                     </Link>
