@@ -10,7 +10,6 @@ interface ProductDisplayProps {
   buyNowLink: string;
 }
 
-// Simple markdown parser for basic formatting
 const parseMarkdown = (text: string) => {
   return text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -21,7 +20,7 @@ const parseMarkdown = (text: string) => {
 export const ProductDisplay = ({
   name,
   description,
-  images = [], // Provide default empty array
+  images = [],
   buyNowLink,
 }: ProductDisplayProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -91,7 +90,6 @@ export const ProductDisplay = ({
         </div>
       </div>
 
-      {/* Product Details */}
       {/* Product Details */}
       <div className="flex-1 flex flex-col">
         <div>

@@ -3,10 +3,12 @@
 ## Steps to Add a New Favicon
 
 1. **Prepare the Favicon File:**
+
    - Create an SVG (preferred) or PNG file for the favicon.
    - Ensure the favicon design aligns with the existing ones.
 
 2. **Place the Favicon in the Correct Directory:**
+
    - Move the favicon file to the `public/favicons/` folder.
 
 3. **Update the Favicon List:**
