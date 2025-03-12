@@ -222,10 +222,10 @@ const Header: React.FC = () => {
                   exit={{ opacity: 0, x: '100%' }}
                   transition={{ type: 'tween', duration: 0.3 }}
                   className="fixed md:hidden top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white shadow-xl z-40
-                            flex flex-col h-screen overflow-y-auto"
+                            flex flex-col h-[90vh] overflow-y-auto"
                 >
                   <div className="h-20" />
-                  <div className="flex-grow-[0.7] flex-shrink flex-basis-0 overflow-y-auto overscroll-contain px-4 py-6">
+                  <div className="flex-grow-1 overflow-y-auto overscroll-contain px-4 py-6">
                     <div className="space-y-6">
                       {Object.entries(dropdowns).map(
                         ([key, { label, items }]) => (
