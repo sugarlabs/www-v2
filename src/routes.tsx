@@ -8,7 +8,7 @@ import TrySugar from '@/pages/TrySugar';
 import JoinDevelopment from '@/pages/JoinDevelopment';
 import Volunteer from '@/pages/Volunteer';
 import Donate from '@/pages/Donate';
-import Products from '@/pages/Products';
+import Products from '@/pages/ProductsPage';
 import NewsPage from '@/pages/News/NewsPage';
 import NewsDetailPage from '@/pages/News/NewsDetailPage';
 import MorePage from '@/pages/More';
