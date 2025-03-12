@@ -1,25 +1,31 @@
-export const tryMoreReviews = [
+export const tryMoreActivities = [
   {
-    name: 'Jack',
-    username: '@jack',
-    body: "I've never seen anything like this before. It's amazing. I love it.",
-    img: 'https://avatar.vercel.sh/jack',
+    title: 'Finance',
+    description: 'Roleplay with money',
+    buttonText: 'Get Finance',
+    img: 'assets/Activities/activity-finance.svg', // Update with actual SVG path
   },
   {
-    name: 'Jill',
-    username: '@jill',
-    body: "I don't know what to say. I'm speechless. This is amazing.",
-    img: 'https://avatar.vercel.sh/jill',
+    title: 'Maze',
+    description: 'Have fun with progressive challenges',
+    buttonText: 'Get Maze',
+    img: 'assets/Activities/activity-maze.svg', // Update with actual SVG path
   },
   {
-    name: 'John',
-    username: '@john',
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: 'https://avatar.vercel.sh/john',
+    title: 'Paint',
+    description: 'Express your creativity',
+    buttonText: 'Get Paint',
+    img: 'assets/Activities/activity-finance.svg', // Example, add more as needed
   },
 ];
 
-export const firstRow = tryMoreReviews.slice(0, tryMoreReviews.length / 2);
-export const secondRow = tryMoreReviews.slice(tryMoreReviews.length / 2);
-export const thirdRow = tryMoreReviews.slice(0, tryMoreReviews.length / 2);
-export const fourthRow = tryMoreReviews.slice(tryMoreReviews.length / 2);
+export const firstRow = tryMoreActivities.slice(
+  0,
+  tryMoreActivities.length / 2,
+);
+export const secondRow = tryMoreActivities.slice(tryMoreActivities.length / 2);
+export const thirdRow = tryMoreActivities.slice(
+  0,
+  tryMoreActivities.length / 2,
+);
+export const fourthRow = tryMoreActivities.slice(tryMoreActivities.length / 2);
