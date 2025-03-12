@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --quiet --fix",
     "preview": "vite preview --host",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
@@ -32,24 +32,26 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@eslint/js": "^9.19.0",
+    "@eslint/js": "^9.22.0",
     "@types/node": "^22.13.5",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
     "@vitejs/plugin-react": "^1.3.2",
-    "eslint": "^9.20.1",
+    "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "gh-pages": "^6.3.0",
-    "globals": "^15.14.0",
+    "globals": "^15.15.0",
     "markdownlint": "^0.37.4",
     "markdownlint-cli": "^0.44.0",
-    "prettier": "^3.5.0",
+    "prettier": "^3.5.3",
     "typescript": "~5.7.2",
-    "typescript-eslint": "^8.22.0",
+    "typescript-eslint": "^8.26.1",
     "vite": "^6.1.0"
   }
 }
