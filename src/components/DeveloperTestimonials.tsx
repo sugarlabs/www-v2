@@ -107,18 +107,17 @@ export function DeveloperTestimonials() {
             custom={2}
           />
 
-          {/* Heading */}
           <motion.h2
             className="font-bold tracking-wider font-Caveat text-3xl md:text-5xl lg:text-6xl text-gray-800 text-center"
             variants={testimonialHeading}
           >
-            <h2 className="text-5xl font-bold font-[Caveat] ">
+            <span className="text-5xl font-bold font-[Caveat]">
               What our developers say
               <br />
               about their journey??
-            </h2>
-            <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
+            </span>
           </motion.h2>
+          <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
 
           {/* Right Apostrophe (Flipped, Hidden Below 400px) */}
           <motion.img

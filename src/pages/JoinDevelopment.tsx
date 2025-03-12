@@ -1,5 +1,5 @@
-import Header from '../sections/Header';
-import Footer from '../sections/Footer';
+import Header from '@/sections/Header';
+import Footer from '@/sections/Footer';
 import { DeveloperTestimonials } from '@/components/DeveloperTestimonials';
 import DeveloperLinks from '@/components/DeveloperLinks';
 import JoinToggle from '@/components/JoinToggle';
