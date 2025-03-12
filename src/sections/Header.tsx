@@ -225,7 +225,7 @@ const Header: React.FC = () => {
                             flex flex-col h-screen overflow-y-auto"
                 >
                   <div className="h-20" />
-                  <div style={{flexGrow:0.85,flexShrink:1,flexBasis:0}}className="overflow-y-auto overscroll-contain px-4 py-6">
+                  <div className="flex-grow-[0.7] flex-shrink flex-basis-0 overflow-y-auto overscroll-contain px-4 py-6">
                     <div className="space-y-6">
                       {Object.entries(dropdowns).map(
                         ([key, { label, items }]) => (
