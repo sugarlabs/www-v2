@@ -12,6 +12,12 @@ import Products from '@/pages/Products';
 import NewsPage from '@/pages/News/NewsPage';
 import NewsDetailPage from '@/pages/News/NewsDetailPage';
 import MorePage from '@/pages/More';
+import TurtleBlocksPage from '@/pages/TryNow/TurtleBlocks';
+import SugarizerPage from '@/pages/TryNow/Sugarizer';
+import BootableSoasPage from '@/pages/TryNow/BootableSoas';
+import TrisquelPage from '@/pages/TryNow/Trisquel';
+import RaspberryPiPage from '@/pages/TryNow/Raspberry';
+import MusicBlocksPage from '@/pages/TryNow/MusicBlocks';
 
 const router = createHashRouter([
   { path: `/`, element: <MainPage /> },
@@ -29,6 +35,12 @@ const router = createHashRouter([
   { path: `/volunteer`, element: <Volunteer /> },
   { path: `/donate`, element: <Donate /> },
   { path: `/products`, element: <Products /> },
+  { path: `/turtleblocks`, element: <TurtleBlocksPage /> },
+  { path: `/sugarizer`, element: <SugarizerPage /> },
+  { path: `/bootablesoas`, element: <BootableSoasPage /> },
+  { path: `/trisquel`, element: <TrisquelPage /> },
+  { path: `/raspberry`, element: <RaspberryPiPage /> },
+  { path: `/musicblocks`, element: <MusicBlocksPage /> },
 ]);
 
 export default router;
