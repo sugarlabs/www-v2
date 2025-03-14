@@ -7,12 +7,12 @@ export const trisquelData = {
     "Trisquel GNU/Linux is a fully free OS for homes, businesses, and schools, with reliable support for the Sugar Desktop. It's a great choice for booting or installing Sugar on any computer.",
   images: [
     {
-      src: '/assets/TryNowImages/trisquel.png',
+      src: 'assets/TryNowImages/trisquel.png',
       alt: 'Trisquel Sugar Blocks 1',
     },
   ],
   extraImage: {
-    src: '/assets/TryNowImages/-mockup.png',
+    src: 'assets/TryNowImages/-mockup.png',
     alt: 'Trsiquel mockup',
   },
 };
