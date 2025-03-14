@@ -24,24 +24,24 @@ export const turtleBlocksSections = [
     title: 'Getting Started Documentation',
     content:
       'The basic buttons and basic blocks are explained in detail in Documentation. A guide to programming with Turtle Blocks is available in Turtle Blocks Guide. A quick start: Google Code-in participant Jasmine Park has created some guides to using Turtle Blocks: Turtle Blocks: An Introductory Manual and Turtle Blocks: A Manual for Advanced Blocks.',
-    button: null, // No button needed
+    button: null,
   },
   {
     title: 'Found a Bug?',
     content: 'Bugs can be reported in the issues section of this repository.',
-    button: null, // No button needed
+    button: null,
   },
   {
     title: 'Advance Features',
     content:
       'Turtle Blocks has a plugin mechanism that is used to add new blocks. You can learn more about how to use plugins (and how to write them) from the Plugins Guide.',
-    button: null, // No button needed
+    button: null,
   },
   {
     title: 'List of Plugins',
     content:
       'Mindstorms: blocks to interact with the LEGO Mindstorms robotics kit\n RoDi: blocks to interact with RoDi wireless robot\n Maths: addition blocks for some more advanced mathematics\n Translate: blocks for translating strings between languages, e.g., English to Spanish\n Dictionary: a block to look up dictionary definitions\n Weather: blocks to retrieve global weather forecasts\n Logic: blocks for bitwise Boolean operations\n Finance: a block for looking up market prices\n Bitcoin: a block for looking up bitcoin exchange rates\n Nutrition: blocks for exploring the nutritional content of food\n Facebook: a block for publishing a project to Facebook\n Heap: blocks to support a heap and for loading and saving data\n Accelerometer: blocks for accessing an accelerometer\n Turtle: blocks to support advanced features when using multiple turtles\n Gmap: blocks to support generation of Google maps.',
-    button: null, // No button needed
+    button: null,
   },
 ];
 

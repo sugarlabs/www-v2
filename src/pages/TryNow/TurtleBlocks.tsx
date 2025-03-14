@@ -13,7 +13,6 @@ const TurtleBlocksPage = () => {
     <div>
       <Header />
       <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
-        {/* Pass Turtle Blocks Data to FeatureSection */}
         <FeatureSection data={turtleBlocksData} />
 
         <p className="w-[80%] mx-auto flex justify-center font-bold">

@@ -837,3 +837,178 @@ export const faqPageAnimations = {
     },
   }),
 };
+export const teamSectionAnimations = {
+  section: {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  },
+
+  heading: {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 },
+    },
+  },
+
+  memberCard: {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+  },
+
+  memberImage: {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.6, ease: 'easeOut', delay: 0.3 },
+    },
+  },
+};
+export const paragraphAnimations = {
+  section: {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+  },
+
+  text: {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4, ease: 'easeOut' },
+    },
+  },
+
+  listItem: (index: number) => ({
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4, delay: index * 0.1 },
+    },
+  }),
+
+  button: {
+    hover: {
+      scale: 1.05,
+      transition: { duration: 0.3 },
+    },
+  },
+};
+export const numberedCardAnimations = {
+  card: {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+    hover: {
+      scale: 1.05,
+      boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)',
+      transition: { duration: 0.3 },
+    },
+  },
+
+  numberCircle: {
+    hover: {
+      rotate: 10,
+      transition: { duration: 0.3 },
+    },
+  },
+
+  image: {
+    hover: {
+      scale: 1.02,
+      transition: { duration: 0.3 },
+    },
+  },
+};
+export const logoCardAnimations = {
+  card: {
+    hidden: { opacity: 0, y: 50 },
+    visible: (index: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut', delay: index * 0.15 },
+    }),
+    hover: {
+      scale: 1.05,
+      boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)',
+      transition: { duration: 0.3 },
+    },
+  },
+
+  logoContainer: {
+    hover: {
+      rotate: 10,
+      transition: { duration: 0.3 },
+    },
+  },
+
+  button: {
+    hover: { scale: 1.1, transition: { duration: 0.2 } },
+    tap: { scale: 0.95 },
+  },
+};
+export const featureSectionAnimations = {
+  section: {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  },
+
+  textContainer: {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  },
+
+  imageContainer: {
+    hidden: { opacity: 0, x: 50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  },
+
+  image: {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.5, ease: 'easeOut' },
+    },
+    hover: { scale: 1.05, transition: { duration: 0.3 } },
+  },
+
+  button: {
+    hover: { scale: 1.3, transition: { type: 'spring', stiffness: 300 } },
+  },
+
+  note: {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { delay: 0.3, duration: 0.5 } },
+  },
+};

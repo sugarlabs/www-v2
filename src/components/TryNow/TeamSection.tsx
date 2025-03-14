@@ -1,4 +1,6 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { teamSectionAnimations } from '@/styles/Animations';
 
 interface TeamMember {
   name: string;
@@ -10,44 +12,69 @@ interface TeamMember {
 
 const TeamSection: React.FC<{ members: TeamMember[] }> = ({ members }) => {
   return (
-    <section className="w-[90%] mx-auto text-center py-12">
+    <motion.section
+      className="w-[90%] mx-auto text-center py-12"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={teamSectionAnimations.section}
+    >
       {/* Title */}
-      <h1 className="text-5xl font-[Caveat] font-bold">
+      <motion.h1
+        className="text-5xl font-[Caveat] font-bold"
+        variants={teamSectionAnimations.heading}
+      >
         Music Blocks Offline Edition
-      </h1>
-      <h2 className="text-4xl font-[Caveat] font-bold mt-2">
+      </motion.h1>
+
+      <motion.h2
+        className="text-4xl font-[Caveat] font-bold mt-2"
+        variants={teamSectionAnimations.heading}
+      >
         and <br /> Curriculum Development Team
-      </h2>
-      <hr className="w-24 border-t-2 border-gray-500 mx-auto mt-4" />
+      </motion.h2>
+
+      <motion.hr
+        className="w-24 border-t-2 border-gray-500 mx-auto mt-4"
+        variants={teamSectionAnimations.heading}
+      />
 
       {/* Grid Layout for Members */}
-      <div className="grid md:grid-cols-2 gap-10 mt-12 bg-gray-100 p-10 rounded-lg">
+      <motion.div
+        className="grid md:grid-cols-2 gap-10 mt-12 bg-gray-100 p-10 rounded-lg"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={teamSectionAnimations.section}
+      >
         {members.map((member, index) => (
-          <div
+          <motion.div
             key={index}
             className="flex flex-col md:flex-row items-center bg-white shadow-lg rounded-lg p-6"
+            variants={teamSectionAnimations.memberCard}
           >
             {/* Member Image */}
-            <img
+            <motion.img
               src={member.image}
               alt={member.name}
               className="w-32 h-32 rounded-full object-cover border-4 border-gray-300"
+              variants={teamSectionAnimations.memberImage}
             />
 
             {/* Member Info */}
             <div className="md:ml-6 text-left mt-4 md:mt-0">
               <h3
-                className={`text-lg font-bold px-3 py-1 rounded-lg inline-block`}
+                className="text-lg font-bold px-3 py-1 rounded-lg inline-block"
                 style={{ backgroundColor: member.bgColor }}
               >
                 {member.name}
               </h3>
               <p className="text-gray-700 mt-2">{member.description}</p>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 };
 

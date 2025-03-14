@@ -22,7 +22,6 @@ const MusicBlocksPage = () => {
     <div>
       <Header />
       <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
-        {/* Pass Turtle Blocks Data to FeatureSection */}
         <FeatureSection data={musicBlocksData} />
 
         <p className="flex justify-center">

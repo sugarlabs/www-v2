@@ -13,7 +13,6 @@ const SugarizerPage = () => {
     <div>
       <Header />
       <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
-        {/* Pass Sugarizer Data to FeatureSection */}
         <FeatureSection data={sugarizerData} />
 
         <img src={mockupImage.path} alt="TurtleMockup" />

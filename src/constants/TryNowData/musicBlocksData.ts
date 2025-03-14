@@ -35,7 +35,7 @@ export const musicBlocksSections = [
     title: 'Credits',
     content:
       'Music Blocks is a fork of TurtleArtJS created by Walter Bender. (Turtle Blocks JS has many contributors).\n Devin Ulibarri has contributed functional and user-interface designs. Many of his contributions were inspired by the music education ideas, representations and practices (e.g. aspects of matrix, musical cups) developed and published by Dr. Lawrence Scripp with whom Devin studied at New England Conservatory and for whom he worked at Affron Scripp & Associates, LLC.\n Much of the initial coding of the fork from Turtle Blocks was done by Yash Khandelwal as part of Google Summer of Code (GSoC) 2015. Hemant Kasat contributed to additional widgets as part of GSoC 2016. Additional contributions are being made by Tayba Wasim, Dinuka Tharangi Jayaweera, Prachi Agrawal, Cristina Del Puerto, and Hrishi Patel as part of GSoC 2017. During GSoC 2018, Riya Lohia developed a Temperament Widget. Ritwik Abhishek added a keyboard widget and a pitch-tracking widget.\n Many students contributed to the project as part of Google Code-in (2015–16, 2016–17, and 2017–2018). Sam Parkinson built the Planet during GCI 2016–17. Euan Ong redesigned the Planet code as a series of GCI tasks in 2017–18.',
-    button: null, // No button needed
+    button: null,
   },
 ];
 
@@ -116,32 +116,16 @@ export const teamMembers = [
     role: 'Developer of Music Blocks',
     description:
       'Developer of Music Blocks. Former director of the MIT Media Lab. Founder of the OLPC (One Laptop Per Child) project, which provides $100 computers to children in developing countries. Founder of the nonprofit organization Sugar Labs.',
-    image: 'assets/TryNowImages/walter.png', // Replace with correct image path
-    bgColor: '#B0D0FF', // Light blue
+    image: 'assets/TryNowImages/walter.png',
+    bgColor: '#B0D0FF',
   },
   {
     name: 'DEVIN ULIBARRI',
     role: 'CEO of Remake Music LLC',
     description:
       'Developer of Music Blocks. CEO of Remake Music LLC. Head of Music + Code Lead Teaching Artist Training at MAP Family Learning Center.',
-    image: 'assets/TryNowImages/devin.png', // Replace with correct image path
-    bgColor: '#FFB3C6', // Light pink
-  },
-  {
-    name: 'Sachiko Nakajima',
-    role: 'Mathematician & STEAM Educator',
-    description:
-      'Musician, mathematician, and STEAM educator. The only Japanese woman to win a gold medal at the Mathematical Olympiad. Graduated from the Department of Mathematics, Faculty of Science, University of Tokyo. Became fascinated with jazz while in college, and after graduation also worked as a jazz pianist.',
-    image: 'assets/TryNowImages/sachiko.png', // Replace with correct image path
-    bgColor: '#FFD700', // Gold/Yellow
-  },
-  {
-    name: 'Yu Ukai',
-    role: 'Former Program Manager at Microsoft',
-    description:
-      "Former Program Manager at Microsoft Development Co., Ltd. In charge of the development of the educational version of Minecraft, 'Minecraft: Education Edition,' and programming education materials, 'Minecraft Hour of Code,' etc. Currently, he is the head of MITOU Junior.",
-    image: 'assets/TryNowImages/yuUkai.png', // Replace with correct image path
-    bgColor: '#90EE90', // Light green
+    image: 'assets/TryNowImages/devin.png',
+    bgColor: '#FFB3C6',
   },
 ];
 
