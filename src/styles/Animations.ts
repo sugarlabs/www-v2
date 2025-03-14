@@ -688,3 +688,152 @@ export const dividerVariants = {
     },
   },
 };
+
+export const faqPageAnimations = {
+  // Page section animations
+  pageSection: {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+  },
+
+  // Text content animations
+  headingText: {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: 'easeOut' },
+    },
+  },
+
+  paragraphText: {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: 'easeOut', delay: 0.2 },
+    },
+  },
+
+  // Hero image animation
+  heroImage: {
+    hidden: { opacity: 0, x: 100 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+    hover: {
+      scale: 1.03,
+      transition: { duration: 0.3 },
+    },
+  },
+
+  // Quick answers grid container
+  quickAnswersContainer: {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.1,
+      },
+    },
+  },
+
+  // Quick answer card animation
+  quickAnswerCard: {
+    hidden: { scale: 0.9, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 400,
+        damping: 10,
+      },
+    },
+    hover: {
+      scale: 1.05,
+      transition: {
+        type: 'spring',
+        stiffness: 400,
+        damping: 10,
+      },
+    },
+    tap: { scale: 0.95 },
+  },
+
+  // Icon in quick answer cards
+  quickAnswerIcon: {
+    hidden: { rotate: -10, scale: 0.9 },
+    visible: (index: number) => ({
+      rotate: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        delay: index * 0.1,
+      },
+    }),
+  },
+
+  // FAQ container
+  faqContainer: {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  },
+
+  // FAQ item animation
+  faqItem: {
+    hidden: { y: 20, opacity: 0 },
+    visible: (index: number) => ({
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        delay: index * 0.1,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    }),
+  },
+
+  // FAQ question button hover
+  faqQuestionButton: {
+    initial: {},
+    hover: {
+      x: 5,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+      },
+    },
+  },
+
+  // FAQ toggle icon animation
+  faqToggleIcon: (isOpen: boolean): Variants => ({
+    initial: { rotate: 0 },
+    animate: {
+      rotate: isOpen ? 180 : 0,
+      transition: { duration: 0.3 },
+    },
+  }),
+
+  // FAQ answer animation
+  faqAnswer: (isOpen: boolean): Variants => ({
+    initial: { height: 0, opacity: 0 },
+    animate: {
+      height: isOpen ? 'auto' : 0,
+      opacity: isOpen ? 1 : 0,
+      transition: { duration: 0.3 },
+    },
+  }),
+};

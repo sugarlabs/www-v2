@@ -1,20 +1,21 @@
-export interface MenuItem {
-  label: string;
-  path: string;
-}
+export const navigationData = {
+  dropdowns: {
+    about: {
+      label: 'About',
+      items: [
+        { label: 'About Us', path: '/about-us' },
+        { label: 'Leadership', path: '/leadership' },
+        { label: 'Contact Us', path: '/contact-us' },
+        { label: 'FAQs', path: '/faqs' },
+      ],
+    },
+  },
 
-export interface DropdownItem {
-  label: string;
-  items: MenuItem[];
-}
-
-const aboutItems: MenuItem[] = [
-  { label: 'About Us', path: '/about-us' },
-  { label: 'Leadership', path: '/leadership' },
-  { label: 'Contact Us', path: '/contact-us' },
-  { label: 'FAQs', path: '/faqs' },
-];
-
-export const dropdowns: Record<string, DropdownItem> = {
-  about: { label: 'About', items: aboutItems },
+  links: [
+    { label: 'News', path: '/news' },
+    { label: 'Products', path: '/products' },
+    { label: 'Donate', path: '/donate' },
+    { label: 'Join Development', path: '/join-development' },
+    { label: 'Volunteer', path: '/volunteer' },
+  ],
 };

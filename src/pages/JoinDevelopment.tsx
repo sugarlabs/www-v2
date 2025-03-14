@@ -1,59 +1,49 @@
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
+import { DeveloperTestimonials } from '@/components/DeveloperTestimonials';
+import DeveloperLinks from '@/components/DeveloperLinks';
+import JoinToggle from '@/components/JoinToggle';
 
 const JoinDevelopment = () => {
   return (
     <div>
       <Header />
-      <main className="container mx-auto p-4">
-        <h1 className="text-4xl font-bold text-center my-8">
-          Join Development
-        </h1>
-        <p className="text-lg text-gray-700 text-center">
-          Contribute to SugarLabs' development and help us create innovative
-          solutions for education.
-        </p>
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-blue-100 p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold">Get Started</h2>
-            <p className="mt-2 text-gray-700">
-              Learn how to get started with contributing to SugarLabs'
-              development.
-            </p>
-            <a
-              href="#"
-              className="mt-4 inline-block text-blue-600 hover:underline"
-            >
-              Get Started →
-            </a>
-          </div>
-          <div className="bg-green-100 p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold">Contribution Guidelines</h2>
-            <p className="mt-2 text-gray-700">
-              Read our contribution guidelines to learn more about our
-              development process.
-            </p>
-            <a
-              href="#"
-              className="mt-4 inline-block text-green-600 hover:underline"
-            >
-              Read Guidelines →
-            </a>
-          </div>
-          <div className="bg-yellow-100 p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold">Meet the Team</h2>
-            <p className="mt-2 text-gray-700">
-              Meet the developers, designers, and contributors who make
-              SugarLabs possible.
-            </p>
-            <a
-              href="#"
-              className="mt-4 inline-block text-yellow-600 hover:underline"
-            >
-              Meet the Team →
-            </a>
-          </div>
+      <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-6">
+        <JoinToggle />
+
+        {/* Getting Involved Section */}
+        <div className="mt-20 max-w-4xl flex flex-col items-center text-center px-6">
+          <h2 className="text-5xl font-bold font-[Caveat]">
+            Before Beginning to Contribute
+          </h2>
+          <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
+
+          <p className="text-lg text-gray-700 font-[Inter] mt-6 leading-relaxed">
+            As a developer, whether you are just starting out or you've
+            participated in other development before, there are a few things you
+            need to know about our community. This page has important
+            information on not just where to find the code, documentation, and
+            how to reach us, but it also has information on our philosophy and a
+            link to our Code of Conduct.
+          </p>
         </div>
+
+        <DeveloperTestimonials />
+
+        {/* Important Links */}
+        <div className="mt-20 max-w-4xl flex flex-col items-center text-center px-6">
+          <h2 className="text-5xl font-bold font-[Caveat]">
+            Important Links for Developers
+          </h2>
+          <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
+
+          <p className="text-lg text-gray-700 font-[Inter] mt-6 leading-relaxed">
+            List of important links for people interested in making development
+            contributions to Sugar Labs:
+          </p>
+        </div>
+
+        <DeveloperLinks />
       </main>
       <Footer />
     </div>

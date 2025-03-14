@@ -26,8 +26,10 @@ export const directors: Director[] = [
     name: 'Claudia Urrea',
     position: 'Treasurer, Sugar Labs',
     bio: "Claudia Urrea is the Senior Associate Director for pK-12 at the MIT Abdul Latif Jameel World Education Lab (J-WEL). Claudia was born in Colombia, where she received an undergraduate degree in Computer Science from EAFIT University. Claudia received her master's degree in Educational Media and Technology from Boston University, and her doctorate degree from the MIT Media Laboratory. Her Ph.D. thesis studied the implications of one-to-one learning in a rural setting in Costa Rica. Claudia worked for 5 years as the Director of Learning for One Laptop Per Child, collaborating with SugarLabs in that role. She has been in the board of SugarLabs since 2010.\n\nFor the past 25 years, Claudia has helped multiple governments and non-government agencies- The New York Academy of Sciences, Schlumberger Excellence in Education Development, International Development Research Centre, among others- to empower and support schools and communities of learners to evolve from traditional teaching methods into progressive learning environments. She has also a research scientist position with the Lifelong Kindergarten group at the MIT Media Lab. She has taught several classes at the Harvard Summer Program and Early Childhood Development program at Tufts University.",
-    imageUrl: 'assets/Images/',
-    socialLinks: {},
+    imageUrl: 'assets/Images/BoardMembers/Claudia.png',
+    socialLinks: {
+      linkedin: 'https://www.linkedin.com/in/claudia-urrea-ph-d-0335041/',
+    },
   },
   {
     id: 2,
@@ -48,6 +50,7 @@ export const directors: Director[] = [
     imageUrl: 'assets/Images/BoardMembers/Samson.jpeg',
     socialLinks: {
       github: 'https://github.com/samswag',
+      linkedin: 'https://www.linkedin.com/in/samsongoddy/',
     },
   },
   {

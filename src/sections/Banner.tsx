@@ -109,7 +109,7 @@ const PromoBanner: React.FC<PromoBannerProps> = ({
         <div
           className={`w-full bg-gradient-to-r ${styles.background} border-b ${styles.border} shadow-sm overflow-hidden`}
         >
-          <div className="max-w-7xl mx-auto px-3 py-6 sm:px-6 md:px-8 relative mt-10 sm:mt-12">
+          <div className="max-w-7xl mx-auto px-3 py-6 sm:px-6 md:px-8 relative">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
                 key={currentBannerIndex}

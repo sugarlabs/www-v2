@@ -22,6 +22,10 @@
   font-family: 'Inter';
   src: url('/fonts/Inter_28pt-Regular.ttf');
 }
+@font-face {
+  font-family: 'Oswald';
+  src: url('/fonts/Oswald-Regular.ttf');
+}
 
 @import 'tailwindcss';
 
@@ -31,6 +35,7 @@
   --font-Pacifico: 'Pacifico', sans-serif;
   --font-AnonymousPro: 'AnonymousPro', sans-serif;
   --font-Inter: 'Inter', sans-serif;
+  --font-Oswald: 'Oswald', sans-serif;
 }
 
 :root {
