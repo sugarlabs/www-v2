@@ -53,7 +53,7 @@ assignees: ''
 
 - [ ] I have read and followed the project's Code of Conduct.
 - [ ] I have searched for similar issues before creating this one.
-- [ ] I have provided sufficient details to understand and reproduce the issue.I have provided all the necessary information to understand and reproduce the issue.
+- [ ] I have provided sufficient details to understand and reproduce the issue. I have provided all the necessary information to understand and reproduce the issue.
 - [ ] I am willing to help resolve this issue.
 
 ---
