@@ -139,19 +139,27 @@ const Donation: React.FC = () => {
             className="mt-4 flex justify-center items-center"
             variants={slideInRight}
           >
-            <input
-              className="px-4 py-2 border border-gray-300 rounded-l-full focus:outline-none"
-              placeholder="Enter your email"
-              type="email"
-            />
-            <motion.button
-              className="px-6 py-2 bg-red-500 text-white font-bold rounded-r-full shadow-lg hover:bg-red-600 transition duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+            <motion.form
+              action="https://buttondown.com/api/emails/embed-subscribe/sugarlabs"
+              method="post"
             >
-              SUBSCRIBE
-            </motion.button>
+              <input
+                className="px-4 py-2 border border-gray-300 rounded-l-full focus:outline-none"
+                placeholder="Enter your email"
+                type="email"
+                name="email"
+                required
+              />
+              <motion.button
+                className="px-6 py-2 bg-red-500 text-white font-bold rounded-r-full shadow-lg hover:bg-red-600 transition duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                type="submit"
+              >
+                SUBSCRIBE
+              </motion.button>
+            </motion.form>
           </motion.div>
         </motion.div>
       </div>
