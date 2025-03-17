@@ -33,14 +33,14 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
       alt={title}
       className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mb-3 sm:mb-4"
     />
-    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">
+    <h3 className="flex-1/3 text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">
       {title}
     </h3>
-    <p className="text-gray-600 text-sm sm:text-base mb-4 sm:mb-6">
+    <p className="flex-1/3 text-gray-600 text-sm sm:text-base mb-4 sm:mb-6">
       {description}
     </p>
     <a href={href} className="w-full">
-      <button className="w-full py-2 sm:py-3 px-4 sm:px-6 border-2 border-gray-900 rounded-full text-sm sm:text-base md:text-lg font-semibold hover:bg-gray-900 hover:text-white transition-colors">
+      <button className="flex-1/3 w-full py-2 sm:py-3 px-4 sm:px-6 border-2 border-gray-900 rounded-full text-sm sm:text-base md:text-lg font-semibold hover:bg-gray-900 hover:text-white transition-colors">
         {buttonText}
       </button>
     </a>
