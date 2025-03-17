@@ -1,19 +1,19 @@
 export const tryMoreReviews = [
   {
     name: 'Sourabha G.',
-    username: '@jack',
+    username: '@Sourabha G. GSoC 2021 Student',
     body: "This summer was super fun and filled with learning! I enjoyed testing over 60+ activities with kids to get first-hand feedback which had a positive impact in the way they approach problems...",
     img: 'https://avatar.vercel.sh/jack',
   },
   {
-    name: 'Ria Lohia',
-    username: '@jill',
+    name: 'Riya Lohia',
+    username: '@Riya Lohia GSoC 2018 Student',
     body: "I would like to thank my mentors Walter Bender and Devin Ulibarri for their constant guidance and motivation...",
     img: 'https://avatar.vercel.sh/jill',
   },
   {
     name: 'LinuxInsider',
-    username: '@john',
+    username: '@LinuxInsider',
     body: "Fedora-Based Sugar on a Stick Is One Sweet Desktop.",
     img: 'https://avatar.vercel.sh/john',
   },
