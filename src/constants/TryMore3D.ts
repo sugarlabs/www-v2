@@ -1,20 +1,20 @@
 export const tryMoreReviews = [
   {
-    name: 'Jack',
+    name: 'Sourabha G.',
     username: '@jack',
-    body: "I've never seen anything like this before. It's amazing. I love it.",
+    body: "This summer was super fun and filled with learning! I enjoyed testing over 60+ activities with kids to get first-hand feedback which had a positive impact in the way they approach problems...",
     img: 'https://avatar.vercel.sh/jack',
   },
   {
-    name: 'Jill',
+    name: 'Ria Lohia',
     username: '@jill',
-    body: "I don't know what to say. I'm speechless. This is amazing.",
+    body: "I would like to thank my mentors Walter Bender and Devin Ulibarri for their constant guidance and motivation...",
     img: 'https://avatar.vercel.sh/jill',
   },
   {
-    name: 'John',
+    name: 'LinuxInsider',
     username: '@john',
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "Fedora-Based Sugar on a Stick Is One Sweet Desktop.",
     img: 'https://avatar.vercel.sh/john',
   },
 ];
