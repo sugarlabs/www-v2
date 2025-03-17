@@ -215,11 +215,11 @@ const Info: React.FC = () => {
 
                 {/* Card on Top Left */}
                 <motion.div
-                  className="absolute top-2 left-2 bg-black/60
+                  className="absolute top-1 left-2 bg-black/60
                     backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
                     max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
                     transition-all duration-300 ease-out z-10 border border-white/50"
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.01 }}
                 >
                   <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1 md:mb-2 text-gray-100 font-AnonymousPro">
                     Project Based Learning
@@ -233,11 +233,11 @@ const Info: React.FC = () => {
 
                 {/* Card on Bottom Right */}
                 <motion.div
-                  className="absolute bottom-2 right-2 bg-black/60
+                  className="absolute bottom-1 right-2 bg-black/60
                     backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
                     max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
                     transition-all duration-300 ease-out z-10 border border-white/50"
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.01 }}
                 >
                   <h3 className="text-base sm:text-lg font-bold mb-1 text-amber-100 font-AnonymousPro">
                     Challenge and Fun: It's hard fun.
