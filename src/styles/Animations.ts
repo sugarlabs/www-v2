@@ -1,5 +1,4 @@
-import { hover, Variants } from 'framer-motion';
-import { tap } from 'node:test/reporters';
+import { Variants } from 'framer-motion';
 
 export const fadeIn: Variants = {
   hidden: { opacity: 0 },

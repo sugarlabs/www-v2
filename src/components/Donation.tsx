@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { donationData } from '@/constants/Donation';
 import { Link } from 'react-router-dom';
 import { volunteerImages } from '@/constants/Volunteer';
-import { hover, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   fadeIn,
   slideInLeft,
@@ -13,7 +13,6 @@ import {
   floatingCircle,
   buttonAnimation,
 } from '@/styles/Animations';
-import { tap } from 'node:test/reporters';
 
 const Donation: React.FC = () => {
   const handleClick = () => {
