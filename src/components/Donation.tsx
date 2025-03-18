@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { donationData } from '@/constants/Donation';
 import { Link } from 'react-router-dom';
 import { volunteerImages } from '@/constants/Volunteer';
@@ -17,6 +17,8 @@ const Donation: React.FC = () => {
   const handleClick = () => {
     window.location.href = donationData.url;
   };
+
+  const [Email, setEmail] = useState('');
 
   return (
     <section className="relative overflow-hidden bg-white text-black py-16 px-4">
@@ -142,14 +144,18 @@ const Donation: React.FC = () => {
             <motion.form
               action="https://buttondown.com/api/emails/embed-subscribe/sugarlabs"
               method="post"
+              onSubmit={() => setTimeout(() => setEmail(''), 500)}
             >
               <input
                 className="px-4 py-2 border border-gray-300 rounded-l-full focus:outline-none"
                 placeholder="Enter your email"
                 type="email"
                 name="email"
+                value={Email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
+              <input value="1" type="hidden" name="embed" />
               <motion.button
                 className="px-6 py-2 bg-red-500 text-white font-bold rounded-r-full shadow-lg hover:bg-red-600 transition duration-300"
                 whileHover={{ scale: 1.05 }}
