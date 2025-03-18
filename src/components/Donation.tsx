@@ -22,7 +22,6 @@ const Donation: React.FC = () => {
 
   return (
     <section className="relative overflow-hidden bg-white text-black py-16 px-4">
-      {/* Flex container to align text and image side by side */}
       <div className="max-w-[90%] mx-auto flex flex-col lg:flex-row items-center justify-center lg:gap-12">
         {/* Left Side - Text Content */}
         <motion.div
@@ -57,7 +56,7 @@ const Donation: React.FC = () => {
           </motion.button>
         </motion.div>
 
-        {/* Right Side - Image with Spacing */}
+        {/* Right Side - Image */}
         <motion.img
           src="assets/Images/DonateToSugarLabs.png"
           alt="Children with laptops and Donate to Sugarlabs"
@@ -70,7 +69,7 @@ const Donation: React.FC = () => {
         />
       </div>
 
-      {/* Newsletter and Volunteer Section Moved Down */}
+      {/* Newsletter and Volunteer Section*/}
       <div className="relative z-10 w-full mt-12 text-center">
         <Link to="/volunteer">
           <motion.div
@@ -128,7 +127,7 @@ const Donation: React.FC = () => {
           </motion.div>
         </Link>
 
-        {/* Newsletter Subscription Section Moved Down */}
+        {/* Newsletter Subscription Section */}
         <motion.div
           className="mt-16"
           variants={staggerContainer}
