@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { donationData } from '@/constants/Donation';
 import { Link } from 'react-router-dom';
 import { volunteerImages } from '@/constants/Volunteer';
-import { motion } from 'framer-motion';
+import { hover, motion } from 'framer-motion';
 import {
   fadeIn,
   slideInLeft,
@@ -11,7 +11,9 @@ import {
   bounce,
   staggerContainer,
   floatingCircle,
+  buttonAnimation,
 } from '@/styles/Animations';
+import { tap } from 'node:test/reporters';
 
 const Donation: React.FC = () => {
   const handleClick = () => {
@@ -158,9 +160,9 @@ const Donation: React.FC = () => {
               <input value="1" type="hidden" name="embed" />
               <motion.button
                 className="px-6 py-2 bg-red-500 text-white font-bold rounded-r-full shadow-lg hover:bg-red-600 transition duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                variants={buttonAnimation}
+                whileTap="tap"
+                whileHover="hover"
                 type="submit"
               >
                 SUBSCRIBE

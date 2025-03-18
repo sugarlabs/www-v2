@@ -1,4 +1,5 @@
-import { Variants } from 'framer-motion';
+import { hover, Variants } from 'framer-motion';
+import { tap } from 'node:test/reporters';
 
 export const fadeIn: Variants = {
   hidden: { opacity: 0 },
@@ -1010,5 +1011,16 @@ export const featureSectionAnimations = {
   note: {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { delay: 0.3, duration: 0.5 } },
+  },
+};
+
+export const buttonAnimation: Variants = {
+  hover: {
+    scale: 1.05,
+    transition: { type: 'spring', stiffness: 400, damping: 10 },
+  },
+  tap: {
+    scale: 0.95,
+    transition: { type: 'spring', stiffness: 400, damping: 10 },
   },
 };
