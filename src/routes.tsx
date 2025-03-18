@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import MainPage from '@/pages/MainPage';
 import AboutUs from '@/pages/About/AboutUs';
 import Leadership from '@/pages/About/Leadership';
@@ -19,28 +19,30 @@ import TrisquelPage from '@/pages/TryNow/Trisquel';
 import RaspberryPiPage from '@/pages/TryNow/Raspberry';
 import MusicBlocksPage from '@/pages/TryNow/MusicBlocks';
 
-const router = createBrowserRouter([
-  { path: `/`, element: <MainPage /> },
-  { path: `/about-us`, element: <AboutUs /> },
-  { path: `/leadership`, element: <Leadership /> },
-  { path: `/contact-us`, element: <ContactUs /> },
-  { path: `/faqs`, element: <FAQs /> },
-  { path: `/news`, element: <NewsPage /> },
-  { path: `/news/:category`, element: <NewsPage /> },
-  { path: `/news/:category/:slug`, element: <NewsDetailPage /> },
-  { path: `/more`, element: <MorePage /> },
-  { path: `/more/:slug`, element: <MorePage /> },
-  { path: `/try-sugar`, element: <TrySugar /> },
-  { path: `/join-development`, element: <JoinDevelopment /> },
-  { path: `/volunteer`, element: <Volunteer /> },
-  { path: `/donate`, element: <Donate /> },
-  { path: `/products`, element: <Products /> },
-  { path: `/turtleblocks`, element: <TurtleBlocksPage /> },
-  { path: `/sugarizer`, element: <SugarizerPage /> },
-  { path: `/bootablesoas`, element: <BootableSoasPage /> },
-  { path: `/trisquel`, element: <TrisquelPage /> },
-  { path: `/raspberry`, element: <RaspberryPiPage /> },
-  { path: `/musicblocks`, element: <MusicBlocksPage /> },
-]);
+const Router = () => (
+  <Routes>
+    <Route path="/" element={<MainPage />} />
+    <Route path="/about-us" element={<AboutUs />} />
+    <Route path="/leadership" element={<Leadership />} />
+    <Route path="/contact-us" element={<ContactUs />} />
+    <Route path="/faqs" element={<FAQs />} />
+    <Route path="/news" element={<NewsPage />} />
+    <Route path="/news/:category" element={<NewsPage />} />
+    <Route path="/news/:category/:slug" element={<NewsDetailPage />} />
+    <Route path="/more" element={<MorePage />} />
+    <Route path="/more/:slug" element={<MorePage />} />
+    <Route path="/try-sugar" element={<TrySugar />} />
+    <Route path="/join-development" element={<JoinDevelopment />} />
+    <Route path="/volunteer" element={<Volunteer />} />
+    <Route path="/donate" element={<Donate />} />
+    <Route path="/products" element={<Products />} />
+    <Route path="/turtleblocks" element={<TurtleBlocksPage />} />
+    <Route path="/sugarizer" element={<SugarizerPage />} />
+    <Route path="/bootablesoas" element={<BootableSoasPage />} />
+    <Route path="/trisquel" element={<TrisquelPage />} />
+    <Route path="/raspberry" element={<RaspberryPiPage />} />
+    <Route path="/musicblocks" element={<MusicBlocksPage />} />
+  </Routes>
+);
 
-export default router;
+export default Router;
