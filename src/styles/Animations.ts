@@ -1015,12 +1015,12 @@ export const featureSectionAnimations = {
 };
 
 export const buttonAnimation: Variants = {
-  hover: {
+  whileHover: {
     scale: 1.05,
-    transition: { type: 'spring', stiffness: 400, damping: 10 },
+    transition: { type: "spring", stiffness: 400, damping: 10 },
   },
-  tap: {
+  whileTap: {
     scale: 0.95,
-    transition: { type: 'spring', stiffness: 400, damping: 10 },
+    transition: { type: "spring", stiffness: 400, damping: 10 },
   },
 };

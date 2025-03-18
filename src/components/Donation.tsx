@@ -161,8 +161,8 @@ const Donation: React.FC = () => {
               <motion.button
                 className="px-6 py-2 bg-red-500 text-white font-bold rounded-r-full shadow-lg hover:bg-red-600 transition duration-300"
                 variants={buttonAnimation}
-                whileTap={'tap'}
-                whileHover={'hover'}
+                whileHover="whileHover"
+                whileTap="whileTap"
                 type="submit"
               >
                 SUBSCRIBE
