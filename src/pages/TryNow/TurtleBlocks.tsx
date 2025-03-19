@@ -3,7 +3,7 @@ import Footer from '@/sections/Footer';
 import FeatureSection from '@/components/TryNow/FeatureSection';
 import Paragraph from '@/components/TryNow/Paragraph';
 import { motion } from 'framer-motion';
-import { fadeInUpAnimation } from '@/styles/Animations.ts';
+import { fadeInUpAnimation, zoomFadeInAnimation } from '@/styles/Animations.ts';
 import {
   turtleBlocksData,
   turtleBlocksSections,
@@ -50,7 +50,14 @@ const TurtleBlocksPage = () => {
           probably want to use Turtle Blocks rather than Turtle Blocks JS.
         </p>
 
-        <img src={mockupImage.path} alt="TurtleMockup" />
+        <motion.img
+          src={mockupImage.path}
+          alt="TurtleMockup"
+          variants={zoomFadeInAnimation}
+          initial="initial"
+          animate="animate"
+          className="w-[80%] mx-auto"
+        />
 
         {/* Render Paragraph components dynamically */}
         {turtleBlocksSections.map((section, index) => (

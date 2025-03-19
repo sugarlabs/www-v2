@@ -3,7 +3,7 @@ import Footer from '@/sections/Footer';
 import FeatureSection from '@/components/TryNow/FeatureSection';
 import LogoCards from '@/components/TryNow/LogoCards';
 import { motion } from 'framer-motion';
-import { fadeInUpAnimation } from '@/styles/Animations.ts';
+import { fadeInUpAnimation, zoomFadeInAnimation } from '@/styles/Animations.ts';
 import {
   logoCardsData,
   sugarizerData,
@@ -31,7 +31,14 @@ const SugarizerPage = () => {
           />
         </motion.div>
 
-        <img src={mockupImage.path} alt="TurtleMockup" />
+        <motion.img
+          src={mockupImage.path}
+          alt="SugarizerMockup"
+          variants={zoomFadeInAnimation}
+          initial="initial"
+          animate="animate"
+          className="w-[80%] mx-auto"
+        />
 
         <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 pb-2 font-[Caveat] text-center mx-auto w-fit mt-10">
           Try it now!

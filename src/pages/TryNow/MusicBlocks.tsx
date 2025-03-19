@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { fadeInUpAnimation } from '@/styles/Animations.ts';
+import { fadeInUpAnimation, zoomFadeInAnimation } from '@/styles/Animations.ts';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import FeatureSection from '@/components/TryNow/FeatureSection';
@@ -82,7 +82,14 @@ const MusicBlocksPage = () => {
         </div>
 
         <div className="w-[80%] mx-auto flex justify-center">
-          <img src={mockupImage.path} alt="TurtleMockup" />
+          <motion.img
+            src={mockupImage.path}
+            alt="MusicBlocksMockup"
+            variants={zoomFadeInAnimation}
+            initial="initial"
+            animate="animate"
+            className="w-[80%] mx-auto"
+          />
         </div>
 
         <p className="w-[80%] mx-auto flex justify-center">

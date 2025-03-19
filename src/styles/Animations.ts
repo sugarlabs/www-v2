@@ -1035,3 +1035,15 @@ export const fadeInUpAnimation: Variants = {
     },
   },
 };
+export const zoomFadeInAnimation: Variants = {
+  initial: { opacity: 0, scale: 0.9 }, // Start with a slight shrink and hidden
+  animate: {
+    opacity: 1,
+    scale: 1, // Smoothly zoom to normal size
+    transition: {
+      delay: 1, // Starts after 2 seconds (optional, tweak as needed)
+      duration: 1.5, // Takes 1.5 seconds
+      ease: 'easeOut',
+    },
+  },
+};
