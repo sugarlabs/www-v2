@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { motion } from 'framer-motion';
@@ -11,6 +11,20 @@ import {
 } from '@/styles/Animations';
 
 const Info: React.FC = () => {
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    // Set initial width
+    handleResize();
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+    // Cleanup event listener
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const renderImageCard = (key: string, image: ImageConfig) => (
     <motion.div
       key={key}
@@ -214,39 +228,61 @@ const Info: React.FC = () => {
                 />
 
                 {/* Card on Top Left */}
-                <motion.div
-                  className="absolute top-2 left-2 bg-black/60
+                {windowWidth >= 270 && (
+                  <motion.div
+                    className="absolute top-2 left-2 bg-black/60
                     backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
                     max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
                     transition-all duration-300 ease-out z-10 border border-white/50"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1 md:mb-2 text-gray-100 font-AnonymousPro">
-                    Project Based Learning
-                  </h3>
-                  <p className="text-white text-xs sm:text-sm leading-tight sm:leading-snug">
-                    Empowering learners and educators with hands-on
-                    project-based tools that enable creation and real-world
-                    problem-solving.
-                  </p>
-                </motion.div>
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    {windowWidth >= 355 && (
+                      <>
+                        <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1 md:mb-2 text-gray-100 font-AnonymousPro">
+                          Project Based Learning
+                        </h3>
+                        <p className="text-white text-xs sm:text-sm leading-tight sm:leading-snug">
+                          Empowering learners and educators with hands-on
+                          project-based tools that enable creation and
+                          real-world problem-solving.
+                        </p>
+                      </>
+                    )}
+                    {windowWidth < 355 && windowWidth >= 250 && (
+                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-100 font-AnonymousPro">
+                        Project Based Learning
+                      </h3>
+                    )}
+                  </motion.div>
+                )}
 
                 {/* Card on Bottom Right */}
-                <motion.div
-                  className="absolute bottom-2 right-2 bg-black/60
+                {windowWidth >= 270 && (
+                  <motion.div
+                    className="absolute bottom-2 right-2 bg-black/60
                     backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
                     max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
                     transition-all duration-300 ease-out z-10 border border-white/50"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <h3 className="text-base sm:text-lg font-bold mb-1 text-amber-100 font-AnonymousPro">
-                    Challenge and Fun: It's hard fun.
-                  </h3>
-                  <p className="text-white text-xs sm:text-sm leading-tight sm:leading-snug">
-                    Bringing interactive, meaningful experiences that make
-                    education exciting and impactful.
-                  </p>
-                </motion.div>
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    {windowWidth >= 355 && (
+                      <>
+                        <h3 className="text-base sm:text-lg font-bold mb-1 text-amber-100 font-AnonymousPro">
+                          Challenge and Fun: It's hard fun.
+                        </h3>
+                        <p className="text-white text-xs sm:text-sm leading-tight sm:leading-snug">
+                          Bringing interactive, meaningful experiences that make
+                          education exciting and impactful.
+                        </p>
+                      </>
+                    )}
+                    {windowWidth < 355 && windowWidth >= 270 && (
+                      <h3 className="text-base sm:text-lg font-bold text-amber-100 font-AnonymousPro">
+                        Challenge and Fun: It's hard fun.
+                      </h3>
+                    )}
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           </motion.section>
