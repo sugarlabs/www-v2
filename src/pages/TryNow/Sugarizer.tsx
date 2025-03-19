@@ -2,6 +2,8 @@ import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import FeatureSection from '@/components/TryNow/FeatureSection';
 import LogoCards from '@/components/TryNow/LogoCards';
+import { motion } from 'framer-motion';
+import { fadeInUpAnimation } from '@/styles/Animations.ts';
 import {
   logoCardsData,
   sugarizerData,
@@ -14,6 +16,20 @@ const SugarizerPage = () => {
       <Header />
       <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
         <FeatureSection data={sugarizerData} />
+
+        {/* Floating SVGs */}
+        <motion.div
+          className="absolute top-35 left-5 sm:left-110"
+          variants={fadeInUpAnimation}
+          initial="initial"
+          animate="animate"
+        >
+          <img
+            src="assets/FloatingSVGs/sugarizer-1.svg"
+            alt="Turtle Blocks 1"
+            className="w-30 sm:w-40"
+          />
+        </motion.div>
 
         <img src={mockupImage.path} alt="TurtleMockup" />
 

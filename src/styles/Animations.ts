@@ -1023,3 +1023,15 @@ export const buttonAnimation: Variants = {
     transition: { type: 'spring', stiffness: 400, damping: 10 },
   },
 };
+export const fadeInUpAnimation: Variants = {
+  initial: { opacity: 0, y: 30 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.7, // ⏳ Adds a delay of 1.5 seconds before animation starts
+      duration: 1.5,
+      ease: 'easeOut',
+    },
+  },
+};
