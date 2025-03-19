@@ -60,9 +60,9 @@ export const TryCard: React.FC<TryCardProps> = ({
   <div className="bg-white rounded-xl sm:rounded-2xl md:rounded-3xl shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] hover:shadow-[rgba(13,_38,_76,_0.25)_0px_12px_28px] transition-all duration-500 overflow-hidden mx-auto w-full group h-full">
     <div className="p-4 sm:p-5 md:p-6 flex flex-col h-full">
       {/* Content Section */}
-      <div className="flex-1 space-y-3 sm:space-y-4">
+      <div className="flex-1 flex flex-col space-y-3 sm:space-y-4">
         {/* Header */}
-        <div className="space-y-2 sm:space-y-3 text-center w-full">
+        <div className="space-y-2 flex-1/4 sm:space-y-3 text-center w-full">
           <h2 className="text-lg sm:text-xl font-black text-gray-800 leading-tight bg-gradient-to-br from-gray-900 via-gray-800 to-gray-600 bg-clip-text group-hover:scale-[1.02] transition-transform duration-500">
             {title}
           </h2>
@@ -72,7 +72,7 @@ export const TryCard: React.FC<TryCardProps> = ({
         </div>
 
         {/* Buttons */}
-        <div className="space-y-2 sm:space-y-2.5 flex flex-col items-center pt-2 sm:pt-3">
+        <div className="space-y-2 sm:space-y-2.5 flex flex-col items-center pt-1 sm:pt-3">
           <a
             href={tryNowHref}
             className={`w-full text-white font-bold px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 rounded-xl sm:rounded-2xl 
