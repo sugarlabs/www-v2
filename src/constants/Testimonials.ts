@@ -10,5 +10,5 @@ export const developertestimonials = [
     username: 'Sourabha G., GSoC 2021 Student',
     body: "This summer was super fun and filled with learning! I enjoyed testing over 60+ activities with kids to get first-hand feedback which had a positive impact in the way they approach problems. The fact that these activities are used by kids as a tool of learning motivates me to contribute more and more. I'm going to continue to contribute and be a part of Sugar Labs.",
     img: 'https://avatar.vercel.sh/jill',
-  }
+  },
 ];
