@@ -232,7 +232,7 @@ const Donate: React.FC = () => {
           </p>
 
           <div className="flex justify-center gap-3 sm:gap-4 flex-wrap">
-            <a href={donationData.urlOne} target="_blank" rel="noreferrer">
+            <a href={donationData.url} target="_blank" rel="noreferrer">
               <button className="bg-green-600 hover:bg-green-700 transition-colors text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md text-sm sm:text-base">
                 Make a One-Time Donation
               </button>
