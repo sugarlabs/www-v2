@@ -72,10 +72,13 @@ const ReviewCard = ({
 };
 
 export function DeveloperTestimonials() {
-  const firstRow = developertestimonials.slice(
-    0,
-    Math.ceil(developertestimonials.length / 2),
-  );
+  const firstRow =
+    developertestimonials.length > 2
+      ? developertestimonials.slice(
+          0,
+          Math.ceil(developertestimonials.length / 2),
+        )
+      : developertestimonials;
 
   return (
     <div className="w-full p-6">
