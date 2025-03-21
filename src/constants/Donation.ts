@@ -6,7 +6,8 @@ interface donationData {
   heading: string;
   subHeading: string;
   paragraph: string;
-  url: string;
+  urlOne: string;
+  urlMonth:string;
   buttonText: string;
 }
 
@@ -17,7 +18,8 @@ export const donationData: donationData = {
   paragraph:
     "Support Sugar Labs and make a difference in children's education. Sugar Labs has brought educational software and authentic problem-solving to millions in the US and across the globe.",
   subHeading: 'Donate to Sugar Labs to make a positive impact',
-  url: 'https://www.every.org/sugar-labs?suggestedAmounts=17,37,57&frequency=ONCE#donate',
+  urlOne: 'https://www.every.org/sugar-labs?suggestedAmounts=17,37,57&frequency=ONCE#donate',
+  urlMonth: 'https://www.every.org/sugar-labs?suggestedAmounts=17,37,57&frequency=MONTHLY#donate',
   buttonText: 'Donate now',
 };
 
