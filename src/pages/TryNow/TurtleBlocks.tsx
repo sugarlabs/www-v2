@@ -17,7 +17,7 @@ const TurtleBlocksPage = () => {
       <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
         {/* Floating SVGs */}
         <motion.div
-          className="absolute top-25 left-5 sm:left-120"
+          className="absolute top-[10vh] left-[5vw] sm:left-[30vw] z-[0] pointer-events-none"
           variants={fadeInUpAnimation}
           initial="initial"
           animate="animate"
@@ -25,12 +25,12 @@ const TurtleBlocksPage = () => {
           <img
             src="assets/FloatingSVGs/turtle-blocks-1.svg"
             alt="Turtle Blocks 1"
-            className="w-30 sm:w-40"
+            className="w-[clamp(100px,10vw,180px)]"
           />
         </motion.div>
 
         <motion.div
-          className="absolute top-95 right-10 sm:right-155"
+          className="absolute top-[60vh] right-[5vw] sm:right-[50vw] z-[-1] pointer-events-none"
           variants={fadeInUpAnimation}
           initial="initial"
           animate="animate"
@@ -38,7 +38,7 @@ const TurtleBlocksPage = () => {
           <img
             src="assets/FloatingSVGs/turtle-blocks-2.svg"
             alt="Turtle Blocks 2"
-            className="w-12 sm:w-25"
+            className="w-[clamp(80px,9vw,160px)]"
           />
         </motion.div>
 

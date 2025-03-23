@@ -19,15 +19,15 @@ const SugarizerPage = () => {
 
         {/* Floating SVGs */}
         <motion.div
-          className="absolute top-35 left-5 sm:left-110"
+          className="absolute top-[28vh] left-[5vw] sm:left-[30vw] z-[-1] pointer-events-none"
           variants={fadeInUpAnimation}
           initial="initial"
           animate="animate"
         >
           <img
             src="assets/FloatingSVGs/sugarizer-1.svg"
-            alt="Turtle Blocks 1"
-            className="w-30 sm:w-40"
+            alt="Sugarizer 1"
+            className="w-[clamp(100px,10vw,180px)]"
           />
         </motion.div>
 

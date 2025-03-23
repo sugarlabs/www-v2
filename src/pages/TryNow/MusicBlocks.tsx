@@ -24,7 +24,7 @@ const MusicBlocksPage = () => {
     <div className="relative">
       {/* Floating SVGs */}
       <motion.div
-        className="absolute top-25 left-5 sm:left-128"
+        className="absolute top-[10vh] left-[5vw] sm:left-[30vw] z-[-1] pointer-events-none"
         variants={fadeInUpAnimation}
         initial="initial"
         animate="animate"
@@ -32,12 +32,12 @@ const MusicBlocksPage = () => {
         <img
           src="assets/FloatingSVGs/music-block-1.svg"
           alt="Music Block 1"
-          className="w-30 sm:w-40"
+          className="w-[clamp(100px,10vw,180px)]"
         />
       </motion.div>
 
       <motion.div
-        className="absolute top-95 right-10 sm:right-150"
+        className="absolute top-[65vh] right-[5vw] sm:right-[50vw] z-[-1] pointer-events-none"
         variants={fadeInUpAnimation}
         initial="initial"
         animate="animate"
@@ -45,20 +45,20 @@ const MusicBlocksPage = () => {
         <img
           src="assets/FloatingSVGs/music-block-2.svg"
           alt="Music Block 2"
-          className="w-12 sm:w-35"
+          className="w-[clamp(80px,9vw,160px)]"
         />
       </motion.div>
 
       <motion.div
-        className="absolute top-16 rigth-16 sm:right-23"
+        className="absolute top-[10vh] right-[10vw] sm:right-[15vw] z-[-1] pointer-events-none"
         variants={fadeInUpAnimation}
         initial="initial"
         animate="animate"
       >
         <img
-          src="/assets/FloatingSVGs/music-block-3.svg"
+          src="assets/FloatingSVGs/music-block-3.svg"
           alt="Music Block 3"
-          className="w-18 sm:w-28"
+          className="w-[clamp(90px,10vw,170px)]"
         />
       </motion.div>
 
