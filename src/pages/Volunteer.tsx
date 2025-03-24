@@ -3,6 +3,13 @@ import Footer from '@/sections/Footer';
 import JoinToggle from '@/components/JoinToggle';
 import { roleCards } from '@/constants/VolunteerAndDev/RoleCards';
 import groupimage from '/assets/Volunteer/volunteer-group.png';
+import { motion } from 'framer-motion';
+import {
+  slideInLeft,
+  slideInRight,
+  slideInBottom,
+  cardFadeIn,
+} from '@/styles/Animations';
 
 const Volunteer = () => {
   return (
@@ -14,7 +21,13 @@ const Volunteer = () => {
         {/* Content Section */}
         <div className="mt-12 flex flex-col md:flex-row items-center gap-8 max-w-5xl">
           {/* Left Side Text */}
-          <div className="max-w-lg text-center md:text-left">
+          <motion.div
+            className="max-w-lg text-center md:text-left"
+            variants={slideInLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+          >
             <h2 className="text-4xl font-bold">
               Become a <span className="text-orange-500">Volunteer</span>
             </h2>
@@ -27,20 +40,32 @@ const Volunteer = () => {
             <button className="mt-6 bg-orange-500 text-white text-lg font-semibold px-6 py-3 rounded-full">
               Getting Involved
             </button>
-          </div>
+          </motion.div>
 
           {/* Right Side Image */}
-          <div className="w-full md:w-1/2 flex justify-center">
+          <motion.div
+            className="w-full md:w-1/2 flex justify-center"
+            variants={slideInRight}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+          >
             <img
               src={groupimage}
               alt="Volunteers working together"
               className="w-full max-w-md rounded-lg shadow-lg"
             />
-          </div>
+          </motion.div>
         </div>
 
         {/* Getting Involved Section */}
-        <div className="mt-20 max-w-4xl text-center px-4">
+        <motion.div
+          className="mt-20 max-w-4xl text-center px-4"
+          variants={slideInBottom}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+        >
           <h2 className="text-5xl font-bold font-[Caveat]">
             Getting Involved as a Volunteer
           </h2>
@@ -68,21 +93,31 @@ const Volunteer = () => {
             about the volunteer role, and what experience/qualities make you a
             good candidate.
           </p>
-        </div>
+        </motion.div>
 
         {/* Volunteer Roles */}
         <div className="mt-16 max-w-6xl px-4">
-          <h2 className="text-5xl font-[Caveat] font-bold text-center">
+          <motion.h2
+            className="text-5xl font-[Caveat] font-bold text-center"
+            variants={slideInBottom}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+          >
             Volunteer Roles
-          </h2>
+          </motion.h2>
           <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
 
           {/* Role Cards */}
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
             {roleCards.map((role, index) => (
-              <div
+              <motion.div
                 key={index}
                 className="border p-6 rounded-lg shadow-lg bg-white text-center"
+                variants={cardFadeIn}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
               >
                 <h3 className="text-2xl font-bold">{role.title}</h3>
                 <hr className="w-16 border-t-2 border-gray-400 mx-auto mt-2" />
@@ -90,7 +125,7 @@ const Volunteer = () => {
                 <ul className="text-gray-600 text-left mt-3 space-y-2">
                   {role.points?.map((point, idx) => (
                     <li key={idx} className="flex items-start">
-                      <span className="text-red-500 font-bold mr-2">•</span>{' '}
+                      <span className="text-red-500 font-bold mr-2">•</span>
                       {point}
                     </li>
                   ))}
@@ -105,13 +140,19 @@ const Volunteer = () => {
                     )}
                   </p>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
         {/* Get Involved Section */}
-        <div className="mt-20 max-w-4xl text-center px-4">
+        <motion.div
+          className="mt-20 max-w-4xl text-center px-4"
+          variants={slideInBottom}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+        >
           <h2 className="text-5xl font-bold font-[Caveat]">
             Ways to Get <span className="text-orange-500">Involved</span>
           </h2>
@@ -136,10 +177,16 @@ const Volunteer = () => {
               ></iframe>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Contact Section */}
-        <div className="mt-20 max-w-4xl text-center px-4">
+        <motion.div
+          className="mt-20 max-w-4xl text-center px-4"
+          variants={slideInBottom}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+        >
           <h2 className="text-5xl font-bold font-[Caveat]">
             Interested in Helping Out?
           </h2>
@@ -150,7 +197,7 @@ const Volunteer = () => {
             email or Matrix. Alternatively, you may send a direct message to one
             of our social media channels.
           </p>
-        </div>
+        </motion.div>
       </main>
       <Footer />
     </div>

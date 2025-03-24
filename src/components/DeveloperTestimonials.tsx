@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Marquee } from '@/components/magicui/Marquee'; // Marquee for scrolling effect
+import { Marquee } from '@/components/magicui/Marquee';
 import { developertestimonials } from '@/constants/VolunteerAndDev/DeveloperTestimonials';
 import { stats } from '@/constants/Stats';
 import {
@@ -117,7 +117,6 @@ export function DeveloperTestimonials() {
               about their journey??
             </span>
           </motion.h2>
-          <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
 
           {/* Right Apostrophe (Flipped, Hidden Below 400px) */}
           <motion.img

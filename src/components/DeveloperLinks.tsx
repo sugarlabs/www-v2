@@ -1,5 +1,6 @@
 import { developerLinks } from '@/constants/VolunteerAndDev/Links';
-
+import { fadeIn } from '@/styles/Animations';
+import { motion } from 'framer-motion';
 const DeveloperLinks = () => {
   return (
     <section className="container mx-auto text-center p-6">
@@ -17,14 +18,20 @@ const DeveloperLinks = () => {
             <span className="absolute inset-0 bg-black rounded-full scale-0 group-hover:scale-150 transition-transform duration-300 origin-center"></span>
 
             {/* Link Content (Ensuring text/icons stay above the background) */}
-            <div className="relative flex items-center gap-3 transition-all group-hover:text-white">
+            <motion.div
+              className="relative flex items-center gap-3 transition-all group-hover:text-white"
+              variants={fadeIn}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.5 }}
+            >
               <img
                 src={link.icon}
                 alt={link.name}
                 className="w-6 h-6 transition-all group-hover:invert"
               />
               <span className="text-lg font-medium">{link.name}</span>
-            </div>
+            </motion.div>
             <span className="relative text-xl transition-all group-hover:text-white">
               →
             </span>

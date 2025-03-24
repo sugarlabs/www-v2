@@ -3,6 +3,8 @@ import Footer from '@/sections/Footer';
 import { DeveloperTestimonials } from '@/components/DeveloperTestimonials';
 import DeveloperLinks from '@/components/DeveloperLinks';
 import JoinToggle from '@/components/JoinToggle';
+import { motion } from 'framer-motion';
+import { slideInBottom } from '@/styles/Animations';
 
 const JoinDevelopment = () => {
   return (
@@ -12,7 +14,13 @@ const JoinDevelopment = () => {
         <JoinToggle />
 
         {/* Getting Involved Section */}
-        <div className="mt-20 max-w-4xl flex flex-col items-center text-center px-6">
+        <motion.div
+          className="mt-20 max-w-4xl flex flex-col items-center text-center px-6"
+          variants={slideInBottom}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+        >
           <h2 className="text-5xl font-bold font-[Caveat]">
             Before Beginning to Contribute
           </h2>
@@ -26,12 +34,18 @@ const JoinDevelopment = () => {
             how to reach us, but it also has information on our philosophy and a
             link to our Code of Conduct.
           </p>
-        </div>
+        </motion.div>
 
         <DeveloperTestimonials />
 
         {/* Important Links */}
-        <div className="mt-20 max-w-4xl flex flex-col items-center text-center px-6">
+        <motion.div
+          className="mt-20 max-w-4xl flex flex-col items-center text-center px-6"
+          variants={slideInBottom}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+        >
           <h2 className="text-5xl font-bold font-[Caveat]">
             Important Links for Developers
           </h2>
@@ -41,7 +55,7 @@ const JoinDevelopment = () => {
             List of important links for people interested in making development
             contributions to Sugar Labs:
           </p>
-        </div>
+        </motion.div>
 
         <DeveloperLinks />
       </main>

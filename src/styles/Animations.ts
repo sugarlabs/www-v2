@@ -1047,3 +1047,27 @@ export const zoomFadeInAnimation: Variants = {
     },
   },
 };
+export const zoomInAnimation = {
+  initial: { scale: 0.8, opacity: 0 },
+  animate: {
+    scale: 1,
+    opacity: 1,
+    transition: { duration: 0.8, ease: 'easeOut' },
+  },
+};
+export const fadeInDelayed = {
+  initial: { opacity: 0, y: 50 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: 'easeOut', delay: 0.5 },
+  },
+};
+export const cardFadeIn = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: 'easeOut', delay: index * 0.2 }, // Stagger effect
+  }),
+};

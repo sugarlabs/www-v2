@@ -5,8 +5,15 @@ import {
   donationData,
   Img,
 } from '@/constants/Donation';
+import {
+  slideInLeft,
+  slideInRight,
+  slideInBottom,
+  buttonAnimation,
+} from '@/styles/Animations';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
+import { motion } from 'framer-motion';
 
 const Donate: React.FC = () => {
   const [showAllFilings, setShowAllFilings] = useState(false);
@@ -24,7 +31,13 @@ const Donate: React.FC = () => {
         {/* Hero Section */}
         <div className="flex flex-col md:flex-row gap-6 md:gap-10 mt-10">
           {/* Left Column with Heading and Buttons */}
-          <div className="flex-1 order-2 md:order-1">
+          <motion.div
+            className="flex-1 order-2 md:order-1"
+            variants={slideInLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+          >
             <h1 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">
               Make a Lasting <span className="text-orange-500">Impact</span> in
               Education
@@ -37,13 +50,18 @@ const Donate: React.FC = () => {
               from around the world.
             </p>
 
-            <div className="flex flex-wrap gap-4 mb-6 sm:mb-8">
+            <motion.div
+              className="flex flex-wrap gap-4 mb-6 sm:mb-8"
+              variants={buttonAnimation}
+              whileHover="hover"
+              whileTap="tap"
+            >
               <a href={donationData.url} target="_blank" rel="noreferrer">
                 <button className="bg-green-600 hover:bg-green-700 transition-colors text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md">
                   Donate Now
                 </button>
               </a>
-            </div>
+            </motion.div>
 
             <div className="bg-gray-100 p-4 rounded-lg border-l-4 border-blue-500 shadow-sm text-xs sm:text-sm">
               <p className="text-gray-600">
@@ -51,20 +69,32 @@ const Donate: React.FC = () => {
                 Labs is a registered 501(c)(3) nonprofit organization.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column with Image */}
-          <div className="flex-1 order-1 md:order-2 mb-6 md:mb-0">
+          <motion.div
+            className="flex-1 order-1 md:order-2 mb-6 md:mb-0"
+            variants={slideInRight}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+          >
             <img
               src={Img[0]}
               alt="Children asking for donations"
               className="w-full rounded-lg shadow-lg object-cover h-64 sm:h-full"
             />
-          </div>
+          </motion.div>
         </div>
 
         {/* Impact Statement Section */}
-        <div className="my-10 sm:my-16 bg-gradient-to-r from-blue-50 to-green-50 p-5 sm:p-8 rounded-xl shadow-sm">
+        <motion.div
+          className="my-10 sm:my-16 bg-gradient-to-r from-blue-50 to-green-50 p-5 sm:p-8 rounded-xl shadow-sm"
+          variants={slideInBottom}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+        >
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">
             Your Donation Directly Assists Our Mission
           </h2>
@@ -89,10 +119,16 @@ const Donate: React.FC = () => {
               to succeed.
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* Why Your Support Matters */}
-        <div className="my-10 sm:my-16">
+        <motion.div
+          className="my-10 sm:my-16"
+          variants={slideInBottom}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+        >
           <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">
             How Your Donation Makes a Difference
           </h2>
@@ -115,10 +151,16 @@ const Donate: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Mission Statement */}
-        <div className="my-10 sm:my-16">
+        <motion.div
+          className="my-10 sm:my-16"
+          variants={slideInBottom}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+        >
           <div className="bg-gray-50 p-5 sm:p-6 rounded-lg shadow-sm border border-gray-100">
             <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-gray-800">
               Our Mission
@@ -147,10 +189,17 @@ const Donate: React.FC = () => {
               </a>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Financial Transparency Section */}
-        <div className="my-10 sm:my-16" id="financial-transparency">
+        <motion.div
+          className="my-10 sm:my-16"
+          id="financial-transparency"
+          variants={slideInBottom}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+        >
           <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">
             Financial Transparency
           </h2>
@@ -213,12 +262,16 @@ const Donate: React.FC = () => {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Donation Section */}
-        <div
+        <motion.div
           className="my-10 sm:my-16 bg-green-50 p-5 sm:p-8 rounded-xl shadow-sm"
           id="donate-section"
+          variants={slideInBottom}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
         >
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">
             Support Our Mission Today
@@ -243,7 +296,7 @@ const Donate: React.FC = () => {
               </button>
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
       <Footer />
     </>
