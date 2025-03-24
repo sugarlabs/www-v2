@@ -30,12 +30,36 @@ export const musicBlocksSections = [
     content:
       'Music Blocks is designed to run in the browser. It is derived from Turtle Blocks JS which can be found here. You can run the software locally from the index.html file, from the GitHub repository, or by setting up a local server. If you want to run Music Blocks offline, download this repo and point your browser to the index.html file found in the musicblocks directory on your local file system. See Using Music Blocks and Music Blocks Guide',
     button: 'Try Music Blocks Now',
+    links: [
+      {
+        text: 'here',
+        url: 'https://github.com/sugarlabs/turtleblocksjs',
+      },
+      {
+        text: 'Github',
+        url: 'https://github.com/sugarlabs/musicblocks/',
+      },
+      {
+        text: 'Using Music Blocks',
+        url: 'http://github.com/sugarlabs/musicblocks/tree/master/documentation',
+      },
+      {
+        text: 'Music Blocks Guide',
+        url: 'http://github.com/sugarlabs/musicblocks/tree/master/guide',
+      },
+    ],
   },
   {
     title: 'Credits',
     content:
       'Music Blocks is a fork of TurtleArtJS created by Walter Bender. (Turtle Blocks JS has many contributors).\n Devin Ulibarri has contributed functional and user-interface designs. Many of his contributions were inspired by the music education ideas, representations and practices (e.g. aspects of matrix, musical cups) developed and published by Dr. Lawrence Scripp with whom Devin studied at New England Conservatory and for whom he worked at Affron Scripp & Associates, LLC.\n Much of the initial coding of the fork from Turtle Blocks was done by Yash Khandelwal as part of Google Summer of Code (GSoC) 2015. Hemant Kasat contributed to additional widgets as part of GSoC 2016. Additional contributions are being made by Tayba Wasim, Dinuka Tharangi Jayaweera, Prachi Agrawal, Cristina Del Puerto, and Hrishi Patel as part of GSoC 2017. During GSoC 2018, Riya Lohia developed a Temperament Widget. Ritwik Abhishek added a keyboard widget and a pitch-tracking widget.\n Many students contributed to the project as part of Google Code-in (2015–16, 2016–17, and 2017–2018). Sam Parkinson built the Planet during GCI 2016–17. Euan Ong redesigned the Planet code as a series of GCI tasks in 2017–18.',
     button: null,
+    links: [
+      {
+        text: 'contributors',
+        url: 'https://github.com/sugarlabs/turtleblocksjs/graphs/contributors',
+      },
+    ],
   },
 ];
 
@@ -51,6 +75,12 @@ export const foundabug = [
   {
     title: 'Found a Bug?',
     content: 'Report it in the issues section of THIS repository.',
+    links: [
+      {
+        text: 'issues',
+        url: 'https://github.com/sugarlabs/musicblocks/issues',
+      },
+    ],
     button: null,
   },
 ];
@@ -66,6 +96,7 @@ export const musicBlocksLogoCards = [
       {
         text: 'Trying out Music Blocks',
         link: 'https://musicblocks.sugarlabs.org/',
+        target: '_blank',
       },
     ],
   },
@@ -79,6 +110,7 @@ export const musicBlocksLogoCards = [
       {
         text: 'Go to Youtube channel',
         link: 'https://www.youtube.com/channel/UCdXacR2zOXff4XCKRLTSnRw',
+        target: '_blank',
       },
     ],
   },
@@ -92,6 +124,7 @@ export const musicBlocksLogoCards = [
       {
         text: 'Go to Youtube channel',
         link: 'https://www.youtube.com/channel/UCdXacR2zOXff4XCKRLTSnRw',
+        target: '_blank',
       },
     ],
   },
@@ -105,6 +138,7 @@ export const musicBlocksLogoCards = [
       {
         text: 'Download PDF file',
         link: 'https://gakken-steam.jp/music_blocks/common/pdf/challengeprint.zip',
+        target: '_blank',
       },
     ],
   },

@@ -1,14 +1,22 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { paragraphAnimations } from '@/styles/Animations';
+import DOMPurify from 'dompurify';
+import { renderContentWithLinks } from '@/utils/renderlinks-utils';
 
 interface ParagraphProps {
   title: string;
   content: string;
   button?: string | null;
+  links?: { text: string; url: string }[] | null;
 }
 
-const Paragraph: React.FC<ParagraphProps> = ({ title, content, button }) => {
+const Paragraph: React.FC<ParagraphProps> = ({
+  title,
+  content,
+  button,
+  links,
+}) => {
   const contentPoints = content.includes('\n')
     ? content.split('\n')
     : [content];
@@ -39,7 +47,13 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, content, button }) => {
               custom={index}
               variants={paragraphAnimations.listItem(index)}
             >
-              {point.trim()}
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(
+                    renderContentWithLinks(point.trim(), links),
+                  ),
+                }}
+              />
             </motion.li>
           ))}
         </ul>
@@ -48,7 +62,13 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, content, button }) => {
           className="text-gray-700 mt-4"
           variants={paragraphAnimations.text}
         >
-          {content}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(
+                renderContentWithLinks(content, links),
+              ),
+            }}
+          />
         </motion.p>
       )}
 

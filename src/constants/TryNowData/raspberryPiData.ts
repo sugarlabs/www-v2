@@ -14,17 +14,51 @@ export const raspberrySections = [
     content:
       'As of August 2017, the best to use is Sugar on a Stick, as it has many activities and has regular security updates. See Sugar on a Stick/Raspberry Pi for how to download and install it. Sugar on a Stick is a spin of Fedora.',
     button: '',
+    links: [
+      {
+        text: 'Sugar on a Stick/Raspberry Pi',
+        url: 'https://wiki.sugarlabs.org/go/Sugar_on_a_Stick/Raspberry_Pi',
+      },
+    ],
   },
   {
     title: 'Other methods to get Sugar on Raspberry Pi?',
     content:
       'using Raspbian, the most common operating system on a Raspberry Pi, a derivative of Debian\n using Fedora\n using Debian\n using Ubuntu',
     button: '',
+    links: [
+      {
+        text: 'Raspbian',
+        url: 'https://wiki.sugarlabs.org/go/Raspbian',
+      },
+      {
+        text: 'Fedora',
+        url: 'https://github.com/sugarlabs/sugar/blob/master/docs/fedora.md',
+      },
+      {
+        text: 'Debian',
+        url: 'https://github.com/sugarlabs/sugar/blob/master/docs/debian.md',
+      },
+      {
+        text: 'Ubuntu',
+        url: 'https://github.com/sugarlabs/sugar/blob/master/docs/ubuntu.md',
+      },
+    ],
   },
   {
     title: 'Developers',
     content:
       'Developers may focus on Fedora or Debian when setting up a development environment for Sugar on Raspberry Pi, because Sugar development on generic computers is focused on those operating systems.',
     button: '',
+    links: [
+      {
+        text: 'Fedora',
+        url: 'https://github.com/sugarlabs/sugar/blob/master/docs/fedora.md',
+      },
+      {
+        text: 'Debian',
+        url: 'https://github.com/sugarlabs/sugar/blob/master/docs/debian.md',
+      },
+    ],
   },
 ];

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { steps } from '@/constants/TryNowData/bootableSoasData';
+import DOMPurify from 'dompurify';
+import { renderContentWithLinks } from '@/utils/renderlinks-utils';
 
 const StepsToUse = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -51,7 +53,17 @@ const StepsToUse = () => {
           </h3>
 
           {/* Description */}
-          <p className="text-gray-700 mt-2">{steps[activeStep].description}</p>
+          <p
+            className="text-gray-700 mt-2"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(
+                renderContentWithLinks(
+                  steps[activeStep].description,
+                  steps[activeStep].links,
+                ),
+              ),
+            }}
+          />
 
           {/* Step Image */}
           <motion.img

@@ -13,6 +13,7 @@ interface StepData {
   title: string;
   description: string;
   image: string;
+  links?: { text: string; url: string }[];
 }
 
 export const steps: StepData[] = [
@@ -21,6 +22,12 @@ export const steps: StepData[] = [
     title: 'Sugar On a Stick',
     description:
       'To boot Sugar Labs OS on your computer, you will need a bootable Sugar on Stick setup already. To see how to set it up, visit the wiki.',
+    links: [
+      {
+        text: 'wiki',
+        url: 'https://wiki.sugarlabs.org/go/Sugar_on_a_Stick/Installation',
+      },
+    ],
     image: 'assets/TryNowImages/step1.jpg',
   },
   {
@@ -64,6 +71,12 @@ export const steps: StepData[] = [
     description:
       'After selecting the USB drive, your computer should boot into the Sugar OS interface. If you encounter any issues during the boot process, seek assistance in the Sugar Labs Matrix room. For detailed instructions and additional resources, visit the Sugar Labs Booting SoaS page.',
     image: 'assets/TryNowImages/step7.png',
+    links: [
+      {
+        text: 'Matrix room',
+        url: 'https://matrix.to/#/#sugar:matrix.org',
+      },
+    ],
   },
 ];
 
