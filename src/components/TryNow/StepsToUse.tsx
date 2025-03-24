@@ -5,6 +5,7 @@ import { steps } from '@/constants/TryNowData/bootableSoasData';
 import { useState } from 'react';
 import DOMPurify from 'dompurify';
 import { renderContentWithLinks } from '@/utils/renderlinks-utils';
+
 const StepsToUse = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -53,6 +54,8 @@ const StepsToUse = () => {
               ),
             }}
           />
+
+
               <img
                 src={step.image}
                 alt={step.title}

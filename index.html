@@ -6,6 +6,15 @@
     <link href="./src/styles/globals.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SugarLabs</title>
+    <script>
+      (function() {
+        const redirectPath = sessionStorage.getItem('redirectPath');
+        if (redirectPath) {
+          sessionStorage.removeItem('redirectPath');
+          window.history.replaceState(null, null, redirectPath);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

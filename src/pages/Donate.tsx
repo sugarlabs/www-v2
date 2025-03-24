@@ -237,7 +237,7 @@ const Donate: React.FC = () => {
                 Make a One-Time Donation
               </button>
             </a>
-            <a href={donationData.url} target="_blank" rel="noreferrer">
+            <a href={donationData.urlMonth} target="_blank" rel="noreferrer">
               <button className="bg-blue-600 hover:bg-blue-700 transition-colors text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md text-sm sm:text-base">
                 Become a Monthly Supporter
               </button>

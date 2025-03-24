@@ -26,7 +26,7 @@ const ReviewCard = ({
 }) => {
   return (
     <motion.div
-      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-lg border border-gray-200 dark:border-gray-700 mx-2"
+      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-lg border border-gray-200 dark:border-gray-700 mx-2 justify-between"
       variants={testimonialCard}
       initial="hidden"
       whileInView="visible"
@@ -51,7 +51,7 @@ const ReviewCard = ({
       </motion.p>
 
       {/* User Info */}
-      <div className="flex items-center mt-4 space-x-3">
+      <div className="flex items-center mt-4 space-x-3 text-left">
         <motion.img
           src={img}
           alt={name}

@@ -16,27 +16,32 @@ import {
 
 const ReviewCard = ({
   img,
-  name,
-  username,
-  body,
+  title,
+  description,
+  buttonText,
 }: {
   img: string;
-  name: string;
-  username: string;
-  body: string;
+  title: string;
+  description: string;
+  buttonText: string;
 }) => {
   return (
-    <figure className="relative h-full w-36 cursor-pointer overflow-hidden rounded-xl border p-4 border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05] dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]">
-      <div className="flex flex-row items-center gap-2">
-        <img className="rounded-full" width="32" height="32" alt="" src={img} />
-        <div className="flex flex-col">
-          <figcaption className="text-sm font-medium dark:text-white">
-            {name}
-          </figcaption>
-          <p className="text-xs font-medium dark:text-white/40">{username}</p>
-        </div>
-      </div>
-      <blockquote className="mt-2 text-sm">{body}</blockquote>
+    <figure className="relative h-full w-36 cursor-pointer overflow-hidden rounded-xl border p-4 border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05] dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15] flex flex-col items-center text-center">
+      {/* SVG Icon */}
+      <img className="w-12 h-12 mb-2" alt={title} src={img} />
+
+      {/* Title */}
+      <figcaption className="text-lg font-semibold dark:text-white">
+        {title}
+      </figcaption>
+
+      {/* Description */}
+      <p className="text-xs font-medium dark:text-white/40">{description}</p>
+
+      {/* Button */}
+      <button className="mt-4 px-3 py-1 border rounded-lg border-gray-950 dark:border-gray-50 text-sm font-medium dark:text-white">
+        {buttonText}
+      </button>
     </figure>
   );
 };
@@ -45,6 +50,7 @@ export function TryMore() {
   return (
     <div className="relative flex flex-col lg:flex-row h-auto lg:h-96 w-full items-center justify-center gap-6 lg:gap-4 overflow-hidden [perspective:300px] px-4 sm:px-6 md:px-10 lg:pl-20 bg-gradient-to-b from-[#F5DDC8] to-white-800">
       <div className="height- 30px"></div>
+
       {/* Left Side Content */}
       <motion.div
         className="w-full lg:w-1/2 text-center lg:text-left"
@@ -77,21 +83,28 @@ export function TryMore() {
           already, please reconsider your other options to explore Sugar. Try
           Sugar!
         </motion.p>
-        <motion.button
-          className="mt-6 px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition"
-          variants={bounce}
-          custom={4}
-          whileHover={{
-            scale: 1.05,
-            backgroundColor: '#4338ca',
-            boxShadow:
-              '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-          }}
-          whileTap={{ scale: 0.95 }}
+        <motion.a
+          href="https://v4.activities.sugarlabs.org/"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          Go to sugar activity page
-        </motion.button>
+          <motion.button
+            className="mt-6 px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition"
+            variants={bounce}
+            custom={4}
+            whileHover={{
+              scale: 1.05,
+              backgroundColor: '#4338ca',
+              boxShadow:
+                '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Go to Sugar Activity page
+          </motion.button>
+        </motion.a>
       </motion.div>
+
       {/* Marquee Section */}
       <div
         className="flex flex-col lg:flex-row items-center gap-4 max-[1040px]:hidden"
@@ -106,7 +119,7 @@ export function TryMore() {
           className="[--duration:20s] w-full lg:w-auto"
         >
           {firstRow.map((review) => (
-            <ReviewCard key={review.username} {...review} />
+            <ReviewCard key={review.title} {...review} />
           ))}
         </Marquee>
         <Marquee
@@ -116,7 +129,7 @@ export function TryMore() {
           className="[--duration:20s] w-full lg:w-auto"
         >
           {secondRow.map((review) => (
-            <ReviewCard key={review.username} {...review} />
+            <ReviewCard key={review.title} {...review} />
           ))}
         </Marquee>
         <Marquee
@@ -126,7 +139,7 @@ export function TryMore() {
           className="[--duration:20s] w-full lg:w-auto"
         >
           {thirdRow.map((review) => (
-            <ReviewCard key={review.username} {...review} />
+            <ReviewCard key={review.title} {...review} />
           ))}
         </Marquee>
         <Marquee
@@ -135,7 +148,7 @@ export function TryMore() {
           className="[--duration:20s] w-full lg:w-auto"
         >
           {fourthRow.map((review) => (
-            <ReviewCard key={review.username} {...review} />
+            <ReviewCard key={review.title} {...review} />
           ))}
         </Marquee>
       </div>

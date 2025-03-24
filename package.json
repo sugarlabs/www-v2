@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://sugarlabs.github.io/www-v2",
+  "homepage": "https://v2.sugarlabs.org/",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc -b && vite build",

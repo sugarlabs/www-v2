@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link id="dynamic" rel="icon" type="image/svg+xml" href="/favicons/favicon1.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SugarLabs - Redirecting...</title>
+    <script>
+      const pathSegments = window.location.pathname.split('/');
+      const fullPath = window.location.pathname + window.location.search + window.location.hash;
+      sessionStorage.setItem('redirectPath', fullPath);
+      window.location.href = '/';
+    </script>
+  </head>
+  <body>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; font-family: Arial, sans-serif;">
+      <h1>Redirecting...</h1>
+      <p>If you are not redirected automatically, <a href="/">click here</a>.</p>
+    </div>
+  </body>
+</html>

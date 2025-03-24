@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
 import { featureSectionAnimations } from '@/styles/Animations';
 
 interface FeatureData {
@@ -39,34 +41,32 @@ const FeatureSection = ({ data }: { data: FeatureData }) => {
         variants={featureSectionAnimations.imageContainer}
       >
         {data.images && data.images.length > 0 ? (
-          <>
-            {/* Display Active Image */}
-            <motion.img
-              key={currentImage} // Ensures animation triggers on image change
-              src={data.images[currentImage].src}
-              alt={data.images[currentImage].alt}
-              className="w-full max-w-lg rounded-lg shadow-md"
-              initial="hidden"
-              animate="visible"
-              whileHover="hover"
-              variants={featureSectionAnimations.image}
-            />
-
-            {/* Dotted Navigation */}
-            <div className="flex mt-4 space-x-2">
-              {data.images.map((_, index) => (
-                <motion.button
-                  key={index}
-                  onClick={() => setCurrentImage(index)}
-                  className={`h-3 w-3 rounded-full ${
-                    index === currentImage ? 'bg-blue-600' : 'bg-gray-400'
-                  }`}
+          <Carousel
+            selectedItem={currentImage}
+            onChange={(index) => setCurrentImage(index)}
+            showThumbs={false}
+            showStatus={false}
+            infiniteLoop
+            autoPlay
+            interval={3000}
+            transitionTime={600} // Smooth transition
+            emulateTouch
+            dynamicHeight
+          >
+            {data.images.map((image, index) => (
+              <motion.div key={index} className="w-full max-w-lg">
+                <motion.img
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full rounded-lg shadow-md"
+                  initial="hidden"
+                  animate="visible"
                   whileHover="hover"
-                  variants={featureSectionAnimations.button}
+                  variants={featureSectionAnimations.image}
                 />
-              ))}
-            </div>
-          </>
+              </motion.div>
+            ))}
+          </Carousel>
         ) : (
           <motion.div
             className="w-full max-w-lg h-64 bg-gray-300 rounded-lg flex items-center justify-center"

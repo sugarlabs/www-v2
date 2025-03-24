@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+import { fadeInUpAnimation, zoomFadeInAnimation } from '@/styles/Animations.ts';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import FeatureSection from '@/components/TryNow/FeatureSection';
@@ -19,7 +21,48 @@ import {
 
 const MusicBlocksPage = () => {
   return (
-    <div>
+    <div className="relative">
+      {/* Floating SVGs */}
+      <motion.div
+        className="absolute top-25 left-5 sm:left-128"
+        variants={fadeInUpAnimation}
+        initial="initial"
+        animate="animate"
+      >
+        <img
+          src="assets/FloatingSVGs/music-block-1.svg"
+          alt="Music Block 1"
+          className="w-30 sm:w-40"
+        />
+      </motion.div>
+
+      <motion.div
+        className="absolute top-95 right-10 sm:right-150"
+        variants={fadeInUpAnimation}
+        initial="initial"
+        animate="animate"
+      >
+        <img
+          src="assets/FloatingSVGs/music-block-2.svg"
+          alt="Music Block 2"
+          className="w-12 sm:w-35"
+        />
+      </motion.div>
+
+      <motion.div
+        className="absolute top-16 rigth-16 sm:right-23"
+        variants={fadeInUpAnimation}
+        initial="initial"
+        animate="animate"
+      >
+        <img
+          src="/assets/FloatingSVGs/music-block-3.svg"
+          alt="Music Block 3"
+          className="w-18 sm:w-28"
+        />
+      </motion.div>
+
+      {/* Main Content */}
       <Header />
       <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
         <FeatureSection data={musicBlocksData} />
@@ -39,7 +82,14 @@ const MusicBlocksPage = () => {
         </div>
 
         <div className="w-[80%] mx-auto flex justify-center">
-          <img src={mockupImage.path} alt="TurtleMockup" />
+          <motion.img
+            src={mockupImage.path}
+            alt="MusicBlocksMockup"
+            variants={zoomFadeInAnimation}
+            initial="initial"
+            animate="animate"
+            className="w-[80%] mx-auto"
+          />
         </div>
 
         <p className="w-[80%] mx-auto flex justify-center">

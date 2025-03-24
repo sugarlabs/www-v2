@@ -20,6 +20,8 @@ export function escapeHtml(unsafe: string): string {
  */
 export const renderMarkdown = (markdown: string): string => {
   let html = markdown;
+  const codeBlockPlaceholders: { [key: string]: string } = {};
+  let codeBlockCounter = 0;
 
   // Create IDs for headers to enable anchor links
   const headerToId = (text: string) => {
@@ -28,6 +30,50 @@ export const renderMarkdown = (markdown: string): string => {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
   };
+
+  // Process code blocks first and replace them with placeholders
+  html = html.replace(
+    /```([\w-]*)\s*([\s\S]*?)```/gm,
+    function (_match, _language, codeContent) {
+      // Prepare the code content for display
+      const escapedCode = escapeHtml(codeContent.trim());
+
+      // Store the original code content for copying (without HTML)
+      const originalCode = codeContent.trim();
+
+      // Replace line breaks with <br> tags
+      const formattedCode = escapedCode.replace(/\n/g, '<br>');
+
+      // Create the code block HTML with copy button
+      const codeBlockHtml = `<div class="relative rounded-lg overflow-hidden shadow-lg bg-gray-900 my-1 group">
+        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <button class="copy-code-btn bg-gray-600 hover:bg-gray-700 text-white text-xs px-2 py-1 rounded shadow-sm flex items-center" 
+                  data-code="${escapeHtml(originalCode).replace(/"/g, '&quot;')}"
+                  onclick="event.stopPropagation(); return false;"
+                  aria-label="Copy code">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </button>
+          <span class="copy-success-message hidden absolute right-10 top-[1px]  bg-gray-600 text-white text-xs px-2 py-1 rounded shadow-sm">
+            Copied!
+          </span>
+        </div>
+        <div class="px-2 overflow-x-auto">
+          <pre class="px-3 py-7"><code class="font-mono text-sm text-gray-200 block whitespace-pre overflow-visible" style="line-height: 0.8;">${formattedCode}</code></pre>
+        </div>
+      </div>`;
+
+      // Create a unique placeholder token
+      const placeholder = `CODE_BLOCK_PLACEHOLDER_${codeBlockCounter++}`;
+
+      // Store the code block HTML with its placeholder
+      codeBlockPlaceholders[placeholder] = codeBlockHtml;
+
+      // Return the placeholder token
+      return placeholder;
+    },
+  );
 
   // Process blockquotes
   html = html.replace(/(^>.*(\n>.*)*)/gm, function (match) {
@@ -159,9 +205,9 @@ export const renderMarkdown = (markdown: string): string => {
     '<a href="$2" class="text-blue-600 hover:underline transition-colors duration-200">$1</a>',
   );
 
-  // Convert inline code
+  // Convert inline code - Make sure this comes after code blocks
   html = html.replace(
-    /`(.*?)`/gim,
+    /`([^`]+)`/gim,
     '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">$1</code>',
   );
 
@@ -292,7 +338,7 @@ export const renderMarkdown = (markdown: string): string => {
 
   // Convert paragraphs - do this last to avoid conflicts
   html = html.replace(
-    /^(?!<[a-z]|\s*$)(.+)$/gim,
+    /^(?!<[a-z]|\s*$|CODE_BLOCK_PLACEHOLDER_)(.+)$/gim,
     '<p class="my-4 text-gray-700 leading-relaxed">$1</p>',
   );
 
@@ -326,6 +372,11 @@ export const renderMarkdown = (markdown: string): string => {
 
   // Remove any remaining newlines that aren't already handled
   html = html.replace(/([^>])\n([^<])/g, '$1 $2');
+
+  // Finally, replace all code block placeholders with their actual HTML
+  Object.keys(codeBlockPlaceholders).forEach((placeholder) => {
+    html = html.replace(placeholder, codeBlockPlaceholders[placeholder]);
+  });
 
   return html;
 };

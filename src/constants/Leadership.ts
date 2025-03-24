@@ -7,6 +7,7 @@ export interface Director {
   socialLinks?: {
     linkedin?: string;
     github?: string;
+    wiki?: string;
   };
 }
 
@@ -29,6 +30,7 @@ export const directors: Director[] = [
     imageUrl: 'assets/Images/BoardMembers/Claudia.png',
     socialLinks: {
       linkedin: 'https://www.linkedin.com/in/claudia-urrea-ph-d-0335041/',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Claudia_Urrea',
     },
   },
   {
@@ -40,6 +42,7 @@ export const directors: Director[] = [
     socialLinks: {
       github: 'https://github.com/pikurasa',
       linkedin: 'https://www.linkedin.com/in/devin-ulibarri-76277a300/',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Pikurasa',
     },
   },
   {
@@ -51,6 +54,7 @@ export const directors: Director[] = [
     socialLinks: {
       github: 'https://github.com/samswag',
       linkedin: 'https://www.linkedin.com/in/samsongoddy/',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Samson_Goddy',
     },
   },
   {
@@ -61,6 +65,7 @@ export const directors: Director[] = [
     imageUrl: 'assets/Images/BoardMembers/Silva.png',
     socialLinks: {
       github: 'https://github.com/icarito',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Sebastian',
     },
   },
   {
@@ -72,6 +77,7 @@ export const directors: Director[] = [
     socialLinks: {
       github: 'https://github.com/sum2it',
       linkedin: 'https://www.linkedin.com/in/sumsri/',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Sum2it',
     },
   },
   {
@@ -83,6 +89,7 @@ export const directors: Director[] = [
     socialLinks: {
       github: 'https://github.com/walterbender',
       linkedin: 'https://www.linkedin.com/in/walterbender/',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Walter',
     },
   },
 ];
