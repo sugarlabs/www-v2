@@ -44,17 +44,13 @@ const StepsToUse = () => {
                 {step.title}
               </h3>
               <p
-            className="text-gray-700 mt-2"
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(
-                renderContentWithLinks(
-                  step.description,
-                  step.links,
-                ),
-              ),
-            }}
-          />
-
+                className="text-gray-700 mt-2"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(
+                    renderContentWithLinks(step.description, step.links),
+                  ),
+                }}
+              />
 
               <img
                 src={step.image}
@@ -79,4 +75,3 @@ const StepsToUse = () => {
 };
 
 export default StepsToUse;
-
