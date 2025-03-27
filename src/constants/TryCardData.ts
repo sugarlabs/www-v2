@@ -111,7 +111,7 @@ export const TryCardData: CardDataType[] = [
     tryNowText: 'Try Flatpack now!',
     tryNowHref: 'https://flathub.org/apps/search?q=sugar%20labs',
     learnMoreText: 'Learn more about Flatpack',
-    learnMoreHref: '',
+    learnMoreHref: '/flatpack',
     imagePath: FlatpackImg,
     gradientClass: 'bg-gradient-to-r from-gray-400 to-gray-900',
   },

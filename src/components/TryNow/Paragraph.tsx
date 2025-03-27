@@ -8,6 +8,7 @@ interface ParagraphProps {
   title: string;
   content: string;
   button?: string | null;
+  buttonLink?: string | URL;
   links?: { text: string; url: string }[] | null;
 }
 
@@ -15,6 +16,7 @@ const Paragraph: React.FC<ParagraphProps> = ({
   title,
   content,
   button,
+  buttonLink,
   links,
 }) => {
   const contentPoints = content.includes('\n')
@@ -62,7 +64,7 @@ const Paragraph: React.FC<ParagraphProps> = ({
           className="text-gray-700 mt-4"
           variants={paragraphAnimations.text}
         >
-          <div
+          <span
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(
                 renderContentWithLinks(content, links),
@@ -78,6 +80,7 @@ const Paragraph: React.FC<ParagraphProps> = ({
           className="mt-4 bg-blue-600 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:bg-blue-700 transition"
           whileHover="hover"
           variants={paragraphAnimations.button}
+          onClick={() => window.open(buttonLink, '_blank')}
         >
           {button}
         </motion.button>
