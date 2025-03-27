@@ -18,7 +18,7 @@ import BootableSoasPage from '@/pages/TryNow/BootableSoas';
 import TrisquelPage from '@/pages/TryNow/Trisquel';
 import RaspberryPiPage from '@/pages/TryNow/Raspberry';
 import MusicBlocksPage from '@/pages/TryNow/MusicBlocks';
-import FlatpackPage from './pages/TryNow/FlatPack';
+import FlatHubPage from '@/pages/TryNow/FlatHub';
 
 const router = createBrowserRouter([
   { path: `/`, element: <MainPage /> },
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
   { path: `/trisquel`, element: <TrisquelPage /> },
   { path: `/raspberry`, element: <RaspberryPiPage /> },
   { path: `/musicblocks`, element: <MusicBlocksPage /> },
-  { path: `/flatpack`, element: <FlatpackPage /> },
+  { path: `/flathub`, element: <FlatHubPage /> },
 ]);
 
 export default router;

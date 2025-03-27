@@ -1,30 +1,30 @@
-export const flatpackData = {
-  title: 'Flatpack for Sugar Labs',
+export const flathubData = {
+  title: 'Flathub for Sugar Labs',
   subtitle: 'Simplified Learning Platform Distribution',
   quote: '"Education should be accessible everywhere" – Sugar Labs',
   description:
-    'Flatpack enables easy installation and distribution of Sugar Labs educational activities across different Linux platforms.',
+    'Flathub enables easy installation and distribution of Sugar Labs educational activities across different Linux platforms.',
   images: [
     {
-      src: 'assets/TryNowImages/flatpack1.png',
+      src: 'assets/TryNowImages/flathub1.png',
       alt: 'Sugar Labs Activities Installation',
     },
   ],
 };
 
-export const flatpackSections = [
+export const flathubSections = [
   {
-    title: 'Flatpack and Sugar Labs',
+    title: 'Flathub and Sugar Labs',
     content:
-      'Flatpack provides a streamlined way to package and distribute Sugar Labs educational activities. It ensures that learning tools can be easily installed on various Linux distributions, making education more accessible.',
+      'Flathub provides a streamlined way to package and distribute Sugar Labs educational activities. It ensures that learning tools can be easily installed on various Linux distributions, making education more accessible.',
     button: 'Explore Sugar Labs Activities',
     buttonLink: 'https://flathub.org/apps/search?q=sugar%20labs',
   },
 ];
 
-export const flatpackLogoCards = [
+export const flathubLogoCards = [
   {
-    logo: 'assets/Cards/Flatpack.png',
+    logo: 'assets/Cards/Flathub.png',
     title: 'Educational Activities',
     description: [
       'Access 34+ educational activities including Paint, Abacus, Music Keyboard, and Story',
@@ -70,7 +70,7 @@ export const flatpackLogoCards = [
 export const numberedCards1 = [
   {
     number: '1',
-    title: 'Enable Flathub',
+    title: 'Install Flathub',
     description: 'Add Flathub repository to your Linux system',
     borderColor: '#68A6F7',
   },
@@ -95,15 +95,5 @@ export const numberedCards2 = [
     title: 'Start Learning',
     description: 'Explore interactive educational experiences for all ages',
     borderColor: '#F8251F',
-  },
-];
-export const teamMembers = [
-  {
-    name: 'Sugar Labs Community',
-    role: 'Open Source Educational Innovators',
-    description:
-      'A global community dedicated to creating free, open-source educational software that empowers learners of all ages.',
-    image: '/assets/TeamImages/sugarlabs-team.jpg',
-    bgColor: '#B0D0FF', // Choose an appropriate background color
   },
 ];

@@ -7,14 +7,14 @@ import Paragraph from '@/components/TryNow/Paragraph';
 import LogoCards from '@/components/TryNow/LogoCards';
 import NumberedCard from '@/components/TryNow/NumberedCard';
 import {
-  flatpackData,
-  flatpackSections,
-  flatpackLogoCards,
+  flathubData,
+  flathubSections,
+  flathubLogoCards,
   numberedCards1,
   numberedCards2,
-} from '@/constants/TryNowData/flatPackData';
+} from '@/constants/TryNowData/flathubData';
 
-const FlatpackPage = () => {
+const FlatHubPage = () => {
   return (
     <div className="relative">
       {/* Floating SVGs */}
@@ -25,8 +25,8 @@ const FlatpackPage = () => {
         animate="animate"
       >
         <img
-          src="assets/FloatingSVGs/flatpack-1.svg"
-          alt="Flatpack SVG 1"
+          src="assets/FloatingSVGs/flathub-1.svg"
+          alt="Flathub SVG 1"
           className="w-[clamp(100px,10vw,150px)]"
         />
       </motion.div>
@@ -38,17 +38,17 @@ const FlatpackPage = () => {
         animate="animate"
       >
         <img
-          src="assets/FloatingSVGs/flatpack-2.svg"
-          alt="Flatpack SVG 2"
+          src="assets/FloatingSVGs/flathub-2.svg"
+          alt="Flathub SVG 2"
           className="w-[clamp(40px,9vw,16px)]"
         />
       </motion.div>
 
       <Header />
 
-      <FeatureSection data={flatpackData} />
+      <FeatureSection data={flathubData} />
 
-      {flatpackSections.map((section, index) => (
+      {flathubSections.map((section, index) => (
         <Paragraph
           key={index}
           title={section.title}
@@ -59,11 +59,11 @@ const FlatpackPage = () => {
       ))}
 
       <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 pb-2 font-[Caveat] text-center mx-auto w-fit mt-10">
-        What can you do with <span className="text-[#68A6F7]">Flatpack</span>?
+        What can you do with <span className="text-[#68A6F7]">Flathub</span>?
       </h2>
 
       <div className="flex justify-center">
-        <LogoCards data={flatpackLogoCards} />
+        <LogoCards data={flathubLogoCards} />
       </div>
 
       <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 my-8">
@@ -106,4 +106,4 @@ const FlatpackPage = () => {
   );
 };
 
-export default FlatpackPage;
+export default FlatHubPage;

@@ -5,7 +5,7 @@ import BootableDriveImg from '/assets/Cards/BootableDrive.png';
 import DesktopInitializationImg from '/assets/Cards/DesktopInitialization.png';
 import TrisquelImg from '/assets/Cards/Trisquel.svg';
 import RaspberryPiImg from '/assets/Cards/RaspberryPi.png';
-import FlatpackImg from '/assets/Cards/Flatpack.png';
+import FlatHubImg from '/assets/Cards/Flathub.png';
 import Finance from '/assets/Cards/activity-finance.svg';
 import Maze from '/assets/Cards/activity-maze.svg';
 import Measure from '/assets/Cards/activity-measure.svg';
@@ -105,14 +105,14 @@ export const TryCardData: CardDataType[] = [
     gradientClass: 'bg-gradient-to-r from-red-600 to-green-500',
   },
   {
-    title: 'Convenient installation via Flatpak',
+    title: 'Convenient installation via Flathub',
     description:
       'Create musical code with the browser based visual programming language Music Blocks',
-    tryNowText: 'Try Flatpack now!',
+    tryNowText: 'Try Flathub now!',
     tryNowHref: 'https://flathub.org/apps/search?q=sugar%20labs',
-    learnMoreText: 'Learn more about Flatpack',
-    learnMoreHref: '/flatpack',
-    imagePath: FlatpackImg,
+    learnMoreText: 'Learn more about Flathub',
+    learnMoreHref: '/flathub',
+    imagePath: FlatHubImg,
     gradientClass: 'bg-gradient-to-r from-gray-400 to-gray-900',
   },
 ];
