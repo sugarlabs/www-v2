@@ -26,6 +26,17 @@ const BootableSoasPage = () => {
         />
 
         <StepsToUse />
+        <motion.div>
+          <p className="justify-self-center mt-4 text-2xl text-gray-700">
+            Cut to the chase and get your pre-installed Sugar on a Stick{' '}
+            <a
+              className="text-blue-700 hover:underline font-semibold"
+              href={'/Products'}
+            >
+              now!
+            </a>
+          </p>
+        </motion.div>
       </main>
       <Footer />
     </div>
