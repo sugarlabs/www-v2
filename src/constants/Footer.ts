@@ -64,7 +64,7 @@ export const resourceLinks = [
 export const developmentLinks = [
   { to: '/join-development', text: 'Read about development' },
   {
-    href: 'https://wiki.sugarlabs.org/go/Mailing_Lists',
+    href: 'https://buttondown.com/sugarlabs',
     text: 'Join mailing list',
   },
   { href: 'https://help.sugarlabs.org/en/', text: 'Documentation' },
