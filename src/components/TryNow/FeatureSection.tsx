@@ -9,6 +9,8 @@ interface FeatureData {
   subtitle: string;
   quote: string;
   description: string;
+  CTA: string;
+  link: { text: string; URL: string };
   images?: { src: string; alt: string }[];
   note?: string;
 }
@@ -33,6 +35,15 @@ const FeatureSection = ({ data }: { data: FeatureData }) => {
         <h2 className="text-4xl font-bold text-black mt-2">{data.subtitle}</h2>
         <p className="text-lg font-semibold mt-4">{data.quote}</p>
         <p className="text-gray-700 mt-4">{data.description}</p>
+        <p className="mt-4 text-lg text-gray-700">
+          {data.CTA}{' '}
+          <a
+            className="text-blue-700 hover:underline font-semibold"
+            href={data.link.URL}
+          >
+            {data.link.text}
+          </a>
+        </p>
       </motion.div>
 
       {/* Right Side: Image Carousel */}

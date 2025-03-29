@@ -5,6 +5,8 @@ export const bootableSoasData = {
     '“Young children learn by games; compulsory education cannot remain in the soul.” — Plato',
   description:
     'Learn how to boot Sugar Labs OS on your computer. Follow our step-by-step guide to get started easily.',
+  CTA: 'Cut to the chase and get your pre-installed Sugar on a Stick',
+  link: { text: 'here!', URL: '/products' },
   images: [{ src: 'assets/TryNowImages/step7.png', alt: 'Boot SOAS step 7' }],
 };
 
