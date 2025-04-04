@@ -1,11 +1,11 @@
 ---
 title: "Markdown Test: This page is a test for markdown formats"
 excerpt: "Please Read Through this to get an Understanding of the Markdown converter"
-category: "EVENTS"
+category: ""
 date: "2025-03-1"
-slug: "GitHub-Test-4"
+slug: "GitHub-Test-1"
 author: "GitHub Copilot"
-description: "GitHub Copilot is a AI that completes task"
+description: "GitHub Copilot is an AI that completes task"
 tags: "markdown,parser,test,education,post,aigenerated"
 image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600"
 ---
