@@ -35,7 +35,7 @@ Of course, I kept reading books to him, which is still invaluable to a child’s
 
 This year, I had a few memorable moments as a teacher in the classroom. This year, I mentored high school students in git version control, mentored another teacher in leading a Music Blocks class, and I even taught a group class for kids ages five and six on the Sugar Learning Platform. I’ll share a little bit of what I learned from each experience here.
 
-<img src="/assets/stories/students3.jpg" alt="Student 3" class="img-fluid" width="60%" style="float: left; margin-right: 20px;"/>
+<img src="/assets/stories/student1.jpg" alt="Student 3" class="img-fluid" width="60%" style="float: left; margin-right: 20px;"/>
 
 Students in a Music Blocks class led by Rafael Moreno, who I guide as a teacher new to teaching programming.
 
