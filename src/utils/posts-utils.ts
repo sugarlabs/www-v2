@@ -119,7 +119,6 @@ export const fetchMarkdownPosts = async (
             : frontmatter.image
               ? '/' + frontmatter.image.replace(/^\/?/, '')
               : '/assets/Images/SugarNewsLogo.png',
-            
         };
 
         allPosts.push(post);
