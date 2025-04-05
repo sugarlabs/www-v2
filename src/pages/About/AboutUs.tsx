@@ -12,37 +12,48 @@ import ProjectsSection from '@/components/AboutUs/ProjectSection';
 import RoadmapSection from '@/components/AboutUs/RoadmapSection';
 
 const AboutUs = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setTimeout(() => setIsLoaded(true), 100);
   }, []);
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-orange-50">
-      <Header />
-      <div className="min-h-screen font-sans">
-        <motion.div
-          initial="hidden"
-          animate={isLoaded ? 'visible' : 'hidden'}
-          variants={{
-            visible: { transition: { staggerChildren: 0.2 } },
-          }}
-          className="container mx-auto px-4 py-16 max-w-6xl"
-        >
-          <HeroSection />
-          <NavigationLinks />
-          <TextMaskSection />
-
-          <div className="space-y-32 my-24">
-            <MissionSection />
-            <PrinciplesSection />
-            <GoalsSection />
-            <ProjectsSection />
-            <RoadmapSection />
-          </div>
-        </motion.div>
+    <div className="bg-white min-h-screen">
+      <div className="relative z-20">
+        <Header />
       </div>
+
+      <motion.main
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="w-full relative z-10"
+      >
+        <HeroSection />
+
+        <div className="w-full">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <NavigationLinks />
+            <TextMaskSection />
+          </div>
+        </div>
+
+        <MissionSection />
+
+        <div className="w-full">
+          <PrinciplesSection />
+        </div>
+
+        <GoalsSection />
+
+        <div className="w-full">
+          <ProjectsSection />
+        </div>
+
+        <RoadmapSection />
+      </motion.main>
+
       <Footer />
     </div>
   );

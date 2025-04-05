@@ -1,103 +1,106 @@
 import { motion } from 'framer-motion';
-import SectionContainer from '@/components/shared/SectionContainer';
-import SectionTitle from '@/components/shared/SectionTitle';
 import { content } from '@/constants/aboutUs/mission';
-import { missionSectionAnimations } from '@/styles/Animations';
 
 const MissionSection = () => {
   return (
-    <SectionContainer id={content.sectionId}>
-      <div className="flex flex-col items-start">
-        <motion.div
-          className="w-full px-4 mb-6"
-          variants={missionSectionAnimations.containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <motion.div variants={missionSectionAnimations.itemVariants}>
-            <SectionTitle>
-              <span className="font-Caveat text-3xl md:text-4xl">
-                {content.title.prefix}
-              </span>{' '}
-              <span className="text-red-500 font-Caveat text-3xl md:text-4xl relative">
-                {content.title.highlighted}
-                <motion.div
-                  className="absolute -z-10 w-full h-3 bg-red-100 bottom-1 left-0"
-                  variants={missionSectionAnimations.titleUnderlineVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                />
-              </span>
-            </SectionTitle>
-          </motion.div>
-        </motion.div>
-
-        <div className="flex flex-col md:flex-row justify-between items-start w-full">
-          <motion.div
-            className="w-full md:w-1/2 px-4 order-2 md:order-1"
-            variants={missionSectionAnimations.containerVariants}
-            initial="hidden"
-            whileInView="visible"
+    <section id={content.sectionId} className="w-full py-24 bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
+        <div className="text-center mb-16">
+          <motion.h2
+            className="text-3xl font-semibold text-slate-800 sm:text-4xl mb-4 tracking-tight"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="text-blue-900 font-medium">
+              {content.title.prefix}
+            </span>{' '}
+            <span className="text-red-600 font-medium">
+              {content.title.highlighted}
+            </span>
+          </motion.h2>
+
+          <motion.div
+            className="h-0.5 w-24 bg-gradient-to-r from-blue-600 to-red-600 mx-auto mb-8"
+            initial={{ width: 0 }}
+            whileInView={{ width: 96 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          />
+        </div>
+
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-16">
+          {/* Main image */}
+          <motion.div
+            className="w-full lg:w-1/2 order-2 lg:order-1"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-red-600/5 rounded-lg -m-2 -z-10"></div>
+              <div className="overflow-hidden rounded-lg shadow-xl">
+                <img
+                  src={content.images.main.src}
+                  alt={content.images.main.alt}
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Text content */}
+          <motion.div
+            className="w-full lg:w-1/2 order-1 lg:order-2 text-slate-700"
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
             <div className="space-y-6">
               {content.paragraphs.map((paragraph, index) => (
                 <motion.p
                   key={index}
-                  className="text-base md:text-lg text-gray-700 leading-relaxed"
-                  variants={missionSectionAnimations.itemVariants}
+                  className="text-base sm:text-lg leading-relaxed"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.1 * index }}
                 >
                   {paragraph}
                 </motion.p>
               ))}
-
-              <motion.div
-                className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8"
-                variants={missionSectionAnimations.containerVariants}
-              >
-                {content.images.gallery.map((img, index) => (
-                  <motion.div
-                    key={index}
-                    className="relative overflow-hidden rounded-lg shadow-lg aspect-video"
-                    variants={missionSectionAnimations.imageHoverVariants}
-                    whileHover="hover"
-                  >
-                    <motion.img
-                      src={img.src}
-                      alt={img.alt}
-                      className="w-full h-full object-cover transform"
-                      variants={missionSectionAnimations.imageScaleVariants}
-                      whileHover="hover"
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
             </div>
-          </motion.div>
 
-          <motion.div
-            className="w-full md:w-1/2 px-4 mb-8 md:mb-0 order-1 md:order-2"
-            initial={missionSectionAnimations.mainImageVariants.initial}
-            whileInView={missionSectionAnimations.mainImageVariants.whileInView}
-            viewport={{ once: true }}
-            transition={missionSectionAnimations.mainImageVariants.transition}
-          >
             <motion.div
-              className="rounded-xl overflow-hidden shadow-2xl relative aspect-[4/3]"
-              whileHover={missionSectionAnimations.mainImageVariants.hover}
+              className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-10"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <img
-                src={content.images.main.src}
-                alt={content.images.main.alt}
-                className="w-full h-full object-cover"
-              />
+              {content.images.gallery.map((img, index) => (
+                <motion.div
+                  key={index}
+                  className="aspect-video overflow-hidden rounded-md shadow-md"
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <img
+                    src={img.src}
+                    alt={img.alt}
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
+              ))}
             </motion.div>
           </motion.div>
         </div>
       </div>
-    </SectionContainer>
+    </section>
   );
 };
 

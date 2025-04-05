@@ -24,7 +24,7 @@ const ContactUs: React.FC = () => {
           variants={fadeIn}
           initial="hidden"
           animate="visible"
-          className="relative overflow-hidden py-16 md:py-24 bg-gradient-to-r from-blue-900 to-indigo-900"
+          className="relative w-full bg-gradient-to-r from-blue-900 via-slate-800 to-slate-900 py-32 overflow-hidden"
         >
           <div className="absolute inset-0 overflow-hidden">
             <svg

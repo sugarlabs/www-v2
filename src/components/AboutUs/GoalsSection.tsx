@@ -1,19 +1,9 @@
 import { motion } from 'framer-motion';
-import SectionContainer from '@/components/shared/SectionContainer';
-import SectionTitle from '@/components/shared/SectionTitle';
 import {
   goals,
   progressItems,
   sectionContent,
 } from '@/constants/aboutUs/goals';
-import {
-  slideInLeft,
-  subtleRise,
-  statCard,
-  staggerContainer,
-  container,
-  statGrid,
-} from '@/styles/Animations';
 import { useMemo, FC } from 'react';
 
 interface GoalStat {
@@ -30,36 +20,6 @@ const GoalsSection: FC = () => {
     color: string;
   }
 
-  const renderProgressBars = (items: ProgressItem[]) => {
-    return items.map((item, index) => (
-      <motion.div
-        key={index}
-        className="mb-6"
-        custom={index}
-        viewport={{ once: true }}
-      >
-        <div className="flex justify-between mb-1">
-          <span className="text-sm font-medium text-gray-700">
-            {item.label}
-          </span>
-          <span className="text-sm font-medium text-gray-700">
-            {item.percent}%
-          </span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2.5">
-          <motion.div
-            className={`h-2.5 rounded-full bg-gradient-to-r ${item.color}`}
-            initial={{ width: 0 }}
-            whileInView={{ width: `${item.percent}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: index * 0.2 }}
-          ></motion.div>
-        </div>
-      </motion.div>
-    ));
-  };
-
-  // Memoize the goal stats for performance
   const goalStats: GoalStat = useMemo(() => {
     const totalGoals = goals.length;
     const completedGoals = progressItems.filter(
@@ -77,183 +37,270 @@ const GoalsSection: FC = () => {
     };
   }, []);
 
-  return (
-    <>
-      <SectionTitle>
-        {sectionContent.title.main}
-        <span className="text-red-500">{sectionContent.title.highlight}</span>
-      </SectionTitle>
-      <SectionContainer id="goals">
-        <div className="flex flex-col md:flex-row gap-8 w-full">
-          <div className="md:w-1/2">
-            <div className="space-y-6">
-              <motion.p
-                className="text-base md:text-lg text-gray-700 leading-relaxed"
-                variants={subtleRise}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                {sectionContent.introduction}
-              </motion.p>
+  const refinedProgressItems = progressItems.map((item) => {
+    let refinedColor;
+    if (item.percent >= 75) {
+      refinedColor = 'bg-emerald-500'; // Completed items
+    } else if (item.percent >= 50) {
+      refinedColor = 'bg-blue-400'; // More than halfway
+    } else if (item.percent >= 25) {
+      refinedColor = 'bg-amber-400'; // Started but less than halfway
+    } else {
+      refinedColor = 'bg-rose-300'; // Just started
+    }
+    return { ...item, color: refinedColor };
+  });
 
-              {/* Dynamic goals rendering from goals array */}
+  const renderProgressBars = (items: ProgressItem[]) => {
+    return items.map((item, index) => (
+      <motion.div
+        key={index}
+        className="mb-5"
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: 0.1 * index }}
+      >
+        <div className="flex justify-between mb-1.5">
+          <span className="text-sm font-medium text-slate-700">
+            {item.label}
+          </span>
+          <span className="text-sm font-medium text-slate-700">
+            {item.percent}%
+          </span>
+        </div>
+        <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+          <motion.div
+            className={`h-2.5 rounded-full ${item.color}`}
+            initial={{ width: 0 }}
+            whileInView={{ width: `${item.percent}%` }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2 + 0.1 * index }}
+          ></motion.div>
+        </div>
+      </motion.div>
+    ));
+  };
+
+  return (
+    <section id="goals" className="w-full py-24 bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
+        <div className="text-center mb-16">
+          <motion.h2
+            className="text-3xl font-semibold text-slate-800 sm:text-4xl mb-4 tracking-tight"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="text-blue-900 font-medium">
+              {sectionContent.title.main}
+            </span>{' '}
+            <span className="text-red-600 font-medium">
+              {sectionContent.title.highlight}
+            </span>
+          </motion.h2>
+
+          <motion.div
+            className="h-0.5 w-24 bg-gradient-to-r from-blue-600 to-rose-400 mx-auto mb-8"
+            initial={{ width: 0 }}
+            whileInView={{ width: 96 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          />
+
+          <motion.p
+            className="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            {sectionContent.introduction}
+          </motion.p>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-16">
+          {/* Left Column - Goals List */}
+          <div className="w-full lg:w-1/2">
+            {goals.map((goal, i) => (
               <motion.div
-                className="space-y-4"
-                variants={staggerContainer}
-                initial="hidden"
-                whileInView="visible"
+                key={i}
+                className="mb-6 bg-white rounded-lg shadow-sm p-6 border border-slate-100 transition-all duration-300 hover:shadow-md hover:border-l-4 hover:border-l-rose-400"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 * i }}
               >
-                {goals.map((goal, i) => (
-                  <motion.div
-                    key={i}
-                    className="p-6 border-l-4 border-red-500 bg-white rounded-lg shadow-sm 
-                             hover:shadow-lg transition-all duration-300"
-                    variants={slideInLeft}
-                    custom={i}
-                    whileHover={{ x: 10, backgroundColor: '#fef2f2' }}
-                  >
-                    <h4 className="font-bold text-gray-800 text-lg mb-2">
-                      {goal.title}
-                    </h4>
-                    <p className="text-gray-600 leading-relaxed">
-                      {goal.description}
-                    </p>
-                  </motion.div>
-                ))}
+                <h4 className="font-semibold text-slate-800 text-lg mb-2">
+                  {goal.title}
+                </h4>
+                <p className="text-slate-600 leading-relaxed">
+                  {goal.description}
+                </p>
               </motion.div>
-            </div>
+            ))}
           </div>
 
-          <div className="md:w-1/2">
+          {/* Right Column - Progress Stats */}
+          <div className="w-full lg:w-1/2">
             <motion.div
-              className="rounded-xl p-6 bg-white border-2 border-gray-100 shadow-lg"
-              variants={subtleRise}
-              initial="hidden"
-              whileInView="visible"
+              className="bg-white rounded-lg shadow-sm p-8 border border-slate-100"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
               {/* Progress Overview */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">
+                <h3 className="text-xl font-semibold text-slate-800 mb-6 pb-2 border-b border-slate-100">
                   {sectionContent.progressTitle}
                 </h3>
 
                 {/* Progress summary stats */}
-                <motion.div
-                  className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"
-                  variants={statGrid}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
+                <div className="grid grid-cols-2 gap-5 mb-10">
                   <motion.div
-                    className="bg-red-50 p-4 rounded-lg text-center"
-                    variants={statCard}
-                    whileHover="hover"
+                    className="bg-slate-50 p-5 rounded-lg text-center border border-slate-100"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
                   >
-                    <p className="text-3xl font-bold text-red-500">
-                      {goalStats.total}
-                    </p>
-                    <p className="text-sm text-gray-600">Total Goals</p>
+                    <div className="w-12 h-12 border-3 border-blue-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <span className="text-blue-500 text-lg font-semibold">
+                        {goalStats.total}
+                      </span>
+                    </div>
+                    <p className="text-slate-700 font-medium">Total Goals</p>
                   </motion.div>
 
                   <motion.div
-                    className="bg-green-50 p-4 rounded-lg text-center"
-                    variants={statCard}
-                    whileHover="hover"
+                    className="bg-slate-50 p-5 rounded-lg text-center border border-slate-100"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.2 }}
                   >
-                    <p className="text-3xl font-bold text-green-500">
-                      {goalStats.completed}
-                    </p>
-                    <p className="text-sm text-gray-600">Completed</p>
+                    <div className="w-12 h-12 border-3 border-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <span className="text-emerald-600 text-lg font-semibold">
+                        {goalStats.completed}
+                      </span>
+                    </div>
+                    <p className="text-slate-700 font-medium">Completed</p>
                   </motion.div>
 
                   <motion.div
-                    className="bg-yellow-50 p-4 rounded-lg text-center"
-                    variants={statCard}
-                    whileHover="hover"
+                    className="bg-slate-50 p-5 rounded-lg text-center border border-slate-100"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.3 }}
                   >
-                    <p className="text-3xl font-bold text-yellow-500">
-                      {goalStats.inProgress}
-                    </p>
-                    <p className="text-sm text-gray-600">In Progress</p>
+                    <div className="w-12 h-12 border-3 border-amber-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <span className="text-amber-500 text-lg font-semibold">
+                        {goalStats.inProgress}
+                      </span>
+                    </div>
+                    <p className="text-slate-700 font-medium">In Progress</p>
                   </motion.div>
 
                   <motion.div
-                    className="bg-blue-50 p-4 rounded-lg text-center"
-                    variants={statCard}
-                    whileHover="hover"
+                    className="bg-slate-50 p-5 rounded-lg text-center border border-slate-100"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.4 }}
                   >
-                    <p className="text-3xl font-bold text-blue-500">
-                      {goalStats.percentComplete}%
+                    <div className="w-12 h-12 border-3 border-rose-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <span className="text-rose-500 text-lg font-semibold">
+                        {goalStats.percentComplete}%
+                      </span>
+                    </div>
+                    <p className="text-slate-700 font-medium">
+                      Overall Progress
                     </p>
-                    <p className="text-sm text-gray-600">Overall Progress</p>
                   </motion.div>
-                </motion.div>
+                </div>
 
                 {/* Overall progress bar */}
-                <div className="mb-8">
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-700">
+                <motion.div
+                  className="mb-10"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                >
+                  <div className="flex justify-between mb-2">
+                    <span className="text-sm font-medium text-slate-700">
                       Overall Completion
                     </span>
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-medium text-blue-500">
                       {goalStats.percentComplete}%
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-4">
+                  <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
                     <motion.div
-                      className="h-4 rounded-full bg-gradient-to-r from-red-400 to-red-600"
+                      className="h-3 rounded-full bg-gradient-to-r from-blue-400 to-rose-400"
                       initial={{ width: 0 }}
                       whileInView={{ width: `${goalStats.percentComplete}%` }}
                       viewport={{ once: true }}
                       transition={{ duration: 1.5 }}
                     ></motion.div>
                   </div>
-                </div>
+                </motion.div>
+
+                {/* Individual progress bars */}
+                <motion.div
+                  className="mt-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                >
+                  <h4 className="font-semibold text-slate-800 text-lg mb-6 pb-2 border-b border-slate-100">
+                    Individual Progress
+                  </h4>
+                  {renderProgressBars(refinedProgressItems)}
+                </motion.div>
+
+                {/* Goal insights */}
+                <motion.div
+                  className="mt-10 p-5 border border-slate-200 rounded-lg bg-gradient-to-br from-white to-slate-50"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                >
+                  <h5 className="font-semibold text-slate-800 mb-2 flex items-center">
+                    <svg
+                      className="w-4 h-4 mr-2 text-blue-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                    {sectionContent.insightsTitle || 'Progress Insights'}
+                  </h5>
+                  <p className="text-slate-700 text-sm leading-relaxed">
+                    Our goals are on track with {goalStats.percentComplete}%
+                    overall completion. We've fully achieved{' '}
+                    {goalStats.completed} goals, with {goalStats.inProgress}{' '}
+                    more in progress. We continue to work towards our mission
+                    with steady progress across all initiatives.
+                  </p>
+                </motion.div>
               </div>
-
-              {/* Individual progress bars */}
-              <motion.div
-                className="mt-6"
-                variants={container}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                <h4 className="font-bold text-gray-800 text-lg mb-4">
-                  Individual Progress
-                </h4>
-                {renderProgressBars(progressItems)}
-              </motion.div>
-
-              {/* Goal insights */}
-              <motion.div
-                className="mt-8 p-5 border border-gray-200 rounded-lg bg-gray-50"
-                variants={subtleRise}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 }}
-              >
-                <h5 className="font-bold text-gray-700 mb-2">
-                  {sectionContent.insightsTitle || 'Progress Insights'}
-                </h5>
-                <p className="text-sm text-gray-600">
-                  Our goals are on track with {goalStats.percentComplete}%
-                  overall completion. We've fully achieved {goalStats.completed}{' '}
-                  goals, with {goalStats.inProgress} more in progress. We
-                  continue to work towards our mission with steady progress
-                  across all initiatives.
-                </p>
-              </motion.div>
             </motion.div>
           </div>
         </div>
-      </SectionContainer>
-    </>
+      </div>
+    </section>
   );
 };
 
