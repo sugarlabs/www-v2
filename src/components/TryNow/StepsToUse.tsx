@@ -1,6 +1,5 @@
 import 'react-responsive-carousel';
 import { Carousel } from 'react-responsive-carousel';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { steps } from '@/constants/TryNowData/bootableSoasData';
 import { useState } from 'react';
 import DOMPurify from 'dompurify';
@@ -27,16 +26,8 @@ const StepsToUse = () => {
           infiniteLoop
         >
           {steps.map((step, index) => (
-            <div key={index} className="text-center relative">
-              {index > 0 && (
-                <button
-                  className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-300 text-black p-2 rounded-full shadow-lg transition hover:bg-gray-400"
-                  onClick={() => setCurrentStep(currentStep - 1)}
-                >
-                  <ArrowLeft size={30} />
-                </button>
-              )}
-
+            <div key={index} className="relative text-center">
+              {/* TEXT CONTENT */}
               <div className="text-lg font-semibold text-gray-600">
                 Step {index + 1}
               </div>
@@ -52,20 +43,34 @@ const StepsToUse = () => {
                 }}
               />
 
-              <img
-                src={step.image}
-                alt={step.title}
-                className="mx-auto mt-4 rounded-lg shadow-lg w-3/4 sm:w-2/3 md:w-1/2 h-auto"
-              />
+              {/* IMAGE + HOVER ARROWS */}
+              <div className="relative group mx-auto mt-4 rounded-lg shadow-lg overflow-hidden">
+                <img
+                  src={step.image}
+                  alt={step.title}
+                  className="w-full h-auto rounded-lg"
+                />
 
-              {index < steps.length - 1 && (
-                <button
-                  className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-300 text-black p-2 rounded-full shadow-lg transition hover:bg-gray-400"
-                  onClick={() => setCurrentStep(currentStep + 1)}
-                >
-                  <ArrowRight size={30} />
-                </button>
-              )}
+                {/* LEFT HOVER AREA */}
+                {index > 0 && (
+                  <div
+                    className="absolute left-0 top-0 h-full w-1/4 bg-gradient-to-r from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer z-10"
+                    onClick={() => setCurrentStep(currentStep - 1)}
+                  >
+                    <div className="absolute left-2 top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-white"></div>
+                  </div>
+                )}
+
+                {/* RIGHT HOVER AREA */}
+                {index < steps.length - 1 && (
+                  <div
+                    className="absolute right-0 top-0 h-full w-1/4 bg-gradient-to-l from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer z-10"
+                    onClick={() => setCurrentStep(currentStep + 1)}
+                  >
+                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-8 border-b-8 border-l-8 border-transparent border-l-white"></div>
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </Carousel>
