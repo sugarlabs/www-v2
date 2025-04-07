@@ -51,7 +51,7 @@ export const testimonials = [
   {
     name: 'Sam Parkinson',
     username: 'Sam Parkinson, Google Code-in grand prize winner',
-    body: 'GCI was truly something that changed my life. I went from being an open source newbie to being able to contribute to really cool projects, thanks to the amazing GCI and Sugar Labs communities. It\'s something that I would recommend any young programmer consider doing. Participating in GCI is something that can make dreams come true.',
+    body: "GCI was truly something that changed my life. I went from being an open source newbie to being able to contribute to really cool projects, thanks to the amazing GCI and Sugar Labs communities. It's something that I would recommend any young programmer consider doing. Participating in GCI is something that can make dreams come true.",
     img: 'https://avatar.vercel.sh/james',
   },
   {
