@@ -46,60 +46,62 @@ const FlatHubPage = () => {
 
       <Header />
 
-      <FeatureSection data={flathubData} />
+      <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
+        <FeatureSection data={flathubData} />
 
-      {flathubSections.map((section, index) => (
-        <Paragraph
-          key={index}
-          title={section.title}
-          content={section.content}
-          button={section.button}
-          buttonLink={section.buttonLink}
-        />
-      ))}
+        {flathubSections.map((section, index) => (
+          <Paragraph
+            key={index}
+            title={section.title}
+            content={section.content}
+            button={section.button}
+            buttonLink={section.buttonLink}
+          />
+        ))}
 
-      <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 pb-2 font-[Caveat] text-center mx-auto w-fit mt-10">
-        What can you do with <span className="text-[#68A6F7]">Flathub</span>?
-      </h2>
+        <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 pb-2 font-[Caveat] text-center mx-auto w-fit mt-10">
+          What can you do with <span className="text-[#68A6F7]">Flathub</span>?
+        </h2>
 
-      <div className="flex justify-center">
-        <LogoCards data={flathubLogoCards} />
-      </div>
+        <div className="flex justify-center">
+          <LogoCards data={flathubLogoCards} />
+        </div>
 
-      <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 my-8">
-        <div className="w-full md:w-1/2">
-          <h2 className="text-2xl font-semibold mb-4 text-center font-Caveat">
-            Getting Started
-          </h2>
-          <div className="grid grid-cols-1 gap-4 mt-6 p-4">
-            {numberedCards1.map((card, index) => (
-              <NumberedCard
-                key={index}
-                number={card.number}
-                title={card.title}
-                description={card.description}
-                borderColor={card.borderColor}
-              />
-            ))}
+        <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 my-8">
+          <div className="w-full md:w-1/2">
+            <h2 className="text-2xl font-semibold mb-4 text-center font-Caveat">
+              Getting Started
+            </h2>
+            <div className="grid grid-cols-1 gap-4 mt-6 p-4">
+              {numberedCards1.map((card, index) => (
+                <NumberedCard
+                  key={index}
+                  number={card.number}
+                  title={card.title}
+                  description={card.description}
+                  borderColor={card.borderColor}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="w-full md:w-1/2">
+            <h2 className="text-2xl font-semibold mb-4 text-center font-[Caveat]">
+              Next Steps
+            </h2>
+            <div className="grid grid-cols-1 gap-4 mt-6 p-4">
+              {numberedCards2.map((card, index) => (
+                <NumberedCard
+                  key={index}
+                  number={card.number}
+                  title={card.title}
+                  description={card.description}
+                  borderColor={card.borderColor}
+                />
+              ))}
+            </div>
           </div>
         </div>
-        <div className="w-full md:w-1/2">
-          <h2 className="text-2xl font-semibold mb-4 text-center font-[Caveat]">
-            Next Steps
-          </h2>
-          <div className="grid grid-cols-1 gap-4 mt-6 p-4">
-            {numberedCards2.map((card, index) => (
-              <NumberedCard
-                key={index}
-                number={card.number}
-                title={card.title}
-                description={card.description}
-                borderColor={card.borderColor}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+      </main>
 
       <Footer />
     </div>
