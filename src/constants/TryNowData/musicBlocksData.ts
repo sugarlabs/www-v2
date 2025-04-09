@@ -7,19 +7,19 @@ export const musicBlocksData = {
   images: [
     {
       src: 'assets/TryNowImages/musicBlocks1.png',
-      alt: 'Turtle Blocks Example 1',
+      alt: 'Music Blocks Example 1',
     },
     {
       src: 'assets/TryNowImages/musicBlocks2.png',
-      alt: 'Turtle Blocks Example 2',
+      alt: 'Music Blocks Example 2',
     },
     {
       src: 'assets/TryNowImages/musicBlocks3.png',
-      alt: 'Turtle Blocks Example 3',
+      alt: 'Music Blocks Example 3',
     },
     {
       src: 'assets/TryNowImages/musicBlocks4.png',
-      alt: 'Turtle Blocks Example 4',
+      alt: 'Music Blocks Example 4',
     },
   ],
 };

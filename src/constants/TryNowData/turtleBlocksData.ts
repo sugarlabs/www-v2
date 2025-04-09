@@ -19,8 +19,16 @@ export const turtleBlocksData = {
     'Turtle Blocks JavaScript lets users create colorful art with a Logo-inspired turtle using snap-together coding blocks. It’s beginner-friendly yet powerful enough for advanced programming, graphics, and math exploration.',
   images: [
     {
-      src: 'assets/TryNowImages/turtleBlocks.png',
+      src: 'assets/TryNowImages/turtleblocks2.png',
       alt: 'Turtle Blocks Example 1',
+    },
+    {
+      src: 'assets/TryNowImages/turtleblocks1.png',
+      alt: 'Turtle Blocks Example 2',
+    },
+    {
+      src: 'assets/TryNowImages/turtleBlocks.png',
+      alt: 'Turtle Blocks Example 3',
     },
   ],
 };

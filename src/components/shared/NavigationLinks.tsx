@@ -118,30 +118,10 @@ const NavigationLinks = () => {
     if (element) {
       const navBar = document.querySelector('header, nav:first-of-type');
       const offsetTop = navBar ? navBar.getBoundingClientRect().height : 0;
-
-      const targetPosition =
-        element.offsetTop - offsetTop - navigationConfig.scrollOffset;
-      const startPosition = window.pageYOffset;
-      const distance = targetPosition - startPosition;
-      const duration = navigationConfig.scrollDuration;
-      let start: number | null = null;
-
-      const animation = (currentTime: number) => {
-        if (start === null) start = currentTime;
-        const timeElapsed = currentTime - start;
-        const progress = Math.min(timeElapsed / duration, 1);
-
-        const ease = (t: number) =>
-          t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-
-        window.scrollTo(0, startPosition + distance * ease(progress));
-
-        if (timeElapsed < duration) {
-          requestAnimationFrame(animation);
-        }
-      };
-
-      requestAnimationFrame(animation);
+      window.scrollTo({
+        top: element.offsetTop - offsetTop - navigationConfig.scrollOffset,
+        behavior: 'smooth',
+      });
     } else {
       console.error(
         `Section with ID "${sectionId}" not found in the document!`,

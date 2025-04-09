@@ -10,11 +10,11 @@ export const trisquelData = {
       src: 'assets/TryNowImages/trisquel.png',
       alt: 'Trisquel Sugar Blocks 1',
     },
+    {
+      src: 'assets/TryNowImages/trisquel2.png',
+      alt: 'Trisquel Turtle Blocks 2',
+    },
   ],
-  extraImage: {
-    src: 'assets/TryNowImages/-mockup.png',
-    alt: 'Trsiquel mockup',
-  },
 };
 
 export const trisquelLogoCards = [

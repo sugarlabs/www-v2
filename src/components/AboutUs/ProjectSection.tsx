@@ -1,80 +1,98 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import SectionContainer from '@/components/shared/SectionContainer';
-import SectionTitle from '@/components/shared/SectionTitle';
 import { projects, projectsContent } from '@/constants/aboutUs/projects';
-import { projectsSectionAnimations } from '@/styles/Animations';
 
 const ProjectsSection = () => {
-  const displayProjects = projects.slice(
-    0,
-    projectsContent.displayProjectCount,
-  );
+  const [showAllProjects, setShowAllProjects] = useState(false);
+
+  const initialProjectCount = 3;
+  const displayProjects = showAllProjects
+    ? projects
+    : projects.slice(0, initialProjectCount);
 
   return (
-    <SectionContainer id={projectsContent.sectionId}>
-      <motion.div
-        className="w-full space-y-8"
-        variants={projectsSectionAnimations.container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
-        <motion.div variants={projectsSectionAnimations.title}>
-          <SectionTitle>
-            <span className="font-Caveat text-3xl md:text-4xl">
+    <section id={projectsContent.sectionId} className="w-full py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
+        <div className="text-center mb-16">
+          <motion.h2
+            className="text-3xl font-semibold text-slate-800 sm:text-4xl mb-4 tracking-tight"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="text-blue-900 font-medium">
               {projectsContent.title.prefix}
             </span>{' '}
-            <span className="text-red-500 font-Caveat text-3xl md:text-4xl">
+            <span className="text-red-600 font-medium">
               {projectsContent.title.highlight}
             </span>
-          </SectionTitle>
-        </motion.div>
+          </motion.h2>
 
-        {projectsContent.description && (
-          <motion.p
-            className="text-base md:text-lg text-gray-700 leading-relaxed text-center max-w-4xl mx-auto"
-            variants={projectsSectionAnimations.title}
-          >
-            {projectsContent.description}
-          </motion.p>
-        )}
+          <motion.div
+            className="h-0.5 w-24 bg-gradient-to-r from-blue-600 to-red-600 mx-auto mb-8"
+            initial={{ width: 0 }}
+            whileInView={{ width: 96 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          />
 
-        <div className="flex flex-col md:flex-row gap-8">
+          {projectsContent.description && (
+            <motion.p
+              className="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              {projectsContent.description}
+            </motion.p>
+          )}
+        </div>
+
+        {/* Projects grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayProjects.map((project, i) => (
             <motion.div
               key={i}
-              className="flex flex-col bg-white rounded-xl shadow-md overflow-hidden transition-all md:w-1/2 items-center"
-              custom={i}
-              variants={projectsSectionAnimations.projectCard}
-              whileHover="hover"
-              style={{ height: '400px' }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 * i }}
+              className="h-full"
             >
-              <motion.div
-                className="w-full h-1/2 flex items-center justify-center bg-gray-50"
-                variants={projectsSectionAnimations.imageContainer}
-              >
-                <img
-                  src={project.imageUrl}
-                  alt={project.title}
-                  className="w-full h-full object-contain p-4"
-                />
-              </motion.div>
-
-              <div className="w-full p-6 text-center flex flex-col flex-grow justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-600">{project.description}</p>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col border border-slate-100 transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px]">
+                <div className="relative">
+                  <div className="absolute top-0 right-0 z-10">
+                    <div className="bg-blue-600 text-white text-xs py-1 px-3 font-medium">
+                      Project {i + 1}
+                    </div>
+                  </div>
+                  <div className="w-full h-48 bg-slate-50 flex items-center justify-center p-6">
+                    <img
+                      src={project.imageUrl}
+                      alt={project.title}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                 </div>
 
-                <div className="flex flex-col items-center mt-4">
+                <div className="p-6 flex flex-col flex-grow">
+                  <h3 className="text-lg font-semibold text-slate-800 mb-3 pb-2 border-b border-slate-100">
+                    {project.title}
+                  </h3>
+
+                  <p className="text-slate-600 mb-6 flex-grow text-base">
+                    {project.description}
+                  </p>
+
                   {project.tags && project.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 justify-center mb-4">
+                    <div className="flex flex-wrap gap-2 mb-4">
                       {project.tags.map((tag, tagIndex) => (
                         <span
                           key={tagIndex}
-                          className="px-2 py-1 bg-red-50 text-red-600 rounded-full text-xs font-medium"
+                          className="px-2 py-1 bg-slate-100 text-slate-700 rounded-full text-xs font-medium"
                         >
                           {tag}
                         </span>
@@ -82,16 +100,15 @@ const ProjectsSection = () => {
                     </div>
                   )}
 
-                  {project.link ? (
-                    <motion.a
+                  {/* Link handling */}
+                  {project.link && (
+                    <a
                       href={project.link}
-                      className="text-red-500 hover:text-red-700 font-medium text-sm flex items-center justify-center gap-1"
-                      variants={projectsSectionAnimations.learnMoreButton}
-                      whileHover="hover"
+                      className="text-blue-600 hover:text-red-600 font-medium text-sm flex items-center gap-1 mt-auto transition-colors duration-300 group"
                     >
-                      {projectsContent.ctaText}
+                      {projectsContent.ctaText || 'Learn More'}
                       <svg
-                        className="w-4 h-4"
+                        className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -103,17 +120,41 @@ const ProjectsSection = () => {
                           d="M9 5l7 7-7 7"
                         ></path>
                       </svg>
-                    </motion.a>
-                  ) : (
-                    <motion.span
-                      className="text-red-500 hover:text-red-700 font-medium text-sm flex items-center justify-center gap-1 cursor-pointer"
-                      variants={projectsSectionAnimations.learnMoreButton}
-                      whileHover="hover"
+                    </a>
+                  )}
+
+                  {project.exlink && (
+                    <a
+                      href={project.exlink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-red-600 font-medium text-sm flex items-center gap-1 mt-auto transition-colors duration-300 group"
+                    >
+                      {projectsContent.ctaText || 'Visit Website'}
+                      <svg
+                        className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        ></path>
+                      </svg>
+                    </a>
+                  )}
+
+                  {!project.link && !project.exlink && (
+                    <button
+                      className="text-blue-600 hover:text-red-600 font-medium text-sm flex items-center gap-1 mt-auto transition-colors duration-300 group"
                       onClick={() => (window.location.href = '#projects')}
                     >
-                      {projectsContent.ctaText}
+                      {projectsContent.ctaText || 'Learn More'}
                       <svg
-                        className="w-4 h-4"
+                        className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -125,7 +166,7 @@ const ProjectsSection = () => {
                           d="M9 5l7 7-7 7"
                         ></path>
                       </svg>
-                    </motion.span>
+                    </button>
                   )}
                 </div>
               </div>
@@ -133,36 +174,60 @@ const ProjectsSection = () => {
           ))}
         </div>
 
-        {projects.length > projectsContent.displayProjectCount && (
+        {/* Show more button*/}
+        {projects.length > initialProjectCount && (
           <motion.div
-            className="flex justify-center mt-8"
-            variants={projectsSectionAnimations.title}
+            className="flex justify-center mt-14"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <motion.a
-              href="/projects"
-              className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center gap-2 shadow-md"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              View all projects
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {!showAllProjects ? (
+              <button
+                onClick={() => setShowAllProjects(true)}
+                className="px-8 py-3 bg-blue-600 hover:bg-red-600 text-white rounded-lg shadow-sm font-medium transition-all duration-300 inline-flex items-center gap-2"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 5l7 7-7 7"
-                ></path>
-              </svg>
-            </motion.a>
+                Show more
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowAllProjects(false)}
+                className="px-8 py-3 bg-blue-600 hover:bg-red-600 text-white rounded-lg shadow-sm font-medium transition-all duration-300 inline-flex items-center gap-2"
+              >
+                Show less
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 15l7-7 7 7"
+                  ></path>
+                </svg>
+              </button>
+            )}
           </motion.div>
         )}
-      </motion.div>
-    </SectionContainer>
+      </div>
+    </section>
   );
 };
 

@@ -5,6 +5,7 @@ export interface Project {
   imageUrl?: string;
   progress?: number;
   link?: string;
+  exlink?: string;
 }
 
 export const projects: Project[] = [
@@ -13,7 +14,7 @@ export const projects: Project[] = [
     description: 'A live USB version of the Sugar platform',
     tags: ['Distribution', 'Portable'],
     imageUrl: 'assets/Images/SOAS.jpeg',
-    link: '/projects/sugar-on-a-stick',
+    link: '/bootablesoas',
   },
   {
     title: 'Google Summer of Code',
@@ -21,23 +22,24 @@ export const projects: Project[] = [
       'GSOC is a global program focused on bringing more student developers into open source software development',
     tags: ['Community', 'Development'],
     imageUrl: 'assets/Images/GSOC.png',
-    link: '/projects/gsoc',
+    exlink:
+      'https://summerofcode.withgoogle.com/programs/2025/organizations/sugar-labs',
   },
   {
     title: 'Music Blocks',
     description: 'A programming environment for exploring musical concepts',
     tags: ['Education', 'Creative'],
     progress: 75,
-    imageUrl: 'assets/Images/default-project.png',
-    link: '/projects/music-blocks',
+    imageUrl: 'assets/TryNowImages/musicBlocks1.png',
+    link: '/musicblocks',
   },
   {
     title: 'Sugarizer',
     description: 'Web implementation of the Sugar platform for modern browsers',
     tags: ['Web', 'Mobile'],
     progress: 80,
-    imageUrl: 'assets/Images/default-project.png',
-    link: '/projects/sugarizer',
+    imageUrl: 'assets/TryNowImages/sugarizer.png',
+    link: '/sugarizer',
   },
 ];
 

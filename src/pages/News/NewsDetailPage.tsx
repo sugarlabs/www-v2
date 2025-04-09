@@ -17,106 +17,85 @@ const NewsDetailPage: React.FC = () => {
     src: string;
     alt: string;
   } | null>(null);
-  const [isPathReady, setIsPathReady] = useState<boolean>(false);
 
-  // Check if path is ready after redirect
+  // Load post data when slug changes
   useEffect(() => {
-    // Small delay to ensure the path restoration from sessionStorage has completed
-    const timer = setTimeout(() => {
-      setIsPathReady(true);
-    }, 50);
+    if (!slug) return;
 
-    return () => clearTimeout(timer);
-  }, []);
+    const loadPost = async () => {
+      setIsLoading(true);
+      try {
+        const fetchedPost = await getPostBySlug(slug);
 
-  const loadPost = useCallback(async () => {
-    if (!slug || !isPathReady) {
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const fetchedPost = await getPostBySlug(slug);
-
-      if (!fetchedPost) {
-        setError('Post not found');
+        if (!fetchedPost) {
+          setError('Post not found');
+          setPost(null);
+        } else {
+          setPost(fetchedPost);
+          setError(null);
+          document.title = fetchedPost.title || 'News Detail';
+        }
+      } catch (err) {
+        console.error('Error loading post:', err);
+        setError('Failed to load the post. Please try again later.');
         setPost(null);
-      } else {
-        setPost(fetchedPost);
-        setError(null);
-        document.title = fetchedPost.title || 'News Detail';
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Error loading post:', error);
-      setError('Failed to load the post');
-      setPost(null);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [slug, isPathReady]);
+    };
 
-  // Effect to load post when path is ready and slug changes
-  useEffect(() => {
-    if (isPathReady) {
-      loadPost();
-    }
-  }, [loadPost, isPathReady]);
+    loadPost();
+  }, [slug]);
 
-  // Image modal setup
-  useEffect(() => {
-    if (!isLoading && post && contentRef.current) {
-      const images = contentRef.current.querySelectorAll(
-        'img[data-zoomable="true"]',
-      );
-      const clickHandlers: (() => void)[] = [];
+  const setupImageListeners = useCallback(() => {
+    if (!contentRef.current || !post) return;
 
-      images.forEach((img) => {
-        const handler = (e: Event) => {
-          const target = e.target as HTMLImageElement;
-          setModalImage({
-            src: target.src,
-            alt: target.alt || 'Image',
-          });
-          document.body.classList.add('overflow-hidden');
-        };
-
-        img.addEventListener('click', handler);
-        clickHandlers.push(() => img.removeEventListener('click', handler));
+    const images = contentRef.current.querySelectorAll(
+      'img[data-zoomable="true"]',
+    );
+    const handleClick = (event: Event) => {
+      const imgElement = event.target as HTMLImageElement;
+      setModalImage({
+        src: imgElement.src,
+        alt: imgElement.alt || 'Image',
       });
-
-      return () => {
-        clickHandlers.forEach((cleanup) => cleanup());
-      };
+      document.body.classList.add('overflow-hidden');
+    };
+    images.forEach((img) => img.addEventListener('click', handleClick));
+    return () => {
+      images.forEach((img) => img.removeEventListener('click', handleClick));
+    };
+  }, [post]);
+  useEffect(() => {
+    if (!isLoading && post) {
+      return setupImageListeners();
     }
-  }, [isLoading, post]);
-
-  // ESC key handler for modal
+  }, [isLoading, post, setupImageListeners]);
   useEffect(() => {
     const handleEscKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === 'Escape' && modalImage) {
         closeImageModal();
       }
     };
 
     window.addEventListener('keydown', handleEscKey);
     return () => window.removeEventListener('keydown', handleEscKey);
-  }, []);
+  });
 
-  const handleGoBack = () => {
+  const handleGoBack = useCallback(() => {
     if (category) {
       navigate(`/news/${category}`);
     } else {
       navigate('/news/community-news');
     }
-  };
+  }, [navigate, category]);
 
-  const closeImageModal = () => {
+  const closeImageModal = useCallback(() => {
     setModalImage(null);
     document.body.classList.remove('overflow-hidden');
-  };
+  }, []);
 
-  // If the path is not ready yet or still loading initial data
-  if (!isPathReady || (isLoading && !post)) {
+  if (isLoading && !post) {
     return (
       <>
         <Header />
@@ -145,7 +124,7 @@ const NewsDetailPage: React.FC = () => {
           </p>
           <button
             onClick={handleGoBack}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mx-auto"
+            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mx-auto focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             Back to News
           </button>
@@ -163,15 +142,17 @@ const NewsDetailPage: React.FC = () => {
         {/* Back button */}
         <motion.button
           onClick={handleGoBack}
-          className="mb-6 px-4 py-2 flex items-center text-blue-600 hover:text-blue-700 transition-colors rounded-md hover:bg-blue-50"
+          className="mb-6 px-4 py-2 flex items-center text-blue-600 hover:text-blue-700 transition-colors rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          aria-label="Back to news list"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 mr-2"
             viewBox="0 0 20 20"
             fill="currentColor"
+            aria-hidden="true"
           >
             <path
               fillRule="evenodd"
@@ -184,52 +165,62 @@ const NewsDetailPage: React.FC = () => {
 
         {/* Article Header */}
         <div className="mb-8 border-b border-gray-200 pb-6">
-          <span className="inline-block px-3 py-1 text-sm font-semibold bg-green-100 text-green-600 mb-4 rounded-full">
-            {post.category}
-          </span>
+          {post.category && (
+            <span className="inline-block px-3 py-1 text-sm font-semibold bg-green-100 text-green-600 mb-4 rounded-full">
+              {post.category}
+            </span>
+          )}
           <h1 className="text-4xl font-bold mb-4 text-gray-800">
             {post.title}
           </h1>
           <div className="flex flex-wrap items-center text-gray-500 mb-3">
-            <span className="mr-4 flex items-center">
-              <svg
-                className="w-4 h-4 mr-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              {post.date}
-            </span>
-            <span className="mr-4">•</span>
-            <span className="flex items-center">
-              <svg
-                className="w-4 h-4 mr-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-              {post.author}
-            </span>
+            {post.date && (
+              <>
+                <span className="mr-4 flex items-center">
+                  <svg
+                    className="w-4 h-4 mr-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <time dateTime={post.date}>{post.date}</time>
+                </span>
+                {post.author && <span className="mr-4">•</span>}
+              </>
+            )}
+            {post.author && (
+              <span className="flex items-center">
+                <svg
+                  className="w-4 h-4 mr-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+                {post.author}
+              </span>
+            )}
           </div>
-          <div className="flex flex-wrap gap-2 mt-3">
-            {post.tags &&
-              post.tags.map((tag, index) => (
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-3">
+              {post.tags.map((tag, index) => (
                 <span
                   key={index}
                   className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
@@ -237,7 +228,8 @@ const NewsDetailPage: React.FC = () => {
                   #{tag}
                 </span>
               ))}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Featured Image */}
@@ -253,7 +245,10 @@ const NewsDetailPage: React.FC = () => {
               alt={post.title}
               className="w-full h-auto max-h-80 object-contain mx-auto cursor-pointer hover:scale-105 transition-transform duration-300"
               onClick={() =>
-                setModalImage({ src: post.image, alt: post.title })
+                setModalImage({
+                  src: post.image,
+                  alt: post.title,
+                })
               }
               data-zoomable="true"
             />
@@ -275,7 +270,7 @@ const NewsDetailPage: React.FC = () => {
         {post.author && (
           <div className="bg-blue-50 rounded-lg p-6 my-8 flex items-center space-x-4">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl">
-              {post.author.charAt(0)}
+              {post.author.charAt(0).toUpperCase()}
             </div>
             <div>
               <h4 className="font-semibold text-lg text-gray-800">
@@ -305,16 +300,6 @@ const NewsDetailPage: React.FC = () => {
           </div>
         )}
 
-        {/* Last updated timestamp */}
-        <div className="text-right text-gray-500 text-sm italic mb-8">
-          Last updated:{' '}
-          {new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
-        </div>
-
         {/* Back to Top Button */}
         <div className="fixed bottom-8 right-8 z-50">
           <motion.button
@@ -330,6 +315,7 @@ const NewsDetailPage: React.FC = () => {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -351,6 +337,9 @@ const NewsDetailPage: React.FC = () => {
           onClick={(e) => {
             if (e.target === e.currentTarget) closeImageModal();
           }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-image-title"
         >
           <div className="relative max-w-4xl max-h-full">
             <motion.img
@@ -360,13 +349,14 @@ const NewsDetailPage: React.FC = () => {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              id="modal-image-title"
             />
             <p className="text-white text-center mt-2 text-sm">
               {modalImage.alt}
             </p>
             <button
               onClick={closeImageModal}
-              className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-8 h-8 flex items-center justify-center"
+              className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-8 h-8 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white"
               aria-label="Close image"
             >
               &times;

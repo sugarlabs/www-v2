@@ -115,8 +115,10 @@ export const fetchMarkdownPosts = async (
               ? [frontmatter.tags]
               : [],
           image: Array.isArray(frontmatter.image)
-            ? frontmatter.image.join(' ')
-            : frontmatter.image || '/assets/Images/teach.jpg',
+            ? '/' + frontmatter.image.join(' ').replace(/^\/?/, '')
+            : frontmatter.image
+              ? '/' + frontmatter.image.replace(/^\/?/, '')
+              : '/assets/Images/SugarNewsLogo.png',
         };
 
         allPosts.push(post);
