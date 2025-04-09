@@ -10,6 +10,7 @@ import {
   slideInBottom,
   cardFadeIn,
 } from '@/styles/Animations';
+import { Link } from 'react-router-dom';
 
 const Volunteer = () => {
   return (
@@ -194,7 +195,7 @@ const Volunteer = () => {
 
           <p className="text-lg text-gray-700 font-[Inter] mt-6 leading-relaxed">
             Feel free to reach out to express your interest in volunteering via
-            email or Matrix. Alternatively, you may send a direct message to one
+            <Link style={{ color: '#007bff' }} to={"mailto:info@sugarlabs.org"}> email </Link> or <Link style={{ color: '#007bff' }} to={"https://matrix.to/#/#sugar:matrix.org"}> Matrix </Link>. Alternatively, you may send a <Link style={{ color: '#007bff' }} to={"/contact-us"}> direct message </Link> to one
             of our social media channels.
           </p>
         </motion.div>
