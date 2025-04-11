@@ -23,8 +23,7 @@ export const bannerConfigs = {
   },
 
   sale: {
-    title:
-      'Flash Sale! 48 Hours Only - 40% OFF All Premium Templates ',
+    title: 'Flash Sale! 48 Hours Only - 40% OFF All Premium Templates ',
     description: 'Use code FLASH40 at checkout. Ends Sunday at midnight.',
     buttonText: 'Shop Now',
     buttonLink: '/products',
@@ -32,45 +31,38 @@ export const bannerConfigs = {
   },
 
   newRelease: {
-    title:
-      'New Product Launch! Introducing our AI-powered design tools ',
+    title: 'New Product Launch! Introducing our AI-powered design tools ',
     buttonText: 'Learn More',
     buttonLink: '/products',
     theme: 'info' as const,
   },
 
   limitedOffer: {
-    title:
-      'Limited Time Offer - Early Bird Tickets Available ',
+    title: 'Limited Time Offer - Early Bird Tickets Available ',
     description: 'Register now and save 30% on conference tickets',
     buttonText: 'Register',
     buttonLink: '/volunteer',
     theme: 'warning' as const,
   },
 
-
   successStory: {
-    title:
-      'Success Story: How Our Tools Helped a Small Business Thrive',
+    title: 'Success Story: How Our Tools Helped a Small Business Thrive',
     description: 'Read about how our solutions transformed a local business.',
     buttonText: 'Read Story',
     buttonLink: '/news/sugar-stories',
     theme: 'success' as const,
   },
 
-
   feedback: {
     title: 'We Value Your Feedback',
-    description:
-      'Take our short survey and help us improve your experience',
+    description: 'Take our short survey and help us improve your experience',
     buttonText: 'Give Feedback',
     buttonLink: '/contact-us',
     theme: 'info' as const,
   },
 
   seasonalPromo: {
-    title:
-      'Spring Sale! Refresh Your Wardrobe with 30% OFF',
+    title: 'Spring Sale! Refresh Your Wardrobe with 30% OFF',
     description: 'New season, new styles. Use code SPRING30 at checkout.',
     buttonText: 'Shop Now',
     buttonLink: '/products',
