@@ -14,7 +14,7 @@ export interface IconProps {
 export const bannerConfigs = {
   donation: {
     title:
-      'Help us reach our goal - $15,000 needed for our new community center (Mock Text for display)',
+      'Help us reach our goal - $15,000 needed for our new community center ',
     description:
       'Your contribution makes a difference in our community. Join 230 others who have already donated.',
     buttonText: 'Donate Now',
@@ -24,7 +24,7 @@ export const bannerConfigs = {
 
   sale: {
     title:
-      'Flash Sale! 48 Hours Only - 40% OFF All Premium Templates (Mock Text for display)',
+      'Flash Sale! 48 Hours Only - 40% OFF All Premium Templates ',
     description: 'Use code FLASH40 at checkout. Ends Sunday at midnight.',
     buttonText: 'Shop Now',
     buttonLink: '/products',
@@ -33,7 +33,7 @@ export const bannerConfigs = {
 
   newRelease: {
     title:
-      'New Product Launch! Introducing our AI-powered design tools (Mock Text for display)',
+      'New Product Launch! Introducing our AI-powered design tools ',
     buttonText: 'Learn More',
     buttonLink: '/products',
     theme: 'info' as const,
@@ -41,47 +41,28 @@ export const bannerConfigs = {
 
   limitedOffer: {
     title:
-      'Limited Time Offer - Early Bird Tickets Available (Mock Text for display)',
+      'Limited Time Offer - Early Bird Tickets Available ',
     description: 'Register now and save 30% on conference tickets',
     buttonText: 'Register',
     buttonLink: '/volunteer',
     theme: 'warning' as const,
   },
 
-  announcement: {
-    title:
-      'Important Announcement: System maintenance scheduled (Mock Text for display)',
-    description:
-      'Our platform will be down for maintenance on March 15th from 2-4 AM UTC',
-    buttonText: 'Read More',
-    buttonLink: 'https://www.example.com',
-    theme: 'info' as const,
-    isExternalLink: true,
-  },
 
   successStory: {
     title:
-      'Success Story: How Our Tools Helped a Small Business Thrive (Mock Text for display)',
+      'Success Story: How Our Tools Helped a Small Business Thrive',
     description: 'Read about how our solutions transformed a local business.',
     buttonText: 'Read Story',
     buttonLink: '/news/sugar-stories',
     theme: 'success' as const,
   },
 
-  webinar: {
-    title:
-      'Upcoming Webinar: Mastering the Art of Digital Marketing (Mock Text for display)',
-    description: 'Join us live on March 25th. Seats are limited!',
-    buttonText: 'Register Now',
-    buttonLink: 'https://www.example.com',
-    theme: 'info' as const,
-    isExternalLink: true,
-  },
 
   feedback: {
     title: 'We Value Your Feedback',
     description:
-      'Take our short survey and help us improve your experience. (Mock Text for display)',
+      'Take our short survey and help us improve your experience',
     buttonText: 'Give Feedback',
     buttonLink: '/contact-us',
     theme: 'info' as const,
@@ -89,7 +70,7 @@ export const bannerConfigs = {
 
   seasonalPromo: {
     title:
-      'Spring Sale! Refresh Your Wardrobe with 30% OFF (Mock Text for display)',
+      'Spring Sale! Refresh Your Wardrobe with 30% OFF',
     description: 'New season, new styles. Use code SPRING30 at checkout.',
     buttonText: 'Shop Now',
     buttonLink: '/products',
@@ -97,7 +78,7 @@ export const bannerConfigs = {
   },
 
   securityUpdate: {
-    title: 'Security Update: Protect Your Account (Mock Text for display)',
+    title: 'Security Update: Protect Your Account',
     description:
       'Enable two-factor authentication to enhance your account security.',
     buttonText: 'Learn How',
