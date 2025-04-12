@@ -76,7 +76,6 @@ const MusicBlocksPage = () => {
           &nbsp;together.
         </p>
 
-
         <div className="w-[80%] mx-auto flex justify-center">
           <img
             src={musicblockstext.path}
