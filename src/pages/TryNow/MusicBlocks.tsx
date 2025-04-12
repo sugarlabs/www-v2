@@ -68,10 +68,14 @@ const MusicBlocksPage = () => {
         <FeatureSection data={musicBlocksData} />
 
         <p className="flex justify-center">
-          <span className="text-[#436EA6]">Learn music</span>,{' '}
-          <span className="text-[#FEC613]"> math</span>, and{' '}
-          <span className="text-[#AB486A]"> programming</span> together.
+          <span className="text-[#436EA6]">Learn music</span>
+          &nbsp;<span>,</span>&nbsp;
+          <span className="text-[#FEC613]">math</span>
+          &nbsp;<span>, and</span>&nbsp;
+          <span className="text-[#AB486A]">programming</span>
+          &nbsp;together.
         </p>
+
 
         <div className="w-[80%] mx-auto flex justify-center">
           <img
