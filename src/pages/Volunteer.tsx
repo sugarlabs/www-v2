@@ -10,8 +10,18 @@ import {
   slideInBottom,
   cardFadeIn,
 } from '@/styles/Animations';
-
+import { Link } from 'react-router-dom';
+import { developerLinks } from '@/constants/VolunteerAndDev/Links';
 const Volunteer = () => {
+  const { matrixLink, mailLink } = developerLinks.reduce(
+    (acc, link) => {
+      if (link.name.includes('Matrix')) acc.matrixLink = link.url;
+      if (link.name.includes('Mailing')) acc.mailLink = link.url;
+      return acc;
+    },
+    { matrixLink: '#', mailLink: '#' },
+  );
+
   return (
     <div>
       <Header />
@@ -194,8 +204,21 @@ const Volunteer = () => {
 
           <p className="text-lg text-gray-700 font-[Inter] mt-6 leading-relaxed">
             Feel free to reach out to express your interest in volunteering via
-            email or Matrix. Alternatively, you may send a direct message to one
-            of our social media channels.
+            <a href={mailLink} style={{ color: '#007bff' }} target="_blank">
+              {' '}
+              email
+            </a>{' '}
+            or{' '}
+            <a href={matrixLink} style={{ color: '#007bff' }} target="_blank">
+              {' '}
+              Matrix
+            </a>
+            . Alternatively, you may send a{' '}
+            <Link style={{ color: '#007bff' }} to={'/contact-us'}>
+              {' '}
+              direct message{' '}
+            </Link>{' '}
+            to one of our social media channels.
           </p>
         </motion.div>
       </main>
