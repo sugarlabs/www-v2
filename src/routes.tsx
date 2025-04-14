@@ -19,6 +19,7 @@ import TrisquelPage from '@/pages/TryNow/Trisquel';
 import RaspberryPiPage from '@/pages/TryNow/Raspberry';
 import MusicBlocksPage from '@/pages/TryNow/MusicBlocks';
 import FlatHubPage from '@/pages/TryNow/FlatHub';
+import Matrix from './pages/Matrix';
 
 const router = createBrowserRouter([
   { path: `/`, element: <MainPage /> },
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
   { path: `/raspberry`, element: <RaspberryPiPage /> },
   { path: `/musicblocks`, element: <MusicBlocksPage /> },
   { path: `/flathub`, element: <FlatHubPage /> },
+  { path: `/contact-us/:matrix`, element: <Matrix /> },
 ]);
 
 export default router;
