@@ -168,7 +168,7 @@ const ContactUs: React.FC = () => {
                     title="Via Matrix Chat"
                     description={
                       <Link
-                        to="matrix" // relative path
+                        to="matrix"
                         className="mt-2 text-gray-600 hover:text-blue-600 transition duration-200 block text-sm"
                       >
                         Go to Matrix Chat

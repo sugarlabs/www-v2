@@ -26,7 +26,6 @@ const Matrix = () => {
     }
   };
 
-  // Animation variants
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -61,7 +60,6 @@ const Matrix = () => {
     },
   };
 
-  // Timeline line animation
   const lineAnimation = {
     hidden: { height: 0 },
     visible: {
@@ -74,7 +72,7 @@ const Matrix = () => {
     <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9]">
       <Header />
       <main className="flex-grow">
-        {/* Hero Section - Now with black background and gradient */}
+        {/* Hero Section*/}
         <motion.section
           initial="hidden"
           animate="visible"
@@ -209,7 +207,7 @@ const Matrix = () => {
           </div>
         </motion.section>
 
-        {/* How to Get Started - Now in Roadmap Style */}
+        {/* How to Get Started */}
         <motion.section
           id="get-started"
           initial="hidden"
