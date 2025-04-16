@@ -124,7 +124,7 @@ export const Activities = [
     icon: Finance,
     buttonText: 'Get Finance',
     href: 'https://activities.sugarlabs.org/en-US/sugar/addon/4040',
-    version: 'V3',
+    version: 'v3',
   },
   {
     title: 'Maze',
@@ -132,7 +132,7 @@ export const Activities = [
     icon: Maze,
     buttonText: 'Get Maze',
     href: 'https://activities.sugarlabs.org/en-US/sugar/addon/4727',
-    version: 'V3',
+    version: 'v3',
   },
   {
     title: 'Measure',
@@ -140,7 +140,7 @@ export const Activities = [
     icon: Measure,
     buttonText: 'Get Measure',
     href: 'https://activities.sugarlabs.org/en-US/sugar/addon/4197',
-    version: 'V3',
+    version: 'v3',
   },
   {
     title: 'TurtleBlocks3D',
@@ -148,7 +148,7 @@ export const Activities = [
     icon: Turtle3D,
     buttonText: 'Get TurtleBlocks3D',
     href: 'https://activities.sugarlabs.org/en-US/sugar/addon/4757',
-    version: 'V3',
+    version: 'v3',
   },
   {
     title: 'Words',
@@ -156,7 +156,7 @@ export const Activities = [
     icon: Words,
     buttonText: 'Get Words',
     href: 'https://activities.sugarlabs.org/en-US/sugar/addon/4315',
-    version: 'V3',
+    version: 'v3',
   },
   {
     title: 'Ruler',
@@ -164,7 +164,7 @@ export const Activities = [
     icon: Ruler,
     buttonText: 'Get Ruler',
     href: 'https://activities.sugarlabs.org/en-US/sugar/addon/4192',
-    version: 'V3',
+    version: 'v3',
   },
   {
     title: 'StarChart',
@@ -172,7 +172,7 @@ export const Activities = [
     icon: StarChart,
     buttonText: 'Get StarChart',
     href: 'https://activities.sugarlabs.org/en-US/sugar/addon/4300',
-    version: 'V3',
+    version: 'v3',
   },
   {
     title: 'Recall',
@@ -180,7 +180,7 @@ export const Activities = [
     icon: Recall,
     buttonText: 'Get Recall',
     href: 'https://v4.activities.sugarlabs.org/app/org.sugarlabs.RecallActivity.html',
-    version: 'V4',
+    version: 'v4',
   },
   {
     title: 'Physics',
@@ -188,6 +188,6 @@ export const Activities = [
     icon: Physics,
     buttonText: 'Get Physics',
     href: 'https://activities.sugarlabs.org/en-US/sugar/addon/4193',
-    version: 'V3',
+    version: 'v3',
   },
 ];

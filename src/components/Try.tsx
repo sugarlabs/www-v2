@@ -157,7 +157,7 @@ const Try: React.FC = () => {
                 </div>
               </div>
 
-              {/* Navigation Buttons - Positioned to avoid overlap with content */}
+              {/* Navigation Buttons */}
               <div className="absolute top-1/2 -translate-y-1/2 left-1 right-1 flex justify-between pointer-events-none">
                 <button
                   onClick={() =>
@@ -283,7 +283,7 @@ const Try: React.FC = () => {
                 icon={activity.icon}
                 buttonText={activity.buttonText}
                 href={activity.href}
-                version={activity.version} // ✅ Explicitly pass version
+                version={activity.version}
               />
             ))}
           </div>
@@ -325,7 +325,7 @@ const Try: React.FC = () => {
                           icon={activity.icon}
                           buttonText={activity.buttonText}
                           href={activity.href}
-                          version={activity.version} // ✅ Also here
+                          version={activity.version}
                         />
                       </div>
                     </div>

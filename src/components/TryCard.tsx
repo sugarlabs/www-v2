@@ -18,7 +18,7 @@ interface ActivityCardProps {
   icon: string;
   buttonText: string;
   href: string;
-  version?: string; // ✅ New optional prop
+  version?: string;
 }
 
 export const ActivityCard: React.FC<ActivityCardProps> = ({
@@ -27,7 +27,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   icon,
   buttonText,
   href,
-  version, // ✅ Destructure version
+  version,
 }) => (
   <div className="bg-white rounded-xl sm:rounded-3xl p-4 sm:p-6 md:p-8 flex flex-col items-center text-center shadow-lg transition-transform hover:scale-105">
     <img
@@ -39,15 +39,14 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
       {title}
     </h3>
 
-    {/* ✅ Conditionally render version with styles for V3 and V4 */}
     {version && (
       <p
-        className={`text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2 ${
-          version === 'V3'
-            ? 'bg-gradient-to-r from-gray-400 to-gray-600 text-white py-1 px-5 rounded-md inline-block ml-auto font-semibold shadow-md'
-            : version === 'V4'
-              ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white py-1 px-5 rounded-md inline-block ml-auto font-semibold shadow-md'
-              : ''
+        className={`text-xs sm:text-sm mb-1 sm:mb-2 px-4 py-1 rounded-full inline-block ml-auto font-medium ${
+          version === 'v4'
+            ? 'bg-pink-100 text-pink-700'
+            : version === 'v3'
+              ? 'bg-cyan-100 text-cyan-700'
+              : 'bg-gray-100 text-gray-600'
         }`}
       >
         {version}
