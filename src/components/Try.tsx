@@ -276,7 +276,15 @@ const Try: React.FC = () => {
           {/* Desktop Grid */}
           <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
             {Activities.map((activity, index) => (
-              <ActivityCard key={index} {...activity} />
+              <ActivityCard
+                key={index}
+                title={activity.title}
+                description={activity.description}
+                icon={activity.icon}
+                buttonText={activity.buttonText}
+                href={activity.href}
+                version={activity.version} // ✅ Explicitly pass version
+              />
             ))}
           </div>
 
@@ -307,11 +315,18 @@ const Try: React.FC = () => {
                     >
                       <div
                         className={`
-                        transform transition-all duration-300
-                        ${isDragging ? 'scale-98' : 'hover:scale-102'}
-                      `}
+                transform transition-all duration-300
+                ${isDragging ? 'scale-98' : 'hover:scale-102'}
+              `}
                       >
-                        <ActivityCard {...activity} />
+                        <ActivityCard
+                          title={activity.title}
+                          description={activity.description}
+                          icon={activity.icon}
+                          buttonText={activity.buttonText}
+                          href={activity.href}
+                          version={activity.version} // ✅ Also here
+                        />
                       </div>
                     </div>
                   ))}

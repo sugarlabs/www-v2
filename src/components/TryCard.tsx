@@ -18,6 +18,7 @@ interface ActivityCardProps {
   icon: string;
   buttonText: string;
   href: string;
+  version?: string; // ✅ New optional prop
 }
 
 export const ActivityCard: React.FC<ActivityCardProps> = ({
@@ -26,6 +27,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   icon,
   buttonText,
   href,
+  version, // ✅ Destructure version
 }) => (
   <div className="bg-white rounded-xl sm:rounded-3xl p-4 sm:p-6 md:p-8 flex flex-col items-center text-center shadow-lg transition-transform hover:scale-105">
     <img
@@ -33,14 +35,31 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
       alt={title}
       className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mb-3 sm:mb-4"
     />
-    <h3 className="flex-1/3 text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">
+    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">
       {title}
     </h3>
-    <p className="flex-1/3 text-gray-600 text-sm sm:text-base mb-4 sm:mb-6">
+
+    {/* ✅ Conditionally render version with styles for V3 and V4 */}
+    {version && (
+      <p
+        className={`text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2 ${
+          version === 'V3'
+            ? 'bg-gradient-to-r from-gray-400 to-gray-600 text-white py-1 px-5 rounded-md inline-block ml-auto font-semibold shadow-md'
+            : version === 'V4'
+              ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white py-1 px-5 rounded-md inline-block ml-auto font-semibold shadow-md'
+              : ''
+        }`}
+      >
+        {version}
+      </p>
+    )}
+
+    <p className="text-gray-600 text-sm sm:text-base mb-4 sm:mb-6">
       {description}
     </p>
+
     <a href={href} className="w-full">
-      <button className="flex-1/3 w-full py-2 sm:py-3 px-4 sm:px-6 border-2 border-gray-900 rounded-full text-sm sm:text-base md:text-lg font-semibold hover:bg-gray-900 hover:text-white transition-colors">
+      <button className="w-full py-2 sm:py-3 px-4 sm:px-6 border-2 border-gray-900 rounded-full text-sm sm:text-base md:text-lg font-semibold hover:bg-gray-900 hover:text-white transition-colors">
         {buttonText}
       </button>
     </a>
