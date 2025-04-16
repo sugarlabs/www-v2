@@ -14,7 +14,7 @@ import {
   faqPageAnimations,
 } from '@/styles/Animations';
 
-const categoryList = [
+const CategoryList = [
   'All',
   'General',
   'Development',
@@ -144,7 +144,7 @@ const FAQs = () => {
 
             {/* Category Tabs */}
             <div className="flex flex-wrap gap-3 mb-6">
-              {categoryList.map((category) => (
+              {CategoryList.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
