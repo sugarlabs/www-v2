@@ -14,12 +14,27 @@ import {
   faqPageAnimations,
 } from '@/styles/Animations';
 
+const categoryList = [
+  'All',
+  'General',
+  'Development',
+  'Activities',
+  'Installation',
+  'Contributing',
+];
+
 const FAQs = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  const filteredFaqs =
+    selectedCategory === 'All'
+      ? faqs
+      : faqs.filter((faq) => faq.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -34,7 +49,6 @@ const FAQs = () => {
           variants={faqPageAnimations.pageSection}
         >
           <div className="max-w-4xl w-4/5 flex flex-col md:flex-row justify-between items-center">
-            {/* Left Side - Text */}
             <motion.div
               className="md:w-1/2 text-left md:pr-8"
               variants={slideInLeft}
@@ -55,7 +69,6 @@ const FAQs = () => {
               </motion.p>
             </motion.div>
 
-            {/* Right Side - Enlarged Image */}
             <motion.div
               className="md:w-1/2 flex justify-end"
               variants={slideInRight}
@@ -71,7 +84,6 @@ const FAQs = () => {
           </div>
         </motion.section>
 
-        {/* FAQ Sections Container */}
         <div className="w-4/5 max-w-5xl mx-auto">
           {/* Quick Answers */}
           <motion.section
@@ -115,7 +127,7 @@ const FAQs = () => {
             </motion.div>
           </motion.section>
 
-          {/* General FAQs */}
+          {/* General FAQs with Filter */}
           <motion.section
             className="my-10"
             initial="hidden"
@@ -127,13 +139,32 @@ const FAQs = () => {
               className="text-3xl font-bold mb-6"
               variants={headerReveal}
             >
-              General FAQs
+              Browse FAQs by Category
             </motion.h2>
+
+            {/* Category Tabs */}
+            <div className="flex flex-wrap gap-3 mb-6">
+              {categoryList.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-full border text-sm font-medium transition-colors duration-200 ${
+                    selectedCategory === category
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-100'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+
+            {/* Filtered FAQ List */}
             <motion.div
               className="bg-white shadow-lg rounded-lg p-6"
               variants={subtleRise}
             >
-              {faqs.map((faq, index) => (
+              {filteredFaqs.map((faq, index) => (
                 <motion.div
                   key={index}
                   className="border-b"

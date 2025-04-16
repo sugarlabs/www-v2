@@ -1,34 +1,69 @@
 const faqs = [
+  // General
   {
-    question: 'What is Sugar Labs?',
+    question: 'What is Sugar?',
     answer:
-      'Sugar Labs, a 501(c)(3) non-profit foundation, serves as a support base and gathering place for the community of educators and software developers who want to extend the Sugar platform and who have been creating Sugar-compatible applications.',
+      'Sugar is a learning platform designed for children to explore and learn collaboratively.',
+    category: 'General',
   },
   {
-    question: 'What is the mission of Sugar Labs?',
+    question: 'Is Sugar free?',
+    answer: 'Yes, Sugar is completely open-source and free to use or modify.',
+    category: 'General',
+  },
+
+  // Development
+  {
+    question: 'How can I set up the development environment?',
     answer:
-      'The overarching mission of Sugar Labs is to support the Sugar platform through software development, and community outreach and support. The purpose of the Sugar platform is provide a software and content environment that enhances learning.',
+      'Follow the Sugar Labs developer guide to set up the Sugar or Sugarizer environment.',
+    category: 'Development',
   },
   {
-    question: 'What are the principles that guide Sugar Labs?',
+    question: 'Which programming languages are used?',
+    answer: 'Python and JavaScript are primarily used in Sugar and Sugarizer.',
+    category: 'Development',
+  },
+
+  // Activities
+  {
+    question: 'What are Activities in Sugar?',
     answer:
-      'Sugar Labs subscribes to principle that learning thrives within a culture of freedom of expression, hence it has a natural affinity with the free software movement.',
+      'Activities are interactive apps like games or tools designed to help kids learn and grow.',
+    category: 'Activities',
   },
   {
-    question:
-      'What makes Sugar different from other educational software platforms?',
+    question: 'Can I make my own Activity?',
+    answer: 'Yes! You can create Activities using Python or JavaScript.',
+    category: 'Activities',
+  },
+
+  // Installation
+  {
+    question: 'How do I install Sugar on my system?',
     answer:
-      'The Sugar interface, in its departure from the desktop metaphor for computing, is the first serious attempt to create a user interface that is based on both cognitive and social constructivism.',
+      'You can install Sugar on most Linux distros using official install guides or try Sugarizer for web/mobile.',
+    category: 'Installation',
   },
   {
-    question: 'Who can use Sugar and how do they benefit?',
+    question: 'Can I use Sugar from a USB?',
     answer:
-      'Sugar is a free software project, freely available to anyone who wants to use it or improve upon it. The Sugar platform was designed for young children (K–6), but it is finding applicability in a number of different venues.',
+      'Yes, you can create a live USB version of Sugar using the Fedora Sugar Spin.',
+    category: 'Installation',
+  },
+
+  // Contributing
+  {
+    question: 'How can I contribute to Sugar?',
+    answer:
+      'You can contribute code, design, documentation, or translations. Visit sugarlabs.org for more info.',
+    category: 'Contributing',
   },
   {
-    question: 'Are there any platforms where Sugar runs on?',
+    question: 'Do I need to be a coder to help?',
     answer:
-      'The Sugar Learning Platform is a leading learning platform that began in the famous One Laptop Per Child project. It is used every day by nearly 3 million children around the world.',
+      'Not at all! You can help by testing, writing docs, translating, or organizing outreach.',
+    category: 'Contributing',
   },
 ];
 
