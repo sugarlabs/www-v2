@@ -9,13 +9,15 @@ export interface RoadmapItem {
 export const roadmapItems: RoadmapItem[] = [
   {
     title: 'Mission, vision, values',
-    description: 'Establishing our foundational principles, creating founding documents and holding elections to our Board of Directors.',
+    description:
+      'Establishing our foundational principles, creating founding documents and holding elections to our Board of Directors.',
     borderColor: 'border-red-500',
     stepColor: 'bg-red-500',
   },
   {
     title: 'Community building',
-    description: 'Work to establish a community of teachers and learners, maintaining ways that we can community and work together to solve problems.',
+    description:
+      'Work to establish a community of teachers and learners, maintaining ways that we can community and work together to solve problems.',
     borderColor: 'border-red-400',
     stepColor: 'bg-purple-500',
   },
@@ -27,13 +29,15 @@ export const roadmapItems: RoadmapItem[] = [
   },
   {
     title: 'Study impact',
-    description: 'Showcase student work, publish teacher and developer stories, and poll users to better understand our impact. Make adjustments based on results.',
+    description:
+      'Showcase student work, publish teacher and developer stories, and poll users to better understand our impact. Make adjustments based on results.',
     borderColor: 'border-blue-400',
     stepColor: 'bg-red-500',
   },
   {
     title: 'Strategic growth',
-    description: 'Work with partners to broaden our reach and deepen our impact.',
+    description:
+      'Work with partners to broaden our reach and deepen our impact.',
     borderColor: 'border-blue-500',
     stepColor: 'bg-purple-500',
   },

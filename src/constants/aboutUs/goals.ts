@@ -59,8 +59,7 @@ export const goals: Goal[] = [
   },
   {
     title: 'New Sugar Stories',
-    description:
-      'Publish five new Sugar Stories from the community in 2025.',
+    description: 'Publish five new Sugar Stories from the community in 2025.',
   },
   {
     title: 'Establish 150k in annual revenue',

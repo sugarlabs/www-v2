@@ -11,7 +11,8 @@ export interface Project {
 export const projects: Project[] = [
   {
     title: 'Sugar on a Stick (SoaS)',
-    description: 'A USB version of the Sugar platform, an environment made for kids to learn and explore. It can be used to temporarily boot into SoaS or to install onto your computer.',
+    description:
+      'A USB version of the Sugar platform, an environment made for kids to learn and explore. It can be used to temporarily boot into SoaS or to install onto your computer.',
     tags: ['Distribution', 'Portable'],
     imageUrl: 'assets/Images/SOAS.jpeg',
     link: '/bootablesoas',
@@ -27,7 +28,8 @@ export const projects: Project[] = [
   },
   {
     title: 'Music Blocks',
-    description: 'A visual programming language for exploring musical concepts. Based on the tried-and-true Logo programming language, you can blend art, geometry, and music to make challenging and fun creations.',
+    description:
+      'A visual programming language for exploring musical concepts. Based on the tried-and-true Logo programming language, you can blend art, geometry, and music to make challenging and fun creations.',
     tags: ['Education', 'Creative'],
     progress: 75,
     imageUrl: 'assets/TryNowImages/musicBlocks1.png',
@@ -35,7 +37,8 @@ export const projects: Project[] = [
   },
   {
     title: 'Sugarizer',
-    description: 'Multi-platform implementation of the Sugar Learning Platform. Versions are available for the web, as well as for iOS, Android, Windows, and GNU/Linux.',
+    description:
+      'Multi-platform implementation of the Sugar Learning Platform. Versions are available for the web, as well as for iOS, Android, Windows, and GNU/Linux.',
     tags: ['Web', 'Mobile'],
     progress: 80,
     imageUrl: 'assets/TryNowImages/sugarizer.png',
