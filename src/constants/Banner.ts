@@ -14,9 +14,9 @@ export interface IconProps {
 export const bannerConfigs = {
   donation: {
     title:
-      'Help us reach our goal - $15,000 needed for our new community center (Mock Text for display)',
+      'Help us reach our next fundraising milestone.',
     description:
-      'Your contribution makes a difference in our community. Join 230 others who have already donated.',
+      'Through every.org, we accept donations via credit card, ACH, PayPal, crypto, stocks, DAF, and Venmo.',
     buttonText: 'Donate Now',
     buttonLink: '/donate',
     theme: 'primary' as const,
@@ -24,45 +24,37 @@ export const bannerConfigs = {
 
   sale: {
     title:
-      'Flash Sale! 48 Hours Only - 40% OFF All Premium Templates (Mock Text for display)',
-    description: 'Use code FLASH40 at checkout. Ends Sunday at midnight.',
+      'Have you seen our merchandise?',
+    description: 'Check out t-shirts, hoodies, and bootable USB sticks, all with the official Sugar Labs logo.',
     buttonText: 'Shop Now',
-    buttonLink: '/products',
-    theme: 'sale' as const,
-  },
-
-  newRelease: {
-    title:
-      'New Product Launch! Introducing our AI-powered design tools (Mock Text for display)',
-    buttonText: 'Learn More',
     buttonLink: '/products',
     theme: 'info' as const,
   },
 
   limitedOffer: {
     title:
-      'Limited Time Offer - Early Bird Tickets Available (Mock Text for display)',
-    description: 'Register now and save 30% on conference tickets',
-    buttonText: 'Register',
+      'Interested in joining the community?',
+    description: 'Learn more about the first steps to volunteering for Sugar Labs.',
+    buttonText: 'Learn more',
     buttonLink: '/volunteer',
-    theme: 'warning' as const,
+    theme: 'info' as const,
   },
 
   announcement: {
     title:
-      'Important Announcement: System maintenance scheduled (Mock Text for display)',
+      'This is our new website!',
     description:
-      'Our platform will be down for maintenance on March 15th from 2-4 AM UTC',
-    buttonText: 'Read More',
-    buttonLink: 'https://www.example.com',
+      'We’ve launched our new website. If you found something missing, please let us know in a GitHub issue.',
+    buttonText: 'Report an issue',
+    buttonLink: 'https://github.com/sugarlabs/www-v2',
     theme: 'info' as const,
     isExternalLink: true,
   },
 
   successStory: {
     title:
-      'Success Story: How Our Tools Helped a Small Business Thrive (Mock Text for display)',
-    description: 'Read about how our solutions transformed a local business.',
+      'Learn more about Sugar Labs through a Sugar Story, told by members of our community.',
+    description: '"Sugar Stories" are stories told by members of the Sugar Labs community.',
     buttonText: 'Read Story',
     buttonLink: '/news/sugar-stories',
     theme: 'success' as const,
@@ -70,39 +62,20 @@ export const bannerConfigs = {
 
   webinar: {
     title:
-      'Upcoming Webinar: Mastering the Art of Digital Marketing (Mock Text for display)',
-    description: 'Join us live on March 25th. Seats are limited!',
-    buttonText: 'Register Now',
-    buttonLink: 'https://www.example.com',
+      'Live online events',
+    description: 'Join us Fridays, starting 4/25/25 at 17:00 UTC (1:00pm EDT) to celebrate our website launch and learn more about Sugar Labs.',
+    buttonText: 'Subscribe for reminders',
+    buttonLink: 'https://www.youtube.com/@SugarlabsOrg-EN',
     theme: 'info' as const,
     isExternalLink: true,
   },
 
   feedback: {
-    title: 'We Value Your Feedback',
+    title: 'We value your feedback',
     description:
-      'Take our short survey and help us improve your experience. (Mock Text for display)',
+      'Take our short survey and help us improve your experience.',
     buttonText: 'Give Feedback',
     buttonLink: '/contact-us',
     theme: 'info' as const,
-  },
-
-  seasonalPromo: {
-    title:
-      'Spring Sale! Refresh Your Wardrobe with 30% OFF (Mock Text for display)',
-    description: 'New season, new styles. Use code SPRING30 at checkout.',
-    buttonText: 'Shop Now',
-    buttonLink: '/products',
-    theme: 'sale' as const,
-  },
-
-  securityUpdate: {
-    title: 'Security Update: Protect Your Account (Mock Text for display)',
-    description:
-      'Enable two-factor authentication to enhance your account security.',
-    buttonText: 'Learn How',
-    buttonLink: 'https://www.example.com',
-    theme: 'warning' as const,
-    isExternalLink: true,
   },
 };
