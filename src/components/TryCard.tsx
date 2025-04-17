@@ -18,6 +18,7 @@ interface ActivityCardProps {
   icon: string;
   buttonText: string;
   href: string;
+  version?: string;
 }
 
 export const ActivityCard: React.FC<ActivityCardProps> = ({
@@ -26,6 +27,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   icon,
   buttonText,
   href,
+  version,
 }) => (
   <div className="bg-white rounded-xl sm:rounded-3xl p-4 sm:p-6 md:p-8 flex flex-col items-center text-center shadow-lg transition-transform hover:scale-105">
     <img
@@ -33,14 +35,30 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
       alt={title}
       className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mb-3 sm:mb-4"
     />
-    <h3 className="flex-1/3 text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">
+    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">
       {title}
     </h3>
-    <p className="flex-1/3 text-gray-600 text-sm sm:text-base mb-4 sm:mb-6">
+
+    {version && (
+      <p
+        className={`text-xs sm:text-sm mb-1 sm:mb-2 px-4 py-1 rounded-full inline-block ml-auto font-medium ${
+          version === 'v4'
+            ? 'bg-pink-100 text-pink-700'
+            : version === 'v3'
+              ? 'bg-cyan-100 text-cyan-700'
+              : 'bg-gray-100 text-gray-600'
+        }`}
+      >
+        {version}
+      </p>
+    )}
+
+    <p className="text-gray-600 text-sm sm:text-base mb-4 sm:mb-6">
       {description}
     </p>
+
     <a href={href} className="w-full">
-      <button className="flex-1/3 w-full py-2 sm:py-3 px-4 sm:px-6 border-2 border-gray-900 rounded-full text-sm sm:text-base md:text-lg font-semibold hover:bg-gray-900 hover:text-white transition-colors">
+      <button className="w-full py-2 sm:py-3 px-4 sm:px-6 border-2 border-gray-900 rounded-full text-sm sm:text-base md:text-lg font-semibold hover:bg-gray-900 hover:text-white transition-colors">
         {buttonText}
       </button>
     </a>

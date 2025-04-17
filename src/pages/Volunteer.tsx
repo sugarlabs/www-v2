@@ -39,7 +39,7 @@ const Volunteer = () => {
             viewport={{ once: true, amount: 0.5 }}
           >
             <h2 className="text-4xl font-bold">
-              Become a <span className="text-orange-500">Volunteer</span>
+              Become a <span className="text-red-500">Volunteer</span>
             </h2>
             <p className="text-lg text-gray-700 mt-4">
               By bringing together people with diverse skills from around the
@@ -47,7 +47,7 @@ const Volunteer = () => {
               Sugar Labs community have ample opportunities to grow their skills
               and learn from one another.
             </p>
-            <button className="mt-6 bg-orange-500 text-white text-lg font-semibold px-6 py-3 rounded-full">
+            <button className="mt-6 bg-red-500 text-white text-lg font-semibold px-6 py-3 rounded-full">
               Getting Involved
             </button>
           </motion.div>
@@ -164,7 +164,7 @@ const Volunteer = () => {
           viewport={{ once: true, amount: 0.5 }}
         >
           <h2 className="text-5xl font-bold font-[Caveat]">
-            Ways to Get <span className="text-orange-500">Involved</span>
+            Ways to Get <span className="text-red-500">Involved</span>
           </h2>
           <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
 

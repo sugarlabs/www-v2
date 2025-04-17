@@ -39,7 +39,7 @@ const Donate: React.FC = () => {
             viewport={{ once: true, amount: 0.5 }}
           >
             <h1 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">
-              Make a Lasting <span className="text-orange-500">Impact</span> in
+              Make a Lasting <span className="text-red-500">Impact</span> in
               Education
             </h1>
 

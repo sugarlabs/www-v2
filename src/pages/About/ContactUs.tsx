@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { socialLinks } from '@/constants/Footer';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
+import { Link } from 'react-router-dom';
 import {
   fadeIn,
   slideInLeft,
@@ -166,14 +167,12 @@ const ContactUs: React.FC = () => {
                     iconSrc="assets/Icons/chat.svg"
                     title="Via Matrix Chat"
                     description={
-                      <a
-                        href="https://wiki.sugarlabs.org/go/Matrix"
+                      <Link
+                        to="matrix"
                         className="mt-2 text-gray-600 hover:text-blue-600 transition duration-200 block text-sm"
-                        target="_blank"
-                        rel="noopener noreferrer"
                       >
-                        wiki.sugarlabs.org/go/Matrix
-                      </a>
+                        Go to Matrix Chat
+                      </Link>
                     }
                   />
                 </motion.div>

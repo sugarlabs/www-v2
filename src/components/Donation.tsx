@@ -36,7 +36,7 @@ const Donation: React.FC = () => {
             <span className="font-bold">Positive</span> Impact
           </p>
           <h1 className="text-4xl md:text-5xl font-bold mt-2 leading-tight">
-            <span className="text-orange-500">Support</span> and Empower <br />{' '}
+            <span className="text-red-500">Support</span> and Empower <br />{' '}
             Learners Everywhere
           </h1>
           <p className="text-gray-600 text-lg mt-4">

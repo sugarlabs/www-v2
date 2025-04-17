@@ -1029,7 +1029,7 @@ export const fadeInUpAnimation: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: 0.7, // ⏳ Adds a delay of 1.5 seconds before animation starts
+      delay: 0.2,
       duration: 1.5,
       ease: 'easeOut',
     },
