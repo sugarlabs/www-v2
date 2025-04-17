@@ -4,14 +4,23 @@ import JoinToggle from '@/components/JoinToggle';
 import { roleCards } from '@/constants/VolunteerAndDev/RoleCards';
 import groupimage from '/assets/Volunteer/volunteer-group.png';
 import { motion } from 'framer-motion';
+import { developerLinks } from '@/constants/VolunteerAndDev/Links';
 import {
   slideInLeft,
   slideInRight,
   slideInBottom,
   cardFadeIn,
 } from '@/styles/Animations';
+import { Link } from 'react-router-dom';
 
 const Volunteer = () => {
+  const matrixLink =
+    developerLinks.find((link) => link.name.includes('Matrix'))?.url ||
+    'https://matrix.to/#/#sugar:matrix.org';
+  const mailLink =
+    developerLinks.find((link) => link.name.includes('Mailing'))?.url ||
+    'https://lists.sugarlabs.org/';
+
   return (
     <div>
       <Header />
@@ -193,9 +202,29 @@ const Volunteer = () => {
           <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
 
           <p className="text-lg text-gray-700 font-[Inter] mt-6 leading-relaxed">
-            Feel free to reach out to express your interest in volunteering via
-            email or Matrix. Alternatively, you may send a direct message to one
-            of our social media channels.
+            Feel free to reach out to express your interest in volunteering via{' '}
+            <a
+              href={mailLink}
+              className="text-blue-500 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              email
+            </a>{' '}
+            or{' '}
+            <a
+              href={matrixLink}
+              className="text-blue-500 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Matrix
+            </a>
+            . Alternatively, you may send{' '}
+            <Link to="/contact-us" className="text-blue-600 hover:underline">
+              direct message
+            </Link>{' '}
+            to one of our social media channels.
           </p>
         </motion.div>
       </main>
