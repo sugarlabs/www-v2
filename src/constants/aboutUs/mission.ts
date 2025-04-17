@@ -5,8 +5,8 @@ export const content = {
     highlighted: 'Mission',
   },
   paragraphs: [
-    'Sugar Labs is dedicated to creating educational tools that transform how children learn and explore technology. Our mission is to provide freely available, open-source software that encourages collaborative learning and creativity.',
-    'We believe that every child deserves access to quality educational tools regardless of their background or location. By developing user-friendly software that runs on a variety of platforms, we aim to bridge the digital divide and empower the next generation of creative thinkers.',
+    'Sugar Labs is dedicated to creating learning tools that transform how children learn and explore technology. Our mission is to, as a community of teachers and learners, create quality software and curriculae under a free/libre/open-source (FLO) license that encourages collaborative learning and creativity.',
+    'We believe that every child deserves equal access to a robust set of learning tools regardless of their background or location. Our global network of teachers and learners work to imagine, design, and test our innovative learning tools for meaningful use in classrooms worldwide.',
     "Our community-driven approach brings together educators, developers, and volunteers who are passionate about making a difference in education worldwide. Together, we're building tools that make learning engaging, accessible, and fun.",
   ],
   images: {

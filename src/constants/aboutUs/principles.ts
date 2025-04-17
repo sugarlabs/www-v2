@@ -8,37 +8,44 @@ export interface Principle {
 export const principles: Principle[] = [
   {
     id: 1,
-    title: 'Open Learning',
+    title: 'Learning as a verb',
     description:
-      'We believe in making education accessible to everyone through open-source software and collaborative learning environments.',
+      'Knowledge is a noun, learning is a verb. Instead of curating prescribed information to be instructed, we create tools for learning. Our methodology is called *Constructionism*.',
     image: 'assets/Images/teach.jpg',
   },
   {
     id: 2,
-    title: 'Community Driven',
+    title: 'Free and open',
     description:
-      'Our success relies on active participation from a diverse community of contributors who share common educational goals.',
+      'We believe that learners can learn not just *with* their tools but also *from* their tools. This is why we distribute all our software and curriculae as free/libre/open (FLO)',
     image: 'assets/Images/teach1.jpg',
   },
   {
     id: 3,
-    title: 'Innovation',
+    title: 'Equitable',
     description:
-      'We encourage creative problem-solving and innovative approaches to educational technology development.',
+      'By helping others learn and grow, we learn and grow as well. We also help make the world a better place for ourselves and others.',
     image: 'assets/Images/teach2.jpeg',
   },
   {
     id: 4,
-    title: 'Collaboration',
+    title: 'Community led',
     description:
-      'Working together while maintaining independence allows each participant to contribute their unique perspective.',
+      'We work with our friends, both locally and globally, to design and develop learning tools meaningful for their communities.',
     image: 'assets/Images/teach.jpg',
   },
   {
     id: 5,
-    title: 'Sustainability',
+    title: 'Accessible',
     description:
-      'Building lasting solutions that can be maintained and improved by the community over time.',
+      'We aim to make our learning tools accessible to as many youth as we possibly can.',
+    image: 'assets/Images/teach1.jpg',
+  },
+  {
+    id: 6,
+    title: 'Hard fun',
+    description:
+      'Our work is challenging, but it’s also fun. We work hard to be playful and inspiring.',
     image: 'assets/Images/teach1.jpg',
   },
 ];
@@ -50,6 +57,6 @@ export const principlesContent = {
     highlight: 'Principles',
   },
   description:
-    "In order for Sugar Labs to be successful, it needs the participation of a large number of people who share common goals while maintaining independence, so that each participant has the ability to act independently. For these reasons, Sugar Labs subscribes to the principles described here, which are the author's own translation of an original text in Spanish.",
+    "Sugar Labs is founded on a set of fundamental principles that guide our work. We believe, for example, that learning is a verb, and we therefore create tools to learn with. We also believe in the freedom to study how one's tools work, and we therefore license all our work under a FLO license. Read on to learn more about our commitment to these principles, as well as our commitment to equity, community, accessibility, and hard fun.",
   featuredImage: 'assets/Images/teach1.jpg',
 };

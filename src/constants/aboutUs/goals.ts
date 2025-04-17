@@ -48,57 +48,67 @@ export interface AnimationsType {
 // Define the goals for the organization
 export const goals: Goal[] = [
   {
-    title: 'Global Education Impact',
+    title: 'Power users, involved in feedback',
     description:
-      'Reach 1 million students worldwide with our educational tools by 2026',
+      'Reach one hundred "power" users, regularly providing their feedback to the development community, by the end of 2025',
   },
   {
-    title: 'Open Source Advocacy',
+    title: 'Leadership in education',
     description:
-      'Foster a new generation of open source contributors through mentorship programs',
+      'Take fifteen actions (e.g. conferences, articles, events-led) in 2025 that help us establish ourselves as leaders in education technology.',
   },
   {
-    title: 'Educational Innovation',
+    title: 'New Sugar Stories',
     description:
-      'Develop cutting-edge learning platforms that adapt to diverse learning styles',
+      'Publish five new Sugar Stories from the community in 2025.',
   },
   {
-    title: 'Community Building',
+    title: 'Establish 150k in annual revenue',
     description:
-      'Create sustainable global communities of practice around educational technology',
+      'In order to magnify our impact, we aim to establish 150k in annual revenue by the end of 2025. These funds will help us establish our operations, starting by hiring one full-time staff and three part time workers to serve our stakeholders.',
   },
   {
-    title: 'Digital Equity',
+    title: '200 volunteers',
     description:
-      'Ensure technology access for underrepresented and underserved communities worldwide',
+      'In order to best serve our community, our goal is to have twenty active mentors, and 180 active volunteers.',
+  },
+  {
+    title: '1,000 people on Matrix',
+    description:
+      'Our main mode of communication is on Matrix chat. Our goal in 2025 is to have 1,000 users on our chat, discussing ideas, designs, and development for our community-led suite of learning tools.',
   },
 ];
 
 // Define progress metrics for each area
 export const progressItems: ProgressItem[] = [
   {
-    percent: 75,
-    label: 'Education Impact',
+    percent: 20,
+    label: '100 power users',
     color: 'from-orange-400 to-orange-600',
   },
   {
-    percent: 60,
-    label: 'Community Growth',
+    percent: 33,
+    label: 'Leadership in education',
     color: 'from-orange-300 to-orange-500',
   },
   {
-    percent: 85,
-    label: 'Innovation',
+    percent: 40,
+    label: 'Five new Sugar Stories',
     color: 'from-orange-500 to-orange-700',
   },
   {
-    percent: 45,
-    label: 'Global Reach',
+    percent: 2,
+    label: 'Operating budget of 150k',
     color: 'from-orange-600 to-orange-800',
   },
   {
-    percent: 70,
-    label: 'Open Source Adoption',
+    percent: 33,
+    label: '200 volunteers',
+    color: 'from-orange-200 to-orange-400',
+  },
+  {
+    percent: 100,
+    label: '1,000 people on our Matrix chat',
     color: 'from-orange-200 to-orange-400',
   },
 ];

@@ -10,16 +10,16 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: 'Sugar on a Stick',
-    description: 'A live USB version of the Sugar platform',
+    title: 'Sugar on a Stick (SoaS)',
+    description: 'A USB version of the Sugar platform, an environment made for kids to learn and explore. It can be used to temporarily boot into SoaS or to install onto your computer.',
     tags: ['Distribution', 'Portable'],
     imageUrl: 'assets/Images/SOAS.jpeg',
     link: '/bootablesoas',
   },
   {
-    title: 'Google Summer of Code',
+    title: 'Google Summer of Code (GSoC)',
     description:
-      'GSOC is a global program focused on bringing more student developers into open source software development',
+      'GSoC is a global program, hosted by Google, focused on bringing more student developers into free/libre/open (FLO) software development.',
     tags: ['Community', 'Development'],
     imageUrl: 'assets/Images/GSOC.png',
     exlink:
@@ -27,7 +27,7 @@ export const projects: Project[] = [
   },
   {
     title: 'Music Blocks',
-    description: 'A programming environment for exploring musical concepts',
+    description: 'A visual programming language for exploring musical concepts. Based on the tried-and-true Logo programming language, you can blend art, geometry, and music to make challenging and fun creations.',
     tags: ['Education', 'Creative'],
     progress: 75,
     imageUrl: 'assets/TryNowImages/musicBlocks1.png',
@@ -35,7 +35,7 @@ export const projects: Project[] = [
   },
   {
     title: 'Sugarizer',
-    description: 'Web implementation of the Sugar platform for modern browsers',
+    description: 'Multi-platform implementation of the Sugar Learning Platform. Versions are available for the web, as well as for iOS, Android, Windows, and GNU/Linux.',
     tags: ['Web', 'Mobile'],
     progress: 80,
     imageUrl: 'assets/TryNowImages/sugarizer.png',
@@ -57,7 +57,7 @@ export const projectsContent = {
     highlight: 'Projects',
   },
   description:
-    'Sugar Labs develops and maintains several key projects that support our educational mission. These projects range from complete distributions to specific applications, each designed to enhance learning through technology.',
+    'Sugar Labs develops and maintains several key projects that support our educational mission. These projects range from complete kid-friendly desktop environments to specific applications, each designed to enhance learning through technology.',
   ctaText: 'Learn more',
   displayProjectCount: 2,
 };
