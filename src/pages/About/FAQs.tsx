@@ -2,7 +2,7 @@ import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import { useState } from 'react';
 import { stats } from '@/constants/Stats';
-import faqs from '@/constants/aboutUs/faqs.ts';
+import faqs, { FAQ_CATEGORIES } from '@/constants/aboutUs/faqs.ts';
 import { quickAnswers } from '@/constants/aboutUs/quickanswers';
 import { motion } from 'framer-motion';
 import {
@@ -16,10 +16,15 @@ import {
 
 const FAQs = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  const filteredFaqs = selectedCategory === 'all' 
+    ? faqs 
+    : faqs.filter(faq => faq.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -71,6 +76,47 @@ const FAQs = () => {
           </div>
         </motion.section>
 
+        {/* Category Filter Section */}
+        <motion.section
+          className="my-8 w-4/5 max-w-5xl mx-auto"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+        >
+          <motion.h2 
+            className="text-2xl font-bold mb-4"
+            variants={headerReveal}
+          >
+            Filter by Category
+          </motion.h2>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className={`px-4 py-2 rounded-full transition-all ${
+                selectedCategory === 'all'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 hover:bg-gray-300'
+              }`}
+            >
+              All
+            </button>            
+              {FAQ_CATEGORIES.filter(cat => cat !== 'all').map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full transition-all capitalize ${
+                  selectedCategory === category
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 hover:bg-gray-300'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </motion.section>
+
         {/* FAQ Sections Container */}
         <div className="w-4/5 max-w-5xl mx-auto">
           {/* Quick Answers */}
@@ -115,7 +161,7 @@ const FAQs = () => {
             </motion.div>
           </motion.section>
 
-          {/* General FAQs */}
+          {/* Categorized FAQs */}
           <motion.section
             className="my-10"
             initial="hidden"
@@ -124,49 +170,53 @@ const FAQs = () => {
             variants={faqPageAnimations.faqContainer}
           >
             <motion.h2
-              className="text-3xl font-bold mb-6"
+              className="text-3xl font-bold mb-6 capitalize"
               variants={headerReveal}
             >
-              General FAQs
+              {selectedCategory === 'all' ? 'All FAQs' : `${selectedCategory} FAQs`}
             </motion.h2>
             <motion.div
               className="bg-white shadow-lg rounded-lg p-6"
               variants={subtleRise}
             >
-              {faqs.map((faq, index) => (
-                <motion.div
-                  key={index}
-                  className="border-b"
-                  variants={faqPageAnimations.faqItem}
-                  custom={index}
-                >
-                  <motion.button
-                    className="w-full text-left py-4 text-lg font-medium flex justify-between items-center"
-                    onClick={() => toggleFAQ(index)}
-                    whileHover="hover"
-                    variants={faqPageAnimations.faqQuestionButton}
+              {filteredFaqs.length > 0 ? (
+                filteredFaqs.map((faq, index) => (
+                  <motion.div
+                    key={index}
+                    className="border-b last:border-b-0"
+                    variants={faqPageAnimations.faqItem}
+                    custom={index}
                   >
-                    {faq.question}
-                    <motion.span
-                      variants={faqPageAnimations.faqToggleIcon(
-                        openIndex === index,
-                      )}
+                    <motion.button
+                      className="w-full text-left py-4 text-lg font-medium flex justify-between items-center"
+                      onClick={() => toggleFAQ(index)}
+                      whileHover="hover"
+                      variants={faqPageAnimations.faqQuestionButton}
+                    >
+                      {faq.question}
+                      <motion.span
+                        variants={faqPageAnimations.faqToggleIcon(openIndex === index)}
+                        initial="initial"
+                        animate="animate"
+                      >
+                        {openIndex === index ? '-' : '+'}
+                      </motion.span>
+                    </motion.button>
+                    <motion.div
+                      variants={faqPageAnimations.faqAnswer(openIndex === index)}
                       initial="initial"
                       animate="animate"
+                      style={{ overflow: 'hidden' }}
                     >
-                      {openIndex === index ? '-' : '+'}
-                    </motion.span>
-                  </motion.button>
-                  <motion.div
-                    variants={faqPageAnimations.faqAnswer(openIndex === index)}
-                    initial="initial"
-                    animate="animate"
-                    style={{ overflow: 'hidden' }}
-                  >
-                    <p className="p-4 text-gray-700">{faq.answer}</p>
+                      <p className="p-4 text-gray-700">{faq.answer}</p>
+                    </motion.div>
                   </motion.div>
-                </motion.div>
-              ))}
+                ))
+              ) : (
+                <p className="text-center text-gray-600 py-4">
+                  No FAQs found for this category.
+                </p>
+              )}
             </motion.div>
           </motion.section>
         </div>
