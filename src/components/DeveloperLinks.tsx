@@ -43,7 +43,7 @@ const DeveloperLinks = () => {
             variants={item}
             whileHover={{
               scale: 1.02,
-              borderColor: '#0ea5e9',
+              borderColor: '#1d4ed8',
               backgroundColor: 'rgba(240, 249, 255, 0.7)',
             }}
             whileTap={{ scale: 0.98 }}
@@ -53,21 +53,21 @@ const DeveloperLinks = () => {
 
             {/* Link Content */}
             <div className="relative flex items-center gap-4 z-10 flex-1">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center group-hover:bg-sky-200 transition-colors">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
                 <img
                   src={link.icon}
                   alt={link.name}
                   className="w-5 h-5 group-hover:scale-110 transition-transform"
                 />
               </div>
-              <span className="text-base md:text-lg font-medium text-gray-800 group-hover:text-sky-700 transition-colors">
+              <span className="text-base md:text-lg font-medium text-gray-800 group-hover:text-blue-700 transition-colors">
                 {link.name}
               </span>
             </div>
 
             {/* Arrow with enhanced animation */}
-            <div className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 group-hover:bg-sky-200 transition-colors ml-4 flex-shrink-0">
-              <span className="text-gray-600 group-hover:text-sky-700 transform group-hover:translate-x-1 transition-all">
+            <div className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 group-hover:bg-blue-200 transition-colors ml-4 flex-shrink-0">
+              <span className="text-gray-600 group-hover:text-blue-700 transform group-hover:translate-x-1 transition-all">
                 →
               </span>
             </div>
