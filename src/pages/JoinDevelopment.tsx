@@ -5,25 +5,32 @@ import DeveloperLinks from '@/components/DeveloperLinks';
 import JoinToggle from '@/components/JoinToggle';
 import { motion } from 'framer-motion';
 import { slideInBottom } from '@/styles/Animations';
+import { useEffect } from 'react';
 
 const JoinDevelopment = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-sky-50">
+    <div>
       <Header />
       <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-6">
         <JoinToggle />
+
+        {/* Getting Involved Section */}
         <motion.div
           className="mt-20 max-w-4xl flex flex-col items-center text-center px-6"
-          variants={slideInBottom}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
           <h2 className="text-5xl font-bold font-[Caveat]">
             Before Beginning to Contribute
           </h2>
           <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
-          <p className="text-lg text-gray-700 font-[Inter] leading-relaxed mt-6">
+
+          <p className="text-lg text-gray-700 font-[Inter] mt-6 leading-relaxed">
             As a developer, whether you are just starting out or you've
             participated in other development before, there are a few things you
             need to know about our community. This page has important
@@ -34,18 +41,20 @@ const JoinDevelopment = () => {
         </motion.div>
 
         {/* Testimonials Section */}
-        <DeveloperTestimonials />
+        <div className="w-full mt-16">
+          <DeveloperTestimonials />
+        </div>
 
         {/* Important Links Section with Anchor */}
-        <section className="py-16" id="links">
+        <section className="py-16 w-full" id="links">
           <motion.div
             className="max-w-5xl mx-auto"
             variants={slideInBottom}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.1 }}
           >
-            <div className="text-center mb-2">
+            <div className="text-center mb-8">
               <span className="inline-block px-3 py-1 bg-indigo-100 text-blue-700 rounded-full text-sm font-semibold mb-4">
                 Resources
               </span>
