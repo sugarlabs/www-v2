@@ -1,6 +1,6 @@
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { stats } from '@/constants/Stats';
 import faqs, { FAQ_CATEGORIES } from '@/constants/aboutUs/faqs.ts';
 import { quickAnswers } from '@/constants/aboutUs/quickanswers';
@@ -13,18 +13,21 @@ import {
   headerReveal,
   faqPageAnimations,
 } from '@/styles/Animations';
+import FAQItem from '@/components/FAQItem';
 
 const FAQs = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [filteredFaqs, setFilteredFaqs] = useState(faqs);
 
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
 
-  const filteredFaqs = selectedCategory === 'all' 
-    ? faqs 
-    : faqs.filter(faq => faq.category === selectedCategory);
+  useEffect(() => {
+    // Filter FAQs based on the selected category
+    const filtered = selectedCategory === 'all' 
+      ? faqs 
+      : faqs.filter(faq => faq.category === selectedCategory);
+    setFilteredFaqs(filtered);
+  }
+  , [selectedCategory]);
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -181,36 +184,12 @@ const FAQs = () => {
             >
               {filteredFaqs.length > 0 ? (
                 filteredFaqs.map((faq, index) => (
-                  <motion.div
+                 <FAQItem
                     key={index}
-                    className="border-b last:border-b-0"
-                    variants={faqPageAnimations.faqItem}
-                    custom={index}
-                  >
-                    <motion.button
-                      className="w-full text-left py-4 text-lg font-medium flex justify-between items-center"
-                      onClick={() => toggleFAQ(index)}
-                      whileHover="hover"
-                      variants={faqPageAnimations.faqQuestionButton}
-                    >
-                      {faq.question}
-                      <motion.span
-                        variants={faqPageAnimations.faqToggleIcon(openIndex === index)}
-                        initial="initial"
-                        animate="animate"
-                      >
-                        {openIndex === index ? '-' : '+'}
-                      </motion.span>
-                    </motion.button>
-                    <motion.div
-                      variants={faqPageAnimations.faqAnswer(openIndex === index)}
-                      initial="initial"
-                      animate="animate"
-                      style={{ overflow: 'hidden' }}
-                    >
-                      <p className="p-4 text-gray-700">{faq.answer}</p>
-                    </motion.div>
-                  </motion.div>
+                    question={faq.question}
+                    answer={faq.answer}
+                    index={index}
+                  />
                 ))
               ) : (
                 <p className="text-center text-gray-600 py-4">

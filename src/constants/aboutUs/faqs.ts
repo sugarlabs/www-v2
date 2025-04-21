@@ -1,7 +1,7 @@
 export const FAQ_CATEGORIES = ['all', 'general', 'development', 'activities', 'installation'] as const;
 export type FaqCategory = typeof FAQ_CATEGORIES[number];
 
-interface FAQ {
+export interface FAQ {
   question: string;
   answer: string;
   category: Exclude<FaqCategory, 'all'>;
