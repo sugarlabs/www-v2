@@ -2,7 +2,7 @@ import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import { useEffect, useState } from 'react';
 import { stats } from '@/constants/Stats';
-import faqs, { FAQ_CATEGORIES } from '@/constants/aboutUs/faqs.ts';
+import faqs, { FAQ_CATEGORIES } from '@/constants/aboutUs/faqs';
 import { quickAnswers } from '@/constants/aboutUs/quickanswers';
 import { motion } from 'framer-motion';
 import {
@@ -19,15 +19,13 @@ const FAQs = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [filteredFaqs, setFilteredFaqs] = useState(faqs);
 
-
   useEffect(() => {
-    // Filter FAQs based on the selected category
-    const filtered = selectedCategory === 'all' 
-      ? faqs 
-      : faqs.filter(faq => faq.category === selectedCategory);
+    const filtered =
+      selectedCategory === 'all'
+        ? faqs
+        : faqs.filter((faq) => faq.category === selectedCategory);
     setFilteredFaqs(filtered);
-  }
-  , [selectedCategory]);
+  }, [selectedCategory]);
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -87,7 +85,7 @@ const FAQs = () => {
           viewport={{ once: true }}
           variants={fadeIn}
         >
-          <motion.h2 
+          <motion.h2
             className="text-2xl font-bold mb-4"
             variants={headerReveal}
           >
@@ -103,8 +101,8 @@ const FAQs = () => {
               }`}
             >
               All
-            </button>            
-              {FAQ_CATEGORIES.filter(cat => cat !== 'all').map((category) => (
+            </button>
+            {FAQ_CATEGORIES.filter((cat) => cat !== 'all').map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
@@ -176,7 +174,9 @@ const FAQs = () => {
               className="text-3xl font-bold mb-6 capitalize"
               variants={headerReveal}
             >
-              {selectedCategory === 'all' ? 'All FAQs' : `${selectedCategory} FAQs`}
+              {selectedCategory === 'all'
+                ? 'All FAQs'
+                : `${selectedCategory} FAQs`}
             </motion.h2>
             <motion.div
               className="bg-white shadow-lg rounded-lg p-6"
@@ -184,7 +184,7 @@ const FAQs = () => {
             >
               {filteredFaqs.length > 0 ? (
                 filteredFaqs.map((faq, index) => (
-                 <FAQItem
+                  <FAQItem
                     key={index}
                     question={faq.question}
                     answer={faq.answer}

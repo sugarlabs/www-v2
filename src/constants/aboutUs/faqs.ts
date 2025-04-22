@@ -1,5 +1,11 @@
-export const FAQ_CATEGORIES = ['all', 'general', 'development', 'activities', 'installation'] as const;
-export type FaqCategory = typeof FAQ_CATEGORIES[number];
+export const FAQ_CATEGORIES = [
+  'all',
+  'general',
+  'development',
+  'activities',
+  'installation',
+] as const;
+export type FaqCategory = (typeof FAQ_CATEGORIES)[number];
 
 export interface FAQ {
   question: string;
@@ -12,7 +18,7 @@ const faqs: FAQ[] = [
     question: 'What is Sugar Labs?',
     answer:
       'Sugar Labs, a 501(c)(3) non-profit foundation, serves as a support base and gathering place for the community of educators and software developers who want to extend the Sugar platform and who have been creating Sugar-compatible applications.',
-      category: 'general',
+    category: 'general',
   },
   {
     question: 'What is the mission of Sugar Labs?',
@@ -47,7 +53,8 @@ const faqs: FAQ[] = [
   },
   {
     question: 'What are some popular Sugar Activities for beginners?',
-    answer: 'Some popular Sugar Activities for beginners include TurtleBlocks (for learning programming through graphics), Write (for writing and journaling), Calculate (for mathematics), Read (for e-books), and Speak (a text-to-speech activity). These activities are designed to be both engaging and educational, helping children learn through exploration and play.',
+    answer:
+      'Some popular Sugar Activities for beginners include TurtleBlocks (for learning programming through graphics), Write (for writing and journaling), Calculate (for mathematics), Read (for e-books), and Speak (a text-to-speech activity). These activities are designed to be both engaging and educational, helping children learn through exploration and play.',
     category: 'activities',
   },
 ];
