@@ -2,9 +2,9 @@ export const raspberrydata = {
   title: 'Raspberry-Pi',
   subtitle: 'Sugar on RaspberryPi',
   quote:
-    '“Young children learn by games; compulsory education cannot remain in the soul.” — Plato',
+    '“Programming should be on every child’s low shelf, within reach for frequent use.” — Walter Bender, Sugar Labs founder',
   description:
-    'Raspberry Pi are a series of small, low cost, low power computers. Sugar can be run on a Raspberry Pi. You will need a display, keyboard and mouse.',
+    'Raspberry Pi are a series of small, low cost, low power computers. The Sugar Desktop Environment can be run on a Raspberry Pi. You will need a display, keyboard, and a mouse.',
   images: [{ src: 'assets/TryNowImages/raspberry.jpg', alt: 'RaspberryPi 1' }],
 };
 
@@ -12,12 +12,12 @@ export const raspberrySections = [
   {
     title: 'Recommendation',
     content:
-      'As of August 2017, the best to use is Sugar on a Stick, as it has many activities and has regular security updates. See Sugar on a Stick/Raspberry Pi for how to download and install it. Sugar on a Stick is a spin of Fedora.',
+      'As of August 2017, the best way to experience Sugar on Raspberry Pi (RPi) is via Sugar on a Stick (SoaS), as it has many activities and has regular security updates. See SoaS/RPi documentation for how to download and install it. SoaS is a spin of Fedora.',
     button: '',
     links: [
       {
         text: 'Sugar on a Stick/Raspberry Pi',
-        url: 'https://wiki.sugarlabs.org/go/Sugar_on_a_Stick/Raspberry_Pi',
+        url: 'https://github.com/sugarlabs/RPi-Docs/blob/main/src/installation.md',
       },
     ],
   },
