@@ -13,7 +13,7 @@ const JoinDevelopment = () => {
   }, []);
 
   return (
-    <div>
+    <div className="bg-gradient-to-b to-red-50">
       <Header />
       <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-6">
         <JoinToggle />
@@ -55,13 +55,13 @@ const JoinDevelopment = () => {
             viewport={{ once: true, amount: 0.1 }}
           >
             <div className="text-center mb-8">
-              <span className="inline-block px-3 py-1 bg-indigo-100 text-blue-700 rounded-full text-sm font-semibold mb-4">
+              <span className="inline-block px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-semibold mb-4">
                 Resources
               </span>
               <h2 className="text-4xl md:text-5xl font-bold font-[Caveat] mb-4">
                 Important Links for Developers
               </h2>
-              <div className="w-24 h-1 bg-blue-700 rounded mx-auto mb-6"></div>
+              <div className="w-24 h-1 bg-red-700 rounded mx-auto mb-6"></div>
               <p className="text-lg text-gray-700 max-w-2xl mx-auto">
                 Essential resources for people interested in making development
                 contributions to Sugar Labs
