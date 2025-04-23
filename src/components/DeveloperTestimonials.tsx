@@ -115,9 +115,9 @@ export function DeveloperTestimonials() {
             variants={testimonialHeading}
           >
             <span className="text-5xl font-bold font-[Caveat]">
-              What our developers say
+              What do developers say
               <br />
-              about their journey??
+              about their journey?
             </span>
           </motion.h2>
 
