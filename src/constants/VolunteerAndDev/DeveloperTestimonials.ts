@@ -20,7 +20,7 @@ export const developertestimonials = [
   {
     name: 'Karan Palan',
     username: 'Karan Palan (GSoC 2024 contributor)',
-    body: "Overall, my work on the Masonry project during GSoC 2024 has involved a mix of design, prototyping, and development activities… This experience has not only strengthened my technical skills but also provided valuable insights into the collaborative, iterative nature of open-source development. I look forward to continuing to contribute to the Music Blocks project and helping to create a more accessible and engaging visual programming environment for users around the world.",
+    body: 'Overall, my work on the Masonry project during GSoC 2024 has involved a mix of design, prototyping, and development activities… This experience has not only strengthened my technical skills but also provided valuable insights into the collaborative, iterative nature of open-source development. I look forward to continuing to contribute to the Music Blocks project and helping to create a more accessible and engaging visual programming environment for users around the world.',
     img: 'https://media.licdn.com/dms/image/v2/D5603AQFd4DwGD9a1Ig/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1719038630136?e=1749686400&v=beta&t=ZNXwm01ufeYSP0Q1SOuDGaXdMULxU2O_zEjkfni_ktM',
   },
 ];
