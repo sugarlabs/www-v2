@@ -17,10 +17,11 @@ const TurtleBlocksPage = () => {
       <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
         {/* Floating SVGs */}
         <motion.div
-          className="absolute top-[10vh] left-[5vw] sm:left-[30vw] z-[0] pointer-events-none"
+          className="absolute top-[10vh] left-[5vw] sm:left-[30vw] z-[-10] pointer-events-none"
           variants={fadeInUpAnimation}
           initial="initial"
           animate="animate"
+           style={{ transform: 'translateZ(-1px)' }}
         >
           <img
             src="assets/FloatingSVGs/turtle-blocks-1.svg"
