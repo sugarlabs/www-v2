@@ -21,7 +21,6 @@ const TurtleBlocksPage = () => {
           variants={fadeInUpAnimation}
           initial="initial"
           animate="animate"
-           style={{ transform: 'translateZ(-1px)' }}
         >
           <img
             src="assets/FloatingSVGs/turtle-blocks-1.svg"
