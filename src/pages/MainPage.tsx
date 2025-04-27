@@ -8,11 +8,13 @@ import { TryMore } from '@/components/TryMore3D';
 import Donation from '@/components/Donation.tsx';
 import PromoBanner from '@/sections/Banner';
 import { bannerConfigs } from '@/constants/Banner';
+import InaugurationReveal from '@/components/InaugurationReveal';
 
 const MainPage = () => {
   return (
     <>
       <Header />
+      <InaugurationReveal />
       <PromoBanner bannerConfigs={bannerConfigs} />
       <Info />
       <Stats />
