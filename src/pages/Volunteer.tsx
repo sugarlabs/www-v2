@@ -21,6 +21,13 @@ const Volunteer = () => {
     developerLinks.find((link) => link.name.includes('Mailing'))?.url ||
     'https://lists.sugarlabs.org/';
 
+  const handleGetInvolved = () => {
+    const gettingInvolvedSection = document.getElementById('volunteer-cards');
+    if (gettingInvolvedSection) {
+      gettingInvolvedSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -48,16 +55,7 @@ const Volunteer = () => {
             </p>
             <button
               className="mt-6 bg-red-500 text-white text-lg font-semibold px-6 py-3 rounded-full"
-              onClick={() => {
-                const gettingInvolvedSection =
-                  document.getElementById('volunteer-cards');
-                if (gettingInvolvedSection) {
-                  gettingInvolvedSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start',
-                  });
-                }
-              }}
+              onClick={handleGetInvolved}
             >
               Get Involved
             </button>
