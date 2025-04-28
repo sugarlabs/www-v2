@@ -15,7 +15,8 @@
     "lint:md": "markdownlint '**/*.md' --ignore-path .prettierignore",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,md}'",
     "format:file": "prettier --write",
-    "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,md}'"
+    "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,md}'",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
@@ -43,6 +44,17 @@
     "tailwindcss-animate": "^1.0.7",
     "unist-util-visit": "^5.0.0"
   },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "prettier --check",
+      "eslint --max-warnings 0",
+      "prettier --write"
+    ],
+    "src/**/*.{js,jsx,json,css,md}": [
+      "prettier --check",
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@types/canvas-confetti": "^1.9.0",
@@ -58,6 +70,8 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "gh-pages": "^6.3.0",
     "globals": "^15.15.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.5.1",
     "markdownlint": "^0.37.4",
     "markdownlint-cli": "^0.44.0",
     "prettier": "^3.5.3",
