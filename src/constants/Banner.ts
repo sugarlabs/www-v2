@@ -42,7 +42,7 @@ export const bannerConfigs = {
   announcement: {
     title: 'This is our new website!',
     description:
-      'We’ve launched our new website. If you found something missing, please let us know in a GitHub issue.',
+      "We've launched our new website. If you found something missing, please let us know in a GitHub issue.",
     buttonText: 'Report an issue',
     buttonLink: 'https://github.com/sugarlabs/www-v2',
     theme: 'info' as const,

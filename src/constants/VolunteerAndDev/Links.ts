@@ -2,7 +2,7 @@ export const developerLinks = [
   {
     name: 'Chat with us on Matrix',
     url: 'https://matrix.to/#/#sugar:matrix.org',
-    icon: 'assets/LinksLogos/matrix.svg', // Replace with actual path
+    icon: 'assets/LinksLogos/matrix.svg',
   },
   {
     name: 'Developer Guide',

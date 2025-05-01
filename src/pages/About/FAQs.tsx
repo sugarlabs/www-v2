@@ -77,47 +77,6 @@ const FAQs = () => {
           </div>
         </motion.section>
 
-        {/* Category Filter Section */}
-        <motion.section
-          className="my-8 w-4/5 max-w-5xl mx-auto"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-        >
-          <motion.h2
-            className="text-2xl font-bold mb-4"
-            variants={headerReveal}
-          >
-            Filter by Category
-          </motion.h2>
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => setSelectedCategory('all')}
-              className={`px-4 py-2 rounded-full transition-all ${
-                selectedCategory === 'all'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 hover:bg-gray-300'
-              }`}
-            >
-              All
-            </button>
-            {FAQ_CATEGORIES.filter((cat) => cat !== 'all').map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full transition-all capitalize ${
-                  selectedCategory === category
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 hover:bg-gray-300'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </motion.section>
-
         {/* FAQ Sections Container */}
         <div className="w-4/5 max-w-5xl mx-auto">
           {/* Quick Answers */}
@@ -162,6 +121,46 @@ const FAQs = () => {
             </motion.div>
           </motion.section>
 
+          {/* Category Filter Section */}
+          <motion.section
+            className="my-8 max-w-5xl mx-auto"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeIn}
+          >
+            <motion.h2
+              className="text-2xl font-bold mb-4"
+              variants={headerReveal}
+            >
+              Filter by Category
+            </motion.h2>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className={`px-4 py-2 rounded-full transition-all ${
+                  selectedCategory === 'all'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 hover:bg-gray-300'
+                }`}
+              >
+                All
+              </button>
+              {FAQ_CATEGORIES.filter((cat) => cat !== 'all').map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-full transition-all capitalize ${
+                    selectedCategory === category
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-200 hover:bg-gray-300'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </motion.section>
           {/* Categorized FAQs */}
           <motion.section
             className="my-10"

@@ -22,6 +22,7 @@ import MusicBlocksPage from '@/pages/TryNow/MusicBlocks';
 import FlatHubPage from '@/pages/TryNow/FlatHub';
 import Matrix from '@/pages/Matrix';
 import NotFoundPage from '@/pages/NotFoundPage';
+import Contributors from '@/pages/Contributors';
 
 const router = createBrowserRouter([
   ...redirectRoutes,
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
   { path: '/musicblocks', element: <MusicBlocksPage /> },
   { path: '/flathub', element: <FlatHubPage /> },
   { path: '/contact-us/:matrix', element: <Matrix /> },
+  { path: '/profiles', element: <Contributors /> },
   { path: '*', element: <NotFoundPage /> },
 ]);
 
