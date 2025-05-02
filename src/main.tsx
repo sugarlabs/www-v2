@@ -6,8 +6,8 @@ import '@/utils/copy-code';
 
 const browserType = window.navigator.userAgent;
 
-if (browserType === "OLPC") {
-  window.location.href = "redirect to old website";
+if (browserType.includes("Chromium/23.0.1271.95")) {
+  window.location.href = "https://sugarlabs.github.io/www/";
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
