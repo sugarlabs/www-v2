@@ -24,7 +24,7 @@ const ProductsPage = () => {
             variants={fadeInUpAnimation}
           >
             <span className="text-black">OUR</span>{' '}
-            <span className="text-red-500">PRODUCTS</span>
+            <span className="text-red-500">MERCHANDISE</span>
           </motion.h2>
           <motion.div variants={zoomInAnimation}>
             <Product />

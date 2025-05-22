@@ -13,7 +13,7 @@ export const navigationData = {
 
   links: [
     { label: 'News', path: '/news' },
-    { label: 'Products', path: '/products' },
+    { label: 'Merchandise', path: '/products' },
     { label: 'Donate', path: '/donate' },
     { label: 'Join Development', path: '/join-development' },
     { label: 'Volunteer', path: '/volunteer' },
