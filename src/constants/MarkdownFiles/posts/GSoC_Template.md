@@ -36,7 +36,8 @@ image: "assets/Images/GSOC.png"
    - Links (if any): PR [#123](https://github.com/owner/repo/pull/123), Issue [#456](https://github.com/owner/repo/issues/456).
 
 2. **[Task or Feature]**  
-   - Brief summary.
+   - Brief summary or a video.
+   [youtube: MM-H69cHYMk]
 
 3. **[Task or Feature]**  
    - Add screenshots or diagrams here if useful:
