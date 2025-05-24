@@ -10,6 +10,7 @@ import {
   bounce,
   simpleFadeIn,
 } from '@/styles/Animations';
+import { CalendarRange } from 'lucide-react';
 
 const NewsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -143,8 +144,8 @@ const NewsPage: React.FC = () => {
         </motion.h1>
 
         {/* Category Tabs */}
-        <div className="mb-10">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-2 max-w-3xl mx-auto overflow-x-auto">
+        <div className="mb-2">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-2 max-w-4xl mx-auto overflow-x-auto">
             <div className="flex flex-wrap justify-center gap-2">
               {sortedCategories.map((cat) => (
                 <motion.button
@@ -170,7 +171,7 @@ const NewsPage: React.FC = () => {
         </div>
 
         <motion.h2
-          className="text-5xl font-Caveat text-center mb-8 border-b pb-2 text-green-600"
+          className="text-5xl font-Caveat text-center  py-5 text-green-600"
           variants={slideInBottom}
           initial="hidden"
           animate="visible"
@@ -183,7 +184,7 @@ const NewsPage: React.FC = () => {
           {visiblePosts[0] && (
             <motion.div
               key={visiblePosts[0].slug}
-              className="mb-12 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer bg-white"
+              className="mb-12 rounded-lg overflow-hidden border  shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer bg-white"
               onClick={() => handlePostClick(visiblePosts[0].slug)}
               variants={simpleFadeIn}
               initial="hidden"
@@ -195,7 +196,7 @@ const NewsPage: React.FC = () => {
                     <img
                       src={visiblePosts[0].image}
                       alt={visiblePosts[0].title}
-                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-500"
                     />
                   )}
                 </div>
@@ -215,8 +216,8 @@ const NewsPage: React.FC = () => {
                   </div>
                   <div className="mt-auto flex items-center justify-between">
                     {visiblePosts[0].date && (
-                      <p className="text-sm font-medium text-gray-500">
-                        {visiblePosts[0].date}
+                      <p className="text-sm font-medium flex gap-2 text-gray-500">
+                        <CalendarRange className='relative top-[3px]' size={14}/> {visiblePosts[0].date}
                       </p>
                     )}
                     <button
@@ -238,7 +239,7 @@ const NewsPage: React.FC = () => {
         {/* Grid of smaller posts */}
         {visiblePosts.length > 1 && (
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-16 "
             initial="hidden"
             animate="visible"
           >
@@ -251,36 +252,38 @@ const NewsPage: React.FC = () => {
                   variants={simpleFadeIn}
                   layout
                 >
-                  <div className="h-32 overflow-hidden">
+                  <div className="h-60 overflow-hidden relative">
                     {post.image && (
                       <img
                         src={post.image}
                         alt={post.title}
-                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        className="w-full h-full rounded-t-lg object-cover transition-transform duration-500 hover:scale-105"
                       />
                     )}
-                  </div>
-                  <div className="p-6 flex-grow">
                     {post.category && (
-                      <span className="inline-block px-3 py-1 text-xs font-semibold bg-green-100 text-green-600 mb-3 rounded-full">
+                      <span className="inline-block absolute bottom-0 left-3 px-3 py-1 text-xs font-semibold bg-green-100 text-green-600 mb-3 rounded-full">
                         {post.category}
                       </span>
                     )}
-                    <h3 className="text-xl font-bold mb-3 text-blue-600 hover:underline">
+                  </div>
+
+                  <div className="px-6 py-2 flex flex-col justify-between flex-grow">                    
+                    <h3 className="text-xl font-bold text-blue-600 hover:underline">
                       {post.title}
                     </h3>
                     <p className="text-gray-600 text-sm line-clamp-3">
                       {post.excerpt}
                     </p>
                   </div>
-                  <div className="px-6 pb-6 pt-2 flex justify-between items-center mt-auto">
+                  <div className="px-6 py-4 flex justify-between items-center mt-auto">
                     {post.date && (
-                      <p className="text-sm font-medium text-gray-500">
+                      <p className="text-sm flex item-end gap-1 font-medium text-gray-500">
+                        <CalendarRange className='relative top-[3px]' size={14}/>
                         {post.date}
                       </p>
                     )}
                     <button
-                      className="px-4 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
                       onClick={(e) => {
                         e.stopPropagation();
                         handlePostClick(post.slug);
@@ -300,7 +303,7 @@ const NewsPage: React.FC = () => {
           <div className="flex justify-center my-10">
             <motion.button
               onClick={handleShowMore}
-              className="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 transition-colors rounded-lg shadow-md hover:shadow-lg duration-300 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 transition-colors rounded-lg shadow-md hover:shadow-lg duration-300 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
               variants={bounce}
               initial="hidden"
               animate="visible"
