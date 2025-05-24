@@ -2,9 +2,11 @@ import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import FeatureSection from '@/components/TryNow/FeatureSection';
 import Paragraph from '@/components/TryNow/Paragraph';
+import LogoCards from '@/components/TryNow/LogoCards';
 import {
   raspberrydata,
   raspberrySections,
+  raspberryLogoCards,
 } from '@/constants/TryNowData/raspberryPiData';
 
 const RaspberryPiPage = () => {
@@ -24,6 +26,7 @@ const RaspberryPiPage = () => {
             links={section.links}
           />
         ))}
+        <LogoCards data={raspberryLogoCards} />
       </main>
       <Footer />
     </div>
