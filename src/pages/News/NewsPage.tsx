@@ -217,7 +217,11 @@ const NewsPage: React.FC = () => {
                   <div className="mt-auto flex items-center justify-between">
                     {visiblePosts[0].date && (
                       <p className="text-sm font-medium flex gap-2 text-gray-500">
-                        <CalendarRange className='relative top-[3px]' size={14}/> {visiblePosts[0].date}
+                        <CalendarRange
+                          className="relative top-[3px]"
+                          size={14}
+                        />{' '}
+                        {visiblePosts[0].date}
                       </p>
                     )}
                     <button
@@ -267,7 +271,7 @@ const NewsPage: React.FC = () => {
                     )}
                   </div>
 
-                  <div className="px-6 py-2 flex flex-col justify-between flex-grow">                    
+                  <div className="px-6 py-2 flex flex-col justify-between flex-grow">
                     <h3 className="text-xl font-bold text-blue-600 hover:underline">
                       {post.title}
                     </h3>
@@ -278,7 +282,10 @@ const NewsPage: React.FC = () => {
                   <div className="px-6 py-4 flex justify-between items-center mt-auto">
                     {post.date && (
                       <p className="text-sm flex item-end gap-1 font-medium text-gray-500">
-                        <CalendarRange className='relative top-[3px]' size={14}/>
+                        <CalendarRange
+                          className="relative top-[3px]"
+                          size={14}
+                        />
                         {post.date}
                       </p>
                     )}
