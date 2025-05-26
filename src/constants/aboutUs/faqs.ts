@@ -83,7 +83,6 @@ const faqs: FAQ[] = [
     category: 'development',
   },
 
- 
   {
     question: 'How do Sugar Activities support different subjects?',
     answer:
@@ -91,13 +90,13 @@ const faqs: FAQ[] = [
     category: 'activities',
   },
   {
-    question: 'Can Sugar Activities be used without the full Sugar environment?',
+    question:
+      'Can Sugar Activities be used without the full Sugar environment?',
     answer:
       'Some Sugar Activities can be run independently on Linux or through emulators and web-based alternatives. However, the full experience is available inside the Sugar environment.',
     category: 'activities',
   },
 
-  
   {
     question: 'What is Sugar on a Stick?',
     answer:
@@ -115,8 +114,7 @@ const faqs: FAQ[] = [
     answer:
       'You can download Sugar from the official website at sugarlabs.org or use distributions like Fedora SoaS that come preloaded with it.',
     category: 'installation',
-  }
-
+  },
 ];
 
 export default faqs;
