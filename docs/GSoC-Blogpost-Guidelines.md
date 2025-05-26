@@ -10,15 +10,15 @@ Use the exact template below for every GSoC ’25 week update or you will also f
 
 ```markdown
 ---
-title: "GSoC ’25 Week XX Update by Safwan Sayeed"
-excerpt: "This is a Template to write Blog Posts for weekly updates"
-category: "TEMPLATE"
-date: "2025-05-10"
-slug: "gsoc-25-sa-fw-an-weekX"
-author: "Safwan Sayeed"
+title: 'GSoC ’25 Week XX Update by Safwan Sayeed'
+excerpt: 'This is a Template to write Blog Posts for weekly updates'
+category: 'TEMPLATE'
+date: '2025-05-10'
+slug: 'gsoc-25-sa-fw-an-weekX'
+author: 'Safwan Sayeed'
 description: "Maintainer and GSoC'25 Contributor at SugarLabs"
-tags: "gsoc25,sugarlabs,weekXX,sa-fw-an"
-image: "assets/Images/GSOC.png"
+tags: 'gsoc25,sugarlabs,weekXX,sa-fw-an'
+image: 'assets/Images/GSOC.png'
 ---
 
 <!-- markdownlint-disable -->
@@ -28,7 +28,7 @@ image: "assets/Images/GSOC.png"
 **Project:** [Project Name](https://github.com/sugarlabs/project_repo)  
 **Mentors:** [Mentor1](https://github.com/Username), [Mentor2](https://github.com/Username)  
 **Assisting Mentors:** [Mentor3](https://github.com/Username), [Mentor4](https://github.com/Username)  
-**Reporting Period:** yyyy-mm-dd - yyyy-mm-dd  
+**Reporting Period:** yyyy-mm-dd - yyyy-mm-dd
 
 ---
 
@@ -42,17 +42,19 @@ image: "assets/Images/GSOC.png"
 
 ## This Week’s Achievements
 
-1. **[Task or Feature]**  
-   - What you did and why it matters.  
+1. **[Task or Feature]**
+
+   - What you did and why it matters.
    - Links (if any): PR [#123](https://github.com/owner/repo/pull/123), Issue [#456](https://github.com/owner/repo/issues/456).
 
-2. **[Task or Feature]**  
-   - Brief summary or a video.
-   [youtube: MM-H69cHYMk]
+2. **[Task or Feature]**
 
-3. **[Task or Feature]**  
+   - Brief summary or a video.
+     [youtube: MM-H69cHYMk]
+
+3. **[Task or Feature]**
    - Add screenshots or diagrams here if useful:
-   ![screenshot-description](https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=2070)
+     ![screenshot-description](https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=2070)
 
 ---
 
@@ -105,7 +107,6 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 - Twitter: [@safwan_say](https://twitter.com/safwan_say)
 
 ---
-
 ```
 
 ## 2. Updating Your Post
@@ -122,7 +123,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 - Branch off `main` with `gsoc-weekXX-username`.
 - Add your file under `constants/MarkdownFiles/posts/`.
-- Commit and open a PR titled:  
+- Commit and open a PR titled:
   ```
   GSoC ’25 Week XX Update by Name
   ```
