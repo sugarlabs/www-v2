@@ -57,6 +57,66 @@ const faqs: FAQ[] = [
       'Some popular Sugar Activities for beginners include TurtleBlocks (for learning programming through graphics), Write (for writing and journaling), Calculate (for mathematics), Read (for e-books), and Speak (a text-to-speech activity). These activities are designed to be both engaging and educational, helping children learn through exploration and play.',
     category: 'activities',
   },
+  {
+    question: 'How does Sugar Labs sustain its operations?',
+    answer:
+      'Sugar Labs is supported by donations, community contributions, and mentorship programs like Google Summer of Code. It relies heavily on its global volunteer network.',
+    category: 'general',
+  },
+  {
+    question: 'What age group is Sugar Labs primarily designed for?',
+    answer:
+      'Sugar Labs focuses primarily on children in the K–6 age range, aiming to provide them with interactive tools for experiential learning.',
+    category: 'general',
+  },
+
+  {
+    question: 'Can I contribute to Sugar Labs if I am not a programmer?',
+    answer:
+      'Absolutely! Non-programmers can contribute through translations, documentation, user testing, outreach, or by creating educational content.',
+    category: 'development',
+  },
+  {
+    question: 'How can I find beginner-friendly issues to contribute to?',
+    answer:
+      'Sugar Labs uses GitHub for tracking issues. You can filter for labels like "good first issue" or "beginner" to find suitable tasks.',
+    category: 'development',
+  },
+
+ 
+  {
+    question: 'How do Sugar Activities support different subjects?',
+    answer:
+      'Sugar Activities cover a wide range of subjects like math, science, reading, music, and programming—each encouraging learning through exploration and play.',
+    category: 'activities',
+  },
+  {
+    question: 'Can Sugar Activities be used without the full Sugar environment?',
+    answer:
+      'Some Sugar Activities can be run independently on Linux or through emulators and web-based alternatives. However, the full experience is available inside the Sugar environment.',
+    category: 'activities',
+  },
+
+  
+  {
+    question: 'What is Sugar on a Stick?',
+    answer:
+      'Sugar on a Stick (SoaS) is a version of Sugar that can run from a bootable USB drive. It allows users to try Sugar without installing anything on their computer.',
+    category: 'installation',
+  },
+  {
+    question: 'Can I run Sugar on Windows or macOS?',
+    answer:
+      'While Sugar is Linux-based, you can use virtualization tools like VirtualBox to run it on Windows or macOS.',
+    category: 'installation',
+  },
+  {
+    question: 'Where can I download the Sugar Learning Platform?',
+    answer:
+      'You can download Sugar from the official website at sugarlabs.org or use distributions like Fedora SoaS that come preloaded with it.',
+    category: 'installation',
+  }
+
 ];
 
 export default faqs;
