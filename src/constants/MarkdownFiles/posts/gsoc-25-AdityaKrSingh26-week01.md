@@ -1,7 +1,7 @@
 ---
 title: "GSoC ’25 Week 01 Update by Aditya Kumar Singh"
-excerpt: "Refining human anatomy models and improving Sugarizer’s Z-Anatomy Activity"
-category: "TEMPLATE"
+excerpt: "Refining human anatomy models and improving Sugarizer’s 3D Human Activity"
+category: "DEVELOPER NEWS"
 date: "2025-05-28"
 slug: "gsoc-25-AdityaKrSingh26-week01"
 author: "Aditya Kumar Singh"
