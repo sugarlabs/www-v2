@@ -1,6 +1,6 @@
 ---
 title: "GSoC ’25 Week 01 Update by Aditya Kumar Singh"
-excerpt: "This is a Template to write Blog Posts for weekly updates"
+excerpt: "Refining human anatomy models and improving Sugarizer’s Z-Anatomy Activity"
 category: "TEMPLATE"
 date: "2025-05-28"
 slug: "gsoc-25-AdityaKrSingh26-week01"
