@@ -3,6 +3,7 @@ import type { RouteObject } from 'react-router-dom';
 
 export const redirectMap: Record<string, string> = {
   '/go/Sugar_Labs/Donate': '/donate',
+  '/booting-soas': '/bootablesoas',
 
   // Example redirects:
   // '/old-path-1': '/new-path-1',
