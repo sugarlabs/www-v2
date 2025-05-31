@@ -64,7 +64,7 @@ const faqs: FAQ[] = [
     category: 'general',
   },
   {
-    question: 'What age group is Sugar Labs primarily designed for?',
+    question: 'What age group is Sugar Labs software primarily designed for?',
     answer:
       'Sugar Labs focuses primarily on children in the K–6 age range, aiming to provide them with interactive tools for experiential learning.',
     category: 'general',
@@ -93,26 +93,26 @@ const faqs: FAQ[] = [
     question:
       'Can Sugar Activities be used without the full Sugar environment?',
     answer:
-      'Some Sugar Activities can be run independently on Linux or through emulators and web-based alternatives. However, the full experience is available inside the Sugar environment.',
+      'Many Sugar Activities can run independently on GNU/Linux or through web-based alternatives such as Sugarizer, which provides a full Sugar experience https://www.sugarlabs.org/sugarizer/',
     category: 'activities',
   },
 
   {
     question: 'What is Sugar on a Stick?',
     answer:
-      'Sugar on a Stick (SoaS) is a version of Sugar that can run from a bootable USB drive. It allows users to try Sugar without installing anything on their computer.',
+      'Sugar on a Stick (SoaS) is a version of Sugar that can run from a bootable USB drive. It allows users to try Sugar without installing anything on their computer. Learn more at https://www.sugarlabs.org/sugarizer/',
     category: 'installation',
   },
   {
     question: 'Can I run Sugar on Windows or macOS?',
     answer:
-      'While Sugar is Linux-based, you can use virtualization tools like VirtualBox to run it on Windows or macOS.',
+      'While the original Sugar is Linux-based and typically run via virtualization tools like VirtualBox, you can use Sugarizer, a web-based version of Sugar, on Windows, macOS, and other platforms. Learn more at https://www.sugarlabs.org/sugarizer/',
     category: 'installation',
   },
   {
     question: 'Where can I download the Sugar Learning Platform?',
     answer:
-      'You can download Sugar from the official website at sugarlabs.org or use distributions like Fedora SoaS that come preloaded with it.',
+      'You can download Sugar preloaded on Fedora SoaS - https://fedoraproject.org/spins/soas/download or Trisquel - https://trisquel.info/en/download',
     category: 'installation',
   },
 ];
