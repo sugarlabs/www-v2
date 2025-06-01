@@ -5,7 +5,7 @@ category: "DEVELOPER NEWS"
 date: "2025-05-28"
 slug: "gsoc-25-AdityaKrSingh26-week01"
 author: "Aditya Kumar Singh"
-description: "Maintainer and GSoC'25 Contributor at SugarLabs"
+description: "GSoC'25 Contributor at SugarLabs (Sugarizer Human Activity Pack)"
 tags: "gsoc25,sugarlabs,week01,AdityaKrSingh26"
 image: "assets/Images/GSOC.png"
 ---
