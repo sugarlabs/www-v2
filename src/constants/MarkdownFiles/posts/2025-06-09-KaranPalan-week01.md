@@ -106,7 +106,7 @@ Huge thanks to **Anindya** for the deep-dive lectures and mentoring, and to **Ju
 
 * GitHub: [@Karan-Palan](https://github.com/Karan-Palan/)
 * Email: [karanpalan007@gmail.com](mailto:karanpalan007@gmail.com)
-* LinkedIn: [Karan Palan](https://www.linkedin.com/in/karan-palan-476472289/)
-* Twitter: [@karanpalan\_](https://x.com/Karan_Palan7)
+* LinkedIn: [karan-palan-476472289/](https://www.linkedin.com/in/karan-palan-476472289/)
+* Twitter: [Karan_Palan7](https://x.com/Karan_Palan7)
 
 ---
