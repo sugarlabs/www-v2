@@ -10,6 +10,8 @@ tags: "dmp25,sugarlabs,week01,AnvitaPrasad"
 image: "assets/Images/c4gt_DMP.png"
 ---
 
+<!-- markdownlint-disable -->
+
 # Week 01 Progress Report by Anvita Prasad
 
 **Project:** [Music Blocks - Improve Synth and Sample Features](https://github.com/sugarlabs/musicblocks/issues/4539)  
