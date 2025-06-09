@@ -80,8 +80,8 @@ We split weekly calls:
 
 ## Next Week’s Roadmap
 
-* **Masonry:** Finish implementing `_generateLeft()` so *all* brick types respect left-side notches.
-* **Engine:** Flesh out `Expression` subclasses and prototype a minimal AST → JS transpile step.
+* **Masonry:** Finish implementing '_generateLeft()' so *all* brick types respect left-side notches.
+* **Engine:** Flesh out 'Expression' subclasses and prototype a minimal AST → JS transpile step.
 * **Docs & CI:** Auto-publish rendered SVG examples in PR previews to catch geometry regressions early.
 
 ---
