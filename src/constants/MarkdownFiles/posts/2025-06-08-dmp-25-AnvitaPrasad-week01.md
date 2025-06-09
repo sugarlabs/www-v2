@@ -3,11 +3,11 @@ title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Improving Synth and Sample Features in Music Blocks"
 category: "DEVELOPER NEWS"
 date: "2025-06-08"
-slug: "dmp-25-AnvitaPrasad-week01"
+slug: "2025-06-08-dmp-25-AnvitaPrasad-week01"
 author: "Anvita Prasad"
 description: "DMP'25 Contributor at SugarLabs (Music Blocks)"
 tags: "dmp25,sugarlabs,week01,AnvitaPrasad"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/c4gt_DMP.png"
 ---
 
 # Week 01 Progress Report by Anvita Prasad
