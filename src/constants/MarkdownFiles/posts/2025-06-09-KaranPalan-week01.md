@@ -8,7 +8,6 @@ slug: "gsoc-25-karan-community-week1"
 author: "Karan Palan"
 description: "GSoC 2024 mentee, now volunteering and peer-mentoring on Music Blocks 4"
 tags: "gsoc25,sugarlabs,communitybonding,week1,karanpalan"
-image: "assets/Images/GSOC.png"
 ---
 
 <!-- markdownlint-disable -->
@@ -17,11 +16,11 @@ image: "assets/Images/GSOC.png"
 
 **by Karan Palan**
 
-**Projects:** Music Blocks 4 **Masonry** & **Program Engine**
-**Role:** Volunteer & Peer-Mentor (GSoC 2024 alumnus)
-**Mentor:** [Anindya Kundu](https://github.com/meganindya/)
-**Mentees:** Justin Jacob, Saumya Sarma (Masonry) • Safwan Sayeed (Engine)
-**Reporting Period:** 2025-05-20 → 2025-06-08
+**Projects:** Music Blocks 4 **Masonry** & **Program Engine**  
+**Role:** Volunteer & Peer-Mentor (GSoC 2024 alumnus)  
+**Mentor:** [Anindya Kundu](https://github.com/meganindya/)  
+**Mentees:** Justin Jacob, Saumya Sarma (Masonry) • Safwan Sayeed (Engine)  
+**Reporting Period:** 2025-05-20 → 2025-06-08  
 
 ---
 
