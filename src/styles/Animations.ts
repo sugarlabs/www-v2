@@ -1078,3 +1078,59 @@ export const lineAnimation = {
     transition: { duration: 1.5, ease: 'easeInOut' },
   },
 };
+export const floatUpAndFade = {
+  hidden: {
+    opacity: 0,
+    y: 60,
+    scale: 0.8,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 1.2,
+      ease: 'easeOut',
+      type: 'spring',
+      damping: 25,
+      stiffness: 100,
+    },
+  },
+};
+export const floatUpAndFadeDelayed = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+    scale: 0.9,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 1.0,
+      ease: 'easeOut',
+      delay: 0.3,
+      type: 'spring',
+      damping: 20,
+      stiffness: 120,
+    },
+  },
+};
+export const iconFloat = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+    rotate: -10,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotate: 0,
+    transition: {
+      duration: 0.8,
+      ease: 'easeOut',
+      delay: 0.6,
+    },
+  },
+};
