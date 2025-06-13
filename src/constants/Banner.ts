@@ -76,4 +76,4 @@ export const bannerConfigs = {
     buttonLink: '/contact-us',
     theme: 'info' as const,
   },
-  
+};
