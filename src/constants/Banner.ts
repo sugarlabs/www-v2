@@ -15,7 +15,7 @@ export const bannerConfigs = {
   donation: {
     title: 'Help us reach our next fundraising milestone.',
     description:
-      'Through every.org, we accept donations via credit card, ACH, PayPal, crypto, stocks, DAF, and Venmo.  ',
+      'Through every.org, we accept donations via credit card, ACH, PayPal, crypto, stocks, DAF, and Venmo.',
     buttonText: 'Donate Now',
     buttonLink: '/donate',
     theme: 'primary' as const,
