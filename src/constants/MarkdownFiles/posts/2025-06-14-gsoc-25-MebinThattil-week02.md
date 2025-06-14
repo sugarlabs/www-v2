@@ -4,8 +4,7 @@ excerpt: "Fine-Tuning, Deploying, Testing & Evaluations"
 category: "DEVELOPER NEWS"
 date: "2025-06-14"
 slug: "2025-06-14-gsoc-25-mebinthattil-week2"
-author: "Mebin J Thattil"
-description: "GSoC'25 Contributor at SugarLabs - Speak Activity"
+author: "@/constants/MarkdownFiles/authors/mebin-thattil.md"
 tags: "gsoc25,sugarlabs,week02,mebinthattil,speak_activity"
 image: "assets/Images/GSOCxSpeak.png"
 ---
@@ -130,11 +129,3 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-## Connect with Me
-
-- Website: [mebin.in](https://mebin.in/)
-- GitHub: [@mebinthattil](https://github.com/mebinthattil)
-- Gmail: [mail@mebin.in](mailto:mail@mebin.in)
-- LinkedIn: [Mebin Thattil](https://www.linkedin.com/in/mebin-thattil/)
-
----
