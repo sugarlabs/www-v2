@@ -5,7 +5,7 @@ category: "DEVELOPER NEWS"
 date: "2025-06-07"
 slug: "gsoc-25-BishoyWadea-week01"
 author: "Bishoy Wadea"
-description: "Maintainer and GSoC'25 Contributor at SugarLabs"
+description: "GSoC'25 Contributor"
 tags: "gsoc25,sugarlabs,week01,BishoyWadea"
 image: "assets/Images/GSOC.png"
 ---
@@ -34,7 +34,7 @@ image: "assets/Images/GSOC.png"
 1. **Initial Game Implementation**
    - Implemented the basic game loop, event handling, and win condition detection. This created the foundation for gameplay.
    - Added support for checking that no two adjacent regions have the same color.  
-   - PR: [#1 Gameplay Base](hhttps://github.com/Bishoywadea/Four-Color-Map/commit/91eabce38439fc08da652d1de309b556393fcee3)
+   - PR: [#1 Gameplay Base](https://github.com/Bishoywadea/Four-Color-Map/commit/91eabce38439fc08da652d1de309b556393fcee3)
 
 2. **UI Enhancements & Interaction Features**  
    - Designed and integrated colorful buttons, icons, and zoom functionalities to make the UI more appealing to children.
