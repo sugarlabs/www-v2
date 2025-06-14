@@ -4,6 +4,8 @@ import { getAllPosts, groupPostsByCategory, Post } from '@/utils/posts-utils';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Toaster } from 'sonner';
+import { toast } from 'sonner';
 import {
   fadeIn,
   slideInBottom,
@@ -125,16 +127,25 @@ const NewsPage: React.FC = () => {
   };
 
   const sharePost = (post: Post, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (navigator.share) {
-      navigator.share({
-        title: post.title,
-        text: post.excerpt,
-        url: window.location.href + `/${post.slug}`,
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.href + `/${post.slug}`);
-    }
+    
+   try {
+     e.stopPropagation();
+     if (navigator.share) {
+       navigator.share({
+         title: post.title,
+         text: post.excerpt,
+         url: window.location.href + `/${post.slug}`,
+         
+       });
+     }
+      else {
+       navigator.clipboard.writeText(window.location.href + `/${post.slug}`)
+       toast.success("URL Copied successfuly")
+     }
+   } catch (error) {
+    console.error("Unable to fetch Url", error)
+    toast.error("URL not available")
+   }
   };
 
   if (isLoading) {
@@ -227,6 +238,7 @@ const NewsPage: React.FC = () => {
   return (
     <>
       <Header />
+      <Toaster/>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
         {/* Enhanced Hero Section */}
         <div className="relative overflow-hidden">
