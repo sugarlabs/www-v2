@@ -127,25 +127,22 @@ const NewsPage: React.FC = () => {
   };
 
   const sharePost = (post: Post, e: React.MouseEvent) => {
-    
-   try {
-     e.stopPropagation();
-     if (navigator.share) {
-       navigator.share({
-         title: post.title,
-         text: post.excerpt,
-         url: window.location.href + `/${post.slug}`,
-         
-       });
-     }
-      else {
-       navigator.clipboard.writeText(window.location.href + `/${post.slug}`)
-       toast.success("URL Copied successfuly")
-     }
-   } catch (error) {
-    console.error("Unable to fetch Url", error)
-    toast.error("URL not available")
-   }
+    try {
+      e.stopPropagation();
+      if (navigator.share) {
+        navigator.share({
+          title: post.title,
+          text: post.excerpt,
+          url: window.location.href + `/${post.slug}`,
+        });
+      } else {
+        navigator.clipboard.writeText(window.location.href + `/${post.slug}`);
+        toast.success('URL Copied successfuly');
+      }
+    } catch (error) {
+      console.error('Unable to fetch Url', error);
+      toast.error('URL not available');
+    }
   };
 
   if (isLoading) {
@@ -238,7 +235,7 @@ const NewsPage: React.FC = () => {
   return (
     <>
       <Header />
-      <Toaster/>
+      <Toaster />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
         {/* Enhanced Hero Section */}
         <div className="relative overflow-hidden">
