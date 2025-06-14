@@ -31,7 +31,7 @@ image: "assets/Images/GSOC.png"
 
 ## This Week’s Achievements – *Broken Calculator Game*
 
-11. **Initial Setup & Core Functionality**
+1. **Initial Setup & Core Functionality**
    - Added starter files and project structure.
    - Implemented basic game manager functionality to handle state, inputs, and equation validation.
    - commit: [Initial Commit](https://github.com/Bishoywadea/BrokenCalculator/commit/initial)
