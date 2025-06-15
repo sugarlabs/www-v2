@@ -2,10 +2,10 @@
 title: "GSoC ’25 Week 02 Update by Diwangshu Kakoty"
 excerpt: "Multi-AI Agent Chat Model"
 category: "DEVELOPER NEWS"
-date: "2025-06-04"
-slug: "2025-06-04-gsoc-25-Diwangshu-week01"
+date: "2025-06-15"
+slug: "diwangshu-kakoty"
 author: "@/constants/MarkdownFiles/authors/diwangshu-kakoty.md"
-tags: "gsoc25,sugarlabs,week01,AI"
+tags: "gsoc25,sugarlabs,week02,AI"
 image: "assets/Images/GSOC.png"
 ---
 
@@ -13,7 +13,7 @@ image: "assets/Images/GSOC.png"
 
 # Week 02 Progress Report by Diwangshu Kakoty
 
-**Project:** [AI Tools for Reflection](https://github.com/Commanderk3/reflection_ai)
+**Project:** [AI Tools for Reflection](https://github.com/Commanderk3/reflection_ai)  
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  
 **Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Ajeet Pratap Singh](https://github.com/apsinghdev)  
 **Reporting Period:** 2025-06-08 - 2025-06-14  
@@ -59,6 +59,7 @@ image: "assets/Images/GSOC.png"
   **Solution:** I first implemented the second option because it is simple and works fine, but the summary generation needs to be done separately for each agent, which I don't think is ideal. Therefore, I have decided to try the first option. I have already started working on it. I need to fix some bugs, and it will be completed by tomorrow (2025-06-16).
 
 - **Challenge:** Retrieved context is irrelevant when the project code is passed. The retriever component returns three chunks arranged in priority. However, a project code can contain many keywords, making the retriever not particularly useful.
+
   **Solution:** I am considering scanning all the keywords (like block names) first and passing their information to the LLM. This data will be stored in a dictionary. Example:
 
 ```python
@@ -73,7 +74,7 @@ This way the LLM can understand block structure and their meaning as well.
 
 ## Key Learnings
 
-- The prototype for this project is developing in Streamlit and I am learning Streamlit a lot.
+- The prototype for this project is developing in Streamlit, and I am learning Streamlit a lot.
 - Also gainig experience in LangChain as this is the primary tool of development.
 
 ---

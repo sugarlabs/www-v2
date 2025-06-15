@@ -13,7 +13,7 @@ image: "assets/Images/GSOC.png"
 
 # Week 01 Progress Report by Diwangshu Kakoty
 
-**Project:** [AI Tools for Reflection](https://github.com/Commanderk3/reflection_ai)
+**Project:** [AI Tools for Reflection](https://github.com/Commanderk3/reflection_ai)  
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  
 **Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [	Ajeet Pratap Singh](https://github.com/apsinghdev)  
 **Reporting Period:** 2025-06-01 - 2025-06-07  

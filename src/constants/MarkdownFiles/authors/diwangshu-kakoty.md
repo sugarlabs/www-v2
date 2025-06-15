@@ -1,6 +1,6 @@
 ---
 name: "Diwangshu Kakoty"
-slug: "Commanderk3"
+slug: "diwangshu-kakoty"
 title: "GSoC'25 Contributor"
 organization: "SugarLabs"
 description: "Member and GSoC'25 Contributor at SugarLabs"
