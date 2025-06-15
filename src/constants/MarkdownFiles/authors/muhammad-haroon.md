@@ -2,9 +2,9 @@
 name: "Muhammad Haroon"
 slug: "muhammad-haroon"
 title: "Member & SSoC'25 Contributor"
-organization: "SugarLabs"
-description: "Member & SSoC'25 Contributor at SugarLabs"
-avatar: "https://media.licdn.com/dms/image/v2/D4D03AQGQFhhc-VO0tg/profile-displayphoto-shrink_800_800/B4DZZR9v3eGkAc-/0/1745131865656?e=1755734400&v=beta&t=R9XgbXXsL9dVHwYtY0l_zVrJNBt9vfx-Tjr0duCgTrw"
+organization: "Sugar Labs"
+description: "Member & SSoC'25 Contributor at Sugar Labs"
+avatar: "/assets/Developers/Muhammad Haroon/muhammadharoon.jpg"
 ---
 
 <!--markdownlint-disable-->
@@ -20,12 +20,12 @@ This summer, I’ve been selected for Sugar Summer of Code 2025. This is the fir
 ## Experience
 
 - **SSoC 2025**: Generative AI Instrument Sample Generation for Music Blocks
-- **SugarLabs Member**: Active contributor to various projects
+- **Sugar Labs Member**: Active contributor to various projects
 
 ## Current Projects
 
 - Generative AI Instrument Sample Generation for Music Blocks
-- SugarLabs website development
+- Sugar Labs website development
 
 ## Connect with Me
 
