@@ -1,6 +1,6 @@
 ---
-title: "JavaScript Editor Updates"
-excerpt: "This is a Template to write Blog Posts for weekly updates"
+title: "GSoC '25 Week 1 Update by Elwin Li"
+excerpt: "Weekly progress report for JSEditor updates"
 category: "DEVELOPER NEWS"
 date: "2025-06-07"
 slug: "JSeditor-updates"
