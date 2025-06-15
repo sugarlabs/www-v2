@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useCallback } from 'react';
 import React, { Children } from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
@@ -9,6 +8,7 @@ import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+import { h } from 'hastscript';
 
 // Type definitions
 interface MarkdownRendererProps {
@@ -220,6 +220,22 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     [content],
   );
 
+  const scrollToAnchor = useCallback(() => {
+    const hash = window.location.hash;
+    if (hash && hash.length > 1) {
+      const id = hash.substring(1);
+      setTimeout(() => {
+        const targetElement = document.getElementById(id);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        }
+      }, 100);
+    }
+  }, []);
+
   const handleCopyClick = useCallback(async (e: MouseEvent) => {
     const button = (e.target as HTMLElement).closest(
       '.copy-code-btn',
@@ -250,10 +266,38 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     }
   }, []);
 
+  const handleAnchorClick = useCallback((e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+
+    if (target.closest('.copy-code-btn')) {
+      return;
+    }
+
+    const anchorLink = target.closest('a[href^="#"]') as HTMLAnchorElement;
+    if (anchorLink) {
+      e.preventDefault();
+      const href = anchorLink.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        const id = href.substring(1);
+        const targetElement = document.getElementById(id);
+
+        if (targetElement) {
+          const currentUrl = window.location.pathname + window.location.search;
+          window.history.pushState(null, '', `${currentUrl}${href}`);
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+  }, []);
+
   useEffect(() => {
     document.addEventListener('click', handleCopyClick);
-    return () => document.removeEventListener('click', handleCopyClick);
-  }, [handleCopyClick]);
+    document.addEventListener('click', handleAnchorClick);
+    return () => {
+      document.removeEventListener('click', handleCopyClick);
+      document.removeEventListener('click', handleAnchorClick);
+    };
+  }, [handleCopyClick, handleAnchorClick]);
 
   useEffect(() => {
     if (setZoomableImages) {
@@ -261,6 +305,19 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       setZoomableImages(Array.from(images) as HTMLImageElement[]);
     }
   }, [processedContent, setZoomableImages]);
+
+  useEffect(() => {
+    scrollToAnchor();
+    const handlePopState = () => {
+      scrollToAnchor();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [processedContent, scrollToAnchor]);
 
   // Component definitions with shared styles
   const headingClasses = {
@@ -272,29 +329,18 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     h6: 'text-sm font-semibold my-3 text-gray-600 dark:text-gray-400 uppercase tracking-wide',
   };
 
-  const linkIcon = (
-    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-      <path d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5z" />
-      <path d="M7.414 15.414a2 2 0 01-2.828-2.828l3-3a2 2 0 012.828 0 1 1 0 001.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5z" />
-    </svg>
-  );
-
   const createHeading =
     (level: keyof typeof headingClasses) =>
-    ({ children, ...props }: any) => {
+    ({
+      children,
+      ...props
+    }: React.HTMLAttributes<HTMLHeadingElement> & {
+      children?: React.ReactNode;
+    }) => {
       const Tag = level;
       return (
         <Tag {...props} className={headingClasses[level]}>
           {children}
-          {props.id && level <= 'h3' && (
-            <a
-              href={`#${props.id}`}
-              className="ml-2 text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
-              aria-label={`Permalink to ${children}`}
-            >
-              {linkIcon}
-            </a>
-          )}
         </Tag>
       );
     };
@@ -515,6 +561,8 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
     a: ({ href = '#', children, ...props }) => {
       const isExternal = href?.startsWith('http');
+      const isAnchor = href?.startsWith('#');
+
       return (
         <a
           href={href}
@@ -522,6 +570,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
           className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline transition-colors font-medium"
           target={isExternal ? '_blank' : undefined}
           rel={isExternal ? 'noopener noreferrer' : undefined}
+          data-anchor-link={isAnchor ? 'true' : undefined}
         >
           {children}
           {isExternal && (
@@ -610,7 +659,41 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
           rehypeRaw,
           [rehypeSanitize, CUSTOM_SANITIZE_SCHEMA],
           rehypeSlug,
-          [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+          [
+            rehypeAutolinkHeadings,
+            {
+              behavior: 'append',
+              properties: {
+                className: [
+                  'ml-2',
+                  'text-blue-600',
+                  'dark:text-blue-400',
+                  'opacity-0',
+                  'group-hover:opacity-100',
+                  'transition-opacity',
+                  'no-underline',
+                ],
+                ariaLabel: 'Permalink to section',
+                title: 'Permalink to section',
+              },
+              content: h(
+                'svg',
+                {
+                  className: 'w-4 h-4',
+                  fill: 'currentColor',
+                  viewBox: '0 0 20 20',
+                },
+                [
+                  h('path', {
+                    d: 'M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5z',
+                  }),
+                  h('path', {
+                    d: 'M7.414 15.414a2 2 0 01-2.828-2.828l3-3a2 2 0 012.828 0 1 1 0 001.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5z',
+                  }),
+                ],
+              ),
+            },
+          ],
         ]}
         components={components}
       >
