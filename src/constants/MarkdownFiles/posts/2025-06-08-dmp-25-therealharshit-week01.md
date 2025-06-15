@@ -4,7 +4,7 @@ excerpt: "Week 01 focused on understanding the Pippy codebase, testing Sugar-AI 
 category: "DEVELOPER NEWS"
 date: "2025-06-09"
 slug: "2025-06-09-dmp-25-therealharshit-week01"
-author: "Harshit Verma"
+author: "@/constants/MarkdownFiles/authors/harshit-verma.md"
 description: "Member and DMP'25 Contributor at SugarLabs"
 tags: "dmp25,sugarlabs,week01,therealharshit"
 image: "assets/Images/c4gt_DMP.png"
