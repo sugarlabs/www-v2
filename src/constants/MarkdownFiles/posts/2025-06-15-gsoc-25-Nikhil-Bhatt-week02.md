@@ -4,7 +4,7 @@ excerpt: "Implemented edit functionality for project repositories and introduced
 category: "DEVELOPER NEWS"
 date: "2025-06-10"
 slug: "2025-06-10-gsoc-25-nikhilbhatt-week02"
-author: "@/constants/MarkdownFiles/authors/nikhilbhatt.md"
+author: "@/constants/MarkdownFiles/authors/nikhil-bhatt.md"
 tags: "gsoc25,sugarlabs,week02,nikhilbhatt"
 image: "assets/Images/GSOC.png"
 ---

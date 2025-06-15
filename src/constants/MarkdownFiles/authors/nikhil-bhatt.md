@@ -1,6 +1,6 @@
 ---
 name: "Nikhil Bhatt"
-slug: "BeNikk"
+slug: "nikhil-bhatt"
 title: "GSoC'25 Contributor" 
 organisation: "Sugarlabs"
 description: "GSoc'25 Contributor, learning through code"
