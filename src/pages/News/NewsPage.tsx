@@ -547,7 +547,11 @@ const NewsPage: React.FC = () => {
       <ShareModal
         open={shareModalOpen}
         onClose={() => setShareModalOpen(false)}
-        url={sharePostData ? `${window.location.origin}/news/${activeCategory === 'All' ? 'all' : activeCategory.toLowerCase().replace(/\s+/g, '-')}/${sharePostData.slug}` : ''}
+        url={
+          sharePostData
+            ? `${window.location.origin}/news/${activeCategory === 'All' ? 'all' : activeCategory.toLowerCase().replace(/\s+/g, '-')}/${sharePostData.slug}`
+            : ''
+        }
         title={sharePostData?.title || ''}
         excerpt={sharePostData?.excerpt || ''}
       />

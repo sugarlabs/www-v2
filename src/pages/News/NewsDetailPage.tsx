@@ -417,7 +417,11 @@ const NewsDetailPage: React.FC = () => {
       <ShareModal
         open={shareModalOpen}
         onClose={() => setShareModalOpen(false)}
-        url={post ? `${window.location.origin}/news/${category || 'all'}/${post.slug}` : ''}
+        url={
+          post
+            ? `${window.location.origin}/news/${category || 'all'}/${post.slug}`
+            : ''
+        }
         title={post?.title || ''}
         excerpt={post?.excerpt || ''}
       />
