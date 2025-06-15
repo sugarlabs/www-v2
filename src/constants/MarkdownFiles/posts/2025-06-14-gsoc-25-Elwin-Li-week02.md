@@ -12,7 +12,7 @@ image: "assets/Images/GSOC.png"
 
 <!-- markdownlint-disable -->
 
-# Week 1 Progress Report by Elwin Li
+# Week 2 Progress Report by Elwin Li
 
 **Project:** [Advanced JavaScript Editor with MusicBlocks Interactions](https://github.com/sugarlabs/musicblocks/tree/config_driven_conversion/elwin)  
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Anindya Kundu](https://github.com/meganindya), [Devin Ulibarri](https://github.com/pikurasa)
@@ -51,7 +51,7 @@ The code to blocks project has been complete and deployed, as seen in this [merg
 
   **Solution:** Merging configs, and using minified JSON for loading.
 
-- **Challenge:** Never seen before git errors when trying to push commit
+- **Challenge:** Never-seen-before git errors when trying to push commit
 
   **Solution:** Image size as part of the documentation was too large, had to compress it.
 
@@ -75,13 +75,5 @@ The code to blocks project has been complete and deployed, as seen in this [merg
 ## Acknowledgments
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
-
----
-
-## Connect with Me
-
-- GitHub: [@ebeetles](https://github.com/ebeetles)
-- Gmail: [elwin.s.li@gmail.com](mailto:elwin.s.li@gmail.com)
-- LinkedIn: [Elwin Li](https://www.linkedin.com/in/elwinsli/)
 
 ---
