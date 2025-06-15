@@ -38,7 +38,7 @@ image: "assets/Images/GSOC.png"
 
    - *Code Mentor* : Handles programming concepts and debugging reflection. Users can paste their simplified project code for better feedback and guidance.
 
-   - *Meta Mentor* : Guides general reflective thinking (learning goals, struggles, progress).
+   - *Meta Facilitator* : Guides general reflective thinking (learning goals, struggles, progress).
 
 2. **Improve Analysis Generation**  
    - As mentioned in the last report, the analysis was inaccurate. I have refined the instructions, and now it functions effectively. It did not take much time.
