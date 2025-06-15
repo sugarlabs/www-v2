@@ -50,7 +50,7 @@ image: "assets/Images/GSOC.png"
 
 ## Challenges & How I Overcame Them
 
-- **Challenge:** The LLM needs to be invoked with the user query, retrieved context, and message history. Since this project involves multiple AI agents, it is somewhat tricky to decide what kind of memory space to use. Possible ways to store messages:
+- **Challenge 1 :** The LLM needs to be invoked with the user query, retrieved context, and message history. Since this project involves multiple AI agents, it is somewhat tricky to decide what kind of memory space to use. Possible ways to store messages:
 
   i) Shared memory space: Each agent will use one common message history with named tags to differentiate among themselves. This way, the AI agents won't repeat questions.
 
@@ -58,7 +58,7 @@ image: "assets/Images/GSOC.png"
 
   **Solution:** I first implemented the second option because it is simple and works fine, but the summary generation needs to be done separately for each agent, which I don't think is ideal. Therefore, I have decided to try the first option. I have already started working on it. I need to fix some bugs, and it will be completed by tomorrow (2025-06-16).
 
-- **Challenge:** Retrieved context is irrelevant when the project code is passed. The retriever component returns three chunks arranged in priority. However, a project code can contain many keywords, making the retriever not particularly useful.
+- **Challenge 2 :** Retrieved context is irrelevant when the project code is passed. The retriever component returns three chunks arranged in priority. However, a project code can contain many keywords, making the retriever not particularly useful.
 
   **Solution:** I am considering scanning all the keywords (like block names) first and passing their information to the LLM. This data will be stored in a dictionary. Example:
 
