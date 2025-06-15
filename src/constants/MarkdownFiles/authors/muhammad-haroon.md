@@ -15,7 +15,7 @@ Hi, I’m Muhammad Haroon, a final year student at NED University Karachi, Pakis
 
 I have been actively contributing to Sugar Labs for a long time not just in code, but also in documentation and by assisting new contributors.
 
-This summer, I’ve been selected for Sugar Summer of Code 2025. This is the first time Sugar Labs is running this program, and I’m proud to be a pilot candidate. I’ll be working on Generative AI Instrument Sample Generation for Music Blocks, which will give students endless options for sound samples.
+This summer, I’ve been selected for Sugar Summer of Code (SSoC) 2025. This is the first time Sugar Labs is running this program, and I’m proud to be a pilot candidate. I’ll be working on Generative AI Instrument Sample Generation for Music Blocks, which will give students endless options for sound samples.
 
 ## Experience
 
