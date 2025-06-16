@@ -5,7 +5,6 @@ category: "DEVELOPER NEWS"
 date: "2025-06-14"
 slug: "JSeditor-updates"
 author: "Elwin Li"
-description: "GSoC Contributor"
 tags: "gsoc25,sugarlabs,week2,javaScript editor"
 image: "assets/Images/GSOC.png"
 ---
