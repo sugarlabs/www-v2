@@ -1,89 +1,88 @@
 ---
-title: "DMP ’25 Week 02 Update by Aman Chadha"
-excerpt: "Enhancing RAG output with part-of-speech tagging and optimizing chunk granularity"
+title: "DMP '25 Week 02 Update by Aman Chadha"
+excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"
 category: "DEVELOPER NEWS"
 date: "2025-06-16"
-slug: "dmp-25-aman-week02"
-author: "Aman Chadha"
-description: "DMP '25 Contributor working on retrieval-augmented generation for Music Blocks"
-tags: "dmp25,musicblocks,rag,week02"
+slug: "2025-06-16-dmp-25-aman-chadha-week02"
+author: "@/constants/MarkdownFiles/authors/aman-chadha.md"
+tags: "dmp25,sugarlabs,week02,aman-chadha"
 image: "assets/Images/c4gt_DMP.png"
 ---
+
+<!-- markdownlint-disable -->
 
 # Week 02 Progress Report by Aman Chadha
 
 **Project:** [JS Internationalization with AI Translation Support](https://github.com/sugarlabs/musicblocks/pull/4459)  
-
-**Mentors:** [Walter Bender](https://github.com/walterbender)
-
-**Reporting Period:** 2025-06-09 – 2025-06-16
+**Mentors:** [Walter Bender](https://github.com/walterbender)  
+**Assisting Mentors:** *None this week*  
+**Reporting Period:** 2025-06-09 - 2025-06-16  
 
 ---
 
 ## Goals for This Week
 
-- Refine the RAG model output format for improved downstream use.
-- Implement part-of-speech tagging to enrich context awareness in RAG retrieval.
-- Reduce chunk size for more precise retrieval based on mentor feedback.
-- Begin testing the RAG model with real-world queries.
+- **Refactor RAG model output** to a structured dictionary format that includes part-of-speech (POS) tagging.
+- **Optimize AST-based chunking** by limiting code context to 5 lines above and below translation usage, per mentor feedback.
+- **Begin functional testing** of the updated RAG pipeline on real-world translation queries.
 
 ---
 
-## This Week’s Achievements
+## This Week's Achievements
 
-1. **Enhanced RAG Output Format**  
-   - Updated the RAG model to return results in a dictionary structure.
-   - Included part-of-speech information for each translation unit, enabling more nuanced context retrieval.
+1. **RAG Output Enhancement**  
+   - Refactored the Retrieval-Augmented Generation model to return results as structured dictionaries.
+   - Each entry now includes `msgid`, `msgstr`, source metadata, and the dominant part of speech, improving retrieval relevance.
 
-2. **Chunk Optimization**  
-   - Adjusted AST-based code chunking logic to include only 5 lines above and below the relevant translation call.
-   - This change was implemented based on feedback from mentor Walter during a sync-up meeting.
-   - The refined chunk size improves focus and reduces noise in context matching.
+2. **Code Chunking Optimization**  
+   - Reduced each extracted code chunk to include only 5 lines above and below the relevant `msgid` usage.
+   - This improves retrieval precision and avoids irrelevant surrounding code.  
+   - Implemented using Babel’s AST traversal logic.
 
-3. **Initial Testing of RAG Model**  
-   - Started testing the RAG system with real query samples from Music Blocks.
-   - Observed initial improvements in contextual relevance due to enriched metadata and refined chunks.
+3. **Initial Model Testing**  
+   - Started testing the RAG model using sample translation queries.
+   - Observed noticeable improvements in answer context relevance due to cleaner chunks and richer metadata.
 
 ---
 
 ## Challenges & How I Overcame Them
 
-- **Challenge:** Integrating part-of-speech tagging meaningfully into the RAG pipeline.  
-  **Solution:** Created a structured dictionary-based output that includes the msgid, msgstr, pos, and source metadata for every entry.
+- **Challenge:** Integrating POS tagging meaningfully into the RAG data pipeline.  
+  **Solution:** Designed a dictionary schema that includes the part-of-speech alongside translation metadata, and verified correctness using test entries.
 
-- **Challenge:** Deciding optimal chunk boundaries without losing semantic context.  
-  **Solution:** Followed mentor advice to use 5-line windows above and below relevant code, then verified accuracy by manual testing.
+- **Challenge:** Tuning chunk granularity without losing contextual utility.  
+  **Solution:** Followed mentor Walter’s advice to use fixed ±5 line windows, and manually verified semantic coherence of resulting chunks.
 
 ---
 
 ## Key Learnings
 
-- Better metadata, such as part-of-speech labels, can significantly improve the performance of retrieval-augmented models.
-- Small refinements in chunk size and structure can lead to clearer, more actionable context.
-- Collaborative iteration with mentor input is crucial in aligning technical decisions with practical outcomes.
+- Part-of-speech tagging can significantly improve the contextual strength of retrieved translations.
+- Smaller, focused code chunks often result in better retrieval precision for RAG applications.
+- Mentor feedback and collaborative iteration are key to refining both code structure and user outcomes.
 
 ---
 
-## Next Week’s Roadmap
+## Next Week's Roadmap
 
-- Integrate the refined RAG model into the full translation flow in Music Blocks.
-- Evaluate RAG accuracy with various translation strings, particularly ambiguous or reused ones.
-- Continue improving the fallback logic for missing translations using AI suggestions.
+- Integrate POS-tagged RAG responses into the full i18n fallback translation pipeline.
+- Expand test coverage to include edge-case translations and re-used `msgid`s.
+- Prepare an internal demo to show RAG-powered retrieval resolving contextually ambiguous translation strings.
 
 ---
 
 ## Resources & References
 
-- **Music Blocks Repository:** [github.com/your-org/musicblocks](https://github.com/your-org/musicblocks)  
-- **Babel AST Docs:** https://babeljs.io/docs/en/babel-parser  
-- **Part-of-Speech Tagging (spaCy):** https://spacy.io/usage/linguistic-features#pos-tagging  
-- **RAG Model Concepts:** https://arxiv.org/abs/2005.11401  
+- **Repository:** [github.com/sugarlabs/musicblocks](https://github.com/sugarlabs/musicblocks)
+- **RAG Concepts:** [arxiv.org/abs/2005.11401](https://arxiv.org/abs/2005.11401)
+- **Babel Parser Docs:** [babeljs.io/docs/en/babel-parser](https://babeljs.io/docs/en/babel-parser)
+- **spaCy POS Tagging:** [spacy.io/usage/linguistic-features#pos-tagging](https://spacy.io/usage/linguistic-features#pos-tagging)
 
 ---
 
 ## Acknowledgments
 
-Thanks to my mentor Walter Bender for his continued feedback and suggestions to improve retrieval relevance and model usability.
+Thanks to my mentor Walter Bender for his guidance on optimizing chunking strategy and enriching the retrieval logic with linguistic features.
 
 ---
 
