@@ -39,9 +39,9 @@ image: "assets/Images/GSOC.png"
 2. **Rendered Output Validation & Screenshots**  
    - Verified each visual brick against expected path geometry.  
    - Screenshots below show rendered bricks:
-        - ![Simple Brick](/assets/Images/simple-bricks.png)
-        - ![Brick with Arguments](/assets/Images/expression-bricks.png)
-        - ![Nested Brick](/assets/Images/nested-bricks.png)
+        ![Simple Brick](/assets/Images/simple-bricks.png)
+        ![Brick with Arguments](/assets/Images/expression-bricks.png)
+        ![Nested Brick](/assets/Images/nested-bricks.png)
 
 2. **Bug Fix: Left SVG Path Issue**
 
@@ -59,10 +59,10 @@ image: "assets/Images/GSOC.png"
 ## Challenges & How I Overcame Them
 
 - **Challenge:** Mapping the brick tree vs AST was initially confusing.
-  **Solution:** Spent focused time breaking down what each structure is supposed to represent and clarified use cases.
+**Solution:** Spent focused time breaking down what each structure is supposed to represent and clarified use cases.
 
 - **Challenge:** SVG left path errors were hard to trace visually.
-  **Solution:** Used visual diffing and debugger to narrow down bounding box and stroke-width miscalculations.
+**Solution:** Used visual diffing and debugger to narrow down bounding box and stroke-width miscalculations.
 
 ---
 
