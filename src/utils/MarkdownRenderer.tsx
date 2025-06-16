@@ -1,4 +1,5 @@
-import { useEffect, useMemo } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useMemo, useCallback } from 'react';
 import React, { Children } from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -9,36 +10,19 @@ import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 
-// Define TypeScript interfaces
+// Type definitions
 interface MarkdownRendererProps {
   content: string;
   setZoomableImages?: (images: HTMLImageElement[]) => void;
   frontmatter?: Record<string, string | number | boolean | null>;
 }
 
-// Extend the default rehypeSanitize schema to allow <mark> and <iframe> tags with necessary attributes
-const customSanitizeSchema = {
-  ...defaultSchema,
-  tagNames: [...(defaultSchema.tagNames || []), 'mark', 'iframe'],
-  attributes: {
-    ...defaultSchema.attributes,
-    mark: ['class'],
-    iframe: [
-      'src',
-      'allow',
-      'allowfullscreen',
-      'frameborder',
-      'title',
-      'style',
-    ],
-  },
-};
-
-// Emoji mapping for shortcode replacement
-const emojiMap: Record<string, string> = {
+// Constants
+const EMOJI_MAP: Record<string, string> = {
   ':smile:': '😊',
   ':heart:': '❤️',
   ':thumbsup:': '👍',
+  ':thumbsdown:': '👎',
   ':rocket:': '🚀',
   ':star:': '⭐',
   ':fire:': '🔥',
@@ -46,85 +30,231 @@ const emojiMap: Record<string, string> = {
   ':info:': 'ℹ️',
   ':check:': '✅',
   ':x:': '❌',
+  ':eyes:': '👀',
+  ':tada:': '🎉',
+  ':bug:': '🐛',
+  ':sparkles:': '✨',
+  ':wrench:': '🔧',
+  ':gear:': '⚙️',
+  ':bulb:': '💡',
+  ':package:': '📦',
+  ':memo:': '📝',
+  ':link:': '🔗',
+  ':lock:': '🔒',
+  ':unlock:': '🔓',
+  ':zap:': '⚡',
+  ':boom:': '💥',
+  ':computer:': '💻',
+  ':phone:': '📱',
+  ':email:': '📧',
+  ':calendar:': '📅',
+  ':clock:': '🕐',
+  ':house:': '🏠',
+  ':car:': '🚗',
+  ':plane:': '✈️',
+  ':coffee:': '☕',
+  ':pizza:': '🍕',
 };
 
+const ALERT_TYPES = {
+  note: {
+    icon: 'ℹ️',
+    bg: 'bg-blue-50 dark:bg-blue-900/20',
+    border: 'border-blue-200 dark:border-blue-800',
+    text: 'text-blue-800 dark:text-blue-200',
+  },
+  tip: {
+    icon: '💡',
+    bg: 'bg-green-50 dark:bg-green-900/20',
+    border: 'border-green-200 dark:border-green-800',
+    text: 'text-green-800 dark:text-green-200',
+  },
+  important: {
+    icon: '❗',
+    bg: 'bg-purple-50 dark:bg-purple-900/20',
+    border: 'border-purple-200 dark:border-purple-800',
+    text: 'text-purple-800 dark:text-purple-200',
+  },
+  warning: {
+    icon: '⚠️',
+    bg: 'bg-yellow-50 dark:bg-yellow-900/20',
+    border: 'border-yellow-200 dark:border-yellow-800',
+    text: 'text-yellow-800 dark:text-yellow-200',
+  },
+  caution: {
+    icon: '🚨',
+    bg: 'bg-red-50 dark:bg-red-900/20',
+    border: 'border-red-200 dark:border-red-800',
+    text: 'text-red-800 dark:text-red-200',
+  },
+};
+
+const CUSTOM_SANITIZE_SCHEMA = {
+  ...defaultSchema,
+  tagNames: [
+    ...(defaultSchema.tagNames || []),
+    'mark',
+    'iframe',
+    'details',
+    'summary',
+    'kbd',
+    'del',
+    'ins',
+    'figure',
+    'figcaption',
+  ],
+  attributes: {
+    ...defaultSchema.attributes,
+    mark: ['class', 'data-*'],
+    iframe: [
+      'src',
+      'allow',
+      'allowfullscreen',
+      'frameborder',
+      'title',
+      'style',
+      'width',
+      'height',
+      'loading',
+      'class',
+    ],
+    details: ['open', 'class'],
+    summary: ['class'],
+    kbd: ['class'],
+    figure: ['class'],
+    figcaption: ['class'],
+    div: ['class', 'style'],
+    '*': [
+      ...(defaultSchema.attributes?.['*'] || []),
+      'className',
+      'data-*',
+      'aria-*',
+    ],
+  },
+  protocols: { ...defaultSchema.protocols, src: ['http', 'https', 'data'] },
+};
+
+// Utility functions
 const processMarkdownContent = (content: string): string => {
   let processed = content;
 
-  Object.entries(emojiMap).forEach(([code, emoji]) => {
-    const escapedCode = code.replace(/[-\\/\\^$*+?.()|[\]{}]/g, '\\$&');
-    processed = processed.replace(new RegExp(escapedCode, 'g'), emoji);
+  // Replace emoji shortcodes
+  Object.entries(EMOJI_MAP).forEach(([code, emoji]) => {
+    processed = processed.replace(
+      new RegExp(code.replace(/[-\\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'),
+      emoji,
+    );
   });
 
+  // GitHub-style highlighting
   processed = processed.replace(
     /==([\s\S]*?)==/g,
-    '<mark class="bg-yellow-200 px-1 rounded">$1</mark>',
+    '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>',
   );
 
-  // Handle collapsible sections
+  // Keyboard shortcuts
+  processed = processed.replace(
+    /\[\[([^\]]+)\]\]/g,
+    '<kbd class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-300 rounded-lg shadow-sm dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600">$1</kbd>',
+  );
+
+  // Strikethrough
+  processed = processed.replace(
+    /~~([\s\S]*?)~~/g,
+    '<del class="line-through text-gray-500 dark:text-gray-400">$1</del>',
+  );
+
+  // Collapsible sections
   processed = processed.replace(
     /:::details\s+(.*?)\n([\s\S]*?):::/gim,
-    '<details class="my-4 border border-gray-200 rounded-lg overflow-hidden">' +
-      '<summary class="bg-gray-100 px-4 py-2 cursor-pointer font-medium text-gray-800 hover:bg-gray-200 transition-colors">$1</summary>' +
-      '<div class="px-4 py-3 text-gray-700">$2</div>' +
-      '</details>',
+    '<details class="my-4 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800">' +
+      '<summary class="bg-gray-50 dark:bg-gray-700 px-4 py-3 cursor-pointer font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors border-b border-gray-200 dark:border-gray-600">$1</summary>' +
+      '<div class="px-4 py-3 text-gray-700 dark:text-gray-300">$2</div></details>',
   );
 
-  // Updated YouTube embeds
+  // GitHub-style alerts
+  processed = processed.replace(
+    /:::(\w+)\s*(.*?)\n([\s\S]*?):::/gim,
+    (_, type, title, content) => {
+      const alert =
+        ALERT_TYPES[type as keyof typeof ALERT_TYPES] || ALERT_TYPES.note;
+      return `<div class="my-4 p-4 border-l-4 ${alert.border} ${alert.bg} rounded-r-lg">
+      <div class="flex items-center mb-2">
+        <span class="mr-2 text-lg">${alert.icon}</span>
+        <strong class="${alert.text} font-semibold uppercase text-sm tracking-wide">${type}${title ? `: ${title}` : ''}</strong>
+      </div>
+      <div class="${alert.text}">${content}</div>
+    </div>`;
+    },
+  );
+
+  // YouTube embeds
   processed = processed.replace(
     /\[youtube:\s*([\w-]+)\]/gim,
-    (_, videoId) => `
-<div class="my-8 mx-auto" style="max-width: 90%;">
-  <div class="rounded-xl shadow-lg overflow-hidden aspect-video">
-    <iframe 
-      src="https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0"
-      class="w-full h-full border-0 rounded-xl"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-      loading="eager"
-      title="YouTube video player">
-    </iframe>
-  </div>
-</div>
-`,
+    (_, videoId) =>
+      `<div class="my-8 mx-auto max-w-4xl"><div class="relative rounded-xl shadow-lg overflow-hidden bg-black" style="aspect-ratio: 16/9;">
+    <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1" class="absolute inset-0 w-full h-full border-0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" title="YouTube video player"></iframe></div></div>`,
+  );
+
+  // Math expressions
+  processed = processed.replace(
+    /\$\$([\s\S]*?)\$\$/g,
+    '<div class="math-display bg-gray-50 dark:bg-gray-800 p-4 rounded-lg my-4 text-center font-mono text-lg">$1</div>',
+  );
+  processed = processed.replace(
+    /\$([^$\n]+)\$/g,
+    '<span class="math-inline bg-gray-100 dark:bg-gray-700 px-1 rounded font-mono">$1</span>',
   );
 
   return processed;
 };
 
-const MarkdownRenderer = ({
+const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   content,
   setZoomableImages,
   frontmatter,
-}: MarkdownRendererProps) => {
+}) => {
   const processedContent = useMemo(
     () => processMarkdownContent(content),
     [content],
   );
-  useEffect(() => {
-    const handleCopyClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const button = target.closest(
-        '.copy-code-btn',
-      ) as HTMLButtonElement | null;
-      if (button) {
-        const code = button.getAttribute('data-code') || '';
-        navigator.clipboard.writeText(code).then(() => {
-          const successMessage = button.nextElementSibling as HTMLElement;
-          if (successMessage) {
-            successMessage.classList.remove('hidden');
-            setTimeout(() => {
-              successMessage.classList.add('hidden');
-            }, 2000);
-          }
-        });
-      }
-    };
 
-    document.addEventListener('click', handleCopyClick as EventListener);
-    return () =>
-      document.removeEventListener('click', handleCopyClick as EventListener);
+  const handleCopyClick = useCallback(async (e: MouseEvent) => {
+    const button = (e.target as HTMLElement).closest(
+      '.copy-code-btn',
+    ) as HTMLButtonElement | null;
+    if (!button) return;
+
+    const code = button.getAttribute('data-code') || '';
+
+    try {
+      await navigator.clipboard.writeText(code);
+      const successMessage = button.nextElementSibling as HTMLElement;
+      if (successMessage) {
+        successMessage.classList.remove('hidden');
+        successMessage.classList.add('flex');
+        setTimeout(() => {
+          successMessage.classList.add('hidden');
+          successMessage.classList.remove('flex');
+        }, 2000);
+      }
+    } catch {
+      const textArea = document.createElement('textarea');
+      textArea.value = code;
+      textArea.style.cssText = 'position:fixed;opacity:0;';
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    }
   }, []);
+
+  useEffect(() => {
+    document.addEventListener('click', handleCopyClick);
+    return () => document.removeEventListener('click', handleCopyClick);
+  }, [handleCopyClick]);
+
   useEffect(() => {
     if (setZoomableImages) {
       const images = document.querySelectorAll('img[data-zoomable="true"]');
@@ -132,150 +262,70 @@ const MarkdownRenderer = ({
     }
   }, [processedContent, setZoomableImages]);
 
+  // Component definitions with shared styles
+  const headingClasses = {
+    h1: 'text-3xl font-bold my-6 text-gray-900 dark:text-gray-100 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-2',
+    h2: 'text-2xl font-semibold my-5 text-gray-900 dark:text-gray-100 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-1',
+    h3: 'text-xl font-semibold my-4 text-gray-900 dark:text-gray-100 group flex items-center',
+    h4: 'text-lg font-semibold my-3 text-gray-900 dark:text-gray-100',
+    h5: 'text-base font-semibold my-3 text-gray-900 dark:text-gray-100',
+    h6: 'text-sm font-semibold my-3 text-gray-600 dark:text-gray-400 uppercase tracking-wide',
+  };
+
+  const linkIcon = (
+    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5z" />
+      <path d="M7.414 15.414a2 2 0 01-2.828-2.828l3-3a2 2 0 012.828 0 1 1 0 001.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5z" />
+    </svg>
+  );
+
+  const createHeading =
+    (level: keyof typeof headingClasses) =>
+    ({ children, ...props }: any) => {
+      const Tag = level;
+      return (
+        <Tag {...props} className={headingClasses[level]}>
+          {children}
+          {props.id && level <= 'h3' && (
+            <a
+              href={`#${props.id}`}
+              className="ml-2 text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
+              aria-label={`Permalink to ${children}`}
+            >
+              {linkIcon}
+            </a>
+          )}
+        </Tag>
+      );
+    };
+
   const components: Components = {
-    h1: ({ children, ...props }) => (
-      <h1
+    h1: createHeading('h1'),
+    h2: createHeading('h2'),
+    h3: createHeading('h3'),
+    h4: createHeading('h4'),
+    h5: createHeading('h5'),
+    h6: createHeading('h6'),
+
+    p: ({ children, ...props }) => (
+      <p
         {...props}
-        className="text-3xl font-bold my-6 text-gray-800 group flex items-center"
+        className="my-4 text-gray-700 dark:text-gray-300 leading-relaxed"
       >
         {children}
-        {props.id && (
-          <a
-            href={`#${props.id}`}
-            className="ml-2 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"
-            aria-hidden="true"
-            tabIndex={-1}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
-              <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
-            </svg>
-          </a>
-        )}
-      </h1>
+      </p>
     ),
-    h2: ({ children, ...props }) => (
-      <h2
+
+    blockquote: ({ children, ...props }) => (
+      <blockquote
         {...props}
-        className="text-2xl font-bold my-5 text-gray-800 group flex items-center"
+        className="border-l-4 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 pl-4 py-2 my-4 italic text-gray-700 dark:text-gray-300 rounded-r-md"
       >
         {children}
-        {props.id && (
-          <a
-            href={`#${props.id}`}
-            className="ml-2 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"
-            aria-hidden="true"
-            tabIndex={-1}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
-              <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
-            </svg>
-          </a>
-        )}
-      </h2>
+      </blockquote>
     ),
-    h3: ({ children, ...props }) => (
-      <h3
-        {...props}
-        className="text-xl font-bold my-4 text-gray-800 group flex items-center"
-      >
-        {children}
-        {props.id && (
-          <a
-            href={`#${props.id}`}
-            className="ml-2 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"
-            aria-hidden="true"
-            tabIndex={-1}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
-              <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
-            </svg>
-          </a>
-        )}
-      </h3>
-    ),
-    p: ({ node, children, ...props }) => {
-      const firstLine = node?.position?.start?.line;
-      if (
-        firstLine === 1 &&
-        Array.isArray(children) &&
-        children.length > 0 &&
-        typeof children[0] === 'string' &&
-        children[0].trim().length > 0
-      ) {
-        const firstChar = children[0].charAt(0);
-        const restOfText = children[0].slice(1);
-        return (
-          <p {...props} className="my-4 text-gray-700 leading-relaxed">
-            <span className="text-5xl float-left mr-3 font-serif text-blue-600 mt-1">
-              {firstChar}
-            </span>
-            {restOfText}
-            {children.slice(1)}
-          </p>
-        );
-      }
-      return (
-        <p {...props} className="my-4 text-gray-700 leading-relaxed">
-          {children}
-        </p>
-      );
-    },
-    blockquote: ({ node, children, ...props }) => {
-      interface ExtendedNode {
-        type: string;
-        parent?: ExtendedNode;
-      }
-      let nestingLevel = 0;
-      let currentNode: ExtendedNode | undefined = node as ExtendedNode;
-      while (currentNode && currentNode.parent) {
-        if (currentNode.parent.type === 'blockquote') {
-          nestingLevel++;
-        }
-        currentNode = currentNode.parent;
-      }
-      const borderColorClasses = ['border-green-400 bg-green-50'];
-      const borderClass =
-        borderColorClasses[nestingLevel % borderColorClasses.length];
-      const marginClass = nestingLevel > 0 ? 'ml-4' : '';
-      const nestIndicator =
-        nestingLevel > 0 ? (
-          <div className="absolute -left-2 top-0 bottom-0 flex items-center">
-            <div
-              className={`w-1 h-full ${borderClass.split(' ')[0].replace('border-', 'bg-')}`}
-            />
-          </div>
-        ) : null;
-      return (
-        <blockquote
-          {...props}
-          className={`border-l-4 ${borderClass} ${marginClass} pl-4 py-2 my-4 italic text-gray-700 rounded-r-md relative`}
-        >
-          {nestIndicator}
-          {children}
-        </blockquote>
-      );
-    },
+
+    // FIXED: Proper distinction between inline code and code blocks
     code: ({
       inline,
       className,
@@ -286,58 +336,77 @@ const MarkdownRenderer = ({
       className?: string;
       children?: React.ReactNode;
     }) => {
-      if (inline) {
+      // Check if it's truly inline code (single backticks) - no className means inline
+      const isInlineCode =
+        inline === true || (!className && typeof children === 'string');
+
+      if (isInlineCode) {
         return (
           <code
             {...props}
-            className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono"
+            className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200 dark:border-gray-700"
           >
             {children}
           </code>
         );
       }
+
+      // This is a code block (triple backticks) - has className or is explicitly not inline
       const codeText = Children.toArray(children).reduce(
         (acc, child) => (typeof child === 'string' ? acc + child : acc),
         '',
       );
+      const language = className?.replace('language-', '') || 'text';
+
       return (
-        <div className="relative rounded-lg overflow-hidden shadow-lg bg-gray-900 my-1 group">
-          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <button
-              className="copy-code-btn bg-gray-600 hover:bg-gray-700 text-white text-xs px-2 py-1 rounded shadow-sm flex items-center"
-              data-code={codeText}
-              onClick={(e) => e.stopPropagation()}
-              aria-label="Copy code"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                />
-              </svg>
-              Copy
-            </button>
-            <span className="copy-success-message hidden absolute top-[1px] bg-gray-600 text-white text-xs px-2 py-1 rounded shadow-sm">
-              Copied!
+        <div className="relative rounded-lg overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 my-4 group">
+          <div className="flex items-center justify-between px-4 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <span className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+              {language}
             </span>
+            <div className="flex items-center space-x-2">
+              <button
+                className="copy-code-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-xs px-3 py-1 rounded-md transition-colors flex items-center space-x-1"
+                data-code={codeText}
+                aria-label="Copy code to clipboard"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                  />
+                </svg>
+                <span>Copy</span>
+              </button>
+              <div className="copy-success-message hidden items-center space-x-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs px-3 py-1 rounded-md">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+                <span>Copied!</span>
+              </div>
+            </div>
           </div>
-          <div className="px-2 overflow-x-auto">
-            <pre className="px-3 py-7">
+          <div className="overflow-x-auto">
+            <pre className="p-4 text-sm leading-relaxed">
               <code
-                className={
-                  className
-                    ? `${className} font-mono text-sm text-gray-200 block whitespace-pre overflow-visible`
-                    : 'font-mono text-sm text-gray-200 block whitespace-pre overflow-visible'
-                }
-                style={{ lineHeight: 0.8 }}
+                className={`${className || ''} text-gray-800 dark:text-gray-200 font-mono block whitespace-pre`}
               >
                 {children}
               </code>
@@ -346,72 +415,64 @@ const MarkdownRenderer = ({
         </div>
       );
     },
+
     img: ({ src = '', alt = '', title, ...props }) => {
       const imageSrc =
-        src === '' && frontmatter?.image ? frontmatter.image : src;
+        src === '' && frontmatter?.image ? String(frontmatter.image) : src;
       return (
         <figure className="flex flex-col items-center my-6">
-          <div className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+          <div className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
             <img
               {...props}
-              src={String(imageSrc)}
+              src={imageSrc}
               alt={alt}
               title={title || alt || ''}
-              className="max-w-full sm:max-w-md md:max-w-lg rounded-lg object-contain max-h-80 hover:scale-105 transition-transform duration-300"
+              className="max-w-full h-auto rounded-lg object-contain hover:scale-105 transition-transform duration-300"
               data-zoomable="true"
               loading="lazy"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src =
+                  '/assets/Images/SugarNewsLogo.png';
+              }}
             />
           </div>
-          {title && (
-            <figcaption className="text-center text-sm text-gray-600 mt-2">
-              {title}
+          {(title || alt) && (
+            <figcaption className="text-center text-sm text-gray-600 dark:text-gray-400 mt-3 italic">
+              {title || alt}
             </figcaption>
           )}
         </figure>
       );
     },
-    sub: ({ children }) => <sub className="text-xs">{children}</sub>,
-    sup: ({ children }) => <sup className="text-xs">{children}</sup>,
-    mark: ({ children }) => (
-      <mark className="bg-yellow-200 px-1 rounded">{children}</mark>
-    ),
-    details: ({ children, ...props }) => (
-      <details
-        className="my-4 border border-gray-200 rounded-lg overflow-hidden"
-        {...props}
-      >
-        {children}
-      </details>
-    ),
-    summary: ({ children }) => (
-      <summary className="bg-gray-100 px-4 py-2 cursor-pointer font-medium text-gray-800 hover:bg-gray-200 transition-colors">
-        {children}
-      </summary>
-    ),
+
     table: ({ children, ...props }) => (
-      <div className="overflow-x-auto my-6 rounded-lg shadow">
+      <div className="overflow-x-auto my-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <table
           {...props}
-          className="min-w-full border border-gray-200 divide-y divide-gray-200"
+          className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
         >
           {children}
         </table>
       </div>
     ),
+
     thead: ({ children, ...props }) => (
-      <thead {...props} className="bg-gray-50">
+      <thead {...props} className="bg-gray-50 dark:bg-gray-800">
         {children}
       </thead>
     ),
     tbody: ({ children, ...props }) => (
-      <tbody {...props} className="bg-white divide-y divide-gray-200">
+      <tbody
+        {...props}
+        className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700"
+      >
         {children}
       </tbody>
     ),
     tr: ({ children, ...props }) => (
       <tr
         {...props}
-        className="hover:bg-gray-100 transition-colors duration-150"
+        className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
       >
         {children}
       </tr>
@@ -419,7 +480,7 @@ const MarkdownRenderer = ({
     th: ({ children, ...props }) => (
       <th
         {...props}
-        className="px-4 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-r last:border-r-0 border-gray-200"
+        className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider border-r last:border-r-0 border-gray-200 dark:border-gray-700"
       >
         {children}
       </th>
@@ -427,66 +488,127 @@ const MarkdownRenderer = ({
     td: ({ children, ...props }) => (
       <td
         {...props}
-        className="px-4 py-3 whitespace-normal text-sm text-gray-700 border-r last:border-r-0 border-gray-200"
+        className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 border-r last:border-r-0 border-gray-200 dark:border-gray-700"
       >
         {children}
       </td>
     ),
+
     ul: ({ children, ...props }) => (
-      <ul {...props} className="list-disc pl-6 my-4">
+      <ul {...props} className="list-disc pl-6 my-4 space-y-1">
         {children}
       </ul>
     ),
     ol: ({ children, ...props }) => (
-      <ol {...props} className="list-decimal pl-6 my-4">
+      <ol {...props} className="list-decimal pl-6 my-4 space-y-1">
         {children}
       </ol>
     ),
     li: ({ children, ...props }) => (
-      <li {...props} className="mb-1 text-gray-700">
+      <li
+        {...props}
+        className="text-gray-700 dark:text-gray-300 leading-relaxed"
+      >
         {children}
       </li>
     ),
-    a: ({ href = '#', children, ...props }) => (
-      <a
-        href={href}
-        {...props}
-        className="text-blue-600 hover:underline transition-colors duration-200"
-        target={href?.startsWith('http') ? '_blank' : undefined}
-        rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
-      >
-        {children}
-      </a>
-    ),
+
+    a: ({ href = '#', children, ...props }) => {
+      const isExternal = href?.startsWith('http');
+      return (
+        <a
+          href={href}
+          {...props}
+          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline transition-colors font-medium"
+          target={isExternal ? '_blank' : undefined}
+          rel={isExternal ? 'noopener noreferrer' : undefined}
+        >
+          {children}
+          {isExternal && (
+            <svg
+              className="inline w-3 h-3 ml-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              />
+            </svg>
+          )}
+        </a>
+      );
+    },
+
     strong: ({ children, ...props }) => (
-      <strong {...props} className="font-bold">
+      <strong
+        {...props}
+        className="font-semibold text-gray-900 dark:text-gray-100"
+      >
         {children}
       </strong>
     ),
     em: ({ children, ...props }) => (
-      <em {...props} className="italic">
+      <em {...props} className="italic text-gray-700 dark:text-gray-300">
         {children}
       </em>
     ),
+    del: ({ children, ...props }) => (
+      <del {...props} className="line-through text-gray-500 dark:text-gray-400">
+        {children}
+      </del>
+    ),
     hr: ({ ...props }) => (
-      <hr {...props} className="my-8 border-t border-gray-300" />
+      <hr
+        {...props}
+        className="my-8 border-t border-gray-300 dark:border-gray-600"
+      />
     ),
     input: ({ ...props }) => (
       <input
         {...props}
         disabled
-        className="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
+        className="form-checkbox h-4 w-4 text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 mr-2"
       />
+    ),
+
+    sub: ({ children }) => <sub className="text-xs">{children}</sub>,
+    sup: ({ children }) => <sup className="text-xs">{children}</sup>,
+    mark: ({ children }) => (
+      <mark className="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">
+        {children}
+      </mark>
+    ),
+    kbd: ({ children }) => (
+      <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-300 rounded-lg shadow-sm dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600">
+        {children}
+      </kbd>
+    ),
+    details: ({ children, ...props }) => (
+      <details
+        className="my-4 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800"
+        {...props}
+      >
+        {children}
+      </details>
+    ),
+    summary: ({ children }) => (
+      <summary className="bg-gray-50 dark:bg-gray-700 px-4 py-3 cursor-pointer font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors border-b border-gray-200 dark:border-gray-600">
+        {children}
+      </summary>
     ),
   };
 
   return (
-    <div className="prose prose-lg max-w-none">
+    <div className="prose prose-lg max-w-none dark:prose-invert">
       <ReactMarkdown
         remarkPlugins={[remarkFrontmatter, remarkGfm, remarkSupersub]}
         rehypePlugins={[
           rehypeRaw,
-          [rehypeSanitize, customSanitizeSchema],
+          [rehypeSanitize, CUSTOM_SANITIZE_SCHEMA],
           rehypeSlug,
           [rehypeAutolinkHeadings, { behavior: 'wrap' }],
         ]}
