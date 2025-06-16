@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import ShareModal from '@/components/ShareModal';
+import { Share2 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPostBySlug, Post } from '@/utils/posts-utils';
 import { motion } from 'framer-motion';
@@ -7,6 +9,8 @@ import Footer from '@/sections/Footer';
 import MarkdownRenderer from '@/utils/MarkdownRenderer';
 
 const NewsDetailPage: React.FC = () => {
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+
   const { slug, category } = useParams<{ slug?: string; category?: string }>();
   const navigate = useNavigate();
   const [post, setPost] = useState<Post | null>(null);
@@ -93,6 +97,23 @@ const NewsDetailPage: React.FC = () => {
     document.body.classList.remove('overflow-hidden');
   }, []);
 
+  const handleTagClick = useCallback(
+    (tag: string) => {
+      navigate(`/tags/${tag}`);
+    },
+    [navigate],
+  );
+
+  const handleAuthorClick = useCallback(() => {
+    if (post?.author?.slug) {
+      navigate(`/authors/${post.author.slug}`);
+    }
+  }, [navigate, post]);
+
+  const handleShareClick = () => {
+    setShareModalOpen(true);
+  };
+
   if (isLoading && !post) {
     return (
       <>
@@ -168,9 +189,17 @@ const NewsDetailPage: React.FC = () => {
               {post.category}
             </span>
           )}
-          <h1 className="text-4xl font-bold mb-4 text-gray-800">
-            {post.title}
-          </h1>
+          <div className="flex items-center gap-3 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900">{post.title}</h1>
+            <button
+              onClick={handleShareClick}
+              className="p-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow hover:from-blue-700 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 cursor-pointer"
+              title="Share"
+              type="button"
+            >
+              <Share2 size={16} className="text-white" />
+            </button>
+          </div>
           <div className="flex flex-wrap items-center text-gray-500 mb-3">
             {post.date && (
               <>
@@ -196,7 +225,10 @@ const NewsDetailPage: React.FC = () => {
               </>
             )}
             {post.author && (
-              <span className="flex items-center">
+              <span
+                className="flex items-center cursor-pointer hover:text-blue-600 transition-colors"
+                onClick={handleAuthorClick}
+              >
                 <svg
                   className="w-4 h-4 mr-1"
                   fill="none"
@@ -212,7 +244,7 @@ const NewsDetailPage: React.FC = () => {
                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                   />
                 </svg>
-                {post.author}
+                {post.author.name}
               </span>
             )}
           </div>
@@ -221,7 +253,8 @@ const NewsDetailPage: React.FC = () => {
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
+                  onClick={() => handleTagClick(tag)}
+                  className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md hover:bg-blue-100 hover:text-blue-700 cursor-pointer transition-colors"
                 >
                   #{tag}
                 </span>
@@ -269,19 +302,34 @@ const NewsDetailPage: React.FC = () => {
 
         {/* Author Bio Section */}
         {post.author && (
-          <div className="bg-blue-50 rounded-lg p-6 my-8 flex items-center space-x-4">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl">
-              {post.author.charAt(0).toUpperCase()}
+          <motion.div
+            className="bg-blue-50 rounded-lg p-6 my-8 flex items-center space-x-4 cursor-pointer hover:bg-blue-100 transition-colors"
+            onClick={handleAuthorClick}
+            whileHover={{ scale: 1.02 }}
+          >
+            <div className="w-16 h-16 flex-shrink-0">
+              {post.author.avatar ? (
+                <img
+                  src={post.author.avatar}
+                  alt={post.author.name}
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl">
+                  {post.author.name.charAt(0).toUpperCase()}
+                </div>
+              )}
             </div>
-            <div>
-              <h4 className="font-semibold text-lg text-gray-800">
-                About {post.author}
+            <div className="flex-1">
+              <h4 className="font-semibold text-lg text-gray-800 hover:text-blue-600 transition-colors">
+                About {post.author.name}
               </h4>
-              <p className="text-gray-600 mt-1">
-                {post.description || 'Author at SugarLabs'}
+              <p className="text-gray-600 mt-1">{post.author.description}</p>
+              <p className="text-sm text-blue-600 mt-2">
+                Click to view profile →
               </p>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Tags Section */}
@@ -292,7 +340,8 @@ const NewsDetailPage: React.FC = () => {
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 cursor-pointer transition-colors"
+                  onClick={() => handleTagClick(tag)}
+                  className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-blue-100 hover:text-blue-700 cursor-pointer transition-colors"
                 >
                   #{tag}
                 </span>
@@ -365,6 +414,17 @@ const NewsDetailPage: React.FC = () => {
           </div>
         </motion.div>
       )}
+      <ShareModal
+        open={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        url={
+          post
+            ? `${window.location.origin}/news/${category || 'all'}/${post.slug}`
+            : ''
+        }
+        title={post?.title || ''}
+        excerpt={post?.excerpt || ''}
+      />
       <Footer />
     </>
   );

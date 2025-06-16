@@ -1,7 +1,8 @@
 /**
- * Blog post utility functions
- * Handles post-specific functionality like loading and parsing blog posts
+ * Blog post utility functions - Updated with author support
  */
+
+import { parseAuthorReference, AuthorReference } from '@/utils/author-utils';
 
 export interface Post {
   id: string;
@@ -11,8 +12,7 @@ export interface Post {
   category: string;
   date: string;
   slug: string;
-  author: string;
-  description: string;
+  author: AuthorReference | null;
   tags: string[];
   image: string;
 }
@@ -22,47 +22,71 @@ export interface Post {
  */
 export const parseFrontmatter = (
   content: string,
-): { frontmatter: { [key: string]: string | string[] }; content: string } => {
+): {
+  frontmatter: Record<string, string | string[]>;
+  content: string;
+} => {
   const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
   const match = frontmatterRegex.exec(content);
 
-  if (!match) {
-    return { frontmatter: {}, content };
-  }
+  if (!match) return { frontmatter: {}, content };
 
-  const frontmatterString = match[1];
-  const mainContent = match[2];
-
-  // Parse frontmatter
+  const [, frontmatterString, mainContent] = match;
   const frontmatter: Record<string, string | string[]> = {};
-  const lines = frontmatterString.split('\n');
 
-  for (const line of lines) {
+  frontmatterString.split('\n').forEach((line) => {
     const colonIndex = line.indexOf(':');
-    if (colonIndex !== -1) {
-      const key = line.slice(0, colonIndex).trim();
-      let value = line.slice(colonIndex + 1).trim();
-      if (
-        (value.startsWith('"') && value.endsWith('"')) ||
-        (value.startsWith("'") && value.endsWith("'"))
-      ) {
-        value = value.slice(1, -1);
-      }
-      if (key === 'tags' && value) {
-        const tagsArray = value.split(',').map((tag) => tag.trim());
-        frontmatter[key] = tagsArray;
-      } else {
-        frontmatter[key] = value;
-      }
+    if (colonIndex === -1) return;
+
+    const key = line.slice(0, colonIndex).trim();
+    let value = line.slice(colonIndex + 1).trim();
+
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
     }
-  }
+
+    frontmatter[key] =
+      key === 'tags' && value
+        ? value.split(',').map((tag) => tag.trim())
+        : value;
+  });
 
   return { frontmatter, content: mainContent };
 };
 
 /**
- * Fetch and parse all markdown blog posts
- * If `category` is passed, filters the result by exact match.
+ * Convert frontmatter value to string with fallback
+ */
+const frontmatterToString = (
+  value: string | string[] | undefined,
+  fallback = '',
+): string =>
+  Array.isArray(value) ? value.join(' ').trim() : value?.trim() || fallback;
+
+/**
+ * Process image URL with validation and fallback
+ */
+const processImageUrl = (imageValue: string | string[] | undefined): string => {
+  let imageUrl = frontmatterToString(
+    imageValue,
+    '/assets/Images/SugarNewsLogo.png',
+  );
+
+  if (
+    imageUrl !== '/assets/Images/SugarNewsLogo.png' &&
+    !/^https?:\/\//.test(imageUrl)
+  ) {
+    imageUrl = '/' + imageUrl.replace(/^\/+/, '');
+  }
+
+  return imageUrl;
+};
+
+/**
+ * Fetch and parse all markdown blog posts with author support
  */
 export const fetchMarkdownPosts = async (
   category?: string,
@@ -86,50 +110,27 @@ export const fetchMarkdownPosts = async (
         );
         const fileName = filePath.split('/').pop()?.replace('.md', '') || '';
 
-        let imageUrl: string;
-        if (Array.isArray(frontmatter.image)) {
-          imageUrl = frontmatter.image.join(' ').trim();
-        } else if (frontmatter.image) {
-          imageUrl = frontmatter.image.trim();
-        } else {
-          imageUrl = '/assets/Images/SugarNewsLogo.png';
-        }
-        if (!/^https?:\/\//.test(imageUrl)) {
-          imageUrl = '/' + imageUrl.replace(/^\/+/, '');
-        }
+        // Parse author reference
+        const author = await parseAuthorReference(
+          frontmatterToString(frontmatter.author),
+          frontmatterToString(frontmatter.description),
+        );
 
         const post: Post = {
           id: fileName,
-          title: Array.isArray(frontmatter.title)
-            ? frontmatter.title.join(' ')
-            : frontmatter.title || 'Untitled',
-          excerpt: Array.isArray(frontmatter.excerpt)
-            ? frontmatter.excerpt.join(' ')
-            : frontmatter.excerpt || '',
+          title: frontmatterToString(frontmatter.title, 'Untitled'),
+          excerpt: frontmatterToString(frontmatter.excerpt),
           content,
-          category: Array.isArray(frontmatter.category)
-            ? frontmatter.category.join(' ').trim()
-            : frontmatter.category
-              ? frontmatter.category.trim()
-              : 'UNCATEGORIZED',
-          date: Array.isArray(frontmatter.date)
-            ? frontmatter.date.join(' ')
-            : frontmatter.date || 'No date',
-          slug: Array.isArray(frontmatter.slug)
-            ? frontmatter.slug.join(' ')
-            : frontmatter.slug || fileName,
-          author: Array.isArray(frontmatter.author)
-            ? frontmatter.author.join(' ')
-            : frontmatter.author || 'Sugar Labs',
-          description: Array.isArray(frontmatter.description)
-            ? frontmatter.description.join(' ')
-            : frontmatter.description || 'Writer and contributor at Sugar Labs',
+          category: frontmatterToString(frontmatter.category, 'UNCATEGORIZED'),
+          date: frontmatterToString(frontmatter.date, 'No date'),
+          slug: frontmatterToString(frontmatter.slug, fileName),
+          author,
           tags: Array.isArray(frontmatter.tags)
             ? frontmatter.tags
             : frontmatter.tags
               ? [frontmatter.tags]
               : [],
-          image: imageUrl,
+          image: processImageUrl(frontmatter.image),
         };
 
         allPosts.push(post);
@@ -138,14 +139,12 @@ export const fetchMarkdownPosts = async (
       }
     }
 
-    // Sort posts by date (newest first)
     const sortedPosts = allPosts.sort((a, b) => {
       const dateA = new Date(a.date).getTime() || 0;
       const dateB = new Date(b.date).getTime() || 0;
       return dateB - dateA;
     });
 
-    // Filter by category if specified
     return category
       ? sortedPosts.filter((post) => post.category === category)
       : sortedPosts;
@@ -156,28 +155,55 @@ export const fetchMarkdownPosts = async (
 };
 
 /**
- * Get a single post by its slug
+ * Get posts by author slug
  */
+export const getPostsByAuthor = async (authorSlug: string): Promise<Post[]> => {
+  const allPosts = await fetchMarkdownPosts();
+  return allPosts.filter((post) => post.author?.slug === authorSlug);
+};
+
+/**
+ * Get posts by tag
+ */
+export const getPostsByTag = async (tag: string): Promise<Post[]> => {
+  const allPosts = await fetchMarkdownPosts();
+  return allPosts.filter((post) =>
+    post.tags.some((postTag) => postTag.toLowerCase() === tag.toLowerCase()),
+  );
+};
+
+/**
+ * Get all unique tags from posts
+ */
+export const getAllTags = async (): Promise<string[]> => {
+  const allPosts = await fetchMarkdownPosts();
+  const tagSet = new Set<string>();
+
+  allPosts.forEach((post) => {
+    post.tags.forEach((tag) => tagSet.add(tag));
+  });
+
+  return Array.from(tagSet).sort();
+};
+
+// ... rest of the existing functions remain the same
 export const getPostBySlug = async (slug: string): Promise<Post | null> => {
   const allPosts = await fetchMarkdownPosts();
   return allPosts.find((post) => post.slug === slug) || null;
 };
 
-export const getAllPosts = async (): Promise<Post[]> => {
-  return fetchMarkdownPosts();
-};
+export const getAllPosts = async (): Promise<Post[]> => fetchMarkdownPosts();
 
 export const groupPostsByCategory = (posts: Post[]): Record<string, Post[]> => {
-  const map: Record<string, Post[]> = {};
+  const categoryMap: Record<string, Post[]> = { All: posts };
 
   posts.forEach((post) => {
-    const cat = post.category || 'UNCATEGORIZED';
-    if (!map[cat]) {
-      map[cat] = [];
+    const category = post.category || 'UNCATEGORIZED';
+    if (!categoryMap[category]) {
+      categoryMap[category] = [];
     }
-    map[cat].push(post);
+    categoryMap[category].push(post);
   });
 
-  map['All'] = posts;
-  return map;
+  return categoryMap;
 };
