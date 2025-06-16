@@ -1,10 +1,15 @@
-import { Variants } from 'framer-motion';
+import { Variants, Easing } from 'framer-motion';
+
+// Define proper easing functions
+const easeOut: Easing = [0.22, 1, 0.36, 1];
+const easeInOut: Easing = [0.4, 0, 0.2, 1];
+const backOut: Easing = [0.175, 0.885, 0.32, 1.275];
 
 export const fadeIn: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 0.6, ease: 'easeOut' },
+    transition: { duration: 0.6, ease: easeOut },
   },
 };
 
@@ -13,7 +18,7 @@ export const slideInLeft: Variants = {
   visible: {
     x: 0,
     opacity: 1,
-    transition: { duration: 0.6, ease: 'easeOut' },
+    transition: { duration: 0.6, ease: easeOut },
   },
 };
 
@@ -22,7 +27,7 @@ export const slideInRight: Variants = {
   visible: {
     x: 0,
     opacity: 1,
-    transition: { duration: 0.6, ease: 'easeOut' },
+    transition: { duration: 0.6, ease: easeOut },
   },
 };
 
@@ -31,7 +36,7 @@ export const slideInBottom: Variants = {
   visible: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.6, ease: 'easeOut' },
+    transition: { duration: 0.6, ease: easeOut },
   },
 };
 
@@ -41,7 +46,7 @@ export const bounce: Variants = {
     scale: 1,
     opacity: 1,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       stiffness: 400,
       damping: 10,
     },
@@ -49,7 +54,7 @@ export const bounce: Variants = {
   hover: {
     scale: 1.05,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       stiffness: 400,
       damping: 10,
     },
@@ -88,7 +93,7 @@ export const simpleFadeIn: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 0.8, ease: 'easeOut' },
+    transition: { duration: 0.8, ease: easeOut },
   },
 };
 
@@ -97,7 +102,7 @@ export const subtleRise: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: 'easeOut' },
+    transition: { duration: 0.7, ease: easeOut },
   },
 };
 
@@ -119,7 +124,7 @@ export const numberCounter: Variants = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: 'easeOut',
+      ease: easeOut,
     },
   },
 };
@@ -136,7 +141,7 @@ export const statCard: Variants = {
     scale: 1,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
+      ease: easeOut,
     },
   },
   hover: {
@@ -169,7 +174,7 @@ export const headerReveal: Variants = {
     y: 0,
     transition: {
       duration: 0.7,
-      ease: 'easeOut',
+      ease: easeOut,
     },
   },
 };
@@ -201,7 +206,7 @@ export const testimonialCard: Variants = {
     scale: 1,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
+      ease: easeOut,
     },
   },
   hover: {
@@ -209,7 +214,7 @@ export const testimonialCard: Variants = {
     boxShadow:
       '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       stiffness: 400,
       damping: 15,
     },
@@ -226,7 +231,7 @@ export const testimonialHeading: Variants = {
     scale: 1,
     transition: {
       duration: 0.7,
-      ease: 'easeOut',
+      ease: easeOut,
     },
   },
 };
@@ -242,7 +247,7 @@ export const decorativeElement: Variants = {
     scale: 1,
     rotate: 0,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       stiffness: 300,
       damping: 15,
     },
@@ -253,7 +258,7 @@ export const decorativeElement: Variants = {
       duration: 3,
       repeat: Infinity,
       repeatType: 'reverse',
-      ease: 'easeInOut',
+      ease: easeInOut,
     },
   },
 };
@@ -280,7 +285,7 @@ export const avatarReveal: Variants = {
     scale: 1,
     opacity: 1,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       stiffness: 400,
       damping: 15,
     },
@@ -318,7 +323,7 @@ export const item = {
     opacity: 1,
     transition: {
       duration: 0.8,
-      ease: [0.22, 1, 0.36, 1],
+      ease: easeOut,
     },
   },
   hover: {
@@ -334,7 +339,7 @@ export const goalSectionAnimations = {
     hidden: { width: 0 },
     visible: (percent: number) => ({
       width: `${percent}%`,
-      transition: { duration: 1, ease: 'easeOut' },
+      transition: { duration: 1, ease: easeOut },
     }),
   },
   flowContainer: subtleRise,
@@ -344,7 +349,7 @@ export const goalSectionAnimations = {
     hidden: { width: 0 },
     visible: (percent: number) => ({
       width: `${percent}%`,
-      transition: { duration: 1.5, ease: 'easeOut' },
+      transition: { duration: 1.5, ease: easeOut },
     }),
   },
 };
@@ -362,7 +367,7 @@ export const heroAnimations = {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
+      transition: { duration: 0.6, ease: easeOut },
     },
   },
   decoration: {
@@ -370,7 +375,7 @@ export const heroAnimations = {
     visible: {
       scale: 1,
       opacity: 1,
-      transition: { duration: 0.8, ease: 'backOut' },
+      transition: { duration: 0.8, ease: backOut },
     },
   },
   subtitle: {
@@ -393,7 +398,7 @@ export const heroAnimations = {
     initial: {},
     hover: {
       scale: 1.05,
-      transition: { type: 'spring', stiffness: 300 },
+      transition: { type: 'spring' as const, stiffness: 300 },
     },
   },
   mouseFollow: {
@@ -430,7 +435,7 @@ export const missionSectionAnimations = {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: 'easeOut',
+        ease: easeOut,
       },
     },
   },
@@ -439,7 +444,7 @@ export const missionSectionAnimations = {
   mainImageVariants: {
     initial: { opacity: 0, scale: 0.95 },
     whileInView: { opacity: 1, scale: 1 },
-    transition: { duration: 0.6, ease: 'easeOut' },
+    transition: { duration: 0.6, ease: easeOut },
     hover: {
       scale: 1.03,
       transition: { duration: 0.4 },
@@ -573,7 +578,7 @@ export const projectsSectionAnimations = {
       transition: {
         delay: i * 0.1,
         duration: 0.5,
-        ease: 'easeOut',
+        ease: easeOut,
       },
     }),
     hover: {
@@ -617,7 +622,7 @@ export const roadmapSectionAnimations = {
     hidden: { width: 0 },
     visible: {
       width: '100%',
-      transition: { duration: 1.2, ease: 'easeInOut' },
+      transition: { duration: 1.2, ease: easeInOut },
     },
   },
 
@@ -659,7 +664,7 @@ export const roadmapSectionAnimations = {
     visible: (i: number) => ({
       scale: 1,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 300,
         damping: 10,
         delay: i * 0.3 + 0.3,
@@ -684,7 +689,7 @@ export const dividerVariants = {
     transition: {
       duration: 0.8,
       delay: 0.3,
-      ease: 'easeOut',
+      ease: easeOut,
     },
   },
 };
@@ -695,7 +700,7 @@ export const faqPageAnimations = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { duration: 0.6, ease: 'easeOut' },
+      transition: { duration: 0.6, ease: easeOut },
     },
   },
 
@@ -705,7 +710,7 @@ export const faqPageAnimations = {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: 'easeOut' },
+      transition: { duration: 0.7, ease: easeOut },
     },
   },
 
@@ -714,7 +719,7 @@ export const faqPageAnimations = {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: 'easeOut', delay: 0.2 },
+      transition: { duration: 0.7, ease: easeOut, delay: 0.2 },
     },
   },
 
@@ -724,7 +729,7 @@ export const faqPageAnimations = {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
+      transition: { duration: 0.6, ease: easeOut },
     },
     hover: {
       scale: 1.03,
@@ -751,7 +756,7 @@ export const faqPageAnimations = {
       scale: 1,
       opacity: 1,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 400,
         damping: 10,
       },
@@ -759,7 +764,7 @@ export const faqPageAnimations = {
     hover: {
       scale: 1.05,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 400,
         damping: 10,
       },
@@ -801,7 +806,7 @@ export const faqPageAnimations = {
       transition: {
         duration: 0.8,
         delay: index * 0.1,
-        ease: [0.22, 1, 0.36, 1],
+        ease: easeOut,
       },
     }),
   },
@@ -812,7 +817,7 @@ export const faqPageAnimations = {
     hover: {
       x: 5,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 300,
       },
     },
@@ -837,13 +842,14 @@ export const faqPageAnimations = {
     },
   }),
 };
+
 export const teamSectionAnimations = {
   section: {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.8, ease: easeOut },
     },
   },
 
@@ -852,7 +858,7 @@ export const teamSectionAnimations = {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 },
+      transition: { duration: 0.6, ease: easeOut, delay: 0.2 },
     },
   },
 
@@ -861,7 +867,7 @@ export const teamSectionAnimations = {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.6, ease: 'easeOut' },
+      transition: { duration: 0.6, ease: easeOut },
     },
   },
 
@@ -870,17 +876,18 @@ export const teamSectionAnimations = {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.6, ease: 'easeOut', delay: 0.3 },
+      transition: { duration: 0.6, ease: easeOut, delay: 0.3 },
     },
   },
 };
+
 export const paragraphAnimations = {
   section: {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
+      transition: { duration: 0.6, ease: easeOut },
     },
   },
 
@@ -889,7 +896,7 @@ export const paragraphAnimations = {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.4, ease: 'easeOut' },
+      transition: { duration: 0.4, ease: easeOut },
     },
   },
 
@@ -909,13 +916,14 @@ export const paragraphAnimations = {
     },
   },
 };
+
 export const numberedCardAnimations = {
   card: {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
+      transition: { duration: 0.6, ease: easeOut },
     },
     hover: {
       scale: 1.05,
@@ -938,13 +946,14 @@ export const numberedCardAnimations = {
     },
   },
 };
+
 export const logoCardAnimations = {
   card: {
     hidden: { opacity: 0, y: 50 },
     visible: (index: number) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: 'easeOut', delay: index * 0.15 },
+      transition: { duration: 0.6, ease: easeOut, delay: index * 0.15 },
     }),
     hover: {
       scale: 1.05,
@@ -965,13 +974,14 @@ export const logoCardAnimations = {
     tap: { scale: 0.95 },
   },
 };
+
 export const featureSectionAnimations = {
   section: {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.8, ease: easeOut },
     },
   },
 
@@ -980,7 +990,7 @@ export const featureSectionAnimations = {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.8, ease: easeOut },
     },
   },
 
@@ -989,7 +999,7 @@ export const featureSectionAnimations = {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.8, ease: easeOut },
     },
   },
 
@@ -998,13 +1008,16 @@ export const featureSectionAnimations = {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.5, ease: 'easeOut' },
+      transition: { duration: 0.5, ease: easeOut },
     },
     hover: { scale: 1.05, transition: { duration: 0.3 } },
   },
 
   button: {
-    hover: { scale: 1.3, transition: { type: 'spring', stiffness: 300 } },
+    hover: {
+      scale: 1.3,
+      transition: { type: 'spring' as const, stiffness: 300 },
+    },
   },
 
   note: {
@@ -1016,13 +1029,14 @@ export const featureSectionAnimations = {
 export const buttonAnimation: Variants = {
   whileHover: {
     scale: 1.05,
-    transition: { type: 'spring', stiffness: 400, damping: 10 },
+    transition: { type: 'spring' as const, stiffness: 400, damping: 10 },
   },
   whileTap: {
     scale: 0.95,
-    transition: { type: 'spring', stiffness: 400, damping: 10 },
+    transition: { type: 'spring' as const, stiffness: 400, damping: 10 },
   },
 };
+
 export const fadeInUpAnimation: Variants = {
   initial: { opacity: 0, y: 30 },
   animate: {
@@ -1031,50 +1045,114 @@ export const fadeInUpAnimation: Variants = {
     transition: {
       delay: 0.2,
       duration: 1.5,
-      ease: 'easeOut',
+      ease: easeOut,
     },
   },
 };
+
 export const zoomFadeInAnimation: Variants = {
-  initial: { opacity: 0, scale: 0.9 }, // Start with a slight shrink and hidden
+  initial: { opacity: 0, scale: 0.9 },
   animate: {
     opacity: 1,
-    scale: 1, // Smoothly zoom to normal size
+    scale: 1,
     transition: {
-      delay: 1, // Starts after 2 seconds (optional, tweak as needed)
-      duration: 1.5, // Takes 1.5 seconds
-      ease: 'easeOut',
+      delay: 1,
+      duration: 1.5,
+      ease: easeOut,
     },
   },
 };
+
 export const zoomInAnimation = {
   initial: { scale: 0.8, opacity: 0 },
   animate: {
     scale: 1,
     opacity: 1,
-    transition: { duration: 0.8, ease: 'easeOut' },
+    transition: { duration: 0.8, ease: easeOut },
   },
 };
+
 export const fadeInDelayed = {
   initial: { opacity: 0, y: 50 },
   animate: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: 'easeOut', delay: 0.5 },
+    transition: { duration: 0.8, ease: easeOut, delay: 0.5 },
   },
 };
+
 export const cardFadeIn = {
   hidden: { opacity: 0, y: 40 },
   visible: (index: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: 'easeOut', delay: index * 0.2 }, // Stagger effect
+    transition: { duration: 0.6, ease: easeOut, delay: index * 0.2 },
   }),
 };
+
 export const lineAnimation = {
   hidden: { height: 0 },
   visible: {
     height: '100%',
-    transition: { duration: 1.5, ease: 'easeInOut' },
+    transition: { duration: 1.5, ease: easeInOut },
+  },
+};
+
+export const floatUpAndFade = {
+  hidden: {
+    opacity: 0,
+    y: 60,
+    scale: 0.8,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 1.2,
+      ease: easeOut,
+      type: 'spring' as const,
+      damping: 25,
+      stiffness: 100,
+    },
+  },
+};
+
+export const floatUpAndFadeDelayed = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+    scale: 0.9,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 1.0,
+      ease: easeOut,
+      delay: 0.3,
+      type: 'spring' as const,
+      damping: 20,
+      stiffness: 120,
+    },
+  },
+};
+
+export const iconFloat = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+    rotate: -10,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotate: 0,
+    transition: {
+      duration: 0.8,
+      ease: easeOut,
+      delay: 0.6,
+    },
   },
 };

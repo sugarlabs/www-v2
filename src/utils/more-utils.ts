@@ -1,6 +1,6 @@
 /**
  * More page utility functions
- * Handles more page-specific functionality like loading and parsing markdown content
+ * Optimized version using shared utilities
  */
 
 import { parseFrontmatter } from '@/utils/posts-utils';
@@ -15,6 +15,15 @@ export interface MorePage {
   lastUpdatedBy?: string;
   category?: string;
 }
+
+/**
+ * Convert frontmatter value to string
+ */
+const frontmatterToString = (
+  value: string | string[] | undefined,
+  fallback = '',
+): string =>
+  Array.isArray(value) ? value.join(' ').trim() : value?.trim() || fallback;
 
 /**
  * Fetch and parse all markdown files for more pages
@@ -41,16 +50,10 @@ export const fetchMorePages = async (): Promise<MorePage[]> => {
 
         const page: MorePage = {
           id: fileName,
-          title: Array.isArray(frontmatter.title)
-            ? frontmatter.title.join(' ')
-            : frontmatter.title || 'Untitled',
-          content: content,
-          slug: Array.isArray(frontmatter.slug)
-            ? frontmatter.slug.join(' ')
-            : frontmatter.slug || fileName,
-          category: Array.isArray(frontmatter.category)
-            ? frontmatter.category.join(' ')
-            : frontmatter.category || 'Uncategorized',
+          title: frontmatterToString(frontmatter.title, 'Untitled'),
+          content,
+          slug: frontmatterToString(frontmatter.slug, fileName),
+          category: frontmatterToString(frontmatter.category, 'Uncategorized'),
         };
 
         allPages.push(page);
@@ -59,7 +62,6 @@ export const fetchMorePages = async (): Promise<MorePage[]> => {
       }
     }
 
-    // Sort pages alphabetically by title
     return allPages.sort((a, b) => a.title.localeCompare(b.title));
   } catch (error) {
     console.error('Error fetching more pages:', error);
@@ -78,20 +80,16 @@ export const getMorePageBySlug = async (
 };
 
 /**
- * Group more pages by categories derived from their frontmatter
+ * Group more pages by categories
  */
 export const getMorePagesByCategory = async (): Promise<
   Record<string, MorePage[]>
 > => {
   const allPages = await fetchMorePages();
-  const pagesByCategory: Record<string, MorePage[]> = {
-    All: allPages,
-  };
+  const pagesByCategory: Record<string, MorePage[]> = { All: allPages };
 
-  // Group pages by their category
   allPages.forEach((page) => {
     const category = page.category || 'Uncategorized';
-
     if (!pagesByCategory[category]) {
       pagesByCategory[category] = [];
     }

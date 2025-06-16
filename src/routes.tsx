@@ -12,6 +12,8 @@ import Donate from '@/pages/Donate';
 import Products from '@/pages/Products';
 import NewsPage from '@/pages/News/NewsPage';
 import NewsDetailPage from '@/pages/News/NewsDetailPage';
+import AuthorPage from '@/pages/News/AuthorPage';
+import TagPage from '@/pages/News/TagPage';
 import MorePage from '@/pages/More';
 import TurtleBlocksPage from '@/pages/TryNow/TurtleBlocks';
 import SugarizerPage from '@/pages/TryNow/Sugarizer';
@@ -34,6 +36,8 @@ const router = createBrowserRouter([
   { path: '/news', element: <NewsPage /> },
   { path: '/news/:category', element: <NewsPage /> },
   { path: '/news/:category/:slug', element: <NewsDetailPage /> },
+  { path: '/authors/:slug', element: <AuthorPage /> },
+  { path: '/tags/:tag', element: <TagPage /> },
   { path: '/more', element: <MorePage /> },
   { path: '/more/:slug', element: <MorePage /> },
   { path: '/try-sugar', element: <TrySugar /> },

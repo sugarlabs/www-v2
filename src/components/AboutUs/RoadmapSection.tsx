@@ -45,7 +45,7 @@ const RoadmapSection: React.FC = () => {
         <div className="hidden md:block relative w-full mt-20">
           <motion.div
             className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-slate-200 transform -translate-x-1/2"
-            initial={{ scaleY: 0, originY: 0 }}
+            initial={{ scaleY: 0, transformOrigin: 'top' }}
             whileInView={{ scaleY: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1.2 }}
@@ -105,7 +105,7 @@ const RoadmapSection: React.FC = () => {
             <motion.div
               className="absolute top-0 bottom-0 left-5 w-0.5 bg-slate-200 h-full"
               style={{ zIndex: 1 }}
-              initial={{ scaleY: 0, originY: 0 }}
+              initial={{ scaleY: 0, transformOrigin: 'top' }}
               whileInView={{ scaleY: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1.2 }}

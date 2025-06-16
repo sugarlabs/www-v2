@@ -1,0 +1,169 @@
+name: Status Bot
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  check-pr-status:
+    name: Workflow Status Check
+    runs-on: ubuntu-latest
+    permissions: 
+      pull-requests: write
+      contents: read
+      issues: write
+      actions: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Build Test (CI Check)
+        id: ci-check
+        run: |
+          if npm run build; then
+            echo "CI_PASSED=true" >> $GITHUB_ENV
+            echo "CI_ERROR=" >> $GITHUB_ENV
+          else
+            echo "CI_PASSED=false" >> $GITHUB_ENV
+            echo "CI_ERROR=Build failed" >> $GITHUB_ENV
+          fi
+
+      - name: Run Linting Checks
+        id: lint-check
+        run: |
+          LINT_ERRORS=""
+          LINT_PASSED=true
+          
+          # Run TypeScript linting
+          if ! npm run lint:ts; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}• TypeScript linting failed\n"
+          fi
+          
+          # Run Markdown linting
+          if ! npm run lint:md; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}• Markdown linting failed\n"
+          fi
+          
+          # Check code formatting with Prettier
+          if ! npm run format:check; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}• Code formatting issues detected\n"
+          fi
+          
+          echo "LINT_PASSED=$LINT_PASSED" >> $GITHUB_ENV
+          echo "LINT_ERRORS<<EOF" >> $GITHUB_ENV
+          echo -e "$LINT_ERRORS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Generate PR Comment
+        id: generate-comment
+        run: |
+          # Extract PR number
+          PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          
+          # Generate a temporary file for the comment
+          COMMENT_FILE=$(mktemp)
+          
+          # Save variables to GITHUB_OUTPUT
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+          echo "COMMENT_FILE=$COMMENT_FILE" >> $GITHUB_OUTPUT
+          
+          # Generate content for the comment file
+          {
+            if [ "$CI_PASSED" = "true" ] && [ "$LINT_PASSED" = "true" ]; then
+              echo "## 🎉 All Checks Passed!"
+              echo ""
+              echo "> **Status:** ✅ Ready to merge"
+              echo ""
+              echo "### ✅ Completed Workflows"
+              echo ""
+              echo "| Workflow | Status | Details |"
+              echo "|----------|--------|---------|"
+              echo "| 🔨 **Continuous Integration** | ✅ Passed | Build completed successfully |"
+              echo "| 📝 **Code Linting** | ✅ Passed | All formatting and style checks passed |"
+              echo ""
+              echo "---"
+              echo ""
+              echo "🚀 **This PR is ready for review and can be safely merged to \`main\` branch!**"
+              echo ""
+              echo "*Great work! Your code meets all quality standards.* 👏"
+            else
+              echo "## ❌ Checks Failed"
+              echo ""
+              echo "> **Status:** 🚫 Not ready to merge"
+              echo ""
+              echo "Please fix the following issues before merging:"
+              echo ""
+              
+              if [ "$CI_PASSED" = "false" ]; then
+                echo "### 🔨 Continuous Integration Failed"
+                echo ""
+                echo "**Issue:** The build process failed to complete."
+                echo ""
+                echo "**How to fix:**"
+                echo "1. Run \`npm run build\` locally to identify the issue"
+                echo "2. Fix any TypeScript compilation errors"
+                echo "3. Ensure all dependencies are properly installed"
+                echo "4. Test your changes before pushing"
+                echo ""
+                echo "---"
+                echo ""
+              fi
+              
+              if [ "$LINT_PASSED" = "false" ]; then
+                echo "### 📝 Code Linting Failed"
+                echo ""
+                echo "**Issue:** Code formatting or style violations detected."
+                echo ""
+                if [ -n "$LINT_ERRORS" ]; then
+                  echo "**Specific problems:**"
+                  echo ""
+                  echo -e "$LINT_ERRORS"
+                  echo ""
+                fi
+                echo "**How to fix:**"
+                echo ""
+                echo "| Platform | Command | Description |"
+                echo "|----------|---------|-------------|"
+                echo "| 🐧 **Unix/macOS/Linux** | \`npm run format\` | Auto-fix all formatting issues |"
+                echo "| 🪟 **Windows** | \`npm run format:file <filename>\` | Fix specific files |"
+                echo "| 🔍 **Check Only** | \`npm run format:check\` | Check formatting without fixing |"
+                echo ""
+                echo "**Need help with linting?** Check out the [Linting Guide for Windows Users](https://github.com/sugarlabs/www-v2/pull/12) for detailed instructions."
+                echo ""
+                echo "---"
+                echo ""
+              fi
+              
+              echo "### 🛠️ Next Steps"
+              echo ""
+              echo "1. **Fix the issues** mentioned above"
+              echo "2. **Test locally** to ensure everything works"
+              echo "3. **Push your fixes** to this branch"
+              echo "4. **Wait for re-check** - This bot will automatically run again"
+              echo ""
+              echo "> 🤖 *This comment will be updated automatically when you push new commits*"
+            fi
+          } > "$COMMENT_FILE"
+
+      - name: Comment on PR
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          file-path: ${{ steps.generate-comment.outputs.COMMENT_FILE }}
+          pr-number: ${{ steps.generate-comment.outputs.PR_NUMBER }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
