@@ -39,9 +39,9 @@ image: "assets/Images/GSOC.png"
 2. **Rendered Output Validation & Screenshots**  
    - Verified each visual brick against expected path geometry.  
    - Screenshots below show rendered bricks:
-     - ![Simple Brick](public\assets\Images\simple-bricks.png)
-     - ![Brick with Arguments](public\assets\Images\expression-bricks.png)
-     - ![Nested Brick](public\assets\Images\nested-bricks.png)
+        - ![Simple Brick](/assets/Images/simple-bricks.png)
+        - ![Brick with Arguments](/assets/Images/expression-bricks.png)
+        - ![Nested Brick](/assets/Images/nested-bricks.png)
 
 2. **Bug Fix: Left SVG Path Issue**
 
