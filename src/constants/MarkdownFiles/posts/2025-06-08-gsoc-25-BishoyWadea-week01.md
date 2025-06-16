@@ -80,11 +80,3 @@ image: "assets/Images/GSOC.png"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for the warm support and constant feedback during this bonding period.
 
 ---
-
-## Connect with Me
-
-- GitHub: [@Bishoywadea](https://github.com/Bishoywadea)
-- Gmail: [bishoywadea@gmail.com](mailto:bishoyw.fathy@gmail.com)
-- LinkedIn: [Bishoy Wadea](https://www.linkedin.com/in/bishoy-wadea-27b016250/)
-
----

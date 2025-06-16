@@ -108,11 +108,3 @@ image: "assets/Images/GSOC.png"
   Polish button styles, spacing, theme consistency (light/dark), and overall visual clarity based on user feedback.
 
 ---
-
-## Connect with Me
-
-- GitHub: [@Bishoywadea](https://github.com/Bishoywadea)
-- Gmail: [bishoywadea@gmail.com](mailto:bishoyw.fathy@gmail.com)
-- LinkedIn: [Bishoy Wadea](https://www.linkedin.com/in/bishoy-wadea-27b016250/)
-
----
