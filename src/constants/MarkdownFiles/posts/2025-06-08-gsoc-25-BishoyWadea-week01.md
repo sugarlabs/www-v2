@@ -4,7 +4,7 @@ excerpt: "Bonding and Four Color Map puzzle"
 category: "DEVELOPER NEWS"
 date: "2025-06-07"
 slug: "2025-06-07-gsoc-25-BishoyWadea-week01"
-author: "Bishoy Wadea"
+author: "@/constants/MarkdownFiles/authors/bishoy-wadea.md"
 tags: "gsoc25,sugarlabs,week01,BishoyWadea"
 image: "assets/Images/GSOC.png"
 ---

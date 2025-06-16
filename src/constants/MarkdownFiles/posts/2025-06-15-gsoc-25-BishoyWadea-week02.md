@@ -4,7 +4,7 @@ excerpt: "Broken Calculator"
 category: "DEVELOPER NEWS"
 date: "2025-06-15"
 slug: "gsoc-25-BishoyWadea-week01"
-author: "Bishoy Wadea"
+author: "@/constants/MarkdownFiles/authors/bishoy-wadea.md"
 tags: "gsoc25,sugarlabs,week02,BishoyWadea"
 image: "assets/Images/GSOC.png"
 ---
