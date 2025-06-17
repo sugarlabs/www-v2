@@ -4,7 +4,7 @@ excerpt: "Kick off Generative AI Instrument Sample Generation for Music Blocks"
 category: "DEVELOPER NEWS"
 date: "2025-06-08"
 slug: "2025-06-08-ssoc-25-MuhammadHaroon-week01"
-author: "Muhammad Haroon"
+author: "@/constants/MarkdownFiles/authors/muhammad-haroon.md"
 description: "SSoC'25 Contributor working on Generative AI Instrument Sample Generation for Music Blocks"
 tags: "ssoc25,sugarlabs,week01,GenAI,MusicBlocks,Music"
 image: "assets/Images/GSOC.png"
@@ -34,13 +34,5 @@ I will begin by testing some prompts and generating some samples from it, to tes
 ## Acknowledgments
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
-
----
-
-## Connect with Me
-
-- GitHub: [@haroon10725](https://github.com/haroon10725)
-- Gmail: [haroongondal347@gmail.com](mailto:haroongondal347@gmail.com)
-- LinkedIn: [Muhammad Haroon](https://www.linkedin.com/in/muhammad-haroon-7003b923b/)
 
 ---

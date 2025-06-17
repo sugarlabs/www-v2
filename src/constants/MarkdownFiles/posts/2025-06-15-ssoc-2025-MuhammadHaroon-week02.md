@@ -4,7 +4,7 @@ excerpt: "Setting up AudioGen locally and building a simple user interface using
 category: "DEVELOPER NEWS"
 date: "2025-06-15"
 slug: "2025-06-15-ssoc-25-MuhammadHaroon-week02"
-author: "Muhammad Haroon"
+author: "@/constants/MarkdownFiles/authors/muhammad-haroon.md"
 description: "SSoC'25 Contributor working on Generative AI Instrument Sample Generation for Music Blocks"
 tags: "ssoc25,sugarlabs,week02,GenAI,MusicBlocks,Music"
 image: "assets/Images/GSOC.png"
@@ -60,13 +60,5 @@ image: "assets/Images/GSOC.png"
 ## Acknowledgments
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
-
----
-
-## Connect with Me
-
-- GitHub: [@haroon10725](https://github.com/haroon10725)
-- Gmail: [haroongondal347@gmail.com](mailto:haroongondal347@gmail.com)
-- LinkedIn: [Muhammad Haroon](https://www.linkedin.com/in/muhammad-haroon-7003b923b/)
 
 ---
