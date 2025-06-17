@@ -4,7 +4,7 @@ excerpt: "This week focused on documenting the brick tree structure, refining SV
 category: "DEVELOPER NEWS"
 date: "2025-06-14"
 slug: "2025-06-14-gsoc-25-saumya-shahi-week02"
-author: "@/constants/MarkdownFiles/authors/saumyashahi.md"
+author: "@/constants/MarkdownFiles/authors/saumya-shahi.md"
 tags: "gsoc25,sugarlabs,week02,saumya-shahi"
 image: "assets/Images/GSOC.png"
 ---
