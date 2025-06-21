@@ -29,6 +29,5 @@ Safwan is a dedicated maintainer and Google Summer of Code 2025 contributor at S
 - **GitHub**: [@sa-fw-an](https://github.com/sa-fw-an)
 - **Email**: [isafwansayeed@gmail.com](mailto:isafwansayeed@gmail.com)
 - **LinkedIn**: [Safwan Sayeed](https://linkedin.com/in/safwan-sayeed-6a3a482a9)
-- **Twitter**: [@safwan_say](https://twitter.com/safwan_say)
-- **Website**: [safwansayeed.dev](https://safwansayeed.dev)
-- **Discord**: [safwan#1234](https://discord.com/users/safwan#1234)
+- **Twitter**: [@safwan_say](https://x.com/safwan_say)
+- **Website**: [www.safwansayeed.live](https://safwansayeed.live)

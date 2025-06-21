@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useCallback } from 'react';
 import React, { Children } from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
@@ -9,6 +8,7 @@ import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+import { h } from 'hastscript';
 
 // Type definitions
 interface MarkdownRendererProps {
@@ -59,33 +59,33 @@ const EMOJI_MAP: Record<string, string> = {
 const ALERT_TYPES = {
   note: {
     icon: 'ℹ️',
-    bg: 'bg-blue-50 dark:bg-blue-900/20',
-    border: 'border-blue-200 dark:border-blue-800',
-    text: 'text-blue-800 dark:text-blue-200',
+    bg: 'bg-blue-50',
+    border: 'border-blue-200',
+    text: 'text-blue-800',
   },
   tip: {
     icon: '💡',
-    bg: 'bg-green-50 dark:bg-green-900/20',
-    border: 'border-green-200 dark:border-green-800',
-    text: 'text-green-800 dark:text-green-200',
+    bg: 'bg-green-50',
+    border: 'border-green-200',
+    text: 'text-green-800',
   },
   important: {
     icon: '❗',
-    bg: 'bg-purple-50 dark:bg-purple-900/20',
-    border: 'border-purple-200 dark:border-purple-800',
-    text: 'text-purple-800 dark:text-purple-200',
+    bg: 'bg-purple-50',
+    border: 'border-purple-200',
+    text: 'text-purple-800',
   },
   warning: {
     icon: '⚠️',
-    bg: 'bg-yellow-50 dark:bg-yellow-900/20',
-    border: 'border-yellow-200 dark:border-yellow-800',
-    text: 'text-yellow-800 dark:text-yellow-200',
+    bg: 'bg-yellow-50',
+    border: 'border-yellow-200',
+    text: 'text-yellow-800',
   },
   caution: {
     icon: '🚨',
-    bg: 'bg-red-50 dark:bg-red-900/20',
-    border: 'border-red-200 dark:border-red-800',
-    text: 'text-red-800 dark:text-red-200',
+    bg: 'bg-red-50',
+    border: 'border-red-200',
+    text: 'text-red-800',
   },
 };
 
@@ -149,27 +149,27 @@ const processMarkdownContent = (content: string): string => {
   // GitHub-style highlighting
   processed = processed.replace(
     /==([\s\S]*?)==/g,
-    '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>',
+    '<mark class="bg-yellow-200 px-1 rounded">$1</mark>',
   );
 
   // Keyboard shortcuts
   processed = processed.replace(
     /\[\[([^\]]+)\]\]/g,
-    '<kbd class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-300 rounded-lg shadow-sm dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600">$1</kbd>',
+    '<kbd class="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-300 rounded-lg shadow-sm">$1</kbd>',
   );
 
   // Strikethrough
   processed = processed.replace(
     /~~([\s\S]*?)~~/g,
-    '<del class="line-through text-gray-500 dark:text-gray-400">$1</del>',
+    '<del class="line-through text-gray-500">$1</del>',
   );
 
   // Collapsible sections
   processed = processed.replace(
     /:::details\s+(.*?)\n([\s\S]*?):::/gim,
-    '<details class="my-4 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800">' +
-      '<summary class="bg-gray-50 dark:bg-gray-700 px-4 py-3 cursor-pointer font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors border-b border-gray-200 dark:border-gray-600">$1</summary>' +
-      '<div class="px-4 py-3 text-gray-700 dark:text-gray-300">$2</div></details>',
+    '<details class="my-4 border border-gray-200 rounded-lg overflow-hidden bg-white">' +
+      '<summary class="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">$1</summary>' +
+      '<div class="px-4 py-3 text-gray-700">$2</div></details>',
   );
 
   // GitHub-style alerts
@@ -197,16 +197,6 @@ const processMarkdownContent = (content: string): string => {
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" title="YouTube video player"></iframe></div></div>`,
   );
 
-  // Math expressions
-  processed = processed.replace(
-    /\$\$([\s\S]*?)\$\$/g,
-    '<div class="math-display bg-gray-50 dark:bg-gray-800 p-4 rounded-lg my-4 text-center font-mono text-lg">$1</div>',
-  );
-  processed = processed.replace(
-    /\$([^$\n]+)\$/g,
-    '<span class="math-inline bg-gray-100 dark:bg-gray-700 px-1 rounded font-mono">$1</span>',
-  );
-
   return processed;
 };
 
@@ -219,6 +209,22 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     () => processMarkdownContent(content),
     [content],
   );
+
+  const scrollToAnchor = useCallback(() => {
+    const hash = window.location.hash;
+    if (hash && hash.length > 1) {
+      const id = hash.substring(1);
+      setTimeout(() => {
+        const targetElement = document.getElementById(id);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        }
+      }, 100);
+    }
+  }, []);
 
   const handleCopyClick = useCallback(async (e: MouseEvent) => {
     const button = (e.target as HTMLElement).closest(
@@ -250,10 +256,38 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     }
   }, []);
 
+  const handleAnchorClick = useCallback((e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+
+    if (target.closest('.copy-code-btn')) {
+      return;
+    }
+
+    const anchorLink = target.closest('a[href^="#"]') as HTMLAnchorElement;
+    if (anchorLink) {
+      e.preventDefault();
+      const href = anchorLink.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        const id = href.substring(1);
+        const targetElement = document.getElementById(id);
+
+        if (targetElement) {
+          const currentUrl = window.location.pathname + window.location.search;
+          window.history.pushState(null, '', `${currentUrl}${href}`);
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+  }, []);
+
   useEffect(() => {
     document.addEventListener('click', handleCopyClick);
-    return () => document.removeEventListener('click', handleCopyClick);
-  }, [handleCopyClick]);
+    document.addEventListener('click', handleAnchorClick);
+    return () => {
+      document.removeEventListener('click', handleCopyClick);
+      document.removeEventListener('click', handleAnchorClick);
+    };
+  }, [handleCopyClick, handleAnchorClick]);
 
   useEffect(() => {
     if (setZoomableImages) {
@@ -262,39 +296,41 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     }
   }, [processedContent, setZoomableImages]);
 
+  useEffect(() => {
+    scrollToAnchor();
+    const handlePopState = () => {
+      scrollToAnchor();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [processedContent, scrollToAnchor]);
+
   // Component definitions with shared styles
   const headingClasses = {
-    h1: 'text-3xl font-bold my-6 text-gray-900 dark:text-gray-100 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-2',
-    h2: 'text-2xl font-semibold my-5 text-gray-900 dark:text-gray-100 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-1',
-    h3: 'text-xl font-semibold my-4 text-gray-900 dark:text-gray-100 group flex items-center',
-    h4: 'text-lg font-semibold my-3 text-gray-900 dark:text-gray-100',
-    h5: 'text-base font-semibold my-3 text-gray-900 dark:text-gray-100',
-    h6: 'text-sm font-semibold my-3 text-gray-600 dark:text-gray-400 uppercase tracking-wide',
+    h1: 'text-3xl font-bold my-6 text-gray-900 group flex items-center border-b border-gray-200 pb-2',
+    h2: 'text-2xl font-semibold my-5 text-gray-900 group flex items-center border-b border-gray-200 pb-1',
+    h3: 'text-xl font-semibold my-4 text-gray-900 group flex items-center',
+    h4: 'text-lg font-semibold my-3 text-gray-900',
+    h5: 'text-base font-semibold my-3 text-gray-900',
+    h6: 'text-sm font-semibold my-3 text-gray-600 uppercase tracking-wide',
   };
-
-  const linkIcon = (
-    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-      <path d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5z" />
-      <path d="M7.414 15.414a2 2 0 01-2.828-2.828l3-3a2 2 0 012.828 0 1 1 0 001.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5z" />
-    </svg>
-  );
 
   const createHeading =
     (level: keyof typeof headingClasses) =>
-    ({ children, ...props }: any) => {
+    ({
+      children,
+      ...props
+    }: React.HTMLAttributes<HTMLHeadingElement> & {
+      children?: React.ReactNode;
+    }) => {
       const Tag = level;
       return (
         <Tag {...props} className={headingClasses[level]}>
           {children}
-          {props.id && level <= 'h3' && (
-            <a
-              href={`#${props.id}`}
-              className="ml-2 text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
-              aria-label={`Permalink to ${children}`}
-            >
-              {linkIcon}
-            </a>
-          )}
         </Tag>
       );
     };
@@ -308,10 +344,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     h6: createHeading('h6'),
 
     p: ({ children, ...props }) => (
-      <p
-        {...props}
-        className="my-4 text-gray-700 dark:text-gray-300 leading-relaxed"
-      >
+      <p {...props} className="my-4 text-gray-700 leading-relaxed">
         {children}
       </p>
     ),
@@ -319,13 +352,12 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     blockquote: ({ children, ...props }) => (
       <blockquote
         {...props}
-        className="border-l-4 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 pl-4 py-2 my-4 italic text-gray-700 dark:text-gray-300 rounded-r-md"
+        className="border-l-3 border-blue-500 bg-blue-50 pl-5 pr-5 py-2 my-4 italic text-blue-800 rounded-r-2xl shadow-sm hover:shadow-md transition-shadow duration-200 "
       >
-        {children}
+        <div className="relative z-10">{children}</div>
       </blockquote>
     ),
 
-    // FIXED: Proper distinction between inline code and code blocks
     code: ({
       inline,
       className,
@@ -336,7 +368,6 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       className?: string;
       children?: React.ReactNode;
     }) => {
-      // Check if it's truly inline code (single backticks) - no className means inline
       const isInlineCode =
         inline === true || (!className && typeof children === 'string');
 
@@ -344,14 +375,13 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         return (
           <code
             {...props}
-            className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200 dark:border-gray-700"
+            className="bg-gray-100 text-pink-600 px-2 py-1 rounded-md text-sm font-mono border border-gray-200 shadow-sm"
           >
             {children}
           </code>
         );
       }
 
-      // This is a code block (triple backticks) - has className or is explicitly not inline
       const codeText = Children.toArray(children).reduce(
         (acc, child) => (typeof child === 'string' ? acc + child : acc),
         '',
@@ -359,14 +389,20 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       const language = className?.replace('language-', '') || 'text';
 
       return (
-        <div className="relative rounded-lg overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 my-4 group">
-          <div className="flex items-center justify-between px-4 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-            <span className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
-              {language}
-            </span>
+        <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-800 bg-gray-900 my-6 group">
+          {/* Header with language and copy button */}
+          <div className="flex items-center justify-between px-6 py-3 bg-gray-200 border-b border-gray-200">
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 rounded-full bg-red-500"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              <span className="text-xs font-semibold text-gray-600 uppercase">
+                {language}
+              </span>
+            </div>
             <div className="flex items-center space-x-2">
               <button
-                className="copy-code-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-xs px-3 py-1 rounded-md transition-colors flex items-center space-x-1"
+                className="copy-code-btn bg-gray-200 hover:bg-gray-300 text-gray-700  text-xs px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 hover:scale-105 shadow-sm hover:shadow-md"
                 data-code={codeText}
                 aria-label="Copy code to clipboard"
               >
@@ -383,30 +419,17 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
                     d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                   />
                 </svg>
-                <span>Copy</span>
+                <span className="font-medium">Copy</span>
               </button>
-              <div className="copy-success-message hidden items-center space-x-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs px-3 py-1 rounded-md">
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                <span>Copied!</span>
+              <div className="copy-success-message hidden items-center space-x-2 bg-green-100 text-green-800 text-xs px-4 py-2 rounded-lg border border-green-200">
+                <span className="font-medium">Copied!</span>
               </div>
             </div>
           </div>
           <div className="overflow-x-auto">
-            <pre className="p-4 text-sm leading-relaxed">
+            <pre className="p-6 bg-gray-50 text-sm leading-relaxed">
               <code
-                className={`${className || ''} text-gray-800 dark:text-gray-200 font-mono block whitespace-pre`}
+                className={`${className || ''} text-gray-800 font-mono block whitespace-pre`}
               >
                 {children}
               </code>
@@ -421,7 +444,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         src === '' && frontmatter?.image ? String(frontmatter.image) : src;
       return (
         <figure className="flex flex-col items-center my-6">
-          <div className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
+          <div className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200">
             <img
               {...props}
               src={imageSrc}
@@ -437,7 +460,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
             />
           </div>
           {(title || alt) && (
-            <figcaption className="text-center text-sm text-gray-600 dark:text-gray-400 mt-3 italic">
+            <figcaption className="text-center text-sm text-gray-600 mt-3 italic">
               {title || alt}
             </figcaption>
           )}
@@ -446,41 +469,32 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     },
 
     table: ({ children, ...props }) => (
-      <div className="overflow-x-auto my-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-        <table
-          {...props}
-          className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-        >
+      <div className="overflow-x-auto my-6 rounded-lg shadow-sm border border-gray-200">
+        <table {...props} className="min-w-full divide-y divide-gray-200">
           {children}
         </table>
       </div>
     ),
 
     thead: ({ children, ...props }) => (
-      <thead {...props} className="bg-gray-50 dark:bg-gray-800">
+      <thead {...props} className="bg-gray-50">
         {children}
       </thead>
     ),
     tbody: ({ children, ...props }) => (
-      <tbody
-        {...props}
-        className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700"
-      >
+      <tbody {...props} className="bg-white divide-y divide-gray-200">
         {children}
       </tbody>
     ),
     tr: ({ children, ...props }) => (
-      <tr
-        {...props}
-        className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-      >
+      <tr {...props} className="hover:bg-gray-50 transition-colors">
         {children}
       </tr>
     ),
     th: ({ children, ...props }) => (
       <th
         {...props}
-        className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider border-r last:border-r-0 border-gray-200 dark:border-gray-700"
+        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r last:border-r-0 border-gray-200"
       >
         {children}
       </th>
@@ -488,7 +502,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     td: ({ children, ...props }) => (
       <td
         {...props}
-        className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 border-r last:border-r-0 border-gray-200 dark:border-gray-700"
+        className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r last:border-r-0 border-gray-200"
       >
         {children}
       </td>
@@ -505,23 +519,23 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       </ol>
     ),
     li: ({ children, ...props }) => (
-      <li
-        {...props}
-        className="text-gray-700 dark:text-gray-300 leading-relaxed"
-      >
+      <li {...props} className="text-gray-700 leading-relaxed">
         {children}
       </li>
     ),
 
     a: ({ href = '#', children, ...props }) => {
       const isExternal = href?.startsWith('http');
+      const isAnchor = href?.startsWith('#');
+
       return (
         <a
           href={href}
           {...props}
-          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline transition-colors font-medium"
+          className="text-blue-600 hover:text-blue-800 hover:underline transition-colors font-medium"
           target={isExternal ? '_blank' : undefined}
           rel={isExternal ? 'noopener noreferrer' : undefined}
+          data-anchor-link={isAnchor ? 'true' : undefined}
         >
           {children}
           {isExternal && (
@@ -544,73 +558,98 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     },
 
     strong: ({ children, ...props }) => (
-      <strong
-        {...props}
-        className="font-semibold text-gray-900 dark:text-gray-100"
-      >
+      <strong {...props} className="font-semibold text-gray-900">
         {children}
       </strong>
     ),
     em: ({ children, ...props }) => (
-      <em {...props} className="italic text-gray-700 dark:text-gray-300">
+      <em {...props} className="italic text-gray-700">
         {children}
       </em>
     ),
     del: ({ children, ...props }) => (
-      <del {...props} className="line-through text-gray-500 dark:text-gray-400">
+      <del {...props} className="line-through text-gray-500">
         {children}
       </del>
     ),
     hr: ({ ...props }) => (
-      <hr
-        {...props}
-        className="my-8 border-t border-gray-300 dark:border-gray-600"
-      />
+      <hr {...props} className="my-8 border-t border-gray-300" />
     ),
     input: ({ ...props }) => (
       <input
         {...props}
         disabled
-        className="form-checkbox h-4 w-4 text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 mr-2"
+        className="form-checkbox h-4 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 mr-2"
       />
     ),
 
     sub: ({ children }) => <sub className="text-xs">{children}</sub>,
     sup: ({ children }) => <sup className="text-xs">{children}</sup>,
     mark: ({ children }) => (
-      <mark className="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">
-        {children}
-      </mark>
+      <mark className="bg-yellow-200 px-1 rounded">{children}</mark>
     ),
     kbd: ({ children }) => (
-      <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-300 rounded-lg shadow-sm dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600">
+      <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-300 rounded-lg shadow-sm">
         {children}
       </kbd>
     ),
     details: ({ children, ...props }) => (
       <details
-        className="my-4 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800"
+        className="my-4 border border-gray-200 rounded-lg overflow-hidden bg-white"
         {...props}
       >
         {children}
       </details>
     ),
     summary: ({ children }) => (
-      <summary className="bg-gray-50 dark:bg-gray-700 px-4 py-3 cursor-pointer font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors border-b border-gray-200 dark:border-gray-600">
+      <summary className="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">
         {children}
       </summary>
     ),
   };
 
   return (
-    <div className="prose prose-lg max-w-none dark:prose-invert">
+    <div className="prose prose-lg max-w-none">
       <ReactMarkdown
         remarkPlugins={[remarkFrontmatter, remarkGfm, remarkSupersub]}
         rehypePlugins={[
           rehypeRaw,
           [rehypeSanitize, CUSTOM_SANITIZE_SCHEMA],
           rehypeSlug,
-          [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+          [
+            rehypeAutolinkHeadings,
+            {
+              behavior: 'append',
+              properties: {
+                className: [
+                  'ml-2',
+                  'text-blue-600',
+                  'opacity-0',
+                  'group-hover:opacity-100',
+                  'transition-opacity',
+                  'no-underline',
+                ],
+                ariaLabel: 'Permalink to section',
+                title: 'Permalink to section',
+              },
+              content: h(
+                'svg',
+                {
+                  className: 'w-4 h-4',
+                  fill: 'currentColor',
+                  viewBox: '0 0 20 20',
+                },
+                [
+                  h('path', {
+                    d: 'M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5z',
+                  }),
+                  h('path', {
+                    d: 'M7.414 15.414a2 2 0 01-2.828-2.828l3-3a2 2 0 012.828 0 1 1 0 001.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5z',
+                  }),
+                ],
+              ),
+            },
+          ],
         ]}
         components={components}
       >

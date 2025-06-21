@@ -4,7 +4,7 @@ excerpt: "localization for 3D Human Activity in Sugarizer, palette switcher, and
 category: "DEVELOPER NEWS"
 date: "2025-06-10"
 slug: "2025-06-10-gsoc-25-AdityaKrSingh26-week04"
-author: "Aditya Kumar Singh"
+author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 description: "GSoC'25 Contributor at SugarLabs (Sugarizer Human Activity Pack)"
 tags: "gsoc25,sugarlabs,week04,AdityaKrSingh26"
 image: "assets/Images/GSOC.png"
