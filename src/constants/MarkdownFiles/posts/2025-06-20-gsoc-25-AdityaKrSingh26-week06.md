@@ -3,9 +3,8 @@ title: "GSoC ’25 Week 06 Update by Aditya Kumar Singh"
 excerpt: "Model optimizations, onboarding tutorial, adding json for body parts, and Shared mode enhancements in Paint Mode for the 3D Human Activity in Sugarizer."
 category: "DEVELOPER NEWS"
 date: "2025-06-20"
-slug: "2025-06-20-gsoc-25-AdityaKrSingh26-week05"
+slug: "2025-06-20-gsoc-25-AdityaKrSingh26-week06"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
-description: "GSoC'25 Contributor at SugarLabs (Sugarizer Human Activity Pack)"
 tags: "gsoc25,sugarlabs,week06,AdityaKrSingh26"
 image: "assets/Images/GSOC.png"
 ---
@@ -111,14 +110,5 @@ image: "assets/Images/GSOC.png"
 ## Acknowledgments
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
-
----
-
-## Connect with Me
-
-- GitHub: [@AdityaKrSingh26](https://github.com/AdityaKrSingh26)
-- Gmail: [adityakrsingh2604@gmail.com](mailto:adityakrsingh2604@gmail.com)
-- LinkedIn: [Aditya Kumar Singh](https://www.linkedin.com/in/adityakrsingh26/)
-- Twitter: [@AdityaKrSingh26](https://x.com/AdityaKrSingh26)
 
 ---
