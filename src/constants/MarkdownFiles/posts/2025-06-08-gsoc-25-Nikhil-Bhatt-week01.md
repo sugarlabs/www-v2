@@ -4,8 +4,7 @@ excerpt: "Implemented repository creation via GitHub App, secure key generation,
 category: "DEVELOPER NEWS"
 date: "2025-06-08"
 slug: "2025-06-08-gsoc-25-Nikhil-Bhatt-week01"
-author: "Nikhil Bhatt"
-description: "GSoC'25 Contributor at SugarLabs (Git backend for Musicblocks)"
+author: "@/constants/MarkdownFiles/authors/nikhil-bhatt.md"
 tags: "gsoc25,sugarlabs,week01,Nikhil-Bhatt"
 image: "assets/Images/GSOC.png"
 ---
