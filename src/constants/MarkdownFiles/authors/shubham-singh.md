@@ -11,7 +11,8 @@ avatar: "https://avatars.githubusercontent.com/u/174003514?s=400&u=e43600ba24f56
 
 # About Shubham
 
-Safwan is a dedicated maintainer and Google Summer of Code 2025 contributor at SugarLabs, working primarily on the Music Blocks 4 Program Engine development. With a passion for educational technology and open-source development, Safwan contributes to making programming more accessible to learners worldwide.
+Shubham Singh is a passionate developer, open-source contributor, and Google Summer of Code 2025 contributor at SugarLabs. As a core contributor, he brings together creativity and functionality, optimizing both the user experience and technical performance of projects. Shubham is currently working on enhancing educational tools, with a focus on accessibility, interactivity, and meaningful design—empowering learners globally through open-source innovation.
+
 
 ## Experience
 
@@ -20,15 +21,15 @@ Safwan is a dedicated maintainer and Google Summer of Code 2025 contributor at S
 
 ## Current Projects
 
-- Music Blocks 4 Program Engine
+- Music Blocks v3 Development of Color Sensor.
 - SugarLabs website development
 
 
 ## Connect with Me
 
-- **GitHub**: [@sa-fw-an](https://github.com/sa-fw-an)
-- **Email**: [isafwansayeed@gmail.com](mailto:isafwansayeed@gmail.com)
-- **LinkedIn**: [Safwan Sayeed](https://linkedin.com/in/safwan-sayeed-6a3a482a9)
-- **Twitter**: [@safwan_say](https://twitter.com/safwan_say)
-- **Website**: [safwansayeed.dev](https://safwansayeed.dev)
-- **Discord**: [safwan#1234](https://discord.com/users/safwan#1234)
+- **GitHub**: [@FirePheonix](https://github.com/FirePheonix)
+- **Email**: [shubhsoch@gmail.com](mailto:shubhsoch@gmail.com)
+- **LinkedIn**: [Shubham Singh](https://www.linkedin.com/in/shubham-singh-8a5643198/)
+- **Twitter**: [@shubhamm069](https://x.com/shubhamm069)
+- **Website**: 
+- **Discord**: [ctrlaltresett](https://discord.com/users/Shubham#0418)
