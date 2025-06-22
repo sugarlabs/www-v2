@@ -1,82 +1,105 @@
 ---
-title: "GSoC ’25 Week 02 Update by Shubham Singh"
+title: "GSoC '25 Week 2 Update by Shubham Singh"
 excerpt: "Adding the entire prototyped interface ON TO the music blocks"
 category: "DEVELOPER NEWS"
 date: "2025-06-14"
 slug: "2025-06-14-gsoc-25-FirePheonix-week02"
-description: "GSoC'25 Contributor at SugarLabs (Color Sensor for music blocks)"
-author: "Shubham Singh"
+author: "@/constants/MarkdownFiles/authors/shubham-singh.md"
 tags: "gsoc25,sugarlabs,week02,FirePheonix"
 image: "assets/Images/GSOC.png"
 ---
 
 <!-- markdownlint-disable -->
 
-# Week 02 Progress Report by Shubham Singh
+# Week 2: Building the Foundation for Lego Notation Detection
 
 **Project:** [Color Sensor for Music Blocks](https://github.com/sugarlabs/musicblocks/issues/4537)  
 **Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Walter Bender](https://github.com/walterbender)  
-**Reporting Period:** 2025-06-08 - 2025-06-15
+**Reporting Period:** June 08, 2025 till June 15, 2025  
 
 ---
 
 ## Goals for This Week
 
+This week was focused on transitioning from prototype to production-ready implementation. My primary objectives were:
 
-- **Goal 1:** Basic UI for Image Upload/Real time Video upload and adjust.
-- **Goal 2:** Putting the developed UIs onto the widget blocks.
-- **Goal 3:** Searching for exisiting audios in the phrase maker and note blocks.
-
----
-
-## This Week’s Achievements
-
-1. **Interface for Image upload for Lego Notations**  
-   - Music Blocks has a feature to detect the color of pixels generated from drawing within the program, but it cannot detect the color of pixels from images that are either uploaded or from a webcam. 
-   - This week I was travelled to a village, I didn't have no internet there, but worked on implementing the LegoBricks block ON TO the music blocks canvas.
-   - You have to change a LOT (I had to go through 6 of them) of files in order to implement an entirely new block. (Good Part: A LOT OF THE CODE IS ALREADY THERE IN MUSIC BLOCKS. It's sooo beautifully encapsulated and documented.)
-   
-   ![screenshot-description](https://i.ibb.co/d0X9zXjF/1st.png)
-   
-
-2. **Graphics for Lego Bricks**  
-   - The following feature helps to use a real time video(webcam) onto the Lego Notation detection interface. Also, you may freely edit and move it around the canvas.
-   ![screenshot-description](https://i.ibb.co/cXL4Hpxq/2nd.png)
-
-    
-3. **Identified methods to exporting blocks' output as an action block**  
-   - I read and went through a lot of documentation, saw a lot of code in the Phrase Maker widget that would help in exporting the code as:  midi and as action block.
-   ![screenshot-description](https://i.ibb.co/bVD8Z54/image.png)
+- **Goal 1:** Basic UI for Image Upload/Real-time Video upload and adjustment
+- **Goal 2:** Integrating the developed UIs onto the widget blocks within Music Blocks
+- **Goal 3:** Researching existing audio integration patterns in the phrase maker and note blocks
 
 ---
 
-## Challenges & How I Overcame Them
+## This Week's Achievements
 
-- **Challenge:** Getting the UI on to the interface of music blocks itself was a challenge.
-- **Solution:** Consulted my mentors, read the old documentation on "how to add new blocks", used some previous codes.
+### Interface Implementation for Lego Notations
 
-- **Challenge:** Figuring out how would the user workflow in the Lego Bricks block take place.
-- **Solution:** Talked to my mentor on meet, discussed how exports take place in the phrase maker?
+Music Blocks already has a sophisticated feature to detect the color of pixels generated from drawing within the program, but it cannot detect the color of pixels from external sources like uploaded images or webcam feeds. This limitation was the core challenge I tackled this week.
+
+Despite being in a village with limited internet connectivity, I made significant progress implementing the LegoBricks block directly onto the Music Blocks canvas. The integration process was more complex than anticipated - I had to modify 6 different files to implement an entirely new block type. However, I was impressed by how much foundational code already existed in Music Blocks. The codebase is beautifully encapsulated and thoroughly documented, which made the learning curve much smoother.
+
+![Interface Implementation](https://i.ibb.co/d0X9zXjF/1st.png)
+
+### Real-time Video Integration
+
+The second major achievement was implementing real-time video functionality through webcam integration. This feature allows users to use live video feeds for Lego Notation detection, with full editing capabilities and canvas manipulation. The interface provides seamless interaction between the video feed and the detection algorithms.
+
+![Real-time Video Feature](https://i.ibb.co/cXL4Hpxq/2nd.png)
+
+### Export Mechanism Research
+
+I conducted extensive research into the existing export mechanisms within Music Blocks, particularly studying the Phrase Maker widget. This involved deep diving into the documentation and codebase to understand how different blocks export their output, both as MIDI files and as action blocks. This research will be crucial for implementing the output functionality of the Lego Notation system.
+
+![Export Research](https://i.ibb.co/bVD8Z54/image.png)
+
+---
+
+## Challenges & Solutions
+
+### UI Integration Complexity
+
+**Challenge:** Getting the UI integrated into the Music Blocks interface proved more challenging than expected. The block system has intricate dependencies and requires specific implementation patterns.
+
+**Solution:** I leveraged multiple resources to overcome this hurdle: consulting with my mentors for guidance, studying the existing documentation on "how to add new blocks," and analyzing previous implementations for reference patterns. This multi-pronged approach helped me understand the architectural requirements.
+
+### User Workflow Design
+
+**Challenge:** Determining the optimal user workflow for the Lego Bricks block required careful consideration of how users would interact with the feature and how it would integrate with existing Music Blocks functionality.
+
+**Solution:** I scheduled a focused discussion with my mentor during our regular meeting, where we analyzed how exports function in the phrase maker. This conversation provided crucial insights into user experience patterns and technical implementation approaches.
 
 ---
 
 ## Key Learnings
 
-- Gained familiarity with **how outputs in different blocks take place.**.
-- Deepened understanding of **inheritance, code modularity and custom return types**
-- Improved skills in **exports, imports, code reusability**, **documentation**, and **collaboration workflows**.
+This week provided several important learning opportunities:
+
+- **Output Mechanisms:** Gained comprehensive understanding of how different blocks in Music Blocks handle their output generation and processing.
+- **Code Architecture:** Deepened my appreciation for inheritance patterns, code modularity, and custom return types within the Music Blocks ecosystem.
+- **Development Workflow:** Improved my skills in exports, imports, code reusability, documentation practices, and collaborative development workflows.
+
+These learnings are already proving valuable as I plan the next phases of development.
 
 ---
 
-## Next Week’s Roadmap
+## Next Week's Roadmap
 
-- Implement **mapping of musical notes to lego bricks' colors**.
-- Target: Completing the **core implementation** in the week number 2 and 3.
+Moving forward, my focus will shift to the core functionality implementation:
+
+- **Primary Goal:** Implement comprehensive mapping of musical notes to Lego brick colors
+- **Target:** Complete the core implementation during weeks 2 and 3, ensuring robust functionality and thorough testing
+
+The foundation laid this week positions me well to tackle these more complex algorithmic challenges.
+
+---
+
+## Resources & References
+
+- Project Issue - [Color Sensor for Music Blocks](https://github.com/sugarlabs/musicblocks/issues/4537)
+- Music Blocks Repository - [sugarlabs/musicblocks](https://github.com/sugarlabs/musicblocks)
+- Documentation - Music Blocks Developer Guide
 
 ---
 
 ## Acknowledgments
 
-Thanks to [Walter Bender's](https://github.com/walterbender) advise on how phrase maker exports the output as an ACTION block in the biweekly meet, I was able to figure out a way to return.
-
----
+Special thanks to [Walter Bender](https://github.com/walterbender) for his invaluable advice during our biweekly meeting on how the phrase maker exports output as ACTION blocks. His insights were instrumental in helping me understand the export mechanism and plan the implementation strategy. Thanks also to [Devin Ulibarri](https://github.com/pikurasa) for ongoing mentorship and guidance throughout this development phase.
