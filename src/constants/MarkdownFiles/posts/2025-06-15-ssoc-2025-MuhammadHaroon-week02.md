@@ -5,7 +5,6 @@ category: "DEVELOPER NEWS"
 date: "2025-06-15"
 slug: "2025-06-15-ssoc-25-MuhammadHaroon-week02"
 author: "@/constants/MarkdownFiles/authors/muhammad-haroon.md"
-description: "SSoC'25 Contributor working on Generative AI Instrument Sample Generation for Music Blocks"
 tags: "ssoc25,sugarlabs,week02,GenAI,MusicBlocks,Music"
 image: "assets/Images/GSOC.png"
 ---
@@ -54,6 +53,7 @@ image: "assets/Images/GSOC.png"
 ## Next Week's Roadmap
 
 - Generate more samples using AudioGen and save them in Google Drive.
+- Experiment with temperature and top_p parameters in AudioGen.
 
 ---
 
