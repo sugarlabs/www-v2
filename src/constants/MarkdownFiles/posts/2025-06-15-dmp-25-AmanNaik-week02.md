@@ -5,7 +5,6 @@ category: "DEVELOPER NEWS"
 date: "2025-06-15"
 slug: "2025-06-15-dmp-25-AmanNaik-week02"
 author: "@/constants/MarkdownFiles/authors/amannaik247.md"
-description: "Member and DMP'25 Contributor at Sugar Labs"
 tags: "dmp25,writeactivity,write,sugarlabs,week01,amannaik247"
 image: "assets/Images/c4gt_DMP.png"
 ---
