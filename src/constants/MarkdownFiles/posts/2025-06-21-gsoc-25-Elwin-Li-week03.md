@@ -4,7 +4,7 @@ excerpt: "Weekly progress report for JSEditor updates"
 category: "DEVELOPER NEWS"
 date: "2025-06-21"
 slug: "JSeditor-updates-3"
-author: "Elwin Li"
+author: "@/constants/MarkdownFiles/authors/elwin-li.md"
 tags: "gsoc25,sugarlabs,week3,javaScript editor"
 image: "assets/Images/GSOC.png"
 ---
