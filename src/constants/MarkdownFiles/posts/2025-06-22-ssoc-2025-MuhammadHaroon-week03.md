@@ -5,7 +5,7 @@ category: "DEVELOPER NEWS"
 date: "2025-06-22"
 slug: "2025-06-22-ssoc-25-MuhammadHaroon-week03"
 author: "@/constants/MarkdownFiles/authors/muhammad-haroon.md"
-tags: "ssoc25,sugarlabs,week02,GenAI,MusicBlocks,Music"
+tags: "ssoc25,sugarlabs,week03,GenAI,MusicBlocks,Music"
 image: "assets/Images/GSOC.png"
 ---
 
