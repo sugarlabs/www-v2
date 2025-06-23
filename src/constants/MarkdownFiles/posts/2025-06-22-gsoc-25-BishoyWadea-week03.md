@@ -23,8 +23,12 @@ image: "assets/Images/GSOC.png"
 ## Goals for This Week
 
 - **Goal 1:** Fix issues in Four Color Map game opened by ibiam [Move buttons from canvas to tool bar](https://github.com/Bishoywadea/Four-Color-Map/issues/1), [Sugarize activity icon](https://github.com/Bishoywadea/Four-Color-Map/issues/2), [adding lisence to activity](https://github.com/Bishoywadea/Four-Color-Map/issues/3).
+
+![b4e81f67-3e05-4389-a67d-82eb71a14899.jpg](https://i.postimg.cc/vmWPFd6q/b4e81f67-3e05-4389-a67d-82eb71a14899.jpg)
+
 - **Goal 2:** Fix issues in Broken Calculator game opened by ibiam [change UI to be more focused](https://github.com/Bishoywadea/Broken-Calculator/issues/2).
 
+![b4e81f67-3e05-4389-a67d-82eb71a14899.jpg](https://i.postimg.cc/7LsNyYZN/download.jpg)
 ---
 
 ## This Week’s Achievements
