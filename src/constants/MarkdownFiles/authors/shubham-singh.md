@@ -1,6 +1,6 @@
 ---
 name: "Shubham Singh"
-slug: "shubham singh"
+slug: "shubham-singh"
 title: "Maintainer and GSoC'25 Contributor"
 organization: "SugarLabs"
 description: "Maintainer and GSoC'25 Contributor at SugarLabs"

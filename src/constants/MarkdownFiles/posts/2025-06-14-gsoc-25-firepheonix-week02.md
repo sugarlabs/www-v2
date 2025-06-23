@@ -3,9 +3,13 @@ title: "GSoC '25 Week 2 Update by Shubham Singh"
 excerpt: "Adding the entire prototyped interface ON TO the music blocks"
 category: "DEVELOPER NEWS"
 date: "2025-06-14"
-slug: "2025-06-14-gsoc-25-FirePheonix-week02"
+slug: "2025-06-14-gsoc-25-firepheonix-week02"
 author: "@/constants/MarkdownFiles/authors/shubham-singh.md"
-tags: "gsoc25,sugarlabs,week02,FirePheonix"
+tags:   
+  - gsoc25
+  - sugarlabs
+  - week02
+  - firepheonix
 image: "assets/Images/GSOC.png"
 ---
 
