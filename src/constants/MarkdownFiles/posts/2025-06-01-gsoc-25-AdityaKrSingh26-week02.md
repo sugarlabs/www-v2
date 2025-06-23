@@ -4,7 +4,7 @@ excerpt: "Merging anatomical models and enhancing Sugarizer’s Human Body Activ
 category: "DEVELOPER NEWS"
 date: "2025-05-29"
 slug: "2025-05-29-gsoc-25-AdityaKrSingh26-week02"
-author: "Aditya Kumar Singh"
+author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 description: "GSoC'25 Contributor at SugarLabs (Sugarizer Human Activity Pack)"
 tags: "gsoc25,sugarlabs,week02,AdityaKrSingh26"
 image: "assets/Images/GSOC.png"

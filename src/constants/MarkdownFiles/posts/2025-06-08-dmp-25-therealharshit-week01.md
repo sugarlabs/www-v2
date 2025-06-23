@@ -4,8 +4,7 @@ excerpt: "Week 01 focused on understanding the Pippy codebase, testing Sugar-AI 
 category: "DEVELOPER NEWS"
 date: "2025-06-09"
 slug: "2025-06-09-dmp-25-therealharshit-week01"
-author: "Harshit Verma"
-description: "Member and DMP'25 Contributor at SugarLabs"
+author: "@/constants/MarkdownFiles/authors/harshit-verma.md"
 tags: "dmp25,sugarlabs,week01,therealharshit"
 image: "assets/Images/c4gt_DMP.png"
 ---
@@ -50,7 +49,7 @@ image: "assets/Images/c4gt_DMP.png"
   **Solution:** Followed documentation and explored Sugar Labs learning resources. Used Ubuntu in a virtual machine to setup sugar desktop.
 
 - **Challenge:** Running Sugar AI locally to test endpoints.  
-  **Solution:** Followed the documentation to run th sever but the default model was taking too long to download so I changed it to a smaller model.
+  **Solution:** Followed the documentation to run the sever but the default model was taking too long to download so I changed it to a smaller model.
 
 ---
 
@@ -73,13 +72,5 @@ image: "assets/Images/c4gt_DMP.png"
 ## Acknowledgments
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
-
----
-
-## Connect with Me
-
-- GitHub: [@therealharshit](https://github.com/therealharshit)
-- Gmail: [therealharshit014@gmail.com](mailto:therealharshit014@gmail.com)
-- LinkedIn: [Harshit Verma](https://www.linkedin.com/in/therealharshit/)
 
 ---

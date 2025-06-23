@@ -4,7 +4,7 @@ excerpt: "Refining human anatomy models and improving Sugarizer’s 3D Human Act
 category: "DEVELOPER NEWS"
 date: "2025-05-28"
 slug: "2025-05-28-gsoc-25-AdityaKrSingh26-week01"
-author: "Aditya Kumar Singh"
+author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 description: "GSoC'25 Contributor at SugarLabs (Sugarizer Human Activity Pack)"
 tags: "gsoc25,sugarlabs,week01,AdityaKrSingh26"
 image: "assets/Images/GSOC.png"
