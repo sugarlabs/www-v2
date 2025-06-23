@@ -65,7 +65,9 @@ image: "assets/Images/GSOC.png"
 
 ## Next Week’s Roadmap
 
-- Work on things suggested by mentors.
+- Work on things suggested by mentors. This could include:
+  - Improving the multi-agent chat model.
+  - Testing the multi-agent chat model with different Gemini models.
 - Discuss with mentors about the 'thinking' capability of the Gemini model. On what kind of queries it can be used.
 - Implement the 'thinking' capability in the multi-agent chat model.
 
