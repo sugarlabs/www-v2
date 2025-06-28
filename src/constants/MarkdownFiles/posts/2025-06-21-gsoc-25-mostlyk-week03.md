@@ -13,9 +13,9 @@ image: "assets/Images/GSOC.png"
 
 # Week 3: Development on the C estabhlishment
 
-**Project:** [GTK4 Exploration](https://summerofcode.withgoogle.com/programs/2025/projects/rsHsYZKy)  
-**Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya Ibiam](https://github.com/chimosky), [Juan Pablo Ugarte](https://github.com/xjuan)       
-**Reporting Period:** June 06, 2025 till June 14, 2025  
+**Project:** [GTK4 Exploration](https://summerofcode.withgoogle.com/programs/2025/projects/rsHsYZKy)
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya Ibiam](https://github.com/chimosky), [Juan Pablo Ugarte](https://github.com/xjuan)
+**Reporting Period:** June 14, 2025 till June 21, 2025
 
 ---
 
@@ -25,13 +25,13 @@ image: "assets/Images/GSOC.png"
 > On last to last Friday(06-06-2025), we had a pivotal video call with Juan Pablo Ugarte and Ibiam Chihurumnaya that completely reshaped the porting approach.
 What started as a discussion about my initial porting work evolved into something much more strategic and forward-thinking.
 
-As discussed about these changes in the past week's blog, I have been continuing to update the C library. I have ported 
+As discussed about these changes in the past week's blog, I have been continuing to update the C library. I have ported
 
 ### Commited:
 
 - Sugar File Attributes ( in discussion of do we need to modernize or no)
 - Event Controllers for Sugar ( handles clicks, movement etc. )
-- Long Press Controllers 
+- Long Press Controllers
 
 ### Local:
 
@@ -113,6 +113,3 @@ These small problems that I tackle using my pre-existing knowledge on LLMs and P
 ## Acknowledgments
 
 Huge thanks to Juan Pablo Ugarte first of all for being the official mentor and Ibiam Chihurumnaya for the guidance that that changed this project's direction. Their architectural vision has transformed porting into a comprehensive modernization effort. Thanks also to Walter Bender for mentorship.
-
-
-
