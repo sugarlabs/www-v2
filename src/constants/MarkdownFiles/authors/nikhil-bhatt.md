@@ -11,6 +11,7 @@ avatar: "https://avatars.githubusercontent.com/u/154296996?s=400&u=985121a969ea9
 
 # About Nikhil Bhatt
 Nikhil Bhatt is a Google Summer of Code 2025 contributor and full stack product developer with a strong focus on building impactful, scalable tools.
+
 ## Experience
 
 - **GSoC 2025**: Music Blocks v3 Backend Development
