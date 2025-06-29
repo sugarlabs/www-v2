@@ -1,9 +1,9 @@
 ---
 title: "GSoC ’25 Week 04 Update by Diwangshu Kakoty"
-excerpt: "AI with Reasoning Capabilities"
+excerpt: "Implementing a Reasoning-Enabled AI Model"
 category: "DEVELOPER NEWS"
 date: "2025-06-29"
-slug: "2025-06-29-gsoc-25-diwangshu-week03"
+slug: "2025-06-29-gsoc-25-diwangshu-week04"
 author: "@/constants/MarkdownFiles/authors/diwangshu-kakoty.md"
 tags: "gsoc25,sugarlabs,week04,AI"
 image: "assets/Images/GSOC.png"
@@ -11,7 +11,7 @@ image: "assets/Images/GSOC.png"
 
 <!-- markdownlint-disable -->
 
-# Week 03 Progress Report by Diwangshu Kakoty
+# Week 04 Progress Report by Diwangshu Kakoty
 
 **Project:** [AI Tools for Reflection](https://github.com/Commanderk3/reflection_ai)  
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  
