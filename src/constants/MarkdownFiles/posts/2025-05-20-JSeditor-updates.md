@@ -4,7 +4,7 @@ excerpt: "Overview of changes being made to the JavaScript editor tool in MusicB
 category: "DEVELOPER NEWS"
 date: "2025-05-20"
 slug: "JSeditor-updates"
-author: "Elwin Li"
+author: "@/constants/MarkdownFiles/authors/elwin-li.md"
 description: "GSoC Contributor"
 tags: "gsoc, javaScript editor, development, contribution, debugger"
 ---
