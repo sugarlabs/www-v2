@@ -25,7 +25,7 @@ image: "assets/Images/GSOC.png"
 - **Goal 1:** Leveraging Gemini's Thinking Feature.
 - **Goal 2:** Code Migration: LangChain → Gemini SDK.
 - **Goal 3:** Clean up the codebase.
-- **Goal 4:** Make sample summaries to test the 'analyis'.
+- **Goal 4:** Make sample summaries to test the 'Analyis' feature.
 - **Goal 5:** Fix bugs occured by these changes.
 
 ---
@@ -68,7 +68,7 @@ image: "assets/Images/GSOC.png"
 - Build a developer settings in the sidebar to allow testers to choose between the 'llm' and 'reasoning_llm' classes for each query. 
 - Work on things suggested by mentors. This could include:
   - Full migration of the 'generation' code to the official Gen AI SDK.
-- Developing sample summaries to test the 'analysis' feature.
+- Developing sample summaries to test the 'Analysis' feature.
 
 ---
 
