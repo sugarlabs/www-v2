@@ -41,13 +41,15 @@ image: "assets/Images/GSOC.png"
     - Set up a 3D scene with movement and camera control.
     - commit: [add 3d space with cube](https://github.com/Bishoywadea/Soma-Cube/commit/c917f9d2af509cc4f405f9b72fe8d479e1f3f56f)
     - commit: [add wasd controls](https://github.com/Bishoywadea/Soma-Cube/commit/7dc779dbecd693794a2ae96f25ef3aa3dd174c83)
-    - ![Demo GIF](https://i.postimg.cc/W4mpdVC6/01.gif)
+
+![Demonstration of 3D environment. You can zoom in and out and rotate.](https://i.postimg.cc/W4mpdVC6/01.gif)
 
 2. **Soma Pieces & Core Mechanics**
     - Added the 7 pieces and enabled, rotation, and collision.
     - commit: [add the 7 basic pieces](https://github.com/Bishoywadea/Soma-Cube/commit/5ace6710608720ba05bad05df3dac26bbd1907e9)
     - commit: [add collision support](https://github.com/Bishoywadea/Soma-Cube/commit/9e1f60943b64718c4efc6deca1a0a077f1e94475)
-    - ![Demo GIF](https://i.postimg.cc/9fsSHwJL/02.gif)
+
+![Demonstration of soma pieces. The various geometries are now in the 3D environment.](https://i.postimg.cc/9fsSHwJL/02.gif)
 
 3. **Interaction & UI Elements**
     - Implemented help system, completion message, and on-screen controls.
@@ -58,7 +60,8 @@ image: "assets/Images/GSOC.png"
     - Added textures for floor, sky, and Soma pieces with improved lighting.
     - commit: [add sky texture](https://github.com/Bishoywadea/Soma-Cube/commit/be08b1c314dccc7f0c984585a1ee19e27664ce89)
     - commit: [add texture for the 7 objects](https://github.com/Bishoywadea/Soma-Cube/commit/8b69f60a615037266dc2ae8e89d8ed09a231c1ea)
-    - ![Demo GIF](https://i.postimg.cc/zB1jkCdY/03-Conv-Gif.gif)
+
+![Texture and other effects are now possible within the 3D model.](https://i.postimg.cc/zB1jkCdY/03-Conv-Gif.gif)
 
 ---
 
