@@ -2,7 +2,7 @@
 title: "GSoC ’25 Week 04 Update by Bishoy Wadea"
 excerpt: "Soma Cube"
 category: "DEVELOPER NEWS"
-date: "2025-06-28
+date: "2025-06-28"
 slug: "gsoc-25-BishoyWadea-week04"
 author: "@/constants/MarkdownFiles/authors/bishoy-wadea.md"
 tags: "gsoc25,sugarlabs,week04,BishoyWadea"
