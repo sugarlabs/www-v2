@@ -229,8 +229,8 @@ const Info: React.FC = () => {
                 {windowWidth >= 270 && (
                   // <motion.div
                   //   className="absolute top-2 left-2 bg-black/60
-                  //   backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
-                  //   max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
+                  //   backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg
+                  //   max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105
                   //   transition-all duration-300 ease-out z-10 border border-white/50"
                   //   whileHover={{ scale: 1.05 }}
                   // >
@@ -241,8 +241,6 @@ const Info: React.FC = () => {
                     transition-all duration-300 ease-out z-10 border border-white/50"
                     whileHover={{ scale: 1.05 }}
                   >
-
-
                     {windowWidth >= 355 && (
                       <>
                         <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1 md:mb-2 text-gray-100 font-AnonymousPro">
