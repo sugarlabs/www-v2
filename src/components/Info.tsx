@@ -228,10 +228,10 @@ const Info: React.FC = () => {
                 {/* Card on Top Left */}
                 {windowWidth >= 270 && (
                   <motion.div
-                    className="absolute top-2 left-2 bg-black/60
+                    className="absolute top-2 left-3 bg-black/60
                     backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
-                    max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
-                    transition-all duration-300 ease-out z-10 border border-white/50"
+                    max-w-[180px] sm:max-w-[220px] md:max-w-xs origin-center
+                    transition-all duration-300 ease-out z-10 border border-white/50 origin-center"
                     whileHover={{ scale: 1.05 }}
                   >
                     {windowWidth >= 355 && (
@@ -257,24 +257,23 @@ const Info: React.FC = () => {
                 {/* Card on Bottom Right */}
                 {windowWidth >= 270 && (
                   <motion.div
-                    className="absolute bottom-2 right-2 bg-black/60
-                    backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
-                    max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
-                    transition-all duration-300 ease-out z-10 border border-white/50"
+                    style={{ willChange: 'transform' }}
                     whileHover={{ scale: 1.05 }}
+                    className="absolute bottom-2 right-3 bg-black/60
+                    backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
+                    max-w-[180px] sm:max-w-[220px] md:max-w-xs origin-center will-
+                    transition-all duration-300 ease-out z-10 border border-white/50"
                   >
-                    {windowWidth >= 355 && (
+                    {windowWidth >= 355 ? (
                       <>
                         <h3 className="text-base sm:text-lg font-bold mb-1 text-amber-100 font-AnonymousPro">
                           Challenge and Fun: It's hard fun.
                         </h3>
                         <p className="text-white text-xs sm:text-sm leading-tight sm:leading-snug">
-                          Bringing interactive, meaningful experiences that make
-                          education exciting and impactful.
+                          Bringing interactive, meaningful experiences that make education exciting and impactful.
                         </p>
                       </>
-                    )}
-                    {windowWidth < 355 && windowWidth >= 270 && (
+                    ) : (
                       <h3 className="text-base sm:text-lg font-bold text-amber-100 font-AnonymousPro">
                         Challenge and Fun: It's hard fun.
                       </h3>
