@@ -40,7 +40,6 @@ image: "assets/Images/GSOC.png"
 ## Next Week's Roadmap
 
 - Find another open-source model to generate high quality sound samples.
-- Find another open-source model to generate high quality sound samples.
 
 ---
 
