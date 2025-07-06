@@ -4,8 +4,7 @@ excerpt: "Deploying a Streamlit app for testing"
 category: "DEVELOPER NEWS"
 date: "2025-06-04"
 slug: "2025-06-04-gsoc-25-Diwangshu-week01"
-author: "Diwangshu Kakoty"
-description: "GSoC'25 Contributor working on AI Tool for Reflection"
+author: "@/constants/MarkdownFiles/authors/diwangshu-kakoty.md"
 tags: "gsoc25,sugarlabs,week01,AI"
 image: "assets/Images/GSOC.png"
 ---
@@ -14,7 +13,7 @@ image: "assets/Images/GSOC.png"
 
 # Week 01 Progress Report by Diwangshu Kakoty
 
-**Project:** [AI Tools for Reflection](https://github.com/Commanderk3/reflection_ai)
+**Project:** [AI Tools for Reflection](https://github.com/Commanderk3/reflection_ai)  
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  
 **Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [	Ajeet Pratap Singh](https://github.com/apsinghdev)  
 **Reporting Period:** 2025-06-01 - 2025-06-07  
@@ -75,14 +74,5 @@ image: "assets/Images/GSOC.png"
 ## Acknowledgments
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
-
----
-
-## Connect with Me
-
-- GitHub: [@Commanderk3](https://github.com/Commanderk3)
-- Gmail: [diwangshukakoty@gmail.com](mailto:diwangshukakoty@gmail.com)
-- LinkedIn: [Diwangshu Kakoty](https://www.linkedin.com/in/diwangshu-kakoty/)
-- Twitter: [@redCoder101](https://twitter.com/redCoder101)
 
 ---

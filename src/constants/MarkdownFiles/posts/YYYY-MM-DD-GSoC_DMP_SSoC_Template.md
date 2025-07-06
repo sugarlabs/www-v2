@@ -3,7 +3,7 @@ title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
 date: "2025-05-10"
-slug: "gsoc-25-sa-fw-an-weekX"
+slug: "YYYY-MM-DD-gsoc-25-sa-fw-an-weekXX"
 author: "@/constants/MarkdownFiles/authors/safwan-sayeed.md"
 tags: "gsoc25,sugarlabs,weekXX,sa-fw-an"
 image: "assets/Images/GSOC.png"
@@ -85,11 +85,3 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-## Connect with Me
-
-- GitHub: [@sa-fw-an](https://github.com/sa-fw-an)
-- Gmail: [isafwansayeed@gmail.com](mailto:isafwansayeed@gmail.com)
-- LinkedIn: [Safwan Sayeed](https://www.linkedin.com/in/safwan-sayeed-6a3a482a9/)
-- Twitter: [@safwan_say](https://twitter.com/safwan_say)
-
----

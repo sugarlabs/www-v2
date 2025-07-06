@@ -25,6 +25,7 @@
     "clsx": "^2.1.1",
     "dompurify": "^3.2.6",
     "framer-motion": "^12.17.3",
+    "hastscript": "^9.0.1",
     "lucide-react": "^0.476.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

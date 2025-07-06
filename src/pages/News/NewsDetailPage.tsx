@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import ShareModal from '@/components/ShareModal';
+import { Share2 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPostBySlug, Post } from '@/utils/posts-utils';
 import { motion } from 'framer-motion';
@@ -7,6 +9,8 @@ import Footer from '@/sections/Footer';
 import MarkdownRenderer from '@/utils/MarkdownRenderer';
 
 const NewsDetailPage: React.FC = () => {
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+
   const { slug, category } = useParams<{ slug?: string; category?: string }>();
   const navigate = useNavigate();
   const [post, setPost] = useState<Post | null>(null);
@@ -106,6 +110,10 @@ const NewsDetailPage: React.FC = () => {
     }
   }, [navigate, post]);
 
+  const handleShareClick = () => {
+    setShareModalOpen(true);
+  };
+
   if (isLoading && !post) {
     return (
       <>
@@ -181,9 +189,17 @@ const NewsDetailPage: React.FC = () => {
               {post.category}
             </span>
           )}
-          <h1 className="text-4xl font-bold mb-4 text-gray-800">
-            {post.title}
-          </h1>
+          <div className="flex items-center gap-3 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900">{post.title}</h1>
+            <button
+              onClick={handleShareClick}
+              className="p-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow hover:from-blue-700 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 cursor-pointer"
+              title="Share"
+              type="button"
+            >
+              <Share2 size={16} className="text-white" />
+            </button>
+          </div>
           <div className="flex flex-wrap items-center text-gray-500 mb-3">
             {post.date && (
               <>
@@ -398,6 +414,17 @@ const NewsDetailPage: React.FC = () => {
           </div>
         </motion.div>
       )}
+      <ShareModal
+        open={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        url={
+          post
+            ? `${window.location.origin}/news/${category || 'all'}/${post.slug}`
+            : ''
+        }
+        title={post?.title || ''}
+        excerpt={post?.excerpt || ''}
+      />
       <Footer />
     </>
   );

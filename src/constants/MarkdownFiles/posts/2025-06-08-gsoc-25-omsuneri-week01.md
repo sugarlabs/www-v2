@@ -4,8 +4,7 @@ excerpt: "Refining the JSON to text convertor code and creating a basic streamli
 category: "DEVELOPER NEWS"
 date: "2025-06-07"
 slug: "2025-06-07-gsoc-25-omsuneri-week01"
-author: "Om Santosh Suneri"
-description: "GSoC'25 Contributor working on AI-powered Debugger for Music Blocks"
+author: "@/constants/MarkdownFiles/authors/om-santosh-suneri.md"
 tags: "gsoc25,sugarlabs,week01,Debugger,AI,Music Blocks"
 image: "assets/Images/GSOC.png"
 ---
@@ -79,14 +78,5 @@ image: "assets/Images/GSOC.png"
 ## Acknowledgments
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
-
----
-
-## Connect with Me
-
-- GitHub: [@omsuneri](https://github.com/omsuneri)
-- Gmail: [omsuneri@gmail.com](mailto:omsuneri@gmail.com)
-- LinkedIn: [Om Santosh Suneri](https://www.linkedin.com/in/om-santosh-suneri-736767166/)
-- Twitter: [@suneri_om](https://x.com/suneri_om)
 
 ---

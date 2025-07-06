@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import ShareModal from '@/components/ShareModal';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAllPosts, groupPostsByCategory, Post } from '@/utils/posts-utils';
 import Header from '@/sections/Header';
@@ -25,6 +26,8 @@ import {
 } from 'lucide-react';
 
 const NewsPage: React.FC = () => {
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [sharePostData, setSharePostData] = useState<Post | null>(null);
   const navigate = useNavigate();
   const { category: categoryParam } = useParams<{ category?: string }>();
 
@@ -124,17 +127,10 @@ const NewsPage: React.FC = () => {
     navigate(`/news/${catPath}/${slug}`);
   };
 
-  const sharePost = (post: Post, e: React.MouseEvent) => {
+  const handleShareClick = (post: Post, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (navigator.share) {
-      navigator.share({
-        title: post.title,
-        text: post.excerpt,
-        url: window.location.href + `/${post.slug}`,
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.href + `/${post.slug}`);
-    }
+    setSharePostData(post);
+    setShareModalOpen(true);
   };
 
   if (isLoading) {
@@ -472,10 +468,12 @@ const NewsPage: React.FC = () => {
 
                       <div className="absolute top-4 right-4 flex gap-2">
                         <button
-                          onClick={(e) => sharePost(post, e)}
-                          className="p-2 rounded-full bg-white bg-opacity-80 text-gray-600 hover:bg-opacity-100 backdrop-blur-sm transition-all duration-300"
+                          onClick={(e) => handleShareClick(post, e)}
+                          className="p-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow hover:from-blue-700 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 cursor-pointer"
+                          title="Share"
+                          type="button"
                         >
-                          <Share2 size={14} />
+                          <Share2 size={16} className="text-white" />
                         </button>
                       </div>
                     </div>
@@ -546,6 +544,17 @@ const NewsPage: React.FC = () => {
           )}
         </div>
       </div>
+      <ShareModal
+        open={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        url={
+          sharePostData
+            ? `${window.location.origin}/news/${activeCategory === 'All' ? 'all' : activeCategory.toLowerCase().replace(/\s+/g, '-')}/${sharePostData.slug}`
+            : ''
+        }
+        title={sharePostData?.title || ''}
+        excerpt={sharePostData?.excerpt || ''}
+      />
       <Footer />
     </>
   );

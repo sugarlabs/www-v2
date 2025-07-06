@@ -4,8 +4,7 @@ excerpt: "Experimenting, Benchmarking and Researching"
 category: "DEVELOPER NEWS"
 date: "2025-06-06"
 slug: "2025-06-06-gsoc-25-mebinthattil-week1"
-author: "Mebin J Thattil"
-description: "GSoC'25 Contributor at SugarLabs - Speak Activity"
+author: "@/constants/MarkdownFiles/authors/mebin-thattil.md"
 tags: "gsoc25,sugarlabs,week01,mebinthattil,speak_activity"
 image: "assets/Images/GSOCxSpeak.png"
 ---
@@ -84,11 +83,3 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-## Connect with Me
-
-- Website: [mebin.in](https://mebin.in/)
-- GitHub: [@mebinthattil](https://github.com/mebinthattil)
-- Gmail: [mail@mebin.in](mailto:mail@mebin.in)
-- LinkedIn: [Mebin Thattil](https://www.linkedin.com/in/mebin-thattil/)
-
----

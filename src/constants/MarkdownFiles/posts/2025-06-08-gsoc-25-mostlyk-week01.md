@@ -4,7 +4,7 @@ excerpt: "A deep dive into the GTK4 migration journey for Sugar Labs - exploring
 category: "DEVELOPER NEWS"
 date: "2025-06-04"
 slug: "2025-06-04-gsoc-25-mostlyk-community-bonding"
-author: "Krish Pandya"
+author: "@/constants/MarkdownFiles/authors/krish-pandya.md"
 description: "GSoC'25 Contributor working on GTK4 migration for Sugar Labs"
 tags: "gsoc25,sugarlabs,gtk4,mostlyk,community-bonding"
 image: "assets/Images/GSOC.png"
@@ -144,13 +144,6 @@ This period taught me that migration projects are as much about understanding th
 Huge thanks to Walter Bender for the guidance during this exploration phase, and to the Sugar Labs community for maintaining such well-documented code. I will be contacting other Mentors for their guidance as well and to know their thoughts!.
 
 ---
-
-## Connect with Me
-
-- GitHub:[@mostlykiguess](https://github.com/mostlykiguess)
-- Email:[krishpandya93@gmail.com](mailto:krishpandya93@gmail.com)
-- LinkedIn:[Krish Pandya](https://www.linkedin.com/in/krish-pandya-020aaa261/)
-- Mastodon:[@mostlyk](https://mastodon.social/@mostlyk)
 
 Looking forward to sharing more updates,
 

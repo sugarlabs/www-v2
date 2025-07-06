@@ -3,12 +3,14 @@ title: "DMP ’25 Week 01 Update by Aman Chadha"
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"
 category: "DEVELOPER NEWS"
 date: "2025-06-09"
-slug: "dmp-25-aman-week01"
+slug: "2025-06-09-dmp-25-aman-week01"
 author: "Aman Chadha"
 description: "DMP '25 Contributor working on retrieval-augmented generation for Music Blocks"
 tags: "dmp25,musicblocks,rag,week01"
 image: "assets/Images/c4gt_DMP.png"
 ---
+
+<!--markdownlint-disable-->
 
 # Week 01 Progress Report by Aman Chadha
 
