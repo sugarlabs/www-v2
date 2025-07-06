@@ -74,7 +74,7 @@ const ReviewCard = ({
 export function DeveloperTestimonials() {
   return (
     <>
-      <div className='w-full pt-6 pr-6 pl-6'>
+      <div className="w-full pt-6 pr-6 pl-6">
         {/* Heading Section with Hearts */}
         <motion.div
           className="flex items-center justify-center gap-4 md:gap-6 mb-12"
@@ -134,10 +134,8 @@ export function DeveloperTestimonials() {
             custom={4}
           />
         </motion.div>
-
-
       </div>
-      <div className='pb-6'>
+      <div className="pb-6">
         {/* Testimonials Section */}
         <motion.div
           className="relative flex flex-col items-center justify-center w-full overflow-hidden mt-6"
@@ -161,6 +159,5 @@ export function DeveloperTestimonials() {
         </motion.div>
       </div>
     </>
-
   );
 }
