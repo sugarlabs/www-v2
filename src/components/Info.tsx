@@ -270,7 +270,8 @@ const Info: React.FC = () => {
                           Challenge and Fun: It's hard fun.
                         </h3>
                         <p className="text-white text-xs sm:text-sm leading-tight sm:leading-snug">
-                          Bringing interactive, meaningful experiences that make education exciting and impactful.
+                          Bringing interactive, meaningful experiences that make
+                          education exciting and impactful.
                         </p>
                       </>
                     ) : (
