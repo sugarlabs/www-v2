@@ -73,88 +73,94 @@ const ReviewCard = ({
 
 export function DeveloperTestimonials() {
   return (
-    <div className="w-full p-6">
-      {/* Heading Section with Hearts */}
-      <motion.div
-        className="flex items-center justify-center gap-4 md:gap-6 mb-12"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.6 }}
-        variants={marqueeContainer}
-      >
-        {/* Left Heart */}
-        <motion.img
-          src={stats.leftHeart}
-          alt="Heart Left"
-          className="w-8 md:w-12 lg:w-16 fill-current text-red-500 border-none shadow-none"
-          variants={decorativeElement}
-          animate="float"
-          custom={1}
-        />
-
-        <div className="relative flex items-center justify-center gap-4 md:gap-6 lg:gap-8">
-          {/* Left Apostrophe (Hidden Below 400px) */}
+    <>
+      <div className='w-full pt-6 pr-6 pl-6'>
+        {/* Heading Section with Hearts */}
+        <motion.div
+          className="flex items-center justify-center gap-4 md:gap-6 mb-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.6 }}
+          variants={marqueeContainer}
+        >
+          {/* Left Heart */}
           <motion.img
-            src={stats.apostrophie}
-            alt="Apostrophe Left"
-            className="w-8 md:w-12 lg:w-16 -translate-y-2 block max-[400px]:hidden"
+            src={stats.leftHeart}
+            alt="Heart Left"
+            className="w-8 md:w-12 lg:w-16 fill-current text-red-500 border-none shadow-none"
             variants={decorativeElement}
-            custom={2}
+            animate="float"
+            custom={1}
           />
 
-          <motion.h2
-            className="font-bold tracking-wider font-Caveat text-3xl md:text-5xl lg:text-6xl text-gray-800 text-center"
-            variants={testimonialHeading}
-          >
-            <span className="text-5xl font-bold font-[Caveat]">
-              What do developers say
-              <br />
-              about their journey?
-            </span>
-          </motion.h2>
-
-          {/* Right Apostrophe (Flipped, Hidden Below 400px) */}
-          <motion.img
-            src={stats.apostrophie}
-            alt="Apostrophe Right"
-            className="w-8 md:w-12 lg:w-16 -translate-y-2 scale-x-[-1] block max-[400px]:hidden"
-            variants={decorativeElement}
-            custom={3}
-          />
-        </div>
-
-        {/* Right Heart */}
-        <motion.img
-          src={stats.rightHeart}
-          alt="Heart Right"
-          className="w-8 md:w-12 lg:w-16 fill-current text-red-500 border-none shadow-none"
-          variants={decorativeElement}
-          animate="float"
-          custom={4}
-        />
-      </motion.div>
-
-      {/* Testimonials Section */}
-      <motion.div
-        className="relative flex flex-col items-center justify-center w-full overflow-hidden mt-6"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={marqueeContainer}
-      >
-        <Marquee pauseOnHover className="w-full flex">
-          {developertestimonials.map((review, index) => (
-            <ReviewCard
-              key={review.username}
-              {...review}
-              delay={index * 0.05}
+          <div className="relative flex items-center justify-center gap-4 md:gap-6 lg:gap-8">
+            {/* Left Apostrophe (Hidden Below 400px) */}
+            <motion.img
+              src={stats.apostrophie}
+              alt="Apostrophe Left"
+              className="w-8 md:w-12 lg:w-16 -translate-y-2 block max-[400px]:hidden"
+              variants={decorativeElement}
+              custom={2}
             />
-          ))}
-        </Marquee>
 
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background"></div>
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background"></div>
-      </motion.div>
-    </div>
+            <motion.h2
+              className="font-bold tracking-wider font-Caveat text-3xl md:text-5xl lg:text-6xl text-gray-800 text-center"
+              variants={testimonialHeading}
+            >
+              <span className="text-5xl font-bold font-[Caveat]">
+                What do developers say
+                <br />
+                about their journey?
+              </span>
+            </motion.h2>
+
+            {/* Right Apostrophe (Flipped, Hidden Below 400px) */}
+            <motion.img
+              src={stats.apostrophie}
+              alt="Apostrophe Right"
+              className="w-8 md:w-12 lg:w-16 -translate-y-2 scale-x-[-1] block max-[400px]:hidden"
+              variants={decorativeElement}
+              custom={3}
+            />
+          </div>
+
+          {/* Right Heart */}
+          <motion.img
+            src={stats.rightHeart}
+            alt="Heart Right"
+            className="w-8 md:w-12 lg:w-16 fill-current text-red-500 border-none shadow-none"
+            variants={decorativeElement}
+            animate="float"
+            custom={4}
+          />
+        </motion.div>
+
+
+      </div>
+      <div className='pb-6'>
+        {/* Testimonials Section */}
+        <motion.div
+          className="relative flex flex-col items-center justify-center w-full overflow-hidden mt-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={marqueeContainer}
+        >
+          <Marquee pauseOnHover className="w-full">
+            {developertestimonials.map((review, index) => (
+              <ReviewCard
+                key={review.username}
+                {...review}
+                delay={index * 0.05}
+              />
+            ))}
+          </Marquee>
+
+          <div className="pointer-events-none absolute inset-y-0 left-0 bg-gradient-to-r from-background"></div>
+          <div className="pointer-events-none absolute inset-y-0 right-0 bg-gradient-to-l from-background"></div>
+        </motion.div>
+      </div>
+    </>
+
   );
 }

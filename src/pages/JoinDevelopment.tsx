@@ -15,7 +15,7 @@ const JoinDevelopment = () => {
   return (
     <div className="bg-gradient-to-b to-red-50">
       <Header />
-      <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-6">
+      <main className="container mx-auto flex flex-col items-center justify-center min-h-screen pt-6 pb-6">
         <JoinToggle />
 
         {/* Getting Involved Section */}
