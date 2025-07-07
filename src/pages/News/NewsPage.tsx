@@ -451,7 +451,7 @@ const NewsPage: React.FC = () => {
                           <img
                             src={post.image}
                             alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                            className="w-full h-full object-contains group-hover:scale-110 transition-transform duration-700"
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-blue-100 via-purple-50 to-green-100 flex items-center justify-center">
@@ -521,7 +521,7 @@ const NewsPage: React.FC = () => {
             <div className="flex justify-center">
               <motion.button
                 onClick={handleShowMore}
-                className="relative px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 text-white hover:from-blue-700 hover:to-green-700 transition-all duration-300 rounded-2xl shadow-lg hover:shadow-2xl font-medium flex items-center gap-3 group overflow-hidden"
+                className="relative px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 text-white hover:from-blue-700 hover:to-green-700 cursor-pointer transition-all duration-300 rounded-2xl shadow-lg hover:shadow-2xl font-medium flex items-center gap-3 group overflow-hidden"
                 variants={bounce}
                 initial="hidden"
                 animate="visible"
