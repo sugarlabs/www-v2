@@ -22,7 +22,7 @@ image: "assets/Images/GSOC.png"
 
 ## A Blog-style Retrospective
 
-This week I implemented the Symbol Table and integrated it with the Memory Module to manage variable scopes and dependencies effectively. This was a crucial step in preparing for the AST-to-IR compilation logic, ensuring that our program engine can handle variable resolution correctly during the translation process.
+This week I implemented the Symbol Table and integrated it with the Memory Module to manage variable scopes and dependencies effectively. This was a crucial step in preparing for the Abstract Syntax Tree (AST)-to-Intermediate Representation (IR) compilation logic, ensuring that our program engine can handle variable resolution correctly during the translation process.
 
 ---
 
