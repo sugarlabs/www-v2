@@ -2,7 +2,7 @@
 title: "GSoC ’25 Week 07 Update by Aditya Kumar Singh"
 excerpt: "Enhanced shared mode synchronization for Tour and Doctor activities, improved scoring visualization, and camera state persistence in the 3D Human Activity."
 category: "DEVELOPER NEWS"
-date: "2025-06-30
+date: "2025-06-30"
 slug: "2025-06-30-gsoc-25-AdityaKrSingh26-week07"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 tags: "gsoc25,sugarlabs,week07,AdityaKrSingh26"
