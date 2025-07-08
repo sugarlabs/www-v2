@@ -48,7 +48,7 @@ const Donation: React.FC = () => {
           {/* Donate Now Button */}
           <motion.button
             onClick={handleDonateClick}
-            className="mt-6 px-6 py-3 bg-[#fbd04d] text-black text-2xl font-bold rounded-full shadow-md hover:bg-yellow-500 transition duration-300 uppercase"
+            className="mt-6 px-6 py-3 bg-[#fbd04d] text-black text-2xl font-bold rounded-full shadow-md hover:bg-yellow-500 cursor-pointer transition duration-300 uppercase"
             variants={bounce}
             whileHover="hover"
             whileTap="tap"
@@ -72,25 +72,24 @@ const Donation: React.FC = () => {
 
       {/* Newsletter and Volunteer Section*/}
       <div className="relative z-10 w-full mt-12 text-center">
-        <Link to="/volunteer">
-          <motion.div
-            className="flex justify-center items-center"
-            variants={slideInBottom}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.6 }}
-          >
-            <div className="relative">
-              <motion.div
-                className="absolute -top-8 -right-8"
-                animate={{
-                  x: [0, 10, 0],
-                  transition: { repeat: Infinity, duration: 1.5 },
-                }}
-              >
-                <i className="fas fa-arrow-right text-2xl" />
-              </motion.div>
-
+        <motion.div
+          className="flex justify-center items-center"
+          variants={slideInBottom}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.6 }}
+        >
+          <div className="relative">
+            <motion.div
+              className="absolute -top-8 -right-8"
+              animate={{
+                x: [0, 10, 0],
+                transition: { repeat: Infinity, duration: 1.5 },
+              }}
+            >
+              <i className="fas fa-arrow-right text-2xl" />
+            </motion.div>
+            <Link to="/volunteer">
               <motion.div
                 className="bg-white border border-gray-300 rounded-full px-4 py-2 flex items-center shadow-lg"
                 whileHover={{ scale: 1.05 }}
@@ -124,9 +123,9 @@ const Donation: React.FC = () => {
                   +1000
                 </motion.span>
               </motion.div>
-            </div>
-          </motion.div>
-        </Link>
+            </Link>
+          </div>
+        </motion.div>
 
         {/* Newsletter Subscription Section */}
         <motion.div
@@ -162,7 +161,7 @@ const Donation: React.FC = () => {
               />
               <input value="1" type="hidden" name="embed" />
               <motion.button
-                className="px-6 py-2 bg-red-500 text-white font-bold rounded-r-full shadow-lg hover:bg-red-600 transition duration-300"
+                className="px-6 py-2 bg-red-500 text-white font-bold rounded-r-full shadow-lg hover:bg-red-600 cursor-pointer transition duration-300"
                 variants={buttonAnimation}
                 whileHover="whileHover"
                 whileTap="whileTap"
