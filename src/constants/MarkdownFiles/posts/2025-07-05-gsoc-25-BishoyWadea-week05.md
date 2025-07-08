@@ -58,10 +58,10 @@ image: "assets/Images/GSOC.png"
 
 ## Challenges & Solutions
 
-- **Challenge:** Creating a responsive and user-friendly tile movement system. 
+- **Challenge:** Creating a responsive and user-friendly tile movement system.  
   **Solution:** Implemented smooth tile animations and move validation logic to ensure accuracy and a satisfying user experience.
 
-- **Challenge:** Designing a clean UI that adapts to game states like playing, winning, or seeking help.
+- **Challenge:** Designing a clean UI that adapts to game states like playing, winning, or seeking help.  
   **Solution:** Built a modular UI with conditionally rendered elements such as move counters, help overlays, and success animations for clarity and flow.
 ---
 
