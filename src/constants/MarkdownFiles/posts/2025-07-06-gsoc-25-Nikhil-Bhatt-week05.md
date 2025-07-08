@@ -55,10 +55,10 @@ To fix this:
 
 ## Challenges & How I Solved Them
 
-- **Challenge:** Missing commit history in GitHub API forks
+- **Challenge:** Missing commit history in GitHub API forks  
   **Solution:** Switched to using Git CLI and a service account PAT to clone and push the entire repository.
 
-- **Challenge:** Rate Limits with PATs
+- **Challenge:** Rate Limits with PATs  
   **Solution:** We're currently using a single org service account PAT. The rate limits (5,000 requests/hour) are more than enough for current needs, but we may consider switching to app-based or scoped PATs if traffic scales up.
 
 ---
