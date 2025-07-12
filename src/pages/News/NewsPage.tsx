@@ -331,7 +331,7 @@ const NewsPage: React.FC = () => {
                         ? 'bg-[#144EEC] text-white shadow-lg'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
                     }`}
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.05, cursor: 'pointer' }}
                     whileTap={{ scale: 0.95 }}
                   >
                     {cat}
@@ -521,7 +521,7 @@ const NewsPage: React.FC = () => {
             <div className="flex justify-center">
               <motion.button
                 onClick={handleShowMore}
-                className="relative px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 text-white hover:from-blue-700 hover:to-green-700 transition-all duration-300 rounded-2xl shadow-lg hover:shadow-2xl font-medium flex items-center gap-3 group overflow-hidden"
+                className="relative px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 text-white hover:from-blue-700 hover:to-green-700 cursor-pointer transition-all duration-300 rounded-2xl shadow-lg hover:shadow-2xl font-medium flex items-center gap-3 group overflow-hidden"
                 variants={bounce}
                 initial="hidden"
                 animate="visible"

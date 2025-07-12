@@ -186,7 +186,7 @@ const ProjectsSection = () => {
             {!showAllProjects ? (
               <button
                 onClick={() => setShowAllProjects(true)}
-                className="px-8 py-3 bg-blue-600 hover:bg-red-600 text-white rounded-lg shadow-sm font-medium transition-all duration-300 inline-flex items-center gap-2"
+                className="px-8 py-3 bg-blue-600 hover:bg-red-600 cursor-pointer text-white rounded-lg shadow-sm font-medium transition-all duration-300 inline-flex items-center gap-2"
               >
                 Show more
                 <svg

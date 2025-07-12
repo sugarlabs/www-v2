@@ -54,7 +54,7 @@ const Volunteer = () => {
               and learn from one another.
             </p>
             <button
-              className="mt-6 bg-red-500 text-white text-lg font-semibold px-6 py-3 rounded-full"
+              className="mt-6 bg-red-500 text-white text-lg font-semibold px-6 py-3 rounded-full hover:cursor-pointer"
               onClick={handleGetInvolved}
             >
               Get Involved

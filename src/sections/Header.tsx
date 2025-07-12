@@ -196,12 +196,12 @@ const MobileNavDrawer: React.FC<{
             <div className="h-16" />
 
             {/* Scrollable content area */}
-            <div className="flex-1 overflow-y-auto px-4 py-2">
+            <div className="flex-1 overflow-y-auto py-2">
               <div className="space-y-4">
                 {/* Dropdown menus */}
                 {Object.entries(navigationData.dropdowns).map(
                   ([key, dropdown]) => (
-                    <div key={key} className="space-y-1">
+                    <div key={key} className="space-y-1 px-2">
                       <button
                         onClick={() =>
                           setActiveDropdown(activeDropdown === key ? null : key)
