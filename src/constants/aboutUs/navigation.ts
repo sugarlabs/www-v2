@@ -24,7 +24,7 @@ export const navigationStyles = {
     'sticky bg-white/90 backdrop-blur-md shadow-md rounded-lg p-4 mb-8 z-40 mt-16',
   list: 'flex flex-wrap justify-center gap-4 md:gap-8',
   button: {
-    base: 'px-4 py-2 rounded-md transition-all duration-300 text-sm md:text-base relative group',
+    base: 'px-4 py-2 rounded-md transition-all duration-300 text-sm md:text-base relative group hover:cursor-pointer',
     active: 'text-red-500 font-medium',
     inactive: 'text-gray-600 hover:text-red-500',
   },
