@@ -19,13 +19,13 @@ image: "assets/Images/GSOC.png"
 
 **Project:** [Color Sensor for Music Blocks](https://github.com/sugarlabs/musicblocks/issues/4537)  
 **Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Walter Bender](https://github.com/walterbender)  
-**Reporting Period:** 2025-06-016 – 2025-06-22 
+**Reporting Period:** 2025-06-16 – 2025-06-22 
 
 ---
 
 ## Goals for This Week
 
-- Complete UIs for image upload, webcam integration to music blocks.
+- Complete UIs for image upload, webcam integration to Music Blocks.
 - Integrating audios from Synth Sampler to LegoBricks widget.
 - Researching existing audio integration patterns in the phrase maker and note blocks.
 
