@@ -5,7 +5,7 @@ category: "DEVELOPER NEWS"
 date: "2025-07-13"
 slug: "2025-07-13-gsoc-25-omsuneri-week06"
 author: "@/constants/MarkdownFiles/authors/om-santosh-suneri.md"
-tags: "gsoc25,sugarlabs,week06,Debugger,AI,Music Blocks"
+tags: "gsoc25,sugarlabs,week06,Debugger,AI,Music Blocks,GSoC Midterm"
 image: "assets/Images/GSOC.png"
 ---
 
@@ -89,7 +89,7 @@ Students and educators can **save their interactions**, review solutions offline
 
 ---
 
-### 📸 Preview Features
+### Preview Features
 
 <a href=""><img src="https://i.ibb.co/FbHymBYN/Screenshot-2025-07-11-at-2-16-30-PM.png" alt="Music Blocks Debugger"></a>
 
@@ -100,18 +100,44 @@ Students and educators can **save their interactions**, review solutions offline
 
 ---
 
+## Midterm Evaluation Summary (Weeks 01–06)
+
+The first six weeks of GSoC 2025 have been focused on architecting and implementing the core systems behind the **AI-powered Debugger for Music Blocks**. From block parsing and embedding generation to LLM integration and full-stack deployment, the project has steadily evolved into a functional, AI-assisted debugging tool optimized for kids and educators.
+
+---
+
+### Key Technical Achievements
+
+* **JSON-to-Text Parser**: Migrated the logic-heavy JavaScript converter to Python, maintaining tree-structured formatting (`├──`, `│`) and supporting recursion for nested Music Blocks projects. This makes visual projects readable and interpretable as text.
+
+* **Streamlit Interface**: Built a clean, user-friendly UI that enables users to paste JSON, parse it live, and interact with the AI debugger—all in one app. Integrated Gemini for generating responses tailored to kids.
+
+* **Vector Search with Qdrant**: Generated semantic embeddings from 14 curated Music Blocks projects and stored them in a Qdrant vector DB. This enables chunk retrieval from documentation and real examples to enhance LLM understanding.
+
+* **RAG Pipeline**: Combined user input + parsed project code + vector context to construct dynamic prompts for the LLM. Prompt behavior adapts based on session length to balance discovery and solution guidance.
+
+* **Export + UX Enhancements**: Added `.txt` chat export, refined session state handling, and introduced autoscroll + dynamic prompt control for a polished user experience.
+
+---
+
+### Why It Matters
+
+By allowing users to paste a Music Blocks JSON file and instantly receive both a clean text summary and interactive feedback from an AI assistant, the tool reduces the barrier to debugging and learning. It helps students understand project flow, educators explain logic, and kids explore possibilities in a guided, friendly way.
+
+---
+
 ### Final Thoughts
 
-This week involved deep integration between previously decoupled components of the app. Bridging the JSON converter and the debugger not only streamlines the UX but also unlocks better prompt generation for the LLM.
+Over the past six weeks, I’ve transitioned from building isolated components to integrating them into a cohesive, interactive debugger. This week’s merge of the JSON converter into the main app simplified the workflow and enabled richer, context-aware prompts for the LLM.
 
-From a technical standpoint, handling state persistence, error boundaries, and contextual prompt generation offered many learning opportunities. I’m also seeing the value of modular code (`convert_music_blocks`, `retrieve_relevant_chunks`, etc.) in accelerating such integrations.
+Technically, it deepened my understanding of state management, error handling, and modular design. Functions like convert_music_blocks() and retrieve_relevant_chunks() proved invaluable for maintaining clean, scalable code. The debugger is now not just functional — it’s ready to be embedded, deployed, and used meaningfully by kids and educators alike.
 
 ---
 
 ### Next Week’s Roadmap
 
-* Deploy the debugger application to the official Sugar Labs AWS server
-* Create a Music Blocks Debugger widget for seamless in-platform integration.
+* **Deploy the app to Sugar Labs’ AWS server** for long-term availability and community usage.
+* **Develop a Music Blocks Widget** to embed the debugger directly into the Music Blocks environment for seamless integration and real-time support.
 
 ---
 
