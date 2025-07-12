@@ -5,7 +5,6 @@ category: "DEVELOPER NEWS"
 date: "2025-06-08"
 slug: "2025-06-08-ssoc-25-MuhammadHaroon-week01"
 author: "@/constants/MarkdownFiles/authors/muhammad-haroon.md"
-description: "SSoC'25 Contributor working on Generative AI Instrument Sample Generation for Music Blocks"
 tags: "ssoc25,sugarlabs,week01,GenAI,MusicBlocks,Music"
 image: "assets/Images/GSOC.png"
 ---
