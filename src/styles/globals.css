@@ -3,7 +3,7 @@
   src: url('/fonts/Caveat-Regular.ttf');
 }
 
-@import 'tailwindcss-animate';
+
 @font-face {
   font-family: 'Roboto';
   src: url('/fonts/Roboto-Regular.ttf');
