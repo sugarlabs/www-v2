@@ -33,213 +33,234 @@ import {
 
 const router = createBrowserRouter([
   ...redirectRoutes,
-  { 
-    path: '/', 
-    element: <MainPage /> // Keep main page eager loaded for better initial experience
+  {
+    path: '/',
+    element: <MainPage />, // Keep main page eager loaded for better initial experience
   },
-  { 
-    path: '/about-us', 
+  {
+    path: '/about-us',
     element: (
       <LazyPage loadingText="Loading About Us..." componentName="AboutUs">
         <AboutUs />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/leadership', 
+  {
+    path: '/leadership',
     element: (
       <LazyPage loadingText="Loading Leadership..." componentName="Leadership">
         <Leadership />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/contact-us', 
+  {
+    path: '/contact-us',
     element: (
       <LazyPage loadingText="Loading Contact Us..." componentName="ContactUs">
         <ContactUs />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/faqs', 
+  {
+    path: '/faqs',
     element: (
       <LazyPage loadingText="Loading FAQs..." componentName="FAQs">
         <FAQs />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/news', 
+  {
+    path: '/news',
     element: (
       <LazyPage loadingText="Loading News..." componentName="NewsPage">
         <NewsPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/news/:category', 
+  {
+    path: '/news/:category',
     element: (
       <LazyPage loadingText="Loading News..." componentName="NewsPage">
         <NewsPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/news/:category/:slug', 
+  {
+    path: '/news/:category/:slug',
     element: (
       <LazyPage loadingText="Loading Article..." componentName="NewsDetailPage">
         <NewsDetailPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/authors/:slug', 
+  {
+    path: '/authors/:slug',
     element: (
       <LazyPage loadingText="Loading Author..." componentName="AuthorPage">
         <AuthorPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/tags/:tag', 
+  {
+    path: '/tags/:tag',
     element: (
       <LazyPage loadingText="Loading Tag..." componentName="TagPage">
         <TagPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/more', 
+  {
+    path: '/more',
     element: (
       <LazyPage loadingText="Loading More..." componentName="MorePage">
         <MorePage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/more/:slug', 
+  {
+    path: '/more/:slug',
     element: (
       <LazyPage loadingText="Loading Page..." componentName="MorePage">
         <MorePage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/try-sugar', 
+  {
+    path: '/try-sugar',
     element: (
       <LazyPage loadingText="Loading Try Sugar..." componentName="TrySugar">
         <TrySugar />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/join-development', 
+  {
+    path: '/join-development',
     element: (
-      <LazyPage loadingText="Loading Join Development..." componentName="JoinDevelopment">
+      <LazyPage
+        loadingText="Loading Join Development..."
+        componentName="JoinDevelopment"
+      >
         <JoinDevelopment />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/volunteer', 
+  {
+    path: '/volunteer',
     element: (
       <LazyPage loadingText="Loading Volunteer..." componentName="Volunteer">
         <Volunteer />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/donate', 
+  {
+    path: '/donate',
     element: (
       <LazyPage loadingText="Loading Donate..." componentName="Donate">
         <Donate />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/products', 
+  {
+    path: '/products',
     element: (
       <LazyPage loadingText="Loading Products..." componentName="Products">
         <Products />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/turtleblocks', 
+  {
+    path: '/turtleblocks',
     element: (
-      <LazyPage loadingText="Loading Turtle Blocks..." componentName="TurtleBlocksPage">
+      <LazyPage
+        loadingText="Loading Turtle Blocks..."
+        componentName="TurtleBlocksPage"
+      >
         <TurtleBlocksPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/sugarizer', 
+  {
+    path: '/sugarizer',
     element: (
-      <LazyPage loadingText="Loading Sugarizer..." componentName="SugarizerPage">
+      <LazyPage
+        loadingText="Loading Sugarizer..."
+        componentName="SugarizerPage"
+      >
         <SugarizerPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/bootablesoas', 
+  {
+    path: '/bootablesoas',
     element: (
-      <LazyPage loadingText="Loading Bootable SOAS..." componentName="BootableSoasPage">
+      <LazyPage
+        loadingText="Loading Bootable SOAS..."
+        componentName="BootableSoasPage"
+      >
         <BootableSoasPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/trisquel', 
+  {
+    path: '/trisquel',
     element: (
       <LazyPage loadingText="Loading Trisquel..." componentName="TrisquelPage">
         <TrisquelPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/raspberry', 
+  {
+    path: '/raspberry',
     element: (
-      <LazyPage loadingText="Loading Raspberry Pi..." componentName="RaspberryPiPage">
+      <LazyPage
+        loadingText="Loading Raspberry Pi..."
+        componentName="RaspberryPiPage"
+      >
         <RaspberryPiPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/musicblocks', 
+  {
+    path: '/musicblocks',
     element: (
-      <LazyPage loadingText="Loading Music Blocks..." componentName="MusicBlocksPage">
+      <LazyPage
+        loadingText="Loading Music Blocks..."
+        componentName="MusicBlocksPage"
+      >
         <MusicBlocksPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/flathub', 
+  {
+    path: '/flathub',
     element: (
       <LazyPage loadingText="Loading FlatHub..." componentName="FlatHubPage">
         <FlatHubPage />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/contact-us/:matrix', 
+  {
+    path: '/contact-us/:matrix',
     element: (
       <LazyPage loadingText="Loading Matrix..." componentName="Matrix">
         <Matrix />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '/profiles', 
+  {
+    path: '/profiles',
     element: (
-      <LazyPage loadingText="Loading Contributors..." componentName="Contributors">
+      <LazyPage
+        loadingText="Loading Contributors..."
+        componentName="Contributors"
+      >
         <Contributors />
       </LazyPage>
-    )
+    ),
   },
-  { 
-    path: '*', 
-    element: <NotFoundPage /> // Keep 404 page eager loaded for better error handling
+  {
+    path: '*',
+    element: <NotFoundPage />, // Keep 404 page eager loaded for better error handling
   },
 ]);
 

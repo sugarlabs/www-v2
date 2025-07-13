@@ -6,9 +6,9 @@ interface PerformanceDashboardProps {
   onClose?: () => void;
 }
 
-const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ 
-  isVisible = false, 
-  onClose 
+const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
+  isVisible = false,
+  onClose,
 }) => {
   const [metrics, setMetrics] = useState(getLazyLoadingMetrics());
   const [isExpanded, setIsExpanded] = useState(false);
@@ -23,17 +23,21 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
 
   if (!isVisible) return null;
 
-  const averageLoadTime = metrics.length > 0 
-    ? metrics.reduce((sum, m) => sum + (m.loadDuration || 0), 0) / metrics.length 
-    : 0;
+  const averageLoadTime =
+    metrics.length > 0
+      ? metrics.reduce((sum, m) => sum + (m.loadDuration || 0), 0) /
+        metrics.length
+      : 0;
 
-  const successfulLoads = metrics.filter(m => m.success);
-  const failedLoads = metrics.filter(m => !m.success);
+  const successfulLoads = metrics.filter((m) => m.success);
+  const failedLoads = metrics.filter((m) => !m.success);
 
   return (
     <div className="fixed bottom-4 right-4 bg-white border border-gray-300 rounded-lg shadow-lg p-4 max-w-sm z-50">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-gray-800">Performance Dashboard</h3>
+        <h3 className="text-sm font-semibold text-gray-800">
+          Performance Dashboard
+        </h3>
         <div className="flex gap-2">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
@@ -73,16 +77,21 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
           <div className="mt-3 border-t pt-3">
             <h4 className="font-medium text-gray-700 mb-2">Recent Loads</h4>
             <div className="space-y-1 max-h-32 overflow-y-auto">
-              {metrics.slice(-5).reverse().map((metric, index) => (
-                <div key={index} className="flex justify-between text-xs">
-                  <span className="truncate">{metric.componentName}</span>
-                  <span className={`font-mono ${
-                    metric.success ? 'text-green-600' : 'text-red-600'
-                  }`}>
-                    {metric.loadDuration?.toFixed(0)}ms
-                  </span>
-                </div>
-              ))}
+              {metrics
+                .slice(-5)
+                .reverse()
+                .map((metric, index) => (
+                  <div key={index} className="flex justify-between text-xs">
+                    <span className="truncate">{metric.componentName}</span>
+                    <span
+                      className={`font-mono ${
+                        metric.success ? 'text-green-600' : 'text-red-600'
+                      }`}
+                    >
+                      {metric.loadDuration?.toFixed(0)}ms
+                    </span>
+                  </div>
+                ))}
             </div>
           </div>
         )}
@@ -91,4 +100,4 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
   );
 };
 
-export default PerformanceDashboard; 
+export default PerformanceDashboard;

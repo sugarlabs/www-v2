@@ -17,14 +17,14 @@ export const useLazyLoading = (componentName: string) => {
 
   useEffect(() => {
     const startTime = loadStartTime.current;
-    
+
     // Report successful load
     const reportSuccess = () => {
       if (hasReported.current) return;
-      
+
       const endTime = Date.now();
       const duration = endTime - startTime;
-      
+
       lazyLoadingMetrics.push({
         componentName,
         loadStartTime: startTime,
@@ -32,9 +32,9 @@ export const useLazyLoading = (componentName: string) => {
         loadDuration: duration,
         success: true,
       });
-      
+
       hasReported.current = true;
-      
+
       // Log to console in development
       if (import.meta.env.DEV) {
         console.log(`✅ ${componentName} loaded in ${duration}ms`);
@@ -56,17 +56,22 @@ export const useLazyLoading = (componentName: string) => {
   // Return metrics for debugging
   return {
     getMetrics: () => lazyLoadingMetrics,
-    getComponentMetrics: (name: string) => 
-      lazyLoadingMetrics.filter(m => m.componentName === name),
+    getComponentMetrics: (name: string) =>
+      lazyLoadingMetrics.filter((m) => m.componentName === name),
     getAverageLoadTime: () => {
-      const successfulLoads = lazyLoadingMetrics.filter(m => m.success && m.loadDuration);
+      const successfulLoads = lazyLoadingMetrics.filter(
+        (m) => m.success && m.loadDuration,
+      );
       if (successfulLoads.length === 0) return 0;
-      
-      const totalTime = successfulLoads.reduce((sum, m) => sum + (m.loadDuration || 0), 0);
+
+      const totalTime = successfulLoads.reduce(
+        (sum, m) => sum + (m.loadDuration || 0),
+        0,
+      );
       return totalTime / successfulLoads.length;
     },
   };
 };
 
 // Export metrics for external access
-export const getLazyLoadingMetrics = () => lazyLoadingMetrics; 
+export const getLazyLoadingMetrics = () => lazyLoadingMetrics;

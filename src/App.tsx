@@ -4,7 +4,8 @@ import router from '@/routes';
 import PerformanceDashboard from '@/components/shared/PerformanceDashboard';
 
 const App = () => {
-  const [showPerformanceDashboard, setShowPerformanceDashboard] = useState(false);
+  const [showPerformanceDashboard, setShowPerformanceDashboard] =
+    useState(false);
 
   useEffect(() => {
     const unsubscribe = router.subscribe(() => {
@@ -41,7 +42,7 @@ const App = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <RouterProvider router={router} />
-      
+
       {/* Performance Dashboard - only in development */}
       {import.meta.env.DEV && (
         <PerformanceDashboard

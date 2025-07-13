@@ -29,18 +29,20 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback || (
-        <div className="flex flex-col items-center justify-center p-8 min-h-[400px]">
-          <div className="text-red-600 text-lg font-semibold mb-4">
-            Something went wrong
+      return (
+        this.props.fallback || (
+          <div className="flex flex-col items-center justify-center p-8 min-h-[400px]">
+            <div className="text-red-600 text-lg font-semibold mb-4">
+              Something went wrong
+            </div>
+            <button
+              onClick={() => this.setState({ hasError: false })}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            >
+              Try Again
+            </button>
           </div>
-          <button
-            onClick={() => this.setState({ hasError: false })}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
+        )
       );
     }
 
@@ -54,10 +56,10 @@ interface LazyPageProps {
   componentName?: string;
 }
 
-const LazyPage: React.FC<LazyPageProps> = ({ 
-  children, 
+const LazyPage: React.FC<LazyPageProps> = ({
+  children,
   loadingText = 'Loading page...',
-  componentName = 'Unknown Component'
+  componentName = 'Unknown Component',
 }) => {
   // Monitor lazy loading performance
   useLazyLoading(componentName);
@@ -71,4 +73,4 @@ const LazyPage: React.FC<LazyPageProps> = ({
   );
 };
 
-export default LazyPage; 
+export default LazyPage;

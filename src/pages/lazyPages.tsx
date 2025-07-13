@@ -39,4 +39,4 @@ export const Matrix = lazy(() => import('./Matrix'));
 export const Contributors = lazy(() => import('./Contributors'));
 
 // 404 page - keep eager loaded for better error handling
-export { default as NotFoundPage } from './NotFoundPage'; 
+export { default as NotFoundPage } from './NotFoundPage';
