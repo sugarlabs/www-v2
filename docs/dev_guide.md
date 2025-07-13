@@ -18,7 +18,7 @@
 
 ## Setup Development Environment
 
-This is a _**TypeScript**_ project that uses _**React**_. You'll just need _[**Node.js**](https://nodejs.org/en) and _**npm**\_ installed on your development machine.
+This is a _**TypeScript**_ project that uses _**React**_. You'll just need _[**Node.js**](https://nodejs.org/en) and _**npm**_ installed on your development machine.
 Although, this is sufficient to run, build, and test the project as a whole, you might need some
 extra tools for other development tasks.
 
