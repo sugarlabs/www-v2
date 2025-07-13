@@ -8,7 +8,7 @@ author: "@/constants/MarkdownFiles/authors/shubham-singh.md"
 tags:   
   - gsoc25
   - sugarlabs
-  - week02
+  - week05
   - firepheonix
 image: "assets/Images/GSOC.png"
 ---
