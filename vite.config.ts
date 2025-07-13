@@ -27,19 +27,71 @@ export default defineConfig({
         warn(warning);
       },
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            // Split vendor code into separate chunks
+        manualChunks: (id: string) => {
+          // Vendor chunks
+          if (id.includes('node_modules/react') || 
+              id.includes('node_modules/react-dom') || 
+              id.includes('node_modules/react-router-dom')) {
             return 'vendor';
           }
-          if (id.includes('src/constants/MarkdownFiles')) {
-            // Split Markdown related pages into a separate chunk
-            return 'mdfiles';
+          
+          if (id.includes('node_modules/framer-motion')) {
+            return 'animations';
           }
-          // Add more custom chunking logic as needed
+          
+          if (id.includes('node_modules/lucide-react') || 
+              id.includes('node_modules/class-variance-authority') || 
+              id.includes('node_modules/clsx') || 
+              id.includes('node_modules/tailwind-merge')) {
+            return 'ui';
+          }
+          
+          // Feature-based chunks for better caching
+          if (id.includes('src/pages/News/')) {
+            return 'news';
+          }
+          
+          if (id.includes('src/pages/About/')) {
+            return 'about';
+          }
+          
+          if (id.includes('src/pages/TryNow/')) {
+            return 'tryNow';
+          }
+          
+          // Markdown content chunk
+          if (id.includes('src/constants/MarkdownFiles')) {
+            return 'markdown';
+          }
+          
+          // Default vendor chunk for other node_modules
+          if (id.includes('node_modules')) {
+            return 'vendor-other';
+          }
+          
+          return undefined;
         },
       },
     },
     chunkSizeWarningLimit: 1000, // Increase the limit as needed
+    
+    // Enable source maps for better debugging
+    sourcemap: true,
+    
+    // Optimize dependencies
+    commonjsOptions: {
+      include: [/node_modules/],
+    },
+  },
+  
+  // Optimize dependencies
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'framer-motion',
+      'lucide-react',
+    ],
   },
 });

@@ -1,60 +1,246 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { redirectRoutes } from '@/redirects';
-import MainPage from '@/pages/MainPage';
-import AboutUs from '@/pages/About/AboutUs';
-import Leadership from '@/pages/About/Leadership';
-import ContactUs from '@/pages/About/ContactUs';
-import FAQs from '@/pages/About/FAQs';
-import TrySugar from '@/pages/TrySugar';
-import JoinDevelopment from '@/pages/JoinDevelopment';
-import Volunteer from '@/pages/Volunteer';
-import Donate from '@/pages/Donate';
-import Products from '@/pages/Products';
-import NewsPage from '@/pages/News/NewsPage';
-import NewsDetailPage from '@/pages/News/NewsDetailPage';
-import AuthorPage from '@/pages/News/AuthorPage';
-import TagPage from '@/pages/News/TagPage';
-import MorePage from '@/pages/More';
-import TurtleBlocksPage from '@/pages/TryNow/TurtleBlocks';
-import SugarizerPage from '@/pages/TryNow/Sugarizer';
-import BootableSoasPage from '@/pages/TryNow/BootableSoas';
-import TrisquelPage from '@/pages/TryNow/Trisquel';
-import RaspberryPiPage from '@/pages/TryNow/Raspberry';
-import MusicBlocksPage from '@/pages/TryNow/MusicBlocks';
-import FlatHubPage from '@/pages/TryNow/FlatHub';
-import Matrix from '@/pages/Matrix';
-import NotFoundPage from '@/pages/NotFoundPage';
-import Contributors from '@/pages/Contributors';
+import LazyPage from '@/components/shared/LazyPage';
+
+// Import lazy-loaded components
+import {
+  MainPage,
+  AboutUs,
+  Leadership,
+  ContactUs,
+  FAQs,
+  TrySugar,
+  JoinDevelopment,
+  Volunteer,
+  Donate,
+  Products,
+  NewsPage,
+  NewsDetailPage,
+  AuthorPage,
+  TagPage,
+  MorePage,
+  TurtleBlocksPage,
+  SugarizerPage,
+  BootableSoasPage,
+  TrisquelPage,
+  RaspberryPiPage,
+  MusicBlocksPage,
+  FlatHubPage,
+  Matrix,
+  NotFoundPage,
+  Contributors,
+} from '@/pages/lazyPages';
 
 const router = createBrowserRouter([
   ...redirectRoutes,
-  { path: '/', element: <MainPage /> },
-  { path: '/about-us', element: <AboutUs /> },
-  { path: '/leadership', element: <Leadership /> },
-  { path: '/contact-us', element: <ContactUs /> },
-  { path: '/faqs', element: <FAQs /> },
-  { path: '/news', element: <NewsPage /> },
-  { path: '/news/:category', element: <NewsPage /> },
-  { path: '/news/:category/:slug', element: <NewsDetailPage /> },
-  { path: '/authors/:slug', element: <AuthorPage /> },
-  { path: '/tags/:tag', element: <TagPage /> },
-  { path: '/more', element: <MorePage /> },
-  { path: '/more/:slug', element: <MorePage /> },
-  { path: '/try-sugar', element: <TrySugar /> },
-  { path: '/join-development', element: <JoinDevelopment /> },
-  { path: '/volunteer', element: <Volunteer /> },
-  { path: '/donate', element: <Donate /> },
-  { path: '/products', element: <Products /> },
-  { path: '/turtleblocks', element: <TurtleBlocksPage /> },
-  { path: '/sugarizer', element: <SugarizerPage /> },
-  { path: '/bootablesoas', element: <BootableSoasPage /> },
-  { path: '/trisquel', element: <TrisquelPage /> },
-  { path: '/raspberry', element: <RaspberryPiPage /> },
-  { path: '/musicblocks', element: <MusicBlocksPage /> },
-  { path: '/flathub', element: <FlatHubPage /> },
-  { path: '/contact-us/:matrix', element: <Matrix /> },
-  { path: '/profiles', element: <Contributors /> },
-  { path: '*', element: <NotFoundPage /> },
+  { 
+    path: '/', 
+    element: <MainPage /> // Keep main page eager loaded for better initial experience
+  },
+  { 
+    path: '/about-us', 
+    element: (
+      <LazyPage loadingText="Loading About Us..." componentName="AboutUs">
+        <AboutUs />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/leadership', 
+    element: (
+      <LazyPage loadingText="Loading Leadership..." componentName="Leadership">
+        <Leadership />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/contact-us', 
+    element: (
+      <LazyPage loadingText="Loading Contact Us..." componentName="ContactUs">
+        <ContactUs />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/faqs', 
+    element: (
+      <LazyPage loadingText="Loading FAQs..." componentName="FAQs">
+        <FAQs />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/news', 
+    element: (
+      <LazyPage loadingText="Loading News..." componentName="NewsPage">
+        <NewsPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/news/:category', 
+    element: (
+      <LazyPage loadingText="Loading News..." componentName="NewsPage">
+        <NewsPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/news/:category/:slug', 
+    element: (
+      <LazyPage loadingText="Loading Article..." componentName="NewsDetailPage">
+        <NewsDetailPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/authors/:slug', 
+    element: (
+      <LazyPage loadingText="Loading Author..." componentName="AuthorPage">
+        <AuthorPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/tags/:tag', 
+    element: (
+      <LazyPage loadingText="Loading Tag..." componentName="TagPage">
+        <TagPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/more', 
+    element: (
+      <LazyPage loadingText="Loading More..." componentName="MorePage">
+        <MorePage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/more/:slug', 
+    element: (
+      <LazyPage loadingText="Loading Page..." componentName="MorePage">
+        <MorePage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/try-sugar', 
+    element: (
+      <LazyPage loadingText="Loading Try Sugar..." componentName="TrySugar">
+        <TrySugar />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/join-development', 
+    element: (
+      <LazyPage loadingText="Loading Join Development..." componentName="JoinDevelopment">
+        <JoinDevelopment />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/volunteer', 
+    element: (
+      <LazyPage loadingText="Loading Volunteer..." componentName="Volunteer">
+        <Volunteer />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/donate', 
+    element: (
+      <LazyPage loadingText="Loading Donate..." componentName="Donate">
+        <Donate />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/products', 
+    element: (
+      <LazyPage loadingText="Loading Products..." componentName="Products">
+        <Products />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/turtleblocks', 
+    element: (
+      <LazyPage loadingText="Loading Turtle Blocks..." componentName="TurtleBlocksPage">
+        <TurtleBlocksPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/sugarizer', 
+    element: (
+      <LazyPage loadingText="Loading Sugarizer..." componentName="SugarizerPage">
+        <SugarizerPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/bootablesoas', 
+    element: (
+      <LazyPage loadingText="Loading Bootable SOAS..." componentName="BootableSoasPage">
+        <BootableSoasPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/trisquel', 
+    element: (
+      <LazyPage loadingText="Loading Trisquel..." componentName="TrisquelPage">
+        <TrisquelPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/raspberry', 
+    element: (
+      <LazyPage loadingText="Loading Raspberry Pi..." componentName="RaspberryPiPage">
+        <RaspberryPiPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/musicblocks', 
+    element: (
+      <LazyPage loadingText="Loading Music Blocks..." componentName="MusicBlocksPage">
+        <MusicBlocksPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/flathub', 
+    element: (
+      <LazyPage loadingText="Loading FlatHub..." componentName="FlatHubPage">
+        <FlatHubPage />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/contact-us/:matrix', 
+    element: (
+      <LazyPage loadingText="Loading Matrix..." componentName="Matrix">
+        <Matrix />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '/profiles', 
+    element: (
+      <LazyPage loadingText="Loading Contributors..." componentName="Contributors">
+        <Contributors />
+      </LazyPage>
+    )
+  },
+  { 
+    path: '*', 
+    element: <NotFoundPage /> // Keep 404 page eager loaded for better error handling
+  },
 ]);
 
 export default router;
