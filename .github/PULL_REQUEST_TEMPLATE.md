@@ -54,6 +54,6 @@ This PR fixes #
 
 Thank you for contributing to our project! We appreciate your help in improving it.
 
-📚 See [contributing instructions](https://github.com/sugarlabs/musicblocks/blob/master/README.md).
+📚 See [contributing instructions](https://github.com/sugarlabs/www-v2/blob/master/README.md).
 
 🙋🏾🙋🏼 Questions: [Community Matrix Server](https://matrix.to/#/#sugar:matrix.org).
