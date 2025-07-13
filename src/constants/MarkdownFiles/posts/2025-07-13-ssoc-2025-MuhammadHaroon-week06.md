@@ -1,6 +1,6 @@
 ---
 title: "SSoC ’25 Week 06 Update by Muhammad Haroon"
-excerpt: "Experimenting with prompts parameter in AudioGen model."
+excerpt: "Find another open-source model that can generate sound samples from prompts."
 category: "DEVELOPER NEWS"
 date: "2025-07-13"
 slug: "2025-07-13-ssoc-25-MuhammadHaroon-week06"
@@ -49,7 +49,7 @@ The first half of my Sugar Summer of Code 2025 project has been both challenging
 
 ## Next Week's Roadmap
 
-- Create an audio clipping tool.
+- Test all the separate components together, generate sound samples from the LLM, pass the generated sound sample to the audio clipping tool to clip it between specific timestamps, and then check whether the resulting audio can be used in Music Blocks.
 
 ---
 
