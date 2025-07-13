@@ -26,20 +26,20 @@ const ReviewCard = ({
   buttonText: string;
 }) => {
   return (
-    <figure className="relative h-full w-36 cursor-pointer overflow-hidden rounded-xl border p-4 border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05] dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15] flex flex-col items-center text-center">
+    <figure className="relative h-full w-36 cursor-pointer overflow-hidden rounded-xl border border-white/40 dark:border-white/20 p-4 bg-gray-950/[.01] hover:bg-gray-950/[.05] flex flex-col items-center text-center">
       {/* SVG Icon */}
       <img className="w-12 h-12 mb-2" alt={title} src={img} />
 
       {/* Title */}
-      <figcaption className="text-lg font-semibold dark:text-white">
+      <figcaption className="text-lg font-semibold text-black">
         {title}
       </figcaption>
 
       {/* Description */}
-      <p className="text-xs font-medium dark:text-white/40">{description}</p>
+      <p className="text-xs font-medium text-black">{description}</p>
 
       {/* Button */}
-      <button className="mt-4 px-3 py-1 border rounded-lg border-gray-950 dark:border-gray-50 text-sm font-medium dark:text-white">
+      <button className="mt-4 px-3 py-1 border rounded-lg border-gray-950 text-sm font-medium text-black">
         {buttonText}
       </button>
     </figure>
@@ -74,7 +74,7 @@ export function TryMore() {
           </motion.span>
         </motion.h2>
         <motion.p
-          className="mt-4 text-base sm:text-lg text-gray-700 dark:text-gray-300"
+          className="mt-4 text-base sm:text-lg text-black"
           variants={fadeIn}
           custom={3}
         >
@@ -111,6 +111,7 @@ export function TryMore() {
         style={{
           transform:
             'translateX(0px) translateY(0px) translateZ(0px) rotateX(10deg) rotateY(-5deg) rotateZ(10deg)',
+          color: 'black',
         }}
       >
         <Marquee
