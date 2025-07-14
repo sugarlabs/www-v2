@@ -43,10 +43,7 @@ const ReviewCard = ({
       />
 
       {/* Feedback Text */}
-      <motion.p
-        className="text-gray-700 mt-2"
-        variants={testimonialText}
-      >
+      <motion.p className="text-gray-700 mt-2" variants={testimonialText}>
         {body}
       </motion.p>
 
@@ -59,12 +56,8 @@ const ReviewCard = ({
           variants={avatarReveal}
         />
         <motion.div variants={testimonialText}>
-          <h3 className="text-lg font-semibold text-gray-900">
-            {name}
-          </h3>
-          <p className="text-sm text-gray-500">
-            @{username}
-          </p>
+          <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
+          <p className="text-sm text-gray-500">@{username}</p>
         </motion.div>
       </div>
     </motion.div>

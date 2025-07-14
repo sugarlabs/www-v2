@@ -71,8 +71,6 @@
   --sidebar-ring: rgb(222, 222, 222);
 }
 
-
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
