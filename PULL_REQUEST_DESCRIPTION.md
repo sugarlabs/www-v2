@@ -13,7 +13,7 @@ This PR enhances the dropdown navigation UI experience.
 
 ## Changes Made
 
-- **Enhanced Button Styling**: 
+- **Enhanced Button Styling**:
   - Upgraded from basic styling to modern rounded-xl design with enhanced padding
   - Added font-semibold for better typography hierarchy
   - Implemented group hover effects with scale and rotation animations
@@ -69,4 +69,4 @@ Thank you for contributing to our project! We appreciate your help in improving 
 
 📚 See [contributing instructions](https://github.com/sugarlabs/www-v2/blob/master/README.md).
 
-🙋🏾🙋🏼 Questions: [Community Matrix Server](https://matrix.to/#/#sugar:matrix.org). 
+🙋🏾🙋🏼 Questions: [Community Matrix Server](https://matrix.to/#/#sugar:matrix.org).
