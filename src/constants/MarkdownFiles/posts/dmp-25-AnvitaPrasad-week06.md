@@ -57,10 +57,10 @@ image: "assets/Images/c4gt_DMP.png"
 
 ## Challenges & How I Overcame Them
 
-- **Challenge:** Persisting Cent Adjustment Information
+- **Challenge:** Persisting Cent Adjustment Information  
   **Solution:** In the previous week, I had implemented cent adjustments by modifying the playback rate in real-time, but this information wasn't being stored with the sample. This meant that when a user saved a sample after making cent adjustments, the adjustments were lost, creating inconsistency in musical compositions. I researched two main approaches: storing notes as floating-point MIDI values (e.g., 60.1 for C4+10¢) or storing integer MIDI notes and cent adjustments separately. I chose the second approach for better compatibility with Music Blocks' existing codebase, clearer data representation, and easier UI integration. I'm still testing this implementation to ensure it works correctly across all use cases.
 
-- **Challenge:** Modifying the Sample Data Structure
+- **Challenge:** Modifying the Sample Data Structure  
   **Solution:** I carefully extended the CUSTOMSAMPLES array to include the cent adjustment value while ensuring backward compatibility. This required precise modifications to several core functions that interact with the sample data structure.
 
 ---
