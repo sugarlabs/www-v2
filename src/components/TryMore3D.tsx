@@ -26,7 +26,7 @@ const ReviewCard = ({
   buttonText: string;
 }) => {
   return (
-    <figure className="relative h-full w-36 cursor-pointer overflow-hidden rounded-xl border border-white/40 dark:border-white/20 p-4 bg-gray-950/[.01] hover:bg-gray-950/[.05] flex flex-col items-center text-center">
+    <figure className="relative h-full w-36 cursor-pointer overflow-hidden rounded-xl border border-white/40 p-4 bg-gray-950/[.01] hover:bg-gray-950/[.05] flex flex-col items-center text-center">
       {/* SVG Icon */}
       <img className="w-12 h-12 mb-2" alt={title} src={img} />
 
@@ -60,7 +60,7 @@ export function TryMore() {
         variants={staggerContainer}
       >
         <motion.h2
-          className="text-3xl sm:text-4xl font-extrabold text-[#975555] dark:text-[#975555]"
+          className="text-3xl sm:text-4xl font-extrabold text-[#975555]"
           variants={headerReveal}
         >
           <motion.span variants={slideInLeft} custom={0}>

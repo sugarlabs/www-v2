@@ -22,7 +22,7 @@ const HeroSection = () => {
     >
       {/* Enhanced background elements with gradient overlays - repositioned for mobile */}
       <motion.div
-        className="absolute top-5 left-5 sm:top-10 sm:left-10 w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 blur-xl sm:blur-2xl opacity-60 dark:opacity-40"
+        className="absolute top-5 left-5 sm:top-10 sm:left-10 w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 blur-xl sm:blur-2xl opacity-60"
         variants={fadeIn}
         custom={0.2}
         initial="hidden"

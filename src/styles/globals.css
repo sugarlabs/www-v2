@@ -71,40 +71,7 @@
   --sidebar-ring: rgb(222, 222, 222);
 }
 
-.dark {
-  --background: rgb(36, 36, 36);
-  --foreground: rgb(251, 251, 251);
-  --card: rgb(36, 36, 36);
-  --card-foreground: rgb(251, 251, 251);
-  --popover: rgb(36, 36, 36);
-  --popover-foreground: rgb(251, 251, 251);
-  --primary: rgb(251, 251, 251);
-  --primary-foreground: rgb(53, 53, 53);
-  --secondary: rgb(70, 70, 70);
-  --secondary-foreground: rgb(251, 251, 251);
-  --muted: rgb(70, 70, 70);
-  --muted-foreground: rgb(179, 179, 179);
-  --accent: rgb(70, 70, 70);
-  --accent-foreground: rgb(251, 251, 251);
-  --destructive: rgb(127, 29, 29);
-  --destructive-foreground: rgb(248, 113, 113);
-  --border: rgb(70, 70, 70);
-  --input: rgb(70, 70, 70);
-  --ring: rgb(113, 113, 113);
-  --chart-1: rgb(124, 58, 237);
-  --chart-2: rgb(34, 197, 94);
-  --chart-3: rgb(168, 85, 247);
-  --chart-4: rgb(236, 72, 153);
-  --chart-5: rgb(239, 68, 68);
-  --sidebar: rgb(53, 53, 53);
-  --sidebar-foreground: rgb(251, 251, 251);
-  --sidebar-primary: rgb(124, 58, 237);
-  --sidebar-primary-foreground: rgb(251, 251, 251);
-  --sidebar-accent: rgb(70, 70, 70);
-  --sidebar-accent-foreground: rgb(251, 251, 251);
-  --sidebar-border: rgb(70, 70, 70);
-  --sidebar-ring: rgb(113, 113, 113);
-}
+
 
 @theme inline {
   --color-background: var(--background);
