@@ -16,7 +16,7 @@ image: "assets/Images/GSOC.png"
 **Project:** [Euclid’s Game](https://github.com/Bishoywadea/Euclid-s-Game)  
 **Mentors:** [Ibiam Chihurumnaya](https://github.com/chimosky)  
 **Assisting Mentors:** [Walter Bender](https://github.com/walterbender/)  
-**Reporting Period:** 2025-06-29 - 2025-07-05 
+**Reporting Period:** 2025-06-07 - 2025-07-14 
 
 ---
 
@@ -70,6 +70,7 @@ Each activity was built from scratch or significantly improved, covering diverse
 
 ### cknowledgments
 This progress would not have been possible without the patient guidance of my mentors, Ibiam. Their feedback has helped me think more deeply about software design, education, and the impact of simplicity. The Sugar Labs community’s encouragement has also been motivating and insightful.
+
 
 ---
 
