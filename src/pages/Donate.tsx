@@ -57,7 +57,7 @@ const Donate: React.FC = () => {
               whileTap="tap"
             >
               <a href={donationData.url} target="_blank" rel="noreferrer">
-                <button className="bg-green-600 hover:bg-green-700 transition-colors text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md">
+                <button className="bg-green-600 hover:bg-green-700 cursor-pointer transition-colors text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md">
                   Donate Now
                 </button>
               </a>
@@ -286,12 +286,12 @@ const Donate: React.FC = () => {
 
           <div className="flex justify-center gap-3 sm:gap-4 flex-wrap">
             <a href={donationData.url} target="_blank" rel="noreferrer">
-              <button className="bg-green-600 hover:bg-green-700 transition-colors text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md text-sm sm:text-base">
+              <button className="bg-green-600 hover:bg-green-700 cursor-pointer transition-colors text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md text-sm sm:text-base">
                 Make a One-Time Donation
               </button>
             </a>
             <a href={donationData.urlMonth} target="_blank" rel="noreferrer">
-              <button className="bg-blue-600 hover:bg-blue-700 transition-colors text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md text-sm sm:text-base">
+              <button className="bg-blue-600 hover:bg-blue-700 cursor-pointer transition-colors text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md text-sm sm:text-base">
                 Become a Monthly Supporter
               </button>
             </a>

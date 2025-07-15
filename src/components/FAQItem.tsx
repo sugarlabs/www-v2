@@ -44,7 +44,7 @@ const FAQItem = ({ index, question, answer }: FAQItemProps) => {
       animate="animate"
     >
       <motion.button
-        className="w-full text-left py-4 text-lg font-medium flex justify-between items-center"
+        className="w-full text-left py-4 text-lg font-medium flex justify-between items-center hover:cursor-pointer"
         onClick={toggleFAQ}
         whileHover="hover"
         variants={faqQuestionButtonVariants}

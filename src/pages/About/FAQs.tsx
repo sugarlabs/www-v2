@@ -140,8 +140,8 @@ const FAQs = () => {
                 onClick={() => setSelectedCategory('all')}
                 className={`px-4 py-2 rounded-full transition-all ${
                   selectedCategory === 'all'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 hover:bg-gray-300'
+                    ? 'bg-blue-600 text-white cursor-pointer'
+                    : 'bg-gray-200 hover:bg-gray-300 cursor-pointer'
                 }`}
               >
                 All
@@ -152,8 +152,8 @@ const FAQs = () => {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-full transition-all capitalize ${
                     selectedCategory === category
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 hover:bg-gray-300'
+                      ? 'bg-blue-600 text-white cursor-pointer'
+                      : 'bg-gray-200 hover:bg-gray-300 cursor-pointer'
                   }`}
                 >
                   {category}
