@@ -47,10 +47,36 @@ numbers already present. The new number must be distinct from all numbers
 previously written. The game continues until a player cannot make a valid move; this
 player loses the game.
 
+**Menu Light Theme:**
+
+This shows the main menu screen of Euclid’s Game in light mode. You can see the toolbar at the top with buttons like New Game and Help, along with options to switch between light and dark themes. Below that, there are buttons for selecting difficulty levels and choosing game modes, such as 2‑player or vs AI.
+
 ![menu light theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/01.png?raw=true)
+
+**Menu Dark Theme:**
+
+This shows the main menu screen of Euclid’s Game in Dark theme
+
 ![menu dark theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/02.png?raw=true)
+
+**Gameplay Dark Theme:**
+
+Here you’re looking at the core game screen in dark mode. There's a board displaying numbers—the starting pair and any differences added. You can also see the current player’s turn and the move counter.
+
 ![game play dark theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/05.png?raw=true)
+
+**Gameplay Dark Theme:**
+
 ![game play light theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/04.png?raw=true)
+
+**Gameplay Light Theme**
+
+This is the same gameplay view but in light theme. 
+
+**Help Panel**
+
+This overlay provides instructions or guidance on how to play the game. It likely appears when you click the “Help” button from the toolbar, offering context and tips for first-time users.
+
 ![help panel](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/06.png?raw=true)
 ---
 
