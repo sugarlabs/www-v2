@@ -11,7 +11,7 @@ image: "assets/Images/GSOC.png"
 
 <!-- markdownlint-disable -->
 
-# Week 05 Progress Report by Bishoy Wadea
+# Week 06 Progress Report by Bishoy Wadea
 
 **Project:** [Euclid’s Game](https://github.com/Bishoywadea/Euclid-s-Game)  
 **Mentors:** [Ibiam Chihurumnaya](https://github.com/chimosky)  
@@ -35,6 +35,16 @@ image: "assets/Images/GSOC.png"
 ---
 
 ### *Goal 2: Start implementing Euclid’s Game*
+
+**description of the game:**
+The game inspired by Euclid’s game is a two-player mathematical strategy game
+that illustrates the principles of the Euclidean algorithm, particularly in finding the
+greatest common divisor (GCD) of two numbers. The game begins with two unequal
+positive integers written on a board. Players alternate turns, and on each turn, a
+player writes a new number on the board, which is the positive difference of any two
+numbers already present. The new number must be distinct from all numbers
+previously written. The game continues until a player cannot make a valid move; this
+player loses the game.
 
 ![menu light theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/01.png?raw=true)
 ![menu dark theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/02.png?raw=true)
