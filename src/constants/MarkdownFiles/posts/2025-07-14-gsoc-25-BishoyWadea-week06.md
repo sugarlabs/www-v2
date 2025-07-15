@@ -31,7 +31,8 @@ image: "assets/Images/GSOC.png"
 
 1. **add video in help button**  
    - commit: [modify code to handle help videos](https://github.com/Bishoywadea/Soma-Cube/commit/63a7daaa8009f5f54791cdf9081e765846135f70)
-![illistration tutorial video](https://github.com/Bishoywadea/Soma-Cube/blob/main/help.mp4)
+
+[![illustration tutorial video](https://i9.ytimg.com/vi_webp/Q4BKp3Yo3Uw/mq3.webp?sqp=CPDv2sMG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGGUgTihBMA8=&rs=AOn4CLCEh8DLiBCY1blowOssb9l5JiRdRQ)](https://youtu.be/Q4BKp3Yo3Uw)
 ---
 
 ### *Goal 2: Start implementing Euclid’s Game*
