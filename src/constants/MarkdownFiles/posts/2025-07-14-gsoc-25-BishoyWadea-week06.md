@@ -66,11 +66,12 @@ As I reach the halfway point of my GSoC journey, I’ve had the chance to reflec
 
 ### Progress So Far
 Over the first phase of GSoC, I successfully developed and shipped five fully functional Sugar activities:
-- **Four Color Map Puzzle** – Core gameplay, UI enhancements, region data integration.
-- **Broken Calculator** – Restrictive math puzzle with scoring, themes, and child-friendly UX.
-- **Soma Cube** – A 3D spatial reasoning puzzle featuring piece manipulation, textures, collision, and video tutorials.
-- **Fifteen Puzzle** – Classic sliding puzzle with smooth animations and responsive layout.
-- **Euclid’s Game** – Strategic math game with theme switching, help overlays, and polished UI.
+- [**Four Color Map Puzzle**](https://github.com/Bishoywadea/Four-Color-Map) – Core gameplay, UI enhancements, region data integration.
+- [**Broken Calculator**](https://github.com/Bishoywadea/Broken-Calculator) – Restrictive math puzzle with scoring, themes, and child-friendly UX.
+- [**Soma Cube**](https://github.com/Bishoywadea/Soma-Cube) – A 3D spatial reasoning puzzle featuring piece manipulation, textures, collision, and video tutorials.
+- [**Fifteen Puzzle**](https://github.com/Bishoywadea/FifteenPuzzle) – Classic sliding puzzle with smooth animations and responsive layout.
+- [**Euclid’s Game**](https://github.com/Bishoywadea/Euclid-s-Game) – Strategic math game with theme switching, help overlays, and polished UI.
+
 
 Each activity was built from scratch or significantly improved, covering diverse gameplay styles—from logic puzzles to real-time spatial challenges—all designed with **educational value and child accessibility** in mind.
 
