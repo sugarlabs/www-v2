@@ -33,6 +33,7 @@ SugarWeb is a client-side web application written in TypeScript. It utilizes Rea
 - TypeScript 5
 - React 19
 - Tailwind CSS
+- Framer motion UI 
 
 ### Tooling
 
