@@ -28,6 +28,10 @@ Our primary focus during this phase was the backend, with some attention to enha
 - Forking with Metadata & History - Projects can be forked easily via the UI. Forked repositories retain original content and metadata,A later upgrade replaced basic copying with full Git CLI–based cloning, ensuring complete ```commit history is preserved```.
 - Commit History & Version Time Travel - Users can now select a commit from a UI modal and load the project state at that point. This feature introduces ```reflective-learning``` in students. 
 - Pull Request Workflow - an interesting addition to our existing planet based system, students can now contribute back to original projects after forking. The backend logic for this is complete and tested. Frontend integration is currently underway and will allow students to ```submit PRs with minimal effort.```
+
+## A flow chart about the architecture of the project
+![Flow chart](assets/Developers/Nikhil/project-flow.png)
+
  
 ## This Week's Achievements
 
