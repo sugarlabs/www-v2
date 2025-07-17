@@ -22,7 +22,7 @@ image: "assets/Images/GSOC.png"
 
 ## Progress Summary
 
-The first half of my Sugar Summer of Code 2025 project has been both challenging and rewarding. My project focuses on generating sound samples from prompts. Over the past six weeks, I've made significant progress toward this goal, working closely with my mentors.
+The first half of my Sugar Summer of Code 2025 project has been both challenging and rewarding. My project focuses on generating sound samples from prompts. Over the past six weeks, I've made significant progress toward this goal, working closely with my mentors which is as follow:
 
 - Researched state of art open-source models for generating sound samples from prompts, including [AudioGen](https://audiocraft.metademolab.com/audiogen.html) and [TangoFlux](https://huggingface.co/spaces/declare-lab/TangoFlux).
 
@@ -30,7 +30,7 @@ The first half of my Sugar Summer of Code 2025 project has been both challenging
 
 - Tested the models using various prompts. (High quality sound of dog bark, A natural and rich sound of car horn etc). Saved the sounds samples into Google Drive which was then scored by both the mentors.
 
-- Concluded that the generated sound samples cannot be used directly in Music Blocks, they need to be clipped before integration.
+- Concluded that the generated sound samples cannot be used directly in Music Blocks, they need to be trimmed before integration.
 
 ---
 
@@ -43,13 +43,32 @@ The first half of my Sugar Summer of Code 2025 project has been both challenging
 ## This Week's Achievements
 
 1. **Find another open-source model**  
-   - I was sucessfully able to find another open-source model [TangoFlux](https://huggingface.co/spaces/declare-lab/TangoFlux). However, after testing several prompts, I realized that these models are unable to generate sound samples suitable for use in Music Blocks. After discussing this with the mentors, we decided that an additional tool is needed, one that can clip audio between specific timestamps. This clipped audio can then be used in Music Blocks, similar to how it's done in Audacity software.
+   - I was sucessfully able to find another open-source model [TangoFlux](https://huggingface.co/spaces/declare-lab/TangoFlux). However, after testing several prompts, I realized that these models are unable to generate sound samples suitable for use in Music Blocks. After discussing this with the mentors, we decided that an additional tool is needed, one that can clip audio between specific timestamps. This trimmed audio can then be used in Music Blocks, similar to how it's done in Audacity software.
 
 ---
 
 ## Next Week's Roadmap
 
-- Test all the separate components together, generate sound samples from the LLM, pass the generated sound sample to the audio clipping tool to clip it between specific timestamps, and then check whether the resulting audio can be used in Music Blocks.
+- Create sketches of user interfaces showing how students will interact with the GenAI and the audio trimming tool.
+
+---
+
+## Proof of Concept (POC)
+
+Since current LLMs are not capable of generating audio that can be used directly in Music Blocks, the following workflow serves as an alternative approach:
+
+- The user first generates an audio using a text-to-audio model such as TangoFlux.  
+![TangoFlux - text to audio generation model](/assets/Developers/Muhammad%20Haroon/TangoFlux%20-%20Text%20to%20Audio%20Generation%20Model.png)
+
+- The generated audio is then passed into an audio trimming tool, for demonstration purpose I am using an Audacity software.
+![Trimming AI-generated audio in Audacity](/assets/Developers/Muhammad%20Haroon/Trimming%20AI%20generated%20audio%20in%20Audacity.png)
+
+![Trimmed audio in Audacity](/assets/Developers/Muhammad%20Haroon/Trimmed%20audio%20in%20Audacity.png)
+
+- Then the users can download the trimmed audio and import it into Music Blocks.
+![AI-generated audio imported into Music Blocks](/assets/Developers/Muhammad%20Haroon/AI%20generated%20audio%20in%20Music%20Blocks.png)
+
+- [View Music Blocks project](/assets/Developers/Muhammad%20Haroon/Muisc%20Blocks%20project.html)
 
 ---
 
