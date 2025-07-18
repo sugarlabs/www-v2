@@ -13,12 +13,12 @@ Before writing your first blog post, you need to create an author profile that w
 
 ```markdown
 ---
-name: "Your Full Name"
-slug: "your-username"
+name: 'Your Full Name'
+slug: 'your-username'
 title: "GSoC'25 Contributor"
-organization: "SugarLabs"
+organization: 'SugarLabs'
 description: "GSoC'25 Contributor at SugarLabs"
-avatar: "https://avatars.githubusercontent.com/u/YOUR_GITHUB_ID?s=400"
+avatar: 'https://avatars.githubusercontent.com/u/YOUR_GITHUB_ID?s=400'
 ---
 
 <!--markdownlint-disable-->
@@ -33,7 +33,7 @@ Write some experience or other categories that you want to add
 
 ## Current Projects
 
-Your Projects or other sections 
+Your Projects or other sections
 
 ## Connect with Me
 
@@ -41,8 +41,8 @@ Your Projects or other sections
 - **Email**: [your.email@example.com](mailto:your.email@example.com)
 - **LinkedIn**: [Your Name](https://linkedin.com/in/your-profile)
 - **Twitter**: [@your_handle](https://twitter.com/your_handle)
-- **Website**: [yourwebsite.com](https://yourwebsite.com) *(optional)*
-- **Discord**: [your#1234](https://discord.com/users/your#1234) *(optional)*
+- **Website**: [yourwebsite.com](https://yourwebsite.com) _(optional)_
+- **Discord**: [your#1234](https://discord.com/users/your#1234) _(optional)_
 ```
 
 ## Step 2: Official GSoC Blog Post Template
@@ -68,7 +68,7 @@ image: "assets/Images/GSOC.png"
 **Project:** [Project Name](https://github.com/sugarlabs/project_repo)  
 **Mentors:** [Mentor1](https://github.com/Username), [Mentor2](https://github.com/Username)  
 **Assisting Mentors:** [Mentor3](https://github.com/Username), [Mentor4](https://github.com/Username)  
-**Reporting Period:** yyyy-mm-dd - yyyy-mm-dd  
+**Reporting Period:** yyyy-mm-dd - yyyy-mm-dd
 
 ---
 
@@ -82,17 +82,17 @@ image: "assets/Images/GSOC.png"
 
 ## This Week's Achievements
 
-1. **[Task or Feature]**  
-   - What you did and why it matters.  
+1. **[Task or Feature]**
+   - What you did and why it matters.
    - Links (if any): PR [#123](https://github.com/owner/repo/pull/123), Issue [#456](https://github.com/owner/repo/issues/456).
 
-2. **[Task or Feature]**  
+2. **[Task or Feature]**
    - Brief summary or a video.
-   [youtube: MM-H69cHYMk]
+     [youtube: MM-H69cHYMk]
 
-3. **[Task or Feature]**  
+3. **[Task or Feature]**
    - Add screenshots or diagrams here if useful:
-   ![screenshot-description](https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=2070)
+     ![screenshot-description](https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=2070)
 
 ---
 
@@ -154,7 +154,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 - Branch off `main` with `gsoc-weekXX-username`.
 - Add your file under `constants/MarkdownFiles/posts/`.
-- Commit and open a PR titled:  
+- Commit and open a PR titled:
   ```
   GSoC '25 Week XX Update by Name
   ```
