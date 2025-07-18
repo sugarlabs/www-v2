@@ -51,11 +51,11 @@ image: "assets/Images/GSOC.png"
 3. **Finally - Testing out Devin's CMK'24 project.**  
    - I finally did what I've always wanted. It was Devin's experiments that inspired me to take up this ,project in core Javascript for music blocks. So, here's a quick summary, haha:
 
-   - During the CMK workshop, Devin undertook a hands-on project titled “Lego Musical Notation for the Blind,” which originated as one of his own suggested ideas. The goal of the project was to create an accessible, tactile music notation system using Lego bricks that could help blind or visually impaired individuals read and compose music through touch. Devin collaborated with Jamie Chelel from MIT’s K12 Maker Lab, and together they quickly developed a physical prototype. The system used a large Lego baseplate as a grid, where the vertical axis represented pitch and the horizontal axis represented time. Lego bricks of different lengths were used to symbolize note durations, while their positions on the grid indicated pitch. They even designed a clef-like marker block to anchor reference pitches and help users navigate the register—similar to how a treble or bass clef works in traditional notation.
+   - Devin led a project called “Lego Musical Notation for the Blind” during the CMK workshop, aiming to create a tactile music system using Lego bricks for visually impaired users. Working with Jamie Chelel from MIT’s K12 Maker Lab, they built a prototype where pitch was mapped vertically and time horizontally on a Lego baseplate. Different brick lengths represented note durations, and a special marker block acted like a clef to guide pitch reference.
 
     ![Devin's CMK project idea. You can read the entire blog https://medium.com/@sugarlabs/reflections-from-constructing-modern-knowledge-2024-1ce7d60fbb1c ](https://i.ibb.co/kgPsNR4x/image-2025-07-13-041505518.png)
 
-   - After building the basic physical model, Devin shifted focus toward digitizing the system. He aimed to convert the tactile notation into a format that could be played back, edited, or exported to digital music platforms like MIDI or Music Blocks. To accomplish this, Devin explored using Scratch, despite only having limited prior experience with the platform. He investigated ways to use Scratch’s pixel color detection to scan an image of the Lego grid and extract musical data. After several attempts with image avatars and backgrounds, Devin found success using a live webcam feed, allowing Scratch’s sprite (the "glyph") to visually scan the Lego structure in real-time. He wrote scripts for the sprite to detect notes first vertically (to determine pitch) and then horizontally (to determine timing), and made the system flexible enough to accommodate any number of pitches or scales. Though Devin managed to create a functional prototype of this scanning system, he encountered challenges when trying to assign precise, meaningful pitches within Scratch’s limitations. Despite not fully resolving that technical hurdle, his work represented a creative and technically ambitious attempt to bridge physical, accessible music tools with computational music platforms.
+   - After building the basic physical model, Devin shifted focus toward digitizing the system. Devin, created a functional prototype of this scanning system, he encountered challenges when trying to assign precise, meaningful pitches within Scratch’s limitations.
 
     <iframe title="vimeo-player" src="https://player.vimeo.com/video/983707992?h=0b765ba25a" width="800" height="405" frameborder="0"    allowfullscreen></iframe>
     
@@ -77,10 +77,10 @@ image: "assets/Images/GSOC.png"
 
 ## Challenges & How I Overcame Them
 
-- **Challenge:** Reading through multiple files
-**Solution:** No solution, just did the old-fashioned, long way. Also read some documentation
-- **Challenge:** Have a lot of college related in the upcoming week.
-**Solution:** Woke up 2-3 sleepless nights to get more time?? Yeah that's what I did.
+- **Challenge:** Reading through multiple files  
+  **Solution:** No solution, just did the old-fashioned, long way. Also read some documentation
+- **Challenge:** Have a lot of college related in the upcoming week.  
+  **Solution:** Woke up 2-3 sleepless nights to get more time?? Yeah that's what I did.
 
 ---
 
