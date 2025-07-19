@@ -34,11 +34,17 @@ Over the past six weeks, we've built a comprehensive foundation for the Music Bl
 
 **Weeks 1-2:** Established the core architecture with AST (Abstract Syntax Tree) framework and memory management system, implementing a three-scope hierarchy (Global, Thread, Local) with full CRUD operations.
 
+![AST Representation](/assets/Developers/Safwan/AST.png)
+
 **Weeks 3-4:** Developed the AST-to-IR compilation logic, creating the crucial translation layer between abstract syntax trees and executable instructions using three-address code format.
 
 **Week 5:** Implemented the Symbol Table and integrated it with the Memory Module for effective variable scope and dependency management.
 
+![Memory Module Tests](/assets/Developers/Safwan/context-stack-test.png)
+
 **Week 6:** Refined the Symbol Table design, identified comprehensive IR instruction sets, and initiated the Interpreter architecture specification.
+
+![Symbol Table Design](/assets/Developers/Safwan/symbol-table-test.png)
 
 This progression has taken us from initial planning to having a complete compilation pipeline ready for execution engine implementation.
 
