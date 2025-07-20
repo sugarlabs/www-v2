@@ -71,7 +71,7 @@ image: "assets/Images/GSOC.png"
 
 ## Resources & References
 
-- **Nothing much; just the Music Blocks documentation sufficed.**
+- **Nothing much, just the Music Blocks documentation sufficed.**
 
 ---
 
