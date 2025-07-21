@@ -32,7 +32,7 @@ image: "assets/Images/GSOC.png"
 1. **add video in help button**  
    - commit: [modify code to handle help videos](https://github.com/Bishoywadea/Soma-Cube/commit/63a7daaa8009f5f54791cdf9081e765846135f70)
 
-<iframe width="932" height="524" src="https://www.youtube.com/embed/Q4BKp3Yo3Uw" title="Soma Cube as Sugar activity" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Soma Cube as Sugar activity [youtube: Q4BKp3Yo3Uw]
 
 ---
 
