@@ -12,15 +12,15 @@ image: "assets/Images/GSOC.png"
 
 # Week 6: Palettes, Windows, and GTK4 Decisions
 
-**Project:** [GTK4 Exploration](https://summerofcode.withgoogle.com/programs/2025/projects/rsHsYZKy)  
-**Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya Ibiam](https://github.com/chimosky), [Juan Pablo Ugarte](https://github.com/xjuan)  
+**Project:** [GTK4 Exploration](https://summerofcode.withgoogle.com/programs/2025/projects/rsHsYZKy)
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya Ibiam](https://github.com/chimosky), [Juan Pablo Ugarte](https://github.com/xjuan)
 **Reporting Period:** July 7, 2025 – July 15, 2025
 
 ---
 
 ## Why This Blog is Two Days Late
 
-First off, a confession: this update is getting written on 15th instead of the usual Saturday, I was travelling back to my university and this week's work was plenty and important. 
+First off, a confession: this update is getting written on 15th instead of the usual Saturday, I was travelling back to my university and this week's work was plenty and important.
 I wanted to make sure I gave the proper write-up it deserves, especially since it's also the time for **midterm** evaluations. So if you are reading this, thank you for patience.
 
 
@@ -39,7 +39,7 @@ For this week we had to write about midterm evaluations and after 6 weeks we hav
 
 ### Personal growth:
 Beyond the code, the first half taught me a lot about communcation, documenting decisions and working with mentors across time zones. I'have learned to reason and think about changes, justify architectural decisions, think broad and wide and accept that sometimes the best solutions are just compromise!
-I look forward for the next half where I can finalizing the widgets and graphics and get one or two activities ported. 
+I look forward for the next half where I can finalizing the widgets and graphics and get one or two activities ported.
 
 ## The Palette Rewrite of '25
 
@@ -53,8 +53,8 @@ The palette system was one of the most challenging and complex rewrites till now
 
 -   `Gtk.Popover` is King: Instead of manually managing popup windows, the new `Palette` class now uses `Gtk.Popover` for the menu implementation.
 
--   Controllers over Signals: The tangled web of event signals is gone. All interaction is now handled by `Gtk.EventController` and `Gtk.Gesture` objects. 
-For example, hover detection in `WidgetInvoker` now uses `Gtk.EventControllerMotion`, and clicks are captured with `Gtk.GestureClick`. 
+-   Controllers over Signals: The tangled web of event signals is gone. All interaction is now handled by `Gtk.EventController` and `Gtk.Gesture` objects.
+For example, hover detection in `WidgetInvoker` now uses `Gtk.EventControllerMotion`, and clicks are captured with `Gtk.GestureClick`.
 
 -  Real Widgets for Menu Items: `PaletteMenuItem` is no longer a `Gtk.EventBox`. It is now a proper `Gtk.Button`, which gives us accessibility, theming, and correct behavior for free. CSS is used to style it to look like a menu item, removing the need for manual background color changes on hover.
 
@@ -105,5 +105,5 @@ Next half of this GSoC going to be fun! And also we merged Sugar-AI ( _yay!_ tha
 
 And YESS NOW YOU CAN PLAY THE GAME HEHE.
 
-Until next week (on time, I promise!),  
+Until next week (on time, I promise!),
 Krish
