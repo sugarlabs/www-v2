@@ -41,7 +41,17 @@ image: "assets/Images/c4gt_DMP.png"
      - Documented why transposition fails:
        - Upward transposition (e.g., C2 → C4) creates thin, metallic sound
        - Downward transposition (e.g., C6 → C4) results in muddy, artificial sound
-     - Recommended 10 samples total (staccato/legato for each register)
+     - Recommended sampling structure:
+       ```javascript
+       "piano": {
+           "C2": { "staccato": "...", "legato": "..." },  // Bass register
+           "C3": { "staccato": "...", "legato": "..." },  // Lower middle
+           "C4": { "staccato": "...", "legato": "..." },  // Middle C
+           "C5": { "staccato": "...", "legato": "..." },  // Upper middle
+           "C6": { "staccato": "...", "legato": "..." }   // Treble register
+       }
+       // 10 samples total
+       ```
 
      **Flute - Register-Based Approach**
      - Mapped register characteristics:
@@ -49,7 +59,15 @@ image: "assets/Images/c4gt_DMP.png"
        - Middle (G4-C6): Clear, characteristic sound
        - High (D6-C7): Bright, piercing quality
      - Different embouchure techniques affect overtone series
-     - Recommended 6 samples across registers
+     - Recommended sampling structure:
+       ```javascript
+       "flute": {
+           "low": { "D4": { "staccato": "...", "legato": "..." } },    // Breathy
+           "middle": { "G4": { "staccato": "...", "legato": "..." } }, // Clear
+           "high": { "C6": { "staccato": "...", "legato": "..." } }    // Bright
+       }
+       // 6 samples total
+       ```
 
      **Violin - String-Specific Sampling**
      - Analyzed individual string characteristics:
@@ -58,17 +76,44 @@ image: "assets/Images/c4gt_DMP.png"
        - A string (A4): Bright, focused sound
        - E string (E5): Brilliant, potentially harsh
      - Documented playing techniques (arco/pizzicato)
-     - Recommended 8 samples total
+     - Note: Articulations (staccato/legato) can be simulated within each technique
+     - Recommended sampling structure:
+       ```javascript
+       "violin": {
+           "G_string": { "G3": { "arco": "...", "pizzicato": "..." } },
+           "D_string": { "D4": { "arco": "...", "pizzicato": "..." } },
+           "A_string": { "A4": { "arco": "...", "pizzicato": "..." } },
+           "E_string": { "E5": { "arco": "...", "pizzicato": "..." } }
+       }
+       // 8 samples total
+       ```
 
      **Trumpet - Harmonic Series Based**
      - Leverages natural harmonic series principles
      - Consistent timbre across range due to uniform bore
-     - Only requires 4 samples (open/muted at two positions)
+     - Natural acoustics support pitch shifting
+     - Recommended sampling structure:
+       ```javascript
+       "trumpet": {
+           "Bb3": { "open": "...", "muted": "..." },
+           "Bb4": { "open": "...", "muted": "..." }
+       }
+       // 4 samples total
+       ```
 
      **Drums - Individual Sampling**
      - Each drum requires individual sampling
      - No transposition possible due to fixed acoustic properties
      - Separate samples needed for different playing techniques
+     - Recommended sampling structure:
+       ```javascript
+       "drums": {
+           "kick": { "hit": "kick.wav" },
+           "snare": { "hit": "snare.wav", "rim": "rim.wav" },
+           "hihat": { "closed": "hihat_closed.wav", "open": "hihat_open.wav" }
+       }
+       // Each drum needs individual samples
+       ```
 
    Detailed specifications and complete analysis available in the [Comprehensive Sampling Strategy Document](https://docs.google.com/document/d/1VoRCEq9SgVe22Q5nvP-9_-R-R3cKR7hfvBHKa3VBFM8/edit?usp=sharing).
 
