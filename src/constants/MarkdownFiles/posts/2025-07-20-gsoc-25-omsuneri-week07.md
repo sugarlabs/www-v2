@@ -59,7 +59,7 @@ This modular architecture is easy to integrate with Music Blocks UI, scalable ac
 
 #### 2. Embedding Music Blocks Lesson Plans
 
-To make the LLM better at understanding educational goals, I wrote a full scraping pipeline to collect and embed **lesson plans from the MAP FLC site**.
+To make the LLM better at understanding educational goals, I wrote a full scraping pipeline to collect and embed **lesson plans from the [MAPFLC](https://mapflc.com/lesson-plans/) site**.
 
 **What the Script Does:**
 
