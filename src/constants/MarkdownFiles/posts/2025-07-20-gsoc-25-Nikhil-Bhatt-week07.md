@@ -23,16 +23,16 @@ image: "assets/Images/GSOC.png"
 
 ### Backend: Project data end point
 
-- Created a new backend route that returns project data of projects without forking them `GET/api/github/getProjectData` 
+- Created a new backend route that returns project data of projects without forking them `GET/api/github/getProjectData`.   
 Earlier, when we used to click "Open in Music blocks" in the projects page, a shallow fork of the project (without all the project history) 
 used to get created, the route helps in only returning the projectData which is loaded to musicblocks allowing students to see first and then 
-decide whether to fork or not
+decide whether to fork or not. 
 
-- Custom description for the project - This change allows student to add descriptions to their projects, similar to what they did in the planet page
+- Custom description for the project - This change allows student to add descriptions to their projects, similar to what they did in the planet page.  
 
 ---
 
-### 💡 Frontend: Forking projects & Student written Description for Projects
+###  Frontend: Forking projects & Student written Description for Projects
 
 - Fork Button in UI: Users now see a "Fork This Project" button while inside any project.
 - It also retains all commit history from the original repository in the fork.
@@ -42,10 +42,10 @@ decide whether to fork or not
 
 ## Challenges & How I Solved Them
 
-- **Challenge:** Handling local saved states for identifying projects with their keys
+- **Challenge:** Handling local saved states for identifying projects with their keys.  
   **Solution:** We are replacing the repoName and its key when a project is forked, discussion on this approach is still in progress. 
 
-- **Challenge:** Managing clear separation between forking and opening a project in musicblocks
+- **Challenge:** Managing clear separation between forking and opening a project in Music Blocks.  
   **Solution:** Created a separate end point which only returns the projectData, no forking initially, will save loading time as well as un-necessary repository creation.
 
 ---
@@ -59,8 +59,8 @@ decide whether to fork or not
 
 ## Next Week's Roadmap
 - Begin work on downloading and sharing of projects.
-- Conceptualise creating pull requests and an option to see them in musicblocks
-- Discuss on working on multiple projects simultaneously 
+- Conceptualise creating pull requests and an option to see them Music Blocks.  
+- Discuss on working on multiple projects simultaneously.  
 
 
 ---
