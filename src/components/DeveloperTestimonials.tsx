@@ -26,7 +26,7 @@ const ReviewCard = ({
 }) => {
   return (
     <motion.div
-      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-lg border border-gray-200 dark:border-gray-700 mx-2 justify-between"
+      className="bg-white rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-lg border border-gray-200 mx-2 justify-between"
       variants={testimonialCard}
       initial="hidden"
       whileInView="visible"
@@ -43,10 +43,7 @@ const ReviewCard = ({
       />
 
       {/* Feedback Text */}
-      <motion.p
-        className="text-gray-700 dark:text-gray-300 mt-2"
-        variants={testimonialText}
-      >
+      <motion.p className="text-gray-700 mt-2" variants={testimonialText}>
         {body}
       </motion.p>
 
@@ -59,12 +56,8 @@ const ReviewCard = ({
           variants={avatarReveal}
         />
         <motion.div variants={testimonialText}>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            {name}
-          </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            @{username}
-          </p>
+          <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
+          <p className="text-sm text-gray-500">@{username}</p>
         </motion.div>
       </div>
     </motion.div>
