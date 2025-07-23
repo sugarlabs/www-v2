@@ -1,20 +1,20 @@
 ---
 title: "GSoC '25 Week 7 Update by Krish Pandya"
-excerpt: "Bundling, Post-Mid Terms"
+excerpt: "Bundling, Post MidTerm"
 category: "DEVELOPER NEWS"
-date: "2025-07-15"
-slug: "2025-07-15-gsoc-25-mostlyk-week07"
+date: "2025-07-22"
+slug: "2025-07-22-gsoc-25-mostlyk-week07"
 author: "@/constants/MarkdownFiles/authors/krish-pandya.md"
 tags: "gsoc25,sugarlabs,week07,mostlyk"
 image: "assets/Images/GSOC.png"
 ---
 
 
-# Week 7: Bundling , Post-Mid Terms, Sugar Envrionment and Profiles
+# Week 7: Bundling , Post MidTerm, Sugar Envrionment and Profiles
 
 **Project:** [GTK4 Exploration](https://summerofcode.withgoogle.com/programs/2025/projects/rsHsYZKy)
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya Ibiam](https://github.com/chimosky), [Juan Pablo Ugarte](https://github.com/xjuan)
-**Reporting Period:** July 7, 2025 – July 15, 2025
+**Reporting Period:** July 15 2025 – July 22, 2025
 
 ---
 
@@ -87,7 +87,7 @@ Apart from that there are no salient quirks one needs to know, just follow the R
 
 ## The Discussion with Juan Pablo and Ibiam
 
-So this friday ( 18-07-2025 ) I had a call with Juan Pablo and Ibiam and we discussed about the implications of changes and overall progress.
+So this friday ( July 18 , 2025 ) I had a call with Juan Pablo and Ibiam and we discussed about the implications of changes and overall progress.
 We talked about how Popover are a really nice alternative as discussed in the last blog as well.
 I learnt about GTK_DEBUG=interactive flag and it changed a lot of things for me. A bit late to learn about that but better late than never they say.
 
