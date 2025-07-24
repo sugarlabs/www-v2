@@ -65,10 +65,9 @@ Since current LLMs are not capable of generating audio that can be used directly
 
 ![Trimmed audio in Audacity](/assets/Developers/Muhammad%20Haroon/Trimmed%20audio%20in%20Audacity.png)
 
-- Then the users can download the trimmed audio and import it into Music Blocks.
-![AI-generated audio imported into Music Blocks](/assets/Developers/Muhammad%20Haroon/AI%20generated%20audio%20in%20Music%20Blocks.png)
+- Click on the video below to see how can we import the audio into Music Blocks:
 
-- [View Music Blocks project](/assets/Developers/Muhammad%20Haroon/Muisc%20Blocks%20project.html)
+[![Importing the audio into Music Blocks](https://img.youtube.com/vi/eR8hfvNzPTg/0.jpg)](https://youtu.be/eR8hfvNzPTg)
 
 ---
 
