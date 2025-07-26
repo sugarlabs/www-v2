@@ -1,6 +1,6 @@
 ---
 title: "SSoC ’25 Week 07 Update by Muhammad Haroon"
-excerpt: "Create sketches of user interfaces showing how students will interact with the GenAI and the audio trimming tool."
+excerpt: "Create sketches of user interface showing how students will interact with the GenAI and the audio trimming tool."
 category: "DEVELOPER NEWS"
 date: "2025-07-20"
 slug: "2025-07-20-ssoc-25-MuhammadHaroon-week07"
@@ -22,20 +22,35 @@ image: "assets/Images/GSOC.png"
 
 ## Goals for This Week
 
-- **Goal 1:** Create sketches of user interfaces showing how students will interact with the GenAI and the audio trimming tool.
+- **Goal 1:** Create sketches of user interface showing how students will interact with the GenAI and the audio trimming tool.
 
 ---
 
 ## This Week's Achievements
 
-1. **Brainstorming Design Ideas**  
-   -  I began brainstorming user interface designs keeping students in mind, focusing on making it easy to interact with both the GenAI tool and the audio trimming tool.
+1. **Created sketches of user interface**  
+   - I created sketches of the user interface, keeping children in mind to ensure it is easy for them to interact with. Below are the sketches of the user interface.
+
+   - I added two buttons to the sampler widget, upon clicking those users can access AI sample generation tool and audio trimming functionality.
+
+   ![User Inerface 1](/assets/Developers/Muhammad%20Haroon/user%20interface%201.png)
+
+   - Upon clicking the prompt button (which has an icon similar to a code editor), the AI sample generation tool will open. It includes an input box where users can enter a prompt and press the Submit button. The audio will then be downloaded automatically.
+
+   ![User Inerface 2](/assets/Developers/Muhammad%20Haroon/user%20interface%202.png)
+
+   - Once the audio is downloaded, users may need to trim it to extract the desired portion. For this, I designed an Audio Trimming Tool, it can be opened by clicking on an icon of a scissor. Users can select the downloaded audio file by clicking the file chooser button. After selecting a file, the file chooser is replaced with an HTML audio player that loads the selected audio (as shown in User Interface 4). This allows users to listen and identify the timestamps of the segment they want to keep. Two input boxes are provided where users can enter the start time and end time of the desired audio segment. A Preview button lets users listen to the trimmed portion before finalizing it. Once satisfied, they can click the Save button to download the trimmed audio.
+
+   ![User Inerface 3](/assets/Developers/Muhammad%20Haroon/user%20interface%203.png)
+
+   ![User Inerface 4](/assets/Developers/Muhammad%20Haroon/user%20interface%204.png)
 
 ---
 
 ## Next Week's Roadmap
 
-- Create sketches of user interfaces showing how students will interact with the GenAI and the audio trimming tool.
+- Code the sketches of the user interface in Music Blocks.
+- Create a FastAPI for connecting frontend with backend.
 
 ---
 
