@@ -35,7 +35,7 @@ image: "assets/Images/GSOC.png"
 
    ![User Inerface 1](/assets/Developers/Muhammad%20Haroon/user%20interface%201.png)
 
-   - Upon clicking the prompt button (which has an icon similar to a code editor), the AI sample generation tool will open. It includes an input box where users can enter a prompt and press the Submit button. The audio will then be downloaded automatically.
+   - Upon clicking the Prompt button (which has an icon resembling a code editor), the AI sample generation tool will open. It includes an input box where users can enter a prompt and press the Submit button. Users can preview the generated audio by pressing the Preview button. If the audio doesn't sound good, they can modify the prompt and preview the audio again before saving it by pressing the Save button.
 
    ![User Inerface 2](/assets/Developers/Muhammad%20Haroon/user%20interface%202.png)
 
