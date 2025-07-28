@@ -11,7 +11,7 @@ image: "assets/Images/GSOC.png"
 
 <!-- markdownlint-disable -->
 
-# Week 10 Progress Report by Aditya Kumar Singh and Midterm Summary
+# Week 11 Progress Report by Aditya Kumar Singh
 
 **Project:** [Sugarizer](https://github.com/llaske/sugarizer)  
 **Mentors:** [Lionel Laské](https://github.com/llaske)  
