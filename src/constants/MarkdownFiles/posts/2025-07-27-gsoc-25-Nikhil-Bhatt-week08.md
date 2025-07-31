@@ -11,7 +11,7 @@ image: "assets/Images/GSOC.png"
 
 <!-- markdownlint-disable -->
 
-# Week 06 Progress Report by Nikhil Bhatt
+# Week 08 Progress Report by Nikhil Bhatt
 
 **Project:** [Git backend for MusicBlocks](https://github.com/benikk/musicblocks-backend)  
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  
