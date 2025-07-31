@@ -5,7 +5,7 @@ category: "DEVELOPER NEWS"
 date: "2025-07-27"
 slug: "2025-07-27-gsoc-25-nikhilbhatt-week08"
 author: "@/constants/MarkdownFiles/authors/nikhil-bhatt.md"
-tags: "gsoc25,sugarlabs,week06,nikhilbhatt,midterm"
+tags: "gsoc25,sugarlabs,week08,nikhilbhatt,midterm"
 image: "assets/Images/GSOC.png"
 ---
 
