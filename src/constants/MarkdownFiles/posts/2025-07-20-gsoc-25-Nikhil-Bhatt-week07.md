@@ -5,17 +5,17 @@ category: "DEVELOPER NEWS"
 date: "2025-07-20"
 slug: "2025-07-20-gsoc-25-nikhilbhatt-week07"
 author: "@/constants/MarkdownFiles/authors/nikhil-bhatt.md"
-tags: "gsoc25,sugarlabs,week06,nikhilbhatt"
+tags: "gsoc25,sugarlabs,week07,nikhilbhatt"
 image: "assets/Images/GSOC.png"
 ---
 
 <!-- markdownlint-disable -->
 
-# Week 06 Progress Report by Nikhil Bhatt
+# Week 07 Progress Report by Nikhil Bhatt
 
 **Project:** [Git backend for MusicBlocks](https://github.com/benikk/musicblocks-backend)  
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  
-**Reporting Period:** 2025-07-07 – 2025-07-13  
+**Reporting Period:** 2025-07-13 – 2025-07-20 
 
 ---
  
