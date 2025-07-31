@@ -5,7 +5,7 @@ category: "DEVELOPER NEWS"
 date: "2025-07-13"
 slug: "2025-07-13-gsoc-25-mebinthattil-week6"
 author: "@/constants/MarkdownFiles/authors/mebin-thattil.md"
-tags: "gsoc25,sugarlabs,week06,mebinthattil,speak_activity"
+tags: "gsoc25,sugarlabs,week06,midterm,mebinthattil,speak_activity"
 image: "assets/Images/GSOCxSpeak.png"
 ---
 
