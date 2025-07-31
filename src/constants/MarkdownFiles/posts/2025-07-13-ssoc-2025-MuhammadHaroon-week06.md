@@ -58,16 +58,16 @@ The first half of my Sugar Summer of Code 2025 project has been both challenging
 Since current LLMs are not capable of generating audio that can be used directly in Music Blocks, the following workflow serves as an alternative approach:
 
 - The user first generates an audio using a text-to-audio model such as TangoFlux.  
-![TangoFlux - text to audio generation model](/assets/Developers/Muhammad%20Haroon/TangoFlux%20-%20Text%20to%20Audio%20Generation%20Model.png)
+![TangoFlux - text to audio generation model](/assets/Developers/Muhammad_Haroon/TangoFlux-Text_to_Audio_Generation_Model.png)
 
 - The generated audio is then passed into an audio trimming tool, for demonstration purpose I am using an Audacity software.
-![Trimming AI-generated audio in Audacity](/assets/Developers/Muhammad%20Haroon/Trimming%20AI%20generated%20audio%20in%20Audacity.png)
+![Trimming AI-generated audio in Audacity](/assets/Developers/Muhammad_Haroon/Trimming_AI_generated_audio_in_Audacity.png)
 
-![Trimmed audio in Audacity](/assets/Developers/Muhammad%20Haroon/Trimmed%20audio%20in%20Audacity.png)
+![Trimmed audio in Audacity](/assets/Developers/Muhammad_Haroon/Trimmed_audio_in_Audacity.png)
 
 - Click on the video below to see how can we import the audio into Music Blocks:
 
-[![Importing the audio into Music Blocks](https://img.youtube.com/vi/eR8hfvNzPTg/0.jpg)](https://youtu.be/eR8hfvNzPTg)
+[youtube: eR8hfvNzPTg]
 
 ---
 
