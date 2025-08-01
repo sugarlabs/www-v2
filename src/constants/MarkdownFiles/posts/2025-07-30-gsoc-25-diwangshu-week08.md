@@ -24,7 +24,7 @@ image: "assets/Images/GSOC.png"
 
 - **Goal 1:** Improved 'reflection' widget UI.
 - **Goal 2:** Implement IndexedDB for storing user data.
-- **Goal 3:** Fix bugs occured by these changes.
+- **Goal 3:** Fix bugs caused by these changes.
 
 ---
 
@@ -40,11 +40,11 @@ image: "assets/Images/GSOC.png"
 
 ## Challenges & How I Overcame Them
 
-- **Challenge 01:** Working with vanilla JavaScripts is really time-consuming. Although my fundamentals about this language is getting stronger, I still find it challenging to make dynamic UI components using it.
+- **Challenge 01:** Working with vanilla JavaScript is really time-consuming. Although my fundamentals about this language are getting stronger, I still find it challenging to make dynamic UI components using it.
 
   **Solution :** I am using existing CSS styling to make the UI components a little bit faster.
 
-- **Challenge 02:** The 'reflection' widget block comes in the project code. So, the LLM also describes the block in the algorithm which is not needed.
+- **Challenge 02:** The 'reflection' widget block comes in the project code. So, the LLM also describes the block in the algorithm that is not needed.
 
   **Solution :** I have not figured out a solution for this yet. I am thinking of using a regex to remove the block from the code before sending it to the LLM.
 ---
@@ -57,7 +57,7 @@ image: "assets/Images/GSOC.png"
 ## Next Week’s Roadmap
 
 - From recent discussions with my mentor, I will be assigning persona-like names to the AI agents.
-- I will be implementing the 'analysis' feature in the 'reflection' widget. Therefor, it has to read the previous summaries and analysis reports from the IndexedDB.
+- I will be implementing the 'analysis' feature in the 'reflection' widget. Therefore, it has to read the previous summaries and analysis reports from the IndexedDB.
 ---
 
 ## Resources & References
