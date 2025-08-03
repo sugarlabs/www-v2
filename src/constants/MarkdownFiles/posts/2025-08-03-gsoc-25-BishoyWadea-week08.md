@@ -1,15 +1,15 @@
 ---
-title: "GSoC ’25 Week 07 Update by Bishoy Wadea"
+title: "GSoC ’25 Week 08 Update by Bishoy Wadea"
 excerpt: "Fixing Sugar OS compatibility and enhancing Euclid’s Game"
 category: "DEVELOPER NEWS"
 date: "2025-08-03"
-slug: "gsoc-25-BishoyWadea-week07"
+slug: "gsoc-25-BishoyWadea-week08"
 author: "@/constants/MarkdownFiles/authors/bishoy-wadea.md"
-tags: "gsoc25,sugarlabs,week07,BishoyWadea"
+tags: "gsoc25,sugarlabs,week08,BishoyWadea"
 image: "assets/Images/GSOC.png"
 ---
 
-# Week 07 Progress Report by Bishoy Wadea
+# Week 08 Progress Report by Bishoy Wadea
 
 **Project:** [Euclid’s Game](https://github.com/Bishoywadea/Euclid-s-Game)  
 **Mentors:** [Ibiam Chihurumnaya](https://github.com/chimosky)  
