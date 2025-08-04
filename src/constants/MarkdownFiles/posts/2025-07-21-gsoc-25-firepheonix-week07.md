@@ -55,18 +55,23 @@ image: "assets/Images/GSOC.png"
 ## Key Learnings
 
 - Sometimes you'll be forced to pivot. Be sure to consult others beforehand.
+- People may use different different widths and heights of monitors, when doing computer vision things related to shapes and sizes, use both x and y-axis to standardize across all monitors.
 
 ---
 
 ## Next Week's Roadmap
 
 - Complete the first actual prototype, with the action block export.
+- Add vertical lines as a grid, to standardize detection time accross all widths of monitors.
+- Find out a method to divide the the entire musical pattern into standard column like sections, like in phrase maker.
 
 ---
 
 ## Resources & References
 
-- **Nothing much; just the Music Blocks documentation sufficed.** 
+- **You can refer to music blocks documentation: https://github.com/sugarlabs/musicblocks/tree/master/documentation** 
+- **You may refer to the Lego Blocks Notation system video: https://youtu.be/LOfrCPf3XJU?feature=shared**
+- **Devin's CMK'24 blog: https://medium.com/@sugarlabs/reflections-from-constructing-modern-knowledge-2024-1ce7d60fbb1c**
 
 ---
 
