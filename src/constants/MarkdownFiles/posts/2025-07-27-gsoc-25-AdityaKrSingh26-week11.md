@@ -104,31 +104,39 @@ Each stickman is defined as a collection of joints. A joint represents a specifi
 ```
 
 ### 2. Defining Joint Relationships
+
 Joints are connected in two meaningful ways:
 
--  Distance-Based Constraints
-These constraints ensure that limbs maintain a fixed length and structure during animation.
+**A. Distance-Based Constraints**  
+These constraints ensure that limbs maintain a fixed length and structure during animation:
 ```javascript
-    const jointConnections = [
-        { from: 0, to: 1, length: 20 },    // head to body
-        { from: 1, to: 11, length: 30 },   // body to middle
-        { from: 11, to: 2, length: 30 },   // middle to hips
-        ...
-    ];
+const jointConnections = [
+    { from: 0, to: 1, length: 20 },    // head to body
+    { from: 1, to: 11, length: 30 },   // body to middle
+    { from: 11, to: 2, length: 30 },   // middle to hips
+    { from: 2, to: 3, length: 25 },    // hips to left knee
+    { from: 2, to: 5, length: 25 },    // hips to right knee
+    { from: 3, to: 4, length: 25 },    // left knee to left foot
+    { from: 5, to: 6, length: 25 },    // right knee to right foot
+    { from: 1, to: 7, length: 25 },    // body to left elbow
+    { from: 1, to: 9, length: 25 },    // body to right elbow
+    { from: 7, to: 8, length: 25 },    // left elbow to left hand
+    { from: 9, to: 10, length: 25 }    // right elbow to right hand
+];
 ```
 
-- Hierarchical Parent-Child Structure
+**B. Hierarchical Parent-Child Structure**  
 To model recursive movement, a joint hierarchy tree is used. This structure defines how movement in one joint affects its descendants:
 ```javascript
-   const jointHierarchy = {
-        2: [11],         // hips → middle
-        11: [1],         // middle → body
-        1: [0, 7, 9],    // body → head, left elbow, right elbow
-        7: [8],          // left elbow → left hand
-        9: [10],         // right elbow → right hand
-        3: [4],          // left knee → left foot
-        5: [6]           // right knee → right foot
-    };
+const jointHierarchy = {
+    2: [11],         // hips → middle
+    11: [1],         // middle → body
+    1: [0, 7, 9],    // body → head, left elbow, right elbow
+    7: [8],          // left elbow → left hand
+    9: [10],         // right elbow → right hand
+    3: [4],          // left knee → left foot
+    5: [6]           // right knee → right foot
+};
 ```
 
 ### 3. Recursive Joint Rotation Algorithm
@@ -168,19 +176,36 @@ To propagate transformations across the hierarchy, we use a recursive rotation a
 
 ### 4. Pivot Assignment Rules
 
-Different joints rotate around different pivots depending on their anatomical location. The rules to assign pivots are as follows:
+Different joints rotate around different pivots depending on their anatomical location. The implementation uses a sophisticated mapping system:
 
 **Algorithm: GetRotationPivot**  
 **Input:**
-- `stickmanIndex`  
-- `jointIndex`  
+- `stickmanIndex`: the stickman to operate on
+- `jointIndex`: the joint being rotated
 
-**Steps:**
-1. If the joint is the `middle`, return the `hip` joint as pivot.  
-2. If the joint is the `body`, return the `middle` joint as pivot.  
-3. If the joint is a left or right elbow, return the `body` joint.  
-4. If the joint is a left or right knee, return the `hip` joint.  
-5. Otherwise, return the joint itself as the pivot.
+**Implementation Logic:**
+```javascript
+function getRotationPivot(stickmanIndex, jointIndex) {
+    const joints = stickmen[stickmanIndex].joints;
+    
+    const pivotMap = {
+        11: joints[2],  // middle joint rotates around hip
+        1: { x: joints[11].x, y: joints[11].y },  // body rotates around middle
+        7: joints[1],   // left elbow rotates around body
+        9: joints[1],   // right elbow rotates around body
+        3: joints[2],   // left knee rotates around hip
+        5: joints[2]    // right knee rotates around hip
+    };
+    
+    return pivotMap[jointIndex] || joints[jointIndex];
+}
+```
+
+**Anatomical Rules:**
+1. **Torso joints (middle, body):** Rotate around their parent in the spine chain
+2. **Arms (elbows, hands):** Rotate around the body/shoulder connection
+3. **Legs (knees, feet):** Rotate around the hip joint
+4. **Extremities (head, hands, feet):** Can rotate independently when directly manipulated
 
 ### 5. Resulting Behavior
 
@@ -192,8 +217,7 @@ With this system, several realistic behaviors are supported:
 - **Independent motion:** Feet, hands, and head can still be individually adjusted when needed.
 
 > Final Result
-![](https://i.ibb.co/XkKP15J4/image.png)
-
+![](https://i.ibb.co/fzWLMJWr/Screenshot-2025-07-29-004041.png)
 
 ---
 
