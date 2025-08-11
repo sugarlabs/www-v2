@@ -34,10 +34,16 @@ To overcome the GitHub API rate-limiting issue, I implemented a **new route** th
 - This ensures users can list all their repositories reliably without hitting the public API rate limit.
 - The route fetches repositories the app has access to, respecting GitHub permissions. 
 
-## Updated Projects page (with themes and updated route).
+## Updated Projects page (with themes and updated route)
+
+After integrating the new theme feature and the authenticated repository fetch route, I updated the Projects page to showcase these enhancements in action. You can now see repository themes displayed alongside project descriptions, making it easier for users to visually identify and filter projects.
+
 ![Projects page](assets/Developers/Nikhil/projectPage.png)
 
-## Actual GitHub repository created in Music Blocks project account. 
+## Actual GitHub repository created in Music Blocks project account 
+
+Here's an example of a repository actually created in the Music Blocks GitHub organization using the new backend functionality. The topics we added (themes) are visible directly in GitHub's About section, showcasing that the integration works end-to-end.
+
 ![GitHub repo](assets/Developers/Nikhil/github-repo.png)
 
 ---
@@ -83,5 +89,5 @@ To overcome the GitHub API rate-limiting issue, I implemented a **new route** th
 ## Acknowledgments
 
 Thanks again to my mentors and the Sugar Labs community for feedback and support!  
-Looking forward to next week’s frontend PR features. 
+Looking forward to next week.  
 
