@@ -15,7 +15,7 @@ image: "assets/Images/GSOC.png"
 
 <!-- markdownlint-disable -->
 
-# Week 7 Progress Report by Shubham Singh
+# Week 8 Progress Report by Shubham Singh
 
 **Project:** [Color Sensor for Music Blocks](https://github.com/sugarlabs/musicblocks/issues/4537)  
 **Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Walter Bender](https://github.com/walterbender)  
