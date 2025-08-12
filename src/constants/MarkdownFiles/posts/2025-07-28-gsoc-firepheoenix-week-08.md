@@ -38,14 +38,15 @@ image: "assets/Images/GSOC.png"
    - Earlier, the method of having the lego blocks just across the horizontal axis. Now, the number of pixels across 2 points on any monitor may vary, so we switched to time. But the length of DISPLAY of blocks might also vary.
    - So now, we're using three things: 1. X-axis 2. Y-axis 3. Time
    - Now, the time across any two columns will be the same. Hence keeping it the same across all types of monitors.
-        ![Y-axis lines are now made.](https://i.ibb.co/m5zFmhr2/Music-Blocks-Google-Chrome-04-08-2025-18-09-24.png)
+
+        ![Y-axis lines are now made](/assets/Developers/Shubham_Singh/gsoc-blog-week08-img2.png)
 
 
 2. **Implemented the dynamic dividing of Lego Block images into different shaped columns**  
    - Now, the image detection also automatically detects the column division.
    - This will help significantly in exporting the audio as an action block.
 
-    ![Detects column's left and right edges.](https://i.ibb.co/rffW0KSM/color-detection-1754299751761.png)
+    ![Detects column's left and right edges.](/assets/Developers/Shubham_Singh/gsoc-blog-week08-img-1.png)
 
 
 ---
@@ -70,7 +71,7 @@ image: "assets/Images/GSOC.png"
 ## Next Week's Roadmap
 
 - Build the action block output.
-- Show actual result of Do,Re,Mi,Fa,Sol... as action block
+- Generate note blocks with their corresponding note values and pitches for a given phrase, based on the LEGO brick input.
 
 ---
 
