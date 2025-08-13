@@ -1,6 +1,6 @@
 ---
 title: "GSoC '25 Week 9 Update by Krish Pandya"
-excerpt: "Hello World, Radio Palettes, and PyPI Release!"
+excerpt: "Hello-World, Radio Palettes, and PyPI Release!"
 category: "DEVELOPER NEWS"
 date: "2025-08-03"
 slug: "2025-08-03-gsoc-25-mostlyk-week09"
@@ -9,7 +9,7 @@ tags: "gsoc25,sugarlabs,week09,mostlyk"
 image: "assets/Images/GSOC.png"
 ---
 
-# Week 9: Hello World, Radio Palettes, and PyPI Release!
+# Week 9: Hello-World, Radio Palettes, and PyPI Release!
 
 **Project:** [GTK4 Exploration](https://summerofcode.withgoogle.com/programs/2025/projects/rsHsYZKy)  
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya Ibiam](https://github.com/chimosky), [Juan Pablo Ugarte](https://github.com/xjuan)  
@@ -19,29 +19,26 @@ image: "assets/Images/GSOC.png"
 
 ## The Week of Debugging, Demos, and Downloads
 
-This week was a classic GSoC rollercoaster: the codebase is now big enough that tiny bugs become huge blockers, and huge features sometimes just work. I spent hours chasing down a path bug that turned out to be a config detail and later on hard coded the paths for a workaround for now , radio tool buttons, palettes, and the first working Hello World activity are all live!
+This week was a classic GSoC roller coaster: the codebase is now big enough that tiny bugs become huge blockers, and huge features sometimes just work. I spent hours chasing down a path bug that turned out to be a config detail and later on hard coded the paths for a workaround for now , radio tool buttons, palettes, and the first working Hello World activity are all live!
 
 _Hello-World isn't pushed yet, will push it with bundle itself_
-
 
 ## Debugging
 
 Early in the project, writing code was fast, just a few graphical interfaces, no integration headaches. Now, every little bug can block the whole flow. This week, I spent hours just figuring out why I couldn't get the art icons working properly, the button signals not ending like I wanted. Turns out, hardcoding the path was the way I have made it work, not elegant, but it works!
 
-A special shoutout to the [Stack Overflow](https://stackoverflow.com/questions/72303475/gtk4-gestureclick-no-released-signal-emitted) and [GNOME Discourse](https://discourse.gnome.org/t/gtk4-need-button-pressed-and-released-signals/8506) threads that helped me fix signaling in Palettes.
-
-
+_A special shoutout to the [Stack Overflow](https://stackoverflow.com/questions/72303475/gtk4-gestureclick-no-released-signal-emitted) and [GNOME Discourse](https://discourse.gnome.org/t/gtk4-need-button-pressed-and-released-signals/8506) threads that helped me fix signaling in Palettes._
 
 ## Radio Tool Buttons & Palettes: The Big Reveal
 
-Let’s start with the fun stuff: radio tool buttons and radio palettes. After a lot of toolkit upgrades and some annoying GTK integration quirks, I finally got radio tool buttons working with their palettes. You can now select between states (eraser, pencil, etc.), and the palette stays in sync with the tool button. 
+Let’s start with the fun stuff: radio tool buttons and radio palettes. After a lot of toolkit upgrades and some annoying GTK integration quirks, I finally got radio tool buttons working with their palettes. You can now select between states (eraser, pencil, etc.), and the palette stays in sync with the tool button.
 
 Also do note: The color scheme is fully customizable via my config, sooo the rainbowish borders you see in the demo is all me, not GTK4 defaults.
 
 Here’s a quick breakdown of what’s working:
 ( This is shown in the video which I have been delaying since the past few weeks! )
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/gbaG9CaJJ-U?si=ukHdaz2HTxdHCd9e" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[youtube: gbaG9CaJJ-U]
 
 - Radio Tool Buttons: Integrated with radio palettes, stateful selection (eraser, pencil, pen, etc.)
 
@@ -55,12 +52,11 @@ Here’s a quick breakdown of what’s working:
 
 ---
 
-## Hello World Activity: Actually Live!
+## Hello-World Activity: Actually Live
 
-The big milestone this week: the Hello World activity is up and running. I spent a lot of time emulating desktop environments (GNOME, KDE, Hyprland etc.) to make sure the UI looks right, even if some backend arguments are a bit hacky for now. The circular CSS isn’t perfect yet, but the basics are solid. This is the first real step toward porting and bundling activities for Sugar GTK4.
+The big milestone this week: the Hello-World activity is up and running. I spent a lot of time emulating desktop environments (GNOME, KDE, Hyprland etc.) to make sure the UI looks right, even if some backend arguments are a bit hacky for now. The circular CSS isn’t perfect yet, but the basics are solid. This is the first real step toward porting and bundling activities for Sugar GTK4.
 
-
-## PyPI Release!
+## PyPI Release
 
 You can now download and install the toolkit directly from PyPI:  
 
@@ -70,19 +66,18 @@ You can now download and install the toolkit directly from PyPI:
 pip install sugar-toolkit-gtk4
 ```
 
-We will change the authors and maintainers as GSoC comes to an end to SugarLabs.
+We will change the authors and maintainers as GSoC comes to an end to Sugar Labs.
 This makes it much easier for others to try out the toolkit and start porting their own activities. Publishing is now automated via GitHub Actions—so every new release is just a push away.
-
-
 
 ---
 
 ## Reflection & Next Steps
 
-After nine weeks of building, breaking, and rebuilding, I’m starting to appreciate how much the little details matter. Debugging path issues, integrating palettes, and getting activities to actually launch has taught me a ton about GTK4’s quirks and strengths. The toolkit is finally at a point where I can start porting real activities. 
+After nine weeks of building, breaking, and rebuilding, I’m starting to appreciate how much the little details matter. Debugging path issues, integrating palettes, and getting activities to actually launch has taught me a ton about GTK4’s quirks and strengths. The toolkit is finally at a point where I can start porting real activities.
 
 Next up:
-- Polish Hello World and fix icon sizing
+
+- Polish Hello-World and fix icon sizing
 - Clean up debug statements and hardcoded paths
 - Continue porting and refining the toolkit
 - Add widgets example, presence and datastore from old library.
