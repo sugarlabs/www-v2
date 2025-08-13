@@ -5,7 +5,7 @@ category: "DEVELOPER NEWS"
 date: "2025-07-26"
 slug: "2025-07-26-gsoc-25-mostlyk-week08"
 author: "@/constants/MarkdownFiles/authors/krish-pandya.md"
-tags: "gsoc25,sugarlabs,week06,mostlyk"
+tags: "gsoc25,sugarlabs,week08,mostlyk"
 image: "assets/Images/GSOC.png"
 ---
 
