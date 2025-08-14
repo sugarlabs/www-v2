@@ -24,7 +24,7 @@ image: "assets/Images/GSOC.png"
 ###  Wrote Comprehensive Backend Tests with Jest
 This week, I focused heavily on **testing the backend** to ensure long-term stability and reliability.
 
-- Created **160 individual tests** covering core API functionality.
+- Created **160 individual tests** ([view them here](https://github.com/BeNikk/musicblocks-backend/tree/main/tests)) covering core API functionality. 
 - Used **Jest** for the testing framework, along with **mocking controllers** to isolate logic from external dependencies.
 - Tests cover both **happy paths** and **edge cases**, ensuring robust API behavior.
 - This significantly improves our **confidence in future code changes** without fear of breaking existing features.
