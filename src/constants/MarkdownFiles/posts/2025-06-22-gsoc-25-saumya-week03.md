@@ -6,7 +6,7 @@ date: "2025-06-21"
 slug: "2025-06-21-gsoc-25-saumya-shahi-week03"
 author: "@/constants/MarkdownFiles/authors/saumya-shahi.md"
 tags: "gsoc25,sugarlabs,week03,saumya-shahi"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

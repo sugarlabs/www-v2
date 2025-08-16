@@ -59,7 +59,7 @@ const Donation: React.FC = () => {
 
         {/* Right Side - Image */}
         <motion.img
-          src="assets/Images/DonateToSugarLabs.png"
+          src="assets/Images/DonateToSugarLabs.webp"
           alt="Children with laptops and Donate to Sugarlabs"
           className="w-[400px] lg:w-[500px] transition-none hover:transform-none object-contain"
           variants={slideInRight}

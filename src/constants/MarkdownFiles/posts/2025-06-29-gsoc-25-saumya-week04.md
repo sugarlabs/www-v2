@@ -7,7 +7,7 @@ date: "2025-06-29"
 slug: "2025-06-29-gsoc-25-saumya-shahi-week04"
 author: "@/constants/MarkdownFiles/authors/saumya-shahi.md"
 tags: "gsoc25,sugarlabs,week04,saumya-shahi"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -41,19 +41,19 @@ Developed a brick tree rendering system that handles three distinct connection t
 - **Vertical Stacking**: Bricks can be connected vertically in sequence below their parent
 - **Cumulative Height Calculation**: Total height of stacked trees is calculated by summing individual brick heights
 - **Width Optimization**: Stacked trees maintain optimal width by taking the maximum width of all stacked bricks
-![stacked bricks in storybook](assets/Images/storybook_stacked_bricks.png)
+![stacked bricks in storybook](assets/Images/storybook_stacked_bricks.webp)
 
 #### **Argument Brick Rendering**
 - **Expression-Only Validation**: Implemented validation ensuring only Expression bricks can be used as arguments
 - **Slot-Based Positioning**: Argument bricks are positioned at specific argument slots on their parent bricks
 - **Dynamic Slot Management**: Parent bricks automatically adjust their argument slots based on the number of arguments
-![argument bricks in storybook](assets/Images/storybook_argument_bricks.png)
+![argument bricks in storybook](assets/Images/storybook_argument_bricks.webp)
 
 #### **Nested Tree Rendering**
 - **Multi-Level Nesting**: Implemented support for bricks nested inside compound bricks, which can themselves contain nested bricks
 - **Dynamic Sizing**: Parent bricks automatically resize based on their nested children's bounding boxes
 - **Proper Positioning**: Nested bricks are positioned at calculated connection points within their parent containers
-![nested bricks in storybook](assets/Images/storybook_nested_bricks.png)
+![nested bricks in storybook](assets/Images/storybook_nested_bricks.webp)
 
 ### 2. **Dynamic Brick Sizing and Layout System**
 
@@ -61,13 +61,13 @@ Developed a brick tree rendering system that handles three distinct connection t
 - **Dynamic Text Measurement**: Implemented canvas-based text measurement for accurate label width calculation
 - **Real-Time Updates**: Brick dimensions update automatically when labels change
 - **Fallback System**: Robust fallback for server-side rendering when canvas is unavailable
-![argument bricks position according to label bounding box calculations](assets/Images/storybook_label_Bbox.png)
+![argument bricks position according to label bounding box calculations](assets/Images/storybook_label_Bbox.webp)
 
 #### **Child-Based Resizing**
 - **Bounding Box Calculation**: Parent bricks recalculate their bounding boxes based on their children's dimensions
 - **Compound Brick Layout**: Compound bricks expand their nested regions to accommodate all nested children
 - **Automatic Geometry Updates**: Brick geometry updates trigger re-rendering with new dimensions
-![expanded nested region according to child bricks](assets/Images/storybook_nested_Bbox.png)
+![expanded nested region according to child bricks](assets/Images/storybook_nested_Bbox.webp)
 
 ### 3. **Advanced Rendering Algorithms**
 
@@ -159,7 +159,7 @@ function validateBrickConnection(parent: BrickModel, child: BrickModel, type: Co
 **Problem**: Bricks needed to resize based on their label text, requiring accurate text measurement and real-time updates.
 **Solution**: Implemented canvas-based text measurement with fallback for server-side rendering, and integrated it into the brick geometry update system.
 
-![Brick Layout with Multiple Nested Children](assets/Images/storybook_compundBrick_multipleLevels.png)
+![Brick Layout with Multiple Nested Children](assets/Images/storybook_compundBrick_multipleLevels.webp)
 
 ---
 

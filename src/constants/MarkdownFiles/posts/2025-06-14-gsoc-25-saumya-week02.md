@@ -6,7 +6,7 @@ date: "2025-06-14"
 slug: "2025-06-14-gsoc-25-saumya-shahi-week02"
 author: "@/constants/MarkdownFiles/authors/saumya-shahi.md"
 tags: "gsoc25,sugarlabs,week02,saumya-shahi"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -39,9 +39,9 @@ image: "assets/Images/GSOC.png"
 2. **Rendered Output Validation & Screenshots**  
    - Verified each visual brick against expected path geometry.  
    - Screenshots below show rendered bricks:
-        ![Simple Brick](/assets/Images/simple-bricks.png)
-        ![Brick with Arguments](/assets/Images/expression-bricks.png)
-        ![Nested Brick](/assets/Images/nested-bricks.png)
+        ![Simple Brick](/assets/Images/simple-bricks.webp)
+        ![Brick with Arguments](/assets/Images/expression-bricks.webp)
+        ![Nested Brick](/assets/Images/nested-bricks.webp)
 
 2. **Bug Fix: Left SVG Path Issue**
 

@@ -58,7 +58,7 @@ date: "2025-06-14"
 slug: ""YYYY-MM-DD-gsoc-25-username-weekXX""
 author: "@/constants/MarkdownFiles/authors/your-username.md"
 tags: "gsoc25,sugarlabs,weekXX,username"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

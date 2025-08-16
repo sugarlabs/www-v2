@@ -72,11 +72,11 @@ const frontmatterToString = (
 const processImageUrl = (imageValue: string | string[] | undefined): string => {
   let imageUrl = frontmatterToString(
     imageValue,
-    '/assets/Images/SugarNewsLogo.png',
+    '/assets/Images/SugarNewsLogo.webp',
   );
 
   if (
-    imageUrl !== '/assets/Images/SugarNewsLogo.png' &&
+    imageUrl !== '/assets/Images/SugarNewsLogo.webp' &&
     !/^https?:\/\//.test(imageUrl)
   ) {
     imageUrl = '/' + imageUrl.replace(/^\/+/, '');

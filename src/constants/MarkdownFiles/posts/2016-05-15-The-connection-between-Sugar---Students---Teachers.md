@@ -16,7 +16,7 @@ Story1: The connection between Sugar - Students - Teachers
 
 One of the first formal studies of Sugar took place in Uruguay in 2009–10. Uruguay was the first country to provide every child a free internet-connected laptop computer. They began distributing OLPC XO laptops running Sugar in 2007. Even though Uruguay is a relatively small country, with less than 500,000 children, it took several years before they could achieve full coverage. The last region to receive laptops was Montevideo. Montevideo was last because there was less need there than in the more rural regions, since many urban children already had access to computers. The delay in deploying in Montevideo presented an opportunity to study the impact of Sugar. Children were asked in 2009—before they has Sugar—what they did with their computers. It should come as no surprise that they used their computers to play games (See Figure). The same children were asked in 2010—after almost one year of using Sugar—what they did with their computers. Again they responded that they used their computers to play games. They were still children after all. But they also used their computers to write, chat, paint, make and watch videos, search for information, etc. In other words, with Sugar, they used the computer as a tool. Children play games. But given the opportunity and the correct affordances, they can leverage computation to do much much more.
 
-<img src="/assets/post-assets/data.png" alt="Image of data from a DSPE-ANEP survey" class="img-fluid" width="100%"/>
+<img src="/assets/post-assets/data.webp" alt="Image of data from a DSPE-ANEP survey" class="img-fluid" width="100%"/>
 
 **Figure: Data from a DSPE-ANEP survey of students in Montevideo before and after the deployment of Sugar**
 
@@ -45,7 +45,7 @@ _**"Teachers can learn (and contribute) too." – Walter Bender**_
 
 Sometimes teachers have been directly involved in Sugar software development. Sugar has an abacus application to help children explore whole-number arithmetic and the concept base (the activity allows the user to switch between various base representations of whole numbers). It also lets children design their own abacus. Teachers in Caacupé, Paraguay, were searching for a way to help their students with the concept of fractions. After playing with the Sugar abacus activity, they conceived and created—with the help of the Sugar developer community—a new abacus that lets children add and subtract fractions (See Figure). Sugar didn't just enable the teachers to invent, it encouraged them to invent.
 
-<img src="/assets/post-assets/abacus.png" alt="Image of the Caacupé Abacus" width="100%" class="img-fluid" />
+<img src="/assets/post-assets/abacus.webp" alt="Image of the Caacupé Abacus" width="100%" class="img-fluid" />
 
 **Figure: The Caacupé Abacus. The white beads represent whole numbers. The black beads represent fractions.**
 

@@ -455,7 +455,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
               loading="lazy"
               onError={(e) => {
                 (e.target as HTMLImageElement).src =
-                  '/assets/Images/SugarNewsLogo.png';
+                  '/assets/Images/SugarNewsLogo.webp';
               }}
             />
           </div>

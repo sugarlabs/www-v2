@@ -6,7 +6,7 @@ date: "2025-06-14"
 slug: "2025-06-14-gsoc-25-mebinthattil-week2"
 author: "@/constants/MarkdownFiles/authors/mebin-thattil.md"
 tags: "gsoc25,sugarlabs,week02,mebinthattil,speak_activity"
-image: "assets/Images/GSOCxSpeak.png"
+image: "assets/Images/GSOCxSpeak.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -104,7 +104,7 @@ image: "assets/Images/GSOCxSpeak.png"
 
 ## Sample model output with stop condition
 
-![sample model output](https://mebin.shop/Mebin-test-FT-model-tesponses.png)
+![sample model output](https://mebin.shop/Mebin-test-FT-model-tesponses.webp)
 
 ---
 

@@ -6,7 +6,7 @@ date: "2025-07-20"
 slug: "2025-07-20-ssoc-25-MuhammadHaroon-week07"
 author: "@/constants/MarkdownFiles/authors/muhammad-haroon.md"
 tags: "ssoc25,sugarlabs,week07,GenAI,MusicBlocks,Music"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -33,17 +33,17 @@ image: "assets/Images/GSOC.png"
 
    - I added two buttons to the sampler widget, upon clicking those users can access AI sample generation tool and audio trimming functionality.
 
-   ![User Inerface 1](/assets/Developers/Muhammad_Haroon/user_interface_1.png)
+   ![User Inerface 1](/assets/Developers/Muhammad_Haroon/user_interface_1.webp)
 
    - Upon clicking the Prompt button (which has an icon resembling a code editor), the AI sample generation tool will open. It includes an input box where users can enter a prompt and press the Submit button. Users can preview the generated audio by pressing the Preview button. If the audio doesn't sound good, they can modify the prompt and preview the audio again before saving it by pressing the Save button.
 
-   ![User Inerface 1](/assets/Developers/Muhammad_Haroon/user_interface_2.png)
+   ![User Inerface 1](/assets/Developers/Muhammad_Haroon/user_interface_2.webp)
 
    - Once the audio is downloaded, users may need to trim it to extract the desired portion. For this, I designed an Audio Trimming Tool, it can be opened by clicking on an icon of a scissor. Users can select the downloaded audio file by clicking the file chooser button. After selecting a file, the file chooser is replaced with an HTML audio player that loads the selected audio (as shown in User Interface 4). This allows users to listen and identify the timestamps of the segment they want to keep. Two input boxes are provided where users can enter the start time and end time of the desired audio segment. A Preview button lets users listen to the trimmed portion before finalizing it. Once satisfied, they can click the Save button to download the trimmed audio.
 
-   ![User Inerface 1](/assets/Developers/Muhammad_Haroon/user_interface_3.png)
+   ![User Inerface 1](/assets/Developers/Muhammad_Haroon/user_interface_3.webp)
 
-   ![User Inerface 1](/assets/Developers/Muhammad_Haroon/user_interface_4.png)
+   ![User Inerface 1](/assets/Developers/Muhammad_Haroon/user_interface_4.webp)
 
 ---
 

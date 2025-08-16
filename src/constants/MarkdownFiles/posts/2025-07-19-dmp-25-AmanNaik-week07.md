@@ -6,7 +6,7 @@ date: "2025-07-19"
 slug: "2025-07-19-dmp-25-AmanNaik-week07"
 author: "@/constants/MarkdownFiles/authors/amannaik247.md"
 tags: "dmp25,writeactivity,write,sugarlabs,week07,amannaik247"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -38,7 +38,7 @@ image: "assets/Images/c4gt_DMP.png"
 2. **AWS SageMaker Endpoint for LLM Inferencing**  
    - Created an AWS endpoint using Amazon SageMaker and deployed the Hugging Face model `Qwen/Qwen3-235B-A22B-Instruct-2507`.
    - Observed that the initial outputs from the model were overly verbose and hallucinated unrelated content.
-   ![Prompt and the response it generated](assets/Images/aman-naik-week7-img1.png)
+   ![Prompt and the response it generated](assets/Images/aman-naik-week7-img1.webp)
    - Identified that a better prompt template could significantly improve output quality, which will be explored further.
 
 ---

@@ -10,7 +10,7 @@ tags:
   - sugarlabs
   - week02
   - firepheonix
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -37,9 +37,9 @@ image: "assets/Images/GSOC.png"
    - Integrated image upload support within the LegoBricks widget, enabling external image input directly on the Music Blocks canvas.
    - Created a new block type by modifying six core files across the codebase.
    - The codebase proved beautifully encapsulated and thoroughly documented, making the learning curve smoother.
-        ![Completed UIs](https://i.ibb.co/39pZpDGv/Music-Blocks-Google-Chrome-28-06-2025-07-13-38.png)
+        ![Completed UIs](https://i.ibb.co/39pZpDGv/Music-Blocks-Google-Chrome-28-06-2025-07-13-38.webp)
 
-        ![Putting images on lego bricks widget](https://i.ibb.co/203Mjsdk/Music-Blocks-Google-Chrome-28-06-2025-07-14-47.png)
+        ![Putting images on lego bricks widget](https://i.ibb.co/203Mjsdk/Music-Blocks-Google-Chrome-28-06-2025-07-14-47.webp)
 
 2. **Real-time Video Integration**  
    - Implemented real-time video functionality through webcam integration.

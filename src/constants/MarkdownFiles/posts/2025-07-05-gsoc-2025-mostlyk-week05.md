@@ -6,7 +6,7 @@ date: "2025-07-05"
 slug: "2025-07-05-gsoc-25-mostlyk-week05"
 author: "@/constants/MarkdownFiles/authors/krish-pandya.md"
 tags: "gsoc25,sugarlabs,week05,mostlyk"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 # Week 5: Animations, Toolbars, and a Playable Game

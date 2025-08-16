@@ -36,8 +36,8 @@ Andres Aguirre du projet Butia, un robot programmé avec TurtleArt, déclare: "B
 - **Lien:** [Paraguay Educa](http://www.paraguayeduca.org)  
 - **Lien:** [CeibalJam!](http://ceibaljam.org)
 
-Image: ![Capture d'écran TurtleArt Caacupé](/assets/post-assets/press/caacupe-turtleartday-captura-pantalla.png)  
-Image: ![Journée TurtleArt Caacupé](/assets/post-assets/press/caacupe-turtleartday.png)
+Image: ![Capture d'écran TurtleArt Caacupé](/assets/post-assets/press/caacupe-turtleartday-captura-pantalla.webp)  
+Image: ![Journée TurtleArt Caacupé](/assets/post-assets/press/caacupe-turtleartday.webp)
 
 ---
 

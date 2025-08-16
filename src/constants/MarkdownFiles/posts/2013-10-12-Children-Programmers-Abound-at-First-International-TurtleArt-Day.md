@@ -39,8 +39,8 @@ Andres Aguirre of the Butia project, a robot programmed with TurtleArt, said,
 > "Even though the children had limited time to use the robots, they were able to experiment with some high-level programming concepts such as conditionals and control structures."
 
 **Images:**  
-- ![caacupe-turtleartday-captura-pantalla.png](/assets/post-assets/press/caacupe-turtleartday-captura-pantalla.png)  
-- ![caacupe-turtleartday.png](/assets/post-assets/press/caacupe-turtleartday.png)
+- ![caacupe-turtleartday-captura-pantalla.webp](/assets/post-assets/press/caacupe-turtleartday-captura-pantalla.webp)  
+- ![caacupe-turtleartday.webp](/assets/post-assets/press/caacupe-turtleartday.webp)
 
 ---
 

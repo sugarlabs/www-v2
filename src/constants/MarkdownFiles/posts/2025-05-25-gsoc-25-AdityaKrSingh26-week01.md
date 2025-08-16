@@ -7,7 +7,7 @@ slug: "2025-05-28-gsoc-25-AdityaKrSingh26-week01"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 description: "GSoC'25 Contributor at SugarLabs (Sugarizer Human Activity Pack)"
 tags: "gsoc25,sugarlabs,week01,AdityaKrSingh26"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -38,8 +38,8 @@ image: "assets/Images/GSOC.png"
 2. **Simplify Z-Anatomy models and increase spacing between organs**  
    - Removed mesh clutter and enhanced spacing between vital organs like heart, lungs, liver to improve visibility and user interaction.
    - This change is aimed at improving user experience, especially on touch devices.
-   ![screenshot-description](https://i.ibb.co/zHbVQ39Z/Screenshot-2025-05-14-130753.png)  
-   ![screenshot-description](https://i.ibb.co/hx8MSh0n/Screenshot-2025-05-14-130802.png)  
+   ![screenshot-description](https://i.ibb.co/zHbVQ39Z/Screenshot-2025-05-14-130753.webp)  
+   ![screenshot-description](https://i.ibb.co/hx8MSh0n/Screenshot-2025-05-14-130802.webp)  
 
 
 3. **Remove redundant code from the current codebase and improve structure**  

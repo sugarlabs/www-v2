@@ -10,7 +10,7 @@ tags:
   - sugarlabs
   - week06
   - firepheonix
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -35,7 +35,7 @@ image: "assets/Images/GSOC.png"
 
 1. **The music notations and their durations are now logged to the console**  
    - I finally logged all the colors to the console in a systematic way, without affecting projectstorage.js.
-        ![Musical Notations mapped to their corresponding times](https://i.ibb.co/yFLF1fSS/Music-Blocks-Google-Chrome-18-07-2025-14-23-07.png)
+        ![Musical Notations mapped to their corresponding times](https://i.ibb.co/yFLF1fSS/Music-Blocks-Google-Chrome-18-07-2025-14-23-07.webp)
 
 
 2. **Implemented the music playing feature**  

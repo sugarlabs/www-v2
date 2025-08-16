@@ -7,7 +7,7 @@ slug: "2025-06-07-gsoc-25-FirePheonix-week01"
 author: "Shubham Singh"
 description: "Maintainer and GSoC'25 Contributor at SugarLabs"
 tags: "gsoc25,sugarlabs,week01,FirePheonix"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -34,12 +34,12 @@ image: "assets/Images/GSOC.png"
    - Music Blocks has a feature to detect the color of pixels generated from drawing within the program, but it cannot detect the color of pixels from images that are either uploaded or from a webcam. 
    - By adding a feature to detect color from both uploaded images and a live webcam stream, users would be able to implement Lego music notation for the blind and similarly interactive programs.
    
-   ![screenshot-description](https://i.ibb.co/d0yVXJmP/Lego-Bricks-Google-Chrome-08-06-2025-01-12-56.png)
+   ![screenshot-description](https://i.ibb.co/d0yVXJmP/Lego-Bricks-Google-Chrome-08-06-2025-01-12-56.webp)
    
 
 2. **Live webcam feed and editing options**  
    - The following feature helps to use a real time video(webcam) onto the Lego Notation detection interface. Also, you may freely edit and move it around the canvas.
-   ![screenshot-description](https://i.ibb.co/n8cswJsP/Lego-Bricks-Google-Chrome-08-06-2025-01-14-01.png)
+   ![screenshot-description](https://i.ibb.co/n8cswJsP/Lego-Bricks-Google-Chrome-08-06-2025-01-14-01.webp)
 
    - Here's the reference video regarding lego bricks as musical notes:
    [youtube: LOfrCPf3XJU]
@@ -49,9 +49,9 @@ image: "assets/Images/GSOC.png"
     
 3. **Identified methods to making a new widget block in music blocks**  
    - I read and went through a lot of documentation, searching for how we can add a new widget block in music blocks. I figured out a few flaws and how can the documentation be improved for future contributors.
-   ![screenshot-description](https://i.ibb.co/bVD8Z54/image.png)
+   ![screenshot-description](https://i.ibb.co/bVD8Z54/image.webp)
    - From what I've realized working on it, for adding a new block on the music blocks, I definitely think that for adding a new block, a lot of the code - UIs, features, etc. would already exist and you can just inherit those exisiting classes. And also, you'll have to edit and change a LOT of files and add new methods for your own new block.
-    ![screenshot-description](https://i.ibb.co/hJRKV0Vq/Documentation.png)
+    ![screenshot-description](https://i.ibb.co/hJRKV0Vq/Documentation.webp)
 
 ---
 

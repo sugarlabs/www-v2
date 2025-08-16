@@ -37,7 +37,7 @@ const TextMaskSection = () => {
             <div
               className="absolute inset-0 w-full h-full"
               style={{
-                backgroundImage: "url('assets/Images/teach.jpg')",
+                backgroundImage: "url('assets/Images/teach.webp')",
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
