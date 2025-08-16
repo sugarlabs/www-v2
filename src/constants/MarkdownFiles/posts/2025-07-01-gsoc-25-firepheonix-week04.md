@@ -10,7 +10,7 @@ tags:
   - sugarlabs
   - week02
   - firepheonix
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -36,30 +36,30 @@ image: "assets/Images/GSOC.png"
    - So after testing out multiple errors, I realized that the DOT scanning method just isn't working that accurately(only ~40% accuracy). It's completely because of the core functionality of how the method itself works.
    - So, I realized there has to be a better method than this. Scanning have been taking place for a long time. There had to be a better method than this.
    - Began reverse engineer everything. Questioning every decision I've made for this project. Going to the very core of how the entire process, storage, time complexity is going on with the dot method.
-        ![Pros and Cons of DOT scanner](https://i.ibb.co/jZM2cXzc/dot-Scanner.png)
+        ![Pros and Cons of DOT scanner](https://i.ibb.co/jZM2cXzc/dot-Scanner.webp)
 
 2. **Tested out spherical method. Failed.**  
    - Implemented the spherical method. It basically takes an AVERAGE of all the pixels underneath it rather than a scanning a single pixel. I did this keeping in mind more and more accuracy,
    - Little did I know, I ran into more errors and worse accuracy than before.
 
-        ![Pros and Cons of Spherical (average) scanner](https://i.ibb.co/q3rJLNgb/sphere-Scanner.png)
+        ![Pros and Cons of Spherical (average) scanner](https://i.ibb.co/q3rJLNgb/sphere-Scanner.webp)
 
 3. **Finally reached an optimal, LINE scanner. Highly balanced. Got to a VERY good accuracy level.**  
    - Learned it the hard way why all bar code scanners are line type scanners. Why all machines (like, even your local printer machine/ or laser scan) follow the line scanning method. Got the best results and very a good accuracy.
 
-        ![Reasons why Line scanner is the BEST for our Lego Blocks case.](https://i.ibb.co/7dsjzRct/line-Scanner.png)
+        ![Reasons why Line scanner is the BEST for our Lego Blocks case.](https://i.ibb.co/7dsjzRct/line-Scanner.webp)
     
     - Now, this doesn't mean that the line scanner doesn't have it's cons. It has cons like the texture-confusion in a place where the block's edge is there, and the green background. But, such a confusion edge is only for a VERY small time. I predict it to be < 0 ms, hence automatically being ignored by the algorithm. And there are some issues still left to be fixed.
 
 4. **Made an output system for TESTING the accuracy of algorithm.**  
    - I ofc was not able to see how my output is through a mere array{{}} type console.log().
-   - So, I developed this method of outputting of the colors on .png type image. To make it visually seem like the image itself for a DIRECT comparision.
+   - So, I developed this method of outputting of the colors on .webp type image. To make it visually seem like the image itself for a DIRECT comparision.
 
-        ![Input I gave](https://i.ibb.co/YzttknX/lego-Notation.png)
+        ![Input I gave](https://i.ibb.co/YzttknX/lego-Notation.webp)
 
-        ![Output I got(very close to my actual input)](https://i.ibb.co/bghJwFq9/color-detection-1751401094449.png)
+        ![Output I got(very close to my actual input)](https://i.ibb.co/bghJwFq9/color-detection-1751401094449.webp)
     
-    - Now I am rather thinking of making use of THIS .png output instead, it's simply good. Should I? Or should I not? Gonna have to ask from my mentors and do some research on this.
+    - Now I am rather thinking of making use of THIS .webp output instead, it's simply good. Should I? Or should I not? Gonna have to ask from my mentors and do some research on this.
 
 
 ---
@@ -69,7 +69,7 @@ image: "assets/Images/GSOC.png"
 - **Challenge:** Was getting stressed about why am I not able to get the accuracy I need.
 **Solution:** Reverse engineered stuff. Thought on my own. Research on youtube- how do scanning algorithms actually work?
 - **Challenge:** Not being to see if my algorithm is accurate or not.
-**Solution:** Made it output the array in the format of a .png format instead of a simple console.log(array).
+**Solution:** Made it output the array in the format of a .webp format instead of a simple console.log(array).
 
 ---
 

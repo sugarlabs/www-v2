@@ -7,7 +7,7 @@ slug: "2025-06-08-dmp-25-AmanNaik-week01"
 author: "@/constants/MarkdownFiles/authors/amannaik247.md"
 description: "Member and DMP'25 Contributor at SugarLabs"
 tags: "dmp25,writeactivity,write,sugarlabs,week01,amannaik247"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->

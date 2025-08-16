@@ -11,20 +11,20 @@ export const content = {
   ],
   images: {
     main: {
-      src: 'assets/Images/student3.png',
+      src: 'assets/Images/student3.webp',
       alt: 'Children using Sugar Labs software in a classroom',
     },
     gallery: [
       {
-        src: 'assets/Images/student9.png',
+        src: 'assets/Images/student9.webp',
         alt: 'Students collaborating on a Sugar Labs project',
       },
       {
-        src: 'assets/Images/teach4.png',
+        src: 'assets/Images/teach4.webp',
         alt: 'Teacher helping students with Sugar Labs activities',
       },
       {
-        src: 'assets/Images/student13.png',
+        src: 'assets/Images/student13.webp',
         alt: 'Children exploring creative software tools',
       },
     ],

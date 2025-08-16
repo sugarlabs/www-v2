@@ -6,7 +6,7 @@ date: "2025-06-29"
 slug: "2025-06-29-gsoc-25-nikhilbhatt-week04"
 author: "@/constants/MarkdownFiles/authors/nikhil-bhatt.md"
 tags: "gsoc25,sugarlabs,week04,nikhilbhatt"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -61,7 +61,7 @@ Features include:
 - Display of metadata like project name, fork status, and last updated time.
 
 **All Projects Dashboard**
-![All Projects Page](assets/Developers/Nikhil/project-dashboard.png)
+![All Projects Page](assets/Developers/Nikhil/project-dashboard.webp)
 
 ---
 

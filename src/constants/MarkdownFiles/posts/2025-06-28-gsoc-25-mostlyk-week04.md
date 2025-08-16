@@ -6,7 +6,7 @@ date: "2025-06-28"
 slug: "2025-06-28-gsoc-25-mostlyk-week04"
 author: "@/constants/MarkdownFiles/authors/krish-pandya.md"
 tags: "gsoc25,sugarlabs,week04,mostlyk"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

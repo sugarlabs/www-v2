@@ -4,7 +4,7 @@ slug: "elwin-li"
 title: "GSoC'25 Contributor"
 organization: "SugarLabs"
 description: "GSoC'25 Contributor at SugarLabs"
-avatar: "https://i.ibb.co/rGyw3WZM/Untitled-design-1.png"
+avatar: "https://i.ibb.co/rGyw3WZM/Untitled-design-1.webp"
 ---
 
 <!--markdownlint-disable-->

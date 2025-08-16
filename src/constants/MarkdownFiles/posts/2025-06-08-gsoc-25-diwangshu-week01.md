@@ -6,7 +6,7 @@ date: "2025-06-04"
 slug: "2025-06-04-gsoc-25-Diwangshu-week01"
 author: "@/constants/MarkdownFiles/authors/diwangshu-kakoty.md"
 tags: "gsoc25,sugarlabs,week01,AI"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

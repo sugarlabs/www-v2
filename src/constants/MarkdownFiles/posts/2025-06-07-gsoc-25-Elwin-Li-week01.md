@@ -7,7 +7,7 @@ slug: "2025-06-07-gsoc-25-Elwin-Li-week01"
 author: "@/constants/MarkdownFiles/authors/elwin-li.md"
 description: "GSoC Contributor"
 tags: "gsoc25,sugarlabs,week1,javaScript editor"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

@@ -37,8 +37,8 @@ Sugar Labs desea agradecer a Google y, en particular, a Bradley Kuhn, director e
 ---
 
 **Imágenes**  
-![Ignacio Rodríguez - Ganador GCI 2013](/assets/post-assets/press/SugarLabs_GCI_2013_Winner_Ignacio.jpg)  
-![Jorge Alberto Gómez López - Ganador GCI 2013](/assets/post-assets/press/SugarLabs_GCI_2013_Winner_Jorge.jpg)
+![Ignacio Rodríguez - Ganador GCI 2013](/assets/post-assets/press/SugarLabs_GCI_2013_Winner_Ignacio.webp)  
+![Jorge Alberto Gómez López - Ganador GCI 2013](/assets/post-assets/press/SugarLabs_GCI_2013_Winner_Jorge.webp)
 
 ---
 

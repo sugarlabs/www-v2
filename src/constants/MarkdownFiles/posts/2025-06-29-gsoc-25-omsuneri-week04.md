@@ -6,7 +6,7 @@ date: "2025-06-29"
 slug: "2025-06-29-gsoc-25-omsuneri-week04"
 author: "@/constants/MarkdownFiles/authors/om-santosh-suneri.md"
 tags: "gsoc25,sugarlabs,week04,Debugger,AI,Music Blocks"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -47,11 +47,11 @@ image: "assets/Images/GSOC.png"
 ## Deployed Project
 - **Music Blocks Debugger:** [Live Demo](https://debuggmb.streamlit.app/)
 
-<a href=""><img src="https://i.ibb.co/p6H5y3Bw/Screenshot-2025-06-28-at-10-41-28-AM.png" alt="Music Blocks Debugger"></a>
+<a href=""><img src="https://i.ibb.co/p6H5y3Bw/Screenshot-2025-06-28-at-10-41-28-AM.webp" alt="Music Blocks Debugger"></a>
 
 - **JSON to Text Converter:** [Live Demo](https://omsuneri.github.io/JSON-to-Text-representation/)
 
-<a href=""><img src= "https://i.ibb.co/ycNPrKVs/Screenshot-2025-06-28-at-10-42-38-AM.png" alt="JSON to Text Converter"></a>
+<a href=""><img src= "https://i.ibb.co/ycNPrKVs/Screenshot-2025-06-28-at-10-42-38-AM.webp" alt="JSON to Text Converter"></a>
 
 ## Challenges & How I Overcame Them
 

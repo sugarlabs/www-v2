@@ -6,7 +6,7 @@ date: "2025-07-06"
 slug: "2025-07-06-gsoc-25-diwangshu-week05"
 author: "@/constants/MarkdownFiles/authors/diwangshu-kakoty.md"
 tags: "gsoc25,sugarlabs,week05,AI"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -35,7 +35,7 @@ image: "assets/Images/GSOC.png"
 
    - The conversation history is stored in the client side. For every query, the widget sends a request to the FastAPI server with payloads like `query`, `messages` and `mentor`. The server then processes the request and returns a response. The response is then displayed in the widget.
 
-  <a href="https://ibb.co/NdLhh6DX"><img src="https://i.ibb.co/21j227Vw/first-Reflection.jpg" alt="first-Reflection" border="0"></a>
+  <a href="https://ibb.co/NdLhh6DX"><img src="https://i.ibb.co/21j227Vw/first-Reflection.webp" alt="first-Reflection" border="0"></a>
 
 2. **Update Fast API server code**  
    - As mentioned in my first week's report that I made the Fast API endpoints `/chat` and `/summary`, I have now updated the code to handle the new 'reflection' widget. 

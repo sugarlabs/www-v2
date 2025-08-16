@@ -6,7 +6,7 @@ date: "2025-06-29"
 slug: "2025-06-29-dmp-25-therealharshit-week04"
 author: "@/constants/MarkdownFiles/authors/harshit-verma.md"
 tags: "dmp25,sugarlabs,week04,therealharshit"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -38,8 +38,8 @@ image: "assets/Images/c4gt_DMP.png"
 2. **Develop the debugging terminal in Pippy**  
    - Added a new Virtual Terminal Emulator (VTE) widget to Pippy using GTK.
    - Integrated the terminal into the existing layout with proper toggling between output and debug views.
-   ![Pippy UI: Output Terminal](assets/Images/pippy_output-terminal.png)
-   ![Pippy UI: Debug Terminal](assets/Images/pippy_debug-terminal.png)
+   ![Pippy UI: Output Terminal](assets/Images/pippy_output-terminal.webp)
+   ![Pippy UI: Debug Terminal](assets/Images/pippy_debug-terminal.webp)
 
 3. **Connected the debugger LLM server with Pippy**  
    - Wired up Pippy to make API calls to the FastAPI server.

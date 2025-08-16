@@ -6,7 +6,7 @@ date: "2025-06-22"
 slug: "gsoc-25-BishoyWadea-week03"
 author: "@/constants/MarkdownFiles/authors/bishoy-wadea.md"
 tags: "gsoc25,sugarlabs,week03,BishoyWadea"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -24,11 +24,11 @@ image: "assets/Images/GSOC.png"
 
 - **Goal 1:** Fix issues in Four Color Map game opened by ibiam [Move buttons from canvas to tool bar](https://github.com/Bishoywadea/Four-Color-Map/issues/1), [Sugarize activity icon](https://github.com/Bishoywadea/Four-Color-Map/issues/2), [adding lisence to activity](https://github.com/Bishoywadea/Four-Color-Map/issues/3).
 
-![image to show difference between before and after](https://i.postimg.cc/vmWPFd6q/b4e81f67-3e05-4389-a67d-82eb71a14899.jpg)
+![image to show difference between before and after](https://i.postimg.cc/vmWPFd6q/b4e81f67-3e05-4389-a67d-82eb71a14899.webp)
 
 - **Goal 2:** Fix issues in Broken Calculator game opened by ibiam [change UI to be more focused](https://github.com/Bishoywadea/Broken-Calculator/issues/2).
 
-![image to show difference between before and after](https://i.postimg.cc/7LsNyYZN/download.jpg)
+![image to show difference between before and after](https://i.postimg.cc/7LsNyYZN/download.webp)
 ---
 
 ## This Week’s Achievements

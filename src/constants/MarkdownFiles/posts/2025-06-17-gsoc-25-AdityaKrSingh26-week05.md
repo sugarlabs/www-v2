@@ -7,7 +7,7 @@ slug: "2025-06-17-gsoc-25-AdityaKrSingh26-week05"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 description: "GSoC'25 Contributor at SugarLabs (Sugarizer Human Activity Pack)"
 tags: "gsoc25,sugarlabs,week05,AdityaKrSingh26"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -36,8 +36,8 @@ image: "assets/Images/GSOC.png"
 1. **Model Selection Palette Fix**  
     - Resolved issue where the palette UI did not reflect the currently selected model.
     - Now dynamically highlights the active selection across Human, Skeleton, and Organs views.
-           ![Updated Tool](https://i.ibb.co/k2jLsdZ1/image.png)   
-           ![Mode pallete](https://i.ibb.co/vCtQr98B/image.png)   
+           ![Updated Tool](https://i.ibb.co/k2jLsdZ1/image.webp)   
+           ![Mode pallete](https://i.ibb.co/vCtQr98B/image.webp)   
 
 2. **Skeleton Bone Naming and Splitting Update**  
     - Expanded the skeletal model by splitting compound bones and renaming:
@@ -53,22 +53,22 @@ image: "assets/Images/GSOC.png"
 4. **Organ Model Alignment Fix**  
    - Reduced the gap between eyes and mouth in the 3D organ model.
    - Realigned surrounding features to maintain anatomical accuracy.
-     ![Organ Alignment Fix](https://i.ibb.co/W4SVHnGx/image.png)
+     ![Organ Alignment Fix](https://i.ibb.co/W4SVHnGx/image.webp)
 
 
 6. **Vertical Mode Selector UI Implementation**  
     - Reworked the mode selection UI to display vertically.
     - Inspired by Dollar Street UI design, this improves accessibility.
     - Earlier :  
-        ![Mode selector earlier](https://i.ibb.co/bR32J4bm/image.png)
+        ![Mode selector earlier](https://i.ibb.co/bR32J4bm/image.webp)
     - Now :  
-        ![Mode selector Now](https://i.ibb.co/60NHStQy/image.png)
+        ![Mode selector Now](https://i.ibb.co/60NHStQy/image.webp)
 
 
 7. **Merged Paint and Learn mode**
     - Implemented a modal system that appears in the bottom-right corner when users click on body parts in paint mode.
     - Added fade-in/fade-out transitions with CSS transforms for better user experience and added duplicate prevention system that removes existing modals before showing new ones.
-     ![Paint Modal](https://i.ibb.co/7tW0PdzH/image.png)
+     ![Paint Modal](https://i.ibb.co/7tW0PdzH/image.webp)
      
 
 

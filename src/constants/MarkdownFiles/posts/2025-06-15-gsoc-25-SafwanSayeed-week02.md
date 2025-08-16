@@ -6,7 +6,7 @@ date: "2025-06-15"
 slug: "2025-06-15-gsoc-25-sa-fw-an-week2"
 author: "@/constants/MarkdownFiles/authors/safwan-sayeed.md"
 tags: "gsoc25,sugarlabs,week2,sa-fw-an"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

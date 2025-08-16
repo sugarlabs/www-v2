@@ -6,7 +6,7 @@ date: "2025-06-29"
 slug: "2025-06-22-dmp-25-AmanNaik-week04"
 author: "@/constants/MarkdownFiles/authors/amannaik247.md"
 tags: "dmp25,writeactivity,write,sugarlabs,week04,amannaik247"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -33,14 +33,14 @@ image: "assets/Images/c4gt_DMP.png"
    - Implemented a basic sidebar within the activity that allows students to converse with the chatbot while simultaneously viewing the story context.  
    - The framework generated from the conversation is currently being saved as a JSON file. UI for displaying the framework is still under development and will be added later.
 
-   ![User interface(sidebar) and AI generated responses](assets/Images/aman-naik-week4-img1.png)
+   ![User interface(sidebar) and AI generated responses](assets/Images/aman-naik-week4-img1.webp)
 
 2. **Implemented Book Recommendation Feature**  
    - Integrated the Google Books API to recommend the top 3 similar books based on the conversation with the AI assistant.  
    - The goal is to inspire children by connecting their creative stories with real-world books.  
    - Based on mentor feedback, I will prioritize refining the chatbot and story framework builder before expanding the recommendation feature.
 
-   ![Book recommendations based on the conversation fro streamlit demo](assets/Images/aman-naik-week4-img2.png)
+   ![Book recommendations based on the conversation fro streamlit demo](assets/Images/aman-naik-week4-img2.webp)
    
 ---
 

@@ -7,7 +7,7 @@ slug: "2025-06-10-gsoc-25-AdityaKrSingh26-week04"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 description: "GSoC'25 Contributor at SugarLabs (Sugarizer Human Activity Pack)"
 tags: "gsoc25,sugarlabs,week04,AdityaKrSingh26"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -40,13 +40,13 @@ image: "assets/Images/GSOC.png"
         - Organs 
     - Set the Human body as the default model loaded on activity start.
     - Palette updates the 3D scene dynamically without requiring a full reload.
-           ![screenshot-description](https://i.ibb.co/SDSYFJf7/image.png)   
+           ![screenshot-description](https://i.ibb.co/SDSYFJf7/image.webp)   
 
 
 2. **Human-Body Model Paint Integration**  
     - Integrated the Human body model with the interactive paint activity.  
     - Ensured hierarchical structure for smooth interactivity and logical mesh grouping  
-        ![screenshot-description](https://i.ibb.co/4wqNymfG/image.png)   
+        ![screenshot-description](https://i.ibb.co/4wqNymfG/image.webp)   
 
 
 3. **Improved Bone Naming in Skeleton Model**  
@@ -61,7 +61,7 @@ image: "assets/Images/GSOC.png"
     - Completed full translation of Human Body Activity in **English** and **French**.  
     - Translation files follow standard .json structure for easy future expansion.  
     - Example image for French:
-        ![screenshot-description](https://i.ibb.co/99ggYBDj/image.png)   
+        ![screenshot-description](https://i.ibb.co/99ggYBDj/image.webp)   
 
 
 ---

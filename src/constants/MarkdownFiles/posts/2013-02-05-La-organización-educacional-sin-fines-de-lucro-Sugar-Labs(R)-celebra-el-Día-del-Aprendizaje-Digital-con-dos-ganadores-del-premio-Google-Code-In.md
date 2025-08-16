@@ -40,7 +40,7 @@ El Dr. Gerald Ardito, un miembro del comité para Sugar Labs(R), maestro de escu
 Sugar Labs(R) desea agradecer a Google y a Bradley Kuhn de la organización Software Freedom Conservancy, madre de Sugar Labs y otros proyectos de software libre/código abierto.
 
 **Imagen del anuncio:**  
-![SugarLabs GCI 2012 Winners](/assets/post-assets/press/SugarLabs_GCI_2012_Winners.jpg)
+![SugarLabs GCI 2012 Winners](/assets/post-assets/press/SugarLabs_GCI_2012_Winners.webp)
 
 ---
 

@@ -6,7 +6,7 @@ date: "2025-07-26"
 slug: "2025-07-26-dmp-25-AmanNaik-week08"
 author: "@/constants/MarkdownFiles/authors/amannaik247.md"
 tags: "dmp25,writeactivity,write,sugarlabs,week08,amannaik247"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -111,7 +111,7 @@ image: "assets/Images/c4gt_DMP.png"
    - As the student writes the story using the framework after certain number of words if they implement each element of the story framework, the progress bar will move ahead and a message of encouragement will pop up.  
    - I havent discussed this with the mentors. But this seems like a fun gamification for students. A bit outside the scope of this project but will be an addition once the scope of this project are finalised.  
 
-   ![Rough idea of UI](assets/Images/aman-naik-week8-img1.png)
+   ![Rough idea of UI](assets/Images/aman-naik-week8-img1.webp)
 
 ---
 

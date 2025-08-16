@@ -36,9 +36,9 @@ Rounding out the Sugar Labs list of finalists are **Sai Vineet** from Jamshedpur
 
 Sugar Labs wishes to thank Google and in particular **Bradley Kuhn**, executive director of the Software Freedom Conservancy.
 
-<img src="/assets/post-assets/press/SugarLabs_GCI_2013_Winner_Ignacio.jpg" alt="SugarLabs_GCI_2013_Winner_Ignacio.jpg" style="width:100%">
+<img src="/assets/post-assets/press/SugarLabs_GCI_2013_Winner_Ignacio.webp" alt="SugarLabs_GCI_2013_Winner_Ignacio.webp" style="width:100%">
 
-<img src="/assets/post-assets/press/SugarLabs_GCI_2013_Winner_Jorge.jpg" alt="SugarLabs_GCI_2013_Winner_Jorge.jpg" style="width:100%">
+<img src="/assets/post-assets/press/SugarLabs_GCI_2013_Winner_Jorge.webp" alt="SugarLabs_GCI_2013_Winner_Jorge.webp" style="width:100%">
 
 ---
 

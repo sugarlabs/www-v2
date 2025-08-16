@@ -6,7 +6,7 @@ date: "2025-06-30"
 slug: "2025-06-30-ssoc-25-MuhammadHaroon-week04"
 author: "@/constants/MarkdownFiles/authors/muhammad-haroon.md"
 tags: "ssoc25,sugarlabs,week04,GenAI,MusicBlocks,Music"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

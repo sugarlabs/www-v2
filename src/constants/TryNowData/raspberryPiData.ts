@@ -5,7 +5,7 @@ export const raspberrydata = {
     '“Programming should be on every child’s low shelf, within reach for frequent use.” — Walter Bender, Sugar Labs founder',
   description:
     'Raspberry Pi are a series of small, low cost, low power computers. The Sugar Desktop Environment can be run on a Raspberry Pi. You will need a display, keyboard, and a mouse.',
-  images: [{ src: 'assets/TryNowImages/raspberry.jpg', alt: 'RaspberryPi 1' }],
+  images: [{ src: 'assets/TryNowImages/raspberry.webp', alt: 'RaspberryPi 1' }],
 };
 
 export const raspberrySections = [

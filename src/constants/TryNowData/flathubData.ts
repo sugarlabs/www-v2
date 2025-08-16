@@ -7,7 +7,7 @@ export const flathubData = {
     'Flatpak enables easy installation and distribution of Sugar Labs educational activities across different Linux platforms.',
   images: [
     {
-      src: 'assets/TryNowImages/flathub1.png',
+      src: 'assets/TryNowImages/flathub1.webp',
       alt: 'Sugar Labs Activities Installation',
     },
   ],
@@ -25,7 +25,7 @@ export const flathubSections = [
 
 export const flathubLogoCards = [
   {
-    logo: 'assets/Cards/Flathub.png',
+    logo: 'assets/Cards/Flathub.webp',
     title: 'Educational Activities',
     description: [
       'Access 34+ educational activities including Paint, Abacus, Music Keyboard, and Story',
@@ -39,7 +39,7 @@ export const flathubLogoCards = [
     ],
   },
   {
-    logo: 'assets/TryNowImages/fpLogoCard2.png',
+    logo: 'assets/TryNowImages/fpLogoCard2.webp',
     title: 'Easy Installation',
     description: [
       'Install Sugar activities with just a few commands on any Linux distribution',
@@ -53,7 +53,7 @@ export const flathubLogoCards = [
     ],
   },
   {
-    logo: 'assets/TryNowImages/fpLogoCard3.png',
+    logo: 'assets/TryNowImages/fpLogoCard3.webp',
     title: 'Cross-Platform Support',
     description: [
       'Compatible with multiple Linux distributions and learning environments',

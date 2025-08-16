@@ -6,7 +6,7 @@ date: "2025-06-23"
 slug: "2025-06-23-dmp-25-therealharshit-week02"
 author: "@/constants/MarkdownFiles/authors/harshit-verma.md"
 tags: "dmp25,sugarlabs,week03,therealharshit"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->

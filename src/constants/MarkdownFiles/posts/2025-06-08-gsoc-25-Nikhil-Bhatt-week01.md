@@ -6,7 +6,7 @@ date: "2025-06-08"
 slug: "2025-06-08-gsoc-25-Nikhil-Bhatt-week01"
 author: "@/constants/MarkdownFiles/authors/nikhil-bhatt.md"
 tags: "gsoc25,sugarlabs,week01,Nikhil-Bhatt"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

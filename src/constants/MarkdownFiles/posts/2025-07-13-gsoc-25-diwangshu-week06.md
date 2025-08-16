@@ -6,7 +6,7 @@ date: "2025-07-13"
 slug: "2025-07-13-gsoc-25-diwangshu-week06"
 author: "@/constants/MarkdownFiles/authors/diwangshu-kakoty.md"
 tags: "gsoc25,sugarlabs,week06,AI,midterm"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -46,7 +46,7 @@ The first six weeks of GSoC'25 have been highly productive, with several key mil
 1. **Add upload and download of session state in Streamlit app**  
    - Users can now conveniently save their conversations by downloading them. If they wish to resume at a later time, they can simply upload the saved session to continue where they left off.
 
-   <a href="https://ibb.co/XZB7HJMG"><img src="https://i.ibb.co/zhcXdfDt/image.png" alt="image" border="0"></a>
+   <a href="https://ibb.co/XZB7HJMG"><img src="https://i.ibb.co/zhcXdfDt/image.webp" alt="image" border="0"></a>
 
 2. **Add code conversion function in Streamlit app**
    - Users can now copy their Music Blocks project code and paste it into the app. The app then uses a conversion algorithm developed by [Omsuneri](authors/om-santosh-suneri) to generate an equivalent flowchart, which is easier for the LLM to interpret.

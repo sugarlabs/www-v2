@@ -6,7 +6,7 @@ date: "2025-06-28"
 slug: "2025-06-28-gsoc-25-Elwin-Li-week04"
 author: "@/constants/MarkdownFiles/authors/elwin-li.md"
 tags: "gsoc25,sugarlabs,week4,javaScript editor"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

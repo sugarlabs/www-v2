@@ -7,7 +7,7 @@ slug: "2025-05-29-gsoc-25-AdityaKrSingh26-week02"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 description: "GSoC'25 Contributor at SugarLabs (Sugarizer Human Activity Pack)"
 tags: "gsoc25,sugarlabs,week02,AdityaKrSingh26"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -35,16 +35,16 @@ image: "assets/Images/GSOC.png"
 1. **Merged intestine models into a single mesh**  
    - Used Blender to unify multiple intestine segments into a single watertight mesh.  
    - Simplified mesh topology while preserving anatomical details for better performance in-browser.  
-      ![screenshot-description](https://i.ibb.co/TM5r90b8/Screenshot-2025-05-19-200136.png)   
-      ![screenshot-description](https://i.ibb.co/svsp626J/Screenshot-2025-05-20-234105.png)   
+      ![screenshot-description](https://i.ibb.co/TM5r90b8/Screenshot-2025-05-19-200136.webp)   
+      ![screenshot-description](https://i.ibb.co/svsp626J/Screenshot-2025-05-20-234105.webp)   
 
 
 2. **Integrated 3D organ models for the basic paint activity**  
    - Selected essential models: heart, brain, lungs, and kidneys.  
    - Positioned and scaled them within the scene for the interactive paint activity.  
    - Confirmed interactivity through raycasting and model selection using three.js.  
-      ![screenshot-description](https://i.ibb.co/spZpwD0P/Screenshot-2025-05-23-005734.png)   
-      ![screenshot-description](https://i.ibb.co/jPxMn9HN/image.png)   
+      ![screenshot-description](https://i.ibb.co/spZpwD0P/Screenshot-2025-05-23-005734.webp)   
+      ![screenshot-description](https://i.ibb.co/jPxMn9HN/image.webp)   
 
 
 3. **Refactored and cleaned up existing code for Human Body Activity**  

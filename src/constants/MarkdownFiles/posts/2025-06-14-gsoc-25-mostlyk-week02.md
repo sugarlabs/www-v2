@@ -6,7 +6,7 @@ date: "2025-06-14"
 slug: "2025-06-14-gsoc-25-mostlyk-week02"
 author: "@/constants/MarkdownFiles/authors/krish-pandya.md"
 tags: "gsoc25,sugarlabs,week02,mostlyk"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -35,7 +35,7 @@ The mentors introduced a brilliant modular approach that addresses the core chal
 - C Library 'sugar-ext': Core objects and reusable GTK widgets
 - Python Wrapper Library: Python widgets and wrapper functions
 
-![GTK4 Planning](assets/Images/gtk4drawing.png)
+![GTK4 Planning](assets/Images/gtk4drawing.webp)
 
 > Subject to change
 

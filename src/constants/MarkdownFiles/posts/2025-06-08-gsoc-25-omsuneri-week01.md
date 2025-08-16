@@ -6,7 +6,7 @@ date: "2025-06-07"
 slug: "2025-06-07-gsoc-25-omsuneri-week01"
 author: "@/constants/MarkdownFiles/authors/om-santosh-suneri.md"
 tags: "gsoc25,sugarlabs,week01,Debugger,AI,Music Blocks"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

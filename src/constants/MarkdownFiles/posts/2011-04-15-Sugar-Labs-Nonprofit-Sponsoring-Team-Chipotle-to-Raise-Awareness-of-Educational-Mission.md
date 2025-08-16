@@ -55,7 +55,7 @@ During the race, children throughout the country will be blogging about the
 team. At eduJAM!, Sugar Labs developers will meet children who are at the
 center of their mission and benefit from their work."
 
-Image: ![ChipotleDevelopmentTeam_RedlandsCyclingClassic.jpg](/assets/post-assets/press/ChipotleDevelopmentTeam_RedlandsCyclingClassic.jpg)
+Image: ![ChipotleDevelopmentTeam_RedlandsCyclingClassic.webp](/assets/post-assets/press/ChipotleDevelopmentTeam_RedlandsCyclingClassic.webp)
 
 About Sugar Labs: Sugar Labs, a volunteer-driven, nonprofit organization, is a
 member project of the Software Freedom Conservancy. Originally part of the One

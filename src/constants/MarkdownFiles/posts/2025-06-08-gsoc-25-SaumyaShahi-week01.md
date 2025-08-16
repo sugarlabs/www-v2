@@ -7,7 +7,7 @@ slug: "2025-06-08-gsoc-25-saumya-week01"
 author: "Saumya Shahi"
 description: "GSoC '25 Contributor at SugarLabs"
 tags: "gsoc25,sugarlabs,masonry,week01,saumya-shahi"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

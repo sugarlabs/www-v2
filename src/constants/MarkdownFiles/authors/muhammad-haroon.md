@@ -4,7 +4,7 @@ slug: "muhammad-haroon"
 title: "Member & SSoC'25 Contributor"
 organization: "Sugar Labs"
 description: "Member & SSoC'25 Contributor at Sugar Labs"
-avatar: "/assets/Developers/Muhammad_Haroon/muhammadharoon.jpg"
+avatar: "/assets/Developers/Muhammad_Haroon/muhammadharoon.webp"
 ---
 
 <!--markdownlint-disable-->

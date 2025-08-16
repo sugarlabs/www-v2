@@ -10,7 +10,7 @@ tags:
   - sugarlabs
   - week02
   - firepheonix
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -38,19 +38,19 @@ image: "assets/Images/GSOC.png"
    - Modified 6 different files to implement an entirely new block type.
    - Music Blocks already has sophisticated color detection for internal pixels, but couldn't detect colors from external sources like uploaded images or webcam feeds — this limitation was addressed.
    - The codebase proved beautifully encapsulated and thoroughly documented, making the learning curve smoother.
-        ![Interface Implementation](https://i.ibb.co/d0X9zXjF/1st.png)
+        ![Interface Implementation](https://i.ibb.co/d0X9zXjF/1st.webp)
 
 2. **Real-time Video Integration**  
    - Implemented real-time video functionality through webcam integration.
    - Added full editing capabilities and canvas manipulation for live video feeds.
    - Interface provides seamless interaction between video feed and detection algorithms.
-        ![Real-time Video Feature](https://i.ibb.co/cXL4Hpxq/2nd.png)
+        ![Real-time Video Feature](https://i.ibb.co/cXL4Hpxq/2nd.webp)
 
 3. **Export Mechanism Research**  
    - Conducted extensive research into existing export mechanisms within Music Blocks.
    - Deep-dived into Phrase Maker widget documentation and codebase.
    - Studied how different blocks export output as both MIDI files and action blocks.
-        ![Export Research](https://i.ibb.co/bVD8Z54/image.png)
+        ![Export Research](https://i.ibb.co/bVD8Z54/image.webp)
 
 ---
 

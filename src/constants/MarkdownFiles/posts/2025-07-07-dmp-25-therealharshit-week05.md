@@ -6,7 +6,7 @@ date: "2025-07-07"
 slug: "2025-07-07-dmp-25-therealharshit-week05"
 author: "@/constants/MarkdownFiles/authors/harshit-verma.md"
 tags: "dmp25,sugarlabs,week05,therealharshit"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -33,7 +33,7 @@ image: "assets/Images/c4gt_DMP.png"
 1. **Built a Lightweight Markdown Parser for VTE**  
    - Created a simple parser to interpret basic Markdown (like `**bold**`, `- bullets`, `### headers`) and display it using ANSI-style formatting in the VTE terminal.
    - Iterated by testing different wording styles and instruction formats, which led to noticeably better visual output.
-   ![Pippy UI: Parsed markdown response in vte](assets/Images/pippy_markdown-parser.png)
+   ![Pippy UI: Parsed markdown response in vte](assets/Images/pippy_markdown-parser.webp)
 
 2. **Started Model Evaluation and Optimization**  
    - Compared several models (like Mistral, CodeLlama, and others from Hugging Face) to balance output quality with local performance.

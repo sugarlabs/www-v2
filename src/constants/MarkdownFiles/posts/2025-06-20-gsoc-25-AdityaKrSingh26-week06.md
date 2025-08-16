@@ -6,7 +6,7 @@ date: "2025-06-20"
 slug: "2025-06-20-gsoc-25-AdityaKrSingh26-week06"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 tags: "gsoc25,sugarlabs,week06,AdityaKrSingh26"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -43,8 +43,8 @@ image: "assets/Images/GSOC.png"
     - Defined tutorial steps in a dedicated `tutorial.js` module using `introJs().setOptions()` to guide users through the UI.  
     - Customized the UI using Sugarizer-themed CSS classes for a consistent visual style.  
     - Enabled full localization support using `l10n.get()` to adapt tutorial text based on the user’s language settings.  
-        ![Tutorial screen](https://i.ibb.co/TBbQPbLv/image.png)   
-        ![Tutorial screen](https://i.ibb.co/q3tNbkRV/image.png)   
+        ![Tutorial screen](https://i.ibb.co/TBbQPbLv/image.webp)   
+        ![Tutorial screen](https://i.ibb.co/q3tNbkRV/image.webp)   
 
 
 3. **Body Parts Metadata via JSON**  
@@ -73,7 +73,7 @@ image: "assets/Images/GSOC.png"
 4. **Shared Mode enhancements for Paint Mode**   
     - **Model sync:** when any participant switches to a different anatomical model, the client now emits a `switchModel` event; all connected users load the same model instantly.  
     - **Shared painting:** a `paintPart` broadcast (object name, color, body-part name, painter ID) lets everyone see the newly painted part in real time. A modal on each peer shows **“<user>     painted: <part>”** for clear attribution.  
-        ![Shared mode](https://i.ibb.co/fV4KLx1d/image.png)   
+        ![Shared mode](https://i.ibb.co/fV4KLx1d/image.webp)   
 
 
 ---

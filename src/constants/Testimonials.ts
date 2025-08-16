@@ -3,14 +3,14 @@ export const testimonials = [
     name: 'Student at Soham Shubham Science',
     username: 'Soham Shubham Science',
     body: 'Music Blocks is a programming environment for children interested in music and graphics. It expands upon Turtle Blocks by adding a collection of features relating to pitch and rhythm.',
-    img: 'https://subhamgroupofinstitutions.com/wp-content/uploads/2022/08/Subham_logo-1-removebg-preview.png',
+    img: 'https://subhamgroupofinstitutions.com/wp-content/uploads/2022/08/Subham_logo-1-removebg-preview.webp',
   },
   {
     name: 'Richard Hermann',
     username:
       'Richard Hermann, PhD, Prof. of Music Theory and Composition, University of New Mexico',
     body: 'I think Music Blocks will inspire many young folks to become programmers, mathematicians, composers, and music theorists. It will also provide important experiences to other young folk who pursue other fields. You are to be congratulated on your efforts.',
-    img: 'https://www.richardhermann.net/_Media/rhmh-tentrock_med.jpeg',
+    img: 'https://www.richardhermann.net/_Media/rhmh-tentrock_med.webp',
   },
   {
     name: 'Riya Lohia',
@@ -34,7 +34,7 @@ export const testimonials = [
     name: 'Harshit Verma',
     username: 'Harshit Verma',
     body: 'Contribution to Sugar Labs has been an incredible rewarding experience. It has not only helped me grow as a developer but also given me confidence to work on real world projects. I’m excited about what’s next in my open source journey, and I can’t wait to continue learning and contributing!',
-    img: 'https://miro.medium.com/v2/resize:fill:44:44/1*devzHlZAKt4fVu5Cg0eN6w.png',
+    img: 'https://miro.medium.com/v2/resize:fill:44:44/1*devzHlZAKt4fVu5Cg0eN6w.webp',
   },
   {
     name: 'Om Santosh Suneri',
@@ -46,7 +46,7 @@ export const testimonials = [
     name: 'Vipul Gupta',
     username: 'Vipul Gupta',
     body: 'Sugar Labs excelled all my expectations of how an open-source community would be like. The work I did during the course of the program would sure benefit the community. But more importantly, from day one, I felt to be working for something much bigger than myself.',
-    img: 'https://miro.medium.com/v2/resize:fill:44:44/1*QK0Aauitgk6kBBB6XpX98A.jpeg',
+    img: 'https://miro.medium.com/v2/resize:fill:44:44/1*QK0Aauitgk6kBBB6XpX98A.webp',
   },
   {
     name: 'Sam Parkinson',

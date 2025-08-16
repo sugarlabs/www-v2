@@ -6,7 +6,7 @@ date: "2025-07-13"
 slug: "gsoc-25-BishoyWadea-week06"
 author: "@/constants/MarkdownFiles/authors/bishoy-wadea.md"
 tags: "gsoc25,sugarlabs,week06,midterm,BishoyWadea"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -52,23 +52,23 @@ player loses the game.
 
 This shows the main menu screen of Euclid’s Game in light mode. You can see the toolbar at the top with buttons like New Game and Help, along with options to switch between light and dark themes. Below that, there are buttons for selecting difficulty levels and choosing game modes, such as 2‑player or vs AI.
 
-![menu light theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/01.png?raw=true)
+![menu light theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/01.webp?raw=true)
 
 **Menu Dark Theme:**
 
 This shows the main menu screen of Euclid’s Game in Dark theme
 
-![menu dark theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/02.png?raw=true)
+![menu dark theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/02.webp?raw=true)
 
 **Gameplay Dark Theme:**
 
 Here you’re looking at the core game screen in dark mode. There's a board displaying numbers—the starting pair and any differences added. You can also see the current player’s turn and the move counter.
 
-![game play dark theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/05.png?raw=true)
+![game play dark theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/05.webp?raw=true)
 
 **Gameplay Dark Theme:**
 
-![game play light theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/04.png?raw=true)
+![game play light theme](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/04.webp?raw=true)
 
 **Gameplay Light Theme**
 
@@ -78,7 +78,7 @@ This is the same gameplay view but in light theme.
 
 This overlay provides instructions or guidance on how to play the game. It likely appears when you click the “Help” button from the toolbar, offering context and tips for first-time users.
 
-![help panel](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/06.png?raw=true)
+![help panel](https://github.com/Bishoywadea/Euclid-s-Game/blob/main/screenshots/06.webp?raw=true)
 ---
 
 ## Challenges & Solutions

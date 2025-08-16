@@ -7,7 +7,7 @@ slug: "2025-06-04-gsoc-25-mostlyk-community-bonding"
 author: "@/constants/MarkdownFiles/authors/krish-pandya.md"
 description: "GSoC'25 Contributor working on GTK4 migration for Sugar Labs"
 tags: "gsoc25,sugarlabs,gtk4,mostlyk,community-bonding"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 

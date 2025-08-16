@@ -6,7 +6,7 @@ date: "2025-06-14"
 slug: "2025-06-14-gsoc-25-Elwin-Li-week02"
 author: "@/constants/MarkdownFiles/authors/elwin-li.md"
 tags: "gsoc25,sugarlabs,week2,javaScript editor"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -40,7 +40,7 @@ I added a script to minify the JSON config so that musicblocks doesn't need to l
 
 The code to blocks project has been complete and deployed, as seen in this [merged PR](https://github.com/sugarlabs/musicblocks/pull/4707). To test, simply write your musicblocks program in Javascript in the editor and press the convert button. Note that the only blocks supported are those supported by block to code conversion, so it won't work on every single block possible, but will work on most of them.
 
-<a href="https://ibb.co/qLNNyH8W"><img src="https://i.ibb.co/V0ggjFGQ/Screenshot-2025-06-14-at-2-25-05-PM.png" alt="Conversion Example"></a>
+<a href="https://ibb.co/qLNNyH8W"><img src="https://i.ibb.co/V0ggjFGQ/Screenshot-2025-06-14-at-2-25-05-PM.webp" alt="Conversion Example"></a>
 
 ---
 

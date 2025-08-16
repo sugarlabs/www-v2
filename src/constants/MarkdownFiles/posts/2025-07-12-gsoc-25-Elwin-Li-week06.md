@@ -6,7 +6,7 @@ date: "2025-07-12"
 slug: "2025-07-12-gsoc-25-Elwin-Li-week06"
 author: "@/constants/MarkdownFiles/authors/elwin-li.md"
 tags: "gsoc25,sugarlabs,midterm,week6,javaScript editor,debugger,syntax highlighting"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -36,9 +36,9 @@ of any errors, and doing some calculations to highlight the associating places r
 
 Any syntax errors will not only cause the place of errors to be highlighted, but it will also print an error message in the console log. This will additionally make it easier for the user to understand when and where an error occurs. A demo of the highlighting is displayed below:
 
-<a href="https://ibb.co/VpVMyZFM"><img src="https://i.ibb.co/yB0gT1zg/Screenshot-2025-07-12-at-9-01-37-PM.png" alt="Syntax Highlight"></a>
+<a href="https://ibb.co/VpVMyZFM"><img src="https://i.ibb.co/yB0gT1zg/Screenshot-2025-07-12-at-9-01-37-PM.webp" alt="Syntax Highlight"></a>
 
-<a href="https://ibb.co/1YTRYQFx"><img src="https://i.ibb.co/Y4hf4QHG/Screenshot-2025-07-12-at-9-01-48-PM.png" alt="Error Highlight"></a>
+<a href="https://ibb.co/1YTRYQFx"><img src="https://i.ibb.co/Y4hf4QHG/Screenshot-2025-07-12-at-9-01-48-PM.webp" alt="Error Highlight"></a>
 
 **Made prototype for prompt to valid JavaScript code that can convert to MusicBlocks AI**
 

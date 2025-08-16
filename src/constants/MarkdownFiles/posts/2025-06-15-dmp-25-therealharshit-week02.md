@@ -6,7 +6,7 @@ date: "2025-06-15"
 slug: "2025-06-15-dmp-25-therealharshit-week02"
 author: "@/constants/MarkdownFiles/authors/harshit-verma.md"
 tags: "dmp25,sugarlabs,week02,therealharshit"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -41,7 +41,7 @@ image: "assets/Images/c4gt_DMP.png"
 
 3. **Updated Pippy UI with Debugging Controls**  
    - Added 'Run and Debug' buttons to the Pippy interface.
-    ![Pippy UI: Run and Debug](assets/Images/pippy_run&debug.png)
+    ![Pippy UI: Run and Debug](assets/Images/pippy_run&debug.webp)
    - This was designed to trigger actions like execute code and get debugging feedback.
 
 4. **Connected Pippy to the FastAPI Server**  

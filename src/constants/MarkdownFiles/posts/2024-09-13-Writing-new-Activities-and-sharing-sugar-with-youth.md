@@ -14,7 +14,7 @@ _Editorial note: This article was given to us by Sugar Labs community member Jam
 
 I started working with OLPC with the Give One Get One program back in 2007. Honestly speaking, at the time, I was more interested in getting an XO laptop for myself than in working for the project. I thought I could use the laptop to read plain textbooks from [Project Gutenberg](https://www.gutenberg.org/). Kindles were very expensive back then, and this looked like a good alternative. And it was. But, at the time, the Read Activity only worked with PDFs. In an effort to expand this functionality, I taught myself to program in Python, studied the code for the [Read Activity](https://activities.sugarlabs.org/en-US/sugar/addon/4028), and created the [Read Etexts Activity](https://activities.sugarlabs.org/en-US/sugar/addon/4035), which supported reading plain text files. Next, I decided that I wanted to have an Activity for reading comic books in CBZ format and created two of them: [View Slides](https://activities.sugarlabs.org/en-US/sugar/addon/4039) and [Read SD Comics](https://activities.sugarlabs.org/en-US/sugar/addon/4340).
 
-![Photo of James Simmons holding a copy of "Make your own Sugar Activities", sitting in front of a computer screen and a small OLPC laptop.](/assets/post-assets/stories/james.jpg)
+![Photo of James Simmons holding a copy of "Make your own Sugar Activities", sitting in front of a computer screen and a small OLPC laptop.](/assets/post-assets/stories/james.webp)
 
 Photo of James Simmons with a copy of "Make your own Sugar Activities". Simmons has been contributing to Sugar since 2007.
 

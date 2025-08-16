@@ -18,7 +18,7 @@ Sugar Labs is at a critical inflection point. We need your support to leverage s
 
 Consider [donating to Sugar Labs](https://www.paypal.com/donate?campaign_id=NEAV3YL4H6B5S) as we move into our next phase.
 
-![Image that has a picture of volunteers at a desk with computers, a teacher in a class with everyone hands raised, and a teacher overlooking two kids at their computers.](/assets/post-assets/donation-banner.jpg)
+![Image that has a picture of volunteers at a desk with computers, a teacher in a class with everyone hands raised, and a teacher overlooking two kids at their computers.](/assets/post-assets/donation-banner.webp)
 *The Sugar Labs community is a global network of students, teachers, and developers.*
 
 I stepped into the executive director position in January of this year. I did so because I believe in Sugar Labs's mission to create educational software and experiences for children.

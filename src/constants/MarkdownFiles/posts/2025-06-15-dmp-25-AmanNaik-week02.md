@@ -6,7 +6,7 @@ date: "2025-06-15"
 slug: "2025-06-15-dmp-25-AmanNaik-week02"
 author: "@/constants/MarkdownFiles/authors/amannaik247.md"
 tags: "dmp25,writeactivity,write,sugarlabs,week01,amannaik247"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -36,9 +36,9 @@ image: "assets/Images/c4gt_DMP.png"
 2. **Finalized the Architecture for the Story Builder Feature**  
    - After research and discussions, I finalized an architecture that aids students in story writing while ensuring that the AI guides rather than writes the story for them.
 
-   ![Question-Answer workflow](assets/Images/aman_naik_week2_img1.png)
+   ![Question-Answer workflow](assets/Images/aman_naik_week2_img1.webp)
 
-   ![Create a framework using the context gained from the Q&A](assets/Images/aman_naik_week2_img2.png)
+   ![Create a framework using the context gained from the Q&A](assets/Images/aman_naik_week2_img2.webp)
 
 3. **Created Documentation for Future Reference**  
    - I’ve documented the feature's flow and design so it can be referred to later. [Link](https://docs.google.com/document/d/14V_FreatUU-gGgiHRdlvNDUXUgmBTWIeFyDaap38RnA/edit?usp=sharing)

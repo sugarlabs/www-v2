@@ -6,7 +6,7 @@ date: "2025-06-16"
 slug: "2025-06-16-dmp-25-aman-chadha-week02"
 author: "@/constants/MarkdownFiles/authors/aman-chadha.md"
 tags: "dmp25,sugarlabs,week02,aman-chadha"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->

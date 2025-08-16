@@ -6,7 +6,7 @@ date: "2025-07-19"
 slug: "2025-07-19-gsoc-25-Elwin-Li-week07"
 author: "@/constants/MarkdownFiles/authors/elwin-li.md"
 tags: "gsoc25,sugarlabs,week7,javaScript editor,debugger,syntax highlighting"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -37,7 +37,7 @@ This week, I mainly focused on gathering data for the MusicBlocks generation mod
 
 To accomplish this, I developed a widget that can load projects directly from the examples folder, generate the corresponding JavaScript code, and download it. This streamlined the process of extracting code from a large number of example projects.
 
-<a href="https://ibb.co/7NTw72yd"><img src="https://i.ibb.co/HpMWmngf/Screenshot-2025-07-20-at-1-04-37-AM.png" alt="Examples Loader Widget"></a>
+<a href="https://ibb.co/7NTw72yd"><img src="https://i.ibb.co/HpMWmngf/Screenshot-2025-07-20-at-1-04-37-AM.webp" alt="Examples Loader Widget"></a>
 
 
 However, I found that only about half of the projects could be successfully converted to JavaScript. Many of the example projects contained blocks that are not currently supported for block-to-code conversion, which limited the amount of usable data I could extract for the model.

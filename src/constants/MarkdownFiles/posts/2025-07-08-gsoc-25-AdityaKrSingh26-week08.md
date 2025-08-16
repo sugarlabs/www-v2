@@ -6,7 +6,7 @@ date: "2025-07-09"
 slug: "2025-07-08-gsoc-25-AdityaKrSingh26-week08"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 tags: "gsoc25,sugarlabs,week08,AdityaKrSingh26"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -70,14 +70,14 @@ image: "assets/Images/GSOC.png"
             - Host sends a `scoreUpdate` broadcast.
             - All peers update their UI leaderboard.
         - Leaderboard HTML is re-rendered using updated user data and SVG icons.
-        ![Shared Doctor Mode](https://i.ibb.co/jkLPqWDP/image.png)   
+        ![Shared Doctor Mode](https://i.ibb.co/jkLPqWDP/image.webp)   
 
 
 3. **Stickman Activity – Initial Scaffold**  
     - Created an initial version of the activity.
     - Toolbar now displays all expected icons (draw, move, add frame, delete frame, play, stop).
     - Currently, button clicks do nothing—but the structure is laid out to integrate drawing and animation logic next week.
-    ![Stickman Basic UI](https://i.ibb.co/mCpmRp3J/image.png) 
+    ![Stickman Basic UI](https://i.ibb.co/mCpmRp3J/image.webp) 
 
 
 

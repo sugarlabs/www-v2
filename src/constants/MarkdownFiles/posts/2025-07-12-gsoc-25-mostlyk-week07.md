@@ -6,7 +6,7 @@ date: "2025-07-22"
 slug: "2025-07-22-gsoc-25-mostlyk-week07"
 author: "@/constants/MarkdownFiles/authors/krish-pandya.md"
 tags: "gsoc25,sugarlabs,week07,mostlyk"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 
