@@ -6,7 +6,7 @@ date: "2025-08-10"
 slug: "2025-08-10-gsoc-25-diwangshu-week09"
 author: "@/constants/MarkdownFiles/authors/diwangshu-kakoty.md"
 tags: "gsoc25,sugarlabs,week09,AI"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -35,7 +35,7 @@ image: "assets/Images/GSOC.png"
 1. **Fixed 'reflection' widget UI**  
   - The user interface design of the widget now aligns with other widgets. There is a sidebar with buttons like export and "generate a summary".
 
-    <a href="https://ibb.co/PZWZQDhN"><img src="https://i.ibb.co/gMWMV4T3/Screenshot-2025-08-10-195926.png" alt="Screenshot-2025-08-10-195926" border="0"></a>
+    <a href="https://ibb.co/PZWZQDhN"><img src="https://i.ibb.co/gMWMV4T3/Screenshot-2025-08-10-195926.png" alt="chat interface" border="0"></a>
 
 2. **Improved chat interface**
   - Every message bubble will now show its sender name on top of the text.
