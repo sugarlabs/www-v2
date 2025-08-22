@@ -19,15 +19,15 @@ export const turtleBlocksData = {
     'Turtle Blocks JavaScript lets users create colorful art with a Logo-inspired turtle using snap-together coding blocks. It’s beginner-friendly yet powerful enough for advanced programming, graphics, and math exploration.',
   images: [
     {
-      src: 'assets/TryNowImages/turtleblocks2.png',
+      src: 'assets/TryNowImages/turtleblocks2.webp',
       alt: 'Turtle Blocks Example 1',
     },
     {
-      src: 'assets/TryNowImages/turtleblocks1.png',
+      src: 'assets/TryNowImages/turtleblocks1.webp',
       alt: 'Turtle Blocks Example 2',
     },
     {
-      src: 'assets/TryNowImages/turtleBlocks.png',
+      src: 'assets/TryNowImages/turtleBlocks.webp',
       alt: 'Turtle Blocks Example 3',
     },
   ],
@@ -172,5 +172,5 @@ export const turtleBlocksSections: TurtleBlockSection[] = [
 ];
 
 export const mockupImage = {
-  path: 'assets/TryNowImages/turtleMockup.png',
+  path: 'assets/TryNowImages/turtleMockup.webp',
 };

@@ -6,7 +6,7 @@ date: "2025-07-05"
 slug: "2025-07-05-gsoc-25-Elwin-Li-week05"
 author: "@/constants/MarkdownFiles/authors/elwin-li.md"
 tags: "gsoc25,sugarlabs,week5,javaScript editor,debugger,syntax highlighting"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -38,7 +38,7 @@ The debugger project has been complete and a [PR has been made](https://github.c
 
 I've added basic syntax highlighting to the JS editor, making it more pleasing to the eye.
 
-<a href="https://ibb.co/23vbzVqq"><img src="https://i.ibb.co/RT35Xr22/Screenshot-2025-07-06-at-12-28-58-AM.png" alt="Syntax Highlight"></a>
+<a href="https://ibb.co/23vbzVqq"><img src="https://i.ibb.co/RT35Xr22/Screenshot-2025-07-06-at-12-28-58-AM.webp" alt="Syntax Highlight"></a>
 
 ---
 

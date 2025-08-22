@@ -6,7 +6,7 @@ date: "2025-06-06"
 slug: "2025-06-06-gsoc-25-mebinthattil-week1"
 author: "@/constants/MarkdownFiles/authors/mebin-thattil.md"
 tags: "gsoc25,sugarlabs,week01,mebinthattil,speak_activity"
-image: "assets/Images/GSOCxSpeak.png"
+image: "assets/Images/GSOCxSpeak.webp"
 ---
 
 <!-- markdownlint-disable -->

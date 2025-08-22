@@ -14,7 +14,7 @@ export const projects: Project[] = [
     description:
       'A USB version of the Sugar platform, an environment made for kids to learn and explore. It can be used to temporarily boot into SoaS or to install onto your computer.',
     tags: ['Distribution', 'Portable'],
-    imageUrl: 'assets/Images/SOAS.jpeg',
+    imageUrl: 'assets/Images/SOAS.webp',
     link: '/bootablesoas',
   },
   {
@@ -22,7 +22,7 @@ export const projects: Project[] = [
     description:
       'GSoC is a global program, hosted by Google, focused on bringing more student developers into free/libre/open (FLO) software development.',
     tags: ['Community', 'Development'],
-    imageUrl: 'assets/Images/GSOC.png',
+    imageUrl: 'assets/Images/GSOC.webp',
     exlink:
       'https://summerofcode.withgoogle.com/programs/2025/organizations/sugar-labs',
   },
@@ -32,7 +32,7 @@ export const projects: Project[] = [
       'A visual programming language for exploring musical concepts. Based on the tried-and-true Logo programming language, you can blend art, geometry, and music to make challenging and fun creations.',
     tags: ['Education', 'Creative'],
     progress: 75,
-    imageUrl: 'assets/TryNowImages/musicBlocks1.png',
+    imageUrl: 'assets/TryNowImages/musicBlocks1.webp',
     link: '/musicblocks',
   },
   {
@@ -41,7 +41,7 @@ export const projects: Project[] = [
       'Multi-platform implementation of the Sugar Learning Platform. Versions are available for the web, as well as for iOS, Android, Windows, and GNU/Linux.',
     tags: ['Web', 'Mobile'],
     progress: 80,
-    imageUrl: 'assets/TryNowImages/sugarizer.png',
+    imageUrl: 'assets/TryNowImages/sugarizer.webp',
     link: '/sugarizer',
   },
 ];

@@ -6,7 +6,7 @@ date: "2025-07-20"
 slug: "2025-07-20-gsoc-25-AdityaKrSingh26-week010"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 tags: "gsoc25,sugarlabs,week10,AdityaKrSingh26"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -75,7 +75,7 @@ image: "assets/Images/GSOC.png"
      - Solid, filled circular head
    - Inspired by Pivot Animator to offer a more professional, relatable look.
     > Updated Stickman Design  
-    ![Stickman UI](https://i.ibb.co/60VymQhm/image.png)
+    ![Stickman UI](https://i.ibb.co/60VymQhm/image.webp)
 
 
 5. **Multi-Stickman Canvas Support**  
@@ -89,7 +89,7 @@ image: "assets/Images/GSOC.png"
      - On user interaction, determine which stickman is targeted.
      - Only that stickman responds to move, draw, and animate actions.
     > Multiple Stickman preview in acitvity  
-    ![Multiple Stickman](https://i.ibb.co/s9VJBctL/image.png)
+    ![Multiple Stickman](https://i.ibb.co/s9VJBctL/image.webp)
 
 
 6. **Journal Integration for Stickman**  

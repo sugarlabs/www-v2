@@ -6,7 +6,7 @@ date: "2025-07-06"
 slug: "2025-07-06-gsoc-25-omsuneri-week05"
 author: "@/constants/MarkdownFiles/authors/om-santosh-suneri.md"
 tags: "gsoc25,sugarlabs,week05,Debugger,AI,Music Blocks"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -114,7 +114,7 @@ Now that the converter is in Streamlit (and Python), integrating it into the AI 
 
 Here’s a quick preview of the app:
 
-<a href=""><img src="https://i.ibb.co/XZt6MF9k/Screenshot-2025-07-05-at-3-09-15-PM.png" alt="Convertor Streamlit interface"></a>
+<a href=""><img src="https://i.ibb.co/XZt6MF9k/Screenshot-2025-07-05-at-3-09-15-PM.webp" alt="Convertor Streamlit interface"></a>
 
 
 ### Final Thoughts

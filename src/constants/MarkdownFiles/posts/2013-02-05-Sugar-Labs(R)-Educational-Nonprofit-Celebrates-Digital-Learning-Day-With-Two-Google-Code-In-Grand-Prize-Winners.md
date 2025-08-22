@@ -27,7 +27,7 @@ Sugar is used in developing countries worldwide through the **[One Laptop Per Ch
 Sugar Labs wishes to thank Google and in particular Bradley Kuhn, executive director of the Software Freedom Conservancy, parent organization of Sugar Labs and 27 other free/libre software projects.
 
 **Image:**  
-![SugarLabs_GCI_2012_Winners.jpg](/assets/post-assets/press/SugarLabs_GCI_2012_Winners.jpg)
+![SugarLabs_GCI_2012_Winners.webp](/assets/post-assets/press/SugarLabs_GCI_2012_Winners.webp)
 
 ---
 

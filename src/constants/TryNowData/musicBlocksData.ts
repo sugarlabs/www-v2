@@ -7,19 +7,19 @@ export const musicBlocksData = {
     'Music Blocks is a collection of manipulative tools for exploring fundamental musical concepts in an integrative and fun way.',
   images: [
     {
-      src: 'assets/TryNowImages/musicBlocks1.png',
+      src: 'assets/TryNowImages/musicBlocks1.webp',
       alt: 'Music Blocks Example 1',
     },
     {
-      src: 'assets/TryNowImages/musicBlocks2.png',
+      src: 'assets/TryNowImages/musicBlocks2.webp',
       alt: 'Music Blocks Example 2',
     },
     {
-      src: 'assets/TryNowImages/musicBlocks3.png',
+      src: 'assets/TryNowImages/musicBlocks3.webp',
       alt: 'Music Blocks Example 3',
     },
     {
-      src: 'assets/TryNowImages/musicBlocks4.png',
+      src: 'assets/TryNowImages/musicBlocks4.webp',
       alt: 'Music Blocks Example 4',
     },
   ],
@@ -65,11 +65,11 @@ export const musicBlocksSections = [
 ];
 
 export const mockupImage = {
-  path: 'assets/TryNowImages/musicMockup.png',
+  path: 'assets/TryNowImages/musicMockup.webp',
 };
 
 export const musicblockstext = {
-  path: 'assets/TryNowImages/mbText.png',
+  path: 'assets/TryNowImages/mbText.webp',
 };
 
 export const foundabug = [
@@ -88,7 +88,7 @@ export const foundabug = [
 
 export const musicBlocksLogoCards = [
   {
-    logo: 'assets/TryNowImages/mbLogoCard1.png',
+    logo: 'assets/TryNowImages/mbLogoCard1.webp',
     title: 'Music Blocks Online',
     description: [
       'Children can learn programming from scratch and have fun creating music and videos by combining blocks that control instruments, rhythms, and changing pitch values.',
@@ -102,7 +102,7 @@ export const musicBlocksLogoCards = [
     ],
   },
   {
-    logo: 'assets/TryNowImages/mbLogoCard2.png',
+    logo: 'assets/TryNowImages/mbLogoCard2.webp',
     title: 'Videos to learn how to use Music Blocks',
     description: [
       'You can learn the basics of Music Blocks through videos. We will explain what you can do with the software, how to start using it, how to program, and more.',
@@ -116,7 +116,7 @@ export const musicBlocksLogoCards = [
     ],
   },
   {
-    logo: 'assets/TryNowImages/mbLogoCard3.png',
+    logo: 'assets/TryNowImages/mbLogoCard3.webp',
     title: 'Videos that teach you how to create works using Music Blocks',
     description: [
       'This article explains how to create music and video works while programming using Music Blocks. Feel free to create your own original works.',
@@ -130,7 +130,7 @@ export const musicBlocksLogoCards = [
     ],
   },
   {
-    logo: 'assets/TryNowImages/mbLogoCard4.png',
+    logo: 'assets/TryNowImages/mbLogoCard4.webp',
     title: 'Music Blocks Challenge Print',
     description: [
       'This is a quiz-style printout that teaches you about the functions of Music Blocks and how to create works. Click the link below to download the PDF file.',
@@ -151,7 +151,7 @@ export const teamMembers = [
     role: 'Developer of Music Blocks',
     description:
       'Developer of Music Blocks. Former director of the MIT Media Lab. Founder of the OLPC (One Laptop Per Child) project, which provides $100 computers to children in developing countries. Founder of the nonprofit organization Sugar Labs.',
-    image: 'assets/TryNowImages/walter.png',
+    image: 'assets/TryNowImages/walter.webp',
     bgColor: '#B0D0FF',
   },
   {
@@ -159,7 +159,7 @@ export const teamMembers = [
     role: 'CEO of Remake Music LLC',
     description:
       'Developer of Music Blocks. CEO of Remake Music LLC. Head of Music + Code Lead Teaching Artist Training at MAP Family Learning Center.',
-    image: 'assets/TryNowImages/devin.png',
+    image: 'assets/TryNowImages/devin.webp',
     bgColor: '#FFB3C6',
   },
 ];
@@ -170,7 +170,7 @@ export const numberedCards1 = [
     title: 'You can create music through programming!',
     description:
       'Rhythms and melodies can be created intuitively, so anyone can easily create original music.',
-    image: 'assets/TryNowImages/mbNumberedCard1.png',
+    image: 'assets/TryNowImages/mbNumberedCard1.webp',
     borderColor: '#FFED51',
   },
   {
@@ -178,7 +178,7 @@ export const numberedCards1 = [
     title: 'You can study math!',
     description:
       "Since musical elements such as 'note length' and 'performance speed' are controlled numerically, students will develop mathematical literacy.",
-    image: 'assets/TryNowImages/mbNumberedCard2.png',
+    image: 'assets/TryNowImages/mbNumberedCard2.webp',
     borderColor: '#FFED51',
   },
   {
@@ -186,7 +186,7 @@ export const numberedCards1 = [
     title: 'You can show your work all over the world!',
     description:
       'You can publish your work on a dedicated cloud. Download the work you like and collaborate with friends around the world.',
-    image: 'assets/TryNowImages/mbNumberedCard3.png',
+    image: 'assets/TryNowImages/mbNumberedCard3.webp',
     borderColor: '#FFED51',
   },
 ];

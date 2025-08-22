@@ -6,7 +6,7 @@ date: "2025-07-15"
 slug: "2025-07-15-gsoc-25-AdityaKrSingh26-week09"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 tags: "gsoc25,sugarlabs,week09,AdityaKrSingh26,midterm"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -57,7 +57,7 @@ image: "assets/Images/GSOC.png"
     ```
     - Links : PR [#1800](https://github.com/llaske/sugarizer/pull/1800) 
     > Failed Attempt Popup  
-    ![Leaderboard](https://i.ibb.co/TxWvQShK/image.png)
+    ![Leaderboard](https://i.ibb.co/TxWvQShK/image.webp)
 
 
 2. **Shared Doctor Mode Leaderboard Enhancements**  
@@ -72,7 +72,7 @@ image: "assets/Images/GSOC.png"
         iconElement.style.backgroundImage = `url(${generateXOLogoWithColor(playerColor)})`;
      ```
     > Real-time XO Leaderboard during Shared Doctor Mode  
-    ![Leaderboard](https://i.ibb.co/jkLPqWDP/image.png)
+    ![Leaderboard](https://i.ibb.co/jkLPqWDP/image.webp)
 
 
 3. **Stickman Activity – Dashboard Features Bootstrap**  
@@ -92,7 +92,7 @@ image: "assets/Images/GSOC.png"
     - **Export as Video** and playback scaffold in progress using HTML5 Canvas.
     - Links : PR [#1799](https://github.com/llaske/sugarizer/pull/1799)
     > Stickman Dashboard UI with Toolbar and Timeline  
-    ![Stickman UI](https://i.ibb.co/H86RT1Z/image.png)
+    ![Stickman UI](https://i.ibb.co/H86RT1Z/image.webp)
 
 
 ---

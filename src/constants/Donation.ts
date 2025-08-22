@@ -1,4 +1,4 @@
-import Image from '/assets/Images/DonatePic.png';
+import Image from '/assets/Images/DonatePic.webp';
 import Arrow from '/assets/Icons/arrow.svg';
 import PdfIcon from '/assets/Icons/pdf-icon.svg';
 

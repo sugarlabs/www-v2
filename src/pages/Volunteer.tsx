@@ -2,7 +2,7 @@ import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import JoinToggle from '@/components/JoinToggle';
 import { roleCards } from '@/constants/VolunteerAndDev/RoleCards';
-import groupimage from '/assets/Volunteer/volunteer-group.png';
+import groupimage from '/assets/Volunteer/volunteer-group.webp';
 import { motion } from 'framer-motion';
 import { developerLinks } from '@/constants/VolunteerAndDev/Links';
 import {

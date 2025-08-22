@@ -4,7 +4,7 @@ slug: "mebin-thattil"
 title: "GSoC'25 Contributor"
 organization: "SugarLabs"
 description: "GSoC'25 Contributor at SugarLabs"
-avatar: "https://mebin.shop/mebin-380.png"
+avatar: "https://mebin.shop/mebin-380.webp"
 ---
 
 <!--markdownlint-disable-->

@@ -6,7 +6,7 @@ date: "2025-07-12"
 slug: "2025-07-12-dmp-25-AmanNaik-week06"
 author: "@/constants/MarkdownFiles/authors/amannaik247.md"
 tags: "dmp25,writeactivity,write,sugarlabs,week06,midterm,amannaik247"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -39,7 +39,7 @@ image: "assets/Images/c4gt_DMP.png"
    - Parsed the JSON response from the LLM and displayed each story element in dedicated sections within the app.  
    - Incorporated error handling for missing or blank story categories.
 
-   ![Framework UI(WIP) with LLM genrated response](assets/Images/aman-naik-week6-img1.png)
+   ![Framework UI(WIP) with LLM genrated response](assets/Images/aman-naik-week6-img1.webp)
 
 3. **Gathered Real-User Feedback Through a School Demo**  
    - Mentor [Devin Ulibarri](https://github.com/pikurasa) organized a hands-on testing session with 12 students across four different activity stations:  
@@ -48,7 +48,7 @@ image: "assets/Images/c4gt_DMP.png"
      - Personas  
    - Students reflected on their experience via handouts. I’ll be analyzing their feedback to better understand their thoughts and identify areas of improvement.
 
-   ![Image of the handout given by Devin Ulibarri](assets/Images/aman-naik-week6-img2.png)
+   ![Image of the handout given by Devin Ulibarri](assets/Images/aman-naik-week6-img2.webp)
 
 4. **Resolved AWS Permissions Issue**  
    - Successfully resolved the permission issue that previously blocked AWS access.  

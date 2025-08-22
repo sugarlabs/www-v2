@@ -6,7 +6,7 @@ date: "2025-07-26"
 slug: "2025-07-26-gsoc-25-mostlyk-week08"
 author: "@/constants/MarkdownFiles/authors/krish-pandya.md"
 tags: "gsoc25,sugarlabs,week06,mostlyk"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 
@@ -32,7 +32,7 @@ There seems to be a lot of bugs here and there and the timing for this has affec
 Every time I think I’ve solved one part, another subtle bug or incompatibility pops up, often related to how GTK4 expects widgets to interact or how events are propagated.
 
 
-![Week-08-Commit](public/assets/Images/week08-mostly-commit.png)
+![Week-08-Commit](public/assets/Images/week08-mostly-commit.webp)
 
 I’ve been itching to record a demo of palettes in action, but there’s a major technical hurdle: on Wayland, widgets don’t have absolute screen coordinates, so palettes can’t reliably appear at the cursor or next to the invoking widget. This is a big departure from X11, where absolute positioning was straightforward. As a result, palettes sometimes pop up in unexpected places, which isn’t ideal for usability or demos. I’ve documented this as a TODO in the code and am actively looking for workarounds, but for now, the ToolbarBox example is at least functional.
 

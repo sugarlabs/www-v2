@@ -6,7 +6,7 @@ date: "2025-07-20"
 slug: "2025-07-20-gsoc-25-sa-fw-an-week7"
 author: "@/constants/MarkdownFiles/authors/safwan-sayeed.md"
 tags: "gsoc25,sugarlabs,week7,sa-fw-an"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -42,7 +42,7 @@ This week I worked on creating a TechSpec for the Interpreter and then Created a
    - Created a Data Flow Diagram (DFD) to visualize the data movement within the Interpreter.
    - The DFD highlights key processes, data stores, and data flows, providing a clear overview of the system's operation.
 
-![Data Flow Diagram](/assets/Developers/Safwan/dfd.png)
+![Data Flow Diagram](/assets/Developers/Safwan/dfd.webp)
 
 ---
 

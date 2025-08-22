@@ -6,7 +6,7 @@ date: "2025-06-15"
 slug: "2025-06-15-DMP-25-AnvitaPrasad-week02"
 author: "@/constants/MarkdownFiles/authors/anvita-prasad.md"
 tags: "dmp25,sugarlabs,week02,AnvitaPrasad"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->

@@ -10,7 +10,7 @@ tags:
   - sugarlabs
   - week07
   - firepheonix
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
