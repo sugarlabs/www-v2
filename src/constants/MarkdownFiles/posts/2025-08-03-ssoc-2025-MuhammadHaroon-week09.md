@@ -1,6 +1,6 @@
 ---
 title: "SSoC ’25 Week 09 Update by Muhammad Haroon"
-excerpt: "Create a FastAPI for connecting frontend with backend."
+excerpt: "Create a FastAPI for connecting frontend with backend for AI Sample Generation."
 category: "DEVELOPER NEWS"
 date: "2025-08-03"
 slug: "2025-08-03-ssoc-25-MuhammadHaroon-week09"
@@ -22,7 +22,7 @@ image: "assets/Images/GSOC.png"
 
 ## Goals for This Week
 
-- **Goal 1:** Create a FastAPI for connecting frontend with backend.
+- **Goal 1:** Create a FastAPI for connecting frontend with backend for AI Sample Generation.
 
 ---
 
