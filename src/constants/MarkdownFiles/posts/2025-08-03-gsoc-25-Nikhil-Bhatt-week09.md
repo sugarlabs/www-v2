@@ -6,7 +6,7 @@ date: "2025-08-03"
 slug: "2025-08-03-gsoc-25-nikhilbhatt-week09"
 author: "@/constants/MarkdownFiles/authors/nikhil-bhatt.md"
 tags: "gsoc25,sugarlabs,week09,nikhilbhatt"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -38,13 +38,13 @@ To overcome the GitHub API rate-limiting issue, I implemented a **new route** th
 
 After integrating the new theme feature and the authenticated repository fetch route, I updated the Projects page to showcase these enhancements in action. You can now see repository themes displayed alongside project descriptions, making it easier for users to visually identify and filter projects.
 
-![Projects page](assets/Developers/Nikhil/projectPage.png)
+![Projects page](assets/Developers/Nikhil/projectPage.webp)
 
 ## Actual GitHub repository created in Music Blocks project account 
 
 Here's an example of a repository actually created in the Music Blocks GitHub organization using the new backend functionality. The topics we added (themes) are visible directly in GitHub's About section, showcasing that the integration works end-to-end.
 
-![GitHub repo](assets/Developers/Nikhil/github-repo.png)
+![GitHub repo](assets/Developers/Nikhil/github-repo.webp)
 
 ---
 
