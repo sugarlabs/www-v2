@@ -6,10 +6,10 @@ date: "2025-08-03"
 slug: "2025-08-03-gsoc-25-mostlyk-week09"
 author: "@/constants/MarkdownFiles/authors/krish-pandya.md"
 tags: "gsoc25,sugarlabs,week09,mostlyk"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
-# Week 9: Hello-World, Radio Palettes, and PyPI Release!
+# Week 9: Hello-World, Radio Palettes, and PyPI Release
 
 **Project:** [GTK4 Exploration](https://summerofcode.withgoogle.com/programs/2025/projects/rsHsYZKy)  
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya Ibiam](https://github.com/chimosky), [Juan Pablo Ugarte](https://github.com/xjuan)  
