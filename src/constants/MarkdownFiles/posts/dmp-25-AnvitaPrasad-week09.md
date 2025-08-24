@@ -56,6 +56,7 @@ image: "assets/Images/c4gt_DMP.png"
   **Solution:** Adapted piano's octave-based approach to violin's string-based strategy with optimized MIDI boundaries
 
 - **Challenge:** Finding high-quality violin samples for different articulations 
+ - **Challenge:** Finding high-quality violin samples for different articulations  
   **Solution:** Still continuing to search for better solutions to ensure consistent sound quality across all violin samples
 
 - **Challenge:** Resolving complex merge conflicts when integrating multi-sample code with master branch  
