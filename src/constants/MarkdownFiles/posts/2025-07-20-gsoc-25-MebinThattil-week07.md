@@ -6,8 +6,10 @@ date: "2025-07-20"
 slug: "2025-07-20-gsoc-25-mebinthattil-week7"
 author: "@/constants/MarkdownFiles/authors/mebin-thattil.md"
 tags: "gsoc25,sugarlabs,week07,mebinthattil,speak_activity"
-image: "assets/Images/GSOCxSpeak.png"
+image: "assets/Images/GSOCxSpeak.webp"
 ---
+
+<!-- markdownlint-disable -->
 
 # Week 07 Progress Report by Mebin J Thattil
 

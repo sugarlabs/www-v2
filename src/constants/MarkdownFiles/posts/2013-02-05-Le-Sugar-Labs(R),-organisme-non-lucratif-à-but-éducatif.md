@@ -42,7 +42,7 @@ Gerald Ardito, membre du bureau du Sugar Labs, enseignant de collège et profess
 Le Sugar Labs tient à exprimer sa gratitude à Google et tout particulièrement à Bradley Kuhn, le directeur exécutif du Software Freedom Conservancy, organisme fédérant le Sugar Labs et 27 autres projets de logiciels libres et ouverts.
 
 **Image :**  
-![SugarLabs GCI 2012 Winners](/assets/post-assets/press/SugarLabs_GCI_2012_Winners.jpg)
+![SugarLabs GCI 2012 Winners](/assets/post-assets/press/SugarLabs_GCI_2012_Winners.webp)
 
 ---
 

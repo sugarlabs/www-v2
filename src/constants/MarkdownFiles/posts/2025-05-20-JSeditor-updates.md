@@ -76,7 +76,7 @@ make adding new blocks an extremely quick and trivial process. The next report m
 
 ### Debugger
 The JavaScript editor debugger will be a tool located as a separate tab within the console space. I plan on implementing this tool as part of GSoC this summer. Although currently unavailable, I have created a simple design as to what it may look like.
-![JSeditor debugger](/assets/post-assets/debugger.png)
+![JSeditor debugger](/assets/post-assets/debugger.webp)
 
 The debugger will have the following functionalities:
  - Ability to set one or multiple breakpoints

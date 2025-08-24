@@ -6,7 +6,7 @@ date: "2025-07-13"
 slug: "2025-07-13-gsoc-25-omsuneri-week06"
 author: "@/constants/MarkdownFiles/authors/om-santosh-suneri.md"
 tags: "gsoc25,sugarlabs,week06,Debugger,AI,Music Blocks,GSoC Midterm"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -91,7 +91,7 @@ Students and educators can **save their interactions**, review solutions offline
 
 ### Preview Features
 
-<a href=""><img src="https://i.ibb.co/FbHymBYN/Screenshot-2025-07-11-at-2-16-30-PM.png" alt="Music Blocks Debugger"></a>
+<a href=""><img src="https://i.ibb.co/FbHymBYN/Screenshot-2025-07-11-at-2-16-30-PM.webp" alt="Music Blocks Debugger"></a>
 
 * 🔁 One-click conversion of Music Blocks JSON to structured text.
 * 💬 Chat-driven debugging using Music Blocks Bot + documentation chunks.

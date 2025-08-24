@@ -133,10 +133,10 @@ export const sugarizerData = {
   description:
     'Sugarizer makes the Sugar Learning Platform and its activities available on web, mobile, Windows, and MacOS.',
   images: [
-    { src: 'assets/TryNowImages/sugarizer.png', alt: 'Sugarizer Example' },
+    { src: 'assets/TryNowImages/sugarizer.webp', alt: 'Sugarizer Example' },
   ],
 };
 
 export const mockupImage = {
-  path: 'assets/TryNowImages/sugarizerMockup.png',
+  path: 'assets/TryNowImages/sugarizerMockup.webp',
 };

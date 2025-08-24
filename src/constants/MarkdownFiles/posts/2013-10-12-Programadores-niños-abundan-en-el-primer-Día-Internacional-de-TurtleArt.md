@@ -37,8 +37,8 @@ Andrés Aguirre, del proyecto Butiá —un robot programado con Tortugarte—, d
 - [Ceibal Jam](http://ceibaljam.org)
 
 **Imágenes del evento:**  
-- ![Captura de pantalla](/assets/post-assets/press/caacupe-turtleartday-captura-pantalla.png)  
-- ![Evento en Caacupé](/assets/post-assets/press/caacupe-turtleartday.png)
+- ![Captura de pantalla](/assets/post-assets/press/caacupe-turtleartday-captura-pantalla.webp)  
+- ![Evento en Caacupé](/assets/post-assets/press/caacupe-turtleartday.webp)
 
 **Sobre Sugar Labs®:**  
 Es una organización sin fines de lucro dirigida por voluntarios, miembro de la Software Freedom Conservancy. Sugar Labs coordina alrededor del mundo a voluntarios apasionados por proveer oportunidades educativas a través de la plataforma de aprendizaje Sugar. Sugar se encuentra instalada en más de tres millones de computadoras. Sugar Labs se mantiene a base de donaciones y busca fondos para acelerar su desarrollo. Para más información visita [sugarlabs.org/press](http://www.sugarlabs.org/press) o escribe a [pr@sugarlabs.org](mailto:pr@sugarlabs.org).

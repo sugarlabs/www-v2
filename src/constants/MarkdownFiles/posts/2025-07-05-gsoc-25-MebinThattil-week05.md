@@ -6,7 +6,7 @@ date: "2025-07-06"
 slug: "2025-07-06-gsoc-25-mebinthattil-week5"
 author: "@/constants/MarkdownFiles/authors/mebin-thattil.md"
 tags: "gsoc25,sugarlabs,week05,mebinthattil,speak_activity"
-image: "assets/Images/GSOCxSpeak.png"
+image: "assets/Images/GSOCxSpeak.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -46,7 +46,7 @@ This week, I tested out different voices of Kokoro in two different ways:
     - The primary reason this was built as a web app is so that we can get kids to test this out and having things as a web app makes it easier. It's cruical for us to get real world feedback before proceeding with the implementation.
     - This web app allows you to try out a plethora of different voices and also mix and match different voices to create basically infinite combinations. It's truly amazing the kind of voices you can create with this.
 
-    ![UI of web app](https://mebin.shop/Kokoro-Streamlit-UI.png)
+    ![UI of web app](https://mebin.shop/Kokoro-Streamlit-UI.webp)
 
     - It's a container app, meaning both the frontend (Streamlit) and backend (Kokoro - FastAPI) run as separate Docker containers hosted on Azure.  
     - The [Kokoro - FastAPI](https://github.com/mebinthattil/Kokoro-FastAPI) exposes an OpenAI-compatible API to generate audio.  
@@ -120,7 +120,7 @@ This week, I tested out different voices of Kokoro in two different ways:
 
     This could be super useful for building *personas* in Speak, as each persona could have a unique voice!
 
-    ![Image showing how the waveforms are combined](https://github.com/mebinthattil/Kokoro-FastAPI/raw/master/assets/voice_analysis.png)
+    ![Image showing how the waveforms are combined](https://github.com/mebinthattil/Kokoro-FastAPI/raw/master/assets/voice_analysis.webp)
 
 **Links:**
 - [Streamlit web app](https://newstreamlit-frontend.blackpond-9921706d.eastus.azurecontainerapps.io/)

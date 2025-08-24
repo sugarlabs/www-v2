@@ -6,7 +6,7 @@ date: "2025-07-05"
 slug: "gsoc-25-BishoyWadea-week05"
 author: "@/constants/MarkdownFiles/authors/bishoy-wadea.md"
 tags: "gsoc25,sugarlabs,week05,BishoyWadea"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -40,7 +40,7 @@ image: "assets/Images/GSOC.png"
     - commit: [add basic board UI](https://github.com/Bishoywadea/FifteenPuzzle/commit/ee2a8ec0a87949a93f0093b558de5d760ef66d59)
     - commit: [add animation for the board](https://github.com/Bishoywadea/FifteenPuzzle/commit/a09f407451cb0772eff80d605509854d76522d17)
 
-![image for board UI](https://github.com/Bishoywadea/FifteenPuzzle/blob/main/screenshots/en/01.png?raw=true)
+![image for board UI](https://github.com/Bishoywadea/FifteenPuzzle/blob/main/screenshots/en/01.webp?raw=true)
 
 2. **Core Logic & Gameplay**
     - Added full logic for tile shifting, move counting, and puzzle completion detection.
@@ -50,8 +50,8 @@ image: "assets/Images/GSOC.png"
     - Introduced help instructions and integrated the help button into the top toolbar for easier access.
     - commit: [add help button](https://github.com/Bishoywadea/FifteenPuzzle/commit/494f212f83e469fe2f3c24dd54e398c903a77dcc)
 
-![image for help panel](https://github.com/Bishoywadea/FifteenPuzzle/blob/main/screenshots/en/02.png?raw=true)
-![image for success animation](https://github.com/Bishoywadea/FifteenPuzzle/blob/main/screenshots/en/03.png?raw=true)
+![image for help panel](https://github.com/Bishoywadea/FifteenPuzzle/blob/main/screenshots/en/02.webp?raw=true)
+![image for success animation](https://github.com/Bishoywadea/FifteenPuzzle/blob/main/screenshots/en/03.webp?raw=true)
 
 
 ---

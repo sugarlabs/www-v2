@@ -6,7 +6,7 @@ date: "2025-06-21"
 slug: "2025-06-21-dmp-25-AmanNaik-week03"
 author: "@/constants/MarkdownFiles/authors/amannaik247.md"
 tags: "dmp25,writeactivity,write,sugarlabs,week03,amannaik247"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -33,9 +33,9 @@ image: "assets/Images/c4gt_DMP.png"
    - Created a functional web application using Streamlit to demonstrate how the story builder AI guides students through storytelling. The demo mimics the question-and-answer-based flow and simulates an AI companion.  
    - Find the demo [here](https://story-builder-ai.streamlit.app/)
 
-   ![Chat responses](assets/Images/aman-naik-week3-img1.png)
+   ![Chat responses](assets/Images/aman-naik-week3-img1.webp)
 
-   ![Framework built using the chat messages](assets/Images/aman-naik-week3-img2.png)
+   ![Framework built using the chat messages](assets/Images/aman-naik-week3-img2.webp)
 
 2. **Presented the Demo to Mentors**  
    - Shared the working version with my mentors. I received positive feedback and valuable suggestions on what could be improved and how the feature can be enhanced with new ideas.

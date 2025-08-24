@@ -7,7 +7,7 @@ slug: "2025-06-02-gsoc-25-AdityaKrSingh26-week03"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 description: "GSoC'25 Contributor at SugarLabs (Sugarizer Human Activity Pack)"
 tags: "gsoc25,sugarlabs,week03,AdityaKrSingh26"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -43,22 +43,22 @@ image: "assets/Images/GSOC.png"
    - Verified clickable regions and ensured raycasting targets are accurate and intuitive.  
    - Updated model hierarchy for smoother interactivity and better scene management. 
    - Refactored the existing click handler for better mesh selection using **screen-space testing**.
-        ![screenshot-description](https://i.ibb.co/ZRCJbPX0/image.png)   
+        ![screenshot-description](https://i.ibb.co/ZRCJbPX0/image.webp)   
 
 
 3. **Bisected full human body model into anatomical sections**  
    - Used Blender’s Bisect tool to separate the full mesh into functional regions: head, torso, arms, and legs.  
    - Cleaned geometry to avoid overlapping or orphaned faces.  
    - Exported and tested the segmented meshes in the Three.js scene.
-        ![screenshot-description](https://i.ibb.co/NgxGXNyz/Screenshot-2025-05-29-233012.png)   
-        ![screenshot-description](https://i.ibb.co/xS4yvMYr/Screenshot-2025-05-29-233650.png)   
-        ![screenshot-description](https://i.ibb.co/zH6K7RC2/Screenshot-2025-05-29-233659.png)   
+        ![screenshot-description](https://i.ibb.co/NgxGXNyz/Screenshot-2025-05-29-233012.webp)   
+        ![screenshot-description](https://i.ibb.co/xS4yvMYr/Screenshot-2025-05-29-233650.webp)   
+        ![screenshot-description](https://i.ibb.co/zH6K7RC2/Screenshot-2025-05-29-233659.webp)   
 
 
 4. **(Bonus) Partial integration of bisected model into paint mode**  
    - Imported segmented torso and head into paint mode as a pilot test.  
    - Validated paint interactions on new sections to ensure consistency.  
-        ![screenshot-description](https://i.ibb.co/XxymdWbF/image.png)   
+        ![screenshot-description](https://i.ibb.co/XxymdWbF/image.webp)   
 
 ---
 

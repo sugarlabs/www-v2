@@ -6,7 +6,7 @@ date: "2025-06-29"
 slug: "2025-06-29-DMP-25-AnvitaPrasad-week04"
 author: "@/constants/MarkdownFiles/authors/anvita-prasad.md"
 tags: "dmp25,sugarlabs,week04,AnvitaPrasad"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -38,7 +38,7 @@ image: "assets/Images/c4gt_DMP.png"
    - Added comprehensive display for octave, semitone, and cent deviations
    - Gathered and incorporated feedback for interface refinements
 
-![](assets/Images/tuner-interface-week4.png)
+![](assets/Images/tuner-interface-week4.webp)
 
 2. **Manual Cents Adjustment Development**
    - Designed and implemented an intuitive pie menu for cent adjustments with:

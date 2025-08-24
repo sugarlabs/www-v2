@@ -6,7 +6,7 @@ date: "2025-05-10"
 slug: "YYYY-MM-DD-gsoc-25-sa-fw-an-weekXX"
 author: "@/constants/MarkdownFiles/authors/safwan-sayeed.md"
 tags: "gsoc25,sugarlabs,weekXX,sa-fw-an"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->

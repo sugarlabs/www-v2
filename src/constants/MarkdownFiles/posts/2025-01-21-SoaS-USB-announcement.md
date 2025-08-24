@@ -19,7 +19,7 @@ One is that they wanted the **convenience—and added assurance—of purchasing 
 
 Well, we're excited to share the news that you are **now able to purchase a Sugar Labs-branded USB with Sugar on a Stick pre-installed!**
 
-![Two USB drives on a laptop. The Sugar Labs logo is prominent, and the drives are shiny.](/assets/post-assets/sugarlabs_soas_usb-two.jpg?w=960&amp;fit=max)
+![Two USB drives on a laptop. The Sugar Labs logo is prominent, and the drives are shiny.](/assets/post-assets/sugarlabs_soas_usb-two.webp?w=960&amp;fit=max)
 *Samples of two USBs with Sugar on a Stick pre-installed. All profits from purchases will go to Sugar Labs to help develop current and future learning projects.*
 
 

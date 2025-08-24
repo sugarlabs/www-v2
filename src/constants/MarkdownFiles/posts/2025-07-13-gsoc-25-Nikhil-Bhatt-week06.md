@@ -6,7 +6,7 @@ date: "2025-07-13"
 slug: "2025-07-13-gsoc-25-nikhilbhatt-week06"
 author: "@/constants/MarkdownFiles/authors/nikhil-bhatt.md"
 tags: "gsoc25,sugarlabs,week06,nikhilbhatt,midterm"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -30,7 +30,7 @@ Our primary focus during this phase was the backend, with some attention to enha
 - Pull Request Workflow - an interesting addition to our existing planet based system, students can now contribute back to original projects after forking. The backend logic for this is complete and tested. Frontend integration is currently underway and will allow students to ```submit PRs with minimal effort.```
 
 ## A flow chart about the architecture of the project
-![Flow chart](assets/Developers/Nikhil/project-flow.png)
+![Flow chart](assets/Developers/Nikhil/project-flow.webp)
 
  
 ## This Week's Achievements

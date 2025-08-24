@@ -6,7 +6,7 @@ date: "2025-07-13"
 slug: "2025-07-13-ssoc-25-MuhammadHaroon-week06"
 author: "@/constants/MarkdownFiles/authors/muhammad-haroon.md"
 tags: "ssoc25,midterm,sugarlabs,week06,GenAI,MusicBlocks,Music"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -58,12 +58,12 @@ The first half of my Sugar Summer of Code 2025 project has been both challenging
 Since current LLMs are not capable of generating audio that can be used directly in Music Blocks, the following workflow serves as an alternative approach:
 
 - The user first generates an audio using a text-to-audio model such as TangoFlux.  
-![TangoFlux - text to audio generation model](/assets/Developers/Muhammad_Haroon/TangoFlux-Text_to_Audio_Generation_Model.png)
+![TangoFlux - text to audio generation model](/assets/Developers/Muhammad_Haroon/TangoFlux-Text_to_Audio_Generation_Model.webp)
 
 - The generated audio is then passed into an audio trimming tool, for demonstration purpose I am using an Audacity software.
-![Trimming AI-generated audio in Audacity](/assets/Developers/Muhammad_Haroon/Trimming_AI_generated_audio_in_Audacity.png)
+![Trimming AI-generated audio in Audacity](/assets/Developers/Muhammad_Haroon/Trimming_AI_generated_audio_in_Audacity.webp)
 
-![Trimmed audio in Audacity](/assets/Developers/Muhammad_Haroon/Trimmed_audio_in_Audacity.png)
+![Trimmed audio in Audacity](/assets/Developers/Muhammad_Haroon/Trimmed_audio_in_Audacity.webp)
 
 - Click on the video below to see how can we import the audio into Music Blocks:
 

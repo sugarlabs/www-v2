@@ -6,7 +6,7 @@ date: "2025-07-05"
 slug: "2025-06-05-dmp-25-AmanNaik-week05"
 author: "@/constants/MarkdownFiles/authors/amannaik247.md"
 tags: "dmp25,writeactivity,write,sugarlabs,week05,amannaik247"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -32,9 +32,9 @@ image: "assets/Images/c4gt_DMP.png"
    - Designed and implemented a widget within Sugar to display the generated story framework.  
    - Although the basic version is functional, it still needs design improvements to make it more engaging and intuitive for children.
 
-   ![Framework dispay: Current version(will be adding more changes)](assets/Images/aman-naik-week5-img1.png)
+   ![Framework dispay: Current version(will be adding more changes)](assets/Images/aman-naik-week5-img1.webp)
 
-   ![Chat messages](assets/Images/aman-naik-week5-img2.png)
+   ![Chat messages](assets/Images/aman-naik-week5-img2.webp)
 
 
 2. **Attempted AWS LLM Deployment**  

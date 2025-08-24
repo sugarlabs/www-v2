@@ -6,7 +6,7 @@ date: "2025-06-30"
 slug: "2025-06-30-gsoc-25-AdityaKrSingh26-week07"
 author: "@/constants/MarkdownFiles/authors/aditya-singh.md"
 tags: "gsoc25,sugarlabs,week07,AdityaKrSingh26"
-image: "assets/Images/GSOC.png"
+image: "assets/Images/GSOC.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -34,7 +34,7 @@ image: "assets/Images/GSOC.png"
 1. **Shared Tour Mode**  
     - Implemented broadcast message `tourStep` carrying the part index & name; the host fires it and peers replay it to keep camera position and mesh highlight in lock-step.  
     - Added graceful join-in-progress sync: newcomers receive the current step and camera pose on `syncAllPaintData`, so nobody is “mid-tour-lost”.  
-    ![Shared tour mode](https://i.ibb.co/TDsVpPpN/image.png)
+    ![Shared tour mode](https://i.ibb.co/TDsVpPpN/image.webp)
     ```javascript
         // Broadcast tour step to other users
         presence.sendMessage(presence.getSharedInfo().id, {
@@ -71,9 +71,9 @@ image: "assets/Images/GSOC.png"
     - Re-used the Presence layer from Paint mode to emit nextQuestion / answer / scoreUpdate events.  
     - First-correct-gets-the-point logic now lives entirely on the host  
     - Peer-to-peer visual feedback: *correct click flashes the mesh green, wrong click red*; scores float next to each user’s XO badge  
-        ![Doctor mode screen](https://i.ibb.co/XxMzh5NS/image.png)   
-        ![Doctor mode Wrong answer](https://i.ibb.co/vvYyyZ0v/image.png)   
-        ![Doctor mode Correct answer](https://i.ibb.co/NgDVpG7f/image.png)   
+        ![Doctor mode screen](https://i.ibb.co/XxMzh5NS/image.webp)   
+        ![Doctor mode Wrong answer](https://i.ibb.co/vvYyyZ0v/image.webp)   
+        ![Doctor mode Correct answer](https://i.ibb.co/NgDVpG7f/image.webp)   
 
 
 3. **Camera & Zoom Persistence**  
@@ -112,8 +112,8 @@ image: "assets/Images/GSOC.png"
   - **Back view** → −Z
   - **Front view** → +Z (default)
 - Created adaptive camera logic in `activity.js` to interpret these flags.
-        ![Side View](https://i.ibb.co/JW5JNMVD/image.png)   
-        ![Back View](https://i.ibb.co/kZLLt0F/image.png)   
+        ![Side View](https://i.ibb.co/JW5JNMVD/image.webp)   
+        ![Back View](https://i.ibb.co/kZLLt0F/image.webp)   
 
 
 ---

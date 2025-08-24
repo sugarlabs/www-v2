@@ -275,7 +275,7 @@ const Contributors: React.FC = () => {
                     className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src =
-                        'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png';
+                        'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.webp';
                     }}
                   />
                   <div className="absolute -bottom-1 -right-4 bg-[#D4B062] text-xs text-white font-bold rounded-full w-9 h-6 flex items-center justify-center">
