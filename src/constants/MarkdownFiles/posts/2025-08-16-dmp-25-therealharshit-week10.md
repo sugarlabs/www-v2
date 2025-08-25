@@ -1,12 +1,12 @@
 ---
 title: "DMP ’25 Week 10 Update by Harshit Verma"
-excerpt: ""
+excerpt: "Focused on refining the Pippy Debugger’s responses to be more age-appropriate by using a larger model, enhancing the prompt workflow, and testing with multiple buggy code examples."
 category: "DEVELOPER NEWS"
 date: "2025-08-16"
 slug: "2025-08-16-dmp-25-therealharshit-week10"
 author: "@/constants/MarkdownFiles/authors/harshit-verma.md"
 tags: "dmp25,sugarlabs,week10,therealharshit"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
