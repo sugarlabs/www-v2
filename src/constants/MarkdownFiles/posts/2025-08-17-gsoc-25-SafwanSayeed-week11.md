@@ -70,6 +70,6 @@ This Week Me and [Justin](https://github.com/justin212407) collaborated on the I
 
 ## Acknowledgments
 
-Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their crucial guidance on compiler design principles and static compilation concepts. Their clarification on the AST-to-IR translation approach and emphasis on maintaining clean instruction generation patterns was essential for this week's successful progress.
+Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their invaluable support and guidance throughout this project.
 
 ---
