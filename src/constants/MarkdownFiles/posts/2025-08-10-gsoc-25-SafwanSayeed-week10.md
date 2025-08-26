@@ -75,6 +75,6 @@ This week I Designed and Implemented the Scheduler for Music Blocks 4. The Sched
 
 ## Acknowledgments
 
-Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their crucial guidance on compiler design principles and static compilation concepts. Their clarification on the AST-to-IR translation approach and emphasis on maintaining clean instruction generation patterns was essential for this week's successful progress.
+Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their invaluable support and guidance throughout this project.
 
 ---
