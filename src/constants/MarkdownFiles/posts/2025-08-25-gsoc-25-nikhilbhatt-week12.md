@@ -1,4 +1,5 @@
-title: "GSoC '25 Final Report by Nikhil Bhatt"
+---
+title: "GSoC '25 Week 12 Update by Nikhil Bhatt"
 excerpt: "Summarizing my Google Summer of Code project — Git backend for MusicBlocks. Highlights include implementing fork/PR workflows, writing detailed backend + frontend docs, and ensuring future contributors can onboard easily."
 category: "DEVELOPER NEWS"
 date: "2025-08-25"
