@@ -298,7 +298,9 @@ const NewsPage: React.FC = () => {
                         activeCategory === 'All'
                           ? 'all'
                           : activeCategory.toLowerCase().replace(/\s+/g, '-');
-                      const query = value ? `?q=${encodeURIComponent(value)}` : '';
+                      const query = value
+                        ? `?q=${encodeURIComponent(value)}`
+                        : '';
                       navigate(`/news/${catPath}${query}`, { replace: true });
                     }}
                     className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
