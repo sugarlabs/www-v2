@@ -67,7 +67,7 @@ You can learn more about this [here](https://github.com/sugarlabs/musicblocks_re
 - Introduced a **Download as Text** button for easy report export.  
 - Added a **Refresh** button to ensure the AI receives the latest code whenever the user makes changes.  
 
-<a href="https://ibb.co/4LKSWWY"><img src="https://i.ibb.co/VGJCVVQ/reflection.png" alt="reflection" border="0"></a>
+<a href="https://ibb.co/kgVBJkJ9"><img src="https://i.ibb.co/Z6RXStSY/Screenshot-2025-09-04-213236.png" alt="reflection" border="0"></a>
 
 ### Phase 5: Deploy to EC2
 
