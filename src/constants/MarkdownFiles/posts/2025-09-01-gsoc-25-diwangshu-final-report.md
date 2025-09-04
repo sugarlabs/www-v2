@@ -56,7 +56,7 @@ Users can interact with any mentor at any time. Another key feature of the widge
 
 - Initially, FastAPI was not part of the setup. Later, it was upgraded to include new API endpoints such as `/chat` and `/analysis`. Over time, additional endpoints like `/projectcode` and `/updatecode` were also introduced.  
 
-You can learn more about this [here](https://github.com/Commanderk3/musicblocks_reflection_fastapi).  
+You can learn more about this [here](https://github.com/sugarlabs/musicblocks_reflection_fastapi).  
 
 ### Phase 4: Native Widget Integration
 
@@ -106,7 +106,7 @@ You can learn more about this [here](https://github.com/Commanderk3/musicblocks_
 
 ## Project Code
 
-- **Backend Code:** [Fast API server](https://github.com/Commanderk3/musicblocks_reflection_fastapi)
+- **Backend Code:** [Fast API server](https://github.com/sugarlabs/musicblocks_reflection_fastapi)
 - **Frontend Code:** [Reflection Widget](https://github.com/sugarlabs/musicblocks/blob/master/js/widgets/reflection.js)
 
 ## Pull Requests 
