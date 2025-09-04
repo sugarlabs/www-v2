@@ -4,7 +4,7 @@ excerpt: "Reflection Widget for Music Blocks"
 category: "DEVELOPER NEWS"
 date: "2025-09-01"
 slug: "2025-09-01-gsoc-25-diwangshu-final-report"
-author: "@/constants/MarkdownFiles/authors/diwangshu.md"
+author: "@/constants/MarkdownFiles/authors/diwangshu-kakoty.md"
 tags: "gsoc25,sugarlabs,final-report,AI,Music Blocks,Final Submission"
 image: "assets/Images/GSOC.webp"
 ---
