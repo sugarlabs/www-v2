@@ -75,6 +75,7 @@ This week I Designed and Implemented the Scheduler for Music Blocks 4. The Sched
 
 ## Acknowledgments
 
+=======
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their invaluable support and guidance throughout this project.
 
 ---
