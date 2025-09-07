@@ -23,6 +23,7 @@ import {
   Sparkles,
   Tag,
   Info,
+  X,
 } from 'lucide-react';
 
 const NewsPage: React.FC = () => {
@@ -303,8 +304,26 @@ const NewsPage: React.FC = () => {
                         : '';
                       navigate(`/news/${catPath}${query}`, { replace: true });
                     }}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                    className="w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                   />
+                  {searchTerm && (
+                    <button
+                      onClick={() => {
+                        setSearchTerm('');
+                        const catPath =
+                          activeCategory === 'All'
+                            ? 'all'
+                            : activeCategory
+                                .toLowerCase()
+                                .replace(/\s+/g, '-');
+                        navigate(`/news/${catPath}`, { replace: true });
+                      }}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      aria-label="Clear search"
+                    >
+                      <X size={20} />
+                    </button>
+                  )}
                 </div>
               </div>
 
