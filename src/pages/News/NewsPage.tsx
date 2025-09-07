@@ -313,9 +313,7 @@ const NewsPage: React.FC = () => {
                         const catPath =
                           activeCategory === 'All'
                             ? 'all'
-                            : activeCategory
-                                .toLowerCase()
-                                .replace(/\s+/g, '-');
+                            : activeCategory.toLowerCase().replace(/\s+/g, '-');
                         navigate(`/news/${catPath}`, { replace: true });
                       }}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
