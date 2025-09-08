@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import ShareModal from '@/components/ShareModal';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { getAllPosts, groupPostsByCategory, Post } from '@/utils/posts-utils';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
@@ -23,6 +23,7 @@ import {
   Sparkles,
   Tag,
   Info,
+  X,
 } from 'lucide-react';
 
 const NewsPage: React.FC = () => {
@@ -42,7 +43,11 @@ const NewsPage: React.FC = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'magazine'>(
     'grid',
   );
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState<string>(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get('q') || '';
+  });
 
   useEffect(() => {
     async function load() {
@@ -74,14 +79,22 @@ const NewsPage: React.FC = () => {
     setActiveCategory('All');
   }, [categoryParam, categories]);
 
+  // Keep searchTerm in sync with the URL (?q=)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const q = params.get('q') || '';
+    setSearchTerm(q);
+  }, [location.search]);
+
   useEffect(() => {
     const pathCat =
       activeCategory === 'All'
         ? 'all'
         : activeCategory.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/news/${pathCat}`, { replace: true });
+    const query = searchTerm ? `?q=${encodeURIComponent(searchTerm)}` : '';
+    navigate(`/news/${pathCat}${query}`, { replace: true });
     setDisplayCount(6);
-  }, [activeCategory, navigate]);
+  }, [activeCategory, navigate, searchTerm]);
 
   const sortedCategories = useMemo(() => {
     const others = categories
@@ -124,7 +137,8 @@ const NewsPage: React.FC = () => {
       activeCategory === 'All'
         ? 'all'
         : activeCategory.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/news/${catPath}/${slug}`);
+    const query = searchTerm ? `?q=${encodeURIComponent(searchTerm)}` : '';
+    navigate(`/news/${catPath}/${slug}${query}`);
   };
 
   const handleShareClick = (post: Post, e: React.MouseEvent) => {
@@ -278,9 +292,36 @@ const NewsPage: React.FC = () => {
                     type="text"
                     placeholder="Search articles, topics, or categories..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setSearchTerm(value);
+                      const catPath =
+                        activeCategory === 'All'
+                          ? 'all'
+                          : activeCategory.toLowerCase().replace(/\s+/g, '-');
+                      const query = value
+                        ? `?q=${encodeURIComponent(value)}`
+                        : '';
+                      navigate(`/news/${catPath}${query}`, { replace: true });
+                    }}
+                    className="w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                   />
+                  {searchTerm && (
+                    <button
+                      onClick={() => {
+                        setSearchTerm('');
+                        const catPath =
+                          activeCategory === 'All'
+                            ? 'all'
+                            : activeCategory.toLowerCase().replace(/\s+/g, '-');
+                        navigate(`/news/${catPath}`, { replace: true });
+                      }}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      aria-label="Clear search"
+                    >
+                      <X size={20} />
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -380,7 +421,14 @@ const NewsPage: React.FC = () => {
               <span>{filteredPosts.length} articles found</span>
               {searchTerm && (
                 <button
-                  onClick={() => setSearchTerm('')}
+                  onClick={() => {
+                    setSearchTerm('');
+                    const catPath =
+                      activeCategory === 'All'
+                        ? 'all'
+                        : activeCategory.toLowerCase().replace(/\s+/g, '-');
+                    navigate(`/news/${catPath}`, { replace: true });
+                  }}
                   className="text-blue-600 hover:text-blue-700 underline text-sm"
                 >
                   Clear search
