@@ -1,8 +1,8 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Marquee } from "@/components/magicui/Marquee";
-import { developertestimonials } from "@/constants/VolunteerAndDev/DeveloperTestimonials";
-import { stats } from "@/constants/Stats";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Marquee } from '@/components/magicui/Marquee';
+import { developertestimonials } from '@/constants/VolunteerAndDev/DeveloperTestimonials';
+import { stats } from '@/constants/Stats';
 import {
   testimonialCard,
   testimonialHeading,
@@ -10,7 +10,7 @@ import {
   testimonialText,
   avatarReveal,
   marqueeContainer,
-} from "@/styles/Animations";
+} from '@/styles/Animations';
 
 const ReviewCard = ({
   img,
@@ -28,7 +28,7 @@ const ReviewCard = ({
   const [imgError, setImgError] = React.useState(false);
 
   // First initial of name
-  const initial = name?.charAt(0).toUpperCase() || "?";
+  const initial = name?.charAt(0).toUpperCase() || '?';
 
   return (
     <motion.div
@@ -79,7 +79,9 @@ const ReviewCard = ({
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             {name}
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">@{username}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            @{username}
+          </p>
         </motion.div>
       </div>
     </motion.div>

@@ -1,8 +1,8 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Marquee } from "@/components/magicui/Marquee"; // Marquee for scrolling effect
-import { testimonials } from "@/constants/Testimonials";
-import { stats } from "@/constants/Stats";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Marquee } from '@/components/magicui/Marquee'; // Marquee for scrolling effect
+import { testimonials } from '@/constants/Testimonials';
+import { stats } from '@/constants/Stats';
 import {
   testimonialCard,
   testimonialHeading,
@@ -10,7 +10,7 @@ import {
   testimonialText,
   avatarReveal,
   marqueeContainer,
-} from "@/styles/Animations";
+} from '@/styles/Animations';
 
 const ReviewCard = ({
   img,
@@ -28,7 +28,7 @@ const ReviewCard = ({
   const [imgError, setImgError] = React.useState(false);
 
   // Extract first initial
-  const initial = name?.charAt(0).toUpperCase() || "?";
+  const initial = name?.charAt(0).toUpperCase() || '?';
 
   return (
     <motion.div
