@@ -1,7 +1,8 @@
-import { motion } from 'framer-motion';
-import { Marquee } from '@/components/magicui/Marquee'; // Marquee for scrolling effect
-import { testimonials } from '@/constants/Testimonials';
-import { stats } from '@/constants/Stats';
+import React from "react";
+import { motion } from "framer-motion";
+import { Marquee } from "@/components/magicui/Marquee"; // Marquee for scrolling effect
+import { testimonials } from "@/constants/Testimonials";
+import { stats } from "@/constants/Stats";
 import {
   testimonialCard,
   testimonialHeading,
@@ -9,7 +10,7 @@ import {
   testimonialText,
   avatarReveal,
   marqueeContainer,
-} from '@/styles/Animations';
+} from "@/styles/Animations";
 
 const ReviewCard = ({
   img,
@@ -24,6 +25,11 @@ const ReviewCard = ({
   body: string;
   delay?: number;
 }) => {
+  const [imgError, setImgError] = React.useState(false);
+
+  // Extract first initial
+  const initial = name?.charAt(0).toUpperCase() || "?";
+
   return (
     <motion.div
       className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-lg border border-gray-200 dark:border-gray-700 mx-2 justify-between"
@@ -52,12 +58,23 @@ const ReviewCard = ({
 
       {/* User Info */}
       <div className="flex items-center mt-4 space-x-3 text-left">
-        <motion.img
-          src={img}
-          alt={name}
-          className="w-12 h-12 rounded-full border border-gray-300"
-          variants={avatarReveal}
-        />
+        {!imgError ? (
+          <motion.img
+            src={img}
+            alt={name}
+            className="w-12 h-12 rounded-full border border-gray-300 object-cover"
+            variants={avatarReveal}
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <motion.div
+            className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-300 bg-gray-400 text-white text-lg font-bold"
+            variants={avatarReveal}
+          >
+            {initial}
+          </motion.div>
+        )}
+
         <motion.div variants={testimonialText}>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             {name}
@@ -96,7 +113,7 @@ export function Testimonials() {
         />
 
         <div className="relative flex items-center justify-center gap-4 md:gap-6 lg:gap-8">
-          {/* Left Apostrophe (Hidden Below 400px) */}
+          {/* Left Apostrophe */}
           <motion.img
             src={stats.apostrophie}
             alt="Apostrophe Left"
@@ -116,7 +133,7 @@ export function Testimonials() {
             </span>
           </motion.h2>
 
-          {/* Right Apostrophe (Flipped, Hidden Below 400px) */}
+          {/* Right Apostrophe */}
           <motion.img
             src={stats.apostrophie}
             alt="Apostrophe Right"
@@ -145,7 +162,7 @@ export function Testimonials() {
         viewport={{ once: true, amount: 0.1 }}
         variants={marqueeContainer}
       >
-        {/* First Row (left to right) */}
+        {/* First Row */}
         <Marquee pauseOnHover className="w-full">
           {firstRow.map((review, index) => (
             <ReviewCard
@@ -156,7 +173,7 @@ export function Testimonials() {
           ))}
         </Marquee>
 
-        {/* Second Row (right to left) */}
+        {/* Second Row */}
         <Marquee reverse pauseOnHover className="w-full mt-4">
           {secondRow.map((review, index) => (
             <ReviewCard
@@ -167,6 +184,7 @@ export function Testimonials() {
           ))}
         </Marquee>
 
+        {/* Gradient Fades */}
         <div className="pointer-events-none absolute inset-y-0 left-0 w-6 md:w-10 bg-gradient-to-r from-background"></div>
         <div className="pointer-events-none absolute inset-y-0 right-0 w-6 md:w-10 bg-gradient-to-l from-background"></div>
       </motion.div>
