@@ -68,7 +68,6 @@ const NewsPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Don't decide active category until categories have been loaded
     if (!categories.length) return;
     if (categoryParam) {
       const formatted = categoryParam.toLowerCase().replace(/-/g, ' ').trim();
@@ -89,7 +88,6 @@ const NewsPage: React.FC = () => {
   }, [location.search]);
 
   useEffect(() => {
-    // Wait until posts/categories load before syncing URL to avoid overwriting category from URL
     if (!categories.length) return;
     const pathCat =
       activeCategory === 'All'
