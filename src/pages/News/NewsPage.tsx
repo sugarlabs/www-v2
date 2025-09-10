@@ -68,6 +68,8 @@ const NewsPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    // Don't decide active category until categories have been loaded
+    if (!categories.length) return;
     if (categoryParam) {
       const formatted = categoryParam.toLowerCase().replace(/-/g, ' ').trim();
       const match = categories.find((cat) => cat.toLowerCase() === formatted);
@@ -87,6 +89,8 @@ const NewsPage: React.FC = () => {
   }, [location.search]);
 
   useEffect(() => {
+    // Wait until posts/categories load before syncing URL to avoid overwriting category from URL
+    if (!categories.length) return;
     const pathCat =
       activeCategory === 'All'
         ? 'all'
@@ -94,7 +98,7 @@ const NewsPage: React.FC = () => {
     const query = searchTerm ? `?q=${encodeURIComponent(searchTerm)}` : '';
     navigate(`/news/${pathCat}${query}`, { replace: true });
     setDisplayCount(6);
-  }, [activeCategory, navigate, searchTerm]);
+  }, [activeCategory, navigate, searchTerm, categories.length]);
 
   const sortedCategories = useMemo(() => {
     const others = categories
