@@ -134,6 +134,7 @@ const PromoBanner: React.FC<PromoBannerProps> = ({
                         whileHover={{
                           scale: 1.1,
                           backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                          cursor: 'pointer',
                         }}
                         whileTap={{ scale: 0.95 }}
                         onClick={prevBanner}
@@ -185,6 +186,7 @@ const PromoBanner: React.FC<PromoBannerProps> = ({
                         whileHover={{
                           scale: 1.1,
                           backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                          cursor: 'pointer',
                         }}
                         whileTap={{ scale: 0.95 }}
                         onClick={nextBanner}

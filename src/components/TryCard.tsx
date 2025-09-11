@@ -58,7 +58,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
     </p>
 
     <a href={href} className="w-full">
-      <button className="w-full py-2 sm:py-3 px-4 sm:px-6 border-2 border-gray-900 rounded-full text-sm sm:text-base md:text-lg font-semibold hover:bg-gray-900 hover:text-white transition-colors">
+      <button className="w-full py-2 sm:py-3 px-4 sm:px-6 border-2 border-gray-900 rounded-full text-sm sm:text-base md:text-lg font-semibold hover:bg-gray-900 cursor-pointer hover:text-white transition-colors">
         {buttonText}
       </button>
     </a>
