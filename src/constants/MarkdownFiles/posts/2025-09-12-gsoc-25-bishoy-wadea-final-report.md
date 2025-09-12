@@ -206,6 +206,34 @@ The **AI Organizer** introduces young learners to machine learning through an im
 
 ---
 
+---
+
+## Weekly Blogs
+
+Throughout the summer, I documented my progress in weekly blog posts.  
+These updates include detailed explanations of challenges, solutions, and milestones for each week of the program.
+
+| **Week** | **Blog Link** |
+|----------|----------------|
+| Week 1   | [GSoC ’25 Week 1 Update](https://www.sugarlabs.org/news/all/2025-06-07-gsoc-25-BishoyWadea-week01) |
+| Week 2   | [GSoC ’25 Week 2 Update](https://www.sugarlabs.org/news/all/gsoc-25-BishoyWadea-week01) |
+| Week 3   | [GSoC ’25 Week 3 Update](https://www.sugarlabs.org/news/all/gsoc-25-BishoyWadea-week03) |
+| Week 4   | [GSoC ’25 Week 4 Update](https://www.sugarlabs.org/news/all/gsoc-25-BishoyWadea-week04) |
+| Week 5   | [GSoC ’25 Week 5 Update](https://www.sugarlabs.org/news/all/gsoc-25-BishoyWadea-week05) |
+| Week 6   | [GSoC ’25 Week 6 Update](https://www.sugarlabs.org/news/all/gsoc-25-BishoyWadea-week06) |
+| Week 7   | [GSoC ’25 Week 7 Update]() |
+| Week 8   | [GSoC ’25 Week 8 Update](https://www.sugarlabs.org/news/all/gsoc-25-BishoyWadea-week08) |
+| Week 9   | [GSoC ’25 Week 9 Update](https://www.sugarlabs.org/news/all/gsoc-25-BishoyWadea-week09) |
+| Week 10  | [GSoC ’25 Week 10 Update](https://www.sugarlabs.org/news/all/gsoc-25-BishoyWadea-week10) |
+| Week 11  | [GSoC ’25 Week 11 Update](https://www.sugarlabs.org/news/all/gsoc-25-BishoyWadea-week11) |
+| Week 12  | [GSoC ’25 Week 12 Update](https://www.sugarlabs.org/news/all/gsoc-25-BishoyWadea-week12) |
+| Week 13  | [GSoC ’25 Week 13 Update](https://www.sugarlabs.org/news/all/gsoc-25-BishoyWadea-week13) |
+
+---
+
+
+---
+
 ## Challenges Overcome
 
 ### Technical Challenges
