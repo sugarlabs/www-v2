@@ -2,7 +2,7 @@
 title: "GSoC '25 Week 10 Update by Bishoy Wadea"
 excerpt: "Magic Number Grid"
 category: "DEVELOPER NEWS"
-date: "2025-08-25"
+date: "2025-08-21"
 slug: "gsoc-25-BishoyWadea-week10"
 author: "@/constants/MarkdownFiles/authors/bishoy-wadea.md"
 tags: "gsoc25,sugarlabs,week10,BishoyWadea"
@@ -14,7 +14,7 @@ image: "assets/Images/GSOC.webp"
 **Project:** [Magic Number Grid](https://github.com/Bishoywadea/Magic-Number-Grid)  
 **Mentors:** [Ibiam Chihurumnaya](https://github.com/chimosky)  
 **Assisting Mentor:** [Walter Bender](https://github.com/walterbender/)  
-**Reporting Period:** 2025-08-18 – 2025-08-25  
+**Reporting Period:** 2025-08-18 – 2025-08-21  
 
 ---
 
