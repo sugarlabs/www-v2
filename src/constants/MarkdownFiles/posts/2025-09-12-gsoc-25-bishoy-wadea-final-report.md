@@ -16,6 +16,8 @@ image: "assets/Images/GSOC.webp"
 **Assisting Mentor:** [Walter Bender](https://github.com/walterbender/)  
 **Reporting Period:** 2025-05-08 – 2025-09-12  
 
+---
+
 During Google Summer of Code 2025, I embarked on an ambitious journey to develop ten innovative educational activities for the Sugar learning platform. My mission was to create engaging, educational experiences that would enhance various cognitive skills in young learners through interactive gameplay and cutting-edge technologies. Throughout this project, I focused on implementing diverse educational concepts ranging from classic puzzles to AI-powered learning tools, ensuring each activity not only served its educational purpose but also captivated users with intuitive interfaces and engaging mechanics.
 
 This project allowed me to explore various domains including game development, 3D graphics, network programming, and machine learning, while contributing meaningfully to the Sugar community. Through challenges and triumphs, I successfully delivered a comprehensive suite of activities that span mathematical reasoning, spatial intelligence, pattern recognition, and artificial intelligence education.
