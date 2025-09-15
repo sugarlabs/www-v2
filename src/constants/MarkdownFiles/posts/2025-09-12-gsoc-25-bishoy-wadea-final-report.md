@@ -11,15 +11,10 @@ image: "assets/Images/GSOC.webp"
 
 # Google Summer of Code 2025: Educational Activities for Sugar
 
-Name - Bishoy Wadea
-
-Email - bishoyw.fathy@gmail.com
-
-GitHub username - [Bishoywadea](https://github.com/Bishoywadea)
-
-Mentor - [Ibiam Chihurumnaya](https://github.com/chimosky)
-
-Assisting Mentor - [Walter Bender](https://github.com/walterbender/)
+**Project:** Developing 10 Math Sugar Activities  
+**Mentors:** [Ibiam Chihurumnaya](https://github.com/chimosky)  
+**Assisting Mentor:** [Walter Bender](https://github.com/walterbender/)  
+**Reporting Period:** 2025-05-08 – 2025-09-12  
 
 During Google Summer of Code 2025, I embarked on an ambitious journey to develop ten innovative educational activities for the Sugar learning platform. My mission was to create engaging, educational experiences that would enhance various cognitive skills in young learners through interactive gameplay and cutting-edge technologies. Throughout this project, I focused on implementing diverse educational concepts ranging from classic puzzles to AI-powered learning tools, ensuring each activity not only served its educational purpose but also captivated users with intuitive interfaces and engaging mechanics.
 
