@@ -24,18 +24,20 @@ This project allowed me to explore various domains including game development, 3
 
 ## Table of Activities
 
-| **Activity Name**                        | **Link**                                                                                                                                       |
-|------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Four Color Map Puzzle**                | [![Icon](https://raw.githubusercontent.com/Bishoywadea/Four-Color-Map/e7988b391e2717360437b3e06492d329493b7cf6/activity/activity-fourcolormap.svg)](https://github.com/Bishoywadea/Four-Color-Map)                                          |
-| **Broken Calculator**                    | [![Icon](https://raw.githubusercontent.com/Bishoywadea/Broken-Calculator/e4ee7ed0b6bf7cfcc1e5a189c991a907932cc3a8/activity/activity-brokencalculator.svg)](https://github.com/Bishoywadea/Broken-Calculator)                                       |
-| **Soma Cube**                           | [![Icon](https://raw.githubusercontent.com/Bishoywadea/Soma-Cube/157bdb37d7e3f489b26e42b897ec1a5dc76379c2/activity/activity-somacube.svg)](https://github.com/Bishoywadea/Soma-Cube)                                               |
-| **Fifteen Puzzle**                      | [![Icon](https://raw.githubusercontent.com/sugarlabs/FifteenPuzzle/86fcd04db881c39b1734a5416cf87042a9f9bb08/activity/puzzle.svg)](https://github.com/Bishoywadea/FifteenPuzzle)                                          |
-| **Euclid's Game**                       | [![Icon](https://raw.githubusercontent.com/Bishoywadea/Euclid-s-Game/3ee322a94773fb3dc18e475c228e49b40c865bf5/activity/activity-euclids.svg)](https://github.com/Bishoywadea/Euclid-s-Game)                                          |
-| **Odd Scoring**                         | [![Icon](https://raw.githubusercontent.com/Bishoywadea/Odd-Scoring/25e8203e22d00158edd2ffb05d7c13390a16479b/activity/activity-oddscoring.svg)](https://github.com/Bishoywadea/Odd-Scoring)                                            |
-| **Magic Number Grid**                   | [![Icon](https://raw.githubusercontent.com/Bishoywadea/Magic-Number-Grid/b6cc4e11b2c0db7326c6111b6cac046c928d13af/activity/activity-magicnumbergrid.svg)](https://github.com/Bishoywadea/Magic-Number-Grid)                                      |
-| **Rubik's Cube**                        | [![Icon](https://raw.githubusercontent.com/Bishoywadea/Rubik-s-Cube/main/activity/activity-rubiccube.svg)](https://github.com/Bishoywadea/Rubiks-Cube)                                            |
-| **Sequence Wizard**                     | [![Icon](https://raw.githubusercontent.com/Bishoywadea/Sequence-Wizard/main/activity/activity-sequencewizard.svg)](https://github.com/Bishoywadea/Sequence-Wizard)                                        |
-| **AI Organizer**                        | [![Icon](https://raw.githubusercontent.com/Bishoywadea/AI-Organizer/main/activity/activity-aiorganizer.svg)](https://github.com/Bishoywadea/AI-Organizer)                                           |
+| **Activities** |
+|----------------|
+| [![Four Color Map Puzzle](https://raw.githubusercontent.com/Bishoywadea/Four-Color-Map/e7988b391e2717360437b3e06492d329493b7cf6/activity/activity-fourcolormap.svg)](https://github.com/Bishoywadea/Four-Color-Map) |
+| [![Broken Calculator](https://raw.githubusercontent.com/Bishoywadea/Broken-Calculator/e4ee7ed0b6bf7cfcc1e5a189c991a907932cc3a8/activity/activity-brokencalculator.svg)](https://github.com/Bishoywadea/Broken-Calculator) |
+| [![Soma Cube](https://raw.githubusercontent.com/Bishoywadea/Soma-Cube/157bdb37d7e3f489b26e42b897ec1a5dc76379c2/activity/activity-somacube.svg)](https://github.com/Bishoywadea/Soma-Cube) |
+| [![Fifteen Puzzle](https://raw.githubusercontent.com/sugarlabs/FifteenPuzzle/86fcd04db881c39b1734a5416cf87042a9f9bb08/activity/puzzle.svg)](https://github.com/Bishoywadea/FifteenPuzzle) |
+| [![Euclid's Game](https://raw.githubusercontent.com/Bishoywadea/Euclid-s-Game/3ee322a94773fb3dc18e475c228e49b40c865bf5/activity/activity-euclids.svg)](https://github.com/Bishoywadea/Euclid-s-Game) |
+| [![Odd Scoring](https://raw.githubusercontent.com/Bishoywadea/Odd-Scoring/25e8203e22d00158edd2ffb05d7c13390a16479b/activity/activity-oddscoring.svg)](https://github.com/Bishoywadea/Odd-Scoring) |
+| [![Magic Number Grid](https://raw.githubusercontent.com/Bishoywadea/Magic-Number-Grid/b6cc4e11b2c0db7326c6111b6cac046c928d13af/activity/activity-magicnumbergrid.svg)](https://github.com/Bishoywadea/Magic-Number-Grid) |
+| [![Rubik's Cube](https://raw.githubusercontent.com/Bishoywadea/Rubik-s-Cube/main/activity/activity-rubiccube.svg)](https://github.com/Bishoywadea/Rubiks-Cube) |
+| [![Sequence Wizard](https://raw.githubusercontent.com/Bishoywadea/Sequence-Wizard/main/activity/activity-sequencewizard.svg)](https://github.com/Bishoywadea/Sequence-Wizard) |
+| [![AI Organizer](https://raw.githubusercontent.com/Bishoywadea/AI-Organizer/main/activity/activity-aiorganizer.svg)](https://github.com/Bishoywadea/AI-Organizer) |
+
+
 
 ## Detailed Activities Description
 
