@@ -2,15 +2,15 @@
 
 ## Getting the code
 
-1. Fork this repository.
+1. Fork this repository
 
-2. Clone your forked copy of the project:
+2. Clone your forked copy of the project
 
     ```bash
     git clone https://github.com/<your_user_name>/www-v2.git
     ```
 
-3. Change to the project directory:
+3. Change to the project directory
 
     ```bash
     cd www-v2
@@ -18,10 +18,12 @@
 
 ## Setup Development Environment
 
-This is a _**TypeScript**_ project that uses _**React**_. You'll just need _[**Node.js**](https://nodejs.org/en)_ and _**npm**_ installed on your development machine.
+This is a _**TypeScript**_ project that uses _**React**_. You'll just need 
+_[**Node.js**](https://nodejs.org/en)_ and _**npm**_ installed on your development machine.
 This is sufficient to run, build, and test the project as a whole, but you might need extra tools for other development tasks.
 
-You'll need _**tsc**_ (_TypeScript Compiler_) to manually compile `.ts` files, and _**ts-node**_ (_Node.js executable for TypeScript_) to manually execute .ts scripts directly.
+You'll need _**tsc**_ (_TypeScript Compiler_) to manually compile `.ts` files, and
+_**ts-node**_ (_Node.js executable for TypeScript_) to manually execute .ts scripts directly.
 
 Finally, once _**npm**_ is installed, to install the above, run
 
@@ -32,7 +34,7 @@ npm i -g ts-node
 
 _**Note:**_ Users on _Linux_ and _MacOS_ are required to add a `sudo` before these commands.
 
-Check installation using:
+Check installation using
 
 ```bash
 node -v && npm -v && tsc -v && ts-node -v
@@ -91,21 +93,27 @@ After setup, the steps you take depend on what you want to do:
 
 ## Editor
 
-_All code is just plain text, so any editor works._ However, using modern, feature-rich IDEs/text-editors like:
+_All code is just plain text, so any editor works._ However, using modern,
+feature-rich IDEs/text-editors like:
 [_**Atom**_](https://github.blog/2022-06-08-sunsetting-atom/),
 [_**Brackets**_](https://brackets.io),
 [_**WebStorm**_](https://www.jetbrains.com/webstorm/),
 [_**Sublime Text**_](https://www.sublimetext.com/),
-[_**Visual Studio Code**_](https://code.visualstudio.com/), etc. makes development way easier. They provide a directory-tree explorer, integrated terminal, and support for plugins/extensions to expand their functionality.
+[_**Visual Studio Code**_](https://code.visualstudio.com/), etc. makes development way easier.They provide a directory-tree explorer,
+integrated terminal, and support for plugins/extensions to expand their functionality.
 
 Some (non-exhaustive) benefits of using these are _syntax highlighting_,
 _warning/error annotations_, _formatting_, _auto-refactoring_, tons of customizable
 _keyboard shortcuts_, etc.
 
-_**Visual Studio Code**_ (_**VSCode**_) is currently the most popular code editor due to being _lightweight_, _clean_, having a large _extensions_ marketplace, integrated _source control_ features, a _debugger_, _remote explorer_ support, and _regular-expression-based find/replace_.
+_**Visual Studio Code**_ (_**VSCode**_) is currently the most popular code editor due
+to being _lightweight_, _clean_, having a large _extensions_ marketplace, integrated
+_source control_ features, a _debugger_, _remote explorer_ support, and
+_regular-expression-based find/replace_.
 
 
-Recommended extensions for this project are `Babel JavaScript`, `ESLint`, `Git Graph`,`GitLens`, `markdownlint`, `Prettier`, `Tailwind CSS IntelliSense`, and `SVG`.
+Recommended extensions for this project are `Babel JavaScript`, `ESLint`, `Git Graph`,
+`GitLens`, `markdownlint`, `Prettier`, `Tailwind CSS IntelliSense`, and `SVG`.
 
 All that, however, shouldn't necessarily stop you from using _**Emacs**_, _**Nano**_, or _**Vim**_,
 if that's your poison :D. Happy coding!
