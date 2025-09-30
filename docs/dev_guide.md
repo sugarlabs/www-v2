@@ -2,15 +2,15 @@
 
 ## Getting the code
 
-1. Fork this repository,
+1. Fork this repository.
 
-2. Clone your forked copy of the project;
+2. Clone your forked copy of the project:
 
     ```bash
     git clone https://github.com/<your_user_name>/www-v2.git
     ```
 
-3. Change to the project directory;
+3. Change to the project directory:
 
     ```bash
     cd www-v2
@@ -23,7 +23,7 @@ This is sufficient to run, build, and test the project as a whole, but you might
 
 You'll need _**tsc**_ (_TypeScript Compiler_) to manually compile `.ts` files, and _**ts-node**_ (_Node.js executable for TypeScript_) to manually execute .ts scripts directly.
 
-Once _**npm**_ is installed, to install the above, run
+Finally, once _**npm**_ is installed, to install the above, run
 
 ```bash
 npm i -g typescript
