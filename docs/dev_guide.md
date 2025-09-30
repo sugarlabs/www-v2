@@ -6,19 +6,19 @@
 
 2. Clone your forked copy of the project
 
-    ```bash
-    git clone https://github.com/<your_user_name>/www-v2.git
-    ```
+   ```bash
+   git clone https://github.com/<your_user_name>/www-v2.git
+   ```
 
 3. Change to the project directory
 
-    ```bash
-    cd www-v2
-    ```
+   ```bash
+   cd www-v2
+   ```
 
 ## Setup Development Environment
 
-This is a _**TypeScript**_ project that uses _**React**_. You'll just need 
+This is a _**TypeScript**_ project that uses _**React**_. You'll just need
 _[**Node.js**](https://nodejs.org/en)_ and _**npm**_ installed on your development machine.
 This is sufficient to run, build, and test the project as a whole, but you might need extra tools for other development tasks.
 
@@ -54,42 +54,40 @@ v10.9.2
 After setup, the steps you take depend on what you want to do:
 
 - **Run a development server**
+  1. To install all the dependencies (in `package.json`), run
 
-    1. To install all the dependencies (in `package.json`), run
+     ```bash
+     npm install
+     ```
 
-        ```bash
-        npm install
-        ```
+  2. Run _React scripts_.
+     - For unoptimized development serving, run
 
-    2. Run _React scripts_.
+       ```bash
+       npm run dev
+       ```
 
-        - For unoptimized development serving, run
+       Visit `localhost:5173` in a browser to view the web page served.
 
-            ```bash
-            npm run dev
-            ```
+     - For generating a generic production build, run
 
-            Visit `localhost:5173` in a browser to view the web page served.
+       ```bash
+       npm run build
+       ```
 
-        - For generating a generic production build, run
+     - For generating a production build under the subdirectory `/www-v2`, run
 
-            ```bash
-            npm run build
-            ```
+       ```bash
+       npm run build
+       ```
 
-        - For generating a production build under the subdirectory `/www-v2`, run
+     - For serving the last production build (`dist` folder), run
 
-            ```bash
-            npm run build
-            ```
+       ```bash
+       npm run preview
+       ```
 
-        - For serving the last production build (`dist` folder), run
-
-            ```bash
-            npm run preview
-            ```
-
-            Visit `localhost:4173` in a browser to view the web page served.
+       Visit `localhost:4173` in a browser to view the web page served.
 
 ## Editor
 
@@ -110,7 +108,6 @@ _**Visual Studio Code**_ (_**VSCode**_) is currently the most popular code edito
 to being _lightweight_, _clean_, having a large _extensions_ marketplace, integrated
 _source control_ features, a _debugger_, _remote explorer_ support, and
 _regular-expression-based find/replace_.
-
 
 Recommended extensions for this project are `Babel JavaScript`, `ESLint`, `Git Graph`,
 `GitLens`, `markdownlint`, `Prettier`, `Tailwind CSS IntelliSense`, and `SVG`.
