@@ -498,11 +498,16 @@ const NewsPage: React.FC = () => {
                         className={`${viewMode === 'list' ? 'h-full' : 'h-56'} overflow-hidden`}
                       >
                         {post.image ? (
-                          <img
-                            src={post.image}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                          />
+                          <picture>
+                            {post.image.endsWith(".png") && (
+                              <source srcSet={post.image.replace(/\.png$/, ".webp")} type="image/webp" />
+                            )}
+                            <img
+                              src={post.image}
+                              alt={post.title}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                            />
+                          </picture>
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-blue-100 via-purple-50 to-green-100 flex items-center justify-center">
                             <div className="text-6xl opacity-50">📰</div>

@@ -275,18 +275,26 @@ const NewsDetailPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <img
-              src={post.image}
-              alt={post.title}
-              className="w-full h-auto max-h-80 object-contain mx-auto cursor-pointer hover:scale-105 transition-transform duration-300"
-              onClick={() =>
-                setModalImage({
-                  src: post.image,
-                  alt: post.title,
-                })
-              }
-              data-zoomable="true"
-            />
+            <picture>
+              {post.image.endsWith('.png') && (
+                <source
+                  srcSet={post.image.replace(/\.png$/, '.webp')}
+                  type="image/webp"
+                />
+              )}
+              <img
+                src={post.image}
+                alt={post.title}
+                className="w-full h-auto max-h-80 object-contain mx-auto cursor-pointer hover:scale-105 transition-transform duration-300"
+                onClick={() =>
+                  setModalImage({
+                    src: post.image.replace(/\.png$/, '.webp'),
+                    alt: post.title,
+                  })
+                }
+                data-zoomable="true"
+              />
+            </picture>
           </motion.div>
         )}
 
@@ -407,6 +415,7 @@ const NewsDetailPage: React.FC = () => {
             />
             <p className="text-white text-center mt-2 text-sm">
               {modalImage.alt}
+              {modalImage.src}
             </p>
             <button
               onClick={closeImageModal}
