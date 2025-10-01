@@ -120,7 +120,7 @@ export function DeveloperTestimonials() {
           />
 
           <motion.h2
-            className="font-bold tracking-wider font-Caveat text-3xl md:text-5xl lg:text-6xl text-gray-800 text-center"
+            className="font-bold tracking-wider font-Caveat text-3xl md:text-5xl lg:text-6xl text-gray-800 dark:text-gray-200 text-center"
             variants={testimonialHeading}
           >
             <span className="text-5xl font-bold font-[Caveat]">

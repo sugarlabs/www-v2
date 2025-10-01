@@ -3,21 +3,24 @@ import { principles, principlesContent } from '@/constants/aboutUs/principles';
 
 const PrinciplesSection = () => {
   return (
-    <section id={principlesContent.sectionId} className="w-full py-24 bg-white">
+    <section
+      id={principlesContent.sectionId}
+      className="w-full py-24 bg-white dark:bg-gray-900"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center mb-16">
           <motion.h2
-            className="text-3xl font-semibold text-slate-800 sm:text-4xl mb-4 tracking-tight"
+            className="text-3xl font-semibold text-slate-800 dark:text-slate-200 sm:text-4xl mb-4 tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-blue-900 font-medium">
+            <span className="text-blue-900 dark:text-blue-400 font-medium">
               {principlesContent.title.prefix}
             </span>{' '}
-            <span className="text-red-600 font-medium">
+            <span className="text-red-600 dark:text-red-400 font-medium">
               {principlesContent.title.highlight}
             </span>
           </motion.h2>
@@ -39,8 +42,8 @@ const PrinciplesSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="bg-slate-50 p-8 rounded-lg shadow-md border-l-2 border-indigo-700">
-              <p className="text-base sm:text-lg text-slate-700 leading-relaxed">
+            <div className="bg-slate-50 dark:bg-slate-800 p-8 rounded-lg shadow-md border-l-2 border-indigo-700 dark:border-indigo-500">
+              <p className="text-base sm:text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
                 {principlesContent.description}
               </p>
             </div>
@@ -83,7 +86,7 @@ const PrinciplesSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 * index }}
             >
-              <div className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col border border-slate-200 transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px]">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden h-full flex flex-col border border-slate-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px]">
                 <div className="h-48 overflow-hidden relative">
                   <img
                     src={principle.image}
@@ -92,11 +95,11 @@ const PrinciplesSection = () => {
                   />
                 </div>
 
-                <div className="p-6 flex flex-col flex-grow bg-gradient-to-b from-white to-slate-50">
-                  <h3 className="text-lg font-semibold text-slate-800 mb-3 pb-2 border-b border-slate-200">
+                <div className="p-6 flex flex-col flex-grow bg-gradient-to-b from-white to-slate-50 dark:from-gray-800 dark:to-gray-800/50">
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3 pb-2 border-b border-slate-200 dark:border-gray-700">
                     {principle.title}
                   </h3>
-                  <p className="text-slate-700 text-base">
+                  <p className="text-slate-700 dark:text-slate-300 text-base">
                     {principle.description}
                   </p>
                 </div>

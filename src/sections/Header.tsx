@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import logo from '/assets/Icons/logo.svg';
 import NavDropdown from '@/sections/NavDropdown';
 import { navigationData } from '@/constants/Header';
+import DarkModeToggle from '@/components/shared/DarkModeToggle';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -51,7 +52,9 @@ const Header: React.FC = () => {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'backdrop-blur-md bg-white/90 shadow-lg' : 'bg-white'
+          isScrolled
+            ? 'backdrop-blur-md bg-white/90 dark:bg-gray-900/80 shadow-lg'
+            : 'bg-white dark:bg-gray-900'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,19 +81,19 @@ const Header: React.FC = () => {
             >
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <span
-                  className={`block w-6 h-0.5 bg-gray-600 transition-all duration-300 ${
+                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 ${
                     isMobileMenuOpen
                       ? 'rotate-45 translate-y-1.5'
                       : 'translate-y-[-4px]'
                   }`}
                 />
                 <span
-                  className={`block w-6 h-0.5 bg-gray-600 transition-all duration-300 mt-1 ${
+                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 mt-1 ${
                     isMobileMenuOpen ? 'opacity-0' : ''
                   }`}
                 />
                 <span
-                  className={`block w-6 h-0.5 bg-gray-600 transition-all duration-300 mt-1 ${
+                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 mt-1 ${
                     isMobileMenuOpen
                       ? '-rotate-45 -translate-y-1.5'
                       : 'translate-y-[4px]'
@@ -121,13 +124,15 @@ const Header: React.FC = () => {
                 <Link
                   key={link.label}
                   to={link.path}
-                  className="px-2 lg:px-3 py-2 text-gray-700 hover:text-blue-600 font-medium rounded-md
-                            transition-all duration-200 hover:bg-gray-50 text-sm lg:text-base"
+                  className="px-2 lg:px-3 py-2 text-gray-700 dark:text-gray-200 hover:text-blue-600 font-medium rounded-md
+                            transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm lg:text-base"
                   onClick={handleNavigation}
                 >
                   {link.label}
                 </Link>
               ))}
+
+              <DarkModeToggle />
 
               {/* CTA Button */}
               <Link
@@ -188,7 +193,7 @@ const MobileNavDrawer: React.FC<{
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: '100%' }}
           transition={{ type: 'tween', duration: 0.3 }}
-          className="fixed md:hidden top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white shadow-xl z-40
+          className="fixed md:hidden top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white dark:bg-gray-900 shadow-xl z-40
                     flex flex-col h-full"
         >
           <div className="flex flex-col h-full">
@@ -207,7 +212,7 @@ const MobileNavDrawer: React.FC<{
                           setActiveDropdown(activeDropdown === key ? null : key)
                         }
                         className="flex items-center justify-between w-full text-left px-2 py-2
-                              text-gray-700 font-medium rounded-lg hover:bg-gray-50"
+                              text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
                         aria-expanded={activeDropdown === key}
                       >
                         <span>{dropdown.label}</span>
@@ -243,8 +248,8 @@ const MobileNavDrawer: React.FC<{
                                   key={item.path}
                                   to={item.path}
                                   onClick={onClose}
-                                  className="flex items-center px-4 py-2 text-sm text-gray-600
-                                      rounded-lg hover:bg-gray-50 hover:text-blue-600"
+                                  className="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-300
+                                      rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600"
                                 >
                                   {item.label}
                                 </Link>
@@ -263,17 +268,20 @@ const MobileNavDrawer: React.FC<{
                     key={link.label}
                     to={link.path}
                     onClick={onClose}
-                    className="block px-4 py-2 text-gray-700 font-medium rounded-lg
-                            hover:bg-gray-50 hover:text-blue-600"
+                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 font-medium rounded-lg
+                            hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600"
                   >
                     {link.label}
                   </Link>
                 ))}
               </div>
+              <div className="px-4 py-2">
+                <DarkModeToggle />
+              </div>
             </div>
 
             {/* CTA button footer */}
-            <div className="p-4 border-t border-gray-200 sticky bottom-0 bg-white">
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700 sticky bottom-0 bg-white dark:bg-gray-900">
               <Link
                 to="/try-sugar"
                 onClick={onClose}

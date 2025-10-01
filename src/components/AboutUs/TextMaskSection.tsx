@@ -90,7 +90,7 @@ const TextMaskSection = () => {
                 <rect
                   width="100%"
                   height="100%"
-                  fill="rgba(255, 255, 255, 0.92)"
+                  className="fill-white/92 dark:fill-gray-900/92"
                   mask="url(#textMask)"
                 />
               </svg>
@@ -104,9 +104,9 @@ const TextMaskSection = () => {
             <div className="absolute bottom-6 right-6 w-16 h-16 border-b-2 border-r-2 border-white/60"></div>
           </div>
 
-          <div className="py-8 px-6 md:px-12 bg-white text-center">
+          <div className="py-8 px-6 md:px-12 bg-white dark:bg-gray-800 text-center">
             <motion.h3
-              className="text-lg md:text-xl font-medium text-blue-600 mb-3"
+              className="text-lg md:text-xl font-medium text-blue-600 dark:text-blue-400 mb-3"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -116,7 +116,7 @@ const TextMaskSection = () => {
             </motion.h3>
 
             <motion.p
-              className="text-base md:text-lg text-slate-700 max-w-2xl mx-auto leading-relaxed"
+              className="text-base md:text-lg text-slate-700 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

@@ -3,21 +3,24 @@ import { content } from '@/constants/aboutUs/mission';
 
 const MissionSection = () => {
   return (
-    <section id={content.sectionId} className="w-full py-24 bg-white">
+    <section
+      id={content.sectionId}
+      className="w-full py-24 bg-white dark:bg-gray-900"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center mb-16">
           <motion.h2
-            className="text-3xl font-semibold text-slate-800 sm:text-4xl mb-4 tracking-tight"
+            className="text-3xl font-semibold text-slate-800 dark:text-slate-200 sm:text-4xl mb-4 tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-blue-900 font-medium">
+            <span className="text-blue-900 dark:text-blue-400 font-medium">
               {content.title.prefix}
             </span>{' '}
-            <span className="text-red-600 font-medium">
+            <span className="text-red-600 dark:text-red-400 font-medium">
               {content.title.highlighted}
             </span>
           </motion.h2>
@@ -54,7 +57,7 @@ const MissionSection = () => {
 
           {/* Text content */}
           <motion.div
-            className="w-full lg:w-1/2 order-1 lg:order-2 text-slate-700"
+            className="w-full lg:w-1/2 order-1 lg:order-2 text-slate-700 dark:text-slate-300"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}

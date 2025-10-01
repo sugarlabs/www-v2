@@ -13,7 +13,7 @@ const JoinDevelopment = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-b to-red-50">
+    <div className="bg-gradient-to-b from-white to-red-50 dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-200">
       <Header />
       <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-6">
         <JoinToggle />
@@ -25,12 +25,12 @@ const JoinDevelopment = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <h2 className="text-5xl font-bold font-[Caveat]">
+          <h2 className="text-5xl font-bold font-[Caveat] dark:text-white">
             Before Beginning to Contribute
           </h2>
-          <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
+          <hr className="w-32 border-t-2 border-gray-400 dark:border-gray-600 mx-auto mt-2" />
 
-          <p className="text-lg text-gray-700 font-[Inter] mt-6 leading-relaxed">
+          <p className="text-lg text-gray-700 dark:text-gray-300 font-[Inter] mt-6 leading-relaxed">
             As a developer, whether you are just starting out or you've
             participated in other development before, there are a few things you
             need to know about our community. This page has important
@@ -55,14 +55,14 @@ const JoinDevelopment = () => {
             viewport={{ once: true, amount: 0.1 }}
           >
             <div className="text-center mb-8">
-              <span className="inline-block px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-semibold mb-4">
+              <span className="inline-block px-3 py-1 bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300 rounded-full text-sm font-semibold mb-4">
                 Resources
               </span>
-              <h2 className="text-4xl md:text-5xl font-bold font-[Caveat] mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold font-[Caveat] mb-4 dark:text-white">
                 Important Links for Developers
               </h2>
-              <div className="w-24 h-1 bg-red-700 rounded mx-auto mb-6"></div>
-              <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+              <div className="w-24 h-1 bg-red-700 dark:bg-red-500 rounded mx-auto mb-6"></div>
+              <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
                 Essential resources for people interested in making development
                 contributions to Sugar Labs
               </p>

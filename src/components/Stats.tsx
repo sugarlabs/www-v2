@@ -10,19 +10,19 @@ import {
 
 const Stats = () => {
   return (
-    <section className="max-w-7xl mx-auto py-10 sm:py-16 md:py-20 px-4 sm:px-6 bg-white">
+    <section className="max-w-7xl mx-auto py-10 sm:py-16 md:py-20 px-4 sm:px-6 bg-white dark:bg-gray-900">
       <div className="relative mb-12 sm:mb-16 md:mb-24">
         <div className="absolute left-0 top-1/2 w-full h-0.5 sm:h-1 bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500 transform -translate-y-1/2 opacity-30"></div>
 
         <motion.div
-          className="relative z-10 text-center mx-auto max-w-2xl bg-white px-2 py-2 sm:py-4"
+          className="relative z-10 text-center mx-auto max-w-2xl bg-white dark:bg-gray-900 px-2 py-2 sm:py-4"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
           <motion.h1 variants={headerReveal} className="text-center">
             <motion.span
-              className="block text-black font-Caveat text-5xl sm:text-6xl md:text-7xl mb-1 sm:mb-2"
+              className="block text-black dark:text-white font-Caveat text-5xl sm:text-6xl md:text-7xl mb-1 sm:mb-2"
               variants={headerReveal}
               custom={1}
             >
@@ -37,7 +37,7 @@ const Stats = () => {
               numbers
             </motion.div>
             <motion.span
-              className="text-black italic font-serif text-2xl sm:text-3xl md:text-4xl"
+              className="text-black dark:text-white italic font-serif text-2xl sm:text-3xl md:text-4xl"
               variants={headerReveal}
               custom={3}
             >
@@ -46,7 +46,7 @@ const Stats = () => {
           </motion.h1>
 
           <motion.p
-            className="text-gray-600 text-base sm:text-lg md:text-xl leading-relaxed font-Roboto mt-4 sm:mt-6"
+            className="text-gray-600 dark:text-gray-400 text-base sm:text-lg md:text-xl leading-relaxed font-Roboto mt-4 sm:mt-6"
             variants={headerReveal}
             custom={4}
           >
@@ -65,12 +65,12 @@ const Stats = () => {
         viewport={{ once: true, amount: 0.1 }}
       >
         <motion.div
-          className="flex flex-col lg:flex-row items-center bg-gradient-to-r from-green-50 to-green-100 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-xl border border-green-200"
+          className="flex flex-col lg:flex-row items-center bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/50 dark:to-green-950/50 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-xl border border-green-200 dark:border-green-800"
           variants={item}
           whileHover="hover"
         >
           <div className="w-full lg:w-1/2 p-5 sm:p-8 lg:p-12">
-            <h3 className="text-gray-700 text-xl sm:text-2xl font-medium mb-3 sm:mb-4 font-AnonymousPro">
+            <h3 className="text-gray-700 dark:text-gray-200 text-xl sm:text-2xl font-medium mb-3 sm:mb-4 font-AnonymousPro">
               Kids whose lives have been enriched by using the Sugar Learning
               Platform.
             </h3>
@@ -126,7 +126,7 @@ const Stats = () => {
               ></div>
             </motion.div>
             <div className="p-4 sm:p-5 md:p-6">
-              <h3 className="text-gray-700 text-lg sm:text-xl font-medium mb-2 sm:mb-3 font-AnonymousPro line-clamp-2 h-12 sm:h-14">
+              <h3 className="text-gray-700 dark:text-gray-200 text-lg sm:text-xl font-medium mb-2 sm:mb-3 font-AnonymousPro line-clamp-2 h-12 sm:h-14">
                 {stat.title}
               </h3>
               <motion.div
@@ -145,16 +145,16 @@ const Stats = () => {
 
       {/* Closing Section with Interactive Element */}
       <motion.div
-        className="text-center mt-10 sm:mt-12 md:mt-16 pt-8 sm:pt-12 md:pt-16 border-t border-gray-200"
+        className="text-center mt-10 sm:mt-12 md:mt-16 pt-8 sm:pt-12 md:pt-16 border-t border-gray-200 dark:border-gray-700"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-4 sm:mb-6">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4 sm:mb-6">
           Join us and make a difference
         </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 px-4 text-sm sm:text-base md:text-lg">
+        <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 px-4 text-sm sm:text-base md:text-lg">
           These numbers represent more than statistics - they represent lives
           changed through education and technology. Sugar Labs continues to grow
           and impact communities worldwide.
@@ -177,7 +177,7 @@ const Stats = () => {
               >
                 {stat.value}
               </span>
-              <span className="text-gray-700 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1">
+              <span className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1">
                 {stat.title.split('.')[0].substring(0, 12)}
                 {stat.title.split('.')[0].length > 12 ? '...' : ''}
               </span>
