@@ -26,7 +26,7 @@ const ContactUs: React.FC = () => {
 
       {/* Hero Section */}
       <motion.section
-        className="relative min-h-[60vh] flex flex-col items-center justify-center text-center px-4 py-16 sm:py-20 overflow-hidden"
+        className="relative min-h-[35vh] flex flex-col items-center justify-center text-center px-4 py-8 sm:py-12 overflow-hidden"
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
@@ -62,7 +62,7 @@ const ContactUs: React.FC = () => {
           animate="visible"
         >
           {/* Main title with animated letters */}
-          <motion.h1 className="text-4xl sm:text-6xl md:text-8xl font-bold mb-6 sm:mb-9 tracking-tight relative inline-block font-Caveat">
+          <motion.h1 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 tracking-tight relative inline-block font-Caveat">
             <div className="flex justify-center items-center relative">
               {title.map((letter, index) => (
                 <motion.span
@@ -103,7 +103,7 @@ const ContactUs: React.FC = () => {
 
           {/* Decorative divider */}
           <motion.div
-            className="w-16 sm:w-24 h-1 sm:h-1.5 mx-auto mb-6 sm:mb-8 rounded-full bg-gradient-to-r from-blue-500 to-slate-500"
+            className="w-16 sm:w-24 h-1 sm:h-1.5 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-r from-blue-500 to-slate-500"
             variants={dividerVariants}
             initial="hidden"
             animate="visible"
@@ -111,7 +111,7 @@ const ContactUs: React.FC = () => {
 
           {/* Subtitle */}
           <motion.h2
-            className="text-xl sm:text-3xl md:text-4xl mb-8 sm:mb-12 max-w-xs sm:max-w-lg md:max-w-3xl mx-auto leading-relaxed font-Caveat relative text-slate-700"
+            className="text-lg sm:text-2xl md:text-3xl mb-6 sm:mb-8 max-w-xs sm:max-w-lg md:max-w-3xl mx-auto leading-relaxed font-Caveat relative text-slate-700"
             variants={slideInBottom}
             initial="hidden"
             animate="visible"
@@ -160,7 +160,7 @@ const ContactUs: React.FC = () => {
       </motion.section>
 
       {/* Main Content */}
-      <section className="w-full py-16 sm:py-20">
+      <section className="w-full pb-16 sm:pb-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             {/* Contact Information Card */}
