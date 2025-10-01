@@ -499,8 +499,11 @@ const NewsPage: React.FC = () => {
                       >
                         {post.image ? (
                           <picture>
-                            {post.image.endsWith(".png") && (
-                              <source srcSet={post.image.replace(/\.png$/, ".webp")} type="image/webp" />
+                            {post.image.endsWith('.png') && (
+                              <source
+                                srcSet={post.image.replace(/\.png$/, '.webp')}
+                                type="image/webp"
+                              />
                             )}
                             <img
                               src={post.image}
