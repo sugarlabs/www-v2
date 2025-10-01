@@ -123,18 +123,14 @@ const ContactUs: React.FC = () => {
               whileHover="hover"
             >
               Get in touch with the{' '}
-              <span className="text-rose-500 font-semibold">
-                Sugar Labs
-              </span>
+              <span className="text-rose-500 font-semibold">Sugar Labs</span>
             </motion.span>{' '}
             <motion.span
               className="relative inline-block"
               variants={heroAnimations.hoverText}
               whileHover="hover"
             >
-              <span className="text-emerald-500 font-semibold">
-                community
-              </span>
+              <span className="text-emerald-500 font-semibold">community</span>
             </motion.span>{' '}
             <motion.span
               variants={bounce}
@@ -186,8 +182,8 @@ const ContactUs: React.FC = () => {
                     </h2>
                     <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full mb-6"></div>
                     <p className="text-lg text-gray-600 leading-relaxed">
-                      We'd love to hear from you. Here's how you can reach our team of
-                      educational innovators and community members.
+                      We'd love to hear from you. Here's how you can reach our
+                      team of educational innovators and community members.
                     </p>
                   </motion.div>
 
@@ -205,7 +201,8 @@ const ContactUs: React.FC = () => {
                         <address className="mt-3 not-italic text-gray-600 leading-relaxed">
                           Sugar Labs
                           <br />
-                          2028 E Ben White Blvd <strong>STE 240 PMB 1271</strong>
+                          2028 E Ben White Blvd{' '}
+                          <strong>STE 240 PMB 1271</strong>
                           <br />
                           AUSTIN, TX 78741
                           <br />
@@ -363,11 +360,7 @@ const ContactMethod: React.FC<ContactMethodProps> = ({
   title,
   description,
 }) => (
-  <motion.div
-    className="group"
-    variants={statCard}
-    whileHover="hover"
-  >
+  <motion.div className="group" variants={statCard} whileHover="hover">
     <div className="flex items-start p-6 rounded-xl bg-gray-50 hover:bg-white hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-blue-200">
       <motion.div
         className="flex-shrink-0 p-4 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-xl text-white shadow-lg group-hover:shadow-xl transition-all duration-300"
