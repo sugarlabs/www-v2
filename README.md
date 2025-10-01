@@ -2,7 +2,7 @@
 
 # [Sugar Labs](https://www.sugarlabs.org/)
 
-**Empowering children worldwide through free educational software**
+## Empowering children worldwide through free educational software
 
 [![Website](https://img.shields.io/badge/Website-www.sugarlabs.org-blue)](https://www.sugarlabs.org/)
 [![License](https://img.shields.io/badge/License-GPL%20v3-green.svg)](LICENSE)
@@ -110,7 +110,7 @@ We welcome contributions from the community! Content about Sugar, Sugarizer, or 
 
 ## Project Structure
 
-```
+```text
 src/
 ├── components/          # Reusable UI components
 ├── pages/              # Page components and routing
