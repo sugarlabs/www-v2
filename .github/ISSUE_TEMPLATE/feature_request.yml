@@ -1,0 +1,97 @@
+name: 💡 Feature Request
+description: Suggest an enhancement for the Sugar Labs website
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest a new feature! Please fill out this form as completely as possible.
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature Type
+      description: What type of feature are you suggesting?
+      options:
+        - New Page or Section
+        - UI/UX Enhancement
+        - Content Improvement
+        - Performance Enhancement
+        - Accessibility Improvement
+        - Integration Feature
+        - Other (please specify below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: Problem Description
+      description: What problem does this feature solve?
+      placeholder: |
+        A clear and concise description of what the problem is.
+        Example: "It's difficult to find information about specific Sugar Labs activities..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see implemented
+      placeholder: |
+        A clear and concise description of what you want to happen.
+        Example: "Add a searchable activity catalog that allows filtering by age group and subject..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternative-solutions
+    attributes:
+      label: Alternative Solutions
+      description: Describe any alternative solutions you've considered
+      placeholder: |
+        A clear and concise description of any alternative solutions or features you've considered.
+        Example: "Could also implement this as a tag-based system..."
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups or Examples
+      description: If you have any mockups, sketches, or examples from other websites, add them here
+      placeholder: You can drag and drop images here.
+
+  - type: textarea
+    id: implementation-details
+    attributes:
+      label: Implementation Details
+      description: If you have technical knowledge, provide any relevant implementation details
+      placeholder: |
+        - Suggested tech stack
+        - Potential APIs to use
+        - Data requirements
+        - Performance considerations
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the feature request here
+      placeholder: |
+        - Who would benefit from this feature?
+        - How urgent is this feature?
+        - Are there any dependencies to consider?
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/sugarlabs/www-v2/blob/main/docs/CONTRIBUTING.md)
+      options:
+        - label: I have searched for similar feature requests before creating this one
+          required: true
+        - label: I understand this is a feature request for the website only, not Sugar Labs software
+          required: true
+        - label: I agree to follow the project's Code of Conduct
+          required: true
