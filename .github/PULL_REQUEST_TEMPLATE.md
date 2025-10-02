@@ -1,59 +1,112 @@
 ---
 name: Pull Request
-about: Submit changes to the project for review and inclusion
+about: Submit changes to the Sugar Labs website for review
 ---
 
-## Description
+## 📝 Description
 
-<!--- Describe the changes introduced by this pull request. -->
-<!--- Explain what problem it solves or what feature/fix it adds. -->
+<!--- Provide a clear and concise description of your changes. -->
+<!--- Explain what problem it solves or what feature/improvement it adds. -->
 
-## Related Issue
 
-<!--- If this pull request is related to a specific issue, reference it here using #issue_number. -->
-<!--- For example, "Fixes #123" or "Addresses #456". -->
+## 🔗 Related Issue
 
-This PR fixes #
+<!--- If this PR is related to any issue(s), link them here using #issue_number -->
+<!--- For example: "Fixes #123" or "Part of #456" -->
 
-## Changes Made
+Fixes #
 
-<!--- Provide a summary of the changes made in this pull request. -->
-<!--- Include any relevant technical details or architecture changes. -->
+## 🔄 Type of Change
 
-- Change 1
-- Change 2
-- ...
+<!--- What types of changes does your code introduce? Put an `x` in all boxes that apply: -->
 
-## Testing Performed
+- [ ] 📱 New Feature (new page, component, or functionality)
+- [ ] 🎨 UI/UX Update (visual changes, styling improvements)
+- [ ] 📖 Content Update (text changes, documentation)
+- [ ] 🐛 Bug Fix
+- [ ] ⚡ Performance Improvement
+- [ ] ♿ Accessibility Enhancement
+- [ ] 🔒 Security Update
+- [ ] 📦 Dependency Update
+- [ ] 🧹 Code Refactoring
+- [ ] 🧪 Test Updates
 
-<!--- Describe the testing that you have performed to validate these changes. -->
-<!--- Include information about test cases, testing environments, and results. -->
+## 📷 Visual Changes
 
-- Tested feature X in scenario Y.
-- Ran unit tests for component Z.
-- Tested on browsers A, B, and C.
-- ...
+<!--- If your changes affect the website's appearance, please provide screenshots -->
+<!--- For UI changes, include before/after screenshots if possible -->
 
-## Checklist
+<details>
+<summary>Screenshots / GIFs</summary>
 
-<!--- Please check the boxes that apply to this pull request. -->
-<!--- You can add or remove items as needed. -->
+<!-- Drag and drop your screenshots here -->
 
-- [ ] I have tested these changes locally and they work as expected.
-- [ ] I have added/updated tests that prove the effectiveness of these changes.
-- [ ] I have updated the documentation to reflect these changes, if applicable.
-- [ ] I have followed the project's coding style guidelines.
-- [ ] I have addressed the code review feedback from the previous submission, if applicable.
+</details>
 
-## Additional Notes for Reviewers
+## 🧪 Testing Performed
 
-<!--- Provide any additional context or notes for the reviewers. -->
-<!--- This might include details about design decisions, potential concerns, or anything else relevant. -->
+### 📱 Browser Compatibility
+
+<!--- Check all browsers where you've tested these changes -->
+
+- [ ] Chrome (Version: )
+- [ ] Firefox (Version: )
+- [ ] Safari (Version: )
+- [ ] Edge (Version: )
+- [ ] Mobile Chrome (Device: )
+- [ ] Mobile Safari (Device: )
+
+### 🖥️ Responsive Design
+
+<!--- Confirm testing on different screen sizes -->
+
+- [ ] Desktop (1200px+)
+- [ ] Tablet (768px - 1199px)
+- [ ] Mobile (320px - 767px)
+
+### ✅ Test Cases
+
+<!--- List the specific test cases you've verified -->
+
+1. 
+2. 
+3. 
+
+## ♿ Accessibility
+
+<!--- Confirm accessibility requirements are met -->
+
+- [ ] Proper heading hierarchy maintained
+- [ ] ARIA labels added where needed
+- [ ] Color contrast requirements met
+- [ ] Keyboard navigation works correctly
+- [ ] Screen reader testing performed
+
+## 📋 PR Checklist
+
+<!--- Review and check all applicable items -->
+
+- [ ] My code follows the project's coding style guidelines
+- [ ] I have tested these changes locally
+- [ ] I have updated the documentation accordingly
+- [ ] My changes generate no new warnings or console errors
+- [ ] I have added tests that prove my fix/feature works
+- [ ] All existing tests pass successfully
+- [ ] I have checked for and resolved any merge conflicts
+- [ ] I have optimized images/assets (if applicable)
+- [ ] I have validated all links are working correctly
+
+## 💭 Additional Notes
+
+<!--- Add any additional context, considerations, or notes for reviewers -->
+
 
 ---
 
-Thank you for contributing to our project! We appreciate your help in improving it.
+### 📚 Reviewer Resources
 
-📚 See [contributing instructions](https://github.com/sugarlabs/musicblocks/blob/master/README.md).
+- [Contributing Guide](https://github.com/sugarlabs/www-v2/blob/main/docs/CONTRIBUTING.md)
+- [Style Guide](https://github.com/sugarlabs/www-v2/blob/main/docs/dev_guide.md)
+- [Community Chat](https://matrix.to/#/#sugarlabs-web:matrix.org)
 
-🙋🏾🙋🏼 Questions: [Community Matrix Server](https://matrix.to/#/#sugar:matrix.org).
+Thank you for contributing to the Sugar Labs website! 🎉
