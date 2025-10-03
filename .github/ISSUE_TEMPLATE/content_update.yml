@@ -1,0 +1,112 @@
+name: 📝 Content Update
+description: Suggest changes to website content or documentation
+title: "[Content]: "
+labels: ["content"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the Sugar Labs website content! Please fill out this form as completely as possible.
+
+  - type: dropdown
+    id: content-type
+    attributes:
+      label: Content Type
+      description: What type of content needs to be updated?
+      options:
+        - Page Content
+        - Documentation
+        - Blog Post
+        - News Article
+        - Activity Description
+        - Image or Media
+        - Translation
+        - Other (please specify below)
+    validations:
+      required: true
+
+  - type: input
+    id: content-location
+    attributes:
+      label: Content Location
+      description: Where is the content that needs to be updated?
+      placeholder: URL or file path in the repository
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-content
+    attributes:
+      label: Current Content
+      description: What is the current content that needs to be changed?
+      placeholder: |
+        Please copy and paste the current content here.
+        For long content, you can summarize and highlight the specific sections that need changes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-changes
+    attributes:
+      label: Proposed Changes
+      description: What changes would you like to make?
+      placeholder: |
+        Please provide:
+        - The new/updated content
+        - Reason for the changes
+        - Any supporting references or sources
+    validations:
+      required: true
+
+  - type: dropdown
+    id: change-type
+    attributes:
+      label: Type of Change
+      description: What kind of change is this?
+      options:
+        - Fix typo or grammar
+        - Update outdated information
+        - Add new information
+        - Improve clarity
+        - Fix broken links
+        - Update images or media
+        - Add translation
+        - Other (please specify in additional context)
+    validations:
+      required: true
+
+  - type: textarea
+    id: supporting-info
+    attributes:
+      label: Supporting Information
+      description: Provide any supporting information for the changes
+      placeholder: |
+        - References to official documentation
+        - Links to source material
+        - Screenshots or images
+        - Relevant discussion links
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the content update
+      placeholder: |
+        - Urgency of the update
+        - Related content that might need similar updates
+        - Impact of these changes
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Content Guidelines
+      description: Please confirm the following
+      options:
+        - label: I have reviewed the content guidelines in the Contributing Guide
+          required: true
+        - label: The proposed changes are accurate and factual
+          required: true
+        - label: I have proper rights/permissions for any new content I'm proposing
+          required: true
+        - label: I agree to follow the project's Code of Conduct
+          required: true
