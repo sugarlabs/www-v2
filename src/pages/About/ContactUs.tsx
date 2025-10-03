@@ -17,16 +17,16 @@ import {
 
 const theme = {
   colors: {
-    primary: '#1E3A8A', // A deeper blue, assuming a primary brand color
-    secondary: '#3B82F6', // A vibrant blue for accents
-    textDark: '#1F2937', // Darker text for readability
-    textLight: '#E5E7EB', // Light text for dark backgrounds
-    bgLight: '#F9FAFB', // Very light background
-    bgDark: '#111827', // Dark background for contrast sections
-    border: '#D1D5DB', // Light border color
+    primary: '#1E3A8A', 
+    secondary: '#3B82F6', 
+    textDark: '#1F2937', 
+    textLight: '#E5E7EB',
+    bgLight: '#F9FAFB', 
+    bgDark: '#111827', 
+    border: '#D1D5DB', 
   },
   typography: {
-    heading: 'font-extrabold tracking-tight', // More impactful headings
+    heading: 'font-extrabold tracking-tight', 
     subheading: 'font-semibold tracking-wide',
     body: 'font-normal leading-relaxed',
   },
@@ -137,7 +137,7 @@ const ContactUs: React.FC = () => {
 
                   {/* Phone */}
                   <ContactMethod
-                    iconSrc="/assets/Icons/phone.svg" // Ensure correct path
+                    iconSrc="/assets/Icons/phone.svg" 
                     title="By Phone"
                     description={
                       <a
