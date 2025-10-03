@@ -50,16 +50,18 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
       <div className="bg-[#D4B062] p-2 rounded-full border-2 border-[#D4B062] text-white mb-3 inline-flex">
         {icon}
       </div>
-      <div className="bg-white p-5 rounded-lg shadow-md">
-        <h3 className="text-lg font-bold text-magazine-navy mb-2">{title}</h3>
-        <p className="text-gray-600 text-sm leading-relaxed">
+      <div className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md">
+        <h3 className="text-lg font-bold text-magazine-navy dark:text-gray-100 mb-2">
+          {title}
+        </h3>
+        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
           {description}
           {link && (
             <a
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#D4B062] hover:underline ml-1 inline-flex items-center"
+              className="text-[#D4B062] hover:underline hover:text-[#e0c17d] dark:text-[#e0c17d] dark:hover:text-[#f0d18d] ml-1 inline-flex items-center"
             >
               {link.text} <ChevronRight className="h-3 w-3 ml-1" />
             </a>
@@ -72,18 +74,18 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
       {isLeft ? (
         <>
           <div className="w-1/2 pr-8 mb-0 text-right">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-xl font-bold text-magazine-navy mb-2">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+              <h3 className="text-xl font-bold text-magazine-navy dark:text-gray-100 mb-2">
                 {title}
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 {description}
                 {link && (
                   <a
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#D4B062] hover:underline ml-1 inline-flex items-center"
+                    className="text-[#D4B062] hover:text-[#e0c17d] dark:text-[#e0c17d] dark:hover:text-[#f0d18d] hover:underline ml-1 inline-flex items-center"
                   >
                     {link.text} <ChevronRight className="h-3 w-3 ml-1" />
                   </a>
@@ -99,7 +101,7 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
               <div className="bg-[#D4B062] p-2 rounded-full border-2 border-[#D4B062] text-white mr-3">
                 {icon}
               </div>
-              <span className="text-magazine-navy font-bold text-lg">
+              <span className="text-magazine-navy dark:text-gray-100 font-bold text-lg">
                 {title.split(' ')[0]}
               </span>
             </motion.div>
@@ -112,7 +114,7 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
               className="flex items-center justify-end"
               whileHover={{ x: -5 }}
             >
-              <span className="text-magazine-navy font-bold text-lg mr-3">
+              <span className="text-magazine-navy dark:text-gray-100 font-bold text-lg mr-3">
                 {title.split(' ')[0]}
               </span>
               <div className="bg-[#D4B062] p-2 rounded-full border-2 border-[#D4B062] text-white">
@@ -124,18 +126,18 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
             <span className="text-white font-bold">{step}</span>
           </div>
           <div className="w-1/2 pl-8">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-xl font-bold text-magazine-navy mb-2">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+              <h3 className="text-xl font-bold text-magazine-navy dark:text-gray-100 mb-2">
                 {title}
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 {description}
                 {link && (
                   <a
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#D4B062] hover:underline ml-1 inline-flex items-center"
+                    className="text-[#D4B062] hover:text-[#e0c17d] dark:text-[#e0c17d] dark:hover:text-[#f0d18d] hover:underline ml-1 inline-flex items-center"
                   >
                     {link.text} <ChevronRight className="h-3 w-3 ml-1" />
                   </a>
@@ -165,23 +167,25 @@ const RoomCard: React.FC<RoomCardProps> = ({ link, getIcon }) => (
     key={link.id}
     variants={statCard}
     whileHover="hover"
-    className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 h-full"
+    className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 h-full"
   >
     <div className="p-4 sm:p-6 flex flex-col h-full">
       <div className="flex items-center gap-3 mb-4">
         <div className="bg-[#D4B062] p-2 sm:p-3 rounded-full text-white flex-shrink-0">
           {getIcon(link.icon)}
         </div>
-        <h3 className="font-bold text-lg sm:text-xl">{link.title}</h3>
+        <h3 className="font-bold text-lg sm:text-xl text-magazine-navy dark:text-gray-100">
+          {link.title}
+        </h3>
       </div>
-      <p className="text-gray-600 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base flex-grow">
+      <p className="text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base flex-grow">
         {link.description}
       </p>
       <motion.a
         href={link.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center text-[#D4B062] hover:text-magazine-navy transition-colors font-medium mt-auto"
+        className="inline-flex items-center text-[#D4B062] hover:text-[#e0c17d] dark:text-[#e0c17d] dark:hover:text-[#f0d18d] transition-colors font-medium mt-auto"
         whileHover={{ x: 5 }}
       >
         Join Room <ExternalLink className="ml-2 h-4 w-4" />
@@ -246,7 +250,7 @@ const Matrix: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9]">
+    <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9] dark:bg-gray-900">
       <Header />
       <main className="flex-grow">
         {/* Hero Section*/}
@@ -307,12 +311,12 @@ const Matrix: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={fadeIn}
-          className="py-12 sm:py-16 bg-[#FFFEF9]"
+          className="py-12 sm:py-16 bg-[#FFFEF9] dark:bg-gray-900"
         >
           <div className="container mx-auto px-4 md:px-6">
             <div className="max-w-3xl mx-auto">
               <motion.h2
-                className="text-2xl sm:text-3xl font-bold mb-6 text-magazine-navy border-b-2 border-[#D4B062] pb-2 inline-block"
+                className="text-2xl sm:text-3xl font-bold mb-6 text-magazine-navy dark:text-gray-100 border-b-2 border-[#D4B062] pb-2 inline-block"
                 variants={fadeIn}
               >
                 What is Matrix?
@@ -350,11 +354,11 @@ const Matrix: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={staggerContainer}
-          className="py-12 sm:py-16 md:py-24 bg-[#FFFEF9]"
+          className="py-12 sm:py-16 md:py-24 bg-[#FFFEF9] dark:bg-gray-900"
         >
           <div className="container mx-auto px-4 md:px-6">
             <motion.div className="text-center mb-8 sm:mb-12" variants={fadeIn}>
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-magazine-navy">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-magazine-navy dark:text-gray-100">
                 Join Our Matrix Rooms
               </h2>
               <div className="w-16 h-1 bg-[#D4B062] mx-auto rounded-full"></div>
@@ -375,11 +379,11 @@ const Matrix: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={staggerContainer}
-          className="py-12 sm:py-16 bg-[#FFFEF9]"
+          className="py-12 sm:py-16 bg-[#FFFEF9] dark:bg-gray-900"
         >
           <div className="container mx-auto px-4 md:px-6">
             <motion.div className="text-center mb-8 sm:mb-12" variants={fadeIn}>
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-magazine-navy">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-magazine-navy dark:text-gray-100">
                 How to Get Started with Matrix
               </h2>
               <div className="w-16 h-1 bg-[#D4B062] mx-auto rounded-full"></div>

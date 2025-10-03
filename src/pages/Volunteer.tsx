@@ -29,9 +29,9 @@ const Volunteer = () => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-[#FFFEF9] dark:bg-[#13141f]">
       <Header />
-      <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-6">
+      <main className="container mx-auto flex flex-col items-center justify-center p-6">
         <JoinToggle />
 
         {/* Content Section */}
@@ -44,10 +44,10 @@ const Volunteer = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.5 }}
           >
-            <h2 className="text-4xl font-bold">
+            <h2 className="text-4xl font-bold dark:text-gray-100">
               Become a <span className="text-red-500">Volunteer</span>
             </h2>
-            <p className="text-lg text-gray-700 mt-4">
+            <p className="text-lg text-gray-700 dark:text-gray-300 mt-4">
               By bringing together people with diverse skills from around the
               globe to work toward our mission in education, volunteers in the
               Sugar Labs community have ample opportunities to grow their skills
@@ -85,12 +85,12 @@ const Volunteer = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
         >
-          <h2 className="text-5xl font-bold font-[Caveat]">
+          <h2 className="text-5xl font-bold font-[Caveat] dark:text-gray-100">
             Getting Involved as a Volunteer
           </h2>
-          <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
+          <hr className="w-32 border-t-2 border-gray-400 dark:border-gray-600 mx-auto mt-2" />
 
-          <p className="text-lg text-gray-700 font-[Inter] mt-6 leading-relaxed">
+          <p className="text-lg text-gray-700 dark:text-gray-300 font-[Inter] mt-6 leading-relaxed">
             Sugar Labs is seeking volunteer assistance in the roles of
             education, communication, advocacy, research, and technical.
             Sustained, committed help in any of these areas will help us grow as
@@ -99,11 +99,11 @@ const Volunteer = () => {
             then we encourage you to apply.
           </p>
 
-          <p className="text-lg text-gray-700 font-[Inter] mt-4 leading-relaxed">
+          <p className="text-lg text-gray-700 dark:text-gray-300 font-[Inter] mt-4 leading-relaxed">
             Send a notification of your interest to
             <a
               href="mailto:info@sugarlabs.org"
-              className="text-blue-500 underline"
+              className="text-blue-500 dark:text-blue-400 underline"
             >
               {' '}
               info@sugarlabs.org
@@ -117,7 +117,7 @@ const Volunteer = () => {
         {/* Volunteer Roles */}
         <div className="mt-16 max-w-6xl px-4" id="volunteer-cards">
           <motion.h2
-            className="text-5xl font-[Caveat] font-bold text-center"
+            className="text-5xl font-[Caveat] font-bold text-center dark:text-gray-100"
             variants={slideInBottom}
             initial="hidden"
             whileInView="visible"
@@ -125,35 +125,44 @@ const Volunteer = () => {
           >
             Volunteer Roles
           </motion.h2>
-          <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
+          <hr className="w-32 border-t-2 border-gray-400 dark:border-gray-600 mx-auto mt-2" />
 
           {/* Role Cards */}
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
             {roleCards.map((role, index) => (
               <motion.div
                 key={index}
-                className="border p-6 rounded-lg shadow-lg bg-white text-center"
+                className="border dark:border-gray-600 p-6 rounded-lg shadow-lg bg-white dark:bg-[#1a1b26] text-center"
                 variants={cardFadeIn}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
               >
-                <h3 className="text-2xl font-bold">{role.title}</h3>
-                <hr className="w-16 border-t-2 border-gray-400 mx-auto mt-2" />
-                <p className="text-gray-700 mt-4">{role.description}</p>
-                <ul className="text-gray-600 text-left mt-3 space-y-2">
+                <h3 className="text-2xl font-bold dark:text-white">
+                  {role.title}
+                </h3>
+                <hr className="w-16 border-t-2 border-gray-400 dark:border-gray-500 mx-auto mt-2" />
+                <p className="text-gray-700 dark:text-gray-200 mt-4">
+                  {role.description}
+                </p>
+                <ul className="text-gray-600 dark:text-gray-300 text-left mt-3 space-y-2">
                   {role.points?.map((point, idx) => (
                     <li key={idx} className="flex items-start">
-                      <span className="text-red-500 font-bold mr-2">•</span>
-                      {point}
+                      <span className="text-red-500 dark:text-red-400 font-bold mr-2">
+                        •
+                      </span>
+                      <span className="dark:text-gray-200">{point}</span>
                     </li>
                   ))}
                 </ul>
                 {role.extra && (
-                  <p className="text-gray-700 text-sm mt-3">
+                  <p className="text-gray-700 dark:text-gray-300 text-sm mt-3">
                     {role.extra}{' '}
                     {role.link && (
-                      <a href={role.link} className="text-blue-500 underline">
+                      <a
+                        href={role.link}
+                        className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 underline"
+                      >
                         {role.link}
                       </a>
                     )}
@@ -172,12 +181,12 @@ const Volunteer = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
         >
-          <h2 className="text-5xl font-bold font-[Caveat]">
+          <h2 className="text-5xl font-bold font-[Caveat] dark:text-gray-100">
             Ways to Get <span className="text-red-500">Involved</span>
           </h2>
-          <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
+          <hr className="w-32 border-t-2 border-gray-400 dark:border-gray-600 mx-auto mt-2" />
 
-          <p className="text-lg text-gray-700 font-[Inter] mt-6 leading-relaxed">
+          <p className="text-lg text-gray-700 dark:text-gray-300 font-[Inter] mt-6 leading-relaxed">
             There are multiple ways to get involved, whether as a developer,
             educator, advocate, or communicator. Each role plays a vital part in
             helping us achieve our mission.
@@ -206,16 +215,16 @@ const Volunteer = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
         >
-          <h2 className="text-5xl font-bold font-[Caveat]">
+          <h2 className="text-5xl font-bold font-[Caveat] dark:text-gray-100">
             Interested in Helping Out?
           </h2>
-          <hr className="w-32 border-t-2 border-gray-400 mx-auto mt-2" />
+          <hr className="w-32 border-t-2 border-gray-400 dark:border-gray-600 mx-auto mt-2" />
 
-          <p className="text-lg text-gray-700 font-[Inter] mt-6 leading-relaxed">
+          <p className="text-lg text-gray-700 dark:text-gray-300 font-[Inter] mt-6 leading-relaxed">
             Feel free to reach out to express your interest in volunteering via{' '}
             <a
               href={mailLink}
-              className="text-blue-500 hover:underline"
+              className="text-blue-500 dark:text-blue-400 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -224,14 +233,17 @@ const Volunteer = () => {
             or{' '}
             <a
               href={matrixLink}
-              className="text-blue-500 hover:underline"
+              className="text-blue-500 dark:text-blue-400 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
               Matrix
             </a>
             . Alternatively, you may send{' '}
-            <Link to="/contact-us" className="text-blue-600 hover:underline">
+            <Link
+              to="/contact-us"
+              className="text-blue-600 dark:text-blue-400 hover:underline"
+            >
               direct message
             </Link>{' '}
             to one of our social media channels.

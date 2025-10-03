@@ -311,12 +311,12 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
   // Component definitions with shared styles
   const headingClasses = {
-    h1: 'text-3xl font-bold my-6 text-gray-900 group flex items-center border-b border-gray-200 pb-2',
-    h2: 'text-2xl font-semibold my-5 text-gray-900 group flex items-center border-b border-gray-200 pb-1',
-    h3: 'text-xl font-semibold my-4 text-gray-900 group flex items-center',
-    h4: 'text-lg font-semibold my-3 text-gray-900',
-    h5: 'text-base font-semibold my-3 text-gray-900',
-    h6: 'text-sm font-semibold my-3 text-gray-600 uppercase tracking-wide',
+    h1: 'text-3xl font-bold my-6 text-gray-900 dark:text-gray-100 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-2',
+    h2: 'text-2xl font-semibold my-5 text-gray-900 dark:text-gray-100 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-1',
+    h3: 'text-xl font-semibold my-4 text-gray-900 dark:text-gray-100 group flex items-center',
+    h4: 'text-lg font-semibold my-3 text-gray-900 dark:text-gray-100',
+    h5: 'text-base font-semibold my-3 text-gray-900 dark:text-gray-100',
+    h6: 'text-sm font-semibold my-3 text-gray-600 dark:text-gray-300 uppercase tracking-wide',
   };
 
   const createHeading =
@@ -344,7 +344,10 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     h6: createHeading('h6'),
 
     p: ({ children, ...props }) => (
-      <p {...props} className="my-4 text-gray-700 leading-relaxed">
+      <p
+        {...props}
+        className="my-4 text-gray-700 dark:text-gray-300 leading-relaxed"
+      >
         {children}
       </p>
     ),
@@ -469,32 +472,41 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     },
 
     table: ({ children, ...props }) => (
-      <div className="overflow-x-auto my-6 rounded-lg shadow-sm border border-gray-200">
-        <table {...props} className="min-w-full divide-y divide-gray-200">
+      <div className="overflow-x-auto my-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <table
+          {...props}
+          className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+        >
           {children}
         </table>
       </div>
     ),
 
     thead: ({ children, ...props }) => (
-      <thead {...props} className="bg-gray-50">
+      <thead {...props} className="bg-gray-50 dark:bg-gray-800">
         {children}
       </thead>
     ),
     tbody: ({ children, ...props }) => (
-      <tbody {...props} className="bg-white divide-y divide-gray-200">
+      <tbody
+        {...props}
+        className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700"
+      >
         {children}
       </tbody>
     ),
     tr: ({ children, ...props }) => (
-      <tr {...props} className="hover:bg-gray-50 transition-colors">
+      <tr
+        {...props}
+        className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+      >
         {children}
       </tr>
     ),
     th: ({ children, ...props }) => (
       <th
         {...props}
-        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r last:border-r-0 border-gray-200"
+        className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider border-r last:border-r-0 border-gray-200 dark:border-gray-700"
       >
         {children}
       </th>
@@ -502,7 +514,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     td: ({ children, ...props }) => (
       <td
         {...props}
-        className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r last:border-r-0 border-gray-200"
+        className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 border-r last:border-r-0 border-gray-200 dark:border-gray-700"
       >
         {children}
       </td>
@@ -519,7 +531,10 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       </ol>
     ),
     li: ({ children, ...props }) => (
-      <li {...props} className="text-gray-700 leading-relaxed">
+      <li
+        {...props}
+        className="text-gray-700 dark:text-gray-300 leading-relaxed"
+      >
         {children}
       </li>
     ),
@@ -532,7 +547,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         <a
           href={href}
           {...props}
-          className="text-blue-600 hover:text-blue-800 hover:underline transition-colors font-medium"
+          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline transition-colors font-medium"
           target={isExternal ? '_blank' : undefined}
           rel={isExternal ? 'noopener noreferrer' : undefined}
           data-anchor-link={isAnchor ? 'true' : undefined}
@@ -558,12 +573,15 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     },
 
     strong: ({ children, ...props }) => (
-      <strong {...props} className="font-semibold text-gray-900">
+      <strong
+        {...props}
+        className="font-semibold text-gray-900 dark:text-gray-100"
+      >
         {children}
       </strong>
     ),
     em: ({ children, ...props }) => (
-      <em {...props} className="italic text-gray-700">
+      <em {...props} className="italic text-gray-700 dark:text-gray-300">
         {children}
       </em>
     ),
@@ -609,7 +627,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   };
 
   return (
-    <div className="prose prose-lg max-w-none">
+    <div className="prose prose-lg dark:prose-invert prose-headings:dark:text-gray-100 prose-p:dark:text-gray-300 prose-strong:dark:text-gray-100 prose-em:dark:text-gray-300 prose-li:dark:text-gray-300 max-w-none">
       <ReactMarkdown
         remarkPlugins={[remarkFrontmatter, remarkGfm, remarkSupersub]}
         rehypePlugins={[

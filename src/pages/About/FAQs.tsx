@@ -46,13 +46,13 @@ const FAQs = () => {
               variants={slideInLeft}
             >
               <motion.h1
-                className="text-4xl font-bold text-gray-100 dark:text-gray-100"
+                className="text-4xl font-bold text-gray-900 dark:text-white"
                 variants={faqPageAnimations.headingText}
               >
                 FAQs
               </motion.h1>
               <motion.p
-                className="text-gray-400 dark:text-gray-400 mt-2 text-lg"
+                className="text-gray-600 dark:text-gray-300 mt-2 text-lg"
                 variants={faqPageAnimations.paragraphText}
               >
                 Have questions? Here you'll find the answers most valued by our
@@ -88,7 +88,7 @@ const FAQs = () => {
             variants={fadeIn}
           >
             <motion.h2
-              className="text-3xl font-bold mb-6"
+              className="text-3xl font-bold mb-6 text-gray-900 dark:text-white"
               variants={headerReveal}
             >
               Quick Answers
@@ -170,7 +170,7 @@ const FAQs = () => {
             variants={faqPageAnimations.faqContainer}
           >
             <motion.h2
-              className="text-3xl font-bold mb-6 capitalize"
+              className="text-3xl font-bold mb-6 capitalize text-gray-900 dark:text-white"
               variants={headerReveal}
             >
               {selectedCategory === 'all'

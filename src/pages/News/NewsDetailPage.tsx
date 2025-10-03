@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ShareModal from '@/components/ShareModal';
 import { Share2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getPostBySlug, Post } from '@/utils/posts-utils';
-import { motion } from 'framer-motion';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import MarkdownRenderer from '@/utils/MarkdownRenderer';
@@ -122,10 +122,12 @@ const NewsDetailPage: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen">
+        <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen bg-white dark:bg-gray-900">
           <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mb-4"></div>
-            <p className="text-gray-600">Loading article...</p>
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 dark:border-blue-400 mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-400">
+              Loading article...
+            </p>
           </div>
         </div>
         <Footer />
@@ -139,15 +141,15 @@ const NewsDetailPage: React.FC = () => {
       <>
         <Header />
         <div className="container mx-auto px-4 py-16 text-center min-h-screen flex flex-col justify-center">
-          <h1 className="text-3xl font-bold mb-4 text-blue-600">
+          <h1 className="text-3xl font-bold mb-4 text-blue-600 dark:text-blue-400">
             {error || 'Post Not Found'}
           </h1>
-          <p className="mb-8 text-gray-600">
+          <p className="mb-8 text-gray-600 dark:text-gray-400">
             The post you're looking for doesn't exist or has been removed.
           </p>
           <button
             onClick={handleGoBack}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mx-auto focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="px-6 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors mx-auto focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             Back to News
           </button>
@@ -161,11 +163,11 @@ const NewsDetailPage: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="container mx-auto px-4 py-8 max-w-4xl bg-white mt-10">
+      <div className="container mx-auto px-4 py-8 max-w-4xl bg-white dark:bg-gray-900 mt-10 rounded-lg">
         {/* Back button */}
         <motion.button
           onClick={handleGoBack}
-          className="mb-6 px-4 py-2 flex items-center text-blue-600 hover:text-blue-700 transition-colors rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="mb-6 px-4 py-2 flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors rounded-md hover:bg-blue-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           aria-label="Back to news list"
@@ -187,14 +189,16 @@ const NewsDetailPage: React.FC = () => {
         </motion.button>
 
         {/* Article Header */}
-        <div className="mb-8 border-b border-gray-200 pb-6">
+        <div className="mb-8 border-b border-gray-200 dark:border-gray-700 pb-6">
           {post.category && (
-            <span className="inline-block px-3 py-1 text-sm font-semibold bg-green-100 text-green-600 mb-4 rounded-full">
+            <span className="inline-block px-3 py-1 text-sm font-semibold bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 mb-4 rounded-full">
               {post.category}
             </span>
           )}
           <div className="flex items-center gap-3 mb-4">
-            <h1 className="text-4xl font-bold text-gray-900">{post.title}</h1>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">
+              {post.title}
+            </h1>
             <button
               onClick={handleShareClick}
               className="p-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow hover:from-blue-700 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 cursor-pointer"
@@ -204,7 +208,7 @@ const NewsDetailPage: React.FC = () => {
               <Share2 size={16} className="text-white" />
             </button>
           </div>
-          <div className="flex flex-wrap items-center text-gray-500 mb-3">
+          <div className="flex flex-wrap items-center text-gray-500 dark:text-gray-400 mb-3">
             {post.date && (
               <>
                 <span className="mr-4 flex items-center">
@@ -258,7 +262,7 @@ const NewsDetailPage: React.FC = () => {
                 <span
                   key={index}
                   onClick={() => handleTagClick(tag)}
-                  className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md hover:bg-blue-100 hover:text-blue-700 cursor-pointer transition-colors"
+                  className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-md hover:bg-blue-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-300 cursor-pointer transition-colors"
                 >
                   #{tag}
                 </span>
@@ -292,7 +296,7 @@ const NewsDetailPage: React.FC = () => {
 
         {/* Article Content */}
         <motion.div
-          className="mb-12"
+          className="mb-12 prose dark:prose-invert  prose-slate max-w-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -307,7 +311,7 @@ const NewsDetailPage: React.FC = () => {
         {/* Author Bio Section */}
         {post.author && (
           <motion.div
-            className="bg-blue-50 rounded-lg p-6 my-8 flex items-center space-x-4 cursor-pointer hover:bg-blue-100 transition-colors"
+            className="bg-blue-50 dark:bg-gray-800 dark:text-white rounded-lg p-6 my-8 flex items-center space-x-4 cursor-pointer hover:bg-blue-100 dark:hover:bg-gray-700 transition-colors"
             onClick={handleAuthorClick}
             whileHover={{ scale: 1.02 }}
           >
@@ -319,17 +323,19 @@ const NewsDetailPage: React.FC = () => {
                   className="w-16 h-16 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl">
+                <div className="w-16 h-16 bg-blue-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-xl">
                   {post.author.name.charAt(0).toUpperCase()}
                 </div>
               )}
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-lg text-gray-800 hover:text-blue-600 transition-colors">
+              <h4 className="font-semibold text-lg text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 About {post.author.name}
               </h4>
-              <p className="text-gray-600 mt-1">{post.author.description}</p>
-              <p className="text-sm text-blue-600 mt-2">
+              <p className="text-gray-600 dark:text-gray-600 mt-1">
+                {post.author.description}
+              </p>
+              <p className="text-sm text-blue-600 dark:text-blue-400 mt-2">
                 Click to view profile →
               </p>
             </div>
@@ -338,14 +344,16 @@ const NewsDetailPage: React.FC = () => {
 
         {/* Tags Section */}
         {post.tags && post.tags.length > 0 && (
-          <div className="border-t border-gray-200 pt-6 mb-8">
-            <h3 className="text-xl font-semibold mb-4 text-gray-700">Tags</h3>
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mb-8">
+            <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-100">
+              Tags
+            </h3>
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
                   onClick={() => handleTagClick(tag)}
-                  className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-blue-100 hover:text-blue-700 cursor-pointer transition-colors"
+                  className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm hover:bg-blue-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400 cursor-pointer transition-colors"
                 >
                   #{tag}
                 </span>
