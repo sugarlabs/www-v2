@@ -17,16 +17,16 @@ import {
 
 const theme = {
   colors: {
-    primary: '#1E3A8A', 
-    secondary: '#3B82F6', 
-    textDark: '#1F2937', 
+    primary: '#1E3A8A',
+    secondary: '#3B82F6',
+    textDark: '#1F2937',
     textLight: '#E5E7EB',
-    bgLight: '#F9FAFB', 
-    bgDark: '#111827', 
-    border: '#D1D5DB', 
+    bgLight: '#F9FAFB',
+    bgDark: '#111827',
+    border: '#D1D5DB',
   },
   typography: {
-    heading: 'font-extrabold tracking-tight', 
+    heading: 'font-extrabold tracking-tight',
     subheading: 'font-semibold tracking-wide',
     body: 'font-normal leading-relaxed',
   },
@@ -46,13 +46,29 @@ const ContactUs: React.FC = () => {
         >
           <div className="absolute inset-0 z-0 opacity-10">
             <svg className="w-full h-full" fill="none" viewBox="0 0 960 540">
-              <pattern id="pattern-zigzag" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                <path d="M0 10L10 0L20 10M10 20L0 10" stroke="white" strokeWidth="0.5" />
+              <pattern
+                id="pattern-zigzag"
+                x="0"
+                y="0"
+                width="20"
+                height="20"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M0 10L10 0L20 10M10 20L0 10"
+                  stroke="white"
+                  strokeWidth="0.5"
+                />
               </pattern>
-              <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-zigzag)" />
+              <rect
+                x="0"
+                y="0"
+                width="100%"
+                height="100%"
+                fill="url(#pattern-zigzag)"
+              />
             </svg>
           </div>
-
 
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
             <motion.div
@@ -123,7 +139,9 @@ const ContactUs: React.FC = () => {
                     iconSrc="assets/Icons/mail.svg"
                     title="By Mail"
                     description={
-                      <address className={`mt-2 not-italic ${theme.typography.body} text-gray-600 text-sm`}>
+                      <address
+                        className={`mt-2 not-italic ${theme.typography.body} text-gray-600 text-sm`}
+                      >
                         Sugar Labs
                         <br />
                         2028 E Ben White Blvd <b>STE 240 PMB 1271</b>
@@ -137,7 +155,7 @@ const ContactUs: React.FC = () => {
 
                   {/* Phone */}
                   <ContactMethod
-                    iconSrc="/assets/Icons/phone.svg" 
+                    iconSrc="/assets/Icons/phone.svg"
                     title="By Phone"
                     description={
                       <a
@@ -154,7 +172,7 @@ const ContactUs: React.FC = () => {
                     iconSrc="/assets/Icons/email.svg"
                     title="By Email"
                     description={
-                     <a
+                      <a
                         href="mailto:info@sugarlabs.org"
                         className={`mt-2 ${theme.typography.body} text-blue-600 hover:text-blue-800 transition duration-200 block text-sm`}
                       >
@@ -241,7 +259,9 @@ const ContactUs: React.FC = () => {
                           aria-hidden="true"
                         />
                       </div>
-                      <span className={`text-sm ${theme.typography.subheading} text-gray-100 group-hover:text-blue-200 transition-colors duration-200 text-center`}>
+                      <span
+                        className={`text-sm ${theme.typography.subheading} text-gray-100 group-hover:text-blue-200 transition-colors duration-200 text-center`}
+                      >
                         {social.name}
                       </span>
                     </motion.a>
@@ -256,10 +276,14 @@ const ContactUs: React.FC = () => {
                 animate="visible"
                 transition={{ delay: 0.4 }}
               >
-                <h3 className={`text-sm uppercase ${theme.typography.subheading} text-gray-300 tracking-wider mb-2`}>
+                <h3
+                  className={`text-sm uppercase ${theme.typography.subheading} text-gray-300 tracking-wider mb-2`}
+                >
                   Follow Our Progress
                 </h3>
-                <p className={`text-xs ${theme.typography.body} text-gray-400 leading-relaxed`}>
+                <p
+                  className={`text-xs ${theme.typography.body} text-gray-400 leading-relaxed`}
+                >
                   Stay updated with our latest developments and educational
                   initiatives.
                 </p>
@@ -287,13 +311,15 @@ const ContactMethod: React.FC<ContactMethodProps> = ({
   <motion.div className="flex items-start" variants={subtleRise}>
     <motion.div
       className="flex-shrink-0 p-3 bg-blue-50 rounded-xl text-blue-600 border border-blue-100 shadow-sm"
-      whileHover={{ scale: 1.05, rotate: 5 }} 
+      whileHover={{ scale: 1.05, rotate: 5 }}
       transition={{ type: 'spring', stiffness: 400, damping: 10 }}
     >
       <img src={iconSrc} alt="" className="h-5 w-5" aria-hidden="true" />
     </motion.div>
     <div className="ml-4">
-      <h3 className={`text-base font-bold text-gray-800 uppercase tracking-wider mb-1 ${theme.typography.subheading}`}>
+      <h3
+        className={`text-base font-bold text-gray-800 uppercase tracking-wider mb-1 ${theme.typography.subheading}`}
+      >
         {title}
       </h3>
       {description}
