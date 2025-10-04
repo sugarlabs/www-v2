@@ -33,7 +33,7 @@ const Paragraph: React.FC<ParagraphProps> = ({
     >
       {/* Styled Title */}
       <motion.h2
-        className="text-4xl font-semibold border-b-2 border-gray-300 inline-block pb-2 font-[Caveat]"
+        className="text-4xl font-semibold border-b-2 border-gray-300 dark:border-gray-600 inline-block pb-2 font-[Caveat] dark:text-white"
         variants={paragraphAnimations.text}
       >
         {title}
@@ -41,7 +41,7 @@ const Paragraph: React.FC<ParagraphProps> = ({
 
       {/* Render Content as a List if Multiple Lines Exist */}
       {contentPoints.length > 1 ? (
-        <ul className="text-gray-700 mt-4 list-disc list-inside text-left">
+        <ul className="text-gray-700 dark:text-gray-300 mt-4 list-disc list-inside text-left">
           {contentPoints.map((point, index) => (
             <motion.li
               key={index}
@@ -61,7 +61,7 @@ const Paragraph: React.FC<ParagraphProps> = ({
         </ul>
       ) : (
         <motion.p
-          className="text-gray-700 mt-4"
+          className="text-gray-700 dark:text-gray-300 mt-4"
           variants={paragraphAnimations.text}
         >
           <span

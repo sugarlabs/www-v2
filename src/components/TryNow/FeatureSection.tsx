@@ -30,9 +30,15 @@ const FeatureSection = ({ data }: { data: FeatureData }) => {
         variants={featureSectionAnimations.textContainer}
       >
         <h1 className="text-5xl font-bold text-blue-600">{data.title}</h1>
-        <h2 className="text-4xl font-bold text-black mt-2">{data.subtitle}</h2>
-        <p className="text-lg font-semibold mt-4">{data.quote}</p>
-        <p className="text-gray-700 mt-4">{data.description}</p>
+        <h2 className="text-4xl font-bold text-black dark:text-white mt-2">
+          {data.subtitle}
+        </h2>
+        <p className="text-lg font-semibold mt-4 dark:text-gray-300">
+          {data.quote}
+        </p>
+        <p className="text-gray-700 dark:text-gray-300 mt-4">
+          {data.description}
+        </p>
       </motion.div>
 
       {/* Right Side: Image Carousel */}
@@ -69,12 +75,14 @@ const FeatureSection = ({ data }: { data: FeatureData }) => {
           </Carousel>
         ) : (
           <motion.div
-            className="w-full max-w-lg h-64 bg-gray-300 rounded-lg flex items-center justify-center"
+            className="w-full max-w-lg h-64 bg-gray-300 dark:bg-gray-700 rounded-lg flex items-center justify-center"
             initial="hidden"
             animate="visible"
             variants={featureSectionAnimations.image}
           >
-            <p className="text-gray-500">No Image Available</p>
+            <p className="text-gray-500 dark:text-gray-400">
+              No Image Available
+            </p>
           </motion.div>
         )}
       </motion.div>
@@ -82,7 +90,7 @@ const FeatureSection = ({ data }: { data: FeatureData }) => {
       {/* Optional Note */}
       {data.note && (
         <motion.p
-          className="text-black font-bold mt-6 text-center w-full"
+          className="text-black dark:text-white font-bold mt-6 text-center w-full"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}

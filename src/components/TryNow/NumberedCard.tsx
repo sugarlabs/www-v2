@@ -42,10 +42,10 @@ const NumberedCard: React.FC<NumberedCardProps> = ({
       </motion.div>
 
       {/* Title */}
-      <h3 className="text-lg font-semibold mt-6">{title}</h3>
+      <h3 className="text-lg font-semibold mt-6 dark:text-white">{title}</h3>
 
       {/* Description */}
-      <p className="text-gray-700 mt-2">{description}</p>
+      <p className="text-gray-700 dark:text-gray-300 mt-2">{description}</p>
 
       {/* Conditionally Render Image */}
       {image && (

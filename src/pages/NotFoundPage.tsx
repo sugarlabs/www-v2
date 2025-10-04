@@ -21,7 +21,7 @@ import {
 
 const NotFoundPage: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9]">
+    <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9] dark:bg-gray-900">
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
@@ -99,10 +99,10 @@ const NotFoundPage: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={fadeIn}
-          className="py-16 bg-[#FFFEF9]"
+          className="py-16 bg-[#FFFEF9] dark:bg-gray-900"
         >
           <div className="container mx-auto px-4 md:px-6 max-w-4xl">
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 p-8">
               <div className="flex flex-col lg:flex-row items-center justify-center">
                 <motion.div
                   className="w-full lg:w-1/2 flex justify-center mb-8 lg:mb-0"
@@ -186,7 +186,7 @@ const NotFoundPage: React.FC = () => {
                   className="w-full lg:w-1/2 lg:pl-8"
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                  <h3 className="font-bold text-2xl text-magazine-navy mb-4 border-b-2 border-[#D4B062] pb-2 inline-block">
+                  <h3 className="font-bold text-2xl text-magazine-navy dark:text-white mb-4 border-b-2 border-[#D4B062] pb-2 inline-block">
                     Connection Status
                   </h3>
 
@@ -196,7 +196,9 @@ const NotFoundPage: React.FC = () => {
                       whileHover={{ x: 5 }}
                     >
                       <div className="w-3 h-3 bg-red-500 rounded-full mr-3 animate-pulse"></div>
-                      <p className="text-gray-700">Resource not found</p>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        Resource not found
+                      </p>
                     </motion.div>
 
                     <motion.div
@@ -204,7 +206,9 @@ const NotFoundPage: React.FC = () => {
                       whileHover={{ x: 5 }}
                     >
                       <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
-                      <p className="text-gray-700">Server connection: Active</p>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        Server connection: Active
+                      </p>
                     </motion.div>
 
                     <motion.div className="mt-6" variants={bounce}>
@@ -234,12 +238,12 @@ const NotFoundPage: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={staggerContainer}
-          className="py-16 bg-[#FFFEF9]"
+          className="py-16 bg-[#FFFEF9] dark:bg-gray-900"
         >
           <div className="container mx-auto px-4 md:px-6">
             <motion.h2
               variants={subtleRise}
-              className="text-3xl font-bold mb-12 text-center text-magazine-navy border-b-2 border-[#D4B062] pb-2 inline-block mx-auto"
+              className="text-3xl font-bold mb-12 text-center text-magazine-navy dark:text-white border-b-2 border-[#D4B062] pb-2 inline-block mx-auto"
             >
               What Happened?
             </motion.h2>
@@ -247,9 +251,9 @@ const NotFoundPage: React.FC = () => {
             <div className="max-w-4xl mx-auto mb-16">
               <motion.div
                 variants={fadeIn}
-                className="bg-white p-6 rounded-xl shadow-md border border-gray-100"
+                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700"
               >
-                <p className="text-gray-600 mb-6 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                   The page you're looking for might have been removed, had its
                   name changed, or is temporarily unavailable. This could be due
                   to:
@@ -269,7 +273,9 @@ const NotFoundPage: React.FC = () => {
                       variants={cardFadeIn}
                     >
                       <div className="mr-3 mt-1 text-[#D4B062]">•</div>
-                      <p className="text-gray-700">{reason}</p>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        {reason}
+                      </p>
                     </motion.div>
                   ))}
                 </div>
@@ -278,7 +284,7 @@ const NotFoundPage: React.FC = () => {
 
             <motion.h2
               variants={subtleRise}
-              className="text-3xl font-bold mb-12 text-center text-magazine-navy"
+              className="text-3xl font-bold mb-12 text-center text-magazine-navy dark:text-white"
             >
               What You Can Do
             </motion.h2>
@@ -308,18 +314,18 @@ const NotFoundPage: React.FC = () => {
                     custom={index}
                     variants={statCard}
                     whileHover="hover"
-                    className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100"
+                    className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700"
                   >
                     <div className="p-6">
                       <div className="flex items-center gap-4 mb-5">
                         <div className="bg-[#D4B062] p-3 rounded-full border-2 border-[#D4B062] text-white">
                           {item.icon}
                         </div>
-                        <h3 className="font-bold text-xl text-magazine-navy">
+                        <h3 className="font-bold text-xl text-magazine-navy dark:text-white">
                           {item.title}
                         </h3>
                       </div>
-                      <p className="text-gray-600 mb-6 leading-relaxed">
+                      <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                         {item.description}
                       </p>
                       {item.action ? (

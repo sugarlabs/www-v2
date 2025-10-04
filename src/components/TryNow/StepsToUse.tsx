@@ -10,7 +10,7 @@ const StepsToUse = () => {
 
   return (
     <section className="w-[90%] mx-auto py-8">
-      <h2 className="text-3xl font-bold text-center text-black mb-6">
+      <h2 className="text-3xl font-bold text-center text-black dark:text-white mb-6">
         Steps to Boot Sugar on a Stick
       </h2>
 
@@ -28,14 +28,14 @@ const StepsToUse = () => {
           {steps.map((step, index) => (
             <div key={index} className="relative text-center">
               {/* TEXT CONTENT */}
-              <div className="text-lg font-semibold text-gray-600">
+              <div className="text-lg font-semibold text-gray-600 dark:text-gray-400">
                 Step {index + 1}
               </div>
-              <h3 className="text-2xl font-semibold text-black mt-1">
+              <h3 className="text-2xl font-semibold text-black dark:text-white mt-1">
                 {step.title}
               </h3>
               <p
-                className="text-gray-700 mt-2"
+                className="text-gray-700 dark:text-gray-300 mt-2"
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(
                     renderContentWithLinks(step.description, step.links),

@@ -69,11 +69,11 @@ const MusicBlocksPage = () => {
 
         <p className="flex justify-center">
           <span className="text-[#436EA6]">Learn music</span>
-          &nbsp;<span>,</span>&nbsp;
+          &nbsp;<span className="dark:text-white">,</span>&nbsp;
           <span className="text-[#FEC613]">math</span>
-          &nbsp;<span>, and</span>&nbsp;
+          &nbsp;<span className="dark:text-white">, and</span>&nbsp;
           <span className="text-[#AB486A]">programming</span>
-          &nbsp;together.
+          &nbsp;<span className="dark:text-white">together.</span>
         </p>
 
         <div className="w-[80%] mx-auto flex justify-center">
@@ -95,7 +95,7 @@ const MusicBlocksPage = () => {
           />
         </div>
 
-        <p className="w-[80%] mx-auto flex justify-center">
+        <p className="w-[80%] mx-auto flex justify-center dark:text-gray-300">
           Music Blocks is an American-made educational software that teaches
           music, math, and programming all at once. By combining blocks that
           indicate instruments and rhythms, and by changing the pitch values,
@@ -115,14 +115,14 @@ const MusicBlocksPage = () => {
           />
         ))}
 
-        <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 pb-2 font-[Caveat] text-center mx-auto w-fit mt-10">
+        <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 dark:border-gray-600 pb-2 font-[Caveat] text-center mx-auto w-fit mt-10 dark:text-white">
           What can you do with{' '}
           <span className="text-[#68A6F7]">Music Blocks</span>??
         </h2>
 
         <LogoCards data={musicBlocksLogoCards} />
 
-        <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 pb-2 font-[Caveat] text-center mx-auto w-fit mt-10">
+        <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 dark:border-gray-600 pb-2 font-[Caveat] text-center mx-auto w-fit mt-10 dark:text-white">
           How <span className="text-[#68A6F7]">Music Blocks</span> help your
           child's education??
         </h2>
