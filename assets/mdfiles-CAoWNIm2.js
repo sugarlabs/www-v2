@@ -19107,7 +19107,8 @@ date: "2025-08-24"
 slug: "2025-08-24-gsoc-25-mebinthattil-week12"
 author: "@/constants/MarkdownFiles/authors/mebin-thattil.md"
 tags: "gsoc25,sugarlabs,week12,mebinthattil,speak_activity"
-image: "assets/Images/GSOCxSpeak.png"
+image: "assets/Images/GSOCxSpeak.webp"
+
 ---
 
 # Week 12 Progress Report by Mebin J Thattil
@@ -19115,7 +19116,7 @@ image: "assets/Images/GSOCxSpeak.png"
 **Project:** [Speak Activity](https://github.com/sugarlabs/speak)  
 **Mentors:** [Chihurumnaya Ibiam](https://github.com/chimosky), [Kshitij Shah](https://github.com/kshitijdshah99)  
 **Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  
-**Reporting Period:** 2025-08-17 - 2025-08-24
+**Reporting Period:** 2025-08-17 - 2025-08-24 
 
 ---
 
