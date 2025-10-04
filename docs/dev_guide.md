@@ -25,14 +25,15 @@ This is sufficient to run, build, and test the project as a whole, but you might
 You'll need _**tsc**_ (_TypeScript Compiler_) to manually compile `.ts` files, and
 _**ts-node**_ (_Node.js executable for TypeScript_) to manually execute .ts scripts directly.
 
-Finally, once _**npm**_ is installed, to install the above, run
+Finally, once _**npm**_ is installed, run the following commands to install the above tools:
+run
 
 ```bash
 npm i -g typescript
 npm i -g ts-node
 ```
 
-_**Note:**_ Users on _Linux_ and _MacOS_ are required to add a `sudo` before these commands.
+_**Note:**_ Users on _Linux_ and _macOS_ are required to add a `sudo` before these commands.
 
 Check installation using
 
@@ -91,7 +92,7 @@ After setup, the steps you take depend on what you want to do:
 
 ## Editor
 
-_All code is just plain text, so any editor works._ However, using modern,
+_All code is plain text, so any editor will work._ However, using modern,
 feature-rich IDEs/text-editors like:
 [_**Atom**_](https://github.blog/2022-06-08-sunsetting-atom/),
 [_**Brackets**_](https://brackets.io),
@@ -113,4 +114,4 @@ Recommended extensions for this project are `Babel JavaScript`, `ESLint`, `Git G
 `GitLens`, `markdownlint`, `Prettier`, `Tailwind CSS IntelliSense`, and `SVG`.
 
 All that, however, shouldn't necessarily stop you from using _**Emacs**_, _**Nano**_, or _**Vim**_,
-if that's your poison :D. Happy coding!
+if that's your preference. Happy coding!
