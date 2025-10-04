@@ -18,23 +18,23 @@
 
 ## Setup Development Environment
 
-This is a _**TypeScript**_ project that uses _**React**_. You'll just need
-_[**Node.js**](https://nodejs.org/en)_ and _**npm**_ installed on your development machine.
+This is a ***TypeScript*** project that uses ***React***. You'll just need
+*[**Node.js**](https://nodejs.org/en)* and ***npm*** installed on your development machine.
 This is sufficient to run, build, and test the project as a whole, but you might need extra tools for other development tasks.
 
-You'll need _**tsc**_ (_TypeScript Compiler_) to manually compile `.ts` files, and
-_**ts-node**_ (_Node.js executable for TypeScript_) to manually execute .ts scripts directly.
+You'll need ***tsc*** (*TypeScript Compiler*) to manually compile `.ts` files, and
+***ts-node*** (*Node.js executable for TypeScript*) to manually execute `.ts` scripts directly.
 
-Finally, once _**npm**_ is installed, to install the above, run
+Finally, once ***npm*** is installed, to install the above, run:
 
 ```bash
 npm i -g typescript
 npm i -g ts-node
 ```
 
-_**Note:**_ Users on _Linux_ and _MacOS_ are required to add a `sudo` before these commands.
+***Note:*** Users on *Linux* and *macOS* are required to add `sudo` before these commands.
 
-Check installation using
+Check installation using:
 
 ```bash
 node -v && npm -v && tsc -v && ts-node -v
@@ -53,15 +53,17 @@ v10.9.2
 
 After setup, the steps you take depend on what you want to do:
 
-- **Run a development server**
-  1. To install all the dependencies (in `package.json`), run
+* **Run a development server**
+
+  1. To install all the dependencies (in `package.json`), run:
 
      ```bash
      npm install
      ```
 
-  2. Run _React scripts_.
-     - For unoptimized development serving, run
+  2. Run *React scripts*:
+
+     * For unoptimized development serving, run:
 
        ```bash
        npm run dev
@@ -69,19 +71,19 @@ After setup, the steps you take depend on what you want to do:
 
        Visit `localhost:5173` in a browser to view the web page served.
 
-     - For generating a generic production build, run
+     * For generating a generic production build, run:
 
        ```bash
        npm run build
        ```
 
-     - For generating a production build under the subdirectory `/www-v2`, run
+     * For generating a production build under the subdirectory `/www-v2`, run:
 
        ```bash
        npm run build
        ```
 
-     - For serving the last production build (`dist` folder), run
+     * For serving the last production build (`dist` folder), run:
 
        ```bash
        npm run preview
@@ -91,26 +93,31 @@ After setup, the steps you take depend on what you want to do:
 
 ## Editor
 
-_All code is just plain text, so any editor works._ However, using modern,
+*All code is just plain text, so any editor works.* However, using modern,
 feature-rich IDEs/text-editors like:
-[_**Atom**_](https://github.blog/2022-06-08-sunsetting-atom/),
-[_**Brackets**_](https://brackets.io),
-[_**WebStorm**_](https://www.jetbrains.com/webstorm/),
-[_**Sublime Text**_](https://www.sublimetext.com/),
-[_**Visual Studio Code**_](https://code.visualstudio.com/), etc. makes development way easier.They provide a directory-tree explorer,
-integrated terminal, and support for plugins/extensions to expand their functionality.
+[***Atom***](https://github.blog/2022-06-08-sunsetting-atom/),
+[***Brackets***](https://brackets.io),
+[***WebStorm***](https://www.jetbrains.com/webstorm/),
+[***Sublime Text***](https://www.sublimetext.com/),
+[***Visual Studio Code***](https://code.visualstudio.com/), etc. makes development much easier.
+They provide a directory-tree explorer,
+an integrated terminal, and support for plugins/extensions to expand their functionality.
 
-Some (non-exhaustive) benefits of using these are _syntax highlighting_,
-_warning/error annotations_, _formatting_, _auto-refactoring_, tons of customizable
-_keyboard shortcuts_, etc.
+Some (non-exhaustive) benefits of using these are *syntax highlighting*,
+*warning/error annotations*, *formatting*, *auto-refactoring*, and tons of customizable
+*keyboard shortcuts*.
 
-_**Visual Studio Code**_ (_**VSCode**_) is currently the most popular code editor due
-to being _lightweight_, _clean_, having a large _extensions_ marketplace, integrated
-_source control_ features, a _debugger_, _remote explorer_ support, and
-_regular-expression-based find/replace_.
+***Visual Studio Code*** (***VSCode***) is currently the most popular code editor due
+to being *lightweight*, *clean*, having a large *extensions* marketplace, integrated
+*source control*, a *debugger*, *remote explorer* support, and
+*regular-expression-based find/replace*.
 
-Recommended extensions for this project are `Babel JavaScript`, `ESLint`, `Git Graph`,
+Recommended extensions for this project are:
+`Babel JavaScript`, `ESLint`, `Git Graph`,
 `GitLens`, `markdownlint`, `Prettier`, `Tailwind CSS IntelliSense`, and `SVG`.
 
-All that, however, shouldn't necessarily stop you from using _**Emacs**_, _**Nano**_, or _**Vim**_,
+All that, however, shouldn't necessarily stop you from using ***Emacs***, ***Nano***, or ***Vim***,
 if that's your poison :D. Happy coding!
+
+```
+```
