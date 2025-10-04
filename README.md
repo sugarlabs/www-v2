@@ -30,16 +30,16 @@ SugarWeb is a client-side web application written in TypeScript. It utilizes Rea
 
 ### Application
 
-- TypeScript 5
-- React 19
-- Tailwind CSS
+- **React 19** – for building dynamic and responsive user interfaces
+- **TypeScript ~5.9.3** – for static typing, enhancing code quality and developer experience
+- **Tailwind CSS 4.1.14** – utility-first CSS framework for rapid UI development
 
 ### Tooling
 
-- Node.js
-- Vite
-- ESLint
-- Prettier
+- **Node.js** – runtime environment for development and build processes
+- **Vite 7.1.7** – fast development server and optimized production builds
+- **ESLint** – for identifying and fixing code issues
+- **Prettier** – for consistent code formatting
 
 ## Development
 
