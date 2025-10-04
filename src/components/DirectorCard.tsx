@@ -6,12 +6,12 @@ const DirectorCard: React.FC<DirectorCardProps> = ({ director }) => {
   const showPlaceholder = imageError || !director.imageUrl;
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+    <div className="flex flex-col h-full bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
       <div className="flex justify-center pt-8 pb-4 relative">
-        <div className="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
-        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-md">
+        <div className="absolute top-0 left-0 w-1 h-full bg-red-500 dark:bg-red-400"></div>
+        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-md">
           {showPlaceholder ? (
-            <div className="flex items-center justify-center w-full h-full bg-gray-100 text-gray-700 text-2xl font-bold">
+            <div className="flex items-center justify-center w-full h-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-2xl font-bold">
               {director.name
                 .split(' ')
                 .map((n) => n[0])
@@ -30,22 +30,24 @@ const DirectorCard: React.FC<DirectorCardProps> = ({ director }) => {
 
       <div className="flex flex-col flex-grow p-5 gap-3">
         <div className="text-center">
-          <h3 className="text-xl font-bold text-gray-900">{director.name}</h3>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+            {director.name}
+          </h3>
           {director.position && (
-            <p className="text-sm font-medium text-red-500 mt-1">
+            <p className="text-sm font-medium text-red-500 dark:text-red-400 mt-1">
               {director.position}
             </p>
           )}
         </div>
 
-        <div className="w-16 h-0.5 bg-gray-200 mx-auto"></div>
+        <div className="w-16 h-0.5 bg-gray-200 dark:bg-gray-700 mx-auto"></div>
         <div className="flex-grow">
-          <div className="text-gray-600 text-sm leading-relaxed max-h-28 overflow-y-auto pr-1 custom-scrollbar">
+          <div className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed max-h-28 overflow-y-auto pr-1 custom-scrollbar">
             {director.bio || 'No biography available.'}
           </div>
         </div>
 
-        <div className="pt-3 mt-auto border-t border-gray-100">
+        <div className="pt-3 mt-auto border-t border-gray-100 dark:border-gray-700">
           <div className="flex items-center justify-center gap-4">
             {director.socialLinks?.linkedin && (
               <SocialLink
@@ -71,7 +73,7 @@ const DirectorCard: React.FC<DirectorCardProps> = ({ director }) => {
             {!director.socialLinks?.linkedin &&
               !director.socialLinks?.github &&
               !director.socialLinks?.wiki && (
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-gray-400 dark:text-gray-500">
                   No social links available
                 </span>
               )}
@@ -87,7 +89,7 @@ const SocialLink: React.FC<SocialLinkProps> = ({ href, aria, icon }) => (
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="text-gray-500 hover:text-red-500 transition-colors"
+    className="text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
     aria-label={aria}
   >
     {icon}

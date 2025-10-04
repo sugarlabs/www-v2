@@ -59,7 +59,7 @@ const FlatHubPage = () => {
           />
         ))}
 
-        <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 pb-2 font-[Caveat] text-center mx-auto w-fit mt-10">
+        <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 dark:border-gray-600 pb-2 font-[Caveat] text-center mx-auto w-fit mt-10 dark:text-white">
           What can you do with <span className="text-[#68A6F7]">Flatpak</span>?
         </h2>
 
@@ -69,7 +69,7 @@ const FlatHubPage = () => {
 
         <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 my-8">
           <div className="w-full md:w-1/2">
-            <h2 className="text-2xl font-semibold mb-4 text-center font-Caveat">
+            <h2 className="text-2xl font-semibold mb-4 text-center font-Caveat dark:text-white">
               Getting Started
             </h2>
             <div className="grid grid-cols-1 gap-4 mt-6 p-4">
@@ -86,7 +86,7 @@ const FlatHubPage = () => {
             </div>
           </div>
           <div className="w-full md:w-1/2">
-            <h2 className="text-2xl font-semibold mb-4 text-center font-[Caveat]">
+            <h2 className="text-2xl font-semibold mb-4 text-center font-[Caveat] dark:text-white">
               Next Steps
             </h2>
             <div className="grid grid-cols-1 gap-4 mt-6 p-4">
@@ -104,12 +104,13 @@ const FlatHubPage = () => {
         </div>
 
         {/* New Developer Section */}
-        <div className="my-12 p-6 bg-gray-50 rounded-lg shadow-sm">
-          <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 pb-2 font-[Caveat] text-center mx-auto w-fit mb-6">
-            For <span className="text-blue-600">Developers</span>
+        <div className="my-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm">
+          <h2 className="text-3xl sm:text-4xl font-semibold border-b-2 border-gray-300 dark:border-gray-600 pb-2 font-[Caveat] text-center mx-auto w-fit mb-6 dark:text-white">
+            For{' '}
+            <span className="text-blue-600 dark:text-blue-400">Developers</span>
           </h2>
           <div className="max-w-3xl mx-auto">
-            <p className="text-lg mb-4">
+            <p className="text-lg mb-4 dark:text-gray-300">
               Looking to package and distribute Sugar activities using Flatpak?
               Our comprehensive guide walks you through the entire process of
               creating, building, and publishing Flatpak applications.

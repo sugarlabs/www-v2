@@ -11,21 +11,24 @@ const ProjectsSection = () => {
     : projects.slice(0, initialProjectCount);
 
   return (
-    <section id={projectsContent.sectionId} className="w-full py-24">
+    <section
+      id={projectsContent.sectionId}
+      className="w-full py-24 dark:bg-gray-900"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center mb-16">
           <motion.h2
-            className="text-3xl font-semibold text-slate-800 sm:text-4xl mb-4 tracking-tight"
+            className="text-3xl font-semibold text-slate-800 dark:text-slate-200 sm:text-4xl mb-4 tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-blue-900 font-medium">
+            <span className="text-blue-900 dark:text-blue-400 font-medium">
               {projectsContent.title.prefix}
             </span>{' '}
-            <span className="text-red-600 font-medium">
+            <span className="text-red-600 dark:text-red-400 font-medium">
               {projectsContent.title.highlight}
             </span>
           </motion.h2>
@@ -40,7 +43,7 @@ const ProjectsSection = () => {
 
           {projectsContent.description && (
             <motion.p
-              className="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto"
+              className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -62,14 +65,14 @@ const ProjectsSection = () => {
               transition={{ duration: 0.6, delay: 0.1 * i }}
               className="h-full"
             >
-              <div className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col border border-slate-100 transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px]">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden h-full flex flex-col border border-slate-100 dark:border-gray-700 transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px]">
                 <div className="relative">
                   <div className="absolute top-0 right-0 z-10">
                     <div className="bg-blue-600 text-white text-xs py-1 px-3 font-medium">
                       Project {i + 1}
                     </div>
                   </div>
-                  <div className="w-full h-48 bg-slate-50 flex items-center justify-center p-6">
+                  <div className="w-full h-48 bg-slate-50 dark:bg-gray-700 flex items-center justify-center p-6">
                     <img
                       src={project.imageUrl}
                       alt={project.title}
@@ -79,11 +82,11 @@ const ProjectsSection = () => {
                 </div>
 
                 <div className="p-6 flex flex-col flex-grow">
-                  <h3 className="text-lg font-semibold text-slate-800 mb-3 pb-2 border-b border-slate-100">
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3 pb-2 border-b border-slate-100 dark:border-gray-700">
                     {project.title}
                   </h3>
 
-                  <p className="text-slate-600 mb-6 flex-grow text-base">
+                  <p className="text-slate-600 dark:text-slate-300 mb-6 flex-grow text-base">
                     {project.description}
                   </p>
 
@@ -92,7 +95,7 @@ const ProjectsSection = () => {
                       {project.tags.map((tag, tagIndex) => (
                         <span
                           key={tagIndex}
-                          className="px-2 py-1 bg-slate-100 text-slate-700 rounded-full text-xs font-medium"
+                          className="px-2 py-1 bg-slate-100 dark:bg-gray-700 text-slate-700 dark:text-slate-300 rounded-full text-xs font-medium"
                         >
                           {tag}
                         </span>
@@ -104,7 +107,7 @@ const ProjectsSection = () => {
                   {project.link && (
                     <a
                       href={project.link}
-                      className="text-blue-600 hover:text-red-600 font-medium text-sm flex items-center gap-1 mt-auto transition-colors duration-300 group"
+                      className="text-blue-600 dark:text-blue-400 hover:text-red-600 dark:hover:text-red-400 font-medium text-sm flex items-center gap-1 mt-auto transition-colors duration-300 group"
                     >
                       {projectsContent.ctaText || 'Learn More'}
                       <svg
@@ -128,7 +131,7 @@ const ProjectsSection = () => {
                       href={project.exlink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-red-600 font-medium text-sm flex items-center gap-1 mt-auto transition-colors duration-300 group"
+                      className="text-blue-600 dark:text-blue-400 hover:text-red-600 dark:hover:text-red-400 font-medium text-sm flex items-center gap-1 mt-auto transition-colors duration-300 group"
                     >
                       {projectsContent.ctaText || 'Visit Website'}
                       <svg
@@ -149,7 +152,7 @@ const ProjectsSection = () => {
 
                   {!project.link && !project.exlink && (
                     <button
-                      className="text-blue-600 hover:text-red-600 font-medium text-sm flex items-center gap-1 mt-auto transition-colors duration-300 group"
+                      className="text-blue-600 dark:text-blue-400 hover:text-red-600 dark:hover:text-red-400 font-medium text-sm flex items-center gap-1 mt-auto transition-colors duration-300 group"
                       onClick={() => (window.location.href = '#projects')}
                     >
                       {projectsContent.ctaText || 'Learn More'}
@@ -186,7 +189,7 @@ const ProjectsSection = () => {
             {!showAllProjects ? (
               <button
                 onClick={() => setShowAllProjects(true)}
-                className="px-8 py-3 bg-blue-600 hover:bg-red-600 cursor-pointer text-white rounded-lg shadow-sm font-medium transition-all duration-300 inline-flex items-center gap-2"
+                className="px-8 py-3 bg-blue-600 hover:bg-red-600 dark:bg-blue-600 dark:hover:bg-red-700 cursor-pointer text-white rounded-lg shadow-sm font-medium transition-all duration-300 inline-flex items-center gap-2"
               >
                 Show more
                 <svg

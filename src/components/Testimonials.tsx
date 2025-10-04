@@ -62,7 +62,7 @@ const ReviewCard = ({
           <motion.img
             src={img}
             alt={name}
-            className="w-12 h-12 rounded-full border border-gray-300 object-cover"
+            className="w-12 h-12 rounded-full border border-gray-300 dark:border-gray-600"
             variants={avatarReveal}
             onError={() => setImgError(true)}
           />
@@ -93,7 +93,7 @@ export function Testimonials() {
   const secondRow = testimonials.slice(Math.ceil(testimonials.length / 2));
 
   return (
-    <div className="w-full bg-gradient-to-b from-white-800 to-[#F5DDC8]">
+    <div className="w-full bg-gradient-to-b from-white-800 to-[#F5DDC8] dark:from-gray-900 dark:to-gray-800">
       {/* Heading Section with Hearts */}
       <motion.div
         className="flex items-center justify-center gap-4 md:gap-6 mb-12"
@@ -124,10 +124,10 @@ export function Testimonials() {
 
           {/* Heading */}
           <motion.h2
-            className="font-bold tracking-wider font-Caveat text-3xl md:text-5xl lg:text-6xl text-gray-800 text-center"
+            className="font-bold tracking-wider font-Caveat text-3xl md:text-5xl lg:text-6xl text-gray-800 dark:text-gray-200 text-center"
             variants={testimonialHeading}
           >
-            <span className="text-black">
+            <span className="text-black dark:text-white">
               Words of appreciation and
               <br /> admiration from others.
             </span>
@@ -185,8 +185,8 @@ export function Testimonials() {
         </Marquee>
 
         {/* Gradient Fades */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-6 md:w-10 bg-gradient-to-r from-background"></div>
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-6 md:w-10 bg-gradient-to-l from-background"></div>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-6 md:w-10 bg-gradient-to-r from-[#F5DDC8] dark:from-gray-800"></div>
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-6 md:w-10 bg-gradient-to-l from-[#F5DDC8] dark:from-gray-800"></div>
       </motion.div>
     </div>
   );

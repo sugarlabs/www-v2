@@ -21,14 +21,14 @@ const TeamSection: React.FC<{ members: TeamMember[] }> = ({ members }) => {
     >
       {/* Title */}
       <motion.h1
-        className="text-5xl font-[Caveat] font-bold"
+        className="text-5xl font-[Caveat] font-bold dark:text-white"
         variants={teamSectionAnimations.heading}
       >
         Music Blocks Offline Edition
       </motion.h1>
 
       <motion.h2
-        className="text-4xl font-[Caveat] font-bold mt-2"
+        className="text-4xl font-[Caveat] font-bold mt-2 dark:text-white"
         variants={teamSectionAnimations.heading}
       >
         and <br /> Curriculum Development Team
@@ -41,7 +41,7 @@ const TeamSection: React.FC<{ members: TeamMember[] }> = ({ members }) => {
 
       {/* Grid Layout for Members */}
       <motion.div
-        className="grid md:grid-cols-2 gap-10 mt-12 bg-gray-100 p-10 rounded-lg"
+        className="grid md:grid-cols-2 gap-10 mt-12 bg-gray-100 dark:bg-gray-800 p-10 rounded-lg"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
@@ -50,7 +50,7 @@ const TeamSection: React.FC<{ members: TeamMember[] }> = ({ members }) => {
         {members.map((member, index) => (
           <motion.div
             key={index}
-            className="flex flex-col md:flex-row items-center bg-white shadow-lg rounded-lg p-6"
+            className="flex flex-col md:flex-row items-center bg-white dark:bg-gray-700 shadow-lg rounded-lg p-6"
             variants={teamSectionAnimations.memberCard}
           >
             {/* Member Image */}
@@ -69,7 +69,9 @@ const TeamSection: React.FC<{ members: TeamMember[] }> = ({ members }) => {
               >
                 {member.name}
               </h3>
-              <p className="text-gray-700 mt-2">{member.description}</p>
+              <p className="text-gray-700 dark:text-gray-300 mt-2">
+                {member.description}
+              </p>
             </div>
           </motion.div>
         ))}

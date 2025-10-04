@@ -11,7 +11,7 @@ import { bannerConfigs } from '@/constants/Banner';
 
 const MainPage = () => {
   return (
-    <>
+    <div className="bg-white dark:bg-gray-900">
       <Header />
       <PromoBanner bannerConfigs={bannerConfigs} />
       <Info />
@@ -21,7 +21,7 @@ const MainPage = () => {
       <TryMore />
       <Donation />
       <Footer />
-    </>
+    </div>
   );
 };
 

@@ -19,7 +19,7 @@ const AboutUs = () => {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white dark:bg-gray-900 min-h-screen">
       <div className="relative z-20">
         <Header />
       </div>

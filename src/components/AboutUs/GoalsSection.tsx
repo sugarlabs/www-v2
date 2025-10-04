@@ -4,21 +4,21 @@ import { FC } from 'react';
 
 const GoalsSection: FC = () => {
   return (
-    <section id="goals" className="w-full py-24 bg-white">
+    <section id="goals" className="w-full py-24 bg-white dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center mb-16">
           <motion.h2
-            className="text-3xl font-semibold text-slate-800 sm:text-4xl mb-4 tracking-tight"
+            className="text-3xl font-semibold text-slate-800 dark:text-slate-200 sm:text-4xl mb-4 tracking-tight"
             initial={animations.flowContainer.initial}
             whileInView={animations.flowContainer.whileInView}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-blue-900 font-medium">
+            <span className="text-blue-900 dark:text-blue-400 font-medium">
               {sectionContent.title.main}
             </span>{' '}
-            <span className="text-red-600 font-medium">
+            <span className="text-red-600 dark:text-red-400 font-medium">
               {sectionContent.title.highlight}
             </span>
           </motion.h2>
@@ -32,7 +32,7 @@ const GoalsSection: FC = () => {
           />
 
           <motion.p
-            className="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto"
+            className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto"
             initial={animations.flowContainer.initial}
             whileInView={animations.flowContainer.whileInView}
             viewport={{ once: true }}
@@ -47,7 +47,7 @@ const GoalsSection: FC = () => {
           {goals.map((goal, i) => (
             <motion.div
               key={i}
-              className="bg-white rounded-lg shadow-sm p-6 border border-slate-100 transition-all duration-300 
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-slate-100 dark:border-gray-700 transition-all duration-300 
                 hover:shadow-md group relative overflow-hidden"
               initial={animations.goalItem.initial}
               whileInView={{ opacity: 1, x: 0 }}
@@ -66,20 +66,20 @@ const GoalsSection: FC = () => {
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-rose-400 flex items-center justify-center text-white font-semibold text-sm">
                   {i + 1}
                 </div>
-                <div className="h-px flex-grow bg-slate-100 ml-3"></div>
+                <div className="h-px flex-grow bg-slate-100 dark:bg-gray-700 ml-3"></div>
               </div>
 
               {/* Goal content */}
-              <h4 className="font-semibold text-slate-800 text-lg mb-3">
+              <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-lg mb-3">
                 {goal.title}
               </h4>
-              <p className="text-slate-600 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                 {goal.description}
               </p>
 
               {/* Category tag */}
               {goal.category && (
-                <div className="mt-4 inline-block px-3 py-1 bg-slate-50 text-xs font-medium text-slate-600 rounded-full">
+                <div className="mt-4 inline-block px-3 py-1 bg-slate-50 dark:bg-gray-700 text-xs font-medium text-slate-600 dark:text-slate-300 rounded-full">
                   {goal.category}
                 </div>
               )}

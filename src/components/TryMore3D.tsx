@@ -48,7 +48,7 @@ const ReviewCard = ({
 
 export function TryMore() {
   return (
-    <div className="relative flex flex-col lg:flex-row h-auto lg:h-96 w-full items-center justify-center gap-6 lg:gap-4 overflow-hidden [perspective:300px] px-4 sm:px-6 md:px-10 lg:pl-20 bg-gradient-to-b from-[#F5DDC8] to-white-800">
+    <div className="relative flex flex-col lg:flex-row h-auto lg:h-96 w-full items-center justify-center gap-6 lg:gap-4 overflow-hidden [perspective:300px] px-4 sm:px-6 md:px-10 lg:pl-20 bg-gradient-to-b from-[#F5DDC8] to-white dark:from-gray-800 dark:to-gray-900">
       <div className="height- 30px"></div>
 
       {/* Left Side Content */}
@@ -60,7 +60,7 @@ export function TryMore() {
         variants={staggerContainer}
       >
         <motion.h2
-          className="text-3xl sm:text-4xl font-extrabold text-[#975555] dark:text-[#975555]"
+          className="text-3xl sm:text-4xl font-extrabold text-[#975555] dark:text-red-400"
           variants={headerReveal}
         >
           <motion.span variants={slideInLeft} custom={0}>

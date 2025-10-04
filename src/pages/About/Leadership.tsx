@@ -14,14 +14,14 @@ import {
 
 const Leadership = () => {
   return (
-    <div>
+    <div className="bg-white dark:bg-gray-900">
       <Header />
-      <section className="py-24 px-4 bg-white">
+      <section className="py-24 px-4 bg-white dark:bg-gray-900">
         <div className="container mx-auto max-w-7xl">
           {/* Section header with animations */}
           <div className="text-center mb-16">
             <motion.h2
-              className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+              className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -50,7 +50,7 @@ const Leadership = () => {
             </div>
 
             <motion.p
-              className="text-lg text-gray-600 max-w-3xl mx-auto"
+              className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}

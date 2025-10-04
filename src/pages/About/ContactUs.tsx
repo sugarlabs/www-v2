@@ -19,7 +19,7 @@ const ContactUs: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Hero Section */}
         <motion.section
           variants={fadeIn}
@@ -93,7 +93,7 @@ const ContactUs: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
             {/* Contact Information Card */}
             <motion.div
-              className="lg:col-span-7 bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 transition-shadow duration-300 hover:shadow-lg"
+              className="lg:col-span-7 bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition-shadow duration-300 hover:shadow-lg"
               variants={slideInLeft}
               initial="hidden"
               animate="visible"
@@ -102,7 +102,7 @@ const ContactUs: React.FC = () => {
             >
               <div className="p-6 md:p-8 lg:p-10">
                 <motion.h2
-                  className="text-2xl font-bold text-gray-800 mb-8 flex items-center"
+                  className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-8 flex items-center"
                   variants={fadeIn}
                   initial="hidden"
                   animate="visible"
@@ -122,7 +122,7 @@ const ContactUs: React.FC = () => {
                     iconSrc="assets/Icons/mail.svg"
                     title="By Mail"
                     description={
-                      <address className="mt-2 not-italic text-gray-600 leading-relaxed text-sm">
+                      <address className="mt-2 not-italic text-gray-600 dark:text-gray-400 leading-relaxed text-sm">
                         Sugar Labs
                         <br />
                         2028 E Ben White Blvd <b>STE 240 PMB 1271</b>
@@ -141,7 +141,7 @@ const ContactUs: React.FC = () => {
                     description={
                       <a
                         href="tel:+16177024088"
-                        className="mt-2 text-gray-600 hover:text-blue-600 transition duration-200 block text-sm"
+                        className="mt-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition duration-200 block text-sm"
                       >
                         +1 (617) 702-4088
                       </a>
@@ -155,7 +155,7 @@ const ContactUs: React.FC = () => {
                     description={
                       <a
                         href="mailto:info@sugarlabs.org"
-                        className="mt-2 text-gray-600 hover:text-blue-600 transition duration-200 block text-sm"
+                        className="mt-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition duration-200 block text-sm"
                       >
                         info@sugarlabs.org
                       </a>
@@ -169,7 +169,7 @@ const ContactUs: React.FC = () => {
                     description={
                       <Link
                         to="matrix"
-                        className="mt-2 text-gray-600 hover:text-blue-600 transition duration-200 block text-sm"
+                        className="mt-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition duration-200 block text-sm"
                       >
                         Go to Matrix Chat
                       </Link>
@@ -285,14 +285,14 @@ const ContactMethod: React.FC<ContactMethodProps> = ({
 }) => (
   <motion.div className="flex items-start" variants={subtleRise}>
     <motion.div
-      className="flex-shrink-0 p-3 bg-blue-50 rounded-lg text-blue-600 border border-blue-100"
+      className="flex-shrink-0 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-500/30"
       whileHover={{ scale: 1.1 }}
       transition={{ type: 'spring', stiffness: 400, damping: 10 }}
     >
       <img src={iconSrc} alt="" className="h-5 w-5" aria-hidden="true" />
     </motion.div>
     <div className="ml-4">
-      <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider">
+      <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200 uppercase tracking-wider">
         {title}
       </h3>
       {description}

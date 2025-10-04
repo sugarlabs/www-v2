@@ -38,13 +38,13 @@ const FAQItem = ({ index, question, answer }: FAQItemProps) => {
   return (
     <motion.div
       key={index}
-      className="border-b last:border-b-0"
+      className="border-b last:border-b-0 border-gray-200 dark:border-gray-700"
       variants={faqItemVariants}
       initial="initial"
       animate="animate"
     >
       <motion.button
-        className="w-full text-left py-4 text-lg font-medium flex justify-between items-center hover:cursor-pointer"
+        className="w-full text-left py-4 text-lg font-medium flex justify-between items-center hover:cursor-pointer text-gray-900 dark:text-gray-100"
         onClick={toggleFAQ}
         whileHover="hover"
         variants={faqQuestionButtonVariants}
@@ -54,6 +54,7 @@ const FAQItem = ({ index, question, answer }: FAQItemProps) => {
           variants={faqToggleIconVariants(isOpen)}
           initial="initial"
           animate="animate"
+          className="text-gray-600 dark:text-gray-400"
         >
           {isOpen ? '-' : '+'}
         </motion.span>
@@ -64,7 +65,7 @@ const FAQItem = ({ index, question, answer }: FAQItemProps) => {
         animate="animate"
         style={{ overflow: 'hidden' }}
       >
-        <p className="p-4 text-gray-700">{answer}</p>
+        <p className="p-4 text-gray-700 dark:text-gray-300">{answer}</p>
       </motion.div>
     </motion.div>
   );

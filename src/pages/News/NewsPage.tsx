@@ -153,7 +153,7 @@ const NewsPage: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-black dark:to-gray-800">
           <div className="container mx-auto px-4 py-20">
             <motion.div
               className="text-center max-w-2xl mx-auto"
@@ -173,12 +173,12 @@ const NewsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl p-8 shadow-xl">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mx-auto mb-6" />
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
                   Loading Latest News
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-400">
                   Fetching the most recent stories from Sugar Labs community...
                 </p>
               </div>
@@ -194,7 +194,7 @@ const NewsPage: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-black dark:to-gray-800">
           <div className="container mx-auto px-4 py-20 text-center">
             <motion.h1
               className="text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600 mb-8"
@@ -218,7 +218,7 @@ const NewsPage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
                 Oops! Something went wrong
               </h2>
               <p className="text-red-600 mb-6">{error}</p>
@@ -239,7 +239,7 @@ const NewsPage: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-black dark:to-gray-800">
         {/* Enhanced Hero Section */}
         <div className="relative overflow-hidden">
           <div className="absolute inset-0">
@@ -269,7 +269,7 @@ const NewsPage: React.FC = () => {
                 />
               </div>
 
-              <p className="text-xl mb-8 text-gray-700 leading-relaxed">
+              <p className="text-xl mb-8 text-gray-700 dark:text-gray-300 leading-relaxed ">
                 Discover the latest innovations, community updates, and
                 educational insights from the Sugar Labs ecosystem
               </p>
@@ -281,7 +281,7 @@ const NewsPage: React.FC = () => {
 
         <div className="container mx-auto px-4 py-8">
           {/* Enhanced Filters and Controls */}
-          <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-100">
+          <div className="bg-white dark:bg-gray-800/50 dark:backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-8 border border-gray-100 dark:border-gray-700">
             <div className="flex flex-col lg:flex-row gap-6">
               {/* Search Bar */}
               <div className="flex-1">
@@ -306,7 +306,7 @@ const NewsPage: React.FC = () => {
                         : '';
                       navigate(`/news/${catPath}${query}`, { replace: true });
                     }}
-                    className="w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                   />
                   {searchTerm && (
                     <button
@@ -329,13 +329,13 @@ const NewsPage: React.FC = () => {
 
               {/* View Mode Toggle */}
               <div className="flex items-center gap-4">
-                <div className="flex bg-gray-100 rounded-xl p-1">
+                <div className="flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
                   <button
                     onClick={() => setViewMode('grid')}
                     className={`p-3 rounded-lg transition-all duration-300 ${
                       viewMode === 'grid'
-                        ? 'bg-white text-blue-600 shadow-md'
-                        : 'text-gray-600 hover:text-blue-600'
+                        ? 'bg-white dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
+                        : 'text-gray-600 dark:text-gray-400 hover:text-blue-600'
                     }`}
                     title="Grid View"
                   >
@@ -345,8 +345,8 @@ const NewsPage: React.FC = () => {
                     onClick={() => setViewMode('list')}
                     className={`p-3 rounded-lg transition-all duration-300 ${
                       viewMode === 'list'
-                        ? 'bg-white text-blue-600 shadow-md'
-                        : 'text-gray-600 hover:text-blue-600'
+                        ? 'bg-white  dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
+                        : 'text-gray-600  dark:text-gray-400 hover:text-blue-600'
                     }`}
                     title="List View"
                   >
@@ -357,10 +357,13 @@ const NewsPage: React.FC = () => {
             </div>
 
             {/* Category Filters - Always Visible */}
-            <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
               <div className="flex items-center mb-4">
-                <Tag className="text-gray-600 mr-2" size={20} />
-                <h3 className="text-lg font-semibold text-gray-800">
+                <Tag
+                  className="text-gray-600 dark:text-gray-400 mr-2"
+                  size={20}
+                />
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                   Categories
                 </h3>
               </div>
@@ -372,7 +375,7 @@ const NewsPage: React.FC = () => {
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                       activeCategory === cat
                         ? 'bg-[#144EEC] text-white shadow-lg'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                        : 'bg-gray-100 dark:bg-gray-700 dark:text-gray-300 text-gray-700 hover:bg-gray-200 hover:shadow-md'
                     }`}
                     whileHover={{ scale: 1.05, cursor: 'pointer' }}
                     whileTap={{ scale: 0.95 }}
@@ -392,15 +395,18 @@ const NewsPage: React.FC = () => {
           {/* Template Category Note */}
           {activeCategory.toLowerCase() === 'template' && (
             <motion.div
-              className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-8 shadow-sm"
+              className="bg-amber-50 dark:bg-amber-900/50 border border-amber-200 dark:border-amber-700/50 rounded-2xl p-6 mb-8 shadow-sm"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
               <div className="flex items-start gap-3">
-                <Info className="text-amber-600 mt-1 flex-shrink-0" size={20} />
+                <Info
+                  className="text-amber-600 dark:text-amber-500 mt-1 flex-shrink-0"
+                  size={20}
+                />
                 <div>
-                  <p className="text-amber-800 font-medium">
+                  <p className="text-amber-800 dark:text-amber-300 font-medium">
                     <strong>Note:</strong> These are developer templates for
                     post formatting.
                   </p>
@@ -419,7 +425,7 @@ const NewsPage: React.FC = () => {
             <h2 className="text-5xl font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600 mb-2">
               {activeCategory} {searchTerm && `· "${searchTerm}"`}
             </h2>
-            <p className="text-gray-600 flex items-center justify-center gap-2">
+            <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
               <span>{filteredPosts.length} articles found</span>
               {searchTerm && (
                 <button
@@ -447,12 +453,12 @@ const NewsPage: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <div className="bg-white rounded-2xl p-12 shadow-xl max-w-md mx-auto">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 shadow-xl max-w-md mx-auto">
                   <div className="text-6xl mb-6">🔍</div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
                     No articles found
                   </h3>
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-gray-600 dark:text-gray-400 mb-6">
                     {searchTerm
                       ? `No articles match "${searchTerm}" in this category.`
                       : 'There are no articles in this category yet.'}
@@ -482,7 +488,7 @@ const NewsPage: React.FC = () => {
                 {visiblePosts.map((post, index) => (
                   <motion.article
                     key={post.slug}
-                    className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden group ${
+                    className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden group ${
                       viewMode === 'list' ? 'flex' : ''
                     }`}
                     onClick={() => handlePostClick(post.slug)}
@@ -504,7 +510,7 @@ const NewsPage: React.FC = () => {
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                           />
                         ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-blue-100 via-purple-50 to-green-100 flex items-center justify-center">
+                          <div className="w-full h-full bg-gradient-to-br from-blue-100 via-purple-50 to-green-100 dark:from-blue-900/50 dark:via-purple-900/50 dark:to-green-900/50 flex items-center justify-center">
                             <div className="text-6xl opacity-50">📰</div>
                           </div>
                         )}
@@ -533,25 +539,25 @@ const NewsPage: React.FC = () => {
                     >
                       <div>
                         <h3
-                          className={`font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors ${
+                          className={`font-bold text-gray-800 dark:text-gray-200 mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors ${
                             viewMode === 'list' ? 'text-xl' : 'text-lg'
                           }`}
                         >
                           {post.title}
                         </h3>
-                        <p className="text-gray-600 text-sm line-clamp-3 mb-4 leading-relaxed">
+                        <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 mb-4 leading-relaxed">
                           {post.excerpt}
                         </p>
                       </div>
 
                       <div className="flex items-center justify-between">
                         {post.date && (
-                          <div className="flex items-center text-sm text-gray-500">
+                          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                             <CalendarRange size={14} className="mr-2" />
                             {post.date}
                           </div>
                         )}
-                        <div className="flex items-center text-blue-600 text-sm font-medium group-hover:text-blue-700">
+                        <div className="flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300">
                           Read more
                           <ArrowRight
                             size={14}

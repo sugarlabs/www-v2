@@ -66,7 +66,7 @@ const Try: React.FC = () => {
       animate="visible"
       variants={fadeIn}
     >
-      <motion.main className="flex-grow bg-[#F6DEC9] px-3 sm:px-4 md:px-8 lg:px-16 py-6 sm:py-8 md:py-12 lg:py-16">
+      <motion.main className="flex-grow bg-[#F6DEC9] dark:bg-gray-900/95 px-3 sm:px-4 md:px-8 lg:px-16 py-6 sm:py-8 md:py-12 lg:py-16">
         <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
           <motion.header
             className="space-y-3 sm:space-y-4 md:space-y-6"
@@ -83,7 +83,7 @@ const Try: React.FC = () => {
                 EXPERIENCE
               </motion.span>
               <motion.span
-                className="text-black sm:ml-2 mt-1 sm:mt-0"
+                className="text-black dark:text-white sm:ml-2 mt-1 sm:mt-0"
                 variants={slideInRight}
               >
                 SUGAR
@@ -94,14 +94,14 @@ const Try: React.FC = () => {
               variants={subtleRise}
             >
               <motion.p
-                className="text-[#975555] text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight"
+                className="text-[#975555] dark:text-pink-400 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight"
                 variants={fadeIn}
               >
                 "Our educational tools can be experienced in a number of ways.
                 Try the ones that are best for you!"
               </motion.p>
               <motion.i
-                className="text-xs md:text-sm text-gray-700 block"
+                className="text-xs md:text-sm text-gray-700 dark:text-gray-400 block"
                 variants={fadeIn}
               >
                 Whether you enjoy hands-on activities, visual learning, or
@@ -163,7 +163,7 @@ const Try: React.FC = () => {
                   onClick={() =>
                     handleSwipe('prev', setCurrentCard, TryCardData.length)
                   }
-                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
+                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 dark:bg-gray-800/80 text-[#975555] dark:text-pink-400 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-700 transition-all"
                   aria-label="Previous"
                 >
                   <svg
@@ -184,7 +184,7 @@ const Try: React.FC = () => {
                   onClick={() =>
                     handleSwipe('next', setCurrentCard, TryCardData.length)
                   }
-                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
+                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 dark:bg-gray-800/80 text-[#975555] dark:text-pink-400 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-700 transition-all"
                   aria-label="Next"
                 >
                   <svg
@@ -212,8 +212,8 @@ const Try: React.FC = () => {
                   onClick={() => setCurrentCard(index)}
                   className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
                     currentCard === index
-                      ? 'bg-[#975555] w-4 sm:w-6'
-                      : 'bg-[#975555]/30'
+                      ? 'bg-[#975555] dark:bg-pink-400 w-4 sm:w-6'
+                      : 'bg-[#975555]/30 dark:bg-pink-400/30'
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -244,7 +244,7 @@ const Try: React.FC = () => {
                 ALREADY USING
               </motion.span>
               <motion.span
-                className="text-black sm:ml-2 mt-1 sm:mt-0"
+                className="text-black dark:text-white sm:ml-2 mt-1 sm:mt-0"
                 variants={slideInRight}
               >
                 SUGAR?
@@ -255,13 +255,13 @@ const Try: React.FC = () => {
               variants={subtleRise}
             >
               <motion.p
-                className="text-[#975555] text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight"
+                className="text-[#975555] dark:text-pink-400 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight"
                 variants={fadeIn}
               >
                 "We have many activities for you!"
               </motion.p>
               <motion.i
-                className="text-xs md:text-sm text-gray-700 block"
+                className="text-xs md:text-sm text-gray-700 dark:text-gray-400 block"
                 variants={fadeIn}
               >
                 The Sugar Learning platform is a complete environment for
@@ -339,7 +339,7 @@ const Try: React.FC = () => {
                   onClick={() =>
                     handleSwipe('prev', setCurrentActivity, Activities.length)
                   }
-                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
+                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 dark:bg-gray-800/80 text-[#975555] dark:text-pink-400 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-700 transition-all"
                   aria-label="Previous"
                 >
                   <svg
@@ -360,7 +360,7 @@ const Try: React.FC = () => {
                   onClick={() =>
                     handleSwipe('next', setCurrentActivity, Activities.length)
                   }
-                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
+                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 dark:bg-gray-800/80 text-[#975555] dark:text-pink-400 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-700 transition-all"
                   aria-label="Next"
                 >
                   <svg
@@ -388,8 +388,8 @@ const Try: React.FC = () => {
                   onClick={() => setCurrentActivity(index)}
                   className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
                     currentActivity === index
-                      ? 'bg-[#975555] w-4 sm:w-6'
-                      : 'bg-[#975555]/30'
+                      ? 'bg-[#975555] dark:bg-pink-400 w-4 sm:w-6'
+                      : 'bg-[#975555]/30 dark:bg-pink-400/30'
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />

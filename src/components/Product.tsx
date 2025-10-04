@@ -21,7 +21,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
   const [currentImage, setCurrentImage] = useState(0);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-b pb-10">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-b dark:border-gray-700 pb-10">
       {/* Product Image Carousel with custom hover controls */}
       <div className="relative group w-full">
         <Carousel
@@ -69,8 +69,12 @@ const ProductCard = ({ product }: { product: ProductType }) => {
 
       {/* Product Details */}
       <div>
-        <h3 className="text-3xl font-semibold">{product.name}</h3>
-        <p className="text-gray-600 mt-2">{product.description}</p>
+        <h3 className="text-3xl font-semibold dark:text-white">
+          {product.name}
+        </h3>
+        <p className="text-gray-600 dark:text-gray-300 mt-2">
+          {product.description}
+        </p>
 
         <div className="mt-6">
           <a
