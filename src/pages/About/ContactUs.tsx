@@ -1,303 +1,267 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { socialLinks } from '@/constants/Footer';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
+import { socialLinks } from '@/constants/Footer';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { ReactNode } from 'react';
 import {
-  fadeIn,
   slideInLeft,
   slideInRight,
   slideInBottom,
-  bounce,
-  staggerContainer,
-  subtleRise,
-  dividerVariants,
+  cardFadeIn,
+  fadeIn,
+  headerReveal,
 } from '@/styles/Animations';
 
-const ContactUs: React.FC = () => {
-  return (
-    <>
-      <Header />
-      <div className="min-h-screen bg-gray-50">
-        {/* Hero Section */}
-        <motion.section
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          className="relative w-full bg-gradient-to-r from-blue-900 via-slate-800 to-slate-900 py-32 overflow-hidden"
-        >
-          <div className="absolute inset-0 overflow-hidden">
-            <svg
-              className="absolute w-full h-full opacity-5"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              <defs>
-                <pattern
-                  id="grid"
-                  width="8"
-                  height="8"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d="M 8 0 L 0 0 0 8"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="0.5"
-                  />
-                </pattern>
-              </defs>
-              <rect x="0" y="0" width="100%" height="100%" fill="url(#grid)" />
-            </svg>
-          </div>
+interface CardProps {
+  icon: string;
+  title: string;
+  content: ReactNode;
+}
 
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+const Card: React.FC<CardProps> = ({ icon, title, content }) => (
+  <motion.div
+    className="relative bg-gradient-to-b from-white to-blue-50 border border-gray-200 
+               rounded-2xl p-8 text-center shadow-md hover:shadow-xl 
+               transition-all duration-300 overflow-hidden"
+    variants={cardFadeIn}
+    whileHover={{ scale: 1.05, y: -4 }}
+  >
+    {/* Gradient bar at top */}
+    <div className="absolute top-0 left-0 w-full h-1 rounded-t-2xl bg-gradient-to-r from-blue-500 to-blue-700" />
+
+    <div className="mx-auto w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 shadow-inner mt-2">
+      <img src={icon} alt={`${title} Icon`} className="h-8 w-8" />
+    </div>
+    <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
+    <div className="text-sm text-gray-600 leading-relaxed">{content}</div>
+  </motion.div>
+);
+
+const ContactUs = () => {
+  return (
+    <div className="min-h-screen bg-white text-gray-900">
+      <Header />
+      <main className="container mx-auto p-4">
+        <motion.section
+          className="my-8 flex justify-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeIn}
+        >
+          <div className="max-w-4xl w-4/5 flex flex-col md:flex-row justify-between items-center">
             <motion.div
-              className="max-w-3xl"
-              variants={slideInBottom}
-              initial="hidden"
-              animate="visible"
+              className="md:w-1/2 text-left md:pr-8"
+              variants={slideInLeft}
             >
-              <motion.h1
-                className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight"
-                variants={slideInBottom}
-                initial="hidden"
-                animate="visible"
-              >
-                Contact <span className="text-blue-200">Sugar Labs</span>
+              <motion.h1 className="text-4xl font-bold" variants={headerReveal}>
+                Contact Us
               </motion.h1>
-              <motion.div
-                className="w-20 h-1 bg-blue-400 mb-6"
-                variants={dividerVariants}
-                initial="hidden"
-                animate="visible"
-              ></motion.div>
               <motion.p
-                className="text-base md:text-lg text-gray-200 max-w-2xl leading-relaxed"
+                className="text-gray-600 mt-2 text-lg"
                 variants={fadeIn}
-                initial="hidden"
-                animate="visible"
-                transition={{ delay: 0.3 }}
               >
-                We'd love to hear from you. Here's how you can reach our team of
-                educational innovators.
+                We'd love to hear from you. Reach out to our team and join our
+                global community dedicated to bringing learning opportunities to
+                children worldwide.
               </motion.p>
+            </motion.div>
+
+            <motion.div
+              className="md:w-1/2 flex justify-end mt-6 md:mt-0"
+              variants={slideInRight}
+            >
+              <img
+                src="/assets/Images/contact-us.png"
+                alt="Contact Us Illustration"
+                className="w-80 md:w-[400px]"
+              />
             </motion.div>
           </div>
         </motion.section>
 
-        {/* Main Content */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
-            {/* Contact Information Card */}
-            <motion.div
-              className="lg:col-span-7 bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 transition-shadow duration-300 hover:shadow-lg"
-              variants={slideInLeft}
-              initial="hidden"
-              animate="visible"
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
+        <div className="w-4/5 max-w-5xl mx-auto">
+          <motion.section
+            className="my-16 px-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeIn}
+          >
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold text-gray-900 text-center"
+              variants={headerReveal}
             >
-              <div className="p-6 md:p-8 lg:p-10">
-                <motion.h2
-                  className="text-2xl font-bold text-gray-800 mb-8 flex items-center"
-                  variants={fadeIn}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <span className="w-1.5 h-6 bg-blue-600 mr-3 rounded-sm"></span>
-                  How to Reach Us
-                </motion.h2>
-
-                <motion.div
-                  className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-6 lg:gap-x-8"
-                  variants={staggerContainer}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  {/* Mail Address */}
-                  <ContactMethod
-                    iconSrc="assets/Icons/mail.svg"
-                    title="By Mail"
-                    description={
-                      <address className="mt-2 not-italic text-gray-600 leading-relaxed text-sm">
-                        Sugar Labs
-                        <br />
-                        2028 E Ben White Blvd <b>STE 240 PMB 1271</b>
-                        <br />
-                        AUSTIN, TX 78741
-                        <br />
-                        USA
-                      </address>
-                    }
-                  />
-
-                  {/* Phone */}
-                  <ContactMethod
-                    iconSrc="assets/Icons/phone.svg"
-                    title="By Phone"
-                    description={
-                      <a
-                        href="tel:+16177024088"
-                        className="mt-2 text-gray-600 hover:text-blue-600 transition duration-200 block text-sm"
-                      >
-                        +1 (617) 702-4088
-                      </a>
-                    }
-                  />
-
-                  {/* Email */}
-                  <ContactMethod
-                    iconSrc="assets/Icons/email.svg"
-                    title="By Email"
-                    description={
-                      <a
-                        href="mailto:info@sugarlabs.org"
-                        className="mt-2 text-gray-600 hover:text-blue-600 transition duration-200 block text-sm"
-                      >
-                        info@sugarlabs.org
-                      </a>
-                    }
-                  />
-
-                  {/* Matrix Chat */}
-                  <ContactMethod
-                    iconSrc="assets/Icons/chat.svg"
-                    title="Via Matrix Chat"
-                    description={
-                      <Link
-                        to="matrix"
-                        className="mt-2 text-gray-600 hover:text-blue-600 transition duration-200 block text-sm"
-                      >
-                        Go to Matrix Chat
-                      </Link>
-                    }
-                  />
-                </motion.div>
-              </div>
-            </motion.div>
-
-            {/* Social Connect Card */}
-            <motion.div
-              className="lg:col-span-5 rounded-xl overflow-hidden shadow-md"
-              variants={slideInRight}
-              initial="hidden"
-              animate="visible"
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="bg-gradient-to-br from-gray-800 via-gray-850 to-gray-900 p-6 md:p-8 lg:p-10">
-                <motion.h2
-                  className="text-2xl font-bold text-white mb-6 flex items-center"
-                  variants={fadeIn}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <span className="w-1.5 h-6 bg-blue-500 mr-3 rounded-sm"></span>
-                  Connect With The Community
-                </motion.h2>
-
-                <motion.p
-                  className="text-gray-300 text-sm leading-relaxed mb-8"
-                  variants={fadeIn}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delay: 0.2 }}
-                >
-                  Join our global community of educators, developers, and
-                  learners who are passionate about bringing educational
-                  software to children around the world.
-                </motion.p>
-
-                <motion.div
-                  className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6"
-                  variants={staggerContainer}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  {socialLinks.map((social, index) => (
-                    <motion.a
-                      key={social.href}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Visit our ${social.name} page`}
-                      className="group flex flex-col items-center"
-                      variants={bounce}
-                      whileHover="hover"
-                      whileTap="tap"
-                      custom={index}
-                    >
-                      <div className="flex items-center justify-center w-12 h-12 bg-white/10 group-hover:bg-white/20 rounded-lg backdrop-blur-sm transition-all duration-300 ease-in-out mb-2 border border-gray-700/50 shadow-sm group-hover:shadow-blue-500/10 group-hover:shadow-md">
-                        <img
-                          src={social.icon}
-                          alt=""
-                          width={20}
-                          height={20}
-                          className="filter brightness-0 invert opacity-90"
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <span className="text-xs text-gray-300 group-hover:text-gray-200 transition-colors duration-200">
-                        {social.name}
-                      </span>
-                    </motion.a>
-                  ))}
-                </motion.div>
-              </div>
-
-              <motion.div
-                className="bg-gray-800 p-5 md:p-6 border-t border-gray-700/50"
+              <motion.span
+                className="text-blue-600 font-Pacifico"
                 variants={fadeIn}
-                initial="hidden"
-                animate="visible"
-                transition={{ delay: 0.4 }}
               >
-                <h3 className="text-xs uppercase font-bold text-gray-300 tracking-wider mb-2">
-                  Follow Our Progress
-                </h3>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Stay updated with our latest developments and educational
-                  initiatives.
-                </p>
-              </motion.div>
+                Get In{' '}
+              </motion.span>
+              Touch
+            </motion.h2>
+
+            <hr className="w-24 border-t-4 border-blue-600 mx-auto mt-3" />
+
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12"
+              variants={fadeIn}
+            >
+              {/* Mail */}
+              <Card
+                icon="assets/Icons/mail.svg"
+                title="By Mail"
+                content={
+                  <>
+                    Sugar Labs <br />
+                    2028 E Ben White Blvd <br />
+                    STE 240 PMB 1271 <br />
+                    AUSTIN, TX 78741 <br />
+                    USA
+                  </>
+                }
+              />
+
+              {/* Phone */}
+              <Card
+                icon="assets/Icons/phone.svg"
+                title="By Phone"
+                content={
+                  <a
+                    href="tel:+16177024088"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    +1 (617) 702-4088
+                  </a>
+                }
+              />
+
+              {/* Email */}
+              <Card
+                icon="assets/Icons/email.svg"
+                title="By Email"
+                content={
+                  <a
+                    href="mailto:info@sugarlabs.org"
+                    className="text-blue-600 hover:underline font-medium break-all"
+                  >
+                    info@sugarlabs.org
+                  </a>
+                }
+              />
             </motion.div>
-          </div>
-        </section>
-      </div>
+          </motion.section>
+
+          <motion.section
+            className="my-16 mt-4 justify-center px-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeIn}
+          >
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold text-gray-900 text-center"
+              variants={headerReveal}
+            >
+              <motion.span
+                className="text-blue-600 font-Pacifico"
+                variants={fadeIn}
+              >
+                Connect{' '}
+              </motion.span>
+              With Our Community
+            </motion.h2>
+
+            <hr className="w-32 border-t-4 border-blue-600 mx-auto mt-2" />
+            <motion.p
+              className="text-gray-600 text-center mt-4 text-lg max-w-3xl mx-auto"
+              variants={fadeIn}
+            >
+              Join our global community of educators, developers, and learners
+              who are passionate about bringing educational software to children
+              around the world.
+            </motion.p>
+
+            <motion.div
+              className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 mt-8"
+              variants={fadeIn}
+            >
+              {socialLinks.map((social) => (
+                <motion.a
+                  key={social.href}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-24 h-24 bg-white shadow-md rounded-2xl 
+                 flex flex-col items-center justify-center 
+                 border border-gray-200 hover:shadow-lg 
+                 hover:bg-blue-50 hover:border-blue-300 
+                 transition-all duration-300"
+                  variants={cardFadeIn}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.2 }}
+                  whileHover={{ scale: 1.05, y: -3 }}
+                >
+                  <div className="w-10 h-10 flex items-center justify-center mb-1">
+                    <img
+                      src={social.icon || '/placeholder.svg'}
+                      alt={social.name}
+                      className={`w-6 h-6 ${social.name === 'X' ? 'brightness-0' : ''}`}
+                    />
+                  </div>
+                  <span className="text-xs text-gray-700 font-medium text-center">
+                    {social.name}
+                  </span>
+                </motion.a>
+              ))}
+            </motion.div>
+          </motion.section>
+
+          <motion.section
+            className="my-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={slideInBottom}
+          >
+            <div className="bg-white shadow-lg rounded-2xl p-8 border border-gray-200">
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 bg-blue-50 flex items-center justify-center rounded-lg border border-blue-100">
+                    <img
+                      src="assets/Icons/chat.svg"
+                      alt=""
+                      className="h-8 w-8"
+                    />
+                  </div>
+                </div>
+                <div className="flex-grow text-center md:text-left">
+                  <h3 className="text-3xl font-bold text-gray-900 mb-2 font-[Caveat]">
+                    Join Our Matrix Chat
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Connect with our community in real-time. Get help, share
+                    ideas, and collaborate with fellow educators and developers.
+                  </p>
+                </div>
+                <div className="flex-shrink-0">
+                  <Link
+                    to="matrix"
+                    className="inline-block px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors font-medium whitespace-nowrap"
+                  >
+                    Join Chat →
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </motion.section>
+        </div>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
-
-interface ContactMethodProps {
-  iconSrc: string;
-  title: string;
-  description: React.ReactNode;
-}
-
-const ContactMethod: React.FC<ContactMethodProps> = ({
-  iconSrc,
-  title,
-  description,
-}) => (
-  <motion.div className="flex items-start" variants={subtleRise}>
-    <motion.div
-      className="flex-shrink-0 p-3 bg-blue-50 rounded-lg text-blue-600 border border-blue-100"
-      whileHover={{ scale: 1.1 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-    >
-      <img src={iconSrc} alt="" className="h-5 w-5" aria-hidden="true" />
-    </motion.div>
-    <div className="ml-4">
-      <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider">
-        {title}
-      </h3>
-      {description}
-    </div>
-  </motion.div>
-);
 
 export default ContactUs;
