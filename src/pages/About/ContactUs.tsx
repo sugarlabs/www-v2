@@ -21,7 +21,8 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ icon, title, content }) => (
   <motion.div
-    className="relative bg-gradient-to-b from-white to-blue-50 border border-gray-200 
+    className="relative bg-gradient-to-b from-white to-blue-50 dark:from-gray-800 dark:to-gray-900
+               border border-gray-200 dark:border-gray-700 
                rounded-2xl p-8 text-center shadow-md hover:shadow-xl 
                transition-all duration-300 overflow-hidden"
     variants={cardFadeIn}
@@ -30,19 +31,24 @@ const Card: React.FC<CardProps> = ({ icon, title, content }) => (
     {/* Gradient bar at top */}
     <div className="absolute top-0 left-0 w-full h-1 rounded-t-2xl bg-gradient-to-r from-blue-500 to-blue-700" />
 
-    <div className="mx-auto w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 shadow-inner mt-2">
+    <div className="mx-auto w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mb-4 shadow-inner mt-2">
       <img src={icon} alt={`${title} Icon`} className="h-8 w-8" />
     </div>
-    <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
-    <div className="text-sm text-gray-600 leading-relaxed">{content}</div>
+    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+      {title}
+    </h3>
+    <div className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+      {content}
+    </div>
   </motion.div>
 );
 
 const ContactUs = () => {
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
       <Header />
       <main className="container mx-auto p-4">
+        {/* Hero Section */}
         <motion.section
           className="my-8 flex justify-center"
           initial="hidden"
@@ -59,7 +65,7 @@ const ContactUs = () => {
                 Contact Us
               </motion.h1>
               <motion.p
-                className="text-gray-600 mt-2 text-lg"
+                className="text-gray-600 dark:text-gray-400 mt-2 text-lg"
                 variants={fadeIn}
               >
                 We'd love to hear from you. Reach out to our team and join our
@@ -82,6 +88,7 @@ const ContactUs = () => {
         </motion.section>
 
         <div className="w-4/5 max-w-5xl mx-auto">
+          {/* Contact Methods */}
           <motion.section
             className="my-16 px-6"
             initial="hidden"
@@ -90,11 +97,11 @@ const ContactUs = () => {
             variants={fadeIn}
           >
             <motion.h2
-              className="text-4xl md:text-5xl font-bold text-gray-900 text-center"
+              className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 text-center"
               variants={headerReveal}
             >
               <motion.span
-                className="text-blue-600 font-Pacifico"
+                className="text-blue-600 dark:text-blue-400 font-Pacifico"
                 variants={fadeIn}
               >
                 Get In{' '}
@@ -102,13 +109,12 @@ const ContactUs = () => {
               Touch
             </motion.h2>
 
-            <hr className="w-24 border-t-4 border-blue-600 mx-auto mt-3" />
+            <hr className="w-24 border-t-4 border-blue-600 dark:border-blue-500 mx-auto mt-3" />
 
             <motion.div
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12"
               variants={fadeIn}
             >
-              {/* Mail */}
               <Card
                 icon="assets/Icons/mail.svg"
                 title="By Mail"
@@ -123,28 +129,26 @@ const ContactUs = () => {
                 }
               />
 
-              {/* Phone */}
               <Card
                 icon="assets/Icons/phone.svg"
                 title="By Phone"
                 content={
                   <a
                     href="tel:+16177024088"
-                    className="text-blue-600 hover:underline font-medium"
+                    className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
                   >
                     +1 (617) 702-4088
                   </a>
                 }
               />
 
-              {/* Email */}
               <Card
                 icon="assets/Icons/email.svg"
                 title="By Email"
                 content={
                   <a
                     href="mailto:info@sugarlabs.org"
-                    className="text-blue-600 hover:underline font-medium break-all"
+                    className="text-blue-600 dark:text-blue-400 hover:underline font-medium break-all"
                   >
                     info@sugarlabs.org
                   </a>
@@ -153,6 +157,7 @@ const ContactUs = () => {
             </motion.div>
           </motion.section>
 
+          {/* Social Links */}
           <motion.section
             className="my-16 mt-4 justify-center px-6"
             initial="hidden"
@@ -161,11 +166,11 @@ const ContactUs = () => {
             variants={fadeIn}
           >
             <motion.h2
-              className="text-4xl md:text-5xl font-bold text-gray-900 text-center"
+              className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 text-center"
               variants={headerReveal}
             >
               <motion.span
-                className="text-blue-600 font-Pacifico"
+                className="text-blue-600 dark:text-blue-400 font-Pacifico"
                 variants={fadeIn}
               >
                 Connect{' '}
@@ -173,9 +178,9 @@ const ContactUs = () => {
               With Our Community
             </motion.h2>
 
-            <hr className="w-32 border-t-4 border-blue-600 mx-auto mt-2" />
+            <hr className="w-32 border-t-4 border-blue-600 dark:border-blue-500 mx-auto mt-2" />
             <motion.p
-              className="text-gray-600 text-center mt-4 text-lg max-w-3xl mx-auto"
+              className="text-gray-600 dark:text-gray-400 text-center mt-4 text-lg max-w-3xl mx-auto"
               variants={fadeIn}
             >
               Join our global community of educators, developers, and learners
@@ -193,10 +198,10 @@ const ContactUs = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-24 h-24 bg-white shadow-md rounded-2xl 
+                  className="w-24 h-24 bg-white dark:bg-gray-800 shadow-md rounded-2xl 
                  flex flex-col items-center justify-center 
-                 border border-gray-200 hover:shadow-lg 
-                 hover:bg-blue-50 hover:border-blue-300 
+                 border border-gray-200 dark:border-gray-700 hover:shadow-lg 
+                 hover:bg-blue-50 dark:hover:bg-gray-700 hover:border-blue-300 
                  transition-all duration-300"
                   variants={cardFadeIn}
                   initial="hidden"
@@ -208,10 +213,14 @@ const ContactUs = () => {
                     <img
                       src={social.icon || '/placeholder.svg'}
                       alt={social.name}
-                      className={`w-6 h-6 ${social.name === 'X' ? 'brightness-0' : ''}`}
+                      className={`w-6 h-6 ${
+                        social.name === 'X'
+                          ? 'brightness-0 dark:invert'
+                          : 'dark:invert'
+                      }`}
                     />
                   </div>
-                  <span className="text-xs text-gray-700 font-medium text-center">
+                  <span className="text-xs text-gray-700 dark:text-gray-300 font-medium text-center">
                     {social.name}
                   </span>
                 </motion.a>
@@ -219,6 +228,7 @@ const ContactUs = () => {
             </motion.div>
           </motion.section>
 
+          {/* Matrix Chat */}
           <motion.section
             className="my-16"
             initial="hidden"
@@ -226,22 +236,22 @@ const ContactUs = () => {
             viewport={{ once: true, amount: 0.2 }}
             variants={slideInBottom}
           >
-            <div className="bg-white shadow-lg rounded-2xl p-8 border border-gray-200">
+            <div className="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-blue-50 flex items-center justify-center rounded-lg border border-blue-100">
+                  <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900 flex items-center justify-center rounded-lg border border-blue-100 dark:border-blue-800">
                     <img
                       src="assets/Icons/chat.svg"
-                      alt=""
-                      className="h-8 w-8"
+                      alt="Chat Icon"
+                      className="h-8 w-8 dark:invert"
                     />
                   </div>
                 </div>
                 <div className="flex-grow text-center md:text-left">
-                  <h3 className="text-3xl font-bold text-gray-900 mb-2 font-[Caveat]">
+                  <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 font-[Caveat]">
                     Join Our Matrix Chat
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                     Connect with our community in real-time. Get help, share
                     ideas, and collaborate with fellow educators and developers.
                   </p>
@@ -249,7 +259,7 @@ const ContactUs = () => {
                 <div className="flex-shrink-0">
                   <Link
                     to="matrix"
-                    className="inline-block px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors font-medium whitespace-nowrap"
+                    className="inline-block px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-full hover:bg-blue-700 dark:hover:bg-blue-400 transition-colors font-medium whitespace-nowrap"
                   >
                     Join Chat →
                   </Link>
