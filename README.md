@@ -36,7 +36,6 @@ SugarWeb is a client-side web application written in TypeScript. It utilizes Rea
 - **React Router DOM** – declarative routing for navigation
 - **Axios** – for handling HTTP requests and API calls
 - **Framer Motion** – for creating smooth UI animations
-- **clsx** and **class-variance-authority** – for managing dynamic and conditional class names
 - **Lucide React** – for modern icon libraries
 - **Content Plugins** – includes react-markdown, rehype, remark, and related plugins for markdown rendering and content sanitization
 - **DomPurify** – for sanitizing user-generated HTML content
