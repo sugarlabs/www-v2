@@ -28,12 +28,8 @@ const DarkModeToggle = () => {
 
   return (
     <>
-
-
-    <Switch checked={isDarkMode} onChange={toggleDarkMode} />;
-    
+      <Switch checked={isDarkMode} onChange={toggleDarkMode} />;
     </>
-    
   );
 };
 

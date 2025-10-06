@@ -10,11 +10,7 @@ const Switch: React.FC<SwitchProps> = ({ checked, onChange }) => {
   return (
     <StyledWrapper>
       <label className="switch">
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={onChange}
-        />
+        <input type="checkbox" checked={checked} onChange={onChange} />
         <span className="slider round"></span>
       </label>
     </StyledWrapper>
@@ -49,7 +45,7 @@ const StyledWrapper = styled.div`
 
   .slider:before {
     position: absolute;
-    content: "";
+    content: '';
     height: 22px;
     width: 22px;
     left: 3px;
