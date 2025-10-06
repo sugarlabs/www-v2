@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",
+    "@types/styled-components": "^5.1.34",
     "axios": "^1.12.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -38,6 +39,7 @@
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
     "remark-supersub": "^1.0.0",
+    "styled-components": "^6.1.19",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.14",
     "tailwindcss-animate": "^1.0.7",
