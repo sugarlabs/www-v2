@@ -211,13 +211,13 @@ const ContactUs = () => {
                 >
                   <div className="w-10 h-10 flex items-center justify-center mb-1">
                     <img
-                          src={social.icon}
-                          alt=""
-                          width={20}
-                          height={20}
-                          className="filter brightness-0 dark:invert opacity-90"
-                          aria-hidden="true"
-                        />
+                      src={social.icon}
+                      alt=""
+                      width={28}
+                      height={28}
+                      className="filter brightness-0 dark:invert opacity-90"
+                      aria-hidden="true"
+                    />
                   </div>
                   <span className="text-xs text-gray-700 dark:text-gray-300 font-medium text-center">
                     {social.name}
