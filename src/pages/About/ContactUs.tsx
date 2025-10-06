@@ -216,7 +216,9 @@ const ContactUs = () => {
                       className={`w-6 h-6 ${
                         social.name === 'X'
                           ? 'brightness-0 dark:invert'
-                          : 'dark:invert'
+                          : social.name === 'LinkedIn'
+                            ? ''
+                            : 'dark:invert'
                       }`}
                     />
                   </div>
