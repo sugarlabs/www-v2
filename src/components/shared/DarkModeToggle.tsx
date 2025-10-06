@@ -27,9 +27,9 @@ const DarkModeToggle = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  const trackWidth = 72; 
-  const thumbWidth = 28; 
-  const padding = 3; 
+  const trackWidth = 72;
+  const thumbWidth = 28;
+  const padding = 3;
 
   const translateX = isDarkMode ? trackWidth - thumbWidth - padding : padding;
 
@@ -40,7 +40,7 @@ const DarkModeToggle = () => {
       onMouseLeave={() => setIsHovered(false)}
       className="group relative inline-flex h-9 w-18 items-center rounded-full transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-1"
       style={{
-        backgroundColor: isDarkMode ? '#1e293b' : '#bae6fd', 
+        backgroundColor: isDarkMode ? '#1e293b' : '#bae6fd',
         boxShadow: isDarkMode
           ? '0 6px 16px rgba(30, 41, 59, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.05)'
           : '0 6px 16px rgba(186, 230, 253, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.1)',
