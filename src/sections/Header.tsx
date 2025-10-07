@@ -59,8 +59,9 @@ const Header: React.FC = () => {
             {/* Logo */}
             <Link
               to="/"
-              className="flex-shrink-0 flex items-center"
+              className="flex-shrink-0 flex items-center sugar-labs-logo"
               onClick={handleNavigation}
+              data-onboarding-id="sugar-labs-logo"
             >
               <img
                 src={logo}
@@ -100,7 +101,10 @@ const Header: React.FC = () => {
             </button>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex md:items-center md:space-x-4 lg:space-x-8">
+            <nav
+              className="hidden md:flex md:items-center md:space-x-4 lg:space-x-8 main-navigation"
+              data-onboarding-id="main-navigation"
+            >
               {/* Dropdown menus */}
               {Object.entries(navigationData.dropdowns).map(
                 ([key, dropdown]) => (
@@ -135,8 +139,9 @@ const Header: React.FC = () => {
                 className="inline-flex items-center px-4 lg:px-6 py-2 lg:py-2.5 rounded-full font-semibold text-white
                           bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
                           transition-all duration-300 transform hover:scale-105 hover:shadow-lg
-                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm lg:text-base"
+                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm lg:text-base try-sugar-button"
                 onClick={handleNavigation}
+                data-onboarding-id="try-sugar-button"
               >
                 TRY NOW
               </Link>

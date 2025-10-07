@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { redirectRoutes } from '@/redirects';
+import OnboardingWrapper from '@/components/OnboardingWrapper';
 import MainPage from '@/pages/MainPage';
 import AboutUs from '@/pages/About/AboutUs';
 import Leadership from '@/pages/About/Leadership';
@@ -28,33 +29,222 @@ import Contributors from '@/pages/Contributors';
 
 const router = createBrowserRouter([
   ...redirectRoutes,
-  { path: '/', element: <MainPage /> },
-  { path: '/about-us', element: <AboutUs /> },
-  { path: '/leadership', element: <Leadership /> },
-  { path: '/contact-us', element: <ContactUs /> },
-  { path: '/faqs', element: <FAQs /> },
-  { path: '/news', element: <NewsPage /> },
-  { path: '/news/:category', element: <NewsPage /> },
-  { path: '/news/:category/:slug', element: <NewsDetailPage /> },
-  { path: '/authors/:slug', element: <AuthorPage /> },
-  { path: '/tags/:tag', element: <TagPage /> },
-  { path: '/more', element: <MorePage /> },
-  { path: '/more/:slug', element: <MorePage /> },
-  { path: '/try-sugar', element: <TrySugar /> },
-  { path: '/join-development', element: <JoinDevelopment /> },
-  { path: '/volunteer', element: <Volunteer /> },
-  { path: '/donate', element: <Donate /> },
-  { path: '/products', element: <Products /> },
-  { path: '/turtleblocks', element: <TurtleBlocksPage /> },
-  { path: '/sugarizer', element: <SugarizerPage /> },
-  { path: '/bootablesoas', element: <BootableSoasPage /> },
-  { path: '/trisquel', element: <TrisquelPage /> },
-  { path: '/raspberry', element: <RaspberryPiPage /> },
-  { path: '/musicblocks', element: <MusicBlocksPage /> },
-  { path: '/flathub', element: <FlatHubPage /> },
-  { path: '/contact-us/:matrix', element: <Matrix /> },
-  { path: '/profiles', element: <Contributors /> },
-  { path: '*', element: <NotFoundPage /> },
+  {
+    path: '/',
+    element: (
+      <OnboardingWrapper>
+        <MainPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/about-us',
+    element: (
+      <OnboardingWrapper>
+        <AboutUs />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/leadership',
+    element: (
+      <OnboardingWrapper>
+        <Leadership />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/contact-us',
+    element: (
+      <OnboardingWrapper>
+        <ContactUs />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/faqs',
+    element: (
+      <OnboardingWrapper>
+        <FAQs />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/news',
+    element: (
+      <OnboardingWrapper>
+        <NewsPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/news/:category',
+    element: (
+      <OnboardingWrapper>
+        <NewsPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/news/:category/:slug',
+    element: (
+      <OnboardingWrapper>
+        <NewsDetailPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/authors/:slug',
+    element: (
+      <OnboardingWrapper>
+        <AuthorPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/tags/:tag',
+    element: (
+      <OnboardingWrapper>
+        <TagPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/more',
+    element: (
+      <OnboardingWrapper>
+        <MorePage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/more/:slug',
+    element: (
+      <OnboardingWrapper>
+        <MorePage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/try-sugar',
+    element: (
+      <OnboardingWrapper>
+        <TrySugar />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/join-development',
+    element: (
+      <OnboardingWrapper>
+        <JoinDevelopment />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/volunteer',
+    element: (
+      <OnboardingWrapper>
+        <Volunteer />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/donate',
+    element: (
+      <OnboardingWrapper>
+        <Donate />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/products',
+    element: (
+      <OnboardingWrapper>
+        <Products />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/turtleblocks',
+    element: (
+      <OnboardingWrapper>
+        <TurtleBlocksPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/sugarizer',
+    element: (
+      <OnboardingWrapper>
+        <SugarizerPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/bootablesoas',
+    element: (
+      <OnboardingWrapper>
+        <BootableSoasPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/trisquel',
+    element: (
+      <OnboardingWrapper>
+        <TrisquelPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/raspberry',
+    element: (
+      <OnboardingWrapper>
+        <RaspberryPiPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/musicblocks',
+    element: (
+      <OnboardingWrapper>
+        <MusicBlocksPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/flathub',
+    element: (
+      <OnboardingWrapper>
+        <FlatHubPage />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/contact-us/:matrix',
+    element: (
+      <OnboardingWrapper>
+        <Matrix />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '/profiles',
+    element: (
+      <OnboardingWrapper>
+        <Contributors />
+      </OnboardingWrapper>
+    ),
+  },
+  {
+    path: '*',
+    element: (
+      <OnboardingWrapper>
+        <NotFoundPage />
+      </OnboardingWrapper>
+    ),
+  },
 ]);
 
 export default router;

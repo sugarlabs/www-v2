@@ -15,11 +15,20 @@ const MainPage = () => {
       <Header />
       <PromoBanner bannerConfigs={bannerConfigs} />
       <Info />
-      <Stats />
+      <div className="stats-section" data-onboarding-id="stats-section">
+        <Stats />
+      </div>
       <Testimonials />
-      <Try />
+      <div
+        className="activities-section"
+        data-onboarding-id="activities-section"
+      >
+        <Try />
+      </div>
       <TryMore />
-      <Donation />
+      <div className="donation-section" data-onboarding-id="donation-section">
+        <Donation />
+      </div>
       <Footer />
     </>
   );

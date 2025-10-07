@@ -28,6 +28,7 @@
     "lucide-react": "^0.544.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-joyride": "^2.9.3",
     "react-markdown": "^10.1.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^7.9.3",
