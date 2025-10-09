@@ -12,13 +12,13 @@ const RoadmapSection: React.FC = () => {
         {/* Section header */}
         <div className="text-center mb-16">
           <motion.h2
-            className="text-3xl font-semibold text-slate-800 dark:text-slate-200 sm:text-4xl mb-4 tracking-tight"
+            className="text-4xl font-semibold sm:text-5xl mb-4 tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-blue-900 dark:text-blue-400 font-medium">
+            <span className="text-blue-600 dark:text-blue-400 font-medium">
               {roadmapContent.title.prefix}
             </span>{' '}
             <span className="text-red-600 dark:text-red-400 font-medium">
@@ -27,7 +27,7 @@ const RoadmapSection: React.FC = () => {
           </motion.h2>
 
           <motion.div
-            className="h-0.5 w-24 bg-gradient-to-r from-blue-600 to-red-600 mx-auto mb-8"
+            className="h-0.5 w-24 bg-gradient-to-r from-blue-500 to-red-500 dark:from-blue-400 dark:to-red-400 mx-auto mb-8"
             initial={{ width: 0 }}
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
@@ -35,7 +35,7 @@ const RoadmapSection: React.FC = () => {
           />
 
           <motion.p
-            className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto"
+            className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -47,7 +47,7 @@ const RoadmapSection: React.FC = () => {
 
         <div className="hidden md:block relative w-full mt-20">
           <motion.div
-            className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-slate-200 dark:bg-gray-700 transform -translate-x-1/2"
+            className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-gray-200 dark:bg-gray-600/50 transform -translate-x-1/2"
             initial={{ scaleY: 0, transformOrigin: 'top' }}
             whileInView={{ scaleY: 1 }}
             viewport={{ once: true }}
@@ -70,14 +70,14 @@ const RoadmapSection: React.FC = () => {
                 {/* Content */}
                 <div className={`w-3/7 ${index % 2 === 0 ? 'pr-1' : 'pl-1'}`}>
                   <div
-                    className={`p-5 bg-white dark:bg-gray-800 rounded-lg shadow-md border-t-2 ${
-                      item.borderColor || 'border-blue-600'
-                    } transition-all duration-300 hover:shadow-lg`}
+                    className={`p-5 bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-xl dark:shadow-black/20 
+                    border-t-2 ${item.borderColor || 'border-blue-600 dark:border-blue-400'} 
+                    transition-all duration-300 hover:shadow-lg dark:hover:shadow-2xl dark:hover:shadow-black/30`}
                   >
-                    <h3 className="text-base font-semibold text-slate-800 mb-2 pb-2 border-b border-slate-100">
+                    <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-2 pb-2 border-b border-gray-100 dark:border-gray-700">
                       {item.title}
                     </h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm">
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">
                       {item.description || 'Milestone in our journey'}
                     </p>
                   </div>
@@ -138,9 +138,9 @@ const RoadmapSection: React.FC = () => {
 
                 {/* Card */}
                 <div
-                  className={`flex-grow p-5 bg-white dark:bg-gray-800 rounded-lg shadow-md border-l-2 ${
-                    item.borderColor || 'border-blue-600'
-                  }`}
+                  className={`flex-grow p-5 bg-white dark:bg-gray-800/90 rounded-lg shadow-md dark:shadow-xl dark:shadow-black/20 
+                  border-l-2 ${item.borderColor ? item.borderColor.replace('border-', 'border-') + ' dark:' + item.borderColor.replace('blue', 'blue').replace('red', 'red') : 'border-blue-600 dark:border-blue-400'} 
+                  backdrop-blur-sm`}
                 >
                   <h3 className="text-base font-semibold text-slate-800 mb-2 pb-2 border-b border-slate-100">
                     {item.title}
