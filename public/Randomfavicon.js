@@ -1,18 +1,18 @@
 (function () {
     function setSequentialFavicons() {
         const favicons = [
-            'favicon1.svg',
-            'favicon2.svg',
-            'favicon3.svg',
-            'favicon4.svg',
-            'favicon5.svg',
-            'favicon6.svg',
-            'favicon7.svg',
-            'favicon8.svg',
-            'favicon9.svg',
-            'favicon10.svg',
-            'favicon11.svg',
-            'favicon12.svg'
+            'favicon_1.svg',
+            'favicon_2.svg',
+            'favicon_3.svg',
+            'favicon_4.svg',
+            'favicon_5.svg',
+            'favicon_6.svg',
+            'favicon_7.svg',
+            'favicon_8.svg',
+            'favicon_9.svg',
+            'favicon_10.svg',
+            'favicon_11.svg',
+            'favicon_12.svg'
         ];
         let currentIndex = 0;
 
