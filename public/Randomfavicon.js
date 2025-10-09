@@ -12,7 +12,19 @@
             'favicon9.svg',
             'favicon10.svg',
             'favicon11.svg',
-            'favicon12.svg'
+            'favicon12.svg',
+            'favicon13.svg',
+            'favicon14.svg',
+            'favicon15.svg',
+            'favicon16.svg',
+            'favicon17.svg',
+            'favicon18.svg',
+            'favicon19.svg',
+            'favicon20.svg',
+            'favicon21.svg',
+            'favicon22.svg',
+            'favicon23.svg',
+            'favicon24.svg'
         ];
         let currentIndex = 0;
 
