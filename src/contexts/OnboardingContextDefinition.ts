@@ -34,6 +34,6 @@ export interface OnboardingContextType {
   lifecycle: string | null;
 }
 
-export const OnboardingContext = createContext<OnboardingContextType | undefined>(
-  undefined,
-);
+export const OnboardingContext = createContext<
+  OnboardingContextType | undefined
+>(undefined);

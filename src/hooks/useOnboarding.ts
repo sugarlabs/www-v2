@@ -1,5 +1,8 @@
 import { useContext } from 'react';
-import { OnboardingContext, OnboardingContextType } from '@/contexts/OnboardingContextDefinition';
+import {
+  OnboardingContext,
+  OnboardingContextType,
+} from '@/contexts/OnboardingContextDefinition';
 
 export const useOnboarding = (): OnboardingContextType => {
   const context = useContext(OnboardingContext);
