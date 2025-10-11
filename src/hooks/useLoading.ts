@@ -1,5 +1,8 @@
 import { useContext } from 'react';
-import { LoadingContext, LoadingContextType } from '@/contexts/LoadingContextDefinition';
+import {
+  LoadingContext,
+  LoadingContextType,
+} from '@/contexts/LoadingContextDefinition';
 
 export const useLoading = (): LoadingContextType => {
   const context = useContext(LoadingContext);
