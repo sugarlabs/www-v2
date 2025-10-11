@@ -1,49 +1,10 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import Joyride, { CallBackProps, STATUS, EVENTS } from 'react-joyride';
-
-export interface OnboardingStep {
-  target: string;
-  content: ReactNode;
-  placement?: 'auto' | 'top' | 'bottom' | 'left' | 'right' | 'center';
-  disableBeacon?: boolean;
-  spotlightClicks?: boolean;
-  hideCloseButton?: boolean;
-  hideBackButton?: boolean;
-  hideSkipButton?: boolean;
-  title?: string;
-  disableOverlayClose?: boolean;
-  hideFooter?: boolean;
-}
-
-export interface OnboardingContextType {
-  isOnboardingActive: boolean;
-  currentStep: number;
-  totalSteps: number;
-  startOnboarding: () => void;
-  stopOnboarding: () => void;
-  skipOnboarding: () => void;
-  resetOnboarding: () => void;
-  goToStep: (stepIndex: number) => void;
-  goToNextStep: () => void;
-  goToPreviousStep: () => void;
-  onboardingCompleted: boolean;
-  onboardingProgress: number;
-  shouldShowTrigger: () => boolean;
-  setRun: (run: boolean) => void;
-  getRun: () => boolean;
-  stepIndex: number;
-  lifecycle: string | null;
-}
-
-const OnboardingContext = createContext<OnboardingContextType | undefined>(
-  undefined,
-);
+import {
+  OnboardingContext,
+  OnboardingStep,
+  OnboardingContextType,
+} from './OnboardingContextDefinition';
 
 const LOCAL_STORAGE_KEY = 'sugar-labs-onboarding';
 const ONBOARDING_STEPS_KEY = 'onboarding-steps';
@@ -328,12 +289,4 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({
       />
     </OnboardingContext.Provider>
   );
-};
-
-export const useOnboarding = (): OnboardingContextType => {
-  const context = useContext(OnboardingContext);
-  if (!context) {
-    throw new Error('useOnboarding must be used within an OnboardingProvider');
-  }
-  return context;
 };

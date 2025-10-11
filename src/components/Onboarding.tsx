@@ -1,15 +1,14 @@
 import React from 'react';
-import {
-  OnboardingProvider,
-  useOnboarding,
-} from '@/contexts/OnboardingContext';
+import { OnboardingProvider } from '@/contexts/OnboardingContext';
+import { OnboardingStep as OnboardingStepType } from '@/contexts/OnboardingContextDefinition';
+import { useOnboarding } from '@/hooks/useOnboarding';
 import { getOnboardingStepsForPage } from '@/constants/OnboardingSteps';
 
 interface OnboardingProps {
   children: React.ReactNode;
   pageType?: 'homepage' | 'try' | 'about' | 'news';
   showProgressIndicator?: boolean;
-  customSteps?: any[];
+  customSteps?: OnboardingStepType[];
 }
 
 export const Onboarding: React.FC<OnboardingProps> = ({
@@ -71,34 +70,6 @@ const OnboardingContent: React.FC<{
 };
 
 // useOnboarding hook is imported above
-
-// Add data attributes to elements for targeting
-export const addOnboardingIds = {
-  sugarLabsLogo: () => ({
-    'data-onboarding-id': 'sugar-labs-logo',
-    className: 'sugar-labs-logo',
-  }),
-  mainNavigation: () => ({
-    'data-onboarding-id': 'main-navigation',
-    className: 'main-navigation',
-  }),
-  trySugarButton: () => ({
-    'data-onboarding-id': 'try-sugar-button',
-    className: 'try-sugar-button',
-  }),
-  activitiesSection: () => ({
-    'data-onboarding-id': 'activities-section',
-    className: 'activities-section',
-  }),
-  statsSection: () => ({
-    'data-onboarding-id': 'stats-section',
-    className: 'stats-section',
-  }),
-  donationSection: () => ({
-    'data-onboarding-id': 'donation-section',
-    className: 'donation-section',
-  }),
-};
 
 // Component to add onboarding trigger button
 export const OnboardingTrigger: React.FC<{

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useOnboarding } from '@/contexts/OnboardingContext';
+import { useOnboarding } from '@/hooks/useOnboarding';
 
 interface OnboardingTriggerProps {
   className?: string;
