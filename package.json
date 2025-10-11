@@ -15,7 +15,8 @@
     "lint:md": "markdownlint '**/*.md' --ignore-path .prettierignore",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,md}'",
     "format:file": "prettier --write",
-    "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,md}'"
+    "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,md}'",
+    "install:legacy": "npm install --legacy-peer-deps"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",
@@ -28,6 +29,7 @@
     "lucide-react": "^0.544.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-joyride": "^2.9.3",
     "react-markdown": "^10.1.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^7.9.3",
