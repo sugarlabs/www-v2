@@ -122,7 +122,7 @@ const NewsDetailPage: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen bg-white dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen bg-white dark:bg-black">
           <div className="flex flex-col items-center">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 dark:border-blue-400 mb-4"></div>
             <p className="text-gray-600 dark:text-gray-400">
@@ -163,7 +163,7 @@ const NewsDetailPage: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="container mx-auto px-4 py-8 max-w-4xl bg-white dark:bg-gray-900 mt-10 rounded-lg">
+      <div className="container mx-auto px-4 py-8 max-w-4xl bg-white dark:bg-black mt-10 rounded-lg">
         {/* Back button */}
         <motion.button
           onClick={handleGoBack}

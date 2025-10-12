@@ -10,7 +10,7 @@ import Product from '@/components/Product';
 
 const ProductsPage = () => {
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-white dark:bg-black">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
         {/* Parent container to control animation sequence */}

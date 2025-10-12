@@ -48,7 +48,7 @@ const Info: React.FC = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-gray-900 font-Inter">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-black dark:to-black font-Inter">
         <main className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-8 sm:py-10 md:py-12 space-y-12 sm:space-y-16 md:space-y-20">
           {/* Hero Section */}
           <section className="container mx-auto px-2 sm:px-4 py-6 sm:py-8 max-w-7xl">

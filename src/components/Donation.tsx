@@ -21,7 +21,7 @@ const Donation: React.FC = () => {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white dark:bg-gray-900 text-black dark:text-white py-16 px-4">
+    <section className="relative overflow-hidden bg-white dark:bg-black text-black dark:text-white py-16 px-4">
       <div className="max-w-[90%] mx-auto flex flex-col lg:flex-row items-center justify-center lg:gap-12">
         {/* Left Side - Text Content */}
         <motion.div

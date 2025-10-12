@@ -21,7 +21,7 @@ import {
 
 const NotFoundPage: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9] dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9] dark:bg-black">
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
@@ -99,7 +99,7 @@ const NotFoundPage: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={fadeIn}
-          className="py-16 bg-[#FFFEF9] dark:bg-gray-900"
+          className="py-16 bg-[#FFFEF9] dark:bg-black"
         >
           <div className="container mx-auto px-4 md:px-6 max-w-4xl">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 p-8">
@@ -238,7 +238,7 @@ const NotFoundPage: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={staggerContainer}
-          className="py-16 bg-[#FFFEF9] dark:bg-gray-900"
+          className="py-16 bg-[#FFFEF9] dark:bg-black"
         >
           <div className="container mx-auto px-4 md:px-6">
             <motion.h2

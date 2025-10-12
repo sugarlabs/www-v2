@@ -13,7 +13,7 @@ const ProjectsSection = () => {
   return (
     <section
       id={projectsContent.sectionId}
-      className="w-full py-24 dark:bg-gray-900"
+      className="w-full py-24 dark:bg-black"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
