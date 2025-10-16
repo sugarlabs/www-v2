@@ -1,10 +1,10 @@
 /**
- * Copy code functionality for code blocks
- * Simplified and optimized version
+ * Copy code functionality for code blocks with user-friendly feedback
  */
 
 /**
  * Handle click on copy button with unified clipboard handling
+ * @param event - The click event from the copy button
  */
 function handleCopyClick(event: Event): void {
   event.preventDefault();
@@ -13,21 +13,15 @@ function handleCopyClick(event: Event): void {
   const button = event.currentTarget as HTMLElement;
   const codeContent = button.getAttribute('data-code');
 
-  if (!codeContent) {
-    console.error('No code content found to copy');
+  if (!codeContent || codeContent.trim() === '') {
+    showErrorMessage(button);
     return;
   }
 
   copyToClipboard(codeContent, button);
 }
 
-/**
- * Unified clipboard copy with fallback
- */
-async function copyToClipboard(
-  text: string,
-  button: HTMLElement,
-): Promise<void> {
+async function copyToClipboard(text: string, button: HTMLElement): Promise<void> {
   try {
     await navigator.clipboard.writeText(text);
     showSuccessMessage(button);
@@ -35,33 +29,60 @@ async function copyToClipboard(
     // Fallback for older browsers
     const textarea = document.createElement('textarea');
     textarea.value = text;
-    textarea.style.cssText =
-      'position:fixed;left:-999999px;top:-999999px;opacity:0;';
-
+    textarea.style.cssText = 'position:fixed;left:-999999px;top:-999999px;opacity:0;';
     document.body.appendChild(textarea);
     textarea.select();
-
     const success = document.execCommand('copy');
     document.body.removeChild(textarea);
-
-    if (success) showSuccessMessage(button);
+    
+    if (success) {
+      showSuccessMessage(button);
+    } else {
+      showErrorMessage(button);
+    }
   }
 }
 
-/**
- * Show success message
- */
 function showSuccessMessage(button: HTMLElement): void {
-  const successMessage = button.nextElementSibling as HTMLElement;
-  if (successMessage?.classList.contains('copy-success-message')) {
-    successMessage.classList.remove('hidden');
-    setTimeout(() => successMessage.classList.add('hidden'), 2000);
-  }
+  const originalContent = button.innerHTML;
+  const originalClasses = button.className;
+  
+  button.className = 'copy-code-btn bg-green-100 text-green-800 text-xs px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-sm border border-green-200';
+  button.innerHTML = `
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+    </svg>
+    <span class="font-medium">Copied!</span>
+  `;
+  button.setAttribute('disabled', 'true');
+  
+  setTimeout(() => {
+    button.className = originalClasses;
+    button.innerHTML = originalContent;
+    button.removeAttribute('disabled');
+  }, 2000);
 }
 
-/**
- * Initialize copy code functionality
- */
+function showErrorMessage(button: HTMLElement): void {
+  const originalContent = button.innerHTML;
+  const originalClasses = button.className;
+  
+  button.className = 'copy-code-btn bg-red-100 text-red-800 text-xs px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 shadow-sm border border-red-200';
+  button.innerHTML = `
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+    <span class="font-medium">Failed!</span>
+  `;
+  button.setAttribute('disabled', 'true');
+  
+  setTimeout(() => {
+    button.className = originalClasses;
+    button.innerHTML = originalContent;
+    button.removeAttribute('disabled');
+  }, 2500);
+}
+
 export function initCodeCopy(): void {
   document.querySelectorAll('.copy-code-btn').forEach((button) => {
     if (button instanceof HTMLElement) {
@@ -71,18 +92,11 @@ export function initCodeCopy(): void {
   });
 }
 
-// Auto-initialize when available
+// Auto-initialize
 if (typeof window !== 'undefined') {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initCodeCopy);
   } else {
     initCodeCopy();
   }
-
-  // Re-initialize for dynamic content
-  let timeoutId: number;
-  document.addEventListener('click', () => {
-    clearTimeout(timeoutId);
-    timeoutId = window.setTimeout(initCodeCopy, 100);
-  });
 }

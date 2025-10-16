@@ -9,6 +9,7 @@ import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import { h } from 'hastscript';
+import { initCodeCopy } from '@/utils/copy-code';
 
 // Type definitions
 interface MarkdownRendererProps {
@@ -226,35 +227,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     }
   }, []);
 
-  const handleCopyClick = useCallback(async (e: MouseEvent) => {
-    const button = (e.target as HTMLElement).closest(
-      '.copy-code-btn',
-    ) as HTMLButtonElement | null;
-    if (!button) return;
 
-    const code = button.getAttribute('data-code') || '';
-
-    try {
-      await navigator.clipboard.writeText(code);
-      const successMessage = button.nextElementSibling as HTMLElement;
-      if (successMessage) {
-        successMessage.classList.remove('hidden');
-        successMessage.classList.add('flex');
-        setTimeout(() => {
-          successMessage.classList.add('hidden');
-          successMessage.classList.remove('flex');
-        }, 2000);
-      }
-    } catch {
-      const textArea = document.createElement('textarea');
-      textArea.value = code;
-      textArea.style.cssText = 'position:fixed;opacity:0;';
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-    }
-  }, []);
 
   const handleAnchorClick = useCallback((e: MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -281,13 +254,11 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   }, []);
 
   useEffect(() => {
-    document.addEventListener('click', handleCopyClick);
     document.addEventListener('click', handleAnchorClick);
     return () => {
-      document.removeEventListener('click', handleCopyClick);
       document.removeEventListener('click', handleAnchorClick);
     };
-  }, [handleCopyClick, handleAnchorClick]);
+  }, [handleAnchorClick]);
 
   useEffect(() => {
     if (setZoomableImages) {
@@ -295,6 +266,15 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       setZoomableImages(Array.from(images) as HTMLImageElement[]);
     }
   }, [processedContent, setZoomableImages]);
+
+  // Initialize copy functionality when content changes
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      initCodeCopy();
+    }, 100); // Small delay to ensure DOM is updated
+
+    return () => clearTimeout(timeoutId);
+  }, [processedContent]);
 
   useEffect(() => {
     scrollToAnchor();
@@ -403,9 +383,9 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
                 {language}
               </span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center">
               <button
-                className="copy-code-btn bg-gray-200 hover:bg-gray-300 text-gray-700  text-xs px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 hover:scale-105 shadow-sm hover:shadow-md"
+                className="copy-code-btn bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 hover:scale-105 shadow-sm hover:shadow-md"
                 data-code={codeText}
                 aria-label="Copy code to clipboard"
               >
@@ -424,9 +404,6 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
                 </svg>
                 <span className="font-medium">Copy</span>
               </button>
-              <div className="copy-success-message hidden items-center space-x-2 bg-green-100 text-green-800 text-xs px-4 py-2 rounded-lg border border-green-200">
-                <span className="font-medium">Copied!</span>
-              </div>
             </div>
           </div>
           <div className="overflow-x-auto">
