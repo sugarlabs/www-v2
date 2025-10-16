@@ -6,7 +6,7 @@ date: "2025-09-15"
 slug: "2025-09-15-dmp-25-weekly-update-aman-chadha"
 author: "@/constants/MarkdownFiles/authors/aman-chadha.md"
 tags: "dmp25,sugarlabs,weeklyupdate,aman-chadha"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 # Weekly Update: Expanding Language Coverage and Translation Validation
@@ -45,6 +45,8 @@ This system allows us to:
 ## Outcome This Week
 
 - Generated working Japanese and Hindi `.po` files.  
+  - [Japanese PR](https://github.com/sugarlabs/musicblocks/pull/4774#issuecomment-3410709064)  
+  - [Hindi PR](https://github.com/sugarlabs/musicblocks/pull/4772)  
 - Built a Selenium + GPT pipeline for translation verification.  
 - Flagged incorrect translations for review, improving translation accuracy and reliability.  
 
@@ -60,4 +62,4 @@ This system allows us to:
 
 ## Reflection
 
-This week marked a major milestone: expanding Music Blocks’ localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.
+This week marked a major milestone: expanding Music Block's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.
