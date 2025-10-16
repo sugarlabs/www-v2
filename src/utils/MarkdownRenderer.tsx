@@ -227,8 +227,6 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     }
   }, []);
 
-
-
   const handleAnchorClick = useCallback((e: MouseEvent) => {
     const target = e.target as HTMLElement;
 
