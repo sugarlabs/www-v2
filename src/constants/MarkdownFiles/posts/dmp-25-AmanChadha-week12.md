@@ -6,7 +6,7 @@ date: "2025-09-08"
 slug: "2025-09-08-dmp-25-aman-chadha-week12"
 author: "@/constants/MarkdownFiles/authors/aman-chadha.md"
 tags: "dmp25,sugarlabs,finalreport,aman-chadha"
-image: "assets/Images/c4gt_DMP.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -62,7 +62,7 @@ Key goals included:
 
 ## Key Learnings
 
-- Infrastructure-level improvements (like i18n) may not be flashy, but they unlock global accessibility.  
+- Infrastructure-level improvements (like i18n) may not be flashy, but they unlock the potential for users from around the world to have access to the program.  
 - Context is essential for high-quality translations — raw machine translation alone isn’t enough.  
 - Clean migration strategy + thorough testing makes adoption smoother for the community.  
 
@@ -91,3 +91,4 @@ I’m deeply grateful to my mentors Walter and Devin, and to the Sugar Labs comm
 - i18next Documentation: [i18next.com](https://www.i18next.com/)  
 
 ---
+
