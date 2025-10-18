@@ -168,8 +168,8 @@ const processMarkdownContent = (content: string): string => {
   processed = processed.replace(
     /:::details\s+(.*?)\n([\s\S]*?):::/gim,
     '\n\n<details class="my-4 border border-gray-200 rounded-lg overflow-hidden bg-white">' +
-    '<summary class="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">$1</summary>' +
-    '<div class="px-4 py-3 text-gray-700">$2</div></details>\n\n',
+      '<summary class="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">$1</summary>' +
+      '<div class="px-4 py-3 text-gray-700">$2</div></details>\n\n',
   );
 
   // GitHub-style alerts - ensure proper block separation
@@ -327,19 +327,19 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
   const createHeading =
     (level: keyof typeof headingClasses) =>
-      ({
-        children,
-        ...props
-      }: React.HTMLAttributes<HTMLHeadingElement> & {
-        children?: React.ReactNode;
-      }) => {
-        const Tag = level;
-        return (
-          <Tag {...props} className={headingClasses[level]}>
-            {children}
-          </Tag>
-        );
-      };
+    ({
+      children,
+      ...props
+    }: React.HTMLAttributes<HTMLHeadingElement> & {
+      children?: React.ReactNode;
+    }) => {
+      const Tag = level;
+      return (
+        <Tag {...props} className={headingClasses[level]}>
+          {children}
+        </Tag>
+      );
+    };
 
   const components: Components = {
     h1: createHeading('h1'),
@@ -354,26 +354,44 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       const childArray = React.Children.toArray(children);
 
       // Check if any child contains HTML that would create block elements or is an image
-      const hasProblematicContent = childArray.some(child => {
+      const hasProblematicContent = childArray.some((child) => {
         if (typeof child === 'string') {
           // Check for HTML tags that create block elements
-          return /<(div|figure|blockquote|pre|table|ul|ol|details|iframe|h[1-6]|img)/i.test(child);
+          return /<(div|figure|blockquote|pre|table|ul|ol|details|iframe|h[1-6]|img)/i.test(
+            child,
+          );
         }
         if (React.isValidElement(child)) {
           const type = child.type;
           // Check for React components that render as block elements or images
-          return typeof type === 'string' &&
-            ['div', 'figure', 'blockquote', 'pre', 'table', 'ul', 'ol', 'details', 'iframe', 'img', 'span'].includes(type);
+          return (
+            typeof type === 'string' &&
+            [
+              'div',
+              'figure',
+              'blockquote',
+              'pre',
+              'table',
+              'ul',
+              'ol',
+              'details',
+              'iframe',
+              'img',
+              'span',
+            ].includes(type)
+          );
         }
         return false;
       });
 
       // Check if this paragraph only contains an image
-      const isImageOnly = childArray.length === 1 &&
+      const isImageOnly =
+        childArray.length === 1 &&
         React.isValidElement(childArray[0]) &&
         (childArray[0].type === 'img' ||
           (typeof childArray[0].type === 'function' &&
-            childArray[0].props && typeof childArray[0].props === 'object' &&
+            childArray[0].props &&
+            typeof childArray[0].props === 'object' &&
             'src' in childArray[0].props));
 
       // If contains problematic content or is image-only, render as div
@@ -673,8 +691,6 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         {children}
       </summary>
     ),
-
-
   };
 
   // Prevent hydration mismatch by only rendering on client
