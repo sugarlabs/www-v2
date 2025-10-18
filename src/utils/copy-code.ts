@@ -34,7 +34,7 @@ async function copyToClipboard(
       await navigator.clipboard.writeText(text);
       showSuccessMessage(button);
       return;
-    } catch (error) {
+    } catch {
       // Fall through to legacy method
     }
   }
@@ -61,7 +61,7 @@ async function copyToClipboard(
     } else {
       showErrorFeedback(button, 'Copy failed - please copy manually');
     }
-  } catch (error) {
+  } catch {
     showErrorFeedback(button, 'Copy not supported in this browser');
   }
 }
