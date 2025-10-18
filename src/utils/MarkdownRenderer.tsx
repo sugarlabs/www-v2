@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useCallback } from 'react';
+import { useEffect, useMemo, useCallback, useState } from 'react';
 import React, { Children } from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -164,37 +164,37 @@ const processMarkdownContent = (content: string): string => {
     '<del class="line-through text-gray-500">$1</del>',
   );
 
-  // Collapsible sections
+  // Collapsible sections - ensure proper block separation
   processed = processed.replace(
     /:::details\s+(.*?)\n([\s\S]*?):::/gim,
-    '<details class="my-4 border border-gray-200 rounded-lg overflow-hidden bg-white">' +
-      '<summary class="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">$1</summary>' +
-      '<div class="px-4 py-3 text-gray-700">$2</div></details>',
+    '\n\n<details class="my-4 border border-gray-200 rounded-lg overflow-hidden bg-white">' +
+    '<summary class="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">$1</summary>' +
+    '<div class="px-4 py-3 text-gray-700">$2</div></details>\n\n',
   );
 
-  // GitHub-style alerts
+  // GitHub-style alerts - ensure proper block separation
   processed = processed.replace(
     /:::(\w+)\s*(.*?)\n([\s\S]*?):::/gim,
     (_, type, title, content) => {
       const alert =
         ALERT_TYPES[type as keyof typeof ALERT_TYPES] || ALERT_TYPES.note;
-      return `<div class="my-4 p-4 border-l-4 ${alert.border} ${alert.bg} rounded-r-lg">
+      return `\n\n<div class="my-4 p-4 border-l-4 ${alert.border} ${alert.bg} rounded-r-lg">
       <div class="flex items-center mb-2">
         <span class="mr-2 text-lg">${alert.icon}</span>
         <strong class="${alert.text} font-semibold uppercase text-sm tracking-wide">${type}${title ? `: ${title}` : ''}</strong>
       </div>
       <div class="${alert.text}">${content}</div>
-    </div>`;
+    </div>\n\n`;
     },
   );
 
-  // YouTube embeds
+  // YouTube embeds - ensure proper block separation
   processed = processed.replace(
     /\[youtube:\s*([\w-]+)\]/gim,
     (_, videoId) =>
-      `<div class="my-8 mx-auto max-w-4xl"><div class="relative rounded-xl shadow-lg overflow-hidden bg-black" style="aspect-ratio: 16/9;">
+      `\n\n<div class="my-8 mx-auto max-w-4xl"><div class="relative rounded-xl shadow-lg overflow-hidden bg-black" style="aspect-ratio: 16/9;">
     <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1" class="absolute inset-0 w-full h-full border-0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" title="YouTube video player"></iframe></div></div>`,
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" title="YouTube video player"></iframe></div></div>\n\n`,
   );
 
   return processed;
@@ -205,6 +205,12 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   setZoomableImages,
   frontmatter,
 }) => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const processedContent = useMemo(
     () => processMarkdownContent(content),
     [content],
@@ -321,19 +327,19 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
   const createHeading =
     (level: keyof typeof headingClasses) =>
-    ({
-      children,
-      ...props
-    }: React.HTMLAttributes<HTMLHeadingElement> & {
-      children?: React.ReactNode;
-    }) => {
-      const Tag = level;
-      return (
-        <Tag {...props} className={headingClasses[level]}>
-          {children}
-        </Tag>
-      );
-    };
+      ({
+        children,
+        ...props
+      }: React.HTMLAttributes<HTMLHeadingElement> & {
+        children?: React.ReactNode;
+      }) => {
+        const Tag = level;
+        return (
+          <Tag {...props} className={headingClasses[level]}>
+            {children}
+          </Tag>
+        );
+      };
 
   const components: Components = {
     h1: createHeading('h1'),
@@ -343,14 +349,55 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     h5: createHeading('h5'),
     h6: createHeading('h6'),
 
-    p: ({ children, ...props }) => (
-      <p
-        {...props}
-        className="my-4 text-gray-700 dark:text-gray-300 leading-relaxed"
-      >
-        {children}
-      </p>
-    ),
+    p: ({ children, ...props }) => {
+      // Convert children to array and check for problematic content
+      const childArray = React.Children.toArray(children);
+
+      // Check if any child contains HTML that would create block elements or is an image
+      const hasProblematicContent = childArray.some(child => {
+        if (typeof child === 'string') {
+          // Check for HTML tags that create block elements
+          return /<(div|figure|blockquote|pre|table|ul|ol|details|iframe|h[1-6]|img)/i.test(child);
+        }
+        if (React.isValidElement(child)) {
+          const type = child.type;
+          // Check for React components that render as block elements or images
+          return typeof type === 'string' &&
+            ['div', 'figure', 'blockquote', 'pre', 'table', 'ul', 'ol', 'details', 'iframe', 'img', 'span'].includes(type);
+        }
+        return false;
+      });
+
+      // Check if this paragraph only contains an image
+      const isImageOnly = childArray.length === 1 &&
+        React.isValidElement(childArray[0]) &&
+        (childArray[0].type === 'img' ||
+          (typeof childArray[0].type === 'function' &&
+            childArray[0].props && typeof childArray[0].props === 'object' &&
+            'src' in childArray[0].props));
+
+      // If contains problematic content or is image-only, render as div
+      if (hasProblematicContent || isImageOnly) {
+        return (
+          <div
+            {...props}
+            className="my-4 text-gray-700 dark:text-gray-300 leading-relaxed"
+          >
+            {children}
+          </div>
+        );
+      }
+
+      // Safe to render as paragraph
+      return (
+        <p
+          {...props}
+          className="my-4 text-gray-700 dark:text-gray-300 leading-relaxed"
+        >
+          {children}
+        </p>
+      );
+    },
 
     blockquote: ({ children, ...props }) => (
       <blockquote
@@ -446,28 +493,30 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       const imageSrc =
         src === '' && frontmatter?.image ? String(frontmatter.image) : src;
       return (
-        <figure className="flex flex-col items-center my-6">
-          <div className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200">
-            <img
-              {...props}
-              src={imageSrc}
-              alt={alt}
-              title={title || alt || ''}
-              className="max-w-full h-auto rounded-lg object-contain hover:scale-105 transition-transform duration-300"
-              data-zoomable="true"
-              loading="lazy"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src =
-                  '/assets/Images/SugarNewsLogo.webp';
-              }}
-            />
-          </div>
-          {(title || alt) && (
-            <figcaption className="text-center text-sm text-gray-600 mt-3 italic">
-              {title || alt}
-            </figcaption>
-          )}
-        </figure>
+        <span className="block my-6">
+          <span className="flex flex-col items-center">
+            <span className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 inline-block">
+              <img
+                {...props}
+                src={imageSrc}
+                alt={alt}
+                title={title || alt || ''}
+                className="max-w-full h-auto rounded-lg object-contain hover:scale-105 transition-transform duration-300"
+                data-zoomable="true"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src =
+                    '/assets/Images/SugarNewsLogo.webp';
+                }}
+              />
+            </span>
+            {(title || alt) && (
+              <span className="text-center text-sm text-gray-600 mt-3 italic block">
+                {title || alt}
+              </span>
+            )}
+          </span>
+        </span>
       );
     },
 
@@ -624,7 +673,22 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         {children}
       </summary>
     ),
+
+
   };
+
+  // Prevent hydration mismatch by only rendering on client
+  if (!isClient) {
+    return (
+      <div className="prose prose-lg dark:prose-invert prose-headings:dark:text-gray-100 prose-p:dark:text-gray-300 prose-strong:dark:text-gray-100 prose-em:dark:text-gray-300 prose-li:dark:text-gray-300 max-w-none">
+        <div className="animate-pulse">
+          <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="prose prose-lg dark:prose-invert prose-headings:dark:text-gray-100 prose-p:dark:text-gray-300 prose-strong:dark:text-gray-100 prose-em:dark:text-gray-300 prose-li:dark:text-gray-300 max-w-none">
