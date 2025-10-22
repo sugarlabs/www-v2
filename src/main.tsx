@@ -38,7 +38,7 @@ if (import.meta.env.DEV) {
     /validateDOMNesting/,
   ];
 
-  console.error = (...args: any[]) => {
+  console.error = (...args: unknown[]) => {
     const message = args.join(' ');
     const shouldSuppress =
       suppressedPatterns.some((pattern) => pattern.test(message)) ||
@@ -54,7 +54,7 @@ if (import.meta.env.DEV) {
     }
   };
 
-  console.warn = (...args: any[]) => {
+  console.warn = (...args: unknown[]) => {
     const message = args.join(' ');
     const shouldSuppress =
       suppressedPatterns.some((pattern) => pattern.test(message)) ||
