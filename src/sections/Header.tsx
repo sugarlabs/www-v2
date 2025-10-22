@@ -133,6 +133,7 @@ const Header: React.FC = () => {
               ))}
 
                <div className="flex items-center px-2 lg:px-3">
+                 // Making Theme toggle button responsive in other devices or frames
   <DarkModeToggle />
 </div>
 
