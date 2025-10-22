@@ -168,8 +168,8 @@ const processMarkdownContent = (content: string): string => {
   processed = processed.replace(
     /:::details\s+(.*?)\n([\s\S]*?):::/gim,
     '<details class="my-4 border border-gray-200 rounded-lg overflow-hidden bg-white">' +
-    '<summary class="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">$1</summary>' +
-    '<div class="px-4 py-3 text-gray-700">$2</div></details>',
+      '<summary class="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">$1</summary>' +
+      '<div class="px-4 py-3 text-gray-700">$2</div></details>',
   );
 
   // GitHub-style alerts
@@ -205,7 +205,6 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   setZoomableImages,
   frontmatter,
 }) => {
-
   const processedContent = useMemo(
     () => processMarkdownContent(content),
     [content],
@@ -322,19 +321,19 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
   const createHeading =
     (level: keyof typeof headingClasses) =>
-      ({
-        children,
-        ...props
-      }: React.HTMLAttributes<HTMLHeadingElement> & {
-        children?: React.ReactNode;
-      }) => {
-        const Tag = level;
-        return (
-          <Tag {...props} className={headingClasses[level]}>
-            {children}
-          </Tag>
-        );
-      };
+    ({
+      children,
+      ...props
+    }: React.HTMLAttributes<HTMLHeadingElement> & {
+      children?: React.ReactNode;
+    }) => {
+      const Tag = level;
+      return (
+        <Tag {...props} className={headingClasses[level]}>
+          {children}
+        </Tag>
+      );
+    };
 
   const components: Components = {
     h1: createHeading('h1'),
