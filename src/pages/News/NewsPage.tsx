@@ -255,19 +255,16 @@ const NewsPage: React.FC = () => {
               initial="hidden"
               animate="visible"
             >
-              <div className="flex items-center justify-center mb-6">
-                <Sparkles
-                  className="text-blue-500 mr-4 animate-pulse"
-                  size={32}
-                />
-                <h1 className="text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
-                  NEWS
-                </h1>
-                <TrendingUp
-                  className="text-green-500 ml-4 animate-bounce"
-                  size={32}
-                />
-              </div>
+              <div className="flex items-center justify-center mb-6 gap-4 relative">
+  <Sparkles className="text-blue-500 animate-pulse" size={32} />
+
+  <h1 className="relative z-10 px-4 text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
+    NEWS
+  </h1>
+
+  <TrendingUp className="text-green-500 animate-bounce" size={32} />
+</div>
+
 
               <p className="text-xl mb-8 text-gray-700 dark:text-gray-300 leading-relaxed ">
                 Discover the latest innovations, community updates, and
