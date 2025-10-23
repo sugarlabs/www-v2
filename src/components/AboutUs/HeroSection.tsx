@@ -106,12 +106,12 @@ const HeroSection = () => {
           animate="visible"
           transition={{ delay: 0.5, duration: 0.8 }}
         >
+          A{' '}
           <motion.span
             className="relative inline-block"
             variants={heroAnimations.hoverText}
             whileHover="hover"
           >
-            A
             <span className="text-rose-500 dark:text-rose-400 font-semibold">
               {' '}
               Community
