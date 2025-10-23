@@ -132,7 +132,10 @@ const Header: React.FC = () => {
                 </Link>
               ))}
 
-              <DarkModeToggle />
+               <div className="flex items-center px-2 lg:px-3">
+  <DarkModeToggle />
+</div>
+
 
               {/* CTA Button */}
               <Link
