@@ -256,13 +256,22 @@ const NewsPage: React.FC = () => {
               animate="visible"
             >
               <div className="flex items-center justify-center mb-6 gap-4 relative">
-  <Sparkles className="text-blue-500 animate-pulse" size={32} />
+
+                
+  <Sparkles
+    className="text-blue-500 animate-pulse"
+    size={32}
+    
+    />
 
   <h1 className="relative z-10 px-4 text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
     NEWS
   </h1>
 
-  <TrendingUp className="text-green-500 animate-bounce" size={32} />
+  <TrendingUp
+    className="text-green-500 animate-bounce"
+    size={32} 
+    />
 </div>
 
 
