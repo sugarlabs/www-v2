@@ -54,7 +54,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-0 mt-2 w-56 rounded-xl bg-white dark:bg-gray-800 shadow-xl ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-10 overflow-hidden"
+            className="absolute left-0 mt-[0.074rem] w-56 rounded-xl bg-white dark:bg-gray-800 shadow-xl ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-10 overflow-hidden"
           >
             <div className="py-2">
               {items.map((item) => (
