@@ -10,12 +10,12 @@ import {
 
 const Stats = () => {
   return (
-    <section className="max-w-7xl mx-auto py-10 sm:py-16 md:py-20 px-4 sm:px-6 bg-white dark:bg-gray-900">
+    <section className="max-w-7xl mx-auto py-10 sm:py-16 md:py-20 px-4 sm:px-6 bg-white dark:bg-black">
       <div className="relative mb-12 sm:mb-16 md:mb-24">
         <div className="absolute left-0 top-1/2 w-full h-0.5 sm:h-1 bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500 transform -translate-y-1/2 opacity-30"></div>
 
         <motion.div
-          className="relative z-10 text-center mx-auto max-w-2xl bg-white dark:bg-gray-900 px-2 py-2 sm:py-4"
+          className="relative z-10 text-center mx-auto max-w-2xl bg-white dark:bg-black px-2 py-2 sm:py-4"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}

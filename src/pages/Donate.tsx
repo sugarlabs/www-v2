@@ -27,7 +27,7 @@ const Donate: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+      <div className="dark:bg-black text-gray-800 dark:text-gray-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 font-sans mt-10 sm:mt-10 mb-10 sm:mb-16">
           {/* Hero Section */}
           <div className="flex flex-col md:flex-row gap-6 md:gap-10 mt-10">

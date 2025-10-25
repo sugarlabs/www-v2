@@ -250,7 +250,7 @@ const Matrix: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9] dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9] dark:bg-black">
       <Header />
       <main className="flex-grow">
         {/* Hero Section*/}
@@ -311,7 +311,7 @@ const Matrix: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={fadeIn}
-          className="py-12 sm:py-16 bg-[#FFFEF9] dark:bg-gray-900"
+          className="py-12 sm:py-16 bg-[#FFFEF9] dark:bg-black"
         >
           <div className="container mx-auto px-4 md:px-6">
             <div className="max-w-3xl mx-auto">
@@ -354,7 +354,7 @@ const Matrix: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={staggerContainer}
-          className="py-12 sm:py-16 md:py-24 bg-[#FFFEF9] dark:bg-gray-900"
+          className="py-12 sm:py-16 md:py-24 bg-[#FFFEF9] dark:bg-black"
         >
           <div className="container mx-auto px-4 md:px-6">
             <motion.div className="text-center mb-8 sm:mb-12" variants={fadeIn}>
@@ -379,7 +379,7 @@ const Matrix: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={staggerContainer}
-          className="py-12 sm:py-16 bg-[#FFFEF9] dark:bg-gray-900"
+          className="py-12 sm:py-16 bg-[#FFFEF9] dark:bg-black"
         >
           <div className="container mx-auto px-4 md:px-6">
             <motion.div className="text-center mb-8 sm:mb-12" variants={fadeIn}>

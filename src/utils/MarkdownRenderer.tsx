@@ -490,7 +490,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     tbody: ({ children, ...props }) => (
       <tbody
         {...props}
-        className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700"
+        className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-700"
       >
         {children}
       </tbody>

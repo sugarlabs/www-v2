@@ -13,7 +13,7 @@ const JoinDevelopment = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-b from-white to-red-50 dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-200">
+    <div className="bg-gradient-to-b from-white to-red-50 dark:from-black dark:to-black text-gray-800 dark:text-gray-200">
       <Header />
       <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-6">
         <JoinToggle />

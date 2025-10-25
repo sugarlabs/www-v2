@@ -29,7 +29,7 @@ const Volunteer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFEF9] dark:bg-[#13141f]">
+    <div className="min-h-screen bg-[#FFFEF9] dark:bg-black">
       <Header />
       <main className="container mx-auto flex flex-col items-center justify-center p-6">
         <JoinToggle />

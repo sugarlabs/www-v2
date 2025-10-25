@@ -5,7 +5,7 @@ const MissionSection = () => {
   return (
     <section
       id={content.sectionId}
-      className="w-full py-24 bg-white dark:bg-gray-900"
+      className="w-full py-24 bg-white dark:bg-black"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}

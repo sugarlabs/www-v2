@@ -32,7 +32,7 @@ const ReviewCard = ({
 
   return (
     <motion.div
-      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-lg border border-gray-200 dark:border-gray-700 mx-2 justify-between"
+      className="bg-white dark:bg-black rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-lg border border-gray-200 dark:border-gray-700 mx-2 justify-between"
       variants={testimonialCard}
       initial="hidden"
       whileInView="visible"
@@ -93,7 +93,7 @@ export function Testimonials() {
   const secondRow = testimonials.slice(Math.ceil(testimonials.length / 2));
 
   return (
-    <div className="w-full bg-gradient-to-b from-white-800 to-[#F5DDC8] dark:from-gray-900 dark:to-gray-800">
+    <div className="w-full bg-gradient-to-b from-white-800 to-[#F5DDC8] dark:from-black dark:to-black">
       {/* Heading Section with Hearts */}
       <motion.div
         className="flex items-center justify-center gap-4 md:gap-6 mb-12"

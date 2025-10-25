@@ -14,9 +14,9 @@ import {
 
 const Leadership = () => {
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-white dark:bg-black">
       <Header />
-      <section className="py-24 px-4 bg-white dark:bg-gray-900">
+      <section className="py-24 px-4 bg-white dark:bg-black">
         <div className="container mx-auto max-w-7xl">
           {/* Section header with animations */}
           <div className="text-center mb-16">

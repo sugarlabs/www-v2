@@ -4,7 +4,7 @@ import { FC } from 'react';
 
 const GoalsSection: FC = () => {
   return (
-    <section id="goals" className="w-full py-24 bg-white dark:bg-gray-900">
+    <section id="goals" className="w-full py-24 bg-white dark:bg-black">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center mb-16">

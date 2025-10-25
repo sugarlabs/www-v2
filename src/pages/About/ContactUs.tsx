@@ -45,7 +45,7 @@ const Card: React.FC<CardProps> = ({ icon, title, content }) => (
 
 const ContactUs = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-gray-100">
       <Header />
       <main className="container mx-auto p-4">
         {/* Hero Section */}
@@ -235,7 +235,7 @@ const ContactUs = () => {
             viewport={{ once: true, amount: 0.2 }}
             variants={slideInBottom}
           >
-            <div className="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+            <div className="bg-white dark:bg-black shadow-lg rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="flex-shrink-0">
                   <div className="w-16 h-16 bg-red-100 dark:bg-red-300 flex items-center justify-center rounded-lg border border-red-100 dark:border-none">

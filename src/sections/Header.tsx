@@ -53,8 +53,8 @@ const Header: React.FC = () => {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'backdrop-blur-md bg-white/90 dark:bg-gray-900/80 shadow-lg'
-            : 'bg-white dark:bg-gray-900'
+            ? 'backdrop-blur-md bg-white/90 dark:bg-black/80 shadow-lg'
+            : 'bg-white dark:bg-black'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -193,7 +193,7 @@ const MobileNavDrawer: React.FC<{
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: '100%' }}
           transition={{ type: 'tween', duration: 0.3 }}
-          className="fixed md:hidden top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white dark:bg-gray-900 shadow-xl z-40
+          className="fixed md:hidden top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white dark:bg-black shadow-xl z-40
                     flex flex-col h-full"
         >
           <div className="flex flex-col h-full">
@@ -281,7 +281,7 @@ const MobileNavDrawer: React.FC<{
             </div>
 
             {/* CTA button footer */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700 sticky bottom-0 bg-white dark:bg-gray-900">
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700 sticky bottom-0 bg-white dark:bg-black">
               <Link
                 to="/try-sugar"
                 onClick={onClose}
