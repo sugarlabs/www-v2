@@ -184,12 +184,12 @@ const TagPage: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           {/* Back Button */}
           <motion.button
             onClick={() => navigate(-1)}
-            className="mb-6 px-4 py-2 flex items-center text-blue-600 hover:text-blue-700 transition-colors rounded-md hover:bg-blue-50"
+            className="mb-6 px-4 py-2 flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -199,40 +199,42 @@ const TagPage: React.FC = () => {
 
           {/* Tag Header */}
           <motion.div
-            className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8"
+            className="bg-white dark:bg-gray-800/80 rounded-2xl shadow-xl p-6 sm:p-8 mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
             <div className="text-center">
               <div className="flex items-center justify-center gap-3 mb-4">
-                <div className="p-3 bg-blue-100 rounded-full">
-                  <Tag className="w-8 h-8 text-blue-600" />
+                <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-full">
+                  <Tag className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white">
                   #{tag}
                 </h1>
               </div>
-              <p className="text-gray-600 text-lg mb-6">
+              <p className="text-gray-600 dark:text-gray-300 text-lg mb-6">
                 {posts.length} {posts.length === 1 ? 'article' : 'articles'}{' '}
                 tagged with #{tag}
               </p>
 
               {/* Stats */}
               <div className="flex flex-wrap justify-center gap-4 text-sm">
-                <div className="flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full">
-                  <BookOpen className="w-4 h-4 text-blue-600" />
-                  <span className="font-medium">{posts.length} Articles</span>
+                <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full">
+                  <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <span className="font-medium dark:text-gray-200">
+                    {posts.length} Articles
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full">
-                  <TrendingUp className="w-4 h-4 text-green-600" />
-                  <span className="font-medium">
+                <div className="flex items-center gap-2 bg-green-50 dark:bg-green-900/30 px-4 py-2 rounded-full">
+                  <TrendingUp className="w-4 h-4 text-green-600 dark:text-green-400" />
+                  <span className="font-medium dark:text-gray-200">
                     {getUniqueCategories().length - 1} Categories
                   </span>
                 </div>
-                <div className="flex items-center gap-2 bg-purple-50 px-4 py-2 rounded-full">
-                  <Tag className="w-4 h-4 text-purple-600" />
-                  <span className="font-medium">
+                <div className="flex items-center gap-2 bg-purple-50 dark:bg-purple-900/30 px-4 py-2 rounded-full">
+                  <Tag className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <span className="font-medium dark:text-gray-200">
                     {relatedTags.length} Related Tags
                   </span>
                 </div>
@@ -246,15 +248,15 @@ const TagPage: React.FC = () => {
               {/* Controls */}
               {posts.length > 0 && (
                 <motion.div
-                  className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 mb-6"
+                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 mb-6"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                 >
                   <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
-                      <Filter className="w-5 h-5 text-gray-600" />
-                      <span className="font-medium text-gray-900">
+                      <Filter className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                      <span className="font-medium text-gray-900 dark:text-gray-100">
                         Showing {filteredPosts.length} of {posts.length}{' '}
                         articles
                       </span>
@@ -332,14 +334,14 @@ const TagPage: React.FC = () => {
               {/* Posts Display */}
               {filteredPosts.length === 0 ? (
                 <motion.div
-                  className="bg-white rounded-2xl shadow-xl p-12 text-center"
+                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-12 text-center"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
                   <div className="text-6xl mb-6">
                     {searchTerm || selectedCategory !== 'All' ? '🔍' : '🏷️'}
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
                     {searchTerm || selectedCategory !== 'All'
                       ? 'No matching articles'
                       : 'No articles found'}
@@ -377,7 +379,8 @@ const TagPage: React.FC = () => {
                         <motion.article
                           key={post.slug}
                           className={`
-                            bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 
+                            bg-white dark:bg-gray-800/90 rounded-2xl shadow-lg hover:shadow-xl 
+                            dark:shadow-blue-500/5 transition-all duration-300 
                             cursor-pointer overflow-hidden group
                             ${viewMode === 'list' ? 'flex' : ''}
                           `}
@@ -405,7 +408,7 @@ const TagPage: React.FC = () => {
                               />
                             ) : (
                               <div
-                                className={`w-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center ${
+                                className={`w-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 flex items-center justify-center ${
                                   viewMode === 'list'
                                     ? 'h-full'
                                     : 'h-48 sm:h-56'
@@ -420,25 +423,25 @@ const TagPage: React.FC = () => {
                             className={`p-4 sm:p-6 ${viewMode === 'list' ? 'w-2/3 sm:w-3/4' : ''}`}
                           >
                             <div className="flex items-center gap-2 mb-3">
-                              <span className="px-3 py-1 text-xs font-bold bg-green-500 text-white rounded-full">
+                              <span className="px-3 py-1 text-xs font-bold bg-green-500 dark:bg-green-600 text-white rounded-full">
                                 {post.category}
                               </span>
                             </div>
 
                             <h2
-                              className={`font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2 ${
+                              className={`font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 ${
                                 viewMode === 'list' ? 'text-lg' : 'text-xl'
                               }`}
                             >
                               {post.title}
                             </h2>
 
-                            <p className="text-gray-600 mb-4 line-clamp-2 text-sm">
+                            <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2 text-sm">
                               {post.excerpt}
                             </p>
 
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                              <div className="flex items-center gap-4 text-sm text-gray-500">
+                              <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
                                 {post.date && (
                                   <div className="flex items-center gap-1">
                                     <Calendar className="w-4 h-4" />
@@ -463,15 +466,15 @@ const TagPage: React.FC = () => {
                                     }}
                                     className={`px-2 py-1 text-xs rounded-full transition-colors ${
                                       postTag === tag
-                                        ? 'bg-blue-100 text-blue-600 font-semibold'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+                                        ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 font-semibold'
+                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/50 hover:text-blue-600 dark:hover:text-blue-400'
                                     }`}
                                   >
                                     #{postTag}
                                   </button>
                                 ))}
                                 {post.tags.length > 3 && (
-                                  <span className="px-2 py-1 text-xs bg-gray-100 text-gray-500 rounded-full">
+                                  <span className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-full">
                                     +{post.tags.length - 3}
                                   </span>
                                 )}
@@ -513,8 +516,8 @@ const TagPage: React.FC = () => {
             >
               {/* Related Tags */}
               {relatedTags.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-xl p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">
+                <div className="bg-white dark:bg-gray-800/80 rounded-2xl shadow-xl p-6">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                     Related Tags
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -522,7 +525,7 @@ const TagPage: React.FC = () => {
                       <button
                         key={relatedTag}
                         onClick={() => handleTagClick(relatedTag)}
-                        className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-blue-100 hover:text-blue-700 transition-colors"
+                        className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
                       >
                         #{relatedTag}
                       </button>
@@ -532,26 +535,32 @@ const TagPage: React.FC = () => {
               )}
 
               {/* Tag Stats */}
-              <div className="bg-white rounded-2xl shadow-xl p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                   Tag Statistics
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Total Articles</span>
-                    <span className="font-semibold text-blue-600">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Total Articles
+                    </span>
+                    <span className="font-semibold text-blue-600 dark:text-blue-400">
                       {posts.length}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Categories</span>
-                    <span className="font-semibold text-gray-900">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Categories
+                    </span>
+                    <span className="font-semibold text-gray-900 dark:text-gray-100">
                       {getUniqueCategories().length - 1}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Related Tags</span>
-                    <span className="font-semibold text-gray-900">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Related Tags
+                    </span>
+                    <span className="font-semibold text-gray-900 dark:text-gray-100">
                       {relatedTags.length}
                     </span>
                   </div>
@@ -560,8 +569,8 @@ const TagPage: React.FC = () => {
 
               {/* Popular in Category */}
               {getUniqueCategories().length > 2 && (
-                <div className="bg-white rounded-2xl shadow-xl p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                     Categories
                   </h3>
                   <div className="space-y-2">
@@ -577,14 +586,14 @@ const TagPage: React.FC = () => {
                             onClick={() => setSelectedCategory(category)}
                             className={`w-full flex justify-between items-center p-2 rounded-lg transition-colors text-left ${
                               selectedCategory === category
-                                ? 'bg-blue-50 text-blue-700'
-                                : 'hover:bg-gray-50'
+                                ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                                : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
                             }`}
                           >
                             <span className="text-sm font-medium">
                               {category}
                             </span>
-                            <span className="text-xs bg-gray-100 px-2 py-1 rounded-full">
+                            <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full">
                               {count}
                             </span>
                           </button>
