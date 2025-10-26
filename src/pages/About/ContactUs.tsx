@@ -193,8 +193,8 @@ const ContactUs = () => {
               variants={fadeIn}
             >
               {socialLinks.map((social) => (
-              <div className="flex justify-center">
-                <motion.a
+                <div className="flex justify-center">
+                  <motion.a
                     key={social.href}
                     href={social.href}
                     target="_blank"
@@ -207,7 +207,11 @@ const ContactUs = () => {
                     whileHover={{
                       scale: 1.05,
                       y: -3,
-                      transition: { type: 'spring', stiffness: 300, damping: 20 },
+                      transition: {
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 20,
+                      },
                     }}
                     style={{ transformOrigin: 'center center' }}
                   >
@@ -224,8 +228,8 @@ const ContactUs = () => {
                     <span className="text-xs text-gray-700 dark:text-gray-300 font-medium text-center">
                       {social.name}
                     </span>
-                </motion.a>
-              </div>  
+                  </motion.a>
+                </div>
               ))}
             </motion.div>
           </motion.section>
@@ -264,7 +268,9 @@ const ContactUs = () => {
                     className="inline-block px-6 py-3 bg-red-600 dark:bg-red-500 text-white rounded-full hover:bg-red-700 dark:hover:bg-red-400 transition-colors font-medium whitespace-nowrap"
                   >
                     <span>Join Chat</span>
-                    <span className="ml-1 text-lg leading-none relative top-[-1.2px]">→</span>
+                    <span className="ml-1 text-lg leading-none relative top-[-1.2px]">
+                      →
+                    </span>
                   </Link>
                 </div>
               </div>
