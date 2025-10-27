@@ -6,15 +6,23 @@ const RoadmapSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
   const mobileTimelineRef = useRef<HTMLDivElement>(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"]
+    offset: ['start end', 'end start'],
   });
 
-  const progressHeight = useTransform(scrollYProgress, [0, 0.8], ["0%", "100%"]);
-  
-  const mobileProgressHeight = useTransform(scrollYProgress, [0, 0.8], ["0%", "100%"]);
+  const progressHeight = useTransform(
+    scrollYProgress,
+    [0, 0.8],
+    ['0%', '100%'],
+  );
+
+  const mobileProgressHeight = useTransform(
+    scrollYProgress,
+    [0, 0.8],
+    ['0%', '100%'],
+  );
 
   return (
     <section
@@ -59,7 +67,10 @@ const RoadmapSection: React.FC = () => {
           </motion.p>
         </div>
 
-        <div ref={timelineRef} className="hidden md:block relative w-full mt-20">
+        <div
+          ref={timelineRef}
+          className="hidden md:block relative w-full mt-20"
+        >
           <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-gray-200 dark:bg-gray-600/50 transform -translate-x-1/2" />
           <motion.div
             className="absolute top-0 left-1/2 w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-red-500 transform -translate-x-1/2 origin-top"
@@ -114,7 +125,10 @@ const RoadmapSection: React.FC = () => {
         </div>
 
         {/* Mobile Timeline - Single Column */}
-        <div ref={mobileTimelineRef} className="md:hidden relative w-full mt-16">
+        <div
+          ref={mobileTimelineRef}
+          className="md:hidden relative w-full mt-16"
+        >
           <div className="flex flex-col items-start space-y-12">
             <div
               className="absolute top-0 bottom-0 left-5 w-0.5 bg-slate-200 dark:bg-gray-700 h-full"
