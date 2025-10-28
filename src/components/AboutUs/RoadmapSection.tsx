@@ -1,10 +1,32 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { roadmapItems, roadmapContent } from '@/constants/aboutUs/roadmap';
 
 const RoadmapSection: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const mobileTimelineRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const progressHeight = useTransform(
+    scrollYProgress,
+    [0, 0.8],
+    ['0%', '100%'],
+  );
+
+  const mobileProgressHeight = useTransform(
+    scrollYProgress,
+    [0, 0.8],
+    ['0%', '100%'],
+  );
+
   return (
     <section
+      ref={sectionRef}
       id={roadmapContent.sectionId}
       className="w-full py-24 bg-white dark:bg-gray-900"
     >
@@ -45,13 +67,14 @@ const RoadmapSection: React.FC = () => {
           </motion.p>
         </div>
 
-        <div className="hidden md:block relative w-full mt-20">
+        <div
+          ref={timelineRef}
+          className="hidden md:block relative w-full mt-20"
+        >
+          <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-gray-200 dark:bg-gray-600/50 transform -translate-x-1/2" />
           <motion.div
-            className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-gray-200 dark:bg-gray-600/50 transform -translate-x-1/2"
-            initial={{ scaleY: 0, transformOrigin: 'top' }}
-            whileInView={{ scaleY: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2 }}
+            className="absolute top-0 left-1/2 w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-red-500 transform -translate-x-1/2 origin-top"
+            style={{ height: progressHeight }}
           />
 
           {/* Roadmap items */}
@@ -102,18 +125,19 @@ const RoadmapSection: React.FC = () => {
         </div>
 
         {/* Mobile Timeline - Single Column */}
-        <div className="md:hidden relative w-full mt-16">
+        <div
+          ref={mobileTimelineRef}
+          className="md:hidden relative w-full mt-16"
+        >
           <div className="flex flex-col items-start space-y-12">
-            {/* Vertical connecting line */}
-            <motion.div
+            <div
               className="absolute top-0 bottom-0 left-5 w-0.5 bg-slate-200 dark:bg-gray-700 h-full"
               style={{ zIndex: 1 }}
-              initial={{ scaleY: 0, transformOrigin: 'top' }}
-              whileInView={{ scaleY: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2 }}
             />
-
+            <motion.div
+              className="absolute top-0 left-5 w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-red-500 origin-top"
+              style={{ height: mobileProgressHeight, zIndex: 2 }}
+            />
             {roadmapItems.map((item, index) => (
               <motion.div
                 key={index}
