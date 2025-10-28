@@ -1,8 +1,8 @@
 ---
-title: "Adding dark mode to  the main Sugar Labs website"
+title: "Adding dark mode to the Sugar Labs homepage"
 excerpt: "New developer Syed Khubayb Ur Rahman shares how he implemented dark mode, what issues he faced and how he debugged them."
 category: "DEVELOPER NEWS"
-date: "2025-10-04"
+date: "2025-10-28"
 slug: "adding-dark-mode-to-sugar-labs"
 author: "@/constants/MarkdownFiles/authors/syed-khubayb-ur-rahman.md"
 tags: "dark-mode,accessibility,frontend,Sugar Labs"
@@ -13,16 +13,16 @@ image: "assets/Images/darkmode.png"
 <!-- markdownlint-disable -->
 
 
-# Adding dark mode to a Sugar Labs Website
+# Adding dark mode to the Sugar Labs homepage
 
 
 ## Introduction
-Sugar Labs builds free/libre/open-source (FLO) tools that make learning playful and accessible. I recently contributed dark mode to a Sugar Labs web project. This post outlines the problem I encountered, how I debugged and fixed it, and the key lessons I learned so others can ship accessible theming with confidence.
+Sugar Labs builds free/libre/open-source (FLO) tools that make learning playful and accessible. I recently contributed dark mode to the Sugar Labs homepage project. This post outlines the problem I encountered, how I debugged and fixed it, and the key lessons I learned so others can ship accessible theming with confidence.
 Repository: [https://github.com/sugarlabs/www-v2](https://github.com/sugarlabs/www-v2)
 
 
 ## The Problem
-The main Sugar Labs website originally lacked a dark mode option, which made browsing less comfortable in low-light conditions.
+The Sugar Labs homepage originally lacked a dark mode option, which made browsing less comfortable in low-light conditions.
 Without dark mode, the bright interface could cause eye strain and reduce accessibility for users with light sensitivity.
 
 
@@ -54,7 +54,7 @@ Implementing the dark mode required careful planning to ensure consistency and a
 ## Impact and Conclusion
 - **Impact on users:** Reduced eye strain, improved readability, and a cohesive experience especially valuable for users with light sensitivity.
 - **Impact on the project:** A unified token system speeds up future development, theming, and contributor onboarding.
-- **Community value:** The approach respects user preferences, provides control, and centers accessibility principles aligned with Sugar Labs’ mission.
+- **Community value:** The approach respects user preferences, provides control, and centers accessibility principles aligned with Sugar Labs's mission.
 
 
 By sharing my experience, I hope to inspire others to contribute to Sugar Labs and make a positive impact on the community. I started by defining semantic tokens, honoring system preferences, and prioritizing accessibility. Through this process, I was able to deliver a dark mode that feels natural, inclusive, and maintainable.
