@@ -5,6 +5,7 @@ export const navigationData = {
       items: [
         { label: 'About Us', path: '/about-us' },
         { label: 'Leadership', path: '/leadership' },
+        { label: 'Authors', path: '/authors' },
         { label: 'Contact Us', path: '/contact-us' },
         { label: 'FAQs', path: '/faqs' },
       ],
