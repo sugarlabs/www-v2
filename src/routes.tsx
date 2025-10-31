@@ -25,6 +25,7 @@ import FlatHubPage from '@/pages/TryNow/FlatHub';
 import Matrix from '@/pages/Matrix';
 import NotFoundPage from '@/pages/NotFoundPage';
 import Contributors from '@/pages/Contributors';
+import AuthorsPage from './pages/News/AuthorsPage';
 
 const router = createBrowserRouter([
   ...redirectRoutes,
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
   { path: '/news/:category', element: <NewsPage /> },
   { path: '/news/:category/:slug', element: <NewsDetailPage /> },
   { path: '/authors/:slug', element: <AuthorPage /> },
+  { path: '/authors', element: <AuthorsPage/>},
   { path: '/tags/:tag', element: <TagPage /> },
   { path: '/more', element: <MorePage /> },
   { path: '/more/:slug', element: <MorePage /> },
