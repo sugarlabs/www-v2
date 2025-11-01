@@ -24,7 +24,7 @@ const Card: React.FC<CardProps> = ({ icon, title, content }) => (
     className="relative bg-gradient-to-b from-white to-red-50 dark:from-gray-800 dark:to-gray-900
                border border-gray-200 dark:border-gray-700 
                rounded-2xl p-8 text-center shadow-md hover:shadow-xl 
-               transition-all duration-300 overflow-hidden"
+               transition-[box-shadow] duration-300 overflow-hidden"
     variants={cardFadeIn}
     whileHover={{ scale: 1.05, y: -4 }}
   >
@@ -193,36 +193,43 @@ const ContactUs = () => {
               variants={fadeIn}
             >
               {socialLinks.map((social) => (
-                <motion.a
-                  key={social.href}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-24 h-24 bg-white dark:bg-gray-800 shadow-md rounded-2xl 
-                 flex flex-col items-center justify-center 
-                 border border-gray-200 dark:border-gray-700 hover:shadow-lg 
-                 hover:bg-red-50 dark:hover:bg-gray-700 hover:border-red-300 
-                 transition-all duration-300"
-                  variants={cardFadeIn}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.2 }}
-                  whileHover={{ scale: 1.05, y: -3 }}
-                >
-                  <div className="w-10 h-10 flex items-center justify-center mb-1">
-                    <img
-                      src={social.icon}
-                      alt=""
-                      width={28}
-                      height={28}
-                      className="filter brightness-0 dark:invert opacity-90"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <span className="text-xs text-gray-700 dark:text-gray-300 font-medium text-center">
-                    {social.name}
-                  </span>
-                </motion.a>
+                <div className="flex justify-center">
+                  <motion.a
+                    key={social.href}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-24 h-24 bg-white dark:bg-gray-800 shadow-md rounded-2xl flex flex-col items-center justify-center border border-gray-200 dark:border-gray-700"
+                    variants={cardFadeIn}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.2 }}
+                    whileHover={{
+                      scale: 1.05,
+                      y: -3,
+                      transition: {
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 20,
+                      },
+                    }}
+                    style={{ transformOrigin: 'center center' }}
+                  >
+                    <div className="w-10 h-10 flex items-center justify-center mb-1">
+                      <img
+                        src={social.icon}
+                        alt=""
+                        width={28}
+                        height={28}
+                        className="filter brightness-0 dark:invert opacity-90"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <span className="text-xs text-gray-700 dark:text-gray-300 font-medium text-center">
+                      {social.name}
+                    </span>
+                  </motion.a>
+                </div>
               ))}
             </motion.div>
           </motion.section>
@@ -260,7 +267,10 @@ const ContactUs = () => {
                     to="matrix"
                     className="inline-block px-6 py-3 bg-red-600 dark:bg-red-500 text-white rounded-full hover:bg-red-700 dark:hover:bg-red-400 transition-colors font-medium whitespace-nowrap"
                   >
-                    Join Chat →
+                    <span>Join Chat</span>
+                    <span className="ml-1 text-lg leading-none relative top-[-1.2px]">
+                      →
+                    </span>
                   </Link>
                 </div>
               </div>

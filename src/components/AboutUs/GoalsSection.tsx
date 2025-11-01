@@ -47,13 +47,15 @@ const GoalsSection: FC = () => {
           {goals.map((goal, i) => (
             <motion.div
               key={i}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-slate-100 dark:border-gray-700 transition-all duration-300 
-                hover:shadow-md group relative overflow-hidden"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-slate-100 dark:border-gray-700 transition-shadow group relative overflow-hidden"
               initial={animations.goalItem.initial}
               whileInView={{ opacity: 1, x: 0 }}
-              whileHover={{ y: -5 }}
+              whileHover={{
+                y: -5,
+                boxShadow: '0 12px 20px rgba(0,0,0,0.12)',
+                transition: { duration: 0.3, ease: 'easeInOut' },
+              }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 * (i % 6) }}
             >
               {/* Decorative element - colored top border */}
               <div
