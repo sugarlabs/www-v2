@@ -260,7 +260,7 @@ const NewsPage: React.FC = () => {
                   className="text-blue-500 mr-4 animate-pulse"
                   size={32}
                 />
-                <h1 className="text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
+                <h1 className="p-4 text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
                   NEWS
                 </h1>
                 <TrendingUp
@@ -561,7 +561,7 @@ const NewsPage: React.FC = () => {
                           Read more
                           <ArrowRight
                             size={14}
-                            className="ml-1 group-hover:translate-x-1 transition-transform duration-300"
+                            className="ml-1 mt-1 group-hover:translate-x-1 transition-transform duration-300"
                           />
                         </div>
                       </div>
@@ -584,7 +584,9 @@ const NewsPage: React.FC = () => {
                 whileHover="hover"
                 whileTap="tap"
               >
-                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <div className="relative group rounded-xl overflow-hidden">
+                  <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl"></div>
+                </div>
                 <span className="relative z-10">Load More Articles</span>
                 <ArrowRight
                   size={18}
