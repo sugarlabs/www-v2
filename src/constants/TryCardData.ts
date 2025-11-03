@@ -75,7 +75,7 @@ export const TryCardData: CardDataType[] = [
   {
     title: 'Desktop/laptop installation',
     description:
-      'Sugar Learning platform can be installed as a full operating system on ost desktop and laptop computers.',
+      'Sugar Learning platform can be installed as a full operating system on most desktop and laptop computers.',
     tryNowText: 'Try Desktop Installation now!',
     tryNowHref: 'https://fedoraproject.org/spins/soas/download/',
     learnMoreText: 'Learn more about Installation',
