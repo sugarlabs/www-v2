@@ -16,7 +16,6 @@ const Paragraph: React.FC<ParagraphProps> = ({
   title,
   content,
   button,
-  buttonLink,
   links,
 }) => {
   const contentPoints = content.includes('\n')
@@ -80,7 +79,9 @@ const Paragraph: React.FC<ParagraphProps> = ({
           className="mt-4 bg-blue-600 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:bg-blue-700 transition"
           whileHover="hover"
           variants={paragraphAnimations.button}
-          onClick={() => window.open(buttonLink, '_blank')}
+          onClick={() =>
+            window.open('https://musicblocks.sugarlabs.org/', '_blank')
+          }
         >
           {button}
         </motion.button>
