@@ -49,12 +49,12 @@ const ReviewCard = ({
       />
 
       {/* Feedback Text */}
-      <motion.p
-        className="text-gray-700 dark:text-gray-300 mt-2"
+      <motion.div
+        className="text-gray-700 dark:text-gray-300 mt-2 flex-1 overflow-y-auto max-h-32 custom-scrollbar"
         variants={testimonialText}
       >
-        {body}
-      </motion.p>
+        <p>{body}</p>
+      </motion.div>
 
       {/* User Info */}
       <div className="flex items-center mt-4 space-x-3 text-left">

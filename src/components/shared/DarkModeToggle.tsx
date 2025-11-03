@@ -2,18 +2,51 @@ import { useState, useEffect } from 'react';
 import { Moon, Sun } from 'lucide-react';
 
 const DarkModeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  // Initialize from the class that was already set in index.html
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return document.documentElement.classList.contains('dark');
+  });
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
+    // Sync with localStorage and system preference on mount
     const theme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
       setIsDarkMode(true);
-    } else {
+    } else if (theme === 'light') {
       document.documentElement.classList.remove('dark');
       setIsDarkMode(false);
+    } else {
+      // If no preference saved, respect system preference
+      if (prefersDark) {
+        document.documentElement.classList.add('dark');
+        setIsDarkMode(true);
+      } else {
+        document.documentElement.classList.remove('dark');
+        setIsDarkMode(false);
+      }
     }
+
+    // Listen for system theme changes (only if no manual preference is set)
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleThemeChange = (e: MediaQueryListEvent) => {
+      // Only update if user hasn't set a manual preference
+      if (!localStorage.getItem('theme')) {
+        if (e.matches) {
+          document.documentElement.classList.add('dark');
+          setIsDarkMode(true);
+        } else {
+          document.documentElement.classList.remove('dark');
+          setIsDarkMode(false);
+        }
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleThemeChange);
+    return () => mediaQuery.removeEventListener('change', handleThemeChange);
   }, []);
 
   const toggleDarkMode = () => {
@@ -34,24 +67,25 @@ const DarkModeToggle = () => {
   const translateX = isDarkMode ? trackWidth - thumbWidth - padding : padding;
 
   return (
-    <button
-      onClick={toggleDarkMode}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="group relative inline-flex h-9 w-18 items-center rounded-full transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-1"
-      style={{
-        backgroundColor: isDarkMode ? '#1e293b' : '#bae6fd',
-        boxShadow: isDarkMode
-          ? '0 6px 16px rgba(30, 41, 59, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.05)'
-          : '0 6px 16px rgba(186, 230, 253, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.1)',
+    <div className="flex items-center justify-center overflow-visible">
+      <button
+        onClick={toggleDarkMode}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="group relative inline-flex h-9 w-18 items-center rounded-full transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-1"
+        style={{
+          backgroundColor: isDarkMode ? '#1e293b' : '#bae6fd',
+          boxShadow: isDarkMode
+            ? '0 6px 16px rgba(30, 41, 59, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.05)'
+            : '0 6px 16px rgba(186, 230, 253, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.1)',
 
-        transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      }}
-      aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-      role="switch"
-      aria-checked={isDarkMode}
-    >
+          transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+        aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+        role="switch"
+        aria-checked={isDarkMode}
+      >
       <div
         className="absolute inset-0 rounded-full overflow-hidden"
         style={{
@@ -143,6 +177,7 @@ const DarkModeToggle = () => {
         }}
       />
     </button>
+    </div>
   );
 };
 

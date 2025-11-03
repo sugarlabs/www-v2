@@ -4,8 +4,14 @@ import router from '@/routes';
 
 const App = () => {
   useEffect(() => {
-    const unsubscribe = router.subscribe(() => {
-      window.scrollTo(0, 0);
+    let lastPathname = window.location.pathname;
+    
+    const unsubscribe = router.subscribe((state) => {
+      // Only scroll to top on pathname changes, not on query/hash changes
+      if (state.location.pathname !== lastPathname) {
+        window.scrollTo(0, 0);
+        lastPathname = state.location.pathname;
+      }
     });
     const handleRedirect = () => {
       const redirectPath = sessionStorage.getItem('gh_redirect');

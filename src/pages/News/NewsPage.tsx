@@ -257,15 +257,17 @@ const NewsPage: React.FC = () => {
             >
               <div className="flex items-center justify-center mb-6">
                 <Sparkles
-                  className="text-blue-500 mr-4 animate-pulse"
-                  size={32}
+                  className="text-blue-500 mr-2 sm:mr-4 animate-pulse"
+                  size={24}
+                  style={{ width: 24, height: 24 }}
                 />
-                <h1 className="text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
+                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
                   NEWS
                 </h1>
                 <TrendingUp
-                  className="text-green-500 ml-4 animate-bounce"
-                  size={32}
+                  className="text-green-500 ml-2 sm:ml-4 animate-bounce"
+                  size={24}
+                  style={{ width: 24, height: 24 }}
                 />
               </div>
 
@@ -381,11 +383,13 @@ const NewsPage: React.FC = () => {
                     whileTap={{ scale: 0.95 }}
                   >
                     {cat}
-                    {activeCategory === cat && (
-                      <span className="ml-2 text-xs bg-white text-black bg-opacity-30 rounded-full px-2 py-1">
-                        {(postsByCategory[cat] || []).length}
-                      </span>
-                    )}
+                    <span className={`ml-2 text-xs rounded-full px-2 py-1 ${
+                      activeCategory === cat
+                        ? 'bg-white text-black bg-opacity-30'
+                        : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
+                    }`}>
+                      {(postsByCategory[cat] || []).length}
+                    </span>
                   </motion.button>
                 ))}
               </div>
