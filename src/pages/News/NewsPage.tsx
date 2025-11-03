@@ -383,11 +383,13 @@ const NewsPage: React.FC = () => {
                     whileTap={{ scale: 0.95 }}
                   >
                     {cat}
-                    <span className={`ml-2 text-xs rounded-full px-2 py-1 ${
-                      activeCategory === cat
-                        ? 'bg-white text-black bg-opacity-30'
-                        : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
-                    }`}>
+                    <span
+                      className={`ml-2 text-xs rounded-full px-2 py-1 ${
+                        activeCategory === cat
+                          ? 'bg-white text-black bg-opacity-30'
+                          : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
                       {(postsByCategory[cat] || []).length}
                     </span>
                   </motion.button>

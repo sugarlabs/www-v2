@@ -5,7 +5,7 @@ import router from '@/routes';
 const App = () => {
   useEffect(() => {
     let lastPathname = window.location.pathname;
-    
+
     const unsubscribe = router.subscribe((state) => {
       // Only scroll to top on pathname changes, not on query/hash changes
       if (state.location.pathname !== lastPathname) {
