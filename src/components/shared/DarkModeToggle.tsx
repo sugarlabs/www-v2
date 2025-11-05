@@ -9,41 +9,31 @@ const DarkModeToggle = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    // Sync with localStorage and system preference on mount
     const theme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia(
       '(prefers-color-scheme: dark)',
     ).matches;
 
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-      setIsDarkMode(true);
-    } else if (theme === 'light') {
-      document.documentElement.classList.remove('dark');
-      setIsDarkMode(false);
-    } else {
-      // If no preference saved, respect system preference
-      if (prefersDark) {
+    setIsDarkMode(() => {
+      const next = theme === 'dark' || (!theme && prefersDark);
+
+      if (next) {
         document.documentElement.classList.add('dark');
-        setIsDarkMode(true);
       } else {
         document.documentElement.classList.remove('dark');
-        setIsDarkMode(false);
       }
-    }
 
-    // Listen for system theme changes (only if no manual preference is set)
+      return next;
+    });
+
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleThemeChange = (e: MediaQueryListEvent) => {
-      // Only update if user hasn't set a manual preference
       if (!localStorage.getItem('theme')) {
-        if (e.matches) {
-          document.documentElement.classList.add('dark');
-          setIsDarkMode(true);
-        } else {
-          document.documentElement.classList.remove('dark');
-          setIsDarkMode(false);
-        }
+        setIsDarkMode(() => {
+          const next = e.matches;
+          document.documentElement.classList.toggle('dark', next);
+          return next;
+        });
       }
     };
 
