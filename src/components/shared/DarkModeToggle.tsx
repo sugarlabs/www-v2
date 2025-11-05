@@ -4,28 +4,29 @@ import { Moon, Sun } from 'lucide-react';
 const DarkModeToggle = () => {
   // Initialize from the class that was already set in index.html
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    return document.documentElement.classList.contains('dark');
+    const storedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return storedTheme === 'dark' || (!storedTheme && prefersDark);
   });
-  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    const theme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Listen for system theme changes (only if no manual preference is set)
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleThemeChange = (e: MediaQueryListEvent) => {
+      // Only update if user hasn't set a manual preference
+      if (!localStorage.getItem('theme')) {
+        const shouldBeDark = e.matches;
+        if (shouldBeDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+        setIsDarkMode(shouldBeDark);
+      }
+    };
 
-    // ✅ Determine the final theme first
-    let shouldBeDark =
-      theme === 'dark' || (!theme && prefersDark);
-
-    // ✅ Apply class WITHOUT calling setState inside effect yet
-    if (shouldBeDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-
-    // ✅ Update state ONCE at the end
-    setIsDarkMode(shouldBeDark);
-
+    mediaQuery.addEventListener('change', handleThemeChange);
+    return () => mediaQuery.removeEventListener('change', handleThemeChange);
   }, []);
 
   const toggleDarkMode = () => {
