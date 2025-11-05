@@ -13,7 +13,9 @@ import {
 
 const HeroSection = () => {
   const title = 'ABOUT US'.split('');
-  const [randomRotations] = useState(() => title.map(() => Math.random() * 10 - 5));
+  const [randomRotations] = useState(() =>
+    title.map(() => Math.random() * 10 - 5),
+  );
 
   return (
     <motion.div
