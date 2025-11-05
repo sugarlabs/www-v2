@@ -5,7 +5,9 @@ const DarkModeToggle = () => {
   // Initialize from the class that was already set in index.html
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const storedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)',
+    ).matches;
     return storedTheme === 'dark' || (!storedTheme && prefersDark);
   });
   const [isHovered, setIsHovered] = useState(false);
