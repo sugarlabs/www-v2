@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useLayoutEffect } from 'react';
 import ShareModal from '@/components/ShareModal';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { getAllPosts, groupPostsByCategory, Post } from '@/utils/posts-utils';
@@ -48,6 +48,18 @@ const NewsPage: React.FC = () => {
     const params = new URLSearchParams(location.search);
     return params.get('q') || '';
   });
+
+  useLayoutEffect(() => {
+    if (!isLoading) {
+      const savedY = Number(sessionStorage.getItem('newsScrollY') || 0);
+      if (savedY > 0) {
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: savedY, behavior: 'auto' });
+        });
+      }
+      sessionStorage.removeItem('newsScrollY');
+    }
+  }, [isLoading, activeCategory, searchTerm]);
 
   useEffect(() => {
     async function load() {
@@ -127,7 +139,10 @@ const NewsPage: React.FC = () => {
 
   const hasMore = filteredPosts.length > displayCount;
 
-  const handleCategoryClick = (cat: string) => setActiveCategory(cat);
+  const handleCategoryClick = (cat: string) => {
+    sessionStorage.setItem('newsScrollY', String(window.scrollY));
+    setActiveCategory(cat);
+  };
 
   const handleShowMore = () => {
     const total = filteredPosts.length;
@@ -296,6 +311,10 @@ const NewsPage: React.FC = () => {
                     value={searchTerm}
                     onChange={(e) => {
                       const value = e.target.value;
+                      sessionStorage.setItem(
+                        'newsScrollY',
+                        String(window.scrollY),
+                      );
                       setSearchTerm(value);
                       const catPath =
                         activeCategory === 'All'
