@@ -10,35 +10,22 @@ const DarkModeToggle = () => {
 
   useEffect(() => {
     const theme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia(
-      '(prefers-color-scheme: dark)',
-    ).matches;
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    setIsDarkMode(() => {
-      const next = theme === 'dark' || (!theme && prefersDark);
+    // ✅ Determine the final theme first
+    let shouldBeDark =
+      theme === 'dark' || (!theme && prefersDark);
 
-      if (next) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+    // ✅ Apply class WITHOUT calling setState inside effect yet
+    if (shouldBeDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
 
-      return next;
-    });
+    // ✅ Update state ONCE at the end
+    setIsDarkMode(shouldBeDark);
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleThemeChange = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem('theme')) {
-        setIsDarkMode(() => {
-          const next = e.matches;
-          document.documentElement.classList.toggle('dark', next);
-          return next;
-        });
-      }
-    };
-
-    mediaQuery.addEventListener('change', handleThemeChange);
-    return () => mediaQuery.removeEventListener('change', handleThemeChange);
   }, []);
 
   const toggleDarkMode = () => {
