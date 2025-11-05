@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-
+  //
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -72,9 +72,9 @@ const Header: React.FC = () => {
               />
             </Link>
 
-            {/* Mobile menu toggle button */}
+            {/* Mobile menu toggle button (visible below lg) */}
             <button
-              className="md:hidden relative w-10 h-10 focus:outline-none z-50"
+              className="lg:hidden relative w-10 h-10 focus:outline-none z-50"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
               aria-expanded={isMobileMenuOpen}
@@ -102,8 +102,8 @@ const Header: React.FC = () => {
               </div>
             </button>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex md:items-center md:space-x-4 lg:space-x-8">
+            {/* Desktop Navigation (visible from lg and up) */}
+            <nav className="hidden lg:flex lg:items-center lg:space-x-4">
               {/* Dropdown menus */}
               {Object.entries(navigationData.dropdowns).map(
                 ([key, dropdown]) => (
@@ -124,27 +124,29 @@ const Header: React.FC = () => {
                 <Link
                   key={link.label}
                   to={link.path}
-                  className="px-2 lg:px-3 py-2 text-gray-700 dark:text-gray-200 hover:text-blue-600 font-medium rounded-md
-                            transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm lg:text-base"
+                  className="px-2 lg:px-2 py-2 text-gray-700 dark:text-gray-200 hover:text-blue-600 font-medium rounded-md
+                            transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm lg:text-sm whitespace-nowrap"
                   onClick={handleNavigation}
                 >
                   {link.label}
                 </Link>
               ))}
 
-              <DarkModeToggle />
+              <div className="flex items-center gap-3">
+                <DarkModeToggle />
 
-              {/* CTA Button */}
-              <Link
-                to="/try-sugar"
-                className="inline-flex items-center px-4 lg:px-6 py-2 lg:py-2.5 rounded-full font-semibold text-white
-                          bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
-                          transition-all duration-300 transform hover:scale-105 hover:shadow-lg
-                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm lg:text-base"
-                onClick={handleNavigation}
-              >
-                TRY NOW
-              </Link>
+                {/* CTA Button (slightly reduced padding at lg so it fits tighter layouts) */}
+                <Link
+                  to="/try-sugar"
+                  className="inline-flex items-center px-3 lg:px-4 py-2 rounded-full font-semibold text-white
+                            bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
+                            transition-all duration-300 transform hover:scale-105 hover:shadow-lg
+                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm"
+                  onClick={handleNavigation}
+                >
+                  TRY NOW
+                </Link>
+              </div>
             </nav>
           </div>
         </div>

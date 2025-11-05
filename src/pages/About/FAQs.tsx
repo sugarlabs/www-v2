@@ -1,6 +1,6 @@
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { stats } from '@/constants/Stats';
 import faqs, { FAQ_CATEGORIES } from '@/constants/aboutUs/faqs';
 import { quickAnswers } from '@/constants/aboutUs/quickanswers';
@@ -17,14 +17,11 @@ import FAQItem from '@/components/FAQItem';
 
 const FAQs = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [filteredFaqs, setFilteredFaqs] = useState(faqs);
 
-  useEffect(() => {
-    const filtered =
-      selectedCategory === 'all'
-        ? faqs
-        : faqs.filter((faq) => faq.category === selectedCategory);
-    setFilteredFaqs(filtered);
+  const filteredFaqs = useMemo(() => {
+    return selectedCategory === 'all'
+      ? faqs
+      : faqs.filter((faq) => faq.category === selectedCategory);
   }, [selectedCategory]);
 
   return (
