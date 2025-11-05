@@ -8,6 +8,7 @@ const DarkModeToggle = () => {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     return storedTheme === 'dark' || (!storedTheme && prefersDark);
   });
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     // Listen for system theme changes (only if no manual preference is set)
