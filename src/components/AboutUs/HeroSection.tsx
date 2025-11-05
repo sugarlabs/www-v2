@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { heroAnimations } from '@/styles/Animations';
 import {
   fadeIn,
@@ -12,6 +13,7 @@ import {
 
 const HeroSection = () => {
   const title = 'ABOUT US'.split('');
+  const [randomRotations] = useState(() => title.map(() => Math.random() * 10 - 5));
 
   return (
     <motion.div
@@ -71,7 +73,7 @@ const HeroSection = () => {
                 }
                 whileHover={{
                   scale: 1.2,
-                  rotate: Math.random() * 10 - 5,
+                  rotate: randomRotations[index],
                   transition: { duration: 0.2 },
                 }}
               >
