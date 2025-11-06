@@ -67,7 +67,7 @@ const DeveloperLinks = () => {
 
             {/* Arrow with enhanced animation */}
             <div className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full bg-red-100 group-hover:bg-red-200 transition-colors ml-4 flex-shrink-0">
-              <span className="text-gray-600 group-hover:text-red-700 transform group-hover:translate-x-1 transition-all">
+              <span className="-mt-1 text-gray-600 group-hover:text-red-700 transform group-hover:translate-x-1 transition-all">
                 →
               </span>
             </div>
