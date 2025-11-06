@@ -1,17 +1,19 @@
 import 'react-responsive-carousel';
 import { Carousel } from 'react-responsive-carousel';
-import { steps } from '@/constants/TryNowData/bootableSoasData';
 import { useState } from 'react';
 import DOMPurify from 'dompurify';
 import { renderContentWithLinks } from '@/utils/renderlinks-utils';
+import { steps } from '@/constants/TryNowData/bootableSoasData';
 
-const StepsToUse = () => {
+
+
+const StepsToUse = ({haeding, StepData} : steps) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   return (
     <section className="w-[90%] mx-auto py-8">
       <h2 className="text-3xl font-bold text-center text-black dark:text-white mb-6">
-        Steps to Boot Sugar on a Stick
+        {haeding}
       </h2>
 
       <div className="relative w-full sm:w-[80%] md:w-[70%] lg:w-[60%] mx-auto">
@@ -25,7 +27,7 @@ const StepsToUse = () => {
           useKeyboardArrows
           infiniteLoop
         >
-          {steps.map((step, index) => (
+          {StepData.map((step, index) => (
             <div key={index} className="relative text-center">
               {/* TEXT CONTENT */}
               <div className="text-lg font-semibold text-gray-600 dark:text-gray-400">
@@ -62,7 +64,7 @@ const StepsToUse = () => {
                 )}
 
                 {/* RIGHT HOVER AREA */}
-                {index < steps.length - 1 && (
+                {index < StepData.length - 1 && (
                   <div
                     className="absolute right-0 top-0 h-full w-1/4 bg-gradient-to-l from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer z-10"
                     onClick={() => setCurrentStep(currentStep + 1)}
