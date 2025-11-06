@@ -6,6 +6,7 @@ import { zoomFadeInAnimation } from '@/styles/Animations';
 import {
   bootableSoasData,
   mockupImage,
+  SugarSteps,
 } from '@/constants/TryNowData/bootableSoasData';
 import StepsToUse from '@/components/TryNow/StepsToUse';
 
@@ -25,7 +26,8 @@ const BootableSoasPage = () => {
           className="w-[80%] mx-auto"
         />
 
-        <StepsToUse />
+  {/* SugarSteps is an array; pass the first group object to StepsToUse */}
+  <StepsToUse {...SugarSteps[0]} />
         <motion.div>
           <p className="justify-self-center mt-4 text-2xl text-gray-700">
             Cut to the chase and get your pre-installed Sugar on a Stick{' '}

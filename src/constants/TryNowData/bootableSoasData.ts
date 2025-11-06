@@ -1,3 +1,5 @@
+
+
 export const bootableSoasData = {
   title: 'Boot SOAS',
   subtitle: 'Sugar On A Stick',
@@ -8,7 +10,7 @@ export const bootableSoasData = {
   images: [{ src: 'assets/TryNowImages/step7.webp', alt: 'Boot SOAS step 7' }],
 };
 
-interface StepData {
+export interface StepData {
   step: number;
   title: string;
   description: string;
@@ -16,9 +18,18 @@ interface StepData {
   links?: { text: string; url: string }[];
 }
 
-export const steps: StepData[] = [
+// Group of steps with an optional identifier and heading
+export interface steps {
+  haeding: string;
+  StepData: StepData[];
+}
+
+
+export const SugarSteps: steps[] = [
   {
-    step: 1,
+    haeding: 'Steps to boot Sugar on a Stick',
+    StepData: [{
+      step: 1,
     title: 'Sugar On a Stick',
     description:
       'To boot Sugar Labs OS on your computer, you will need a bootable Sugar on Stick setup already. To see how to set it up, visit the wiki.',
@@ -77,6 +88,8 @@ export const steps: StepData[] = [
         url: 'https://matrix.to/#/#sugar:matrix.org',
       },
     ],
+  },
+]
   },
 ];
 
