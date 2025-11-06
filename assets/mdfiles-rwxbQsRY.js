@@ -324,7 +324,7 @@ slug: "mebin-thattil"
 title: "GSoC'25 Contributor"
 organization: "SugarLabs"
 description: "GSoC'25 Contributor at SugarLabs"
-avatar: "https://mebin.shop/mebin-380.webp"
+avatar: "https://cdn.mebin.in/mebin-380.webp"
 ---
 
 <!--markdownlint-disable-->
@@ -5421,7 +5421,7 @@ image: "assets/Images/GSOCxSpeak.webp"
 
 ## Sample model output with stop condition
 
-![sample model output](https://mebin.shop/Mebin-test-FT-model-tesponses.webp)
+![sample model output](https://cdn.mebin.in/Mebin-test-FT-model-tesponses.webp)
 
 ---
 
@@ -10318,7 +10318,7 @@ This week, I tested out different voices of Kokoro in two different ways:
     - The primary reason this was built as a web app is so that we can get kids to test this out and having things as a web app makes it easier. It's cruical for us to get real world feedback before proceeding with the implementation.
     - This web app allows you to try out a plethora of different voices and also mix and match different voices to create basically infinite combinations. It's truly amazing the kind of voices you can create with this.
 
-    ![UI of web app](https://mebin.shop/Kokoro-Streamlit-UI.webp)
+    ![UI of web app](https://cdn.mebin.in/Kokoro-Streamlit-UI.webp)
 
     - It's a container app, meaning both the frontend (Streamlit) and backend (Kokoro - FastAPI) run as separate Docker containers hosted on Azure.  
     - The [Kokoro - FastAPI](https://github.com/mebinthattil/Kokoro-FastAPI) exposes an OpenAI-compatible API to generate audio.  
