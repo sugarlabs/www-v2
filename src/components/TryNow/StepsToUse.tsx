@@ -5,9 +5,7 @@ import DOMPurify from 'dompurify';
 import { renderContentWithLinks } from '@/utils/renderlinks-utils';
 import { steps } from '@/constants/TryNowData/bootableSoasData';
 
-
-
-const StepsToUse = ({haeding, StepData} : steps) => {
+const StepsToUse = ({ haeding, StepData }: steps) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   return (

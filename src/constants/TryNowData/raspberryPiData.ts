@@ -1,4 +1,4 @@
-import { steps } from "./bootableSoasData";
+import { steps } from './bootableSoasData';
 
 export const raspberrydata = {
   title: 'Raspberry-Pi',
@@ -110,14 +110,14 @@ export const raspberryLogoCards = [
 
 export const raspberrySteps: steps[] = [
   {
-    haeding: "Steps to install Sugar using Raspbian",
+    haeding: 'Steps to install Sugar using Raspbian',
     StepData: [
       {
         step: 1,
         title: 'Install Raspberry Pi OS',
         description:
           'Download and install the latest Raspberry Pi OS (formerly Raspbian) from the official Raspberry Pi website. Use the Raspberry Pi Imager tool for an easy installation process.',
-          image:'assets/TryNowImages/raspbian-step1.webp',
+        image: 'assets/TryNowImages/raspbian-step1.webp',
       },
     ],
   },
@@ -127,7 +127,8 @@ export const raspberrySteps: steps[] = [
       {
         step: 1,
         title: 'Download Fedora for Raspberry Pi',
-        description:'Download the Fedora ARM image for Raspberry Pi from the official Fedora website. Choose the appropriate version for your Raspberry Pi model.',
+        description:
+          'Download the Fedora ARM image for Raspberry Pi from the official Fedora website. Choose the appropriate version for your Raspberry Pi model.',
         image: 'assets/TryNowImages/fedora-step1.webp',
       },
     ],
@@ -138,7 +139,8 @@ export const raspberrySteps: steps[] = [
       {
         step: 1,
         title: 'Download Debian for Raspberry Pi',
-        description:'Download the Debian ARM image for Raspberry Pi from the official Debian website. Choose the appropriate version for your Raspberry Pi model.',
+        description:
+          'Download the Debian ARM image for Raspberry Pi from the official Debian website. Choose the appropriate version for your Raspberry Pi model.',
         image: 'assets/TryNowImages/debian-step1.webp',
       },
     ],
@@ -149,9 +151,10 @@ export const raspberrySteps: steps[] = [
       {
         step: 1,
         title: 'Download Ubuntu for Raspberry Pi',
-        description:'Download the Ubuntu ARM image for Raspberry Pi from the official Ubuntu website. Choose the appropriate version for your Raspberry Pi model.',
+        description:
+          'Download the Ubuntu ARM image for Raspberry Pi from the official Ubuntu website. Choose the appropriate version for your Raspberry Pi model.',
         image: 'assets/TryNowImages/ubuntu-step1.webp',
       },
     ],
-  }
+  },
 ];

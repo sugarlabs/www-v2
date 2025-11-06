@@ -37,29 +37,34 @@ const RaspberryPiPage = () => {
             links={section.links}
           />
         ))}
-  <section className="w-[90%] mx-auto py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-    {raspberryLogoCards.map((card, idx) => {
-      const key = card.title.replace(/^using\s+/i, '').toLowerCase();
-      const isSelected = selectedSteps?.haeding.toLowerCase().includes(key) || false;
-      return (
-        <LogoCard
-          key={idx}
-          logo={card.logo}
-          title={card.title}
-          selected={isSelected}
-          onClick={() => {
-            const found = raspberrySteps.find((g) => g.haeding.toLowerCase().includes(key) || (g as any).is === key);
-            if (found) setSelectedSteps(found);
-          }}
-        />
-      );
-    })}
-  </section>
+        <section className="w-[90%] mx-auto py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {raspberryLogoCards.map((card, idx) => {
+            const key = card.title.replace(/^using\s+/i, '').toLowerCase();
+            const isSelected =
+              selectedSteps?.haeding.toLowerCase().includes(key) || false;
+            return (
+              <LogoCard
+                key={idx}
+                logo={card.logo}
+                title={card.title}
+                selected={isSelected}
+                onClick={() => {
+                  const found = raspberrySteps.find(
+                    (g) =>
+                      g.haeding.toLowerCase().includes(key) ||
+                      (g as any).is === key,
+                  );
+                  if (found) setSelectedSteps(found);
+                }}
+              />
+            );
+          })}
+        </section>
 
-  {/* Render the currently selected steps group */}
-  <div ref={stepsRef}>
-    <StepsToUse {...selectedSteps} />
-  </div>
+        {/* Render the currently selected steps group */}
+        <div ref={stepsRef}>
+          <StepsToUse {...selectedSteps} />
+        </div>
       </main>
       <Footer />
     </div>
