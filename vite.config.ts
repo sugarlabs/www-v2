@@ -13,6 +13,7 @@ export default defineConfig({
     },
   },
   build: {
+    target: 'esnext',
     rollupOptions: {
       /**
        * Ignore "use client" warning since we are not using SSR

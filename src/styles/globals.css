@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'Caveat';
   src: url('/fonts/Caveat-Regular.ttf');
+  font-display: swap;
 }
 
 @plugin 'tailwindcss-animate';
@@ -9,22 +10,27 @@
 @font-face {
   font-family: 'Roboto';
   src: url('/fonts/Roboto-Regular.ttf');
+  font-display: swap;
 }
 @font-face {
   font-family: 'Pacifico';
   src: url('/fonts/Pacifico-Regular.ttf');
+  font-display: swap;
 }
 @font-face {
   font-family: 'AnonymousPro';
   src: url('/fonts/AnonymousPro-Regular.ttf');
+  font-display: swap;
 }
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/Inter_28pt-Regular.ttf');
+  font-display: swap;
 }
 @font-face {
   font-family: 'Oswald';
   src: url('/fonts/Oswald-Regular.ttf');
+  font-display: swap;
 }
 
 @import 'tailwindcss';
