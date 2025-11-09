@@ -3,7 +3,7 @@ import Footer from '@/sections/Footer';
 import FeatureSection from '@/components/TryNow/FeatureSection';
 import Paragraph from '@/components/TryNow/Paragraph';
 import LogoCard from '@/components/TryNow/LogoCard';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import {
   raspberrydata,
   raspberrySections,
@@ -15,12 +15,13 @@ import StepsToUse from '@/components/TryNow/StepsToUse';
 const RaspberryPiPage = () => {
   const [selectedSteps, setSelectedSteps] = useState(raspberrySteps[0]);
   const stepsRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    // scroll to steps whenever selectedSteps changes
+
+  // scroll to steps only when user clicks a card (not on mount or refresh)
+  const scrollToSteps = () => {
     if (stepsRef.current) {
       stepsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, [selectedSteps]);
+  };
   return (
     <div>
       <Header />
@@ -41,7 +42,7 @@ const RaspberryPiPage = () => {
           {raspberryLogoCards.map((card, idx) => {
             const key = card.title.replace(/^using\s+/i, '').toLowerCase();
             const isSelected =
-              selectedSteps?.haeding.toLowerCase().includes(key) || false;
+              selectedSteps?.heading.toLowerCase().includes(key) || false;
             return (
               <LogoCard
                 key={idx}
@@ -51,10 +52,15 @@ const RaspberryPiPage = () => {
                 onClick={() => {
                   const found = raspberrySteps.find(
                     (g) =>
-                      g.haeding.toLowerCase().includes(key) ||
+                      g.heading.toLowerCase().includes(key) ||
                       (g as any).is === key,
                   );
-                  if (found) setSelectedSteps(found);
+                  if (found) {
+                    setSelectedSteps(found);
+                    // scroll only when user clicks
+                    // use rAF to ensure layout updated
+                    requestAnimationFrame(() => scrollToSteps());
+                  }
                 }}
               />
             );

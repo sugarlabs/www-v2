@@ -14,17 +14,19 @@ export interface StepData {
   description: string;
   image: string;
   links?: { text: string; url: string }[];
+  // Optional shell commands or CLI steps related to this step
+  commands?: string;
 }
 
 // Group of steps with an optional identifier and heading
 export interface steps {
-  haeding: string;
+  heading: string;
   StepData: StepData[];
 }
 
 export const SugarSteps: steps[] = [
   {
-    haeding: 'Steps to boot Sugar on a Stick',
+    heading: 'Steps to boot Sugar on a Stick',
     StepData: [
       {
         step: 1,

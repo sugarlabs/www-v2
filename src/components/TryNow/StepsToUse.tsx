@@ -5,13 +5,22 @@ import DOMPurify from 'dompurify';
 import { renderContentWithLinks } from '@/utils/renderlinks-utils';
 import { steps } from '@/constants/TryNowData/bootableSoasData';
 
-const StepsToUse = ({ haeding, StepData }: steps) => {
+const StepsToUse = ({ heading, StepData }: steps) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [copied, setCopied] = useState(false);
+
+  function clicktocopy(command: string) {
+    navigator.clipboard.writeText(command).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  }
 
   return (
     <section className="w-[90%] mx-auto py-8">
+      {/* Heading */}
       <h2 className="text-3xl font-bold text-center text-black dark:text-white mb-6">
-        {haeding}
+        {heading}
       </h2>
 
       <div className="relative w-full sm:w-[80%] md:w-[70%] lg:w-[60%] mx-auto">
@@ -42,7 +51,57 @@ const StepsToUse = ({ haeding, StepData }: steps) => {
                   ),
                 }}
               />
-
+              {/* Command */}
+              {step.commands && (
+                <div className="overflow-x-auto overflow-y-hidden commands-scroll w-full mt-4">
+                  <div className="relative group inline-flex min-w-max items-center gap-3 px-4 py-2 rounded-lg border border-gray-200/5 bg-slate-800 text-white dark:bg-slate-800 dark:text-white">
+                    <button
+                      onClick={() => {
+                        clicktocopy(step.commands || '');
+                      }}
+                      className="absolute top-1 right-1 text-gray-400 hover:text-white transition"
+                    >
+                      {copied ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 text-green-400"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path d="M5 13l4 4L19 7" />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <rect
+                            x="9"
+                            y="9"
+                            width="13"
+                            height="13"
+                            rx="2"
+                            ry="2"
+                          />
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                        </svg>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => clicktocopy(step.commands || '')}
+                      className="p-2 text-white rounded cursor-pointer whitespace-nowrap font-mono text-sm text-gray-200 truncate"
+                    >
+                      {`$ ${step.commands}`}
+                    </button>
+                  </div>
+                </div>
+              )}
               {/* IMAGE + HOVER ARROWS */}
               <div className="relative group mx-auto mt-4 rounded-lg shadow-lg overflow-hidden">
                 <img
