@@ -22,6 +22,8 @@ export interface StepData {
 export interface steps {
   heading: string;
   StepData: StepData[];
+  // Optional identifier used by some pages to match logo cards
+  is?: string;
 }
 
 export const SugarSteps: steps[] = [

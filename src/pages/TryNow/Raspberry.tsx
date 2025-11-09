@@ -52,8 +52,7 @@ const RaspberryPiPage = () => {
                 onClick={() => {
                   const found = raspberrySteps.find(
                     (g) =>
-                      g.heading.toLowerCase().includes(key) ||
-                      (g as any).is === key,
+                      g.heading.toLowerCase().includes(key) || g.is === key,
                   );
                   if (found) {
                     setSelectedSteps(found);
