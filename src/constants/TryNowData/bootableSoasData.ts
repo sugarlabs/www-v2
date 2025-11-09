@@ -1,5 +1,3 @@
-
-
 export const bootableSoasData = {
   title: 'Boot SOAS',
   subtitle: 'Sugar On A Stick',
@@ -93,8 +91,7 @@ export const SugarSteps: steps[] = [
       },
     ],
   },
-]
-
+];
 
 export const mockupImage = {
   path: 'assets/TryNowImages/boatsoasMockup.webp',
