@@ -1,73 +1,98 @@
 import { motion } from 'framer-motion';
 import { logoCardAnimations } from '@/styles/Animations';
+import { useState } from 'react';
+import Fedora from '../Installation-guid/Fedora';
+import Ubuntu from '../Installation-guid/Ubuntu';
+import Debian from '../Installation-guid/Debian';
+import Raspbian from '../Installation-guid/Raspbian';
 
 interface LogoCard {
   logo: string;
   title: string;
   description: string[];
-  buttons?: { text: string; link: string }[];
+  buttons?: { text: string; value: string }[];
 }
 
 const LogoCards = ({ data }: { data: LogoCard[] }) => {
+  const [selectedOS, setSelectedOS] = useState('');
+
   return (
-    <section className="w-[90%] mx-auto py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {data.map((card, index) => (
-        <motion.div
-          key={index}
-          className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 flex flex-col items-center text-center border border-blue-500 dark:border-blue-400"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={logoCardAnimations.card}
-          custom={index}
-          whileHover="hover"
-        >
-          {/* Logo */}
+    <>
+      <section className="w-[90%] mx-auto py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {data.map((card, index) => (
           <motion.div
-            className="w-24 h-24 bg-yellow-300 flex items-center justify-center rounded-full"
+            key={index}
+            className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 flex flex-col items-center text-center border border-blue-500 dark:border-blue-400"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={logoCardAnimations.card}
+            custom={index}
             whileHover="hover"
-            variants={logoCardAnimations.logoContainer}
           >
-            <img src={card.logo} alt={card.title} className="w-12 h-12" />
-          </motion.div>
+            {/* Logo */}
+            <motion.div
+              className="w-24 h-24 bg-yellow-300 flex items-center justify-center rounded-full"
+              whileHover="hover"
+              variants={logoCardAnimations.logoContainer}
+            >
+              <img src={card.logo} alt={card.title} className="w-12 h-12" />
+            </motion.div>
 
-          {/* Title */}
-          <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mt-4">
-            {card.title}
-          </h3>
+            {/* Title */}
+            <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mt-4">
+              {card.title}
+            </h3>
 
-          {/* Divider */}
-          <hr className="w-full my-3 border-gray-300 dark:border-gray-600" />
+            {/* Divider */}
+            <hr className="w-full my-3 border-gray-300 dark:border-gray-600" />
 
-          {/* Description */}
-          <ul className="text-gray-600 dark:text-gray-300 text-sm text-left list-disc list-inside">
-            {card.description.map((point, i) => (
-              <li key={i}>{point}</li>
-            ))}
-          </ul>
-
-          {/* Buttons */}
-          {card.buttons && (
-            <div className="mt-4 flex flex-wrap gap-2 justify-center">
-              {card.buttons.map((btn, i) => (
-                <motion.a
-                  key={i}
-                  href={btn.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-blue-600 text-white font-bold rounded-full shadow-md hover:bg-blue-700 transition duration-200"
-                  whileHover="hover"
-                  whileTap="tap"
-                  variants={logoCardAnimations.button}
-                >
-                  {btn.text}
-                </motion.a>
+            {/* Description */}
+            <ul className="text-gray-600 dark:text-gray-300 text-sm text-left list-disc list-inside">
+              {card.description.map((point, i) => (
+                <li key={i}>{point}</li>
               ))}
-            </div>
-          )}
-        </motion.div>
-      ))}
-    </section>
+            </ul>
+
+            {/* Buttons */}
+            {card.buttons && (
+              <div className="mt-4 flex flex-wrap gap-2 justify-center">
+                {card.buttons.map((btn, i) => (
+                  <motion.a
+                    key={i}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-blue-600 text-white font-bold rounded-full shadow-md hover:bg-blue-700 transition duration-200"
+                    whileHover="hover"
+                    whileTap="tap"
+                    variants={logoCardAnimations.button}
+                    onClick={() => {
+                      setSelectedOS(btn?.value);
+                    }}
+                  >
+                    {btn.text}
+                  </motion.a>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        ))}
+        <b className="text-center">
+          <a
+            href="https://wiki.sugarlabs.org/go/Installation#Raspberry_Pi"
+            className=" hover:text-blue-800 underline"
+          >
+            visit here for more info
+          </a>
+        </b>
+      </section>
+      <section>
+        {selectedOS == 'Fedora' && <Fedora />}
+        {selectedOS == 'Ubuntu' && <Ubuntu />}
+        {selectedOS == 'Debian' && <Debian />}
+        {selectedOS == 'Raspbian' && <Raspbian />}
+      </section>
+    </>
   );
 };
 
