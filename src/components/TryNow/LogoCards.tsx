@@ -10,7 +10,7 @@ interface LogoCard {
   logo: string;
   title: string;
   description: string[];
-  buttons?: { text: string; value: string }[];
+  buttons?: { text: string; value?: string; target?: string; link?:string}[];
 }
 
 const LogoCards = ({ data }: { data: LogoCard[] }) => {
@@ -67,7 +67,7 @@ const LogoCards = ({ data }: { data: LogoCard[] }) => {
                     whileTap="tap"
                     variants={logoCardAnimations.button}
                     onClick={() => {
-                      setSelectedOS(btn?.value);
+                      setSelectedOS(btn?.value as string);
                     }}
                   >
                     {btn.text}
