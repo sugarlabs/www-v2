@@ -26,8 +26,8 @@ const BootableSoasPage = () => {
           className="w-[80%] mx-auto"
         />
 
-  {/* SugarSteps is an array; pass the first group object to StepsToUse */}
-  <StepsToUse {...SugarSteps[0]} />
+        {/* SugarSteps is an array; pass the first group object to StepsToUse */}
+        <StepsToUse {...SugarSteps[0]} />
         <motion.div>
           <p className="justify-self-center mt-4 text-2xl text-gray-700">
             Cut to the chase and get your pre-installed Sugar on a Stick{' '}

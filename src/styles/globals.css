@@ -179,6 +179,7 @@
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -207,4 +208,28 @@
 .dark .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #555 #2d2d2d;
+}
+
+/* Horizontal-only scrollbar for command rows.
+   Keep identical appearance in light and dark modes.
+*/
+.commands-scroll::-webkit-scrollbar {
+  height: 10px; /* horizontal scrollbar height only */
+}
+.commands-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.commands-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.4);
+  border-radius: 6px;
+}
+.commands-scroll::-webkit-scrollbar-button {
+  display: none; /* remove arrow buttons on WebKit browsers */
+}
+.commands-scroll::-webkit-scrollbar-corner {
+  background: transparent; /* remove corner square */
+}
+.commands-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
 }
