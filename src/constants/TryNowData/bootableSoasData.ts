@@ -94,8 +94,7 @@ export const SugarSteps: steps[] = [
     ],
   },
 ]
-  },
-];
+
 
 export const mockupImage = {
   path: 'assets/TryNowImages/boatsoasMockup.webp',
