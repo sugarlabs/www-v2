@@ -40,7 +40,7 @@ const RaspberryPiPage = () => {
   <section className="w-[90%] mx-auto py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
     {raspberryLogoCards.map((card, idx) => {
       const key = card.title.replace(/^using\s+/i, '').toLowerCase();
-      const isSelected = selectedSteps?.haeding.toLowerCase().includes(key) || false;
+      const isSelected = selectedSteps?.heading.toLowerCase().includes(key) || false;
       return (
         <LogoCard
           key={idx}
@@ -48,7 +48,7 @@ const RaspberryPiPage = () => {
           title={card.title}
           selected={isSelected}
           onClick={() => {
-            const found = raspberrySteps.find((g) => g.haeding.toLowerCase().includes(key) || (g as any).is === key);
+            const found = raspberrySteps.find((g) => g.heading.toLowerCase().includes(key) || (g as any).is === key);
             if (found) setSelectedSteps(found);
           }}
         />

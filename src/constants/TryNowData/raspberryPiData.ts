@@ -110,7 +110,7 @@ export const raspberryLogoCards = [
 
 export const raspberrySteps: steps[] = [
   {
-    haeding: "Steps to install Sugar using Raspbian",
+    heading: "Steps to install Sugar using Raspbian",
     StepData: [
       {
         step: 1,
@@ -122,7 +122,7 @@ export const raspberrySteps: steps[] = [
     ],
   },
   {
-    haeding: 'Steps to install Sugar using Fedora',
+    heading: 'Steps to install Sugar using Fedora',
     StepData: [
       {
         step: 1,
@@ -133,7 +133,7 @@ export const raspberrySteps: steps[] = [
     ],
   },
   {
-    haeding: 'Steps to install Sugar using Debian',
+    heading: 'Steps to install Sugar using Debian',
     StepData: [
       {
         step: 1,
@@ -144,7 +144,7 @@ export const raspberrySteps: steps[] = [
     ],
   },
   {
-    haeding: 'Steps to install Sugar using Ubuntu',
+    heading: 'Steps to install Sugar using Ubuntu',
     StepData: [
       {
         step: 1,

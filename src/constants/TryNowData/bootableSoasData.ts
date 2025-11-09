@@ -20,14 +20,14 @@ export interface StepData {
 
 // Group of steps with an optional identifier and heading
 export interface steps {
-  haeding: string;
+  heading: string;
   StepData: StepData[];
 }
 
 
 export const SugarSteps: steps[] = [
   {
-    haeding: 'Steps to boot Sugar on a Stick',
+    heading: 'Steps to boot Sugar on a Stick',
     StepData: [{
       step: 1,
     title: 'Sugar On a Stick',
