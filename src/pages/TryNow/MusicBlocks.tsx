@@ -67,7 +67,7 @@ const MusicBlocksPage = () => {
       <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
         <FeatureSection data={musicBlocksData} />
 
-        <p className="flex justify-center">
+        <p className="flex justify-center flex-wrap">
           <span className="text-[#436EA6]">Learn music</span>
           &nbsp;<span className="dark:text-white">,</span>&nbsp;
           <span className="text-[#FEC613]">math</span>
