@@ -104,7 +104,7 @@ image: "assets/Images/GSOCxSpeak.webp"
 
 ## Sample model output with stop condition
 
-![sample model output](https://mebin.shop/Mebin-test-FT-model-tesponses.webp)
+![sample model output](https://cdn.mebin.in/Mebin-test-FT-model-tesponses.webp)
 
 ---
 
