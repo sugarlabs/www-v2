@@ -3,9 +3,9 @@ title: "Fall board elections: How to participate"
 excerpt: "Sugar Labs will be running an election this fall for three seats to its board of directors. Sugar Labs community members are encouraged to participate."
 category: "COMMUNITY NEWS"
 date: "2024-11-08"
-slug: "fall-board-elections-2024"
+slug: "fall-board-elections-2024-how-to-participate"
 author: "Devin Ulibarri"
-description: ""
+description: "Executive Director"
 tags: "community,election,announcement,sugarlabs,board"
 ---
 <!-- markdownlint-disable -->
