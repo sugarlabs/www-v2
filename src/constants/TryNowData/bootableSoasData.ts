@@ -1,3 +1,5 @@
+
+
 export const bootableSoasData = {
   title: 'Boot SOAS',
   subtitle: 'Sugar On A Stick',
@@ -90,6 +92,8 @@ export const SugarSteps: steps[] = [
         ],
       },
     ],
+  },
+]
   },
 ];
 
