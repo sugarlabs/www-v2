@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { User, Building, BookOpen } from 'lucide-react';
+import { User, Building, BookOpen, Search } from 'lucide-react';
 
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
@@ -17,6 +17,16 @@ const AuthorsPage: React.FC = () => {
   const [authors, setAuthors] = useState<AuthorWithPostCount[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  // Debounce search input
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchTerm.trim().toLowerCase());
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
 
   useEffect(() => {
     const loadAllAuthors = async () => {
@@ -61,6 +71,14 @@ const AuthorsPage: React.FC = () => {
     navigate(`/authors/${slug}`);
   };
 
+  // Filter authors based on search
+  const filteredAuthors = useMemo(() => {
+    if (!debouncedSearch) return authors;
+    return authors.filter((author) =>
+      author.name.toLowerCase().includes(debouncedSearch),
+    );
+  }, [authors, debouncedSearch]);
+
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -95,88 +113,113 @@ const AuthorsPage: React.FC = () => {
       );
     }
 
+    // Search bar
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {authors.map((author, index) => (
-          <motion.div
-            key={author.slug}
-            onClick={() => handleAuthorClick(author.slug)}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl dark:shadow-black/20 
-                       transition-shadow duration-300 group-hover:shadow-blue-200 dark:group-hover:shadow-blue-500/30
-                       cursor-pointer group flex flex-col"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.5,
-              delay: index * 0.1,
-              scale: {
-                type: 'spring',
-                stiffness: 300,
-                damping: 15,
-              },
-            }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="flex flex-col items-center p-6 text-center flex-1">
-              {/* Avatar */}
-              <div className="flex-shrink-0 mb-4">
-                {author.avatar ? (
-                  <img
-                    src={author.avatar}
-                    alt={author.name}
-                    className="w-24 h-24 rounded-full object-cover border-4 border-blue-100 dark:border-blue-900"
-                  />
-                ) : (
-                  <div className="w-24 h-24 bg-blue-100 dark:bg-gray-700/50 rounded-full flex items-center justify-center">
-                    <User className="w-12 h-12 text-blue-600 dark:text-blue-400" />
+      <div>
+        <div className="flex justify-center mb-12">
+          <div className="relative w-full max-w-md">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Search authors by name..."
+              className="w-full pl-12 pr-4 py-3 rounded-full border border-gray-300 dark:border-gray-700 
+                         bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 
+                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {filteredAuthors.length === 0 ? (
+          <div className="text-center py-16 text-gray-600 dark:text-gray-300">
+            No authors found matching "
+            <span className="font-semibold text-blue-600 dark:text-blue-400">
+              {searchTerm}
+            </span>
+            "
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredAuthors.map((author, index) => (
+              <motion.div
+                key={author.slug}
+                onClick={() => handleAuthorClick(author.slug)}
+                className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl dark:shadow-black/20 
+                           transition-shadow duration-300 group-hover:shadow-blue-200 dark:group-hover:shadow-blue-500/30
+                           cursor-pointer group flex flex-col"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.1,
+                }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <div className="flex flex-col items-center p-6 text-center flex-1">
+                  {/* Avatar */}
+                  <div className="flex-shrink-0 mb-4">
+                    {author.avatar ? (
+                      <img
+                        src={author.avatar}
+                        alt={author.name}
+                        className="w-24 h-24 rounded-full object-cover border-4 border-blue-100 dark:border-blue-900"
+                      />
+                    ) : (
+                      <div className="w-24 h-24 bg-blue-100 dark:bg-gray-700/50 rounded-full flex items-center justify-center">
+                        <User className="w-12 h-12 text-blue-600 dark:text-blue-400" />
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
 
-              {/* Author Info*/}
-              <div className="flex flex-col flex-1">
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {author.name}
-                </h1>
+                  {/* Author Info*/}
+                  <div className="flex flex-col flex-1">
+                    <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {author.name}
+                    </h1>
 
-                {/* Title and Org */}
-                <div className="flex flex-col items-center gap-1 mb-3">
-                  <span className="text-md text-blue-600 dark:text-blue-400 font-medium">
-                    {author.title}
-                  </span>
-                  {author.organization && (
-                    <div className="flex items-center justify-center gap-1 text-sm text-gray-700 dark:text-gray-300">
-                      <Building className="w-4 h-4" />
-                      <span className="font-medium">{author.organization}</span>
+                    {/* Title and Org */}
+                    <div className="flex flex-col items-center gap-1 mb-3">
+                      <span className="text-md text-blue-600 dark:text-blue-400 font-medium">
+                        {author.title}
+                      </span>
+                      {author.organization && (
+                        <div className="flex items-center justify-center gap-1 text-sm text-gray-700 dark:text-gray-300">
+                          <Building className="w-4 h-4" />
+                          <span className="font-medium">
+                            {author.organization}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
 
-                {/* Description */}
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 max-w-xl line-clamp-3">
-                  {author.description}
-                </p>
+                    {/* Description */}
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 max-w-xl line-clamp-3">
+                      {author.description}
+                    </p>
 
-                {/* Quick Stats */}
-                <div className="flex flex-wrap justify-center gap-2 text-xs text-gray-600 dark:text-gray-300 mt-auto">
-                  <div className="flex items-center gap-1 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">
-                    <BookOpen className="w-4 h-4" />
-                    <span>
-                      {author.postCount}{' '}
-                      {author.postCount === 1 ? 'Article' : 'Articles'}
-                    </span>
+                    {/* Quick Stats */}
+                    <div className="flex flex-wrap justify-center gap-2 text-xs text-gray-600 dark:text-gray-300 mt-auto">
+                      <div className="flex items-center gap-1 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">
+                        <BookOpen className="w-4 h-4" />
+                        <span>
+                          {author.postCount}{' '}
+                          {author.postCount === 1 ? 'Article' : 'Articles'}
+                        </span>
+                      </div>
+                      {author.organization && (
+                        <div className="flex items-center gap-1 bg-gray-50 dark:bg-gray-700/50 px-3 py-1 rounded-full">
+                          <Building className="w-4 h-4" />
+                          <span>{author.organization}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  {author.organization && (
-                    <div className="flex items-center gap-1 bg-gray-50 dark:bg-gray-700/50 px-3 py-1 rounded-full">
-                      <Building className="w-4 h-4" />
-                      <span>{author.organization}</span>
-                    </div>
-                  )}
                 </div>
-              </div>
-            </div>
-          </motion.div>
-        ))}
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     );
   };
