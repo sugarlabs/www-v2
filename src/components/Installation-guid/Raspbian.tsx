@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import img1 from '../../../public/assets/Images/fedora-step1.webp';
+
 function Raspbian() {
   return (
     <div className="w-full max-w-3xl mx-auto p-6 space-y-6">
@@ -9,7 +10,7 @@ function Raspbian() {
         Raspberry Pi devices are small, low-cost computers that work well with
         Sugar. To use Sugar, you'll need a display, keyboard, and mouse.
       </p>
-          <img src={ `${img1}`} alt="" />
+      <img src={`${img1}`} alt="" />
       <motion.section
         className="space-y-3"
         initial={{ opacity: 0, x: 0 }}

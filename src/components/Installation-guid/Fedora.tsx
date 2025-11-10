@@ -1,11 +1,12 @@
-import {motion} from 'framer-motion'
+import { motion } from 'framer-motion';
 import img1 from '../../../public/assets/Images/fedora-step1.webp';
+
 function Fedora() {
   return (
     <>
       <main>
         <motion.article className="mx-auto p-6 flex items-center flex-col max-w-10/12">
-          <h1 className=" text-4xl font-sans font-bold text-center">
+          <h1 className="text-4xl font-sans font-bold text-center">
             Steps to install Sugar using Fedora
           </h1>
 

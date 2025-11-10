@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import img1 from '../../../public/assets/Images/guid-image-1.webp'
+import img1 from '../../../public/assets/Images/guid-image-1.webp';
+
 function Ubuntu() {
   return (
     <>

@@ -10,7 +10,12 @@ interface LogoCard {
   logo: string;
   title: string;
   description: string[];
-  buttons?: { text: string; value?: string; target?: string; link?:string}[];
+  buttons?: {
+    text: string;
+    value?: string;
+    target?: string;
+    link?: string;
+  }[];
 }
 
 const LogoCards = ({ data }: { data: LogoCard[] }) => {
@@ -80,17 +85,17 @@ const LogoCards = ({ data }: { data: LogoCard[] }) => {
         <b className="text-center">
           <a
             href="https://wiki.sugarlabs.org/go/Installation#Raspberry_Pi"
-            className=" hover:text-blue-800 underline"
+            className="hover:text-blue-800 underline"
           >
             visit here for more info
           </a>
         </b>
       </section>
       <section>
-        {selectedOS == 'Fedora' && <Fedora />}
-        {selectedOS == 'Ubuntu' && <Ubuntu />}
-        {selectedOS == 'Debian' && <Debian />}
-        {selectedOS == 'Raspbian' && <Raspbian />}
+        {selectedOS === 'Fedora' && <Fedora />}
+        {selectedOS === 'Ubuntu' && <Ubuntu />}
+        {selectedOS === 'Debian' && <Debian />}
+        {selectedOS === 'Raspbian' && <Raspbian />}
       </section>
     </>
   );
