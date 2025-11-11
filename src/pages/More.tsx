@@ -20,6 +20,7 @@ const MorePage: React.FC = () => {
   const [pagesByCategory, setPagesByCategory] = useState<
     Record<string, MorePageType[]>
   >({});
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [notFoundSlug, setNotFoundSlug] = useState<string | null>(null);
   const [zoomableImages, setZoomableImages] = useState<HTMLImageElement[]>([]);
@@ -28,6 +29,20 @@ const MorePage: React.FC = () => {
     alt: string;
   } | null>(null);
 
+useEffect(() => {
+  const dark = document.documentElement.classList.contains('dark');
+  setIsDarkMode(dark);
+
+  const observer = new MutationObserver(() => {
+    const updatedDark = document.documentElement.classList.contains('dark');
+    setIsDarkMode(updatedDark);
+  });
+
+  observer.observe(document.documentElement, { attributes: true });
+
+  return () => observer.disconnect();
+}, []);
+  
   useEffect(() => {
     const loadPage = async () => {
       setIsLoading(true);
@@ -213,7 +228,7 @@ const MorePage: React.FC = () => {
             transition={{ duration: 0.5 }}
             key={page?.slug}
           >
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className={`${isDarkMode?"bg-amber-950":"bg-white"} rounded-lg shadow-md p-6`}>
               {page ? (
                 <div className="prose prose-lg max-w-none">
                   <MarkdownRenderer
