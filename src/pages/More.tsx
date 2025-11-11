@@ -29,20 +29,20 @@ const MorePage: React.FC = () => {
     alt: string;
   } | null>(null);
 
-useEffect(() => {
-  const dark = document.documentElement.classList.contains('dark');
-  setIsDarkMode(dark);
+  useEffect(() => {
+    const dark = document.documentElement.classList.contains('dark');
+    setIsDarkMode(dark);
 
-  const observer = new MutationObserver(() => {
-    const updatedDark = document.documentElement.classList.contains('dark');
-    setIsDarkMode(updatedDark);
-  });
+    const observer = new MutationObserver(() => {
+      const updatedDark = document.documentElement.classList.contains('dark');
+      setIsDarkMode(updatedDark);
+    });
 
-  observer.observe(document.documentElement, { attributes: true });
+    observer.observe(document.documentElement, { attributes: true });
 
-  return () => observer.disconnect();
-}, []);
-  
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     const loadPage = async () => {
       setIsLoading(true);
@@ -60,7 +60,7 @@ useEffect(() => {
           if (fetchedPage) {
             setPage(fetchedPage);
             setNotFoundSlug(null);
-            document.title = fetchedPage.title + ' - Sugar Labs';
+            document.title = `${fetchedPage.title} - Sugar Labs`;
 
             if (fetchedPage.category) {
               setActiveCategory(fetchedPage.category);
@@ -147,7 +147,11 @@ useEffect(() => {
             className="text-blue-600 hover:underline mb-2 inline-block"
           >
             <motion.button
-              className="mb-6 px-4 py-2 flex items-center text-blue-600 hover:text-blue-700 transition-colors rounded-md hover:bg-blue-50"
+              className={
+                'mb-6 px-4 py-2 flex items-center text-blue-600 ' +
+                'hover:text-blue-700 transition-colors rounded-md ' +
+                'hover:bg-blue-50'
+              }
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -199,7 +203,7 @@ useEffect(() => {
               <h3 className="font-bold text-xl mb-4">
                 {activeCategory === 'All'
                   ? 'All Pages'
-                  : activeCategory + ' Pages'}
+                  : `${activeCategory} Pages`}
               </h3>
               <ul className="space-y-2">
                 {pagesByCategory[activeCategory]?.map((linkPage) => (
@@ -228,7 +232,11 @@ useEffect(() => {
             transition={{ duration: 0.5 }}
             key={page?.slug}
           >
-            <div className={`${isDarkMode?"bg-amber-950":"bg-white"} rounded-lg shadow-md p-6`}>
+            <div
+              className={`${
+                isDarkMode ? 'bg-amber-950' : 'bg-white'
+              } rounded-lg shadow-md p-6`}
+            >
               {page ? (
                 <div className="prose prose-lg max-w-none">
                   <MarkdownRenderer
@@ -312,7 +320,12 @@ useEffect(() => {
             </p>
             <button
               onClick={closeImageModal}
-              className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-8 h-8 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white"
+              className={
+                'absolute top-2 right-2 text-white text-2xl ' +
+                'hover:text-gray-300 bg-black bg-opacity-50 rounded-full ' +
+                'w-8 h-8 flex items-center justify-center ' +
+                'focus:outline-none focus:ring-2 focus:ring-white'
+              }
               aria-label="Close image"
             >
               &times;
