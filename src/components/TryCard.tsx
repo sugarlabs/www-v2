@@ -95,7 +95,7 @@ export const TryCard: React.FC<TryCardProps> = ({
             href={tryNowHref}
             className={`w-full text-white font-bold px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 rounded-lg sm:rounded-xl 
                        transition-all duration-500 hover:scale-[1.02] hover:shadow-lg 
-                       active:scale-95 text-xs sm:text-sm backdrop-blur-sm relative overflow-hidden
+                       active:scale-95 text-xs sm:text-sm backdrop-blur-sm relative overflow-hidden flex items-center justify-center
                        ${gradientClass || 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800'}
                        before:absolute before:inset-0 before:bg-white/20 before:translate-x-[-150%] before:skew-x-[45deg]
                        hover:before:translate-x-[150%] before:transition-transform before:duration-700
@@ -108,7 +108,7 @@ export const TryCard: React.FC<TryCardProps> = ({
             className="w-full bg-gray-50/80 dark:bg-gray-700/80 backdrop-blur-sm border-[1.5px] border-gray-100 dark:border-gray-600 rounded-lg sm:rounded-xl px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5
                      font-bold transition-all duration-500 hover:scale-[1.02] 
                      hover:bg-gray-100/80 hover:border-gray-200 dark:hover:bg-gray-600/80 dark:hover:border-gray-500 text-gray-700 dark:text-gray-200 text-xs sm:text-sm
-                     active:scale-95 relative overflow-hidden
+                     active:scale-95 relative overflow-hidden flex items-center justify-center
                      before:absolute before:inset-0 before:bg-gray-400/20 before:translate-x-[-150%] before:skew-x-[45deg]
                      hover:before:translate-x-[150%] before:transition-transform before:duration-700"
           >
