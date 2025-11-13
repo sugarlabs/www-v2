@@ -112,8 +112,11 @@ const Try: React.FC = () => {
             </motion.div>
           </motion.header>
 
-          {/* Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+          {/* Desktop Grid - Dynamic Columns */}
+          <div className="hidden md:grid gap-6 md:gap-8 w-full max-w-6xl mx-auto"
+            style={{
+              gridTemplateColumns: `repeat(${TryCardData.length % 3 === 0 ? 3 : 2}, 1fr)`
+            }}>
             {TryCardData.map((card, index) => (
               <TryCard key={index} {...card} />
             ))}
