@@ -112,8 +112,8 @@ const Try: React.FC = () => {
             </motion.div>
           </motion.header>
 
-          {/* Desktop Grid - 2 Columns */}
-          <div className="hidden md:grid md:grid-cols-2 gap-6 md:gap-8 w-full max-w-6xl mx-auto">
+          {/* Desktop Grid */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
             {TryCardData.map((card, index) => (
               <TryCard key={index} {...card} />
             ))}
