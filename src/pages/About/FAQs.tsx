@@ -103,7 +103,7 @@ const FAQs = () => {
                   whileTap="tap"
                 >
                   <motion.div
-                    className="w-12 h-12 bg-white dark:bg-gray-700 flex items-center justify-center rounded-lg mb-4"
+                    className="w-12 h-12 bg-white dark:bg-white-700 flex items-center justify-center rounded-lg mb-4"
                     variants={faqPageAnimations.quickAnswerIcon}
                     custom={index}
                   >
