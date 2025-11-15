@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion';
 import { logoCardAnimations } from '@/styles/Animations';
 
-interface LogoCard {
+export interface LogoCard {
   logo: string;
   title: string;
-  description: string[];
+  description?: string[];
   buttons?: { text: string; link: string }[];
+  onClick?: () => void;
+  selected?: boolean;
 }
 
 const LogoCards = ({ data }: { data: LogoCard[] }) => {
@@ -41,7 +43,7 @@ const LogoCards = ({ data }: { data: LogoCard[] }) => {
 
           {/* Description */}
           <ul className="text-gray-600 dark:text-gray-300 text-sm text-left list-disc list-inside">
-            {card.description.map((point, i) => (
+            {card.description?.map((point, i) => (
               <li key={i}>{point}</li>
             ))}
           </ul>
