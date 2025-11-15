@@ -344,10 +344,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     h6: createHeading('h6'),
 
     p: ({ children, ...props }) => (
-      <p
-        {...props}
-        className="my-4 text-gray-700 leading-relaxed"
-      >
+      <p {...props} className="my-4 text-gray-700 leading-relaxed">
         {children}
       </p>
     ),
@@ -531,10 +528,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       </ol>
     ),
     li: ({ children, ...props }) => (
-      <li
-        {...props}
-        className="text-gray-700 leading-relaxed"
-      >
+      <li {...props} className="text-gray-700 leading-relaxed">
         {children}
       </li>
     ),
@@ -573,10 +567,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     },
 
     strong: ({ children, ...props }) => (
-      <strong
-        {...props}
-        className="font-semibold text-gray-900"
-      >
+      <strong {...props} className="font-semibold text-gray-900">
         {children}
       </strong>
     ),
