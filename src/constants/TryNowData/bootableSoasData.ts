@@ -8,73 +8,88 @@ export const bootableSoasData = {
   images: [{ src: 'assets/TryNowImages/step7.webp', alt: 'Boot SOAS step 7' }],
 };
 
-interface StepData {
+export interface StepData {
   step: number;
   title: string;
   description: string;
   image: string;
   links?: { text: string; url: string }[];
+  // Optional shell commands or CLI steps related to this step
+  commands?: string;
 }
 
-export const steps: StepData[] = [
+// Group of steps with an optional identifier and heading
+export interface steps {
+  heading: string;
+  StepData: StepData[];
+  // Optional identifier used by some pages to match logo cards
+  is?: string;
+}
+
+export const SugarSteps: steps[] = [
   {
-    step: 1,
-    title: 'Sugar On a Stick',
-    description:
-      'To boot Sugar Labs OS on your computer, you will need a bootable Sugar on Stick setup already. To see how to set it up, visit the wiki.',
-    links: [
+    heading: 'Steps to boot Sugar on a Stick',
+    StepData: [
       {
-        text: 'wiki',
-        url: 'https://wiki.sugarlabs.org/go/Sugar_on_a_Stick/Installation',
+        step: 1,
+        title: 'Sugar On a Stick',
+        description:
+          'To boot Sugar Labs OS on your computer, you will need a bootable Sugar on Stick setup already. To see how to set it up, visit the wiki.',
+        links: [
+          {
+            text: 'wiki',
+            url: 'https://wiki.sugarlabs.org/go/Sugar_on_a_Stick/Installation',
+          },
+        ],
+        image: 'assets/TryNowImages/step1.webp',
       },
-    ],
-    image: 'assets/TryNowImages/step1.webp',
-  },
-  {
-    step: 2,
-    title: 'Insert the USB Drive',
-    description:
-      'Plug the prepared Sugar on a Stick USB drive into an available USB port on your computer.',
-    image: 'assets/TryNowImages/step2.webp',
-  },
-  {
-    step: 3,
-    title: 'Access Advanced Boot Options (Windows)',
-    description:
-      "On Windows systems, access the advanced boot options by holding the 'Shift' key while clicking 'Restart.' This will bring you to the advanced boot menu.",
-    image: 'assets/TryNowImages/step3.webp',
-  },
-  {
-    step: 4,
-    title: 'Choose to Boot from USB (Windows)',
-    description:
-      "In the advanced boot menu, select 'Use a Device' to proceed with booting from the USB drive.",
-    image: 'assets/TryNowImages/step4.webp',
-  },
-  {
-    step: 5,
-    title: ' Select the USB Drive (Windows)',
-    description:
-      'Choose your USB drive from the list of devices to boot into the Sugar OS.',
-    image: 'assets/TryNowImages/step5.webp',
-  },
-  {
-    step: 6,
-    title: 'Traditional Boot Method (Non-Windows Systems)',
-    description:
-      "For non-Windows computers:Power on your computer and immediately press the appropriate key (commonly F9, F12, or Esc) repeatedly to access the boot menu or BIOS settings. In the boot menu, select your USB drive, often identified by its brand or model name, and press 'Enter' to boot into Sugar.",
-    image: 'assets/TryNowImages/step6.webp',
-  },
-  {
-    step: 7,
-    title: 'Enjoy Sugar on a Stick',
-    description:
-      'After selecting the USB drive, your computer should boot into the Sugar OS interface. If you encounter any issues during the boot process, seek assistance in the Sugar Labs Matrix room. For detailed instructions and additional resources, visit the Sugar Labs Booting SoaS page.',
-    image: 'assets/TryNowImages/step7.webp',
-    links: [
       {
-        text: 'Matrix room',
-        url: 'https://matrix.to/#/#sugar:matrix.org',
+        step: 2,
+        title: 'Insert the USB Drive',
+        description:
+          'Plug the prepared Sugar on a Stick USB drive into an available USB port on your computer.',
+        image: 'assets/TryNowImages/step2.webp',
+      },
+      {
+        step: 3,
+        title: 'Access Advanced Boot Options (Windows)',
+        description:
+          "On Windows systems, access the advanced boot options by holding the 'Shift' key while clicking 'Restart.' This will bring you to the advanced boot menu.",
+        image: 'assets/TryNowImages/step3.webp',
+      },
+      {
+        step: 4,
+        title: 'Choose to Boot from USB (Windows)',
+        description:
+          "In the advanced boot menu, select 'Use a Device' to proceed with booting from the USB drive.",
+        image: 'assets/TryNowImages/step4.webp',
+      },
+      {
+        step: 5,
+        title: ' Select the USB Drive (Windows)',
+        description:
+          'Choose your USB drive from the list of devices to boot into the Sugar OS.',
+        image: 'assets/TryNowImages/step5.webp',
+      },
+      {
+        step: 6,
+        title: 'Traditional Boot Method (Non-Windows Systems)',
+        description:
+          "For non-Windows computers:Power on your computer and immediately press the appropriate key (commonly F9, F12, or Esc) repeatedly to access the boot menu or BIOS settings. In the boot menu, select your USB drive, often identified by its brand or model name, and press 'Enter' to boot into Sugar.",
+        image: 'assets/TryNowImages/step6.webp',
+      },
+      {
+        step: 7,
+        title: 'Enjoy Sugar on a Stick',
+        description:
+          'After selecting the USB drive, your computer should boot into the Sugar OS interface. If you encounter any issues during the boot process, seek assistance in the Sugar Labs Matrix room. For detailed instructions and additional resources, visit the Sugar Labs Booting SoaS page.',
+        image: 'assets/TryNowImages/step7.webp',
+        links: [
+          {
+            text: 'Matrix room',
+            url: 'https://matrix.to/#/#sugar:matrix.org',
+          },
+        ],
       },
     ],
   },

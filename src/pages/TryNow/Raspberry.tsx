@@ -2,14 +2,26 @@ import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import FeatureSection from '@/components/TryNow/FeatureSection';
 import Paragraph from '@/components/TryNow/Paragraph';
-import LogoCards from '@/components/TryNow/LogoCards';
+import LogoCard from '@/components/TryNow/LogoCard';
+import { useState, useRef } from 'react';
 import {
   raspberrydata,
   raspberrySections,
   raspberryLogoCards,
+  raspberrySteps,
 } from '@/constants/TryNowData/raspberryPiData';
+import StepsToUse from '@/components/TryNow/StepsToUse';
 
 const RaspberryPiPage = () => {
+  const [selectedSteps, setSelectedSteps] = useState(raspberrySteps[0]);
+  const stepsRef = useRef<HTMLDivElement | null>(null);
+
+  // scroll to steps only when user clicks a card (not on mount or refresh)
+  const scrollToSteps = () => {
+    if (stepsRef.current) {
+      stepsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
   return (
     <div>
       <Header />
@@ -26,7 +38,38 @@ const RaspberryPiPage = () => {
             links={section.links}
           />
         ))}
-        <LogoCards data={raspberryLogoCards} />
+        <section className="w-[90%] mx-auto py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {raspberryLogoCards.map((card, idx) => {
+            const key = card.title.replace(/^using\s+/i, '').toLowerCase();
+            const isSelected =
+              selectedSteps?.heading.toLowerCase().includes(key) || false;
+            return (
+              <LogoCard
+                key={idx}
+                logo={card.logo}
+                title={card.title}
+                selected={isSelected}
+                onClick={() => {
+                  const found = raspberrySteps.find(
+                    (g) =>
+                      g.heading.toLowerCase().includes(key) || g.is === key,
+                  );
+                  if (found) {
+                    setSelectedSteps(found);
+                    // scroll only when user clicks
+                    // use rAF to ensure layout updated
+                    requestAnimationFrame(() => scrollToSteps());
+                  }
+                }}
+              />
+            );
+          })}
+        </section>
+
+        {/* Render the currently selected steps group */}
+        <div ref={stepsRef}>
+          <StepsToUse {...selectedSteps} />
+        </div>
       </main>
       <Footer />
     </div>
