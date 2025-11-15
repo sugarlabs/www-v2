@@ -126,7 +126,7 @@ const Stats = () => {
               ></div>
             </motion.div>
             <div className="p-4 sm:p-5 md:p-6">
-              <h3 className="text-gray-700 dark:text-gray-200 text-lg sm:text-xl font-medium mb-2 sm:mb-3 font-AnonymousPro line-clamp-2 h-12 sm:h-14">
+              <h3 className="text-gray-700 dark:text-gray-200 text-lg sm:text-xl font-medium mb-2 sm:mb-3 font-AnonymousPro line-clamp-3">
                 {stat.title}
               </h3>
               <motion.div
@@ -165,7 +165,7 @@ const Stats = () => {
           {statisticsData.map((stat, index) => (
             <motion.div
               key={index}
-              className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center`}
+              className={`group relative px-2 sm:px-3 md:px-4 py-3 sm:py-4 md:py-5 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center min-h-[80px] sm:min-h-[90px] cursor-pointer`}
               whileHover={{
                 scale: 1.05,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -177,10 +177,17 @@ const Stats = () => {
               >
                 {stat.value}
               </span>
-              <span className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1">
-                {stat.title.split('.')[0].substring(0, 12)}
-                {stat.title.split('.')[0].length > 12 ? '...' : ''}
+              <span className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-2 leading-tight">
+                {stat.title}
               </span>
+
+              {/* Tooltip on hover */}
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 dark:bg-gray-800 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none z-50 max-w-[200px] sm:max-w-[250px] text-center">
+                {stat.title}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
+                  <div className="border-4 border-transparent border-t-gray-900 dark:border-t-gray-800"></div>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
