@@ -311,12 +311,12 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
   // Component definitions with shared styles
   const headingClasses = {
-    h1: 'text-3xl font-bold my-6 text-gray-900 dark:text-gray-100 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-2',
-    h2: 'text-2xl font-semibold my-5 text-gray-900 dark:text-gray-100 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-1',
-    h3: 'text-xl font-semibold my-4 text-gray-900 dark:text-gray-100 group flex items-center',
-    h4: 'text-lg font-semibold my-3 text-gray-900 dark:text-gray-100',
-    h5: 'text-base font-semibold my-3 text-gray-900 dark:text-gray-100',
-    h6: 'text-sm font-semibold my-3 text-gray-600 dark:text-gray-300 uppercase tracking-wide',
+    h1: 'text-3xl font-bold my-6 text-gray-900 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-2',
+    h2: 'text-2xl font-semibold my-5 text-gray-900 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-1',
+    h3: 'text-xl font-semibold my-4 text-gray-900 group flex items-center',
+    h4: 'text-lg font-semibold my-3 text-gray-900',
+    h5: 'text-base font-semibold my-3 text-gray-900',
+    h6: 'text-sm font-semibold my-3 text-gray-600 uppercase tracking-wide',
   };
 
   const createHeading =
@@ -346,7 +346,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     p: ({ children, ...props }) => (
       <p
         {...props}
-        className="my-4 text-gray-700 dark:text-gray-300 leading-relaxed"
+        className="my-4 text-gray-700 leading-relaxed"
       >
         {children}
       </p>
@@ -533,7 +533,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     li: ({ children, ...props }) => (
       <li
         {...props}
-        className="text-gray-700 dark:text-gray-300 leading-relaxed"
+        className="text-gray-700 leading-relaxed"
       >
         {children}
       </li>
@@ -575,13 +575,13 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     strong: ({ children, ...props }) => (
       <strong
         {...props}
-        className="font-semibold text-gray-900 dark:text-gray-100"
+        className="font-semibold text-gray-900"
       >
         {children}
       </strong>
     ),
     em: ({ children, ...props }) => (
-      <em {...props} className="italic text-gray-700 dark:text-gray-300">
+      <em {...props} className="italic text-gray-700">
         {children}
       </em>
     ),

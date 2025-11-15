@@ -162,7 +162,7 @@ const MorePage: React.FC = () => {
             <div className="bg-gray-50 p-4 rounded-lg shadow-md">
               {/* Category Navigation */}
               <div className="mb-6">
-                <h3 className="font-bold text-xl mb-2">Categories</h3>
+                <h3 className="font-bold text-xl mb-2 text-gray-900">Categories</h3>
                 <div className="flex flex-wrap gap-2">
                   {categories.map((category) => (
                     <button
@@ -181,7 +181,7 @@ const MorePage: React.FC = () => {
               </div>
 
               {/* Page Links */}
-              <h3 className="font-bold text-xl mb-4">
+              <h3 className="font-bold text-xl mb-4 text-gray-900">
                 {activeCategory === 'All'
                   ? 'All Pages'
                   : activeCategory + ' Pages'}
