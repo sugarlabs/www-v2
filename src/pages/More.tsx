@@ -151,7 +151,7 @@ const MorePage: React.FC = () => {
               Back to Home
             </motion.button>
           </Link>
-          <h2 className="text-3xl font-bold border-b-2 border-red-500 pb-2">
+          <h2 className="text-3xl font-bold border-b-2 border-red-500 pb-2 text-gray-900 dark:text-gray-100">
             {page ? page.title : 'Page Not Found'}
           </h2>
         </div>
@@ -159,7 +159,7 @@ const MorePage: React.FC = () => {
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar Navigation */}
           <div className="md:w-1/4">
-            <div className="bg-gray-50 p-4 rounded-lg shadow-md">
+            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-md">
               {/* Category Navigation */}
               <div className="mb-6">
                 <h3 className="font-bold text-xl mb-2">Categories</h3>
@@ -171,7 +171,7 @@ const MorePage: React.FC = () => {
                       className={`px-3 py-1 rounded-full text-sm ${
                         activeCategory === category
                           ? 'bg-blue-600 text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                       }`}
                     >
                       {category}
@@ -191,10 +191,10 @@ const MorePage: React.FC = () => {
                   <li key={linkPage.slug}>
                     <Link
                       to={`/more/${linkPage.slug}`}
-                      className={`block p-2 rounded hover:bg-gray-100 transition ${
+                      className={`block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition ${
                         linkPage.slug === page?.slug
-                          ? 'bg-red-100 text-red-600 font-medium'
-                          : 'text-gray-700'
+                          ? 'bg-red-100 text-red-600 font-medium dark:bg-red-900/40 dark:text-red-300'
+                          : 'text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       {linkPage.title}
@@ -213,7 +213,7 @@ const MorePage: React.FC = () => {
             transition={{ duration: 0.5 }}
             key={page?.slug}
           >
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 text-gray-900 dark:text-gray-100">
               {page ? (
                 <div className="prose prose-lg max-w-none">
                   <MarkdownRenderer
