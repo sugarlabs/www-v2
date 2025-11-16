@@ -68,7 +68,7 @@ const ReviewCard = ({
           />
         ) : (
           <motion.div
-            className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-300 bg-gray-400 text-white text-lg font-bold"
+            className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-300 bg-gray-400 text-white text-lg font-bold shrink-0"
             variants={avatarReveal}
           >
             {initial}
