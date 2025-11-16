@@ -65,8 +65,8 @@ const Header: React.FC = () => {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-            ? 'backdrop-blur-md bg-white/90 dark:bg-gray-900/80 shadow-lg'
-            : 'bg-white dark:bg-gray-900'
+          ? 'backdrop-blur-md bg-white/90 dark:bg-gray-900/80 shadow-lg'
+          : 'bg-white dark:bg-gray-900'
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,7 +80,7 @@ const Header: React.FC = () => {
               <img
                 src={logo}
                 alt="Sugar Labs"
-                className="h-8 md:h-12 w-auto transition-transform"
+                className="h-8 md:h-12 w-auto transition-transform hover:scale-105z"
               />
             </Link>
 
@@ -94,8 +94,8 @@ const Header: React.FC = () => {
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <span
                   className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 ${isMobileMenuOpen
-                      ? 'rotate-45 translate-y-1.5'
-                      : 'translate-y-[-4px]'
+                    ? 'rotate-45 translate-y-1.5'
+                    : 'translate-y-[-4px]'
                     }`}
                 />
                 <span
@@ -104,28 +104,15 @@ const Header: React.FC = () => {
                 />
                 <span
                   className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 mt-1 ${isMobileMenuOpen
-                      ? '-rotate-45 -translate-y-1.5'
-                      : 'translate-y-[4px]'
+                    ? '-rotate-45 -translate-y-1.5'
+                    : 'translate-y-[4px]'
                     }`}
                 />
               </div>
             </button>
 
-
-            {/* Regular links */}
+            {/* Desktop Navigation (visible from lg and up) */}
             <nav className="hidden lg:flex lg:items-center lg:space-x-4">
-              {navigationData.linksBefore.map((link) => (
-                <Link
-                  key={link.label}
-                  to={link.path}
-                  className="px-2 lg:px-2 py-2 text-gray-700 dark:text-gray-200 hover:text-blue-600 font-medium rounded-md
-                            transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm lg:text-sm whitespace-nowrap"
-                  onClick={handleNavigation}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              {/* Desktop Navigation (visible from lg and up) */}
               {/* Dropdown menus */}
               {Object.entries(navigationData.dropdowns).map(
                 ([key, dropdown]) => (
@@ -154,7 +141,7 @@ const Header: React.FC = () => {
                 </Link>
               ))}
 
-              <div className="flex items-center lg:ml-13 gap-3">
+              <div className="flex items-center gap-3">
                 <DarkModeToggle />
 
                 {/* CTA Button (slightly reduced padding at lg so it fits tighter layouts) */}
@@ -219,27 +206,14 @@ const MobileNavDrawer: React.FC<{
           transition={{ type: 'tween', duration: 0.3 }}
           className="fixed lg:hidden top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white dark:bg-gray-900 shadow-xl z-40 flex flex-col h-full"
         >
-
           <div className="flex flex-col h-full">
             {/* Space to avoid overlay with main header */}
             <div className="h-16" />
 
             {/* Scrollable content area */}
             <div className="flex-1 overflow-y-auto py-2">
-
               <div className="space-y-4">
                 {/* Dropdown menus */}
-                {navigationData.linksBefore.map((link) => (
-                  <Link
-                    key={link.label}
-                    to={link.path}
-                    onClick={onClose}
-                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 font-medium  rounded-lg
-                            hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
                 {Object.entries(navigationData.dropdowns).map(
                   ([key, dropdown]) => (
                     <div key={key} className="space-y-1 px-2">
@@ -303,7 +277,7 @@ const MobileNavDrawer: React.FC<{
                     key={link.label}
                     to={link.path}
                     onClick={onClose}
-                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 font-medium  rounded-lg
+                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 font-medium rounded-lg
                             hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600"
                   >
                     {link.label}
