@@ -11,7 +11,6 @@ export const navigationData = {
       ],
     },
   },
-
   links: [
     { label: 'News', path: '/news' },
     { label: 'Merchandise', path: '/products' },
@@ -19,4 +18,7 @@ export const navigationData = {
     { label: 'Join Development', path: '/join-development' },
     { label: 'Volunteer', path: '/volunteer' },
   ],
+  linksBefore:[
+    { label: 'Home', path: '/' },
+  ], 
 };
