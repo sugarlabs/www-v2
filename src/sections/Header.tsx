@@ -64,10 +64,11 @@ const Header: React.FC = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? 'backdrop-blur-md bg-white/90 dark:bg-gray-900/80 shadow-lg'
-          : 'bg-white dark:bg-gray-900'
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? 'backdrop-blur-md bg-white/90 dark:bg-gray-900/80 shadow-lg'
+            : 'bg-white dark:bg-gray-900'
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 md:h-20">
@@ -93,20 +94,23 @@ const Header: React.FC = () => {
             >
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <span
-                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 ${isMobileMenuOpen
-                    ? 'rotate-45 translate-y-1.5'
-                    : 'translate-y-[-4px]'
-                    }`}
+                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 ${
+                    isMobileMenuOpen
+                      ? 'rotate-45 translate-y-1.5'
+                      : 'translate-y-[-4px]'
+                  }`}
                 />
                 <span
-                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 mt-1 ${isMobileMenuOpen ? 'opacity-0' : ''
-                    }`}
+                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 mt-1 ${
+                    isMobileMenuOpen ? 'opacity-0' : ''
+                  }`}
                 />
                 <span
-                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 mt-1 ${isMobileMenuOpen
-                    ? '-rotate-45 -translate-y-1.5'
-                    : 'translate-y-[4px]'
-                    }`}
+                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 mt-1 ${
+                    isMobileMenuOpen
+                      ? '-rotate-45 -translate-y-1.5'
+                      : 'translate-y-[4px]'
+                  }`}
                 />
               </div>
             </button>
@@ -227,8 +231,9 @@ const MobileNavDrawer: React.FC<{
                       >
                         <span>{dropdown.label}</span>
                         <svg
-                          className={`w-5 h-5 transition-transform duration-200 ${activeDropdown === key ? 'rotate-180' : ''
-                            }`}
+                          className={`w-5 h-5 transition-transform duration-200 ${
+                            activeDropdown === key ? 'rotate-180' : ''
+                          }`}
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"

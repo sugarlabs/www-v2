@@ -18,7 +18,5 @@ export const navigationData = {
     { label: 'Join Development', path: '/join-development' },
     { label: 'Volunteer', path: '/volunteer' },
   ],
-  linksBefore:[
-    { label: 'Home', path: '/' },
-  ], 
+  linksBefore: [{ label: 'Home', path: '/' }],
 };
