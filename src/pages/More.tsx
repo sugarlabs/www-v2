@@ -193,7 +193,7 @@ const MorePage: React.FC = () => {
                   <li key={linkPage.slug}>
                     <Link
                       to={`/more/${linkPage.slug}`}
-                      className={`block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 dark:transition ${
+                      className={`block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition ${
                         linkPage.slug === page?.slug
                           ? 'bg-red-100 text-red-600 font-medium dark:hover:bg-red-200'
                           : 'text-gray-700 dark:text-gray-100'
