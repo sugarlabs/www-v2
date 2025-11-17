@@ -355,7 +355,9 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     blockquote: ({ children, ...props }) => (
       <blockquote
         {...props}
-        className="border-l-3 border-blue-500 bg-blue-50 pl-5 pr-5 py-2 my-4 italic text-blue-800 rounded-r-2xl shadow-sm hover:shadow-md transition-shadow duration-200 "
+        className={
+          'border-l-3 border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-gray-800/40 pl-5 pr-5 py-2 my-4 italic text-blue-800 dark:text-blue-100 rounded-r-2xl shadow-sm dark:shadow-none hover:shadow-md transition-shadow duration-200'
+        }
       >
         <div className="relative z-10">{children}</div>
       </blockquote>

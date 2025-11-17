@@ -132,7 +132,7 @@ const MorePage: React.FC = () => {
             className="text-blue-600 hover:underline mb-2 inline-block"
           >
             <motion.button
-              className="mb-6 px-4 py-2 flex items-center text-blue-600 hover:text-blue-700 transition-colors rounded-md hover:bg-blue-50"
+              className="mb-6 px-4 py-2 flex items-center text-blue-600 hover:text-blue-700 transition-colors rounded-md hover:bg-blue-50 dark:hover:bg-gray-800"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -159,10 +159,12 @@ const MorePage: React.FC = () => {
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar Navigation */}
           <div className="md:w-1/4">
-            <div className="bg-gray-50 p-4 rounded-lg shadow-md">
+            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-md">
               {/* Category Navigation */}
               <div className="mb-6">
-                <h3 className="font-bold text-xl mb-2">Categories</h3>
+                <h3 className="font-bold text-xl mb-2 dark:text-gray-100">
+                  Categories
+                </h3>
                 <div className="flex flex-wrap gap-2">
                   {categories.map((category) => (
                     <button
@@ -181,7 +183,7 @@ const MorePage: React.FC = () => {
               </div>
 
               {/* Page Links */}
-              <h3 className="font-bold text-xl mb-4">
+              <h3 className="font-bold text-xl mb-4 text-gray-900 dark:text-gray-100">
                 {activeCategory === 'All'
                   ? 'All Pages'
                   : activeCategory + ' Pages'}
@@ -191,10 +193,10 @@ const MorePage: React.FC = () => {
                   <li key={linkPage.slug}>
                     <Link
                       to={`/more/${linkPage.slug}`}
-                      className={`block p-2 rounded hover:bg-gray-100 transition ${
+                      className={`block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 dark:transition ${
                         linkPage.slug === page?.slug
-                          ? 'bg-red-100 text-red-600 font-medium'
-                          : 'text-gray-700'
+                          ? 'bg-red-100 text-red-600 font-medium dark:hover:bg-red-200'
+                          : 'text-gray-700 dark:text-gray-100'
                       }`}
                     >
                       {linkPage.title}
@@ -213,7 +215,7 @@ const MorePage: React.FC = () => {
             transition={{ duration: 0.5 }}
             key={page?.slug}
           >
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 text-gray-800 dark:text-gray-100">
               {page ? (
                 <div className="prose prose-lg max-w-none">
                   <MarkdownRenderer
