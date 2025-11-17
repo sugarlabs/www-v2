@@ -114,9 +114,19 @@ const Header: React.FC = () => {
                 />
               </div>
             </button>
-
-            {/* Desktop Navigation (visible from lg and up) */}
             <nav className="hidden lg:flex lg:items-center lg:space-x-4">
+              {navigationData.linksBefore.map((link) => (
+                <Link
+                  key={link.label}
+                  to={link.path}
+                  className="px-2 lg:px-2 py-2 text-gray-700 dark:text-gray-200 hover:text-blue-600 font-medium rounded-md
+                            transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm lg:text-sm whitespace-nowrap"
+                  onClick={handleNavigation}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              {/* Desktop Navigation (visible from lg and up) */}
               {/* Dropdown menus */}
               {Object.entries(navigationData.dropdowns).map(
                 ([key, dropdown]) => (
@@ -218,6 +228,17 @@ const MobileNavDrawer: React.FC<{
             <div className="flex-1 overflow-y-auto py-2">
               <div className="space-y-4">
                 {/* Dropdown menus */}
+                {navigationData.linksBefore.map((link) => (
+                  <Link
+                    key={link.label}
+                    to={link.path}
+                    onClick={onClose}
+                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 font-medium rounded-lg
+                            hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
                 {Object.entries(navigationData.dropdowns).map(
                   ([key, dropdown]) => (
                     <div key={key} className="space-y-1 px-2">
@@ -277,6 +298,7 @@ const MobileNavDrawer: React.FC<{
                 )}
 
                 {/* Regular links */}
+
                 {navigationData.links.map((link) => (
                   <Link
                     key={link.label}
