@@ -81,7 +81,7 @@ const Header: React.FC = () => {
               <img
                 src={logo}
                 alt="Sugar Labs"
-                className="h-8 md:h-12 w-auto transition-transform hover:scale-105z"
+                className="h-8 md:h-12 w-auto transition-transform "
               />
             </Link>
 
