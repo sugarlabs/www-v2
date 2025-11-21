@@ -137,7 +137,12 @@ const Volunteer = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
-              >
+                whileHover={{
+                  scale: 1.005,
+                  y: -6,
+                  transition: { type: "spring", stiffness: 250, damping: 30 },
+                }}  
+              >   
                 <h3 className="text-2xl font-bold dark:text-white">
                   {role.title}
                 </h3>
