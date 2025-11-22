@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { products, ProductType } from '@/constants/ProductsData';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -20,6 +20,14 @@ const ProductCard = ({ product }: { product: ProductType }) => {
   const hasMultipleImages = imageUrls.length > 1;
   const [currentImage, setCurrentImage] = useState(0);
 
+  useEffect(() => {
+    if (!hasMultipleImages) return;
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev === imageUrls.length - 1 ? 0 : prev + 1));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [hasMultipleImages, imageUrls.length]);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-b dark:border-gray-700 pb-10">
       {/* Product Image Carousel with custom hover controls */}
@@ -30,10 +38,10 @@ const ProductCard = ({ product }: { product: ProductType }) => {
           showArrows={false}
           showThumbs={false}
           showStatus={false}
-          showIndicators={true}
-          infiniteLoop
-          useKeyboardArrows
-          swipeable
+          showIndicators={hasMultipleImages}
+          infiniteLoop={hasMultipleImages}
+          useKeyboardArrows={hasMultipleImages}
+          swipeable={hasMultipleImages}
         >
           {imageUrls.map((img, idx) => (
             <div key={idx}>
