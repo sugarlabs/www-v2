@@ -99,9 +99,9 @@ const ContactUs = () => {
         }, 3000);
       }
     } catch (error) {
-  console.error('Contact form submit error:', error);
-  setFormStatus('error');
-  setTimeout(() => setFormStatus('idle'), 5000);
+      console.error('Contact form submit error:', error);
+      setFormStatus('error');
+      setTimeout(() => setFormStatus('idle'), 5000);
     }
   };
 
