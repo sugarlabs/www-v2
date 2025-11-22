@@ -49,49 +49,59 @@ const ContactUs = () => {
     email: '',
     subject: '',
     message: '',
-    userRole: ''
+    userRole: '',
   });
-  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [formStatus, setFormStatus] = useState<
+    'idle' | 'submitting' | 'success' | 'error'
+  >('idle');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus('submitting');
-    
+
     try {
       const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
           subject: formData.subject,
           userRole: formData.userRole,
-          message: formData.message
-        })
+          message: formData.message,
+        }),
       });
 
       if (response.ok) {
         setFormStatus('success');
         setTimeout(() => {
-          setFormData({ name: '', email: '', subject: '', message: '', userRole: '' });
+          setFormData({
+            name: '',
+            email: '',
+            subject: '',
+            message: '',
+            userRole: '',
+          });
           setFormStatus('idle');
         }, 3000);
-      } else {
-        setFormStatus('error');
-        setTimeout(() => setFormStatus('idle'), 5000);
       }
     } catch (error) {
-      setFormStatus('error');
-      setTimeout(() => setFormStatus('idle'), 5000);
+  console.error('Contact form submit error:', error);
+  setFormStatus('error');
+  setTimeout(() => setFormStatus('idle'), 5000);
     }
   };
 
@@ -192,8 +202,6 @@ const ContactUs = () => {
                   </a>
                 }
               />
-
-              
             </motion.div>
           </motion.section>
 
@@ -224,7 +232,10 @@ const ContactUs = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Your Name *
                     </label>
                     <input
@@ -240,7 +251,10 @@ const ContactUs = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Your Email *
                     </label>
                     <input
@@ -258,7 +272,10 @@ const ContactUs = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label
+                      htmlFor="subject"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Subject *
                     </label>
                     <input
@@ -274,7 +291,10 @@ const ContactUs = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="userRole" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label
+                      htmlFor="userRole"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       I am a (Optional)
                     </label>
                     <select
@@ -295,7 +315,10 @@ const ContactUs = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Message *
                   </label>
                   <textarea
