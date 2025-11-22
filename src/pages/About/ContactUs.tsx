@@ -3,7 +3,7 @@ import Footer from '@/sections/Footer';
 import { socialLinks } from '@/constants/Footer';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import {
   slideInLeft,
   slideInRight,
@@ -44,6 +44,57 @@ const Card: React.FC<CardProps> = ({ icon, title, content }) => (
 );
 
 const ContactUs = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+    userRole: ''
+  });
+  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormStatus('submitting');
+    
+    try {
+      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          userRole: formData.userRole,
+          message: formData.message
+        })
+      });
+
+      if (response.ok) {
+        setFormStatus('success');
+        setTimeout(() => {
+          setFormData({ name: '', email: '', subject: '', message: '', userRole: '' });
+          setFormStatus('idle');
+        }, 3000);
+      } else {
+        setFormStatus('error');
+        setTimeout(() => setFormStatus('idle'), 5000);
+      }
+    } catch (error) {
+      setFormStatus('error');
+      setTimeout(() => setFormStatus('idle'), 5000);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <Header />
@@ -142,19 +193,143 @@ const ContactUs = () => {
                 }
               />
 
-              <Card
-                icon="assets/Icons/email.svg"
-                title="By Email"
-                content={
-                  <a
-                    href="mailto:info@sugarlabs.org"
-                    className="text-red-600 dark:text-red-400 hover:underline font-medium break-all"
-                  >
-                    info@sugarlabs.org
-                  </a>
-                }
-              />
+              
             </motion.div>
+          </motion.section>
+
+          {/* Contact Form */}
+          <motion.section
+            className="my-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={slideInBottom}
+          >
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 text-center mb-3"
+              variants={headerReveal}
+            >
+              <motion.span
+                className="text-red-500 font-Pacifico"
+                variants={fadeIn}
+              >
+                Send Us{' '}
+              </motion.span>
+              A Message
+            </motion.h2>
+
+            <hr className="w-24 border-t-4 border-red-600 dark:border-red-500 mx-auto mb-8" />
+
+            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Your Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                      placeholder="John Doe"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Your Email *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                      placeholder="john@example.com"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Subject *
+                    </label>
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      required
+                      value={formData.subject}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                      placeholder="How can we help you?"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="userRole" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      I am a (Optional)
+                    </label>
+                    <select
+                      id="userRole"
+                      name="userRole"
+                      value={formData.userRole}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all cursor-pointer"
+                    >
+                      <option value="">Select your role</option>
+                      <option value="Educator">Educator</option>
+                      <option value="Student">Student</option>
+                      <option value="Developer">Developer</option>
+                      <option value="Contributor">Contributor</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Message *
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows={6}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all resize-none"
+                    placeholder="Tell us more about your inquiry..."
+                  />
+                </div>
+
+                {formStatus === 'success' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 rounded-lg"
+                  >
+                    Thank you — your message was sent.
+                  </motion.div>
+                )}
+
+                <div className="flex justify-center">
+                  <button
+                    type="submit"
+                    className="px-8 py-3 bg-red-600 dark:bg-red-500 text-white rounded-full hover:bg-red-700 dark:hover:bg-red-400 transition-colors font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-transform"
+                  >
+                    Send Message
+                  </button>
+                </div>
+              </form>
+            </div>
           </motion.section>
 
           {/* Social Links */}
@@ -193,9 +368,8 @@ const ContactUs = () => {
               variants={fadeIn}
             >
               {socialLinks.map((social) => (
-                <div className="flex justify-center">
+                <div className="flex justify-center" key={social.href}>
                   <motion.a
-                    key={social.href}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
