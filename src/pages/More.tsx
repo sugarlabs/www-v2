@@ -159,7 +159,7 @@ const MorePage: React.FC = () => {
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar Navigation */}
           <div className="md:w-1/4">
-            <div className="bg-gray-50 p-4 rounded-lg shadow-md">
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
               {/* Category Navigation */}
               <div className="mb-6">
                 <h3 className="font-bold text-xl mb-2">Categories</h3>
@@ -213,7 +213,7 @@ const MorePage: React.FC = () => {
             transition={{ duration: 0.5 }}
             key={page?.slug}
           >
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg shadow-md p-6">
               {page ? (
                 <div className="prose prose-lg max-w-none">
                   <MarkdownRenderer
