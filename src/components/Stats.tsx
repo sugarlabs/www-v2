@@ -99,48 +99,91 @@ const Stats = () => {
 
       {/* Stats Grid */}
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
+        className="flex flex-col items-center gap-6 sm:gap-8 md:gap-10"
         variants={container}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
       >
-        {statisticsData.slice(1).map((stat, index) => (
-          <motion.div
-            key={index}
-            className={`rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 ${stat.bgColor} border ${stat.borderColor}`}
-            variants={item}
-            whileHover={{ y: -5, transition: { duration: 0.2 } }}
-          >
+        {/* Top Row - 2 Items */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full justify-items-center max-w-3xl">
+          {statisticsData.slice(1, 3).map((stat, index) => (
             <motion.div
-              className="h-36 sm:h-40 md:h-48 relative overflow-hidden"
-              variants={imageReveal}
+              key={index}
+              className={`rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 ${stat.bgColor} border ${stat.borderColor} w-full max-w-sm`}
+              variants={item}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
-              <img
-                src={stat.imageSrc}
-                alt={stat.imageAlt}
-                className="w-full h-full object-cover object-center"
-              />
-              <div
-                className={`absolute inset-0 opacity-10 bg-gradient-to-br ${stat.gradient}`}
-              ></div>
-            </motion.div>
-            <div className="p-4 sm:p-5 md:p-6">
-              <h3 className="text-gray-700 dark:text-gray-200 text-lg sm:text-xl font-medium mb-2 sm:mb-3 font-AnonymousPro line-clamp-2 h-12 sm:h-14">
-                {stat.title}
-              </h3>
               <motion.div
-                className={`text-4xl sm:text-5xl md:text-6xl font-bold mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}
-                variants={numberCounter}
+                className="h-32 sm:h-36 md:h-44 relative overflow-hidden"
+                variants={imageReveal}
               >
-                {stat.value}
+                <img
+                  src={stat.imageSrc}
+                  alt={stat.imageAlt}
+                  className="w-full h-full object-cover object-center"
+                />
+                <div
+                  className={`absolute inset-0 opacity-10 bg-gradient-to-br ${stat.gradient}`}
+                ></div>
               </motion.div>
-              <div
-                className={`w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r ${stat.gradient} opacity-50 rounded-full mt-1 sm:mt-2`}
-              ></div>
-            </div>
-          </motion.div>
-        ))}
+              <div className="p-4 sm:p-5 md:p-6">
+                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-2 sm:mb-3 font-AnonymousPro line-clamp-2 h-10 sm:h-12">
+                  {stat.title}
+                </h3>
+                <motion.div
+                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}
+                  variants={numberCounter}
+                >
+                  {stat.value}
+                </motion.div>
+                <div
+                  className={`w-12 sm:w-16 md:w-20 h-0.5 sm:h-1 bg-gradient-to-r ${stat.gradient} opacity-50 rounded-full mt-1 sm:mt-2`}
+                ></div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Bottom Row - 3 Items */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 w-full justify-items-center max-w-5xl">
+          {statisticsData.slice(3).map((stat, index) => (
+            <motion.div
+              key={index}
+              className={`rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 ${stat.bgColor} border ${stat.borderColor} w-full max-w-sm`}
+              variants={item}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
+              <motion.div
+                className="h-32 sm:h-36 md:h-44 relative overflow-hidden"
+                variants={imageReveal}
+              >
+                <img
+                  src={stat.imageSrc}
+                  alt={stat.imageAlt}
+                  className="w-full h-full object-cover object-center"
+                />
+                <div
+                  className={`absolute inset-0 opacity-10 bg-gradient-to-br ${stat.gradient}`}
+                ></div>
+              </motion.div>
+              <div className="p-4 sm:p-5 md:p-6">
+                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-2 sm:mb-3 font-AnonymousPro line-clamp-2 h-10 sm:h-12">
+                  {stat.title}
+                </h3>
+                <motion.div
+                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}
+                  variants={numberCounter}
+                >
+                  {stat.value}
+                </motion.div>
+                <div
+                  className={`w-12 sm:w-16 md:w-20 h-0.5 sm:h-1 bg-gradient-to-r ${stat.gradient} opacity-50 rounded-full mt-1 sm:mt-2`}
+                ></div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </motion.div>
 
       {/* Closing Section with Interactive Element */}
