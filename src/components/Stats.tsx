@@ -208,7 +208,8 @@ const Stats = () => {
           {statisticsData.map((stat, index) => (
             <motion.div
               key={index}
-              className={` px-5 sm:px-6 md:px-7 py-6 sm:py-7 min-h-36 sm:min-h-40 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center`}              whileHover={{
+              className={` px-5 sm:px-6 md:px-7 py-6 sm:py-7 min-h-36 sm:min-h-40 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center`}
+              whileHover={{
                 scale: 1.05,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
               }}
