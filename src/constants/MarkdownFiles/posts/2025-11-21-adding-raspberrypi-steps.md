@@ -48,7 +48,7 @@ Implementing this required converting inline, page-specific content into reusabl
 
 - **Include images for clarity**
 
-	Steps can reference images stored in `public/assets/TryNowImages`. Where helpful (hardware wiring, installation output), I included images so users can validate each step visually.
+Where helpful (hardware wiring, installation output), I included images so users can validate each step visually.
 
 
 ## Challenges and takeaways
@@ -69,7 +69,7 @@ Implementing this required converting inline, page-specific content into reusabl
 - **Impact on the project:** Centralizing step rendering and logo cards reduces duplication and makes future changes (styling, copy, or behavior) straightforward.
 - **Community value:** Clearer instructions improve onboarding for contributors and users, aligning with Sugar Labs's goal of making learning tools easy to use and maintain.
 
-By sharing my experience, I hope to inspire others to contribute to Sugar Labs and make a positive impact on the community. I started by defining semantic tokens, honoring system preferences, and prioritizing accessibility. Through this process, I was able to deliver a guide to install suger on raspberrypi using different os. This guide help people to install suger on machines.
+By sharing my experience, I hope to inspire others to contribute to Sugar Labs and make a positive impact on the community. I started by defining semantic tokens, honoring system preferences, and prioritizing accessibility. Through this process, I was able to deliver a guide to install Sugar on Raspberry Pi using different OSes. This guide helps people to install Sugar on machines.
 
 ## Try it out
 
