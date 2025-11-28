@@ -2142,37 +2142,70 @@ Sugar Labs is seeking volunteer assistance in the following ways. Sustained, com
 - **Wiki** – [https://wiki.sugarlabs.org](https://wiki.sugarlabs.org)
 - **Mastodon** – [https://mastodon.social/@sugar_labs](https://mastodon.social/@sugar_labs)
 `,Li=Object.freeze(Object.defineProperty({__proto__:null,default:ue},Symbol.toStringTag,{value:"Module"})),he=`---
-title: "Board election results announcement: Three new members for the 2025-26 cycle"
-excerpt: "The election results for the Sugar Labs Board of Directors have been announced. Devin Ulibarri, Sumit Srivastava, and Sebastian Silva will serve on the board for the 2025-26 cycle."
+title: "Fall board elections: How to participate"
+excerpt: "Sugar Labs will be running an election this fall for three seats to its board of directors. Sugar Labs community members are encouraged to participate."
 category: "COMMUNITY NEWS"
 date: "2024-11-08"
-slug: "board-election-results-2025-26"
+slug: "fall-board-elections-2024-how-to-participate"
 author: "Devin Ulibarri"
 description: "Executive Director"
-tags: "markdown,parser,test,education,post,aigenerated"
+tags: "community,election,announcement,sugarlabs,board"
 ---
 <!-- markdownlint-disable -->
 
-# The results for the 2025-26 Sugar Labs board cycle have been determined.
+**Sugar Labs will be running an election this fall for three seats to its board of directors. Sugar Labs community members are encouraged to participate.**
 
-The votes have been counted, and the [results](https://bettervoting.com/dp3xc7/) for the [2025-26 Sugar Labs board cycle](https://www.sugarlabs.org/community/2024/11/22/elections-extension/) have been determined.
+This fall, we’re running an election for seats to the [board of
+directors](https://www.sugarlabs.org/leadership/) for Sugar Labs
+Inc. There are three seats up for election. Two seats are held by
+board members Lionel Laské and Alex Perez, and one seat is a vacancy.
 
-The winners are **Devin Ulibarri, Sumit Srivastava, and Sebastian Silva**. They have all been notified and have agreed to serve on the Board of Directors for the 2025-26 cycle. For this election, we used [bettervoting.com](https://bettervoting.com) after doing research on various voting systems. Please read our [original election announcement](https://www.sugarlabs.org/community/2024/11/22/elections-extension/) for more information on how we decided upon this voting system.
+### Receive your ballot
 
-The new members of the board will be filling the seats of two outgoing board members, **Lionel Laské and Alex Perez**, and one vacant seat.
+We encourage you to vote. The application to receive your ballot, due
+ by the end of day on November 22, 2024, is here: <https://forms.gle/48F6h5wdV6BpSro66>
 
-The next election for three seats to the **2026-27 cycle** is planned for **August of next year**. All Sugar Labs members may vote, and members can:
-- Run for election to the Board of Directors  
-- Vote in the elections for the Board of Directors  
-- Suggest referenda
+There are no special qualifications that you need to prove to be able to vote.
 
-As indicated in the [Sugar Labs Inc. bylaws](https://wiki.sugarlabs.org/go/Sugar_Labs/Governance), anyone with "significant and sustained" contributions to Sugar Labs is eligible for membership. If you believe you qualify for membership based on this criteria and are interested in [becoming an official member of Sugar Labs](https://wiki.sugarlabs.org/go/Sugar_Labs/Members), you are encouraged to send an email to <members@sugarlabs.org>.
+### Running for a board position
 
-If you were a member in the past but [did not vote in this election](https://www.sugarlabs.org/community/2024/11/22/elections-extension/), you will need to reapply for membership in order for your membership status to be reinstated. *(If you voted in this election, no further action is required.)* Registering for membership early will help ensure that you will be ready for the next election.
+For those of you who would like to run for a board position, you will
+need to add your name and statement to the list on
+<https://wiki.sugarlabs.org/go/Oversight_Board/2025-2026-candidates>. If
+you need any technical assistance with the wiki, please contact
+[elections@sugarlabs.org](mailto:elections@sugarlabs.org).
 
-If you are interested in volunteering to assist with the next election in 2025, please contact <volunteering@sugarlabs.org> with your interest.
+Candidates should read and understand the terms of the [Sugar Labs
+Inc.'s Bylaws](https://wiki.sugarlabs.org/go/Sugar_Labs/Governance),
+as well as any domestic and international laws governing participation
+in a US-based 501(c)(3) nonprofit board.
 
-On behalf of the [Sugar Labs Board of Directors](https://www.sugarlabs.org/leadership/), we offer a big **Thank you!** to all who participated in this year's election.
+### Election timeline
+
+The timeline of the election is planned as follows, with a deadline to
+receive ballot applications for the end of day on November 22, 2024,
+and a deadline to vote for the end of day on December 13, 2024.
+
+| Stage I | November 8 | Announcement of election date and first call for candidates. |
+| :---- | :---- | :---- |
+| Stage II | November 22 | Deadline to receive [candidacy applications](https://wiki.sugarlabs.org/go/Oversight_Board/2025-2026-candidates#Candidates) and candidate bios; and deadline to receive [ballot applications](https://forms.gle/48F6h5wdV6BpSro66). |
+| Stage III | November 27 | Ballots to be sent by email; If you do not receive your ballot by the following day, please email elections@sugarlabs.org |
+| Stage IV | December 13 | Deadline to vote |
+| Stage V | December 19 | Election results announced |
+
+### Election method
+
+After doing research on various [election software recommended by the
+FLOSS community](https://github.com/sugarlabs/elections-research), we
+have decided to use [bettervoting.com](http://bettervoting.com). The
+software is licensed under the AGPLv3, and the system supports
+automatic runoff vote tallying. Our internal research on the system
+can be found here:
+<https://docs.google.com/document/d/1kuXXL-tVgB1Ptu50cTonWtRnAuKmWn1jyKd1qPgqFJY/edit?tab=t.0>
+
+Again, we encourage you to take the first step and apply for a ballot
+via our [application form](https://forms.gle/48F6h5wdV6BpSro66), and
+we look forward to your involvement.
 `,xi=Object.freeze(Object.defineProperty({__proto__:null,default:he},Symbol.toStringTag,{value:"Module"})),ge=`---
 title: "Deadline extended to November 24 to apply for a ballot and apply for candidacy"
 excerpt: "Sugar Labs has extended the deadline for board of directors election participation to November 24, including both ballot applications and candidacy submissions for the upcoming election cycle."
