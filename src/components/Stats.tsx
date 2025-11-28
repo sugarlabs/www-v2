@@ -208,22 +208,43 @@ const Stats = () => {
           {statisticsData.map((stat, index) => (
             <motion.div
               key={index}
-              className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center`}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              className={`relative px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center min-h-[90px]`}
+              whileHover="hover"
+              variants={{
+                hover: {
+                  scale: 1.05,
+                  transition: { type: 'spring', stiffness: 380, damping: 18 },
+                },
               }}
-              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
             >
+              {/* Value */}
               <span
                 className={`font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.gradient} text-base sm:text-xl md:text-2xl`}
               >
                 {stat.value}
               </span>
-              <span className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1">
-                {stat.title.split('.')[0].substring(0, 12)}
-                {stat.title.split('.')[0].length > 12 ? '...' : ''}
+
+              {/* Truncated display title */}
+              <span className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-1 line-clamp-1">
+                {stat.title}
               </span>
+
+              {/* CENTERED FULL TITLE TOOLTIP (Hover Popup) */}
+              <motion.div
+                className="absolute left-1/2 bottom-[110%] -translate-x-1/2 px-3 py-2 rounded-md bg-gray-900 text-white text-xs sm:text-sm shadow-lg w-48 sm:w-64 text-center whitespace-normal break-words z-50 pointer-events-none"
+                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                variants={{
+                  hover: {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    transition: { duration: 0.25 },
+                  },
+                }}
+              >
+                {stat.title}
+                <div className="absolute left-1/2 top-full -translate-x-1/2 w-3 h-3 bg-gray-900 rotate-45"></div>
+              </motion.div>
             </motion.div>
           ))}
         </div>
