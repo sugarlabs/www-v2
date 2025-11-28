@@ -12,16 +12,25 @@ import {
 } from '@/constants/TryNowData/raspberryPiData';
 import StepsToUse from '@/components/TryNow/StepsToUse';
 
-const RaspberryPiPage = () => {
-  const [selectedSteps, setSelectedSteps] = useState(raspberrySteps[0]);
+export function useScroll() {
   const stepsRef = useRef<HTMLDivElement | null>(null);
 
   // scroll to steps only when user clicks a card (not on mount or refresh)
   const scrollToSteps = () => {
     if (stepsRef.current) {
-      stepsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      stepsRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
     }
   };
+  return { stepsRef, scrollToSteps };
+}
+
+const RaspberryPiPage = () => {
+  const [selectedSteps, setSelectedSteps] = useState(raspberrySteps[0]);
+  const { stepsRef, scrollToSteps } = useScroll();
+
   return (
     <div>
       <Header />
