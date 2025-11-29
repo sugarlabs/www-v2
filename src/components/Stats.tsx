@@ -208,7 +208,7 @@ const Stats = () => {
           {statisticsData.map((stat, index) => (
             <motion.div
               key={index}
-              className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center`}
+              className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative group`}
               whileHover={{
                 scale: 1.05,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -220,9 +220,14 @@ const Stats = () => {
               >
                 {stat.value}
               </span>
-              <span className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1">
+              {/* Truncated text - visible by default */}
+              <span className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1 group-hover:hidden">
                 {stat.title.split('.')[0].substring(0, 12)}
                 {stat.title.split('.')[0].length > 12 ? '...' : ''}
+              </span>
+              {/* Full text - visible on hover */}
+              <span className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 hidden group-hover:block whitespace-normal px-1">
+                {stat.title}
               </span>
             </motion.div>
           ))}
