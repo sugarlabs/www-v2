@@ -9,7 +9,8 @@ import {
   mockupImage,
   SugarSteps,
 } from '@/constants/TryNowData/bootableSoasData';
-import StepsToUse, { useScroll } from '@/components/TryNow/StepsToUse';
+import StepsToUse from '@/components/TryNow/StepsToUse';
+import { useScroll } from '@/components/TryNow/useScroll';
 import LogoCard from '@/components/TryNow/LogoCard';
 import { useState } from 'react';
 
@@ -63,7 +64,10 @@ const BootableSoasPage = () => {
         </section>
         {/* SugarSteps is an array; pass the first group object to StepsToUse */}
         <div ref={stepsRef}>
-          <StepsToUse {...selectedSteps} />
+          <StepsToUse
+            key={selectedSteps?.heading || 'steps'}
+            {...selectedSteps}
+          />
         </div>
         <motion.div>
           <p className="justify-self-center mt-4 text-2xl text-gray-700">

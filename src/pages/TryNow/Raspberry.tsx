@@ -10,7 +10,8 @@ import {
   raspberryLogoCards,
   raspberrySteps,
 } from '@/constants/TryNowData/raspberryPiData';
-import StepsToUse, { useScroll } from '@/components/TryNow/StepsToUse';
+import StepsToUse from '@/components/TryNow/StepsToUse';
+import { useScroll } from '@/components/TryNow/useScroll';
 
 const RaspberryPiPage = () => {
   const [selectedSteps, setSelectedSteps] = useState(raspberrySteps[0]);
@@ -62,7 +63,10 @@ const RaspberryPiPage = () => {
 
         {/* Render the currently selected steps group */}
         <div ref={stepsRef}>
-          <StepsToUse {...selectedSteps} />
+          <StepsToUse
+            key={selectedSteps?.heading || 'steps'}
+            {...selectedSteps}
+          />
         </div>
       </main>
       <Footer />
