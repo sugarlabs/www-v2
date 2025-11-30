@@ -19,7 +19,7 @@ This fall, Sugar Labs is running an election for three seats on the [board of di
 
 We encourage you to vote. The application to receive your ballot, due by the end of day on December 19, 2025, is here: <https://forms.gle/2F5PjLHZpzPq2ssL7>. 
 
-There are no special qualifications that you need to prove to be able to vote. 
+Your ballot application will be used to determine Sugar Labs membership eligibility, which is the only qualification needed to vote. If you've made contributions to Sugar Labs within the past year, you're likely [eligible to be a member](https://wiki.sugarlabs.org/go/Sugar_Labs/Governance) and therefore eligible to vote in this election.
 
 
 ### Running for a board position
