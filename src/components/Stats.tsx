@@ -131,11 +131,11 @@ const Stats = () => {
                 ></div>
               </motion.div>
               <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-2 sm:mb-3 font-AnonymousPro line-clamp-2 h-10 sm:h-12">
+                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px] leading-relaxed">
                   {stat.title}
                 </h3>
                 <motion.div
-                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}
+                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat leading-none`}
                   variants={numberCounter}
                 >
                   {stat.value}
@@ -171,11 +171,11 @@ const Stats = () => {
                 ></div>
               </motion.div>
               <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-2 sm:mb-3 font-AnonymousPro line-clamp-2 h-10 sm:h-12">
+                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px] leading-relaxed">
                   {stat.title}
                 </h3>
                 <motion.div
-                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}
+                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat leading-none`}
                   variants={numberCounter}
                 >
                   {stat.value}
