@@ -1,6 +1,6 @@
 import 'react-responsive-carousel';
 import { Carousel } from 'react-responsive-carousel';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 import { renderContentWithLinks } from '@/utils/renderlinks-utils';
 import { steps } from '@/constants/TryNowData/bootableSoasData';
@@ -8,6 +8,11 @@ import { steps } from '@/constants/TryNowData/bootableSoasData';
 const StepsToUse = ({ heading, StepData }: steps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [copied, setCopied] = useState(false);
+
+  // Reset to first step when StepData changes
+  useEffect(() => {
+    setCurrentStep(0);
+  }, [StepData]);
 
   function clicktocopy(command: string) {
     navigator.clipboard.writeText(command).then(() => {
@@ -139,3 +144,17 @@ const StepsToUse = ({ heading, StepData }: steps) => {
 };
 
 export default StepsToUse;
+
+// scroll to steps only when user clicks a card (not on mount or refresh)
+export function useScroll() {
+  const stepsRef = useRef<HTMLDivElement | null>(null);
+  const scrollToSteps = () => {
+    if (stepsRef.current) {
+      stepsRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  };
+  return { stepsRef, scrollToSteps };
+}

@@ -9,10 +9,9 @@ import {
   mockupImage,
   SugarSteps,
 } from '@/constants/TryNowData/bootableSoasData';
-import StepsToUse from '@/components/TryNow/StepsToUse';
+import StepsToUse, { useScroll } from '@/components/TryNow/StepsToUse';
 import LogoCard from '@/components/TryNow/LogoCard';
 import { useState } from 'react';
-import { useScroll } from './Raspberry';
 
 const BootableSoasPage = () => {
   const [selectedSteps, setSelectedSteps] = useState(SugarSteps[0]);

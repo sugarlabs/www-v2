@@ -3,29 +3,14 @@ import Footer from '@/sections/Footer';
 import FeatureSection from '@/components/TryNow/FeatureSection';
 import Paragraph from '@/components/TryNow/Paragraph';
 import LogoCard from '@/components/TryNow/LogoCard';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import {
   raspberrydata,
   raspberrySections,
   raspberryLogoCards,
   raspberrySteps,
 } from '@/constants/TryNowData/raspberryPiData';
-import StepsToUse from '@/components/TryNow/StepsToUse';
-
-export function useScroll() {
-  const stepsRef = useRef<HTMLDivElement | null>(null);
-
-  // scroll to steps only when user clicks a card (not on mount or refresh)
-  const scrollToSteps = () => {
-    if (stepsRef.current) {
-      stepsRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    }
-  };
-  return { stepsRef, scrollToSteps };
-}
+import StepsToUse, { useScroll } from '@/components/TryNow/StepsToUse';
 
 const RaspberryPiPage = () => {
   const [selectedSteps, setSelectedSteps] = useState(raspberrySteps[0]);
