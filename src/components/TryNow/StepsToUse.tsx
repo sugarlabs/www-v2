@@ -9,10 +9,12 @@ const StepsToUse = ({ heading, StepData }: steps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [copied, setCopied] = useState(false);
 
-  // Reset to first step when StepData changes
+  // Reset to first step when StepData changes — only update when necessary
   useEffect(() => {
-    setCurrentStep(0);
-  }, [StepData]);
+    if (currentStep !== 0) {
+      setCurrentStep(0);
+    }
+  }, [StepData, currentStep]);
 
   function clicktocopy(command: string) {
     navigator.clipboard.writeText(command).then(() => {
