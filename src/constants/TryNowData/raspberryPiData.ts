@@ -45,66 +45,18 @@ export const raspberryLogoCards = [
   {
     logo: 'assets/TryMoreSvgs/trisquel-desktop.svg',
     title: 'using Raspbian',
-    description: [
-      'Raspbian (now known as Raspberry Pi OS) is the most widely used OS for Raspberry Pi and is based on Debian.',
-      'You can install the Sugar learning environment using package managers or custom scripts.',
-      'It’s lightweight, actively maintained, and optimized for Raspberry Pi hardware.',
-      'Best suited for users already familiar with Raspberry Pi setups.',
-    ],
-    buttons: [
-      {
-        text: 'Read Raspbian installation guide',
-        link: 'https://wiki.sugarlabs.org/go/Raspbian',
-      },
-    ],
   },
   {
     logo: 'assets/TryMoreSvgs/fedora.svg',
     title: 'using Fedora',
-    description: [
-      'Fedora offers a reliable and cutting-edge platform to run Sugar on various hardware, including Raspberry Pi.',
-      'Sugar on a Stick (SoaS) is a Fedora-based spin tailored for educational purposes.',
-      'You can run Sugar live from a USB stick or install it on the Pi directly with some configuration.',
-      'Suitable for users seeking a polished Linux experience with SELinux and Wayland support.',
-    ],
-    buttons: [
-      {
-        text: 'View Fedora instructions',
-        link: 'https://github.com/sugarlabs/sugar/blob/master/docs/fedora.md',
-      },
-    ],
   },
   {
     logo: 'assets/TryMoreSvgs/debian.svg',
     title: 'using Debian',
-    description: [
-      'Debian is the upstream source of Raspbian and offers a very stable environment for Sugar.',
-      'You can install Sugar via APT repositories or build it from source for more customization.',
-      'Recommended for developers and advanced users familiar with Debian packaging and systems.',
-      'You gain fine-grained control over packages and system updates.',
-    ],
-    buttons: [
-      {
-        text: 'Read Debian instructions',
-        link: 'https://github.com/sugarlabs/sugar/blob/master/docs/debian.md',
-      },
-    ],
   },
   {
     logo: 'assets/TryMoreSvgs/ubuntu.svg',
     title: 'using Ubuntu',
-    description: [
-      'Ubuntu is a user-friendly Linux distribution and supports running Sugar with a few extra steps.',
-      'You can install Sugar directly via terminal or explore Ubuntu derivatives for a lighter setup.',
-      'Popular among new users due to its graphical interface and large support community.',
-      'Ideal if you’re already using Ubuntu on other machines and want consistency.',
-    ],
-    buttons: [
-      {
-        text: 'View Ubuntu setup guide',
-        link: 'https://github.com/sugarlabs/sugar/blob/master/docs/ubuntu.md',
-      },
-    ],
   },
 ];
 
