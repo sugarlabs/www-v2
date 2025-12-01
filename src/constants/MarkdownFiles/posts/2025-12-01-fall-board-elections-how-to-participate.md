@@ -35,7 +35,7 @@ The timeline of the election is planned as follows, with a deadline to receive c
 
 | Stage | Date | Description |
 | :---- | :---- | :---- |
-| Stage I | December 1 | Announcement of election date and first call for candidates.   |
+| Stage I | December 5 | Announcement of election date and first call for candidates.   |
 | Stage II | December 19 | Deadline to receive candidacy applications and candidate bios; and deadline to receive [combined membership and ballot applications](https://forms.gle/2F5PjLHZpzPq2ssL7).   |
 | Stage III | December 27 | Ballots to be sent by email; if you do not receive your ballot by the following day, please email [elections@sugarlabs.org](mailto:elections@sugarlabs.org).   |
 | Stage IV | January 10 | Deadline to vote.   |
