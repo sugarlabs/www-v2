@@ -73,7 +73,7 @@ By sharing my experience, I hope to inspire others to contribute to Sugar Labs a
 
 ## Try it out
 
-The guide of installing suger on raspberrypi is available on respberry page.
+The guide of installing suger on Raspberrypi is available on Raspberry page.
 https://www.sugarlabs.org/raspberry
 
 ![Logocards for switching between guides](/assets/Images/logocard.webp)
