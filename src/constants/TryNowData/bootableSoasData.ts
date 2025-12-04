@@ -28,7 +28,7 @@ export interface steps {
 
 export const SugarSteps: steps[] = [
   {
-    heading: 'Steps to boot Sugar on a Stick',
+    heading: 'Steps to boot Sugar on Windows',
     StepData: [
       {
         step: 1,
@@ -52,21 +52,21 @@ export const SugarSteps: steps[] = [
       },
       {
         step: 3,
-        title: 'Access Advanced Boot Options (Windows)',
+        title: 'Access Advanced Boot Options',
         description:
           "On Windows systems, access the advanced boot options by holding the 'Shift' key while clicking 'Restart.' This will bring you to the advanced boot menu.",
         image: 'assets/TryNowImages/step3.webp',
       },
       {
         step: 4,
-        title: 'Choose to Boot from USB (Windows)',
+        title: 'Choose to Boot from USB',
         description:
           "In the advanced boot menu, select 'Use a Device' to proceed with booting from the USB drive.",
         image: 'assets/TryNowImages/step4.webp',
       },
       {
         step: 5,
-        title: ' Select the USB Drive (Windows)',
+        title: 'Select the USB Drive',
         description:
           'Choose your USB drive from the list of devices to boot into the Sugar OS.',
         image: 'assets/TryNowImages/step5.webp',
@@ -93,8 +93,65 @@ export const SugarSteps: steps[] = [
       },
     ],
   },
+  {
+    heading: 'Steps to boot Sugar on MacOS',
+    StepData: [
+      {
+        step: 1,
+        title: 'Sugar On a Stick',
+        description:
+          'To boot Sugar Labs OS on your Mac, you will need a bootable Sugar on Stick setup already. To see how to set it up, visit the wiki.',
+        links: [
+          {
+            text: 'wiki',
+            url: 'https://wiki.sugarlabs.org/go/Sugar_on_a_Stick/Installation',
+          },
+        ],
+        image: 'assets/TryNowImages/step1.webp',
+      },
+      {
+        step: 2,
+        title: 'Insert the USB Drive',
+        description:
+          'Plug the prepared Sugar on a Stick USB drive into an available USB port on your mac.',
+        image: 'assets/TryNowImages/step2.webp',
+      },
+      {
+        step: 3,
+        title: 'Access the Boot Menu',
+        description:
+          'Power on your Mac and immediately press and hold the Option (⌥) key until the boot menu appears.',
+        image: 'assets/TryNowImages/mac-step3.webp',
+      },
+      {
+        step: 4,
+        title: 'Select the USB Drive',
+        description:
+          'Choose your USB drive from the list of devices to boot into the Sugar OS.',
+        image: 'assets/TryNowImages/mac-step4.webp',
+      },
+      {
+        step: 5,
+        title: 'Enjoy Sugar on a Stick',
+        description:
+          'After selecting the USB drive, your Mac should boot into the Sugar OS interface.',
+        image: 'assets/TryNowImages/step7.webp',
+      },
+    ],
+  },
 ];
 
 export const mockupImage = {
   path: 'assets/TryNowImages/boatsoasMockup.webp',
 };
+
+export const logocardsdata = [
+  {
+    logo: 'assets/TryMoreSvgs/windows.svg',
+    title: 'Windows',
+  },
+  {
+    logo: 'assets/TryMoreSvgs/mac.svg',
+    title: 'MacOS',
+  },
+];

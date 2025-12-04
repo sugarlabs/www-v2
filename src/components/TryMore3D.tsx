@@ -107,7 +107,7 @@ export function TryMore() {
 
       {/* Marquee Section */}
       <div
-        className="flex flex-col lg:flex-row items-center gap-4 max-[1040px]:hidden"
+        className="flex flex-col lg:flex-row items-center gap-4 max-[1215px]:hidden"
         style={{
           transform:
             'translateX(0px) translateY(0px) translateZ(0px) rotateX(10deg) rotateY(-5deg) rotateZ(10deg)',

@@ -3,7 +3,7 @@ import Footer from '@/sections/Footer';
 import FeatureSection from '@/components/TryNow/FeatureSection';
 import Paragraph from '@/components/TryNow/Paragraph';
 import LogoCard from '@/components/TryNow/LogoCard';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import {
   raspberrydata,
   raspberrySections,
@@ -11,17 +11,12 @@ import {
   raspberrySteps,
 } from '@/constants/TryNowData/raspberryPiData';
 import StepsToUse from '@/components/TryNow/StepsToUse';
+import { useScroll } from '@/components/TryNow/useScroll';
 
 const RaspberryPiPage = () => {
   const [selectedSteps, setSelectedSteps] = useState(raspberrySteps[0]);
-  const stepsRef = useRef<HTMLDivElement | null>(null);
+  const { stepsRef, scrollToSteps } = useScroll();
 
-  // scroll to steps only when user clicks a card (not on mount or refresh)
-  const scrollToSteps = () => {
-    if (stepsRef.current) {
-      stepsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
   return (
     <div>
       <Header />
@@ -68,7 +63,10 @@ const RaspberryPiPage = () => {
 
         {/* Render the currently selected steps group */}
         <div ref={stepsRef}>
-          <StepsToUse {...selectedSteps} />
+          <StepsToUse
+            key={selectedSteps?.heading || 'steps'}
+            {...selectedSteps}
+          />
         </div>
       </main>
       <Footer />

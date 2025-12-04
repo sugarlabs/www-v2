@@ -19,12 +19,14 @@ export default function ScrollToTop() {
       style={{ zIndex: 9999 }}
       className="
         fixed right-5 bottom-6
-        w-15 h-15 rounded-lg border-none
-        bg-emerald-300 text-black shadow-lg
+        w-12 h-12 sm:w-14 sm:h-14 rounded-lg
+        bg-emerald-500 text-white border-2 border-emerald-600
+        dark:bg-slate-800 dark:text-white dark:border-transparent
+        shadow-xl shadow-emerald-300/40 dark:shadow-black/30
         cursor-pointer flex items-center justify-center
-        opacity-95 hover:opacity-100 hover:-translate-y-[3px]
-        transition-transform duration-200 ease-in-out
-        focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2
+        opacity-100 hover:opacity-100 hover:-translate-y-[3px] hover:scale-105
+        transform transition-transform duration-200 ease-in-out
+        focus:outline-none focus:ring-2 focus:ring-emerald-300/60 dark:focus:ring-blue-300/30 focus:ring-offset-2
       "
     >
       <svg
