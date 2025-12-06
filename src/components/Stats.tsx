@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { stats, statisticsData } from '@/constants/Stats.ts';
+import { statisticsData } from '@/constants/Stats.ts';
 import {
   headerReveal,
   numberCounter,
@@ -60,46 +60,6 @@ const Stats = () => {
         </motion.div>
       </div>
 
-      <motion.div
-        className="mb-8 sm:mb-12 md:mb-16"
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-      >
-        <motion.div
-          className="flex flex-col lg:flex-row items-center bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/50 dark:to-green-950/50 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-xl border border-green-200 dark:border-green-800"
-          variants={item}
-          whileHover="hover"
-        >
-          <div className="w-full lg:w-1/2 p-5 sm:p-8 lg:p-12">
-            <h3 className="text-gray-700 dark:text-gray-200 text-xl sm:text-2xl font-medium mb-3 sm:mb-4 font-AnonymousPro">
-              Kids whose lives have been enriched by using the Sugar Learning
-              Platform.
-            </h3>
-            <motion.div
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-8 bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent font-Caveat"
-              variants={numberCounter}
-            >
-              3,000,000+
-            </motion.div>
-            <div className="w-24 sm:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-green-600 to-green-400 rounded-full"></div>
-          </div>
-
-          <motion.div
-            className="w-full lg:w-1/2 h-48 sm:h-56 md:h-64 lg:h-96 relative"
-            variants={imageReveal}
-          >
-            <img
-              src={stats.kidlaptop}
-              alt="Student with laptop"
-              className="w-full h-full object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-transparent"></div>
-          </motion.div>
-        </motion.div>
-      </motion.div>
-
       {/* Stats Grid */}
       <motion.div
         className="flex flex-col items-center gap-6 sm:gap-8 md:gap-10"
@@ -108,82 +68,77 @@ const Stats = () => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
       >
-        {/* Top Row - 2 Items */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full justify-items-center max-w-3xl">
-          {statisticsData.slice(1, 3).map((stat, index) => (
-            <motion.div
-              key={index}
-              className={`rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 ${stat.bgColor} border ${stat.borderColor} w-full max-w-sm`}
-              variants={item}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            >
-              <motion.div
-                className="h-32 sm:h-36 md:h-44 relative overflow-hidden"
-                variants={imageReveal}
-              >
-                <img
-                  src={stat.imageSrc}
-                  alt={stat.imageAlt}
-                  className="w-full h-full object-cover object-center"
-                />
-                <div
-                  className={`absolute inset-0 opacity-10 bg-gradient-to-br ${stat.gradient}`}
-                ></div>
-              </motion.div>
-              <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px] leading-relaxed">
-                  {stat.title}
-                </h3>
-                <motion.div
-                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat leading-none`}
-                  variants={numberCounter}
-                >
-                  {stat.value}
-                </motion.div>
-                <div
-                  className={`w-12 sm:w-16 md:w-20 h-0.5 sm:h-1 bg-gradient-to-r ${stat.gradient} opacity-50 rounded-full mt-1 sm:mt-2`}
-                ></div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Bottom Row - 3 Items */}
+        {/* 3 Items */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 w-full justify-items-center max-w-5xl">
-          {statisticsData.slice(3).map((stat, index) => (
+          {statisticsData.map((stat, index) => (
             <motion.div
               key={index}
-              className={`rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 ${stat.bgColor} border ${stat.borderColor} w-full max-w-sm`}
+              className="w-full max-w-sm h-[400px] sm:h-[420px] md:h-[450px]"
               variants={item}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              style={{ perspective: '1000px' }}
             >
               <motion.div
-                className="h-32 sm:h-36 md:h-44 relative overflow-hidden"
-                variants={imageReveal}
+                className="relative w-full h-full"
+                style={{ transformStyle: 'preserve-3d' }}
+                whileHover={{ rotateY: 180 }}
+                transition={{ duration: 0.6, type: 'spring', stiffness: 100 }}
               >
-                <img
-                  src={stat.imageSrc}
-                  alt={stat.imageAlt}
-                  className="w-full h-full object-cover object-center"
-                />
+                {/* Front Face - Image with Count */}
                 <div
-                  className={`absolute inset-0 opacity-10 bg-gradient-to-br ${stat.gradient}`}
-                ></div>
-              </motion.div>
-              <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px] leading-relaxed">
-                  {stat.title}
-                </h3>
-                <motion.div
-                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat leading-none`}
-                  variants={numberCounter}
+                  className={`absolute inset-0 rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-lg border ${stat.borderColor} ${stat.bgColor}`}
+                  style={{
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
                 >
-                  {stat.value}
-                </motion.div>
+                  <div className="h-full flex flex-col">
+                    {/* Image */}
+                    <motion.div
+                      className="flex-1 relative overflow-hidden"
+                      variants={imageReveal}
+                    >
+                      <img
+                        src={stat.imageSrc}
+                        alt={stat.imageAlt}
+                        className="w-full h-full object-cover object-center"
+                      />
+                      <div
+                        className={`absolute inset-0 opacity-10 bg-gradient-to-br ${stat.gradient}`}
+                      ></div>
+                    </motion.div>
+
+                    {/* Count below image */}
+                    <div className="p-4 sm:p-5 md:p-6 bg-white/95 dark:bg-gray-800/95">
+                      <motion.div
+                        className={`text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat text-center`}
+                        variants={numberCounter}
+                      >
+                        {stat.value}
+                      </motion.div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Back Face - Text Description */}
                 <div
-                  className={`w-12 sm:w-16 md:w-20 h-0.5 sm:h-1 bg-gradient-to-r ${stat.gradient} opacity-50 rounded-full mt-1 sm:mt-2`}
-                ></div>
-              </div>
+                  className={`absolute inset-0 rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-lg border ${stat.borderColor} ${stat.bgColor}`}
+                  style={{
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    transform: 'rotateY(180deg)',
+                  }}
+                >
+                  <div className="h-full flex flex-col justify-center items-center p-6 sm:p-8 md:p-10">
+                    <h3 className="text-gray-700 dark:text-gray-200 text-base sm:text-lg md:text-xl font-medium text-center font-AnonymousPro leading-relaxed">
+                      {stat.title}
+                    </h3>
+
+                    <div
+                      className={`w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-gradient-to-r ${stat.gradient} opacity-50 rounded-full mt-4 sm:mt-6`}
+                    ></div>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
           ))}
         </div>
