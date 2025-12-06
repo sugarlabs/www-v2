@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { stats, statisticsData } from '@/constants/Stats.ts';
+import { statisticsData } from '@/constants/Stats.ts';
 import {
   headerReveal,
   numberCounter,
