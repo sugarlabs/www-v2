@@ -60,46 +60,6 @@ const Stats = () => {
         </motion.div>
       </div>
 
-      {/* <motion.div
-        className="mb-8 sm:mb-12 md:mb-16"
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-      >
-        <motion.div
-          className="flex flex-col lg:flex-row items-center bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/50 dark:to-green-950/50 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-xl border border-green-200 dark:border-green-800"
-          variants={item}
-          whileHover="hover"
-        >
-          <div className="w-full lg:w-1/2 p-5 sm:p-8 lg:p-12">
-            <h3 className="text-gray-700 dark:text-gray-200 text-xl sm:text-2xl font-medium mb-3 sm:mb-4 font-AnonymousPro">
-              Kids whose lives have been enriched by using the Sugar Learning
-              Platform.
-            </h3>
-            <motion.div
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-8 bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent font-Caveat"
-              variants={numberCounter}
-            >
-              3,000,000+
-            </motion.div>
-            <div className="w-24 sm:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-green-600 to-green-400 rounded-full"></div>
-          </div>
-
-          <motion.div
-            className="w-full lg:w-1/2 h-48 sm:h-56 md:h-64 lg:h-96 relative"
-            variants={imageReveal}
-          >
-            <img
-              src={stats.kidlaptop}
-              alt="Student with laptop"
-              className="w-full h-full object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-transparent"></div>
-          </motion.div>
-        </motion.div>
-      </motion.div> */}
-
       {/* Stats Grid */}
       <motion.div
         className="flex flex-col items-center gap-6 sm:gap-8 md:gap-10"
