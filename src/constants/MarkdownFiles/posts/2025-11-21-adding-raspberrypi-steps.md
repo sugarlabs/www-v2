@@ -1,11 +1,13 @@
 ---
-title: "Adding steps to install suger on raspberrypi"
-excerpt: "New developer Daksh kaushik shares how he implemented the steps to install suger on raspberrypi, what issues he faced and how he debugged them"
+title: "Adding steps to install Sugar on Raspberry Pi"
+excerpt: "New developer Daksh Kaushik shares how he implemented the steps to
+install Sugar on Raspberry Pi, what issues he faced, and how he
+debugged them"
 category: "DEVELOPER NEWS"
 date: "2025-11-21"
-slug: "adding-steps-to-install-suger-on-raspberrypi"
+slug: "adding-steps-to-install-sugar-on-raspberrypi"
 author: "@/constants/MarkdownFiles/authors/daksh-kaushik.md"
-tags: "suger,raspberrypi,frontend,Sugar Labs"
+tags: "sugar,raspberrypi,frontend,Sugar Labs"
 image: "assets/Images/suger-on-raspberrypi.webp"
 ---
 
@@ -48,16 +50,13 @@ Implementing this required converting inline, page-specific content into reusabl
 
 - **Include images for clarity**
 
-Where helpful (hardware wiring, installation output), I included images so users can validate each step visually.
+    Where helpful (hardware wiring, installation output), I included images so users can validate each step visually.
 
 
 ## Challenges and takeaways
 
-- **Keeping steps accurate:** The upstream Sugar repo documents are authoritative;
-
-    I referenced this: https://github.com/sugarlabs/sugar/blob/master/docs/README.md
-
-    and tested commands locally where possible.
+ - **Keeping steps accurate:** The upstream Sugar repo documents are
+   authoritative. I referenced the official [Sugar docs](https://github.com/sugarlabs/sugar/blob/master/docs/README.md) and tested commands locally where possible.
 - **Legacy component constraints:** The original `StepsToUse` was page-specific and missing a command field — refactoring removed duplication and enabled reuse.
 - **Card sizing and density:** Existing logo cards included descriptions which increased size; `LogoCard` is intentionally compact (title + logo + click behavior) to fit multiple cards in a row without layout surprises.
 - **Copy UX:** Copy-to-clipboard needs a clear, short visual confirmation — I added a temporary message when a command is copied.
@@ -73,8 +72,8 @@ By sharing my experience, I hope to inspire others to contribute to Sugar Labs a
 
 ## Try it out
 
-The guide of installing suger on Raspberrypi is available on Raspberry page.
-https://www.sugarlabs.org/raspberry
+The guide for installing Sugar on Raspberry Pi is available on the
+[Raspberry page](https://www.sugarlabs.org/raspberry).
 
 ![Logocards for switching between guides](/assets/Images/logocard.webp)
 
