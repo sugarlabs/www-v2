@@ -63,7 +63,7 @@ export const statisticsData = [
   },
   {
     title: 'Languages our educational software has been translated into',
-    value: '170',
+    value: '170+',
     imageSrc: stats.language,
     imageAlt: 'Language icon',
     gradient: 'from-blue-600 to-blue-700',
