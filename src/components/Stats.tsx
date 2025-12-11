@@ -135,7 +135,7 @@ const Stats = () => {
                   {stat.title}
                 </h3>
                 <motion.div
-                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat break-words`}
+                  className={`text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat whitespace-nowrap`}
                   variants={numberCounter}
                 >
                   {stat.value}
@@ -175,7 +175,7 @@ const Stats = () => {
                   {stat.title}
                 </h3>
                 <motion.div
-                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat break-words`}
+                  className={`text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat whitespace-nowrap`}
                   variants={numberCounter}
                 >
                   {stat.value}
