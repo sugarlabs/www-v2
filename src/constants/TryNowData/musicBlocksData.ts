@@ -42,7 +42,7 @@ export const musicBlocksSections = [
       },
       {
         text: 'Using Music Blocks',
-        url: 'https://github.com/sugarlabs/musicblocks/blob/master/Docs/documentation-es/README.md',
+        url: 'https://github.com/sugarlabs/musicblocks/blob/master/Docs/documentation/README.md',
       },
       {
         text: 'Music Blocks Guide',
