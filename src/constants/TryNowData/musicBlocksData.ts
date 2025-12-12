@@ -37,16 +37,16 @@ export const musicBlocksSections = [
         url: 'https://github.com/sugarlabs/turtleblocksjs',
       },
       {
-        text: 'Github',
+        text: 'GitHub',
         url: 'https://github.com/sugarlabs/musicblocks/',
       },
       {
         text: 'Using Music Blocks',
-        url: 'http://github.com/sugarlabs/musicblocks/tree/master/documentation',
+        url: 'https://github.com/sugarlabs/musicblocks/blob/master/Docs/documentation-es/README.md',
       },
       {
         text: 'Music Blocks Guide',
-        url: 'http://github.com/sugarlabs/musicblocks/tree/master/guide',
+        url: 'https://github.com/sugarlabs/musicblocks/blob/master/Docs/guide/README.md',
       },
     ],
   },
