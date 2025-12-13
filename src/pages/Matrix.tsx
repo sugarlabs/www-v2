@@ -295,6 +295,8 @@ const Matrix: React.FC = () => {
               </motion.p>
               <motion.a
                 href="https://matrix.to/#/#sugar-labs:matrix.org"
+                target='_blank'
+                rel="noopener noreferrer"
                 className="bg-[#D4B062] hover:bg-white hover:text-black text-black font-medium px-6 sm:px-8 py-2.5 sm:py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl text-sm sm:text-base"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
