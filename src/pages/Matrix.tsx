@@ -299,13 +299,13 @@ const Matrix: React.FC = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={(e) => {
-                  e.preventDefault()
-                  const element = document.getElementById('matrix-rooms')
-                  if(element) {
+                  e.preventDefault();
+                  const element = document.getElementById('matrix-rooms');
+                  if (element) {
                     element.scrollIntoView({
                       behavior: 'smooth',
-                      block: 'start'
-                    })
+                      block: 'start',
+                    });
                   }
                 }}
               >
@@ -360,7 +360,7 @@ const Matrix: React.FC = () => {
 
         {/* Matrix Rooms */}
         <motion.section
-          id='matrix-rooms'
+          id="matrix-rooms"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
