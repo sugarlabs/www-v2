@@ -263,28 +263,28 @@ const NewsPage: React.FC = () => {
             <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-blue-300 opacity-10 rounded-full"></div>
           </div>
 
-          <div className="relative container mx-auto px-4 py-20">
+          <div className="relative container mx-auto px-4 py-8">
             <motion.div
               className="text-center max-w-4xl mx-auto"
               variants={fadeIn}
               initial="hidden"
               animate="visible"
             >
-              <div className="flex items-center justify-center mb-6">
+              <div className="flex items-center justify-center mb-3">
                 <Sparkles
-                  className="text-blue-500 mr-4 animate-pulse"
-                  size={32}
+                  className="text-blue-500 mr-3 animate-pulse"
+                  size={24}
                 />
-                <h1 className="p-4 text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
+                <h1 className="p-2 text-5xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
                   NEWS
                 </h1>
                 <TrendingUp
-                  className="text-green-500 ml-4 animate-bounce"
-                  size={32}
+                  className="text-green-500 ml-3 animate-bounce"
+                  size={24}
                 />
               </div>
 
-              <p className="text-xl mb-8 text-gray-700 dark:text-gray-300 leading-relaxed ">
+              <p className="text-base mb-4 text-gray-700 dark:text-gray-300 leading-relaxed ">
                 Discover the latest innovations, community updates, and
                 educational insights from the Sugar Labs ecosystem
               </p>
