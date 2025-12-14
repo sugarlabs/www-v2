@@ -60,7 +60,9 @@ const NavDropdown: React.FC<NavDropdownProps> = ({
           >
             <div className="py-2">
               {items.map((item) => {
-                const isItemActive = location.pathname === item.path;
+                const isItemActive =
+                  location.pathname === item.path ||
+                  location.pathname.startsWith(item.path + '/');
                 return (
                   <Link
                     key={item.path}

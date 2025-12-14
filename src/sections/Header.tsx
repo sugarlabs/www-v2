@@ -135,7 +135,9 @@ const Header: React.FC = () => {
 
               {/* Regular links */}
               {navigationData.links.map((link) => {
-                const isActive = location.pathname === link.path;
+                const isActive =
+                  location.pathname === link.path ||
+                  location.pathname.startsWith(link.path + '/');
                 return (
                   <Link
                     key={link.label}
@@ -263,7 +265,11 @@ const MobileNavDrawer: React.FC<{
                           >
                             <div className="pl-4 space-y-1 pb-2">
                               {dropdown.items.map((item) => {
-                                const isItemActive = window.location.pathname === item.path;
+                                const isItemActive =
+                                  window.location.pathname === item.path ||
+                                  window.location.pathname.startsWith(
+                                    item.path + '/',
+                                  );
                                 return (
                                   <Link
                                     key={item.path}
@@ -287,7 +293,9 @@ const MobileNavDrawer: React.FC<{
 
                 {/* Regular links */}
                 {navigationData.links.map((link) => {
-                  const isActive = window.location.pathname === link.path;
+                  const isActive =
+                    window.location.pathname === link.path ||
+                    window.location.pathname.startsWith(link.path + '/');
                   return (
                     <Link
                       key={link.label}
