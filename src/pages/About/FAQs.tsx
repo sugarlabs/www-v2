@@ -14,6 +14,8 @@ import {
   faqPageAnimations,
 } from '@/styles/Animations';
 import FAQItem from '@/components/FAQItem';
+import SEO from '@/components/shared/SEO';
+import { pageSEO } from '@/constants/SEO';
 
 const FAQs = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -26,6 +28,11 @@ const FAQs = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <SEO
+        title={pageSEO.faqs.title}
+        description={pageSEO.faqs.description}
+        keywords={pageSEO.faqs.keywords}
+      />
       <Header />
       <main className="container mx-auto p-4">
         {/* Top FAQs Section */}

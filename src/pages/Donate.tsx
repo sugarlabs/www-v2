@@ -14,6 +14,8 @@ import {
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
 import { motion } from 'framer-motion';
+import SEO from '@/components/shared/SEO';
+import { pageSEO } from '@/constants/SEO';
 
 const Donate: React.FC = () => {
   const [showAllFilings, setShowAllFilings] = useState(false);
@@ -26,6 +28,11 @@ const Donate: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title={pageSEO.donate.title}
+        description={pageSEO.donate.description}
+        keywords={pageSEO.donate.keywords}
+      />
       <Header />
       <div className="dark:bg-gray-900 text-gray-800 dark:text-gray-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 font-sans mt-10 sm:mt-10 mb-10 sm:mb-16">

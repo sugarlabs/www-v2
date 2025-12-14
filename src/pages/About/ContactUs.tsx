@@ -12,6 +12,8 @@ import {
   fadeIn,
   headerReveal,
 } from '@/styles/Animations';
+import SEO from '@/components/shared/SEO';
+import { pageSEO } from '@/constants/SEO';
 
 interface CardProps {
   icon: string;
@@ -46,6 +48,11 @@ const Card: React.FC<CardProps> = ({ icon, title, content }) => (
 const ContactUs = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <SEO
+        title={pageSEO.contactUs.title}
+        description={pageSEO.contactUs.description}
+        keywords={pageSEO.contactUs.keywords}
+      />
       <Header />
       <main className="container mx-auto p-4">
         {/* Hero Section */}

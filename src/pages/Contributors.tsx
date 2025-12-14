@@ -13,6 +13,8 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { fadeIn, staggerContainer } from '@/styles/Animations';
+import SEO from '@/components/shared/SEO';
+import { pageSEO } from '@/constants/SEO';
 
 interface Repository {
   id: number;
@@ -300,6 +302,11 @@ const Contributors: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title={pageSEO.contributors.title}
+        description={pageSEO.contributors.description}
+        keywords={pageSEO.contributors.keywords}
+      />
       <Header />
       <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9]">
         {/* Hero Section */}

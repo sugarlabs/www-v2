@@ -6,6 +6,8 @@ import JoinToggle from '@/components/JoinToggle';
 import { motion } from 'framer-motion';
 import { slideInBottom } from '@/styles/Animations';
 import { useEffect } from 'react';
+import SEO from '@/components/shared/SEO';
+import { pageSEO } from '@/constants/SEO';
 
 const JoinDevelopment = () => {
   useEffect(() => {
@@ -14,6 +16,11 @@ const JoinDevelopment = () => {
 
   return (
     <div className="bg-gradient-to-b from-white to-red-50 dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-200">
+      <SEO
+        title={pageSEO.joinDevelopment.title}
+        description={pageSEO.joinDevelopment.description}
+        keywords={pageSEO.joinDevelopment.keywords}
+      />
       <Header />
       <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-6">
         <JoinToggle />

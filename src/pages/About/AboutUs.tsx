@@ -10,6 +10,8 @@ import PrinciplesSection from '@/components/AboutUs/PrinciplesSection';
 import GoalsSection from '@/components/AboutUs/GoalsSection';
 import ProjectsSection from '@/components/AboutUs/ProjectSection';
 import RoadmapSection from '@/components/AboutUs/RoadmapSection';
+import SEO from '@/components/shared/SEO';
+import { pageSEO } from '@/constants/SEO';
 
 const AboutUs = () => {
   const [, setIsLoaded] = useState(false);
@@ -20,6 +22,11 @@ const AboutUs = () => {
 
   return (
     <div className="bg-white dark:bg-gray-900 min-h-screen">
+      <SEO
+        title={pageSEO.aboutUs.title}
+        description={pageSEO.aboutUs.description}
+        keywords={pageSEO.aboutUs.keywords}
+      />
       <div className="relative z-20">
         <Header />
       </div>

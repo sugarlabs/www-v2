@@ -11,10 +11,17 @@ import {
   decorativeElement,
   dividerVariants,
 } from '@/styles/Animations';
+import SEO from '@/components/shared/SEO';
+import { pageSEO } from '@/constants/SEO';
 
 const Leadership = () => {
   return (
     <div className="bg-white dark:bg-gray-900">
+      <SEO
+        title={pageSEO.leadership.title}
+        description={pageSEO.leadership.description}
+        keywords={pageSEO.leadership.keywords}
+      />
       <Header />
       <section className="py-24 px-4 bg-white dark:bg-gray-900">
         <div className="container mx-auto max-w-7xl">

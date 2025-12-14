@@ -12,6 +12,8 @@ import {
   cardFadeIn,
 } from '@/styles/Animations';
 import { Link } from 'react-router-dom';
+import SEO from '@/components/shared/SEO';
+import { pageSEO } from '@/constants/SEO';
 
 const Volunteer = () => {
   const matrixLink =
@@ -30,6 +32,11 @@ const Volunteer = () => {
 
   return (
     <div className="min-h-screen bg-[#FFFEF9] dark:bg-[#13141f]">
+      <SEO
+        title={pageSEO.volunteer.title}
+        description={pageSEO.volunteer.description}
+        keywords={pageSEO.volunteer.keywords}
+      />
       <Header />
       <main className="container mx-auto flex flex-col items-center justify-center p-6">
         <JoinToggle />

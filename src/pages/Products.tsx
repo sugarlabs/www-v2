@@ -7,10 +7,17 @@ import {
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import Product from '@/components/Product';
+import SEO from '@/components/shared/SEO';
+import { pageSEO } from '@/constants/SEO';
 
 const ProductsPage = () => {
   return (
     <div className="bg-white dark:bg-gray-900">
+      <SEO
+        title={pageSEO.products.title}
+        description={pageSEO.products.description}
+        keywords={pageSEO.products.keywords}
+      />
       <Header />
       <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
         {/* Parent container to control animation sequence */}
