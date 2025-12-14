@@ -108,9 +108,7 @@ export const fetchMarkdownPostsMetadata = async (
     for (const [filePath, importFn] of Object.entries(markdownFiles)) {
       try {
         const fileContent = await importFn();
-        const { frontmatter } = parseFrontmatter(
-          fileContent as string,
-        );
+        const { frontmatter } = parseFrontmatter(fileContent as string);
         const fileName = filePath.split('/').pop()?.replace('.md', '') || '';
 
         // Parse author reference
@@ -159,11 +157,13 @@ export const fetchMarkdownPostsMetadata = async (
 /**
  * Fetch a single post by slug with full content
  */
-export const fetchMarkdownPostBySlug = async (slug: string): Promise<Post | null> => {
+export const fetchMarkdownPostBySlug = async (
+  slug: string,
+): Promise<Post | null> => {
   try {
     // Get all posts metadata first to find the correct file
     const allPostsMetadata = await fetchMarkdownPostsMetadata();
-    const targetPost = allPostsMetadata.find(post => post.slug === slug);
+    const targetPost = allPostsMetadata.find((post) => post.slug === slug);
 
     if (!targetPost) {
       return null;
@@ -185,9 +185,7 @@ export const fetchMarkdownPostBySlug = async (slug: string): Promise<Post | null
       // Check if this file corresponds to our post
       if (fileName === targetPost.id) {
         const fileContent = await importFn();
-        const { content } = parseFrontmatter(
-          fileContent as string,
-        );
+        const { content } = parseFrontmatter(fileContent as string);
 
         return {
           ...targetPost,
@@ -206,7 +204,9 @@ export const fetchMarkdownPostBySlug = async (slug: string): Promise<Post | null
 /**
  * Get posts by author slug (metadata only)
  */
-export const getPostsByAuthor = async (authorSlug: string): Promise<PostMetaData[]> => {
+export const getPostsByAuthor = async (
+  authorSlug: string,
+): Promise<PostMetaData[]> => {
   const allPosts = await fetchMarkdownPostsMetadata();
   return allPosts.filter((post) => post.author?.slug === authorSlug);
 };
@@ -251,7 +251,9 @@ export const getAllPosts = async (): Promise<PostMetaData[]> =>
 /**
  * Group posts by category (metadata only)
  */
-export const groupPostsByCategory = (posts: PostMetaData[]): Record<string, PostMetaData[]> => {
+export const groupPostsByCategory = (
+  posts: PostMetaData[],
+): Record<string, PostMetaData[]> => {
   const categoryMap: Record<string, PostMetaData[]> = { All: posts };
 
   posts.forEach((post) => {

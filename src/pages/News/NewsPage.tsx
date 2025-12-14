@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import ShareModal from '@/components/ShareModal';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { getAllPosts, groupPostsByCategory, PostMetaData } from '@/utils/posts-utils';
+import {
+  getAllPosts,
+  groupPostsByCategory,
+  PostMetaData,
+} from '@/utils/posts-utils';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import { motion } from 'framer-motion';
@@ -263,7 +267,9 @@ const NewsPage: React.FC = () => {
                           const catPath =
                             activeCategory === 'All'
                               ? 'all'
-                              : activeCategory.toLowerCase().replace(/\s+/g, '-');
+                              : activeCategory
+                                  .toLowerCase()
+                                  .replace(/\s+/g, '-');
                           navigate(`/news/${catPath}`, { replace: true });
                         }}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
@@ -280,20 +286,22 @@ const NewsPage: React.FC = () => {
                   <div className="flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`p-3 rounded-lg transition-all duration-300 ${viewMode === 'grid'
-                        ? 'bg-white dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-blue-600'
-                        }`}
+                      className={`p-3 rounded-lg transition-all duration-300 ${
+                        viewMode === 'grid'
+                          ? 'bg-white dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
+                          : 'text-gray-600 dark:text-gray-400 hover:text-blue-600'
+                      }`}
                       title="Grid View"
                     >
                       <Grid3X3 size={18} />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`p-3 rounded-lg transition-all duration-300 ${viewMode === 'list'
-                        ? 'bg-white  dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
-                        : 'text-gray-600  dark:text-gray-400 hover:text-blue-600'
-                        }`}
+                      className={`p-3 rounded-lg transition-all duration-300 ${
+                        viewMode === 'list'
+                          ? 'bg-white  dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
+                          : 'text-gray-600  dark:text-gray-400 hover:text-blue-600'
+                      }`}
                       title="List View"
                     >
                       <List size={18} />
@@ -318,10 +326,11 @@ const NewsPage: React.FC = () => {
                     <motion.button
                       key={cat}
                       onClick={() => handleCategoryClick(cat)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === cat
-                        ? 'bg-[#144EEC] text-white shadow-lg'
-                        : 'bg-gray-100 dark:bg-gray-700 dark:text-gray-300 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                        }`}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                        activeCategory === cat
+                          ? 'bg-[#144EEC] text-white shadow-lg'
+                          : 'bg-gray-100 dark:bg-gray-700 dark:text-gray-300 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                      }`}
                       whileHover={{ scale: 1.05, cursor: 'pointer' }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -393,15 +402,16 @@ const NewsPage: React.FC = () => {
             {/* Posts Display */}
             <div className="mb-12">
               <div
-                className={`${viewMode === 'grid'
-                  ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'
-                  : viewMode === 'list'
-                    ? 'space-y-8'
-                    : 'grid grid-cols-1 lg:grid-cols-2 gap-8'
-                  }`}
+                className={`${
+                  viewMode === 'grid'
+                    ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'
+                    : viewMode === 'list'
+                      ? 'space-y-8'
+                      : 'grid grid-cols-1 lg:grid-cols-2 gap-8'
+                }`}
               >
-                {isLoading
-                  ? Array.from({ length: 6 }).map((_, index) => (
+                {isLoading ? (
+                  Array.from({ length: 6 }).map((_, index) => (
                     <PostCard
                       key={`skeleton-${index}`}
                       viewMode={viewMode}
@@ -409,43 +419,45 @@ const NewsPage: React.FC = () => {
                       isLoading={true}
                     />
                   ))
-                  : visiblePosts.length === 0
-                    ? // Empty state as a grid item
-                    <motion.div
-                      className="col-span-full text-center py-20"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                    >
-                      <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 shadow-xl max-w-md mx-auto">
-                        <div className="text-6xl mb-6">🔍</div>
-                        <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-                          No articles found
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400 mb-6">
-                          {searchTerm
-                            ? `No articles match "${searchTerm}" in this category.`
-                            : 'There are no articles in this category yet.'}
-                        </p>
-                        {searchTerm && (
-                          <button
-                            onClick={() => setSearchTerm('')}
-                            className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
-                          >
-                            Clear Search
-                          </button>
-                        )}
-                      </div>
-                    </motion.div>
-                    : visiblePosts.map((post, index) => (
-                      <PostCard
-                        key={post.slug}
-                        post={post}
-                        viewMode={viewMode}
-                        index={index}
-                        onPostClick={handlePostClick}
-                        onShareClick={handleShareClick}
-                      />
-                    ))}
+                ) : visiblePosts.length === 0 ? (
+                  // Empty state as a grid item
+                  <motion.div
+                    className="col-span-full text-center py-20"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 shadow-xl max-w-md mx-auto">
+                      <div className="text-6xl mb-6">🔍</div>
+                      <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+                        No articles found
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-400 mb-6">
+                        {searchTerm
+                          ? `No articles match "${searchTerm}" in this category.`
+                          : 'There are no articles in this category yet.'}
+                      </p>
+                      {searchTerm && (
+                        <button
+                          onClick={() => setSearchTerm('')}
+                          className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                        >
+                          Clear Search
+                        </button>
+                      )}
+                    </div>
+                  </motion.div>
+                ) : (
+                  visiblePosts.map((post, index) => (
+                    <PostCard
+                      key={post.slug}
+                      post={post}
+                      viewMode={viewMode}
+                      index={index}
+                      onPostClick={handlePostClick}
+                      onShareClick={handleShareClick}
+                    />
+                  ))
+                )}
               </div>
             </div>
 
