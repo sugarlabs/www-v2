@@ -61,14 +61,22 @@ export const parseFrontmatter = (
   return { frontmatter, content: mainContent };
 };
 
-const paginate = <T>(items: T[], offset = 0, limit?: number): T[] => {
-  return limit !== undefined
-    ? items.slice(offset, offset + limit)
-    : items.slice(offset);
+const paginate = <T>(
+  items: T[],
+  offset = 0,
+  limit?: number,
+): { posts: T[]; total: number } => {
+  const total = items.length;
+  const paginatedItems =
+    limit !== undefined
+      ? items.slice(offset, offset + limit)
+      : items.slice(offset);
+
+  return { posts: paginatedItems, total };
 };
 
 /**
- * Fetch metadata for all markdown posts
+ * Fetch metadata for all markdown posts : Use this function for pagination support
  */
 export const fetchPostsMetadata = ({
   category,
@@ -78,7 +86,7 @@ export const fetchPostsMetadata = ({
   category?: string;
   offset?: number;
   limit?: number;
-} = {}): PostMetaData[] => {
+} = {}): { posts: PostMetaData[]; total: number } => {
   let posts = postsIndex as PostMetaData[];
 
   if (category) {
@@ -153,7 +161,7 @@ export const getPostBySlug = async (slug: string): Promise<Post | null> => {
 /**
  * Get all posts metadata (without content)
  */
-export const getAllPosts = (): PostMetaData[] => fetchPostsMetadata();
+export const getAllPosts = (): PostMetaData[] => fetchPostsMetadata().posts;
 
 /**
  * Group posts by category (metadata only)
