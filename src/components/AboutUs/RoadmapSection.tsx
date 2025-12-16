@@ -166,10 +166,10 @@ const RoadmapSection: React.FC = () => {
                   border-l-2 ${item.borderColor ? item.borderColor.replace('border-', 'border-') + ' dark:' + item.borderColor.replace('blue', 'blue').replace('red', 'red') : 'border-blue-600 dark:border-blue-400'} 
                   backdrop-blur-sm`}
                 >
-                  <h3 className="text-base font-semibold text-slate-800 mb-2 pb-2 border-b border-slate-100">
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-2 pb-2 border-b border-gray-100 dark:border-gray-700">
                     {item.title}
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm">
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
                     {item.description || 'Milestone in our journey'}
                   </p>
                 </div>
