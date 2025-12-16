@@ -41,7 +41,7 @@ const DeveloperLinks = () => {
     relative flex items-center justify-between px-6 py-5 rounded-xl
     border-2 border-gray-200 dark:border-gray-700
     bg-white dark:bg-[#303848]
-    hover:!border-red-600 dark:hover:!border-gray-500
+    hover:!border-red-600 dark:hover:!border-orange-500
     shadow-sm hover:shadow-lg
     overflow-hidden transition-all duration-300 group h-full
   "
@@ -57,7 +57,7 @@ const DeveloperLinks = () => {
                   absolute inset-0
                   bg-gradient-to-r
                   from-red-50 to-red-100
-                  dark:from-gray-700 dark:to-gray-600
+                  dark:from-orange-900/10 dark:to-orange-800/40
                   opacity-0 group-hover:opacity-100
                   transition-opacity duration-300
                 "
@@ -70,7 +70,7 @@ const DeveloperLinks = () => {
                     flex-shrink-0 w-10 h-10 rounded-full
                     bg-red-100 dark:bg-[#FFFFFF]
                     flex items-center justify-center
-                    group-hover:bg-red-200 dark:group-hover:bg-gray-200 transition-colors
+                    group-hover:bg-red-200 dark:group-hover:bg-orange-200 transition-colors
                   "
               >
                 <img
@@ -84,7 +84,7 @@ const DeveloperLinks = () => {
                 className="
                     text-base md:text-lg font-medium
                     text-gray-800 dark:text-gray-100
-                    group-hover:text-red-700 dark:group-hover:text-gray-300
+                    group-hover:text-red-700 dark:group-hover:text-orange-400
                     transition-colors
                   "
               >
@@ -97,7 +97,7 @@ const DeveloperLinks = () => {
               className="
                   relative z-10 flex items-center justify-center w-8 h-8 rounded-full
                   bg-red-100 dark:bg-[#FFFFFF]
-                  group-hover:bg-red-200 dark:group-hover:bg-gray-200 transition-colors
+                  group-hover:bg-red-200 dark:group-hover:bg-orange-200 transition-colors
                   ml-4 flex-shrink-0
                 "
             >
@@ -105,7 +105,7 @@ const DeveloperLinks = () => {
                 className="
                     -mt-1
                     text-gray-800 dark:text-gray-800
-                    group-hover:text-red-700 dark:group-hover:text-gray-600
+                    group-hover:text-red-700 dark:group-hover:text-orange-600
                     transform group-hover:translate-x-1
                     transition-all
                   "
