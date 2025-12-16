@@ -98,35 +98,35 @@ At Sugar Labs, Ulibarri has worked closely with Walter Bender to create Music Bl
     relative flex items-center justify-between px-6 py-5 rounded-xl
     border-2 border-gray-200 dark:border-gray-700
     bg-white dark:bg-[#303848]
-    hover:!border-red-600 dark:hover:!border-gray-500
+    hover:!border-red-600 dark:hover:!border-orange-500
     shadow-sm hover:shadow-lg
     overflow-hidden transition-all duration-300 group h-full
   `,variants:i,whileHover:{scale:1.02},whileTap:{scale:.98},children:[t.jsx("span",{className:`
                   absolute inset-0
                   bg-gradient-to-r
                   from-red-50 to-red-100
-                  dark:from-gray-700 dark:to-gray-600
+                  dark:from-orange-900/10 dark:to-orange-800/40
                   opacity-0 group-hover:opacity-100
                   transition-opacity duration-300
                 `}),t.jsxs("div",{className:"relative flex items-center gap-4 z-10 flex-1",children:[t.jsx("div",{className:`
                     flex-shrink-0 w-10 h-10 rounded-full
                     bg-red-100 dark:bg-[#FFFFFF]
                     flex items-center justify-center
-                    group-hover:bg-red-200 dark:group-hover:bg-gray-200 transition-colors
+                    group-hover:bg-red-200 dark:group-hover:bg-orange-200 transition-colors
                   `,children:t.jsx("img",{src:r.icon,alt:r.name,className:"w-5 h-5 group-hover:scale-110 transition-transform"})}),t.jsx("span",{className:`
                     text-base md:text-lg font-medium
                     text-gray-800 dark:text-gray-100
-                    group-hover:text-red-700 dark:group-hover:text-gray-300
+                    group-hover:text-red-700 dark:group-hover:text-orange-400
                     transition-colors
                   `,children:r.name})]}),t.jsx("div",{className:`
                   relative z-10 flex items-center justify-center w-8 h-8 rounded-full
                   bg-red-100 dark:bg-[#FFFFFF]
-                  group-hover:bg-red-200 dark:group-hover:bg-gray-200 transition-colors
+                  group-hover:bg-red-200 dark:group-hover:bg-orange-200 transition-colors
                   ml-4 flex-shrink-0
                 `,children:t.jsx("span",{className:`
                     -mt-1
                     text-gray-800 dark:text-gray-800
-                    group-hover:text-red-700 dark:group-hover:text-gray-600
+                    group-hover:text-red-700 dark:group-hover:text-orange-600
                     transform group-hover:translate-x-1
                     transition-all
                   `,children:"→"})})]},n))})})},na=()=>{const s=Ne(),i=le(),r=s.pathname==="/volunteer",n=s.pathname==="/join-development";return t.jsx("div",{className:"pt-12 md:pt-20",children:t.jsxs("div",{className:"flex flex-wrap items-center justify-center md:justify-between w-full max-w-6xl font-Oswald",children:[t.jsx("div",{className:"w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-12",children:t.jsx("h1",{className:"text-6xl md:text-[10rem] font-extralight tracking-tight text-center md:text-right",children:"JOIN"})}),t.jsxs("div",{className:"w-full md:w-1/2 flex flex-col justify-center items-center md:items-start",children:[t.jsx(o.h2,{className:"text-4xl md:text-[5rem] font-extralight pb-1 md:pb-2 cursor-pointer transition-colors",initial:{opacity:.6,scale:.95},animate:{color:r?"#EF4444":"#D1D5DB",opacity:r?1:.7,scale:r?1.1:1},transition:{duration:.4,ease:"easeInOut"},onClick:()=>!r&&i("/volunteer"),children:"Volunteer"}),t.jsx("div",{className:"border-t border-gray-300 w-3/4 md:w-4/5"}),t.jsx(o.h2,{className:"text-4xl md:text-[5rem] font-extralight pt-1 md:pt-2 cursor-pointer transition-colors",initial:{opacity:.6,scale:.95},animate:{color:n?"#EF4444":"#D1D5DB",opacity:n?1:.7,scale:n?1.1:1},transition:{duration:.4,ease:"easeInOut"},onClick:()=>!n&&i("/join-development"),children:"Development"})]})]})})},Rr=()=>(d.useEffect(()=>{window.scrollTo(0,0)},[]),t.jsxs("div",{className:"bg-gradient-to-b from-white to-red-50 dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-200",children:[t.jsx(M,{}),t.jsxs("main",{className:"container mx-auto flex flex-col items-center justify-center min-h-screen p-6",children:[t.jsx(na,{}),t.jsxs(o.div,{className:"mt-20 max-w-4xl flex flex-col items-center text-center px-6",initial:{opacity:0,y:20},animate:{opacity:1,y:0},transition:{duration:.6,delay:.2},children:[t.jsx("h2",{className:"text-5xl font-bold font-[Caveat] dark:text-white",children:"Before Beginning to Contribute"}),t.jsx("hr",{className:"w-32 border-t-2 border-gray-400 dark:border-gray-600 mx-auto mt-2"}),t.jsx("p",{className:"text-lg text-gray-700 dark:text-gray-300 font-[Inter] mt-6 leading-relaxed",children:"As a developer, whether you are just starting out or you've participated in other development before, there are a few things you need to know about our community. This page has important information on not just where to find the code, documentation, and how to reach us, but it also has information on our philosophy and a link to our Code of Conduct."})]}),t.jsx("div",{className:"w-full mt-16",children:t.jsx(Pr,{})}),t.jsx("section",{className:"py-16 w-full",id:"links",children:t.jsxs(o.div,{className:"max-w-5xl mx-auto",variants:z,initial:"hidden",whileInView:"visible",viewport:{once:!0,amount:.1},children:[t.jsxs("div",{className:"text-center mb-8",children:[t.jsx("span",{className:"inline-block px-3 py-1 bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300 rounded-full text-sm font-semibold mb-4",children:"Resources"}),t.jsx("h2",{className:"text-4xl md:text-5xl font-bold font-[Caveat] mb-4 dark:text-white",children:"Important Links for Developers"}),t.jsx("div",{className:"w-24 h-1 bg-red-700 dark:bg-red-500 rounded mx-auto mb-6"}),t.jsx("p",{className:"text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto",children:"Essential resources for people interested in making development contributions to Sugar Labs"})]}),t.jsx(Dr,{})]})})]}),t.jsx(P,{})]})),Cr=[{title:"Educator",description:"Sugar Labs is focused on education, and we value the feedback of other educators. Here are ways that educators can participate in Sugar Labs as a volunteer:",points:["Use our software and lesson plans in your classroom, and try our Constructionism learning tools for yourself.","Test software and give your feedback based on your experience as an educator.","Create your own lesson plans for other teachers to use in the classroom."],extra:`Educators are encouraged to contact iaep@sugarlabs.org and ask education-specific questions. "IAEP" stands for "It's an education project". 
