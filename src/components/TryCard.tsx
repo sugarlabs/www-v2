@@ -33,7 +33,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
     <img
       src={icon}
       alt={title}
-      className="flex-1/3 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mb-3 sm:mb-4"
+      className="flex-1/3 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mb-3 sm:mb-4 dark:invert"
     />
     <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2 dark:text-white">
       {title}
