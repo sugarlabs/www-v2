@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 type NavDropdownProps = {
@@ -19,6 +19,8 @@ const NavDropdown: React.FC<NavDropdownProps> = ({
   setActive,
   onNavigate,
 }) => {
+  const location = useLocation();
+
   return (
     <div
       className="relative"
@@ -57,21 +59,29 @@ const NavDropdown: React.FC<NavDropdownProps> = ({
             className="absolute left-0 mt-[0.074rem] w-56 rounded-xl bg-white dark:bg-gray-800 shadow-xl ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-10 overflow-hidden"
           >
             <div className="py-2">
-              {items.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={onNavigate}
-                  className="group flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700
-                          transition-all duration-200 hover:text-blue-600 dark:hover:text-blue-400"
-                >
-                  <span
-                    className="w-2 h-2 rounded-full bg-blue-600 opacity-0 group-hover:opacity-100
-                              transition-all duration-200 mr-2 transform scale-0 group-hover:scale-100"
-                  />
-                  {item.label}
-                </Link>
-              ))}
+              {items.map((item) => {
+                const isItemActive =
+                  location.pathname === item.path ||
+                  location.pathname.startsWith(item.path + '/');
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={onNavigate}
+                    className={`group flex items-center px-4 py-3 text-sm
+                            transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700
+                            hover:text-blue-600 dark:hover:text-blue-400
+                            ${isItemActive ? 'text-blue-600 dark:text-blue-400 bg-gray-50 dark:bg-gray-700' : 'text-gray-700 dark:text-gray-300'}`}
+                  >
+                    <span
+                      className={`w-2 h-2 rounded-full bg-blue-600 mr-2 transform
+                                transition-all duration-200
+                                ${isItemActive ? 'opacity-100 scale-100' : 'opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100'}`}
+                    />
+                    {item.label}
+                  </Link>
+                );
+              })}
             </div>
           </motion.div>
         )}
