@@ -2,3 +2,4 @@ node_modules/
 build/
 public/
 src/constants/MarkdownFiles/
+src/constants/posts.index.json

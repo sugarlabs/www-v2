@@ -1,8 +1,9 @@
 /**
- * Blog post utility functions - Updated with author support
+ * Blog post utility functions - Optimized with index file support
  */
 
-import { parseAuthorReference, AuthorReference } from '@/utils/author-utils';
+import postsIndex from '@/constants/posts.index.json';
+import { AuthorReference } from '@/utils/author-utils';
 
 export interface PostMetaData {
   id: string;
@@ -60,193 +61,107 @@ export const parseFrontmatter = (
   return { frontmatter, content: mainContent };
 };
 
-/**
- * Convert frontmatter value to string with fallback
- */
-const frontmatterToString = (
-  value: string | string[] | undefined,
-  fallback = '',
-): string =>
-  Array.isArray(value) ? value.join(' ').trim() : value?.trim() || fallback;
+const paginate = <T>(
+  items: T[],
+  offset = 0,
+  limit?: number,
+): { posts: T[]; total: number } => {
+  const total = items.length;
+  const paginatedItems =
+    limit !== undefined
+      ? items.slice(offset, offset + limit)
+      : items.slice(offset);
 
-/**
- * Process image URL with validation and fallback
- */
-const processImageUrl = (imageValue: string | string[] | undefined): string => {
-  let imageUrl = frontmatterToString(
-    imageValue,
-    '/assets/Images/SugarNewsLogo.webp',
-  );
-
-  if (
-    imageUrl !== '/assets/Images/SugarNewsLogo.webp' &&
-    !/^https?:\/\//.test(imageUrl)
-  ) {
-    imageUrl = '/' + imageUrl.replace(/^\/+/, '');
-  }
-
-  return imageUrl;
+  return { posts: paginatedItems, total };
 };
 
 /**
- * Fetch and parse metadata only (without content) for all markdown posts
+ * Fetch metadata for all markdown posts : Use this function for pagination support
  */
-export const fetchMarkdownPostsMetadata = async (
-  category?: string,
-): Promise<PostMetaData[]> => {
-  try {
-    const markdownFiles = import.meta.glob(
-      '@/constants/MarkdownFiles/posts/*.md',
-      {
-        query: '?raw',
-        import: 'default',
-      },
-    );
+export const fetchPostsMetadata = ({
+  category,
+  offset = 0,
+  limit,
+}: {
+  category?: string;
+  offset?: number;
+  limit?: number;
+} = {}): { posts: PostMetaData[]; total: number } => {
+  let posts = postsIndex as PostMetaData[];
 
-    const allPosts: PostMetaData[] = [];
-
-    for (const [filePath, importFn] of Object.entries(markdownFiles)) {
-      try {
-        const fileContent = await importFn();
-        const { frontmatter } = parseFrontmatter(fileContent as string);
-        const fileName = filePath.split('/').pop()?.replace('.md', '') || '';
-
-        // Parse author reference
-        const author = await parseAuthorReference(
-          frontmatterToString(frontmatter.author),
-          frontmatterToString(frontmatter.description),
-        );
-
-        const post: PostMetaData = {
-          id: fileName,
-          title: frontmatterToString(frontmatter.title, 'Untitled'),
-          excerpt: frontmatterToString(frontmatter.excerpt),
-          category: frontmatterToString(frontmatter.category, 'UNCATEGORIZED'),
-          date: frontmatterToString(frontmatter.date, 'No date'),
-          slug: frontmatterToString(frontmatter.slug, fileName),
-          author,
-          tags: Array.isArray(frontmatter.tags)
-            ? frontmatter.tags
-            : frontmatter.tags
-              ? [frontmatter.tags]
-              : [],
-          image: processImageUrl(frontmatter.image),
-        };
-
-        allPosts.push(post);
-      } catch (error) {
-        console.error(`Error processing ${filePath}:`, error);
-      }
-    }
-
-    const sortedPosts = allPosts.sort((a, b) => {
-      const dateA = new Date(a.date).getTime() || 0;
-      const dateB = new Date(b.date).getTime() || 0;
-      return dateB - dateA;
-    });
-
-    return category
-      ? sortedPosts.filter((post) => post.category === category)
-      : sortedPosts;
-  } catch (error) {
-    console.error('Error fetching markdown posts metadata:', error);
-    return [];
+  if (category) {
+    posts = posts.filter((p) => p.category === category);
   }
+
+  return paginate(posts, offset, limit);
 };
 
 /**
  * Fetch a single post by slug with full content
  */
-export const fetchMarkdownPostBySlug = async (
-  slug: string,
-): Promise<Post | null> => {
-  try {
-    // Get all posts metadata first to find the correct file
-    const allPostsMetadata = await fetchMarkdownPostsMetadata();
-    const targetPost = allPostsMetadata.find((post) => post.slug === slug);
+export const fetchPostBySlug = async (slug: string): Promise<Post | null> => {
+  const meta = (postsIndex as PostMetaData[]).find((p) => p.slug === slug);
 
-    if (!targetPost) {
-      return null;
+  if (!meta) return null;
+
+  const markdownFiles = import.meta.glob(
+    '@/constants/MarkdownFiles/posts/*.md',
+    { query: '?raw', import: 'default' },
+  );
+
+  for (const [path, loader] of Object.entries(markdownFiles)) {
+    if (path.endsWith(`/${meta.id}.md`)) {
+      const raw = (await loader()) as string;
+
+      // IMPORTANT: strip frontmatter using gray-matter style split
+      const content = raw.replace(/^---[\s\S]*?---\s*/, '');
+
+      return {
+        ...meta,
+        content,
+      };
     }
-
-    // Dynamically import only the needed file
-    const markdownFiles = import.meta.glob(
-      '@/constants/MarkdownFiles/posts/*.md',
-      {
-        query: '?raw',
-        import: 'default',
-      },
-    );
-
-    // Find the file that matches the slug
-    for (const [filePath, importFn] of Object.entries(markdownFiles)) {
-      const fileName = filePath.split('/').pop()?.replace('.md', '') || '';
-
-      // Check if this file corresponds to our post
-      if (fileName === targetPost.id) {
-        const fileContent = await importFn();
-        const { content } = parseFrontmatter(fileContent as string);
-
-        return {
-          ...targetPost,
-          content,
-        };
-      }
-    }
-
-    return null;
-  } catch (error) {
-    console.error(`Error fetching post by slug ${slug}:`, error);
-    return null;
   }
+
+  return null;
 };
 
 /**
  * Get posts by author slug (metadata only)
  */
-export const getPostsByAuthor = async (
-  authorSlug: string,
-): Promise<PostMetaData[]> => {
-  const allPosts = await fetchMarkdownPostsMetadata();
-  return allPosts.filter((post) => post.author?.slug === authorSlug);
-};
+export const getPostsByAuthor = (authorSlug: string): PostMetaData[] =>
+  (postsIndex as PostMetaData[]).filter((p) => p.author?.slug === authorSlug);
 
 /**
  * Get posts by tag (metadata only)
  */
-export const getPostsByTag = async (tag: string): Promise<PostMetaData[]> => {
-  const allPosts = await fetchMarkdownPostsMetadata();
-  return allPosts.filter((post) =>
-    post.tags.some((postTag) => postTag.toLowerCase() === tag.toLowerCase()),
+export const getPostsByTag = (tag: string): PostMetaData[] =>
+  (postsIndex as PostMetaData[]).filter((p) =>
+    p.tags.some((t) => t.toLowerCase() === tag.toLowerCase()),
   );
-};
 
 /**
  * Get all unique tags from posts (metadata only)
  */
-export const getAllTags = async (): Promise<string[]> => {
-  const allPosts = await fetchMarkdownPostsMetadata();
-  const tagSet = new Set<string>();
-
-  allPosts.forEach((post) => {
-    post.tags.forEach((tag) => tagSet.add(tag));
-  });
-
-  return Array.from(tagSet).sort();
+export const getAllTags = (): string[] => {
+  const set = new Set<string>();
+  (postsIndex as PostMetaData[]).forEach((p) =>
+    p.tags.forEach((t) => set.add(t)),
+  );
+  return Array.from(set).sort();
 };
 
 /**
  * Get a single post by slug WITH content
  */
 export const getPostBySlug = async (slug: string): Promise<Post | null> => {
-  return await fetchMarkdownPostBySlug(slug);
+  return await fetchPostBySlug(slug);
 };
 
 /**
  * Get all posts metadata (without content)
  */
-export const getAllPosts = async (): Promise<PostMetaData[]> =>
-  await fetchMarkdownPostsMetadata();
+export const getAllPosts = (): PostMetaData[] => fetchPostsMetadata().posts;
 
 /**
  * Group posts by category (metadata only)

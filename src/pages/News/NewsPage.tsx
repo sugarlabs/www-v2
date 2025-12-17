@@ -52,10 +52,10 @@ const NewsPage: React.FC = () => {
   });
 
   useEffect(() => {
-    async function load() {
+    function load() {
       setIsLoading(true);
       try {
-        const allPosts = await getAllPosts();
+        const allPosts = getAllPosts();
         const grouped = groupPostsByCategory(allPosts);
         setPostsByCategory(grouped);
         setCategories(Object.keys(grouped));
