@@ -93,7 +93,7 @@ export function Testimonials() {
   const secondRow = testimonials.slice(Math.ceil(testimonials.length / 2));
 
   return (
-    <div className="w-full bg-linear-to-b from-white-800 to-[#F5DDC8] dark:from-gray-900 dark:from-20% dark:via-gray-800 dark:to-gray-900">
+    <div className="w-full bg-linear-to-b from-white-800 to-[#F5DDC8] dark:from-gray-900  dark:via-gray-950 dark:to-gray-950">
       {/* Heading Section with Hearts */}
       <motion.div
         className="flex items-center justify-center gap-4 md:gap-6 mb-12"
