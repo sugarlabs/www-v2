@@ -6,7 +6,8 @@ import {
 } from '@/styles/Animations.ts';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
-import Product from '@/components/Product';
+import ProductCard from '@/components/Product';
+import { products } from '@/constants/ProductsData';
 
 const ProductsPage = () => {
   return (
@@ -27,7 +28,13 @@ const ProductsPage = () => {
             <span className="text-red-500">MERCHANDISE</span>
           </motion.h2>
           <motion.div variants={zoomInAnimation}>
-            <Product />
+            <section className="py-12 px-4">
+              <div className="max-w-5xl mx-auto grid grid-cols-1 gap-12">
+                {products.map((product, index) => (
+                  <ProductCard key={index} product={product} />
+                ))}
+              </div>
+            </section>
           </motion.div>
         </motion.div>
       </main>
