@@ -6,14 +6,6 @@ export interface Goal {
   category?: string;
 }
 
-export interface SectionContentType {
-  title: {
-    main: string;
-    highlight: string;
-  };
-  introduction: string;
-}
-
 export interface AnimationsType {
   goalItem: {
     initial: MotionProps['initial'];
@@ -70,16 +62,6 @@ export const goals: Goal[] = [
     category: 'Communication',
   },
 ];
-
-// Section text content
-export const sectionContent: SectionContentType = {
-  title: {
-    main: 'Our ',
-    highlight: 'Goals',
-  },
-  introduction:
-    'At Sugar Labs, we strive to create a vibrant ecosystem where technology empowers education. Our strategic goals focus on expanding our impact while maintaining our core values.',
-};
 
 // Animation settings
 export const animations: AnimationsType = {
