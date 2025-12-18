@@ -10,7 +10,7 @@ import Section from '@/components/AboutUs/Section';
 
 const AboutUs = () => {
   return (
-    <div className="">
+    <>
       <Header />
       <motion.main
         initial={{ opacity: 0 }}
@@ -35,7 +35,7 @@ const AboutUs = () => {
         </div>
       </motion.main>
       <Footer />
-    </div>
+    </>
   );
 };
 
