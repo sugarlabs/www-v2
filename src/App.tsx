@@ -11,7 +11,6 @@ const App = () => {
     const handleRedirect = () => {
       const redirectPath = sessionStorage.getItem('gh_redirect');
       if (redirectPath) {
-        console.log('Restoring route:', redirectPath);
         sessionStorage.removeItem('gh_redirect');
         setTimeout(() => {
           router.navigate(redirectPath);
