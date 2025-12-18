@@ -19,28 +19,28 @@ const HeroSection = () => {
 
   return (
     <motion.div
-      className="relative min-h-[50vh] flex flex-col items-center justify-center text-center px-4 py-16 sm:py-20 overflow-hidden"
+      className="relative min-h-[50vh] flex flex-col items-center justify-center text-center px-4 py-16 sm:py-20"
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
     >
       {/* Enhanced background elements with gradient overlays - repositioned for mobile */}
       <motion.div
-        className="absolute top-5 left-5 sm:top-10 sm:left-10 w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 blur-xl sm:blur-2xl opacity-60 dark:opacity-40"
+        className="absolute top-5 left-5 sm:top-10 sm:left-10 w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-linear-to-br from-indigo-400 to-blue-500 blur-xl sm:blur-2xl opacity-60 dark:opacity-40"
         variants={fadeIn}
         custom={0.2}
         initial="hidden"
         animate="visible"
       />
       <motion.div
-        className="absolute bottom-5 right-5 sm:bottom-10 sm:right-10 w-32 h-32 sm:w-48 sm:h-48 rounded-full bg-gradient-to-tr from-emerald-300 to-teal-400 blur-xl sm:blur-2xl opacity-50 dark:opacity-30"
+        className="absolute bottom-5 right-5 sm:bottom-10 sm:right-10 w-32 h-32 sm:w-48 sm:h-48 rounded-full bg-linear-to-tr from-emerald-300 to-teal-400 blur-xl sm:blur-2xl opacity-50 dark:opacity-30"
         variants={fadeIn}
         custom={0.4}
         initial="hidden"
         animate="visible"
       />
       <motion.div
-        className="absolute top-1/2 left-1/4 w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-gradient-to-r from-amber-300 to-yellow-400 blur-xl sm:blur-2xl opacity-40 dark:opacity-20"
+        className="absolute top-1/2 left-1/4 w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-linear-to-r from-amber-300 to-yellow-400 blur-xl sm:blur-2xl opacity-40 dark:opacity-20"
         variants={fadeIn}
         custom={0.6}
         initial="hidden"
@@ -85,7 +85,7 @@ const HeroSection = () => {
 
             {/* Enhanced animated underline with gradient - adjusted for mobile */}
             <motion.div
-              className="absolute -z-10 h-3 sm:h-6 bottom-1 sm:bottom-2 left-0 transform -skew-x-6 bg-gradient-to-r from-emerald-300 via-teal-400 to-cyan-300 opacity-70 dark:opacity-80"
+              className="absolute -z-10 h-3 sm:h-6 bottom-1 sm:bottom-2 left-0 transform -skew-x-6 bg-linear-to-r from-emerald-300 via-teal-400 to-cyan-300 opacity-70 dark:opacity-80"
               variants={slideInLeft}
               initial="hidden"
               animate="visible"
@@ -96,7 +96,7 @@ const HeroSection = () => {
 
         {/* Decorative divider - adjusted for consistent spacing */}
         <motion.div
-          className="w-16 sm:w-24 h-1 sm:h-1.5 mx-auto mb-6 sm:mb-8 rounded-full bg-gradient-to-r from-blue-500 to-slate-500"
+          className="w-16 sm:w-24 h-1 sm:h-1.5 mx-auto mb-6 sm:mb-8 rounded-full bg-linear-to-r from-blue-500 to-slate-500"
           variants={dividerVariants}
           initial="hidden"
           animate="visible"
@@ -143,7 +143,7 @@ const HeroSection = () => {
 
       {/* Enhanced interactive mouse-follow effect - adjusted size for mobile */}
       <motion.div
-        className="absolute w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 dark:from-indigo-900/20 dark:via-purple-900/20 dark:to-pink-900/20 rounded-full blur-2xl sm:blur-3xl opacity-30 dark:opacity-20"
+        className="absolute w-64 h-64 sm:w-96 sm:h-96 bg-linear-to-br from-indigo-100 via-purple-100 to-pink-100 dark:from-indigo-900/20 dark:via-purple-900/20 dark:to-pink-900/20 rounded-full blur-2xl sm:blur-3xl opacity-30 dark:opacity-20"
         variants={heroAnimations.mouseFollow}
         initial="hidden"
         animate="visible"
