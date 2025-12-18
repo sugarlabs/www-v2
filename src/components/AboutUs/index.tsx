@@ -6,11 +6,11 @@ import ProjectsSection from '@/components/AboutUs/ProjectSection';
 import RoadmapSection from '@/components/AboutUs/RoadmapSection';
 
 const SECTION_CONTENTS: Record<SectionId, () => React.JSX.Element> = {
-    mission: () => <MissionSection />,
-    principles: () => <PrinciplesSection />,
-    goals: () => <GoalsSection />,
-    projects: () => <ProjectsSection />,
-    roadmap: () => <RoadmapSection />,
+  mission: () => <MissionSection />,
+  principles: () => <PrinciplesSection />,
+  goals: () => <GoalsSection />,
+  projects: () => <ProjectsSection />,
+  roadmap: () => <RoadmapSection />,
 };
 
 export default SECTION_CONTENTS;

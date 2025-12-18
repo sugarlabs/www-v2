@@ -7,7 +7,6 @@ import { SECTIONS } from '@/constants/aboutUs';
 import SECTION_CONTENTS from '@/components/AboutUs';
 import Section from '@/components/AboutUs/Section';
 
-
 const AboutUs = () => {
   return (
     <>
@@ -26,12 +25,15 @@ const AboutUs = () => {
             const SectionContent = SECTION_CONTENTS[section.id];
 
             return (
-              <Section id={section.id} title={section.title} description={section.description}>
+              <Section
+                id={section.id}
+                title={section.title}
+                description={section.description}
+              >
                 <SectionContent />
               </Section>
             );
           })}
-
         </div>
       </motion.main>
       <Footer />

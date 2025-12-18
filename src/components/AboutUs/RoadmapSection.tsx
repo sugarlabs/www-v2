@@ -13,7 +13,7 @@ const RoadmapSection: React.FC = () => {
   const progressHeight = useTransform(
     scrollYProgress,
     [0, 0.8],
-    ['0%', '100%']
+    ['0%', '100%'],
   );
 
   return (
@@ -37,7 +37,7 @@ const RoadmapSection: React.FC = () => {
               className={`flex mb-16 ${index % 2 === 0 ? 'justify-start' : 'justify-end'} relative`}
               initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: '-100px' }}
               transition={{ duration: 0.6, delay: 0.1 * index }}
             >
               {/* Content */}
@@ -63,7 +63,7 @@ const RoadmapSection: React.FC = () => {
                       ${item.stepColor || 'bg-blue-600'}`}
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
+                  viewport={{ once: true, margin: '-50px' }}
                   transition={{ duration: 0.5, delay: 0.2 + 0.1 * index }}
                 >
                   {index + 1}
@@ -95,7 +95,7 @@ const RoadmapSection: React.FC = () => {
               className="relative w-full flex items-start space-x-4 pr-2"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: 0.1 * index }}
             >
               {/* Step number */}
@@ -104,7 +104,7 @@ const RoadmapSection: React.FC = () => {
                     ${item.stepColor || 'bg-blue-600'}`}
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
-                viewport={{ once: true, margin: "-30px" }}
+                viewport={{ once: true, margin: '-30px' }}
                 transition={{ duration: 0.4, delay: 0.2 }}
               >
                 {index + 1}

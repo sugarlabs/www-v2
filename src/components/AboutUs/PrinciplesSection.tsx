@@ -34,9 +34,7 @@ const PrinciplesSection = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-80"></div>
             <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-              <h3 className="text-xl font-semibold">
-                Our Guiding Principles
-              </h3>
+              <h3 className="text-xl font-semibold">Our Guiding Principles</h3>
               <div className="w-20 h-0.5 bg-rose-600 mt-2 mb-3"></div>
               <p className="text-sm text-slate-100">
                 Values that drive our organization forward

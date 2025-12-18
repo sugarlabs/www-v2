@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { SECTIONS, SectionId } from '@/constants/aboutUs';
 
-
 const TextMaskSection = () => {
   const handleScroll = (id: SectionId) => {
     const el = document.getElementById(id);
@@ -11,7 +10,7 @@ const TextMaskSection = () => {
       behavior: 'smooth',
       block: 'start',
     });
-  }
+  };
   return (
     <motion.div
       className="
@@ -123,7 +122,7 @@ const TextMaskSection = () => {
       {/* Navigation bar */}
       <nav className="w-full py-8">
         <ul className="flex flex-wrap justify-center gap-4 md:gap-12">
-          {SECTIONS.map(item => (
+          {SECTIONS.map((item) => (
             <li key={item.id}>
               <button
                 onClick={() => handleScroll(item.id)}
