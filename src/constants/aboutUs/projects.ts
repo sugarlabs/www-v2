@@ -52,15 +52,3 @@ export const projectIcons = [
   { color: 'bg-orange-300', icon: '🌐', title: 'Sugarizer' },
   { color: 'bg-orange-100', icon: '🎮', title: 'Activities' },
 ];
-
-export const projectsContent = {
-  sectionId: 'projects',
-  title: {
-    prefix: 'Our',
-    highlight: 'Projects',
-  },
-  description:
-    'Sugar Labs develops and maintains several key projects that support our educational mission. These projects range from complete kid-friendly desktop environments to specific applications, each designed to enhance learning through technology.',
-  ctaText: 'Learn more',
-  displayProjectCount: 2,
-};
