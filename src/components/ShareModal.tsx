@@ -1,5 +1,5 @@
 import React from 'react';
-
+import toast from 'react-hot-toast';
 interface ShareModalProps {
   open: boolean;
   onClose: () => void;
@@ -13,7 +13,18 @@ const shareOptions = [
     name: 'Copy Link',
     action: async (url: string) => {
       await navigator.clipboard.writeText(url);
-      alert('Link copied to clipboard!');
+      toast.success('Link copied to clipboard!', {
+        duration: 3000,
+        icon: '📋',
+        style: {
+          background: 'linear-gradient(to right, #2563eb, #10b981)',
+          color: '#fff',
+          fontWeight: '500',
+          padding: '16px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)',
+        },
+      });
     },
     icon: (
       <svg
