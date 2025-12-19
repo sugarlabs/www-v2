@@ -16,7 +16,7 @@ const shareOptions = [
       toast.success('Link copied to clipboard!', {
         duration: 3000,
         icon: null,
-        position: 'bottom-right',
+        position: 'top-right',
         style: {
           background: 'var(--toast-bg, #ffffff)',
           color: 'var(--toast-text, #000000)',
