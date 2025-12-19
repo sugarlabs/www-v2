@@ -72,7 +72,15 @@ const FAQItem = ({ index, question, answer }: FAQItemProps) => {
         animate="animate"
         style={{ overflow: 'hidden' }}
       >
-        <p className="px-6 pb-4 text-gray-700 dark:text-gray-300">{answer}</p>
+        <p
+          className="px-6 pb-4 text-gray-700 dark:text-gray-300"
+          dangerouslySetInnerHTML={{
+            __html: answer.replace(
+              /(https?:\/\/[^\s]+)/g,
+              '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline hover:text-blue-800 dark:text-blue-400">$1</a>',
+            ),
+          }}
+        />
       </motion.div>
     </motion.div>
   );
