@@ -1,3 +1,14 @@
+:root {
+  --toast-bg: #ffffff;
+  --toast-text: #000000;
+  --toast-border: #000000;
+}
+
+.dark {
+  --toast-bg: #3f3f46;
+  --toast-text: #e5e5e5;
+  --toast-border: #a1a1aa;
+}
 @font-face {
   font-family: 'Caveat';
   src: url('/fonts/Caveat-Regular.ttf');
