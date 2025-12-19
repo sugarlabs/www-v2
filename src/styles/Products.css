@@ -1,0 +1,22 @@
+/* Carousel indicator dots - improved contrast */
+.carousel .control-dots .dot {
+  background-color: #9ca3af !important;
+  opacity: 0.7 !important;
+  box-shadow: none !important;
+}
+
+.carousel .control-dots .dot.selected {
+  background-color: #000000 !important;
+  opacity: 1 !important;
+}
+
+/* Dark mode support */
+.dark .carousel .control-dots .dot {
+  background-color: #6b7280 !important;
+  opacity: 0.7 !important;
+}
+
+.dark .carousel .control-dots .dot.selected {
+  background-color: #1f2937 !important;
+  opacity: 1 !important;
+}
