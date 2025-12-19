@@ -14,17 +14,19 @@ const shareOptions = [
     action: async (url: string) => {
       await navigator.clipboard.writeText(url);
       toast.success('Link copied to clipboard!', {
-        duration: 3000,
-        icon: '📋',
-        style: {
-          background: 'linear-gradient(to right, #2563eb, #10b981)',
-          color: '#fff',
-          fontWeight: '500',
-          padding: '16px',
-          borderRadius: '12px',
-          boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)',
-        },
-      });
+  duration: 3000,
+  icon: null,
+  position: 'bottom-right',
+  style: {
+    background: 'var(--toast-bg, #ffffff)',
+    color: 'var(--toast-text, #000000)',
+    border: '1px solid var(--toast-border, #000000)',
+    fontWeight: '500',
+    padding: '16px',
+    borderRadius: '12px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+  },
+});
     },
     icon: (
       <svg
