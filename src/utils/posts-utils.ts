@@ -4,17 +4,20 @@
 
 import { parseAuthorReference, AuthorReference } from '@/utils/author-utils';
 
-export interface Post {
+export interface PostMetaData {
   id: string;
   title: string;
   excerpt: string;
-  content: string;
   category: string;
   date: string;
   slug: string;
   author: AuthorReference | null;
   tags: string[];
   image: string;
+}
+
+export interface Post extends PostMetaData {
+  content: string;
 }
 
 /**
@@ -86,11 +89,11 @@ const processImageUrl = (imageValue: string | string[] | undefined): string => {
 };
 
 /**
- * Fetch and parse all markdown blog posts with author support
+ * Fetch and parse metadata only (without content) for all markdown posts
  */
-export const fetchMarkdownPosts = async (
+export const fetchMarkdownPostsMetadata = async (
   category?: string,
-): Promise<Post[]> => {
+): Promise<PostMetaData[]> => {
   try {
     const markdownFiles = import.meta.glob(
       '@/constants/MarkdownFiles/posts/*.md',
@@ -100,14 +103,12 @@ export const fetchMarkdownPosts = async (
       },
     );
 
-    const allPosts: Post[] = [];
+    const allPosts: PostMetaData[] = [];
 
     for (const [filePath, importFn] of Object.entries(markdownFiles)) {
       try {
         const fileContent = await importFn();
-        const { frontmatter, content } = parseFrontmatter(
-          fileContent as string,
-        );
+        const { frontmatter } = parseFrontmatter(fileContent as string);
         const fileName = filePath.split('/').pop()?.replace('.md', '') || '';
 
         // Parse author reference
@@ -116,11 +117,10 @@ export const fetchMarkdownPosts = async (
           frontmatterToString(frontmatter.description),
         );
 
-        const post: Post = {
+        const post: PostMetaData = {
           id: fileName,
           title: frontmatterToString(frontmatter.title, 'Untitled'),
           excerpt: frontmatterToString(frontmatter.excerpt),
-          content,
           category: frontmatterToString(frontmatter.category, 'UNCATEGORIZED'),
           date: frontmatterToString(frontmatter.date, 'No date'),
           slug: frontmatterToString(frontmatter.slug, fileName),
@@ -149,34 +149,83 @@ export const fetchMarkdownPosts = async (
       ? sortedPosts.filter((post) => post.category === category)
       : sortedPosts;
   } catch (error) {
-    console.error('Error fetching markdown posts:', error);
+    console.error('Error fetching markdown posts metadata:', error);
     return [];
   }
 };
 
 /**
- * Get posts by author slug
+ * Fetch a single post by slug with full content
  */
-export const getPostsByAuthor = async (authorSlug: string): Promise<Post[]> => {
-  const allPosts = await fetchMarkdownPosts();
+export const fetchMarkdownPostBySlug = async (
+  slug: string,
+): Promise<Post | null> => {
+  try {
+    // Get all posts metadata first to find the correct file
+    const allPostsMetadata = await fetchMarkdownPostsMetadata();
+    const targetPost = allPostsMetadata.find((post) => post.slug === slug);
+
+    if (!targetPost) {
+      return null;
+    }
+
+    // Dynamically import only the needed file
+    const markdownFiles = import.meta.glob(
+      '@/constants/MarkdownFiles/posts/*.md',
+      {
+        query: '?raw',
+        import: 'default',
+      },
+    );
+
+    // Find the file that matches the slug
+    for (const [filePath, importFn] of Object.entries(markdownFiles)) {
+      const fileName = filePath.split('/').pop()?.replace('.md', '') || '';
+
+      // Check if this file corresponds to our post
+      if (fileName === targetPost.id) {
+        const fileContent = await importFn();
+        const { content } = parseFrontmatter(fileContent as string);
+
+        return {
+          ...targetPost,
+          content,
+        };
+      }
+    }
+
+    return null;
+  } catch (error) {
+    console.error(`Error fetching post by slug ${slug}:`, error);
+    return null;
+  }
+};
+
+/**
+ * Get posts by author slug (metadata only)
+ */
+export const getPostsByAuthor = async (
+  authorSlug: string,
+): Promise<PostMetaData[]> => {
+  const allPosts = await fetchMarkdownPostsMetadata();
   return allPosts.filter((post) => post.author?.slug === authorSlug);
 };
 
 /**
- * Get posts by tag
+ * Get posts by tag (metadata only)
  */
-export const getPostsByTag = async (tag: string): Promise<Post[]> => {
-  const allPosts = await fetchMarkdownPosts();
+export const getPostsByTag = async (tag: string): Promise<PostMetaData[]> => {
+  const allPosts = await fetchMarkdownPostsMetadata();
   return allPosts.filter((post) =>
     post.tags.some((postTag) => postTag.toLowerCase() === tag.toLowerCase()),
   );
 };
 
 /**
- * Get all unique tags from posts
+ * Get all unique tags from posts (metadata only)
  */
 export const getAllTags = async (): Promise<string[]> => {
-  const allPosts = await fetchMarkdownPosts();
+  const allPosts = await fetchMarkdownPostsMetadata();
   const tagSet = new Set<string>();
 
   allPosts.forEach((post) => {
@@ -186,16 +235,26 @@ export const getAllTags = async (): Promise<string[]> => {
   return Array.from(tagSet).sort();
 };
 
-// ... rest of the existing functions remain the same
+/**
+ * Get a single post by slug WITH content
+ */
 export const getPostBySlug = async (slug: string): Promise<Post | null> => {
-  const allPosts = await fetchMarkdownPosts();
-  return allPosts.find((post) => post.slug === slug) || null;
+  return await fetchMarkdownPostBySlug(slug);
 };
 
-export const getAllPosts = async (): Promise<Post[]> => fetchMarkdownPosts();
+/**
+ * Get all posts metadata (without content)
+ */
+export const getAllPosts = async (): Promise<PostMetaData[]> =>
+  await fetchMarkdownPostsMetadata();
 
-export const groupPostsByCategory = (posts: Post[]): Record<string, Post[]> => {
-  const categoryMap: Record<string, Post[]> = { All: posts };
+/**
+ * Group posts by category (metadata only)
+ */
+export const groupPostsByCategory = (
+  posts: PostMetaData[],
+): Record<string, PostMetaData[]> => {
+  const categoryMap: Record<string, PostMetaData[]> = { All: posts };
 
   posts.forEach((post) => {
     const category = post.category || 'UNCATEGORIZED';

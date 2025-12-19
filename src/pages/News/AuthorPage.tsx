@@ -17,15 +17,15 @@ import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import MarkdownRenderer from '@/utils/MarkdownRenderer';
 import { getAuthorBySlug, Author } from '@/utils/author-utils';
-import { getPostsByAuthor, Post } from '@/utils/posts-utils';
+import { getPostsByAuthor, PostMetaData } from '@/utils/posts-utils';
 
 const AuthorPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
   const [author, setAuthor] = useState<Author | null>(null);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostMetaData[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostMetaData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -101,7 +101,7 @@ const AuthorPage: React.FC = () => {
     setDisplayCount(6); // Reset display count when filters change
   }, [posts, searchTerm, selectedCategory, sortBy]);
 
-  const handlePostClick = (post: Post) => {
+  const handlePostClick = (post: PostMetaData) => {
     const categoryPath = post.category.toLowerCase().replace(/\s+/g, '-');
     navigate(`/news/${categoryPath}/${post.slug}`);
   };
