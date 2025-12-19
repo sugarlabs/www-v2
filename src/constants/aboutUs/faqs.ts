@@ -112,7 +112,7 @@ const faqs: FAQ[] = [
   {
     question: 'Where can I download the Sugar Learning Platform?',
     answer:
-      'You can download Sugar preloaded on Fedora SoaS -  https://fedoraproject.org/spins/soas/download or Trisquel - https://trisquel.info/en/download',
+      'You can download Sugar preloaded on Fedora SoaS - https://fedoraproject.org/spins/soas/download or Trisquel - https://trisquel.info/en/download',
     category: 'installation',
   },
 ];
