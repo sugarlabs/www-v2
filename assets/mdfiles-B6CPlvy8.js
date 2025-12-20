@@ -217,7 +217,7 @@ of Economics Trade and Industry.
 - **Email**: [devin@sugarlabs.org](mailto:devin@sugarlabs.org)
 - **LinkedIn**: [Devin Ulibarri](https://www.linkedin.com/in/devin-ulibarri-76277a300/)
 - **Mastodon**: [@pikurasa@mastodon.social](https://mastodon.social/@pikurasa)
-- **Website**: [www.devinulibarri.com](https://www.devinulibarri.com)`,Po=Object.freeze(Object.defineProperty({__proto__:null,default:i},Symbol.toStringTag,{value:"Module"})),s=`---
+- **Website**: [www.devinulibarri.com](https://www.devinulibarri.com)`,Mo=Object.freeze(Object.defineProperty({__proto__:null,default:i},Symbol.toStringTag,{value:"Module"})),s=`---
 name: "Diwangshu Kakoty"
 slug: "diwangshu-kakoty"
 title: "GSoC'25 Contributor"
@@ -251,7 +251,7 @@ Hi, I'm Diwangshu - a B.Tech student and lifelong learner in computer science. I
 - **Email**: [diwangshukakoty@gmail.com](mailto:diwangshukakoty@gmail.com)
 - **LinkedIn**: [Diwangshu Kakoty](https://www.linkedin.com/in/diwangshu-kakoty/)
 - **Twitter**: [@redCoder101](https://twitter.com/redCoder101)
-- **Discord**: [commanderk3](https://discord.com/users/commanderk3)`,Mo=Object.freeze(Object.defineProperty({__proto__:null,default:s},Symbol.toStringTag,{value:"Module"})),r=`---
+- **Discord**: [commanderk3](https://discord.com/users/commanderk3)`,Po=Object.freeze(Object.defineProperty({__proto__:null,default:s},Symbol.toStringTag,{value:"Module"})),r=`---
 name: "Elwin Li"
 slug: "elwin-li"
 title: "GSoC'25 Contributor"
@@ -763,7 +763,7 @@ Walter Bender, Executive Director of Sugar Labs, said: “Sugar is perfectly sui
 Caroline Meeks of Solution Grove ([www.solutiongrove.com](http://www.solutiongrove.com)), the Sugar on a Stick project manager, commented: “We’re counting on teachers to help us improve Sugar on a Stick as we work towards our Version‑1 release scheduled for Q3 2009. We just presented Sugar on a Stick at the FOSS VT conference (<http://www.ncose.org/node/47>) where it generated great interest, and our real-world tests at local sites with varied aging PCs have been very encouraging.”
 
 Sugar testers are invited to send bug information and constructive criticism to [feedback@sugarlabs.org](mailto:feedback@sugarlabs.org). “We won’t be able to reply to every message,” continued Ms. Meeks, “but we will read every one in order to make Sugar on a Stick a reliable learning tool in budget-stretched classrooms by the fall.”
-`,Ko=Object.freeze(Object.defineProperty({__proto__:null,default:T},Symbol.toStringTag,{value:"Module"})),P=`---
+`,Ko=Object.freeze(Object.defineProperty({__proto__:null,default:T},Symbol.toStringTag,{value:"Module"})),M=`---
 title: "Sugar Labs annonce la bêta-1 de Sugar on a Stick, version LiveUSB de Sugar, la plate-forme d’apprentissage pour enfants"
 category: "PRESS RELEASE"
 date: "2009-04-22"
@@ -784,7 +784,7 @@ Walter Bender, le directeur exécutif de Sugar Labs, a dit : “Sugar est parfai
 Caroline Meeks de Solution Grove ([www.solutiongrove.com](http://www.solutiongrove.com)), gestionnaire du projet Sugar on a Stick, a commenté : “Nous comptons sur les enseignants pour nous aider à améliorer Sugar on a Stick tandis que nous continuons à travailler sur la Version-1 prévue pour le troisième trimestre 2009. Nous venons de présenter Sugar on a Stick à la conférence FOSS VT (<http://www.ncose.org/node/47>) où il a suscité beaucoup d’intérêt, et nos tests sur le terrain avec des PCs variés et anciens ont été très encourageants.”
 
 Les testeurs de Sugar sont invités à envoyer des informations sur tout bogue et autres critiques constructives à l’adresse suivante : [feedback@sugarlabs.org](mailto:feedback@sugarlabs.org). “Nous ne pourrons pas répondre à chaque message,” a continué Mme Meeks, “mais nous allons lire chacun afin de rendre Sugar on a Stick un outil fiable dans les classes qui manquent de ressources d’ici la rentrée.”
-`,Vo=Object.freeze(Object.defineProperty({__proto__:null,default:P},Symbol.toStringTag,{value:"Module"})),M=`---
+`,Vo=Object.freeze(Object.defineProperty({__proto__:null,default:M},Symbol.toStringTag,{value:"Module"})),P=`---
 title: "Sugar Labs Announces Immediate Availability of Sugar on a Stick; Learning Platform Runs on Any PC or Netbook In The Classroom"
 category: "PRESS RELEASE"
 date: "2009-06-24"
@@ -804,7 +804,7 @@ As part of an ongoing effort to make Sugar on a Stick classroom-ready, Sugar Lab
 Learning Activities are at the heart of Sugar. Sugar on a Stick includes 40 Activities to interest young learners such as Read, Write, Paint, and Etoys. Hundreds more Activities are available free for download at the [Sugar Activity Library](http://activities.sugarlabs.org). Most “Sugarized” Activities have student collaboration built-in; students and teachers work, play, and learn on the same Activities together. The Sugar Learning Platform is open, so by leveraging the work of other open source projects, existing software for children can be integrated; for example, the acclaimed GCompris suite of 100 Activities developed over the past five years by Bruno Coudoin was recently added to Sugar, including Activities such as Chess, Geography, and Sudoku. Teachers and parents interested in Sugar’s Activities and its modern interface for children can watch short videos on the recently opened [Sugar Labs Dailymotion channel](http://www.dailymotion.com/sugarlabs).
 
 Visitors to LinuxTag are welcome to speak with Sugar Labs contributors at booth 7.2a 110a.
-`,Jo=Object.freeze(Object.defineProperty({__proto__:null,default:M},Symbol.toStringTag,{value:"Module"})),C=`---
+`,Jo=Object.freeze(Object.defineProperty({__proto__:null,default:P},Symbol.toStringTag,{value:"Module"})),C=`---
 title: "Sugar Labs annonce la disponibilité immédiate de « Sugar on a Stick », une plate-forme d’apprentissage qui fonctionne sur n’importe quel PC ou netbook dans la salle de classe"
 category: "PRESS RELEASE"
 date: "2009-06-24"
@@ -1967,7 +1967,7 @@ Of the hiring, Sugar Labs board member and founder Walter Bender said, "Devin is
 The officers of Sugar Labs Inc. are currently: Devin Ulibarri, executive director; Claudia Urrea, treasurer; and Walter Bender, secretary. The current board is Samson Goddy, Lionel Laské, Claudia Urrea, Walter Bender, and Alex Perez.
 
 **More Info:**  
-- [Sugar Labs Oversight Board](https://wiki.sugarlabs.org/go/Oversight_Board)`,Pi=Object.freeze(Object.defineProperty({__proto__:null,default:ie},Symbol.toStringTag,{value:"Module"})),se=`---
+- [Sugar Labs Oversight Board](https://wiki.sugarlabs.org/go/Oversight_Board)`,Mi=Object.freeze(Object.defineProperty({__proto__:null,default:ie},Symbol.toStringTag,{value:"Module"})),se=`---
 title: "Musical Squares: From Turtle Blocks to Music Blocks and Beyond"
 excerpt: "Learn about Music Blocks, a visual programming language that combines music and coding, with a hands-on demonstration during this educational Sugar Labs livestream event."
 category: "EVENTS"
@@ -1993,7 +1993,7 @@ tags: "music,programming,education,turtle-blocks,visual-programming,livestream,c
 
 ## About Sugar Labs
 
-Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a global mission to create educational opportunities`,Mi=Object.freeze(Object.defineProperty({__proto__:null,default:se},Symbol.toStringTag,{value:"Module"})),re=`---
+Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a global mission to create educational opportunities`,Pi=Object.freeze(Object.defineProperty({__proto__:null,default:se},Symbol.toStringTag,{value:"Module"})),re=`---
 title: "Learn to make games with Gameeky!"
 excerpt: "Join developer Martin Abente Lahaye for a hands-on tutorial on creating games with Gameeky, a platform that empowers young learners and educators to build cooperative games and learning experiences."
 category: "EVENTS"
@@ -2152,66 +2152,160 @@ excerpt: "The inaugural issue of Sugar Labs' newsletter covering recent updates,
 category: "COMMUNITY NEWS"
 date: "2024-09-20"
 slug: "the-sweet-spot-issue-001"
-author: "Sugar Labs"
-description: "Community Newsletter"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "newsletter,community,gsoc,dmp,updates,volunteer,outreach,education"
 ---
 <!-- markdownlint-disable -->
-# Recent news for September 20, 2024
 
-Welcome to the very first issue of the **"Sweet Spot"**, a newsletter for Sugar Labs-related news in development, student and teacher work, events, how to get involved, and other news and information. This newsletter will be published semi-regularly for now, but the plan is to publish it on a bi-monthly, perhaps even monthly, basis in the future. Our aim with this newsletter is to help keep the growing body of Sugar Labs contributors on the same page, all while documenting our growth for our own and others' reference.
+*Recent news for September 20, 2024*
 
-This first issue is meant to set a precedent of communication and documentation, as well as to help inform the community of our current status, recent progress, and future plans. Its predecessor is the ["Sugar Digest"](https://lists.sugarlabs.org/archive/community-news/), which still serves as an important catalog of our activities. Like Sugar Digest, this newsletter is intended to keep community members in the loop about everything going on within Sugar Labs. It will highlight any recent publications from us. It will occasionally include links to third-party news and updates that our community finds relevant.
+Welcome to the very first issue of the "Sweet Spot", a newsletter for Sugar Labs-related news in development, student and teacher work, events, how to get involved, and other news and information. This newsletter will be published semi-regularly for now, but the plan is
+to publish it on a bi-monthly, perhaps even monthly, basis in the future. Our aim with this newsletter is to help keep the growing body of Sugar Labs contributors on the same page, all while documenting our growth for our own and others' reference.
 
-This first issue has links and "news" from a few months back. Future installments will focus on a more acute timeframe than this inaugural issue, which aims to cover our news since the beginning of this year.
+This first issue is meant to set a precedent of communication and documentation, as well as to help inform the community of our current status, recent progress, and future plans. Its predecessor is the [“Sugar Digest”][1], which still serves as an important catalog of our activities. Like Sugar Digest, this newsletter is intended to keep community members in the loop about everything going on within Sugar Labs. It will highlight any recent publications from us. It will occasionally include links to third-party news and updates that our community finds relevant.
 
-We hope that you enjoy this first issue. And, if you have something you'd like to share, please feel free to email [info@sugarlabs.org](mailto:info@sugarlabs.org). And for those who would like to volunteer in other ways, this edition has a list of volunteer help that we need with Sugar Labs overall.
+[1]: https://lists.sugarlabs.org/archive/community-news/
+
+This first issue has links and “news” from a few months back. Future installments will focus on a more acute timeframe than this inaugural issue, which aims to cover our news since the beginning of this year.
+
+We hope that you enjoy this first issue. And, if you have something you’d like to share, please feel free to email info@sugarlabs.org. And for those who would like to volunteer in other ways, this edition has a list of volunteer help that we need with Sugar Labs overall.
 
 ## Updates
 
 ### GSoC and DMP students complete their projects
 
-This year's GSoC and DMP students have completed their work for Sugar Labs. Students were asked to document their progress through blogs and participate in online events showcasing their work at regular intervals throughout the summer. You can find links to their blog posts on our bi-weekly summary posts on Medium and watch videos of their presentations on YouTube.
+This year’s GSoC and DMP students have completed their work for Sugar
+Labs. Students were asked to document their progress through blogs and
+participate in online events showcasing their work at regular
+intervals throughout the summer. You can find links to their blog
+posts on our bi-weekly summary posts on Medium and watch videos of
+their presentations on YouTube.
 
-#### Bi-weekly GSoC and DMP summaries:
+Bi-weekly GSoC and DMP summaries:
 
-- [Please help us welcome this summer's Google Summer of Code team for Music Blocks development](https://medium.com/@sugarlabs/please-help-us-welcome-this-summers-google-summer-of-code-team-for-music-blocks-development-6c2524244605)
-- [GSoC 2024 Students Weekly Report 1](https://medium.com/@sugarlabs/gsoc-2024-students-weekly-report-1-1af7c29ede0a)
-- [GSoC 2024 Students Weekly Reports 2 and 3](https://medium.com/@sugarlabs/gsoc-2024-students-weekly-reports-2-and-3-af03ec159b49)
-- [GSoC 2024 Students Weekly Reports 4 and 5](https://medium.com/@sugarlabs/gsoc-2024-students-weekly-reports-4-and-5-987825617340)
-- [GSoC 2024 Students Weekly Reports 6 and 7](https://medium.com/@sugarlabs/gsoc-2024-students-weekly-reports-6-and-7-9eacb78e4093)
-- [GSoC 2024 Students Weekly Reports 8 and 9](https://medium.com/@sugarlabs/gsoc-2024-students-weekly-reports-8-and-9-fb7d86cfabb1)
-- [GSoC 2024 Students Weekly Reports 10 and 11](https://medium.com/@sugarlabs/gsoc-2024-students-weekly-reports-10-and-11-670e9f3bb6b0)
+  * <https://medium.com/@sugarlabs/please-help-us-welcome-this-summers-google-summer-of-code-team-for-music-blocks-development-6c2524244605>
+  * <https://medium.com/@sugarlabs/gsoc-2024-students-weekly-report-1-1af7c29ede0a>
+  * <https://medium.com/@sugarlabs/gsoc-2024-students-weekly-reports-2-and-3-af03ec159b49>  
+  * <https://medium.com/@sugarlabs/gsoc-2024-students-weekly-reports-4-and-5-987825617340>
+  * <https://medium.com/@sugarlabs/gsoc-2024-students-weekly-reports-6-and-7-9eacb78e4093>  
+  * <https://medium.com/@sugarlabs/gsoc-2024-students-weekly-reports-8-and-9-fb7d86cfabb1>  
+  * <https://medium.com/@sugarlabs/gsoc-2024-students-weekly-reports-10-and-11-670e9f3bb6b0>
 
-#### YouTube updates:
+YouTube updates:
 
-- [GSoC+DMP contributors initial check-in 1 of 2: Music Blocks projects](https://www.youtube.com/watch?v=PeIS3gXPFj0)
-- [GSoC+DMP contributors initial check-in 2 of 2: Sugarizer, Raspberry Pi, Math games, and more](https://www.youtube.com/watch?v=k7eY-tkl2zw)
-- [Summer Interlude by GSoC+DMP Interns, Presentation 1 of 2: Music Blocks and Sugarizer](https://www.youtube.com/watch?v=qWLWCdp4_D4)
-- [Summer Interlude by GSoC+DMP Interns, Presentation 2 of 2: RPi, AI Assists, Math games, and more](https://www.youtube.com/watch?v=TARoJDitQVg)
-- [Summer Finale by GSoC Interns, Presentation 1 of 3: Music Blocks and Sugarizer](https://www.youtube.com/watch?v=dVYpK5fTHsQ)
-- [Summer Finale by GSoC Interns, Presentation 2 of 3: RPi, AI Assists, Math games, and more](https://www.youtube.com/watch?v=d0nTfKmOWl8)
-- [Summer Finale by DMP Interns, Presentation 3 of 3: Music Blocks, Raspberry Pi and Math games](https://www.youtube.com/watch?v=0yMqz3GW3rY)
+  * [GSoC+DMP contributors initial check-in 1 of 2: Music Blocks projects](https://www.youtube.com/watch?v=PeIS3gXPFj0)  
+  * [GSoC+DMP contributors initial check-in 2 of 2: Sugarizer, Raspberry Pi, Math games, and more](https://www.youtube.com/watch?v=k7eY-tkl2zw)  
+  * [Summer Interlude by GSoC+DMP Interns, Presentation 1 of 2: Music Blocks and Sugarizer](https://www.youtube.com/watch?v=qWLWCdp4_D4)  
+  * [Summer Interlude by GSoC+DMP Interns, Presentation 2 of 2: RPi, AI Assists, Math games, and more](https://www.youtube.com/watch?v=TARoJDitQVg)  
+  * [Summer Finale by GSoC Interns, Presentation 1 of 3: Music Blocks and Sugarizer](https://www.youtube.com/watch?v=dVYpK5fTHsQ)  
+  * [Summer Finale by GSoC Interns, Presentation 2 of 3: RPi, AI Assists, Math games, and more](https://www.youtube.com/watch?v=d0nTfKmOWl8)  
+  * [Summer Finale by DMP Interns, Presentation 3 of 3: Music Blocks, Raspberry Pi and Math games](https://www.youtube.com/watch?v=0yMqz3GW3rY) 
+
+### Sugar Labs participating in this year's DMP (Code4GovTech) for the first time
+
+For the first time ever, Sugar Labs will be participating in
+DMP. Sugar Labs will be participating this year in DMP.
+
+*Note: DMP has concluded for this year. To read about the work
+ contributors did this summer, you are encouraged to read our blog on
+ Medium.*
+
+  * <https://medium.com/@sugarlabs/list/code4govtech-3377e03c6dd5>
+
+### Sugar Labs accepted as an org in this year's GSoC, contributors announced
+
+We are proud to share with you that Sugar Labs has been accepted once
+again as an org for this year's Google Summer of Code (GSoC),
+receiving eleven project slots.
+
+  * <https://summerofcode.withgoogle.com/programs/2024/organizations/sugar-labs>
+
+### Sugar Labs turned sixteen this May
+
+*May 15, 2024*
+
+The sixteenth anniversary of Sugar Labs’s founding was on Monday, May
+15, 2024. Please consider marking your calendars for next year’s
+birthday.
+
+  * <https://www.sugarlabs.org/2008/05/15/New-foundation-focused-on-taking-the-Sugar-user-interface-to-the-next-level-of-usability-and-utility/>
+
+### Sugar Labs as a nonprofit and ED announcement
+
+*May 8, 2024*
+
+In the spring of 2021, Sugar Labs Inc. was granted nonprofit status
+from the IRS. In January of this year, Sugar Labs hired its first
+employee since becoming a nonprofit. Sugar Labs community member and
+Music Blocks co-creator Devin Ulibarri was hired by the Sugar Labs
+board of directors to fill the role of full-time executive
+director. The members of board of directors for Sugar Labs
+Inc. currently are Samson Goddy, Lionel Laské, Claudia Urrea, Walter
+Bender, and Alex Perez.
+
+  * <https://www.sugarlabs.org/2024/05/08/Sugar-Labs-announces-nonprofit-status-new-executive-director/>
 
 ### Ways to get involved
 
-Sugar Labs is seeking volunteer assistance in the following ways. Sustained, committed help in any of the following areas will help us grow as an organization. If you are passionate or curious to learn more about any of these roles, and are able to commit the time necessary, then we encourage you to apply. Send a notification of your interest to [info@sugarlabs.org](mailto:info@sugarlabs.org), including some information about yourself, what interests you about the volunteer role, and what experience/qualities make you a good candidate for the position.
+Sugar Labs is seeking volunteer assistance in the following
+ways. Sustained, committed help in any of the following areas will
+help us grow as an organization. If you are passionate or curious to
+learn more about any of these roles, and are able to commit the time
+necessary, then we encourage you to apply. Send a notification of your
+interest to info@sugarlabs.org, including some information about
+yourself, what interests you about the volunteer role, and what
+experience/qualities make you a good candidate for the position.
 
-- [Help Wanted](https://wiki.sugarlabs.org/go/Help_Wanted)
-- [Introduction Video](https://www.youtube.com/watch?v=W5ZLFBZkE34)
+Sugar Labs is a growing organization. We don't currently have the
+resources to hire people to fulfill these roles. Our hope is that we
+one day will be able to, but, for now, we are looking for volunteers
+who can work with the executive director and the board to work
+diligently to improve our operations. What we can provide, in return,
+for your help, is assistance in conducting your role and mentorship
+(especially in the case of technical roles). Plus, you'll gain the
+experience and satisfaction of working with an organization that aims
+to do good in society.
 
-## Social Links
+Please see:
 
-- **Wiki** – [https://wiki.sugarlabs.org](https://wiki.sugarlabs.org)
-- **Mastodon** – [https://mastodon.social/@sugar_labs](https://mastodon.social/@sugar_labs)
-`,Di=Object.freeze(Object.defineProperty({__proto__:null,default:he},Symbol.toStringTag,{value:"Module"})),ge=`---
+  * <https://wiki.sugarlabs.org/go/Help_Wanted>
+  * <https://www.youtube.com/watch?v=W5ZLFBZkE34>
+
+### Upcoming events  
+
+
+*Editorial note: Events will be listed in this section in upcoming
+ issues of Sweet Spot.*
+
+### Social Links  
+
+* Wiki – <https://wiki.sugarlabs.org>  
+* Mastodon – <https://mastodon.social/@sugar_labs>  
+* Twitter/X – <https://twitter.com/sugar_labs>  
+* Facebook – <https://www.facebook.com/SugarLabsforall/>  
+* LinkedIn – <https://www.linkedin.com/company/sugar-labs>  
+* Medium – <https://medium.com/@sugarlabs>
+* YouTube – <https://www.youtube.com/@SugarlabsOrg-EN>
+
+## About Sugar Labs
+
+Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a
+global mission to create educational opportunities in technology to
+youth around the world. Volunteer mentors and contributors work
+together to develop activity-focused software for children. All
+software is developed with learning as the primary goal, necessitating
+the need for source code to be published publicly for study, licensed
+under a Free/Libre license for explicit permission to share and remix,
+and openly worked upon within a community where students are invited
+to make contributions, under guidance of experienced mentors.
+Donations to support the work of Sugar Labs can be made at
+<https://wiki.sugarlabs.org/go/Sugar_Labs/Donate>.`,Di=Object.freeze(Object.defineProperty({__proto__:null,default:he},Symbol.toStringTag,{value:"Module"})),ge=`---
 title: "Fall board elections: How to participate"
 excerpt: "Sugar Labs will be running an election this fall for three seats to its board of directors. Sugar Labs community members are encouraged to participate."
 category: "COMMUNITY NEWS"
 date: "2024-11-08"
 slug: "fall-board-elections-2024-how-to-participate"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "community,election,announcement,sugarlabs,board"
 ---
 <!-- markdownlint-disable -->
@@ -2275,8 +2369,7 @@ excerpt: "Sugar Labs has extended the deadline for board of directors election p
 category: "COMMUNITY NEWS"
 date: "2024-11-22"
 slug: "elections-extension-november-2024"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "elections,governance,board,voting,deadline,community,membership"
 ---
 <!-- markdownlint-disable -->
@@ -2334,8 +2427,7 @@ excerpt: "Sugar Labs Executive Director Devin Ulibarri shares the organization's
 category: "COMMUNITY NEWS"
 date: "2024-12-03"
 slug: "help-sugar-labs-continue-transform-education"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "fundraising,donations,education,nonprofit,growth,community,technology,open-source"
 ---
 <!-- markdownlint-disable -->
@@ -2455,8 +2547,7 @@ excerpt: "The election results for the Sugar Labs Board of Directors have been a
 category: "COMMUNITY NEWS"
 date: "2024-12-19"
 slug: "board-election-results-2025-26"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "elections,governance,board,community,leadership,voting"
 ---
 <!-- markdownlint-disable -->
@@ -2487,8 +2578,7 @@ excerpt: "Sugar Labs Executive Director Devin Ulibarri shares personal experienc
 category: "SUGAR STORIES"
 date: "2024-12-25"
 slug: "reflections-as-parents-and-teachers-sugar-at-home-and-in-classroom"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "education,parenting,classroom,sugar-activities,learning,teaching,literacy,programming"
 ---
 <!-- markdownlint-disable -->
@@ -2553,150 +2643,220 @@ excerpt: "The second issue of Sugar Labs' newsletter covering recent updates, ev
 category: "COMMUNITY NEWS"
 date: "2024-12-29"
 slug: "the-sweet-spot-issue-002"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "newsletter,community,updates,elections,social-media,volunteer,outreach,education"
 ---
 <!-- markdownlint-disable -->
 
-# Recent news for December 29, 2024
+*Recent news for December 29, 2024*
 
-Welcome to the second issue of the **"Sweet Spot"**, a newsletter for Sugar Labs-related news in development, student and teacher work, events, how to get involved, and other news and information. This newsletter will be published semi-regularly for now, but the plan is to publish it on a bi-monthly, perhaps even monthly, basis in the future. Our aim with this newsletter is to help keep the growing body of Sugar Labs contributors on the same page, all while documenting our growth for our own and others' reference.
+Welcome to the second issue of the "Sweet Spot", a newsletter for
+Sugar Labs-related news in development, student and teacher work,
+events, how to get involved, and other news and information. This
+newsletter will be published semi-regularly for now, but the plan is
+to publish it on a bi-monthly, perhaps even monthly, basis in the
+future. Our aim with this newsletter is to help keep the growing body
+of Sugar Labs contributors on the same page, all while documenting our
+growth for our own and others' reference.
 
-These first issues are meant to set a precedent of communication and documentation, as well as to help inform the community of our current status, recent progress, and future plans. Its predecessor is the [Sugar Digest](https://lists.sugarlabs.org/archive/community-news/), which still serves as an important catalog of our activities. Like Sugar Digest, this newsletter is intended to keep community members in the loop about everything going on within Sugar Labs. It will highlight any recent publications from us. It will occasionally include links to third-party news and updates that our community finds relevant.
+These first issues are meant to set a precedent of communication and
+documentation, as well as to help inform the community of our current
+status, recent progress, and future plans. Its predecessor is the
+[“Sugar Digest”][1], which still serves as an important catalog of our
+activities. Like Sugar Digest, this newsletter is intended to keep
+community members in the loop about everything going on within Sugar
+Labs. It will highlight any recent publications from us. It will
+occasionally include links to third-party news and updates that our
+community finds relevant.
 
----
+[1]: https://lists.sugarlabs.org/archive/community-news/
 
 ## Updates
 
 ### Today, help Sugar Labs continue to transform education
 
-**December 3, 2024**
+*December 3, 2024*
 
-![An image with Sugar Labs teachers, volunteers, and students.](/assets/post-assets/donation-banner.webp?w=960&amp;fit=max)
-*Your donation helps us in many ways.*
+Sugar Labs is in the middle of a campaign to raise funds necessary for
+outreach, software development, project maintenance, mentorship, and
+more. Having left Software Freedom Conservancy in 2020, this year is
+the first that Sugar Labs is investing financially in its own growth,
+and we’d love to have your participation in this pivotal moment. We’ve
+been particularly heartened to see volunteers in our community assist
+with various aspects of this campaign, such as making improvements to
+our website. You may also participate in our fundraiser, while getting
+something nice for yourself or a loved one, by purchasing Sugar Labs
+merchandise from our new store on Bonfire.
 
-Sugar Labs is in the middle of a campaign to raise funds necessary for outreach, software development, project maintenance, mentorship, and more. Having left Software Freedom Conservancy in 2020, this year is the first that Sugar Labs is investing financially in its own growth, and we'd love to have your participation in this pivotal moment. We've been particularly heartened to see volunteers in our community assist with various aspects of this campaign, such as making improvements to our website. You may also participate in our fundraiser, while getting something nice for yourself or a loved one, by purchasing Sugar Labs merchandise from our new store on Bonfire.
+Read executive director Devin Ulibarri’s letter to the community to
+learn more about the work we’ve done this year, consider making a
+donation or purchasing merchandise, and please help spread the word.
 
-Read executive director Devin Ulibarri's letter to the community to learn more about the work we've done this year, consider making a donation or purchasing merchandise, and please help spread the word.
 
-- [Learn more about our work](https://www.sugarlabs.org/community/2024/12/03/help-SL-continue-to-transform-education/)
-- [Donate now](https://www.paypal.com/donate?campaign_id=NEAV3YL4H6B5S)
-- [Visit the new donation banner](https://www.sugarlabs.org/)
-- [Get Sugar Labs merchandise](https://www.bonfire.com/sugar-labs-education/)
-
----
+* <https://www.sugarlabs.org/community/2024/12/03/help-SL-continue-to-transform-education/>
+* Make a donation to the current campaign: <https://www.paypal.com/donate?campaign\\_id=NEAV3YL4H6B5S>
+* See our new donation banner, created by volunteers in our development community: <https://www.sugarlabs.org/>   
+* Contribute to Sugar Labs by purchasing Sugar Labs brand merchandise: <https://www.bonfire.com/sugar-labs-education/>
 
 ### Sugar Labs election information and results
 
-**December 19, 2024**
+*December 19, 2024*
 
-Sugar Labs completed an election for three seats to its Board of Directors for the 2025–26 cycle. The results are out, and the winners are **Devin Ulibarri, Sumit Srivastava, and Sebastian Silva**. Read the articles to learn more about Sugar Labs's election process and how you can prepare to participate in the next election.
+Sugar Labs completed an election for three seats to its Board of
+Directors for the 2025-26 cycle. The results are out, and the winners
+are Devin Ulibarri, Sumit Srivastava, and Sebastian Silva. Read the
+articles to learn more about Sugar Labs’s election process and how you
+can prepare to participate in the next election.
 
-- [Election results](https://www.sugarlabs.org/community/2024/12/19/election-results/)
-- [Elections extension](https://www.sugarlabs.org/community/2024/11/22/elections-extension/)
-- [How to participate](https://www.sugarlabs.org/community/2024/11/08/fall-board-elections-how-to-participate/)
-
----
+* <https://www.sugarlabs.org/community/2024/12/19/election-results/>
+* <https://www.sugarlabs.org/community/2024/11/22/elections-extension/>
+* <https://www.sugarlabs.org/community/2024/11/08/fall-board-elections-how-to-participate/>
 
 ### Sugar Labs expands its social media presence to Bluesky and WhatsApp
 
-**December 9, 2024**
+*December 9,2024*
 
-Sugar Labs is now on **Bluesky** and **WhatsApp**. Sugar Labs continues to maintain a presence on X (formerly Twitter), Facebook, Mastodon, Instagram, YouTube, LinkedIn, and GitHub. We decided to join Bluesky and WhatsApp in an effort to expand our reach. For those active on any of these platforms, please follow Sugar Labs to help our outreach efforts.
+Sugar Labs is now on Bluesky and WhatsApp. Sugar Labs continues to
+maintain a presence on X (formerly Twitter), Facebook, Mastodon,
+Instagram, YouTube, LinkedIn, and Github. We decided to join Bluesky
+and WhatsApp in an effort to expand our reach. For those active on any
+of these platforms, please follow Sugar Labs to help our outreach
+efforts.
 
-- [Marketing announcement](https://lists.sugarlabs.org/archive/marketing/2024-December/004160.html)
+* <https://lists.sugarlabs.org/archive/marketing/2024-December/004160.html>
 
-**Newly joined social media platforms:**
-- [Follow us on Bluesky](https://bsky.app/profile/sugarlabs.bsky.social)
-- [Reach out on WhatsApp](https://wa.me/16177024088)
+Newly joined social media platforms:
 
----
+* Follow us on Bluesky: <https://bsky.app/profile/sugarlabs.bsky.social>
+* Reach out on WhatsApp: <https://wa.me/16177024088>
+
+*Note: For a complete list of our official social media channels,
+ please see the “Social and Communication Links” section at the bottom
+ of this newsletter.*
 
 ### Reflections from Constructing Modern Knowledge 2024
 
-**November 27, 2024**
+*November 27, 2024*
 
-Sugar Labs executive director and Music Blocks co-maintainer **Devin Ulibarri** attended **Constructing Modern Knowledge (CMK)**. In this post, Ulibarri shares his experience at the teacher institute, what he learned, and what it could mean for Sugar Labs.
+This past July, Sugar Labs executive director and Music Blocks
+co-maintainer Devin Ulibarri attended Constructing Modern Knowledge
+(CMK). In this post, Ulibarri shares his experience at the teacher
+institute, what he learned, and what it could mean for Sugar Labs. He
+also shares his group’s “Lego Notation for the Blind” project, which
+is a step toward using physical Lego blocks as musical notation to
+convert to a programming language such as Sugar Labs’s Music
+Blocks. By taking Lego blocks, configured pitch-over-time on a
+baseplate, a camera connected to a computer can image the Legos and
+translate them into musical code. While the system is not yet
+complete, the article gives insight into what Music Blocks can do, how
+Sugar Labs is approaching outreach (as well as learning from other
+educators), and a glimpse at what we’re looking to create in the
+future.
 
-- [Read Devin's reflection on Medium](https://medium.com/@sugarlabs/reflections-from-constructing-modern-knowledge-2024-1ce7d60fbb1c)
+* <https://medium.com/@sugarlabs/reflections-from-constructing-modern-knowledge-2024-1ce7d60fbb1c>
 
----
+### James Simmons’s Sugar Story: Writing new Activities and sharing Sugar with youth
 
-### James Simmons's Sugar Story: Writing new Activities and sharing Sugar with youth
+*September 3, 2024*
 
-**September 3, 2024**
+Sugar Labs community member James Simmons shares his story about his
+involvement with Sugar Labs. Simmons tells us how he began
+contributing to the Sugar Learning Platform by expanding the
+functionality of the Read Activity and adding support for e-texts. In
+addition to authoring Read ETexts, he also created View Slides and
+Read SD Comics Activities to support the ability to read comic books
+in CBZ format. Having had this experience writing Activities for
+Sugar, he wrote *Make Your Own Sugar Activities\\!* as a manual for
+anyone interested in writing their own Activities for Sugar.
 
-Sugar Labs community member **James Simmons** shares his story about his involvement with Sugar Labs. Simmons tells us how he began contributing to the Sugar Learning Platform by expanding the functionality of the Read Activity and adding support for e-texts.
-
-- [Read James's story](https://medium.com/@sugarlabs/james-simmonss-sugar-story-writing-new-activities-and-sharing-sugar-with-youth-9282c66f9219)
-- *Make Your Own Sugar Activities!*:
-  - [English (Internet Archive)](https://archive.org/details/MakeYourOwnSugarActivities)
-  - [Spanish (Internet Archive)](https://archive.org/details/ComoHacerUnaActividadSugar)
-- [See all of James's Activities](https://activities.sugarlabs.org/en-US/sugar/user/45)
-
----
+* <https://medium.com/@sugarlabs/james-simmonss-sugar-story-writing-new-activities-and-sharing-sugar-with-youth-9282c66f9219>  
+* Download *Make Your Own Sugar Activities!* From Internet Archive: <https://archive.org/details/MakeYourOwnSugarActivities> (English) and <https://archive.org/details/ComoHacerUnaActividadSugar> (Spanish)  
+* See all of James’s Activities: <https://activities.sugarlabs.org/en-US/sugar/user/45>
 
 ## (Volunteer) Help wanted
 
-Sugar Labs is seeking volunteer assistance in various areas. If you are passionate about our mission and can commit time, we encourage you to apply.
+Sugar Labs is seeking volunteer assistance in the following
+ways. Sustained, committed help in any of the following areas will
+help us grow as an organization. If you are passionate or curious to
+learn more about any of these roles, and are able to commit the time
+necessary, then we encourage you to apply. Send a notification of your
+interest to info@sugarlabs.org, including some information about
+yourself, what interests you about the volunteer role, and what
+experience/qualities make you a good candidate for the position.
 
-- [Help Wanted wiki](https://wiki.sugarlabs.org/go/Help_Wanted)
-- [Watch volunteer appeal](https://www.youtube.com/watch?v=W5ZLFBZkE34)
+Sugar Labs is a growing organization. We don't currently have the
+resources to hire people to fulfill these roles. Our hope is that we
+one day will be able to, but, for now, we are looking for volunteers
+who can work with the executive director and the board to work
+diligently to improve our operations. What we can provide, in return,
+for your help, is assistance in conducting your role and mentorship
+(especially in the case of technical roles). Plus, you'll gain the
+experience and satisfaction of working with an organization that aims
+to do good in society.
 
----
+Please see: <https://wiki.sugarlabs.org/go/Help_Wanted> and
+<https://www.youtube.com/watch?v=W5ZLFBZkE34>
 
 ## Upcoming events and meetings
 
-**Regular meetings:**
+Sugar Labs hosts events and meetings for the community. The current
+list of scheduled events and meetings are as follows:
 
-- **Music Blocks meetings**: Every Sunday at 7:00 EST (12:00 UTC)  
-  [Join on Jitsi](https://meet.jit.si/ResponsibleMasksForecastHastily)
-- **Sugar Activity meetings**: Every Wednesday at 7:00 EST (12:00 UTC)  
-  [Join on Jitsi](https://meet.jit.si/ResponsibleMasksForecastHastily)
-- **Sugar Labs Board of Directors meetings**: Every Wednesday at 14:30 EST (19:30 UTC)  
-  [Join on Matrix](https://matrix.to/#/#sugar:matrix.org)
-
----
+* Music Blocks meetings: Every Sunday at 7:00 EST (12:00 UTC) on <https://meet.jit.si/ResponsibleMasksForecastHastily>   
+* Sugar Activity meetings: Every Wednesday at 7:00 EST (12:00 UTC) on <https://meet.jit.si/ResponsibleMasksForecastHastily>   
+* Sugar Labs Board of Directors meetings: Every Wednesday at 14:30 EST (19:30 UTC) on <https://matrix.to/#/#sugar:matrix.org>
 
 ## About Sugar Labs
 
-**Sugar Labs®** is a US-based 501(c)(3) nonprofit organization with a global mission to create educational opportunities in technology for youth. Volunteers work together to develop activity-focused software for children.
-
-Support Sugar Labs by donating at [www.sugarlabs.org/donate](http://www.sugarlabs.org/donate/).
-
----
+Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a
+global mission to create educational opportunities in technology to
+youth around the world. Volunteer mentors and contributors work
+together to develop activity-focused software for children. All
+software is developed with learning as the primary goal, necessitating
+the need for source code to be published publicly for study, licensed
+under a Free/Libre license for explicit permission to share and remix,
+and openly worked upon within a community where students are invited
+to make contributions, under guidance of experienced mentors. You can
+learn about how to make a donation to support the work of Sugar Labs
+at <http://www.sugarlabs.org/donate/>.
 
 ## Social and Communication Links
 
-Stay connected with Sugar Labs on the following platforms:
+Below is a complete list of all the official social media and other
+communication channels for Sugar Labs. If you are on any of the social
+media platforms, such as Bluesky, Facebook, Instagram, YouTube, or
+X/Twitter, we encourage you to show your support for Sugar Labs by
+following us. If you are interested in testing and development, GitHub
+and Matrix are where you can report issues and ask questions.
 
-- [Bluesky](https://bsky.app/profile/sugarlabs.bsky.social)
-- [Facebook](https://www.facebook.com/SugarLabsforall/)
-- [GitHub](https://github.com/sugarlabs)
-- [Instagram](https://www.instagram.com/sugarlabsforall/)
-- [LinkedIn](https://www.linkedin.com/company/sugar-labs)
-- [Mailing lists](https://wiki.sugarlabs.org/go/Mailing_Lists)
-- [Mastodon](https://mastodon.social/@sugar_labs)
-- [Matrix](https://matrix.to/#/#sugar:matrix.org)
-- [Medium](https://medium.com/@sugarlabs)
-- [Twitter/X](https://twitter.com/sugar_labs)
-- [WhatsApp](https://wa.me/16177024088)
-- [YouTube](https://www.youtube.com/@SugarlabsOrg-EN)
+Communications on our official channels must abide by our [Code of
+Conduct](https://github.com/sugarlabs/sugar-docs/blob/master/src/CODE_OF_CONDUCT.md).
 
----
+* Bluesky – <https://bsky.app/profile/sugarlabs.bsky.social>
+* Facebook – <https://www.facebook.com/SugarLabsforall/>
+* GitHub – <https://github.com/sugarlabs>
+* Instagram – <https://www.instagram.com/sugarlabsforall/>
+* LinkedIn – <https://www.linkedin.com/company/sugar-labs>
+* Mailing lists – <https://wiki.sugarlabs.org/go/Mailing_Lists>
+* Mastodon – <https://mastodon.social/@sugar_labs>
+* Matrix – <https://matrix.to/#/#sugar:matrix.org>
+* Medium – <https://medium.com/@sugarlabs>
+* Snail mail and phone – <https://www.sugarlabs.org/contact-us/>
+* Twitter/X – <https://twitter.com/sugar_labs>
+* Wiki – <https://wiki.sugarlabs.org>
+* WhatsApp – <https://wa.me/16177024088>
+* YouTube – <https://www.youtube.com/@SugarlabsOrg-EN>
 
-## Back issues of "The Sweet Spot"
+## Back issues of “The Sweet Spot”
 
-Find this issue and past issues at: [sugarlabs.org/community-news](https://www.sugarlabs.org/community-news/)
-`,Oi=Object.freeze(Object.defineProperty({__proto__:null,default:we},Symbol.toStringTag,{value:"Module"})),ye=`---
+You can find this issue and past issues of “The Sweet Spot” at
+<https://www.sugarlabs.org/community-news/>`,Oi=Object.freeze(Object.defineProperty({__proto__:null,default:we},Symbol.toStringTag,{value:"Module"})),ye=`---
 title: "Get and gift Sugar: Purchase new Sugar on a Stick USBs"
 excerpt: "Sugar Labs now offers pre-installed Sugar on a Stick USB drives for purchase, making it easier for educators and supporters to use and share our educational software."
 category: "COMMUNITY NEWS"
 date: "2025-01-21"
 slug: "get-and-gift-sugar-soas-usbs"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "products,merchandise,SoaS,USB,education,fundraising,open-source"
 ---
 
@@ -2734,8 +2894,7 @@ excerpt: "A comprehensive overview of Sugar Labs' accomplishments, activities, a
 category: "COMMUNITY NEWS"
 date: "2025-03-24"
 slug: "annual-report-2024"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "annual-report,education,gsoc,outreach,classroom,finance,development,community"
 ---
 <!-- markdownlint-disable -->
@@ -3165,156 +3324,243 @@ title: "The Sweet Spot – Issue 003"
 excerpt: "Recent news from Sugar Labs including Sugarizer v1.9 release, annual report for 2024, contributor stories, and more community updates."
 category: "COMMUNITY NEWS"
 date: "2025-03-31"
-author: "Devin Ulibarri"
-tags: "markdown,parser,test,education,post,aigenerated"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
+tags: "newsletter,community,updates,elections,social-media,volunteer,outreach,education"
 ---
 <!-- markdownlint-disable -->
 
 *Recent news for March 31, 2025*
 
-Welcome to the third issue of *The Sweet Spot*, a newsletter for Sugar Labs-related news in development, student and teacher work, events, how to get involved, and other related news and information.
+Welcome to the third issue of *The Sweet Spot*, a newsletter for Sugar
+Labs-related news in development, student and teacher work, events,
+how to get involved, and other related news and information.
 
 ## Contents of this issue
 
-- Sugarizer v1.9 is available for your device  
-- Annual report for 2024  
-- From beginner to number one on the contributors chart: My open-source journey  
-- Devin Ulibarri: How Sugar Labs empowers education via FLOSS  
-- Enhancing Sampler widget with drag and drop  
-- Sugar Labs is a mentoring organization for GSoC 2025  
-- Two new ways to donate: Every.org and Benevity  
-- My open-source journey with Sugar Labs  
-- Volunteers wanted  
-- Upcoming events and meetings  
-- About Sugar Labs  
-- Social and communication links  
-- Back issues of *The Sweet Spot*
-
----
+* Sugarizer v1.9 is available for your device  
+* Annual report for 2024  
+* From beginner to number one on the contributors chart: My open-source journey  
+* Devin Ulibarri: How Sugar Labs empowers education via FLOSS  
+* Enhancing Sampler widget with drag and drop  
+* Sugar Labs is a mentoring organization for GSoC 2025  
+* Two new ways to donate: Every.org and Benevity  
+* My open-source journey with Sugar Labs  
+* Volunteers wanted  
+* Upcoming events and meetings  
+* About Sugar Labs  
+* Social and communication links  
+* Back issues of *The Sweet Spot*
 
 ## Updates
 
-### Sugarizer v1.9 is available for your device  
-**March 25, 2025**
+### Sugarizer v1.9 is available for your device
 
-Sugarizer maintainer Lionel Laské has announced a new release of the multi-platform clone to Sugar Learning Platform. This release includes:
+*March 25, 2025*
 
-- A new 3D volume activity (developed during GSoC)
-- Improved stability
-- A new "direct launch" feature to auto-start an activity on Sugarizer launch
+Sugarizer maintainer Lionel Laské has announced a new release of the
+multi-platform clone to Sugar Learning Platform. This release includes
+a new 3D volume activity, developed last summer for Google Summer of
+Code (GSoC), improved stability, and a new direct launch feature,
+allowing users to launch an activity directly at Sugarizer
+startup. Read the full release notes and watch the video demonstrating
+the new activity and improvements.
 
-Check out the full details:  
- [Release notes](https://lists.sugarlabs.org/archive/sugar-devel/2025-March/059881.html)  
- [Try it live](https://try.sugarizer.org/)
+* <https://lists.sugarlabs.org/archive/sugar-devel/2025-March/059881.html>
+* <https://youtu.be/r5yamM5j7rk>
+* <https://try.sugarizer.org/>
 
-[youtube: r5yamM5j7rk]
+### Annual report for 2024
 
----
+*March 24, 2025*
 
-### Annual report for 2024  
-**March 24, 2025**
+We recently compiled a summary of our activities in 2024\\. In the
+newly released “Annual report for 2024”, we’ve included information
+about software development, Sugar in the classroom, and our outreach
+efforts. In this report, Sugar Labs executive director Devin Ulibarri
+takes us through the work he did in 2024 to reach more students,
+represent Sugar Labs at conferences, and oversee development of new
+Constructionist tools for teaching and learning. Preliminary financial
+information is also included in this report.
 
-The newly released **Annual Report for 2024** includes highlights of our work in:
+* <https://www.sugarlabs.org/community/2025/03/24/annual-report/>
 
-- Software development
-- Sugar in classrooms worldwide
-- Outreach and conferences  
-- Preliminary financials
+### From beginner to number one on the contributors chart: My open-source journey
 
-Read the report: [Annual report – 2024](https://www.sugarlabs.org/community/2025/03/24/annual-report/)
+*March 21, 2025 by Om Santosh Suneri*
 
----
+New contributors are encouraged to write about their experience
+contributing to Sugar Labs, what they’re working on and what they’ve
+learned. In his first article detailing his experience with Sugar
+Labs, Suneri shares his recent contributions to Music Blocks visual
+programming language, his inception into free/libre/open-source
+software, and his advice to other new contributors.
 
-### From beginner to #1 on the contributors chart  
-**March 21, 2025 – by Om Santosh Suneri**
+* <https://medium.com/@omsuneri/from-beginner-to-1-on-the-contributors-chart-my-open-source-journey-a0c4d07e1818>
 
-Om shares his incredible journey from being new to open source to topping the contributors chart for Music Blocks. In his blog, he discusses his contributions, early learnings, and advice to newcomers.
+### Devin Ulibarri: How Sugar Labs empowers education via FLOSS
 
-Read the full article:  
- [My Open-Source Journey](https://medium.com/@omsuneri/from-beginner-to-1-on-the-contributors-chart-my-open-source-journey-a0c4d07e1818)
+*March 12, 2025 by Max Roveri*
 
----
+Linux Professional Institute recently interviewed Sugar Labs executive
+director Devin Ulibarri, asking him about our key projects, our
+free/libre/open (FLO) philosophy, our challenges, and our future
+goals. Read the interview to learn more about the trajectory of Sugar
+Labs, and share the article to help us reach new people to “expand our
+mentoring community and grow our team to support diverse stakeholders”
+as Ulibarri describes in the interview.
 
-### 🎓 Devin Ulibarri: How Sugar Labs empowers education via FLOSS  
-**March 12, 2025 – by Max Roveri**
+* <https://www.lpi.org/blog/2025/03/12/devin-ulibarri-how-sugar-labs-empowers-education-via-floss/>
 
-In an interview with Linux Professional Institute, Devin Ulibarri dives into:
+### Enhancing Sampler widget with drag and drop
 
-- Sugar Labs' mission  
-- FLO (Free/Libre/Open) values  
-- Challenges in scaling  
-- Future goals for growth and mentorship
+*March 6, 2025 by Harshit Verma*
 
- [Read the Interview](https://www.lpi.org/blog/2025/03/12/devin-ulibarri-how-sugar-labs-empowers-education-via-floss/)
+Read about recent enhancements to the sampler widget, implemented by
+new contributor Harshit Verma. These enhancements allow users to drag
+and drop sound samples into the browser to create code, which is
+expected to make using custom samples in Music Blocks more accessible
+to users.
 
----
+* <https://musicblocks.net/2025/03/06/enhancing-sampler-widget-with-drag-and-drop-support-to-add-samples-music-blocks/>
 
-### Enhancing Sampler widget with drag and drop  
-**March 6, 2025 – by Harshit Verma**
+### Sugar Labs is a mentoring organization for GSoC 2025
 
-New contributor Harshit Verma upgraded the Music Blocks Sampler widget. You can now drag and drop sound samples directly into the browser to generate code.
+*February 28, 2025*
 
- [Enhancement details](https://musicblocks.net/2025/03/06/enhancing-sampler-widget-with-drag-and-drop-support-to-add-samples-music-blocks/)
+Google announced in February that Sugar Labs will be a mentoring
+organization in this year’s Google Summer of Code. For those
+interested in participating this year as a contributor, please read
+the projects on the project page and submit your proposal before the
+submission deadline of April 8th 18:00 UTC.
 
----
+* <https://mastodon.social/@sugar_labs/114083771631725400>
+* <https://github.com/sugarlabs/GSoC/blob/master/Ideas-2025.md>
+* <https://lists.sugarlabs.org/archive/sugar-devel/2025-March/059892.html>
 
-### Sugar Labs is a mentoring organization for GSoC 2025  
-**February 28, 2025**
+### Two new ways to donate: Every.org and Benevity
 
-Sugar Labs will mentor students in this year's **Google Summer of Code**!
+*February 26, 2025*
 
- Explore our project ideas  
- Submit proposals by **April 8th, 18:00 UTC**
+Sugar Labs has recently expanded the ways to donate in support of its
+mission. Financial contributions can now be made through every.org, a
+fundraising platform that is itself a nonprofit
+organization. Every.org accepts donations in many forms, such as
+credit card, ACH, stocks, PayPal, and crypto-currency donations. Plus,
+every.org doesn't charge a service fee, instead it gives the option to
+donate to their nonprofit.
 
- [Mastodon announcement](https://mastodon.social/@sugar_labs/114083771631725400)  
- [Project Ideas](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2025.md)  
- [Mailing List post](https://lists.sugarlabs.org/archive/sugar-devel/2025-March/059892.html)
+In addition to every.org, donors may now give to Sugar Labs through
+Benevity, a Canadian-based firm that supports companies in managing
+their employees' charitable giving.
 
----
+As a US-based nonprofit organization, Sugar Labs is dedicated to
+creating Constructionist software and experiences for learners in the
+US and all around the world.
+
+* <https://www.every.org/sugar-labs>  
+* <https://mygoodness.benevity.org/community/cause/840-843289298/donate>
+* <https://causes.benevity.org/causes/840-843289298>  
+* <https://www.sugarlabs.org/donate/>  
+* <https://mastodon.social/@sugar_labs/114072023419108205>
+
+### My open-source journey with Sugar Labs
+
+*February 25, 2025 by Harshit Verma*
+
+New contributor Harshit Verma shares his experience contributing to
+Sugar Labs. He shares how he discovered Sugar Labs and one of its
+projects, Music Blocks. He shares the issues he’s helped fix, what he
+learned during the process, and shares his goals for the future.
+
+* <https://medium.com/@therealharshit/my-open-source-journey-with-sugar-labs-362117497dcc>
 
 ## Volunteers wanted
 
-We're growing and need **volunteer support** in various areas—tech, outreach, design, documentation, and more.
+Sugar Labs is seeking volunteer assistance in a variety of
+roles. Sustained, committed help in any of these roles will help us
+grow as an organization. If you are passionate or curious to learn
+more about these roles, and are able to commit the time necessary,
+then we encourage you to apply. Send a notification of your interest
+to <info@sugarlabs.org>, including some information about yourself,
+what interests you about the volunteer role, and what experience and
+other qualities make you a good candidate for the position.
 
-If you're curious and committed, email us: [info@sugarlabs.org](mailto:info@sugarlabs.org)  
- Learn more: [Volunteering at Sugar Labs](https://www.sugarlabs.org/volunteering)
+Please note that Sugar Labs is a growing organization. We don't
+currently have the resources to compensate people to fulfill these
+roles. Our hope is that we one day will be able to, but, for now, we
+are looking for volunteers to assist the [Board of
+Directors](https://www.sugarlabs.org/leadership/) to build out and
+improve our operations. We can provide assistance in conducting your
+role, as well as guidance and mentorship. Plus, you'll gain the
+experience and satisfaction of working with an organization that aims
+to do good in society.
 
----
+Please see: <https://www.sugarlabs.org/volunteering>
 
 ## Upcoming events and meetings
 
-### Special Event  
-**New website launch party**  
- April 25, 2025 at 13:00 EDT / 17:00 UTC  
- [YouTube Stream](https://www.youtube.com/watch?v=v76Mw9wqO6E)
+Sugar Labs hosts events and meetings for the community. The current
+list of scheduled events and meetings are as follows:
 
-### Regular Meetings  
-**Music Blocks Weekly Meetups**  
- Every Sunday – 7:00 EDT / 11:00 UTC  
- [Join here](https://meet.jit.si/ResponsibleMasksForecastHastily)
+### Special events
 
----
+* *New website: Launch party* – April 25, 2025 at 13:00 EDT (17:00 UTC) via <https://www.youtube.com/watch?v=v76Mw9wqO6E>
+* *Sugar Labs: Introduction to events this summer* – May 2, 2025 at 13:00 EDT (17:00 UTC) via <https://www.youtube.com/watch?v=u-qJ4dz13lY>
+* *Sugar Labs and artificial intelligence* – May 9, 2025 at 13:00 EDT (17:00 UTC) via <https://www.youtube.com/watch?v=i3NRnztAETU>
+* *Role of generative AI in education* – May 16, 2025 at 13:00 EDT (17:00 UTC) via <https://www.youtube.com/watch?v=nn1jeQgKTOA>
+* *Generative AI development demonstrations* – May 23, 2025 at 13:00 EDT (17:00 UTC) via <https://www.youtube.com/watch?v=SKyf_awMK4w>
+
+### Regular meetings
+
+* Music Blocks meetings – Every Sunday at 7:00 EDT (11:00 UTC) via <https://meet.jit.si/ResponsibleMasksForecastHastily>
+* Sugar Activity meetings – Every Wednesday at 7:00 EDT (11:00 UTC) via <https://meet.jit.si/ResponsibleMasksForecastHastily>
+* Sugar Labs Board of Directors meetings – Every Wednesday at 15:30 EDT (19:30 UTC) via <https://matrix.to/#/#sugar:matrix.org>
 
 ## About Sugar Labs
 
-Sugar Labs® is a US-based 501(c)(3) nonprofit dedicated to creating educational tools that promote technology exploration and learning for youth globally.
-
-Support our work: [Donate here](https://www.sugarlabs.org/donate/)
-
----
+Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a
+global mission to create educational opportunities in technology to
+youth around the world. Volunteer mentors and contributors work
+together to develop activity-focused software for children. All
+software is developed with learning as the primary goal, necessitating
+the need for source code to be published publicly for study, licensed
+under a Free/Libre license for explicit permission to share and remix,
+and openly worked upon within a community where students are invited
+to make contributions, under guidance of experienced
+mentors. Donations to support the work of Sugar Labs can be made at
+<https://www.sugarlabs.org/donate/>.
 
 ## Social and Communication Links
 
-- Bluesky: [@sugarlabs.bsky.social](https://bsky.app/profile/sugarlabs.bsky.social)  
-- GitHub: [github.com/sugarlabs](https://github.com/sugarlabs)
+Below is a complete list of all the official social media and other
+communication channels for Sugar Labs. If you are on any of the social
+media platforms, such as Bluesky, Facebook, Instagram, YouTube, or
+X/Twitter, we encourage you to show your support for Sugar Labs by
+following us. If you are interested in testing and development, GitHub
+and Matrix are where you can report issues and ask questions.
 
----
+Communications on our official channels must abide by our [Code of
+Conduct](https://github.com/sugarlabs/sugar-docs/blob/master/src/CODE_OF_CONDUCT.md).
+
+* Bluesky – <https://bsky.app/profile/sugarlabs.bsky.social>
+* Facebook – <https://www.facebook.com/SugarLabsforall/>
+* GitHub – <https://github.com/sugarlabs>
+* Instagram – <https://www.instagram.com/sugarlabsforall/>
+* LinkedIn – <https://www.linkedin.com/company/sugar-labs>
+* Mailing lists – <https://wiki.sugarlabs.org/go/Mailing_Lists>
+* Mastodon – <https://mastodon.social/@sugar_labs>
+* Matrix – <https://matrix.to/#/#sugar:matrix.org>
+* Medium – <https://medium.com/@sugarlabs>
+* Snail mail and phone – <https://www.sugarlabs.org/contact-us/>
+* Twitter/X – <https://twitter.com/sugar_labs>
+* Wiki – <https://wiki.sugarlabs.org>
+* WhatsApp – <https://wa.me/16177024088>
+* YouTube – <https://www.youtube.com/@SugarlabsOrg-EN>
 
 ## Back issues of *The Sweet Spot*
 
-Find this and previous issues at:  
- [Sugar Labs Community News](https://www.sugarlabs.org/community-news/)
-`,Ui=Object.freeze(Object.defineProperty({__proto__:null,default:ve},Symbol.toStringTag,{value:"Module"})),Se=`---
+You can find this issue and past issues of *The Sweet Spot* at
+<https://www.sugarlabs.org/community-news/>`,Ui=Object.freeze(Object.defineProperty({__proto__:null,default:ve},Symbol.toStringTag,{value:"Module"})),Se=`---
 title: "Live Session: Role of generative AI in education"
 excerpt: "Join us with guest speaker Ken Kahn, PhD for a live session on the role of generative AI in education"
 category: "EVENTS"
@@ -3654,7 +3900,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 - Twitter: [@AdityaKrSingh26](https://x.com/AdityaKrSingh26)
 
 ---
-`,Ki=Object.freeze(Object.defineProperty({__proto__:null,default:Te},Symbol.toStringTag,{value:"Module"})),Pe=`---
+`,Ki=Object.freeze(Object.defineProperty({__proto__:null,default:Te},Symbol.toStringTag,{value:"Module"})),Me=`---
 title: "GSoC '25 Week 1 Update by Elwin Li"
 excerpt: "Weekly progress report for JSEditor updates"
 category: "DEVELOPER NEWS"
@@ -3778,7 +4024,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 - LinkedIn: [Elwin Li](https://www.linkedin.com/in/elwinsli/)
 
 ---
-`,Vi=Object.freeze(Object.defineProperty({__proto__:null,default:Pe},Symbol.toStringTag,{value:"Module"})),Me=`---
+`,Vi=Object.freeze(Object.defineProperty({__proto__:null,default:Me},Symbol.toStringTag,{value:"Module"})),Pe=`---
 title: "DMP ’25 Week 1 Update by Aman Naik"
 excerpt: "This week's focus was exploring the write-activity codebase, finding appropriate grammar correction models & understanding Abiword documentations."
 category: "DEVELOPER NEWS"
@@ -3863,7 +4109,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow contributors for y
 - LinkedIn: [Aman Naik](https://www.linkedin.com/in/aman-naik/)
 
 ---
-`,Ji=Object.freeze(Object.defineProperty({__proto__:null,default:Me},Symbol.toStringTag,{value:"Module"})),Ce=`---
+`,Ji=Object.freeze(Object.defineProperty({__proto__:null,default:Pe},Symbol.toStringTag,{value:"Module"})),Ce=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Improving Synth and Sample Features in Music Blocks"
 category: "DEVELOPER NEWS"
@@ -7090,7 +7336,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,Ps=Object.freeze(Object.defineProperty({__proto__:null,default:sn},Symbol.toStringTag,{value:"Module"})),rn=`---
+`,Ms=Object.freeze(Object.defineProperty({__proto__:null,default:sn},Symbol.toStringTag,{value:"Module"})),rn=`---
 title: "DMP ’25 Week 3 Update by Aman Naik"
 excerpt: "This week's focus was developing a working demo for the Story Builder feature using Streamlit and gathering mentor feedback for further improvements."
 category: "DEVELOPER NEWS"
@@ -7163,7 +7409,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for their continuous guidance and valuable feedback!
 
 ---
-`,Ms=Object.freeze(Object.defineProperty({__proto__:null,default:rn},Symbol.toStringTag,{value:"Module"})),ln=`---
+`,Ps=Object.freeze(Object.defineProperty({__proto__:null,default:rn},Symbol.toStringTag,{value:"Module"})),ln=`---
 title: "GSoC '25 Week 3 Update by Elwin Li"
 excerpt: "Weekly progress report for JSEditor updates"
 category: "DEVELOPER NEWS"
@@ -8811,7 +9057,7 @@ Ideally I want to have some sort of more quick start activity which uses bunch o
 ## Acknowledgments
 
 Thanks to all the mentors whose guidance and support have been strong in helping me navigate the Port.
-`,qs=Object.freeze(Object.defineProperty({__proto__:null,default:Tn},Symbol.toStringTag,{value:"Module"})),Pn=`---
+`,qs=Object.freeze(Object.defineProperty({__proto__:null,default:Tn},Symbol.toStringTag,{value:"Module"})),Mn=`---
 title: "DMP’25 Week 04 Update by Justin Charles"
 excerpt: "Completed SVG path logic for all brick types and documented props and rendering states"
 category: "DEVELOPER NEWS"
@@ -8899,7 +9145,7 @@ A few bricks had similar or identical display labels, which caused confusion in 
 Thanks to my mentors for helping review the UI and desgin for the palette. Their early feedback made the path code significantly more robust and maintainable.
 
 ---
-`,Ks=Object.freeze(Object.defineProperty({__proto__:null,default:Pn},Symbol.toStringTag,{value:"Module"})),Mn=`---
+`,Ks=Object.freeze(Object.defineProperty({__proto__:null,default:Mn},Symbol.toStringTag,{value:"Module"})),Pn=`---
 title: "DMP '25 Week 04 Update by Anvita Prasad"
 excerpt: "Completion of target pitch mode and implementation of manual cent adjustments pie menu"
 category: "DEVELOPER NEWS"
@@ -9003,7 +9249,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support and valuable feedback on the new features.
 
---- `,Vs=Object.freeze(Object.defineProperty({__proto__:null,default:Mn},Symbol.toStringTag,{value:"Module"})),Cn=`---
+--- `,Vs=Object.freeze(Object.defineProperty({__proto__:null,default:Pn},Symbol.toStringTag,{value:"Module"})),Cn=`---
 title: "DMP ’25 Week 04 Update by Harshit Verma"
 excerpt: "Developed a working prototype."
 category: "DEVELOPER NEWS"
@@ -12387,7 +12633,7 @@ This progression has taken us from initial planning to having a complete compila
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their continued guidance on compiler design principles and execution engine architecture. Their emphasis on maintaining clean separation between compilation and execution phases was crucial for this week's successful progress.
 
 ---
-`,Pr=Object.freeze(Object.defineProperty({__proto__:null,default:st},Symbol.toStringTag,{value:"Module"})),rt=`---
+`,Mr=Object.freeze(Object.defineProperty({__proto__:null,default:st},Symbol.toStringTag,{value:"Module"})),rt=`---
 title: "GSoC ’25 Week 06 Update by Diwangshu Kakoty"
 excerpt: "Reflection Learning Widget in Music Blocks"
 category: "DEVELOPER NEWS"
@@ -12485,7 +12731,7 @@ The first six weeks of GSoC'25 have been highly productive, with several key mil
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Mr=Object.freeze(Object.defineProperty({__proto__:null,default:rt},Symbol.toStringTag,{value:"Module"})),lt=`---
+---`,Pr=Object.freeze(Object.defineProperty({__proto__:null,default:rt},Symbol.toStringTag,{value:"Module"})),lt=`---
 title: "GSoC '25 Week 06 Update by Shubham Singh"
 excerpt: "Music Player + Mid Term Evaluation"
 category: "DEVELOPER NEWS"
@@ -14263,7 +14509,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. Thanks to Devin and Walter for suggesting methods to make this process easy.
 
----`,qr=Object.freeze(Object.defineProperty({__proto__:null,default:Tt},Symbol.toStringTag,{value:"Module"})),Pt=`---
+---`,qr=Object.freeze(Object.defineProperty({__proto__:null,default:Tt},Symbol.toStringTag,{value:"Module"})),Mt=`---
 title: "DMP ’25 Week 8 Update by Aman Naik"
 excerpt: "This week focused on improving model response quality, optimizing inference costs, and enhancing the UX logic of the story framework display."
 category: "DEVELOPER NEWS"
@@ -14410,7 +14656,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thanks to my mentors and the Sugar Labs community. Special thanks to the open-source contributors whose documentation around Qwen models and SageMaker integration helped resolve key technical issues this week.
 
 ---
-`,Kr=Object.freeze(Object.defineProperty({__proto__:null,default:Pt},Symbol.toStringTag,{value:"Module"})),Mt=`---
+`,Kr=Object.freeze(Object.defineProperty({__proto__:null,default:Mt},Symbol.toStringTag,{value:"Module"})),Pt=`---
 title: "GSoC '25 Week 8 Update by Elwin Li"
 excerpt: "MusicBlocks generation model"
 category: "DEVELOPER NEWS"
@@ -14522,7 +14768,7 @@ This was done by the following:
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
---- `,Vr=Object.freeze(Object.defineProperty({__proto__:null,default:Mt},Symbol.toStringTag,{value:"Module"})),Ct=`---
+--- `,Vr=Object.freeze(Object.defineProperty({__proto__:null,default:Pt},Symbol.toStringTag,{value:"Module"})),Ct=`---
 title: "GSoC '25 Week 8 Update by Krish Pandya"
 excerpt: "Palettes, Groups, and GTK4 Decisions "
 category: "DEVELOPER NEWS"
@@ -17591,7 +17837,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Pl=Object.freeze(Object.defineProperty({__proto__:null,default:sa},Symbol.toStringTag,{value:"Module"})),ra=`---
+---`,Ml=Object.freeze(Object.defineProperty({__proto__:null,default:sa},Symbol.toStringTag,{value:"Module"})),ra=`---
 title: "GSoC '25 Week 10 Update by Krish Pandya"
 excerpt: "20,000 Lines, Datastore, ObjectChooser, and Sugar Widgets!"
 category: "DEVELOPER NEWS"
@@ -17664,7 +17910,7 @@ This week’s commits were all about foundational infrastructure:
 - [New Python Library (sugar-toolkit-gtk4-py)](https://github.com/MostlyKIGuess/sugar-toolkit-gtk4-py)
 - [New C Library (sugar-ext)](https://github.com/sugarlabs/sugar-ext)
 - [Game Demo Video](https://youtu.be/B517C_LTCns)
-`,Ml=Object.freeze(Object.defineProperty({__proto__:null,default:ra},Symbol.toStringTag,{value:"Module"})),la=`---
+`,Pl=Object.freeze(Object.defineProperty({__proto__:null,default:ra},Symbol.toStringTag,{value:"Module"})),la=`---
 title: "GSoC’25 Week 10 Update by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -19444,7 +19690,7 @@ The modernized Speak activity demonstrates how AI can enhance education while ma
 
 ---
 
-`,ql=Object.freeze(Object.defineProperty({__proto__:null,default:Ta},Symbol.toStringTag,{value:"Module"})),Pa=`---
+`,ql=Object.freeze(Object.defineProperty({__proto__:null,default:Ta},Symbol.toStringTag,{value:"Module"})),Ma=`---
 title: "GSoC '25 Week 12 Update by Safwan Sayeed"
 excerpt: "Integration of Engine with Masonry"
 category: "DEVELOPER NEWS"
@@ -19511,7 +19757,7 @@ This Week Me and [Justin](https://github.com/justin212407) discussed on the Crea
 
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their invaluable support and guidance throughout this project.
 
----`,Kl=Object.freeze(Object.defineProperty({__proto__:null,default:Pa},Symbol.toStringTag,{value:"Module"})),Ma=`---
+---`,Kl=Object.freeze(Object.defineProperty({__proto__:null,default:Ma},Symbol.toStringTag,{value:"Module"})),Pa=`---
 title: "GSoC’25 Week 12 Update by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -19677,7 +19923,7 @@ I look forward to staying active in this community, contributing more, and suppo
 ---
 *Made with ❤️ for Music, Open Source, and Learning.*
 
-`,Vl=Object.freeze(Object.defineProperty({__proto__:null,default:Ma},Symbol.toStringTag,{value:"Module"})),Ca=`---
+`,Vl=Object.freeze(Object.defineProperty({__proto__:null,default:Pa},Symbol.toStringTag,{value:"Module"})),Ca=`---
 title: "SSoC ’25 Week 12 Update by Muhammad Haroon"
 excerpt: "Deploying the backend on AWS and My Journey in the Sugar Summer of Code 2025"
 category: "DEVELOPER NEWS"
@@ -23906,7 +24152,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Pd=Object.freeze(Object.defineProperty({__proto__:null,default:so},Symbol.toStringTag,{value:"Module"})),ro=`---
+--- `,Md=Object.freeze(Object.defineProperty({__proto__:null,default:so},Symbol.toStringTag,{value:"Module"})),ro=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -24051,7 +24297,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Md=Object.freeze(Object.defineProperty({__proto__:null,default:ro},Symbol.toStringTag,{value:"Module"})),lo=`---
+--- `,Pd=Object.freeze(Object.defineProperty({__proto__:null,default:ro},Symbol.toStringTag,{value:"Module"})),lo=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -25333,4 +25579,4 @@ These books are recommended as a rich source of ideas on how to use Sugar in and
 - **Papert, S. & Solomon, C.** (1971). *Twenty Things to Do with a Computer.* *Artificial Intelligence Memo No. 248* and *Logo Memo No. 3.*
 - **Pink, D.** (2009). *Drive: The Surprising Truth About What Motivates Us.* Riverhead Press.
 - **Stefanakis, E.** (2002). *Multiple Intelligences and Portfolios: A Window into the Learner's Mind.* Greenwood Press.
-- **Trinidad, G.** (2013). *Física con XO.*`,Od=Object.freeze(Object.defineProperty({__proto__:null,default:ko},Symbol.toStringTag,{value:"Module"}));export{ki as $,Jo as A,Xo as B,$o as C,Yo as D,Qo as E,Zo as F,ei as G,ni as H,ti as I,ai as J,oi as K,ii as L,si as M,ri as N,li as O,di as P,ci as Q,ui as R,hi as S,gi as T,mi as U,pi as V,bi as W,fi as X,wi as Y,yi as Z,zo as _,vo as a,xs as a$,vi as a0,Si as a1,Ii as a2,Ai as a3,Ti as a4,Pi as a5,Mi as a6,Ci as a7,Li as a8,xi as a9,as as aA,os as aB,is as aC,ss as aD,rs as aE,ls as aF,ds as aG,cs as aH,us as aI,hs as aJ,gs as aK,ms as aL,ps as aM,bs as aN,fs as aO,ws as aP,ys as aQ,ks as aR,vs as aS,Ss as aT,Is as aU,As as aV,Ts as aW,Ps as aX,Ms as aY,Cs as aZ,Ls as a_,Wi as aa,Gi as ab,Di as ac,_i as ad,Ei as ae,Bi as af,ji as ag,Ri as ah,Oi as ai,zi as aj,Fi as ak,Ui as al,Ni as am,Hi as an,qi as ao,Ki as ap,Vi as aq,Ji as ar,Xi as as,$i as at,Yi as au,Qi as av,Zi as aw,es as ax,ns as ay,ts as az,So as b,zr as b$,Ws as b0,Gs as b1,Ds as b2,_s as b3,Es as b4,Bs as b5,js as b6,Rs as b7,Os as b8,zs as b9,gr as bA,mr as bB,pr as bC,br as bD,fr as bE,wr as bF,yr as bG,kr as bH,vr as bI,Sr as bJ,Ir as bK,Ar as bL,Tr as bM,Pr as bN,Mr as bO,Cr as bP,Lr as bQ,xr as bR,Wr as bS,Gr as bT,Dr as bU,_r as bV,Er as bW,Br as bX,jr as bY,Rr as bZ,Or as b_,Fs as ba,Us as bb,Ns as bc,Hs as bd,qs as be,Ks as bf,Vs as bg,Js as bh,Xs as bi,$s as bj,Ys as bk,Qs as bl,Zs as bm,er as bn,nr as bo,tr as bp,ar as bq,or as br,ir as bs,sr as bt,rr as bu,lr as bv,dr as bw,cr as bx,ur as by,hr as bz,Io as c,$l as c$,Fr as c0,Ur as c1,Nr as c2,Hr as c3,qr as c4,Kr as c5,Vr as c6,Jr as c7,Xr as c8,$r as c9,Il as cA,Al as cB,Tl as cC,Pl as cD,Ml as cE,Cl as cF,Ll as cG,xl as cH,Wl as cI,Gl as cJ,Dl as cK,_l as cL,El as cM,Bl as cN,jl as cO,Rl as cP,Ol as cQ,zl as cR,Fl as cS,Ul as cT,Nl as cU,Hl as cV,ql as cW,Kl as cX,Vl as cY,Jl as cZ,Xl as c_,Yr as ca,Qr as cb,Zr as cc,el as cd,nl as ce,tl as cf,al as cg,ol as ch,il as ci,sl as cj,rl as ck,ll as cl,dl as cm,cl as cn,ul as co,hl as cp,gl as cq,ml as cr,pl as cs,bl as ct,fl as cu,wl as cv,yl as cw,kl as cx,vl as cy,Sl as cz,Ao as d,Yl as d0,Ql as d1,Zl as d2,ed as d3,nd as d4,td as d5,ad as d6,od as d7,id as d8,sd as d9,Gd as dA,Dd as dB,_d as dC,Ed as dD,Bd as dE,jd as dF,Rd as dG,Od as dH,rd as da,ld as db,dd as dc,cd as dd,ud as de,hd as df,gd as dg,md as dh,pd as di,bd as dj,fd as dk,wd as dl,yd as dm,kd as dn,vd as dp,Sd as dq,Id as dr,Ad as ds,Td as dt,Pd as du,Md as dv,Cd as dw,Ld as dx,xd as dy,Wd as dz,To as e,Po as f,Mo as g,Co as h,Lo as i,xo as j,Wo as k,Do as l,Go as m,_o as n,Eo as o,jo as p,Ro as q,Oo as r,Bo as s,Fo as t,Uo as u,No as v,Ho as w,qo as x,Ko as y,Vo as z};
+- **Trinidad, G.** (2013). *Física con XO.*`,Od=Object.freeze(Object.defineProperty({__proto__:null,default:ko},Symbol.toStringTag,{value:"Module"}));export{ki as $,Jo as A,Xo as B,$o as C,Yo as D,Qo as E,Zo as F,ei as G,ni as H,ti as I,ai as J,oi as K,ii as L,si as M,ri as N,li as O,di as P,ci as Q,ui as R,hi as S,gi as T,mi as U,pi as V,bi as W,fi as X,wi as Y,yi as Z,zo as _,vo as a,xs as a$,vi as a0,Si as a1,Ii as a2,Ai as a3,Ti as a4,Mi as a5,Pi as a6,Ci as a7,Li as a8,xi as a9,as as aA,os as aB,is as aC,ss as aD,rs as aE,ls as aF,ds as aG,cs as aH,us as aI,hs as aJ,gs as aK,ms as aL,ps as aM,bs as aN,fs as aO,ws as aP,ys as aQ,ks as aR,vs as aS,Ss as aT,Is as aU,As as aV,Ts as aW,Ms as aX,Ps as aY,Cs as aZ,Ls as a_,Wi as aa,Gi as ab,Di as ac,_i as ad,Ei as ae,Bi as af,ji as ag,Ri as ah,Oi as ai,zi as aj,Fi as ak,Ui as al,Ni as am,Hi as an,qi as ao,Ki as ap,Vi as aq,Ji as ar,Xi as as,$i as at,Yi as au,Qi as av,Zi as aw,es as ax,ns as ay,ts as az,So as b,zr as b$,Ws as b0,Gs as b1,Ds as b2,_s as b3,Es as b4,Bs as b5,js as b6,Rs as b7,Os as b8,zs as b9,gr as bA,mr as bB,pr as bC,br as bD,fr as bE,wr as bF,yr as bG,kr as bH,vr as bI,Sr as bJ,Ir as bK,Ar as bL,Tr as bM,Mr as bN,Pr as bO,Cr as bP,Lr as bQ,xr as bR,Wr as bS,Gr as bT,Dr as bU,_r as bV,Er as bW,Br as bX,jr as bY,Rr as bZ,Or as b_,Fs as ba,Us as bb,Ns as bc,Hs as bd,qs as be,Ks as bf,Vs as bg,Js as bh,Xs as bi,$s as bj,Ys as bk,Qs as bl,Zs as bm,er as bn,nr as bo,tr as bp,ar as bq,or as br,ir as bs,sr as bt,rr as bu,lr as bv,dr as bw,cr as bx,ur as by,hr as bz,Io as c,$l as c$,Fr as c0,Ur as c1,Nr as c2,Hr as c3,qr as c4,Kr as c5,Vr as c6,Jr as c7,Xr as c8,$r as c9,Il as cA,Al as cB,Tl as cC,Ml as cD,Pl as cE,Cl as cF,Ll as cG,xl as cH,Wl as cI,Gl as cJ,Dl as cK,_l as cL,El as cM,Bl as cN,jl as cO,Rl as cP,Ol as cQ,zl as cR,Fl as cS,Ul as cT,Nl as cU,Hl as cV,ql as cW,Kl as cX,Vl as cY,Jl as cZ,Xl as c_,Yr as ca,Qr as cb,Zr as cc,el as cd,nl as ce,tl as cf,al as cg,ol as ch,il as ci,sl as cj,rl as ck,ll as cl,dl as cm,cl as cn,ul as co,hl as cp,gl as cq,ml as cr,pl as cs,bl as ct,fl as cu,wl as cv,yl as cw,kl as cx,vl as cy,Sl as cz,Ao as d,Yl as d0,Ql as d1,Zl as d2,ed as d3,nd as d4,td as d5,ad as d6,od as d7,id as d8,sd as d9,Gd as dA,Dd as dB,_d as dC,Ed as dD,Bd as dE,jd as dF,Rd as dG,Od as dH,rd as da,ld as db,dd as dc,cd as dd,ud as de,hd as df,gd as dg,md as dh,pd as di,bd as dj,fd as dk,wd as dl,yd as dm,kd as dn,vd as dp,Sd as dq,Id as dr,Ad as ds,Td as dt,Md as du,Pd as dv,Cd as dw,Ld as dx,xd as dy,Wd as dz,To as e,Mo as f,Po as g,Co as h,Lo as i,xo as j,Wo as k,Do as l,Go as m,_o as n,Eo as o,jo as p,Ro as q,Oo as r,Bo as s,Fo as t,Uo as u,No as v,Ho as w,qo as x,Ko as y,Vo as z};
