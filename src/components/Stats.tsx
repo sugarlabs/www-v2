@@ -207,7 +207,7 @@ const Stats = () => {
         </p>
 
         {/* Interactive Stats Summary - Grid Layout */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 max-w-6xl mx-auto px-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 max-w-6xl mx-auto px-2 items-center">
           {statisticsData.map((stat, index) => {
             const isActive = activeCardIndex === index;
             const showFullText = isActive;
@@ -215,32 +215,37 @@ const Stats = () => {
             return (
               <motion.div
                 key={index}
-                className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative group cursor-pointer`}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                }}
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                className="relative"
                 onClick={() => setActiveCardIndex(isActive ? null : index)}
               >
-                <span
-                  className={`font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.gradient} text-base sm:text-xl md:text-2xl`}
+                {/* Wrapper added to isolate hover scale animation and prevent layout shift in the grid */}
+                <motion.div
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                  className={`will-change-transform transform-gpu origin-center px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative group cursor-pointer`}
                 >
-                  {stat.value}
-                </span>
-                {/* Truncated text - visible by default, hidden on hover (desktop) or when active (mobile) */}
-                <span
-                  className={`text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1 ${showFullText ? 'hidden' : ''} lg:block lg:group-hover:hidden`}
-                >
-                  {stat.title.split('.')[0].substring(0, 12)}
-                  {stat.title.split('.')[0].length > 12 ? '...' : ''}
-                </span>
-                {/* Full text - visible on hover (desktop) or when active (mobile) */}
-                <span
-                  className={`text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 whitespace-normal px-1 ${showFullText ? 'block' : 'hidden'} lg:hidden lg:group-hover:block`}
-                >
-                  {stat.title}
-                </span>
+                  <span
+                    className={`font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.gradient} text-base sm:text-xl md:text-2xl`}
+                  >
+                    {stat.value}
+                  </span>
+                  {/* Truncated text - visible by default, hidden on hover (desktop) or when active (mobile) */}
+                  <span
+                    className={`text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1 ${showFullText ? 'hidden' : ''} lg:block lg:group-hover:hidden`}
+                  >
+                    {stat.title.split('.')[0].substring(0, 12)}
+                    {stat.title.split('.')[0].length > 12 ? '...' : ''}
+                  </span>
+                  {/* Full text - visible on hover (desktop) or when active (mobile) */}
+                  <span
+                    className={`text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 whitespace-normal px-1 ${showFullText ? 'block' : 'hidden'} lg:hidden lg:group-hover:block`}
+                  >
+                    {stat.title}
+                  </span>
+                </motion.div>
               </motion.div>
             );
           })}
