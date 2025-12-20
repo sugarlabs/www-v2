@@ -1,39 +1,75 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
 
 const DarkModeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const theme = localStorage.getItem('theme');
-    const isDark = theme === 'dark';
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    return isDark;
+   
+  const [themePreference, setThemePreference] = useState(() => {
+    const saved = localStorage.getItem('theme');
+   
+    return saved || 'system';
   });
   const [isHovered, setIsHovered] = useState(false);
 
-  const toggleDarkMode = () => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+  const getAppliedTheme = useCallback((preference: string) => {
+    if (preference === 'system') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
     }
-    setIsDarkMode(!isDarkMode);
-  };
+    return preference;
+  }, []);
 
+  const applyTheme = useCallback(
+    (preference: string) => {
+      const theme = getAppliedTheme(preference);
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    },
+    [getAppliedTheme],
+  );
+
+  useEffect(() => {
+    applyTheme(themePreference);
+  }, [themePreference, applyTheme]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const handleChange = () => {
+      if (themePreference === 'system') {
+        applyTheme('system');
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [themePreference, applyTheme]);
+
+  const toggleTheme = () => {
+    const nextTheme =
+      themePreference === 'light'
+        ? 'dark'
+        : themePreference === 'dark'
+          ? 'system'
+          : 'light';
+
+    setThemePreference(nextTheme);
+    localStorage.setItem('theme', nextTheme);
+  };
   const trackWidth = 72;
   const thumbWidth = 28;
   const padding = 3;
 
+  const appliedTheme = getAppliedTheme(themePreference);
+  const isDarkMode = appliedTheme === 'dark';
   const translateX = isDarkMode ? trackWidth - thumbWidth - padding : padding;
 
   return (
     <button
-      onClick={toggleDarkMode}
+      onClick={toggleTheme}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className="group relative inline-flex h-9 w-18 items-center rounded-full transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-1"
