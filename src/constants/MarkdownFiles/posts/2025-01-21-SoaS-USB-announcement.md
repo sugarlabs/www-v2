@@ -4,8 +4,7 @@ excerpt: "Sugar Labs now offers pre-installed Sugar on a Stick USB drives for pu
 category: "COMMUNITY NEWS"
 date: "2025-01-21"
 slug: "get-and-gift-sugar-soas-usbs"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "products,merchandise,SoaS,USB,education,fundraising,open-source"
 ---
 

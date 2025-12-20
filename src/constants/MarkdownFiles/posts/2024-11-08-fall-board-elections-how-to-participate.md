@@ -4,8 +4,7 @@ excerpt: "Sugar Labs will be running an election this fall for three seats to it
 category: "COMMUNITY NEWS"
 date: "2024-11-08"
 slug: "fall-board-elections-2024-how-to-participate"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "community,election,announcement,sugarlabs,board"
 ---
 <!-- markdownlint-disable -->

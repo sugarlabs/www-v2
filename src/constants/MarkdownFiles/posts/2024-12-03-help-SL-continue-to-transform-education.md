@@ -4,8 +4,7 @@ excerpt: "Sugar Labs Executive Director Devin Ulibarri shares the organization's
 category: "COMMUNITY NEWS"
 date: "2024-12-03"
 slug: "help-sugar-labs-continue-transform-education"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "fundraising,donations,education,nonprofit,growth,community,technology,open-source"
 ---
 <!-- markdownlint-disable -->
