@@ -2,10 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
 
 const DarkModeToggle = () => {
-   
   const [themePreference, setThemePreference] = useState(() => {
     const saved = localStorage.getItem('theme');
-   
+
     return saved || 'system';
   });
   const [isHovered, setIsHovered] = useState(false);
