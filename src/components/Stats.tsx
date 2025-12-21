@@ -214,12 +214,12 @@ const Stats = () => {
 
             return (
               <motion.div
-              key={index}
+                key={index}
                 whileHover={{
                   scale: 1.05,
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
                 className={`
                   will-change-transform transform-gpu origin-center
                   h-28 sm:h-32 md:h-36   /* 🔒 FIXED HEIGHT */
