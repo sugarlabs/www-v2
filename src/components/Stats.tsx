@@ -214,13 +214,24 @@ const Stats = () => {
 
             return (
               <motion.div
-                key={index}
-                className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative group cursor-pointer`}
+              key={index}
                 whileHover={{
                   scale: 1.05,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                className={`
+                  will-change-transform transform-gpu origin-center
+                  h-28 sm:h-32 md:h-36   /* 🔒 FIXED HEIGHT */
+                  w-full
+                  overflow-hidden        /* 🔒 PREVENT SPILL */
+                  px-2 sm:px-3 md:px-4
+                  py-2 sm:py-3
+                  rounded-md sm:rounded-lg
+                  ${stat.bgColor} border ${stat.borderColor}
+                  flex flex-col items-center justify-center
+                  relative group cursor-pointer
+                `}
                 onClick={() => setActiveCardIndex(isActive ? null : index)}
               >
                 <span
