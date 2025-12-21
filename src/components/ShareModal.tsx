@@ -33,7 +33,9 @@ const shareOptions = [
     name: 'Twitter',
     action: (url: string, title: string) => {
       window.open(
-        `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
+        `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+          url,
+        )}&text=${encodeURIComponent(title)}`,
         '_blank',
       );
     },
@@ -45,7 +47,9 @@ const shareOptions = [
     name: 'Facebook',
     action: (url: string) => {
       window.open(
-        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+          url,
+        )}`,
         '_blank',
       );
     },
@@ -62,7 +66,9 @@ const shareOptions = [
     name: 'WhatsApp',
     action: (url: string, title: string) => {
       window.open(
-        `https://api.whatsapp.com/send?text=${encodeURIComponent(title + ' ' + url)}`,
+        `https://api.whatsapp.com/send?text=${encodeURIComponent(
+          title + ' ' + url,
+        )}`,
         '_blank',
       );
     },
@@ -79,7 +85,9 @@ const shareOptions = [
     name: 'LinkedIn',
     action: (url: string, title: string) => {
       window.open(
-        `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`,
+        `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
+          url,
+        )}&title=${encodeURIComponent(title)}`,
         '_blank',
       );
     },
@@ -96,7 +104,9 @@ const shareOptions = [
     name: 'Mastodon',
     action: (url: string, title: string) => {
       window.open(
-        `https://mastodon.social/share?text=${encodeURIComponent(title + ' ' + url)}`,
+        `https://mastodon.social/share?text=${encodeURIComponent(
+          title + ' ' + url,
+        )}`,
         '_blank',
       );
     },
@@ -148,12 +158,15 @@ const ShareModal: React.FC<ShareModalProps> = ({
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
+
         <h3 className="text-xl font-bold mb-4 text-blue-700 text-center">
           Share this post
         </h3>
+
         <div className="mb-5 text-xs text-gray-700 bg-white border border-gray-100 rounded px-3 py-2 break-all text-center select-all">
           {url}
         </div>
+
         <div className="flex flex-col gap-3">
           {typeof navigator.share === 'function' && (
             <button
@@ -164,6 +177,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
               Share via Device...
             </button>
           )}
+
           {shareOptions.map((opt) => (
             <button
               key={opt.name}
