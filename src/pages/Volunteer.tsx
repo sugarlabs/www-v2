@@ -156,7 +156,7 @@ const Volunteer = () => {
                   ))}
                 </ul>
                 {role.extra && (
-                  <p className="text-gray-700 dark:text-gray-300 text-sm mt-3">
+                  <p className="text-gray-700 dark:text-gray-300 text-sm mt-3 break-words">
                     {role.extra}{' '}
                     {role.link && (
                       <a
