@@ -148,12 +148,18 @@ const Contributors: React.FC = () => {
     }
 
     if (error) {
-      return <div className="text-red-500 text-center py-10 dark:text-red-400">{error}</div>;
+      return (
+        <div className="text-red-500 text-center py-10 dark:text-red-400">
+          {error}
+        </div>
+      );
     }
 
     if (repos.length === 0) {
       return (
-        <p className="text-gray-500 text-center py-10 dark:text-gray-400">No repositories found</p>
+        <p className="text-gray-500 text-center py-10 dark:text-gray-400">
+          No repositories found
+        </p>
       );
     }
 
@@ -235,7 +241,11 @@ const Contributors: React.FC = () => {
     }
 
     if (error) {
-      return <div className="text-red-500 text-center py-10 dark:text-red-400">{error}</div>;
+      return (
+        <div className="text-red-500 text-center py-10 dark:text-red-400">
+          {error}
+        </div>
+      );
     }
 
     if (contributors.length === 0) {
