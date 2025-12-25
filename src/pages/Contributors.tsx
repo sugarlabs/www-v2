@@ -173,19 +173,25 @@ const Contributors: React.FC = () => {
               key={repo.id}
               whileHover="hover"
               onClick={() => handleRepoClick(repo.name)}
-              className={`p-4 rounded-lg cursor-pointer transition duration-300 border-l-4 ${
-                selectedRepo === repo.name
+              className={`p-4 rounded-lg cursor-pointer transition duration-300 border-l-4
+  ${selectedRepo === repo.name
                   ? 'bg-[#D4B062]/10 border-[#D4B062]'
-                  : 'hover:bg-gray-50 border-transparent hover:border-gray-200'
-              }`}
+                  : `
+        bg-white dark:bg-[#121212]
+        hover:bg-gray-50 dark:hover:bg-[#1A1A1A]
+        border-transparent hover:border-gray-200 dark:hover:border-gray-700
+      `
+                }
+`}
+
             >
-              <h3 className="font-medium text-lg text-gray-800 break-words">
+              <h3 className="font-medium text-lg text-gray-800 dark:text-gray-100 break-words">
                 {repo.name}
               </h3>
-              <p className="text-sm text-gray-600 line-clamp-2 mt-1">
+              <p className="text-sm text-gray-600 line-clamp-2 mt-1 dark:text-gray-400">
                 {repo.description || 'No description'}
               </p>
-              <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-500">
+              <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
                 <span className="flex items-center gap-1">
                   <Star className="h-3.5 w-3.5 text-[#D4B062]" />{' '}
                   {repo.stargazers_count}
@@ -301,7 +307,8 @@ const Contributors: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9]">
+      <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9] dark:bg-[#0B0B0B]
+  text-gray-900 dark:text-gray-100">
         {/* Hero Section */}
         <motion.section
           initial="hidden"
@@ -364,7 +371,16 @@ const Contributors: React.FC = () => {
                 placeholder="Search repositories..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4B062] shadow-sm bg-white text-gray-700"
+                className="
+    w-full px-4 py-3 pl-12 rounded-full
+    bg-white dark:bg-[#121212]
+    text-gray-700 dark:text-gray-200
+    border border-gray-200 dark:border-gray-700
+    focus:outline-none focus:ring-2 focus:ring-[#D4B062]
+    shadow-sm
+    placeholder-gray-400 dark:placeholder-gray-500
+    transition-colors
+  "
               />
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
             </div>
@@ -379,7 +395,12 @@ const Contributors: React.FC = () => {
               initial="hidden"
               animate="visible"
               variants={staggerContainer}
-              className="lg:col-span-5 bg-white rounded-xl shadow-md p-6 overflow-hidden border border-gray-100"
+              className="
+    lg:col-span-5
+    bg-white dark:bg-[#121212]
+    rounded-xl shadow-md p-6 overflow-hidden
+    border border-gray-100 dark:border-gray-800
+  "
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#D4B062] p-3 rounded-full text-white">
@@ -398,7 +419,12 @@ const Contributors: React.FC = () => {
               initial="hidden"
               animate="visible"
               variants={staggerContainer}
-              className="lg:col-span-7 bg-white rounded-xl shadow-md p-6 overflow-hidden border border-gray-100"
+              className="
+    lg:col-span-7
+    bg-white dark:bg-[#121212]
+    rounded-xl shadow-md p-6 overflow-hidden
+    border border-gray-100 dark:border-gray-800
+  "
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#D4B062] p-3 rounded-full text-white">
