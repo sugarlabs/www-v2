@@ -174,16 +174,16 @@ const Contributors: React.FC = () => {
               whileHover="hover"
               onClick={() => handleRepoClick(repo.name)}
               className={`p-4 rounded-lg cursor-pointer transition duration-300 border-l-4
-  ${selectedRepo === repo.name
-                  ? 'bg-[#D4B062]/10 border-[#D4B062]'
-                  : `
+  ${
+    selectedRepo === repo.name
+      ? 'bg-[#D4B062]/10 border-[#D4B062]'
+      : `
         bg-white dark:bg-[#121212]
         hover:bg-gray-50 dark:hover:bg-[#1A1A1A]
         border-transparent hover:border-gray-200 dark:hover:border-gray-700
       `
-                }
+  }
 `}
-
             >
               <h3 className="font-medium text-lg text-gray-800 dark:text-gray-100 break-words">
                 {repo.name}
@@ -307,8 +307,10 @@ const Contributors: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9] dark:bg-[#0B0B0B]
-  text-gray-900 dark:text-gray-100">
+      <div
+        className="min-h-screen flex flex-col font-sans bg-[#FFFEF9] dark:bg-[#0B0B0B]
+  text-gray-900 dark:text-gray-100"
+      >
         {/* Hero Section */}
         <motion.section
           initial="hidden"
