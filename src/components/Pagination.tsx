@@ -42,6 +42,10 @@ const Pagination: React.FC<PaginationProps> = ({
     const pages = [];
 
     if (isMobile) {
+      // Mobile Behavior:
+      // Due to limited screen width, we simplify the pagination.
+      // We only show the current page and its immediate neighbors (e.g., 4, 5, 6).
+      // Ellipses and first/last shortcuts are removed to prevent wrapping.
       const start = Math.max(1, currentPage - 1);
       const end = Math.min(totalPages, currentPage + 1);
 
