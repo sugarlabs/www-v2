@@ -50,14 +50,14 @@ const TeamSection: React.FC<{ members: TeamMember[] }> = ({ members }) => {
         {members.map((member, index) => (
           <motion.div
             key={index}
-            className="flex flex-col md:flex-row items-center bg-white dark:bg-gray-700 shadow-lg rounded-lg p-6"
+            className="flex flex-col lg:flex-row items-center bg-white dark:bg-gray-700 shadow-lg rounded-lg p-6"
             variants={teamSectionAnimations.memberCard}
           >
             {/* Member Image */}
             <motion.img
               src={member.image}
               alt={member.name}
-              className="w-32 h-32 rounded-full object-cover border-4 border-gray-300"
+              className="w-32 h-32 rounded-full object-cover border-4 border-gray-300 md:mb-3"
               variants={teamSectionAnimations.memberImage}
             />
 
