@@ -10,8 +10,8 @@ import {
   Grid,
   List,
   Search,
-  ChevronDown,
 } from 'lucide-react';
+import Pagination from '@/components/Pagination';
 
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
@@ -30,7 +30,8 @@ const AuthorPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // UI State
-  const [displayCount, setDisplayCount] = useState(6);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -98,7 +99,7 @@ const AuthorPage: React.FC = () => {
     });
 
     setFilteredPosts(filtered);
-    setDisplayCount(6); // Reset display count when filters change
+    setCurrentPage(1); // Reset page when filters change
   }, [posts, searchTerm, selectedCategory, sortBy]);
 
   const handlePostClick = (post: PostMetaData) => {
@@ -106,8 +107,9 @@ const AuthorPage: React.FC = () => {
     navigate(`/news/${categoryPath}/${post.slug}`);
   };
 
-  const handleShowMore = () => {
-    setDisplayCount((prev) => Math.min(prev + 6, filteredPosts.length));
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const getUniqueCategories = () => {
@@ -115,8 +117,11 @@ const AuthorPage: React.FC = () => {
     return ['All', ...categories.sort()];
   };
 
-  const visiblePosts = filteredPosts.slice(0, displayCount);
-  const hasMore = filteredPosts.length > displayCount;
+  const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
+  const visiblePosts = filteredPosts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   if (isLoading) {
     return (
@@ -435,24 +440,11 @@ const AuthorPage: React.FC = () => {
                       </AnimatePresence>
                     </motion.div>
 
-                    {/* Load More Button */}
-                    {hasMore && (
-                      <div className="text-center mt-8">
-                        <motion.button
-                          onClick={handleShowMore}
-                          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white 
-                          rounded-lg transition-colors font-medium flex items-center gap-2 mx-auto shadow-md dark:shadow-blue-500/20"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          Load More Articles
-                          <ChevronDown className="w-4 h-4" />
-                          <span className="text-xs bg-blue-500 dark:bg-blue-600 px-2 py-1 rounded-full">
-                            +{Math.min(6, filteredPosts.length - displayCount)}
-                          </span>
-                        </motion.button>
-                      </div>
-                    )}
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
                   </>
                 )}
               </div>
