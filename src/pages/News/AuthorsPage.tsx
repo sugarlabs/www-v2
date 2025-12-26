@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { User, Building, BookOpen, Search } from 'lucide-react';
@@ -28,6 +28,38 @@ const AuthorsPage: React.FC = () => {
     }, 300);
     return () => clearTimeout(handler);
   }, [searchTerm]);
+
+  const loadPostCounts = useCallback(async (authorsList: Author[]) => {
+    const batchSize = 3; /*Load 3 post counts at a time*/
+
+    for (let i = 0; i < authorsList.length; i += batchSize) {
+      const batch = authorsList.slice(i, i + batchSize);
+
+      const batchResults = await Promise.all(
+        batch.map(async (author) => {
+          try {
+            const posts = await getPostsByAuthor(author.slug);
+            return { slug: author.slug, postCount: posts.length };
+          } catch (error) {
+            console.error(`Failed to get post count for ${author.name}`, error);
+            return { slug: author.slug, postCount: 0 };
+          }
+        }),
+      );
+
+      /*Update state with these post counts (progressive UI update)*/
+      setAuthors((prevAuthors) =>
+        prevAuthors.map((author) => {
+          const result = batchResults.find((r) => r.slug === author.slug);
+          return result ? { ...author, postCount: result.postCount } : author;
+        }),
+      );
+
+      if (i + batchSize < authorsList.length) {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const loadAllAuthors = async () => {
@@ -63,39 +95,7 @@ const AuthorsPage: React.FC = () => {
     };
 
     loadAllAuthors();
-  }, []);
-
-  const loadPostCounts = async (authorsList: Author[]) => {
-    const batchSize = 3; /*Load 3 post counts at a time*/
-
-    for (let i = 0; i < authorsList.length; i += batchSize) {
-      const batch = authorsList.slice(i, i + batchSize);
-
-      const batchResults = await Promise.all(
-        batch.map(async (author) => {
-          try {
-            const posts = await getPostsByAuthor(author.slug);
-            return { slug: author.slug, postCount: posts.length };
-          } catch (error) {
-            console.error(`Failed to get post count for ${author.name}`, error);
-            return { slug: author.slug, postCount: 0 };
-          }
-        }),
-      );
-
-      /*Update state with these post counts (progressive UI update)*/
-      setAuthors((prevAuthors) =>
-        prevAuthors.map((author) => {
-          const result = batchResults.find((r) => r.slug === author.slug);
-          return result ? { ...author, postCount: result.postCount } : author;
-        }),
-      );
-
-      if (i + batchSize < authorsList.length) {
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      }
-    }
-  };
+  }, [loadPostCounts]);
 
   const handleAuthorClick = (slug: string) => {
     navigate(`/authors/${slug}`);
