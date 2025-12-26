@@ -48,12 +48,10 @@ const Pagination: React.FC<PaginationProps> = ({
       if (currentPage === 1) {
         const endAdjusted = Math.min(totalPages, 3);
         for (let i = 1; i <= endAdjusted; i++) pages.push(i);
-      }
-      else if (currentPage === totalPages) {
+      } else if (currentPage === totalPages) {
         const startAdjusted = Math.max(1, totalPages - 2);
         for (let i = startAdjusted; i <= totalPages; i++) pages.push(i);
-      }
-      else {
+      } else {
         for (let i = start; i <= end; i++) {
           pages.push(i);
         }
