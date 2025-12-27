@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { stats, statisticsData } from '@/constants/Stats.ts';
 import {
   headerReveal,
@@ -11,6 +11,7 @@ import {
 
 const Stats = () => {
   const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
+  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
 
   return (
     <section className="max-w-7xl mx-auto py-10 sm:py-16 md:py-20 px-4 sm:px-6 bg-white dark:bg-gray-900">
@@ -210,37 +211,61 @@ const Stats = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 max-w-6xl mx-auto px-2">
           {statisticsData.map((stat, index) => {
             const isActive = activeCardIndex === index;
-            const showFullText = isActive;
+            const isHovered = hoveredCardIndex === index;
+            const showFullText = isActive || isHovered;
 
             return (
               <motion.div
                 key={index}
-                className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative group cursor-pointer`}
+                className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative cursor-pointer overflow-hidden`}
                 whileHover={{
                   scale: 1.05,
                   boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 10 }}
                 onClick={() => setActiveCardIndex(isActive ? null : index)}
+                onHoverStart={() => setHoveredCardIndex(index)}
+                onHoverEnd={() => setHoveredCardIndex(null)}
+                layout
               >
                 <span
                   className={`font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.gradient} text-base sm:text-xl md:text-2xl`}
                 >
                   {stat.value}
                 </span>
-                {/* Truncated text - visible by default, hidden on hover (desktop) or when active (mobile) */}
-                <span
-                  className={`text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1 ${showFullText ? 'hidden' : ''} lg:block lg:group-hover:hidden`}
+                {/* Text container with smooth animations */}
+                <motion.div
+                  className="w-full flex flex-col items-center min-h-[1.5rem]"
+                  layout
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
                 >
-                  {stat.title.split('.')[0].substring(0, 12)}
-                  {stat.title.split('.')[0].length > 12 ? '...' : ''}
-                </span>
-                {/* Full text - visible on hover (desktop) or when active (mobile) */}
-                <span
-                  className={`text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 whitespace-normal px-1 ${showFullText ? 'block' : 'hidden'} lg:hidden lg:group-hover:block`}
-                >
-                  {stat.title}
-                </span>
+                  <AnimatePresence mode="wait">
+                    {!showFullText ? (
+                      <motion.span
+                        key="truncated"
+                        className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      >
+                        {stat.title.split('.')[0].substring(0, 12)}
+                        {stat.title.split('.')[0].length > 12 ? '...' : ''}
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="full"
+                        className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 whitespace-normal px-1"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      >
+                        {stat.title}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               </motion.div>
             );
           })}
