@@ -12,8 +12,8 @@ import {
 const Stats = () => {
   const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
-  const [isTouchDevice] = useState(() => 
-    'ontouchstart' in window || navigator.maxTouchPoints > 0
+  const [isTouchDevice] = useState(
+    () => 'ontouchstart' in window || navigator.maxTouchPoints > 0,
   );
   const gridRef = useRef<HTMLDivElement>(null);
   const prevIsMobileRef = useRef<boolean>(window.innerWidth < 1024);
