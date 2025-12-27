@@ -12,13 +12,10 @@ import {
 const Stats = () => {
   const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTouchDevice] = useState(() => 
+    'ontouchstart' in window || navigator.maxTouchPoints > 0
+  );
   const gridRef = useRef<HTMLDivElement>(null);
-
-  // Detect touch device on mount
-  useEffect(() => {
-    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
-  }, []);
 
   // Handle click outside to reset active state
   useEffect(() => {
@@ -38,13 +35,6 @@ const Stats = () => {
       document.removeEventListener('touchstart', handleClickOutside);
     };
   }, []);
-
-  // Clear hover state when active card changes (prevents stuck hover on mobile)
-  useEffect(() => {
-    if (activeCardIndex !== null) {
-      setHoveredCardIndex(null);
-    }
-  }, [activeCardIndex]);
 
   return (
     <section className="max-w-7xl mx-auto py-10 sm:py-16 md:py-20 px-4 sm:px-6 bg-white dark:bg-gray-900">
@@ -269,6 +259,7 @@ const Stats = () => {
                   // On mobile, toggle active state; on desktop, set active and clear hover
                   if (isActive) {
                     setActiveCardIndex(null);
+                    setHoveredCardIndex(null);
                   } else {
                     setActiveCardIndex(index);
                     setHoveredCardIndex(null);
