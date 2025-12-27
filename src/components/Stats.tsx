@@ -16,6 +16,25 @@ const Stats = () => {
     'ontouchstart' in window || navigator.maxTouchPoints > 0
   );
   const gridRef = useRef<HTMLDivElement>(null);
+  const prevIsMobileRef = useRef<boolean>(window.innerWidth < 1024);
+
+  // Reset component state when switching between mobile and desktop views
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 1024;
+      const prevIsMobile = prevIsMobileRef.current;
+
+      // Reset states when switching between mobile and desktop
+      if (isMobile !== prevIsMobile) {
+        setActiveCardIndex(null);
+        setHoveredCardIndex(null);
+        prevIsMobileRef.current = isMobile;
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Handle click outside to reset active state
   useEffect(() => {
