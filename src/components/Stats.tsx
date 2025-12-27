@@ -241,7 +241,7 @@ const Stats = () => {
         </p>
 
         {/* Interactive Stats Summary - Grid Layout */}
-        <div 
+        <div
           ref={gridRef}
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 max-w-6xl mx-auto px-2"
         >
