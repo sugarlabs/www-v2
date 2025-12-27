@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { stats, statisticsData } from '@/constants/Stats.ts';
 import {
@@ -12,6 +12,39 @@ import {
 const Stats = () => {
   const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  // Detect touch device on mount
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
+
+  // Handle click outside to reset active state
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (gridRef.current && !gridRef.current.contains(event.target as Node)) {
+        setActiveCardIndex(null);
+        setHoveredCardIndex(null);
+      }
+    };
+
+    // Add event listeners for both mouse and touch
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
+
+  // Clear hover state when active card changes (prevents stuck hover on mobile)
+  useEffect(() => {
+    if (activeCardIndex !== null) {
+      setHoveredCardIndex(null);
+    }
+  }, [activeCardIndex]);
 
   return (
     <section className="max-w-7xl mx-auto py-10 sm:py-16 md:py-20 px-4 sm:px-6 bg-white dark:bg-gray-900">
@@ -208,24 +241,53 @@ const Stats = () => {
         </p>
 
         {/* Interactive Stats Summary - Grid Layout */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 max-w-6xl mx-auto px-2">
+        <div 
+          ref={gridRef}
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 max-w-6xl mx-auto px-2"
+        >
           {statisticsData.map((stat, index) => {
             const isActive = activeCardIndex === index;
-            const isHovered = hoveredCardIndex === index;
+            // Only use hover on non-touch devices
+            const isHovered = !isTouchDevice && hoveredCardIndex === index;
             const showFullText = isActive || isHovered;
 
             return (
               <motion.div
                 key={index}
                 className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative cursor-pointer overflow-hidden`}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                }}
+                whileHover={
+                  !isTouchDevice
+                    ? {
+                        scale: 1.05,
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      }
+                    : undefined
+                }
                 transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                onClick={() => setActiveCardIndex(isActive ? null : index)}
-                onHoverStart={() => setHoveredCardIndex(index)}
-                onHoverEnd={() => setHoveredCardIndex(null)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // On mobile, toggle active state; on desktop, set active and clear hover
+                  if (isActive) {
+                    setActiveCardIndex(null);
+                  } else {
+                    setActiveCardIndex(index);
+                    setHoveredCardIndex(null);
+                  }
+                }}
+                onHoverStart={() => {
+                  if (!isTouchDevice) {
+                    setHoveredCardIndex(index);
+                  }
+                }}
+                onHoverEnd={() => {
+                  if (!isTouchDevice) {
+                    setHoveredCardIndex(null);
+                  }
+                }}
+                onTouchStart={(e) => {
+                  // Prevent hover from triggering on touch devices
+                  e.stopPropagation();
+                }}
                 layout
               >
                 <span
