@@ -264,25 +264,31 @@ const AuthorsPage: React.FC = () => {
                         {/* Quick Stats Badges */}
                         <div className="flex flex-wrap justify-center gap-2 text-xs text-gray-600 dark:text-gray-300 mt-auto">
                           {/* Article count badge with loading state */}
-                          <div className="flex items-center gap-1 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">
-                            <BookOpen className="w-4 h-4" aria-hidden="true" />
-                            <span>
-                              {author.postCount !== null ? (
-                                <>
-                                  {author.postCount}{' '}
-                                  {author.postCount === 1
-                                    ? 'Article'
-                                    : 'Articles'}
-                                </>
-                              ) : (
-                                <span
-                                  className="inline-block w-12 h-3 bg-blue-200 dark:bg-blue-800 rounded animate-pulse"
-                                  role="status"
-                                  aria-label="Loading article count"
-                                />
-                              )}
-                            </span>
-                          </div>
+                          {author.postCount !== null ? (
+                            // Loaded state - show actual count
+                            <div className="flex items-center gap-1 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">
+                              <BookOpen
+                                className="w-4 h-4"
+                                aria-hidden="true"
+                              />
+                              <span>
+                                {author.postCount}{' '}
+                                {author.postCount === 1
+                                  ? 'Article'
+                                  : 'Articles'}
+                              </span>
+                            </div>
+                          ) : (
+                            // Loading state - entire badge shimmers
+                            <div
+                              className="flex items-center gap-1 bg-gray-300 dark:bg-gray-700 px-3 py-1 rounded-full animate-pulse"
+                              role="status"
+                              aria-label="Loading article count"
+                            >
+                              <div className="w-4 h-4 bg-gray-400 dark:bg-gray-600 rounded" />
+                              <div className="w-16 h-3 bg-gray-400 dark:bg-gray-600 rounded" />
+                            </div>
+                          )}
 
                           {/* Organization badge */}
                           {author.organization && (
