@@ -148,18 +148,24 @@ const Contributors: React.FC = () => {
     }
 
     if (error) {
-      return <div className="text-red-500 text-center py-10">{error}</div>;
+      return (
+        <div className="text-red-500 text-center py-10 dark:text-red-400">
+          {error}
+        </div>
+      );
     }
 
     if (repos.length === 0) {
       return (
-        <p className="text-gray-500 text-center py-10">No repositories found</p>
+        <p className="text-gray-500 text-center py-10 dark:text-gray-400">
+          No repositories found
+        </p>
       );
     }
 
     if (filteredRepos.length === 0) {
       return (
-        <p className="text-gray-500 text-center py-10">
+        <p className="text-gray-500 text-center py-10 dark:text-gray-400">
           No repositories match your search
         </p>
       );
@@ -175,17 +181,17 @@ const Contributors: React.FC = () => {
               onClick={() => handleRepoClick(repo.name)}
               className={`p-4 rounded-lg cursor-pointer transition duration-300 border-l-4 ${
                 selectedRepo === repo.name
-                  ? 'bg-[#D4B062]/10 border-[#D4B062]'
-                  : 'hover:bg-gray-50 border-transparent hover:border-gray-200'
+                  ? 'bg-[#D4B062]/10 border-[#D4B062] dark:bg-[#D4B062]/20'
+                  : 'hover:bg-gray-50 border-transparent hover:border-gray-200 dark:hover:bg-gray-800 dark:hover:border-gray-700'
               }`}
             >
-              <h3 className="font-medium text-lg text-gray-800 break-words">
+              <h3 className="font-medium text-lg text-gray-800 break-words dark:text-gray-100">
                 {repo.name}
               </h3>
-              <p className="text-sm text-gray-600 line-clamp-2 mt-1">
+              <p className="text-sm text-gray-600 line-clamp-2 mt-1 dark:text-gray-400">
                 {repo.description || 'No description'}
               </p>
-              <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-500">
+              <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
                 <span className="flex items-center gap-1">
                   <Star className="h-3.5 w-3.5 text-[#D4B062]" />{' '}
                   {repo.stargazers_count}
@@ -218,8 +224,8 @@ const Contributors: React.FC = () => {
     if (!selectedRepo) {
       return (
         <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center py-12">
-          <Users className="h-16 w-16 text-gray-300 mb-4" />
-          <p className="text-gray-500 max-w-xs">
+          <Users className="h-16 w-16 text-gray-300 mb-4 dark:text-gray-600" />
+          <p className="text-gray-500 max-w-xs dark:text-gray-400">
             Select a repository from the list to view its contributors
           </p>
         </div>
@@ -235,14 +241,18 @@ const Contributors: React.FC = () => {
     }
 
     if (error) {
-      return <div className="text-red-500 text-center py-10">{error}</div>;
+      return (
+        <div className="text-red-500 text-center py-10 dark:text-red-400">
+          {error}
+        </div>
+      );
     }
 
     if (contributors.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center h-64 text-center">
-          <Users className="h-16 w-16 text-gray-300 mb-4" />
-          <p className="text-gray-500">
+          <Users className="h-16 w-16 text-gray-300 mb-4 dark:text-gray-600" />
+          <p className="text-gray-500 dark:text-gray-400">
             No contributors found for this repository
           </p>
         </div>
@@ -251,12 +261,12 @@ const Contributors: React.FC = () => {
 
     return (
       <>
-        <p className="text-sm text-gray-500 mb-4">
+        <p className="text-sm text-gray-500 mb-4 dark:text-gray-400">
           Showing all {contributors.length} contributors
         </p>
         <div className="max-h-[65vh] overflow-y-auto pr-1">
           <motion.div
-            variants={staggerContainer}
+            // variants={staggerContainer}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           >
             {contributors.map((contributor) => (
@@ -266,13 +276,13 @@ const Contributors: React.FC = () => {
                 href={contributor.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center p-5 bg-gray-50 rounded-lg transition duration-300 hover:bg-[#D4B062]/5 hover:shadow-md border border-gray-100"
+                className="group flex flex-col items-center p-5 bg-gray-50 rounded-lg transition duration-300 hover:bg-[#D4B062]/5 hover:shadow-md border border-gray-100 dark:bg-gray-800 dark:hover:bg-[#D4B062]/10 dark:border-gray-700"
               >
                 <div className="relative mb-3">
                   <img
                     src={contributor.avatar_url}
                     alt={`${contributor.login}'s avatar`}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm dark:border-gray-700"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src =
                         'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.webp';
@@ -284,7 +294,7 @@ const Contributors: React.FC = () => {
                       : contributor.contributions}
                   </div>
                 </div>
-                <h3 className="font-medium text-gray-800 text-center break-words w-full">
+                <h3 className="font-medium text-gray-800 text-center break-words w-full dark:text-gray-100">
                   {contributor.login}
                 </h3>
                 <div className="mt-2 flex items-center text-xs text-[#D4B062] opacity-0 group-hover:opacity-100 transition-opacity">
@@ -301,7 +311,7 @@ const Contributors: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9]">
+      <div className="min-h-screen flex flex-col font-sans bg-[#FFFEF9] dark:bg-[#13141f]">
         {/* Hero Section */}
         <motion.section
           initial="hidden"
@@ -364,11 +374,11 @@ const Contributors: React.FC = () => {
                 placeholder="Search repositories..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4B062] shadow-sm bg-white text-gray-700"
+                className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4B062] shadow-sm bg-white text-gray-700 dark:border-gray-700 dark:bg-[#1a1b26] dark:text-gray-200 dark:placeholder:text-gray-500"
               />
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 dark:text-gray-500" />
             </div>
-            <p className="text-sm text-gray-500 mt-2 text-center">
+            <p className="text-sm text-gray-500 mt-2 text-center dark:text-gray-400">
               Showing {filteredRepos.length} repositories.
             </p>
           </motion.div>
@@ -379,13 +389,13 @@ const Contributors: React.FC = () => {
               initial="hidden"
               animate="visible"
               variants={staggerContainer}
-              className="lg:col-span-5 bg-white rounded-xl shadow-md p-6 overflow-hidden border border-gray-100"
+              className="lg:col-span-5 bg-white rounded-xl shadow-md p-6 overflow-hidden border border-gray-100 dark:bg-[#1a1b26] dark:border-gray-800"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#D4B062] p-3 rounded-full text-white">
                   <Code className="h-5 w-5" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800">
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
                   Repositories
                 </h2>
               </div>
@@ -398,13 +408,13 @@ const Contributors: React.FC = () => {
               initial="hidden"
               animate="visible"
               variants={staggerContainer}
-              className="lg:col-span-7 bg-white rounded-xl shadow-md p-6 overflow-hidden border border-gray-100"
+              className="lg:col-span-7 bg-white rounded-xl shadow-md p-6 overflow-hidden border border-gray-100 dark:bg-[#1a1b26] dark:border-gray-800"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#D4B062] p-3 rounded-full text-white">
                   <Users className="h-5 w-5" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800">
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
                   {selectedRepo
                     ? `Contributors for ${selectedRepo}`
                     : 'Select a repository'}
