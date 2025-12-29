@@ -11,6 +11,7 @@ import {
   Code,
   Users,
   ExternalLink,
+  RefreshCw,
 } from 'lucide-react';
 import { fadeIn, staggerContainer } from '@/styles/Animations';
 
@@ -33,78 +34,342 @@ interface Contributor {
   contributions: number;
 }
 
+interface CacheData<T> {
+  data: T;
+  timestamp: number;
+  expiresIn: number; // in milliseconds
+}
+
+const CACHE_CONFIG = {
+  REPOSITORIES: {
+    KEY: 'sugarlabs_repositories_cache',
+    EXPIRY: 30 * 60 * 1000, // 30min
+  },
+  CONTRIBUTORS: {
+    KEY_PREFIX: 'sugarlabs_contributors_cache_',
+    EXPIRY: 60 * 60 * 1000, // 60min
+  },
+  SESSION: {
+    SELECTED_REPO: 'selected_repo',
+  },
+};
+
+const CacheService = {
+  get<T>(key: string): T | null {
+    try {
+      const cached = localStorage.getItem(key);
+      if (!cached) return null;
+
+      const { data, timestamp, expiresIn }: CacheData<T> = JSON.parse(cached);
+
+      if (Date.now() - timestamp > expiresIn) {
+        localStorage.removeItem(key);
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Cache read error:', error);
+      return null;
+    }
+  },
+
+  set<T>(key: string, data: T, expiresIn: number): void {
+    try {
+      const cacheData: CacheData<T> = {
+        data,
+        timestamp: Date.now(),
+        expiresIn,
+      };
+      localStorage.setItem(key, JSON.stringify(cacheData));
+    } catch (error) {
+      console.error('Cache write error:', error);
+    }
+  },
+
+  clear(key: string): void {
+    localStorage.removeItem(key);
+  },
+
+  clearAll(): void {
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('sugarlabs_')) {
+        localStorage.removeItem(key);
+      }
+    });
+  },
+
+  isValid(key: string): boolean {
+    const cached = localStorage.getItem(key);
+    if (!cached) return false;
+
+    try {
+      const { timestamp, expiresIn }: CacheData<unknown> = JSON.parse(cached);
+      return Date.now() - timestamp <= expiresIn;
+    } catch {
+      return false;
+    }
+  },
+
+  getAge(key: string): number {
+    const cached = localStorage.getItem(key);
+    if (!cached) return Infinity;
+
+    try {
+      const { timestamp }: CacheData<unknown> = JSON.parse(cached);
+      return Math.floor((Date.now() - timestamp) / 60000);
+    } catch {
+      return Infinity;
+    }
+  },
+};
+
 const Contributors: React.FC = () => {
   const [repos, setRepos] = useState<Repository[]>([]);
   const [filteredRepos, setFilteredRepos] = useState<Repository[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
+  const [selectedRepo, setSelectedRepo] = useState<string | null>(() => {
+    return sessionStorage.getItem(CACHE_CONFIG.SESSION.SELECTED_REPO);
+  });
   const [contributors, setContributors] = useState<Contributor[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [cacheAge, setCacheAge] = useState<number>(0);
 
-  const fetchAllRepos = useCallback(async () => {
-    setRepoLoading(true);
-    setError(null);
-
+  const fetchAllReposBackground = useCallback(async () => {
     try {
-      let allRepos: Repository[] = [];
-      let page = 1;
-      let hasMore = true;
+      const response = await axios.get(
+        'https://api.github.com/orgs/sugarlabs/repos?per_page=100&sort=updated&direction=desc',
+        {
+          headers: {
+            Accept: 'application/vnd.github.v3+json',
+          },
+        },
+      );
 
-      while (hasMore) {
-        const response = await axios.get(
-          `https://api.github.com/orgs/sugarlabs/repos?per_page=100&page=${page}&sort=updated&direction=desc`,
+      if (response.data && response.data.length > 0) {
+        CacheService.set(
+          CACHE_CONFIG.REPOSITORIES.KEY,
+          response.data,
+          CACHE_CONFIG.REPOSITORIES.EXPIRY,
         );
-
-        if (response.data.length === 0) {
-          hasMore = false;
-        } else {
-          allRepos = [...allRepos, ...response.data];
-          page++;
-        }
       }
-
-      setRepos(allRepos);
-      setFilteredRepos(allRepos);
     } catch (error) {
-      console.error('Error fetching repositories:', error);
-      setError('Failed to load repositories. Please try again later.');
-    } finally {
-      setRepoLoading(false);
+      console.error('Background refresh failed:', error);
     }
   }, []);
 
-  const fetchAllContributors = useCallback(async (repoName: string) => {
-    setLoading(true);
-    setError(null);
+  // Fetching all repositories with caching
+  const fetchAllRepos = useCallback(
+    async (force = false) => {
+      setRepoLoading(true);
+      setError(null);
 
-    try {
-      let allContributors: Contributor[] = [];
-      let page = 1;
-      let hasMore = true;
+      try {
+        if (!force) {
+          const cachedRepos = CacheService.get<Repository[]>(
+            CACHE_CONFIG.REPOSITORIES.KEY,
+          );
 
-      while (hasMore) {
-        const response = await axios.get(
-          `https://api.github.com/repos/sugarlabs/${repoName}/contributors?per_page=100&page=${page}`,
+          if (cachedRepos) {
+            const age = CacheService.getAge(CACHE_CONFIG.REPOSITORIES.KEY);
+            setCacheAge(age);
+            setRepos(cachedRepos);
+            setFilteredRepos(cachedRepos);
+            setRepoLoading(false);
+            setTimeout(() => fetchAllReposBackground(), 100);
+            return;
+          }
+        }
+
+        let allRepos: Repository[] = [];
+        let page = 1;
+        let hasMore = true;
+
+        while (hasMore) {
+          const response = await axios.get(
+            `https://api.github.com/orgs/sugarlabs/repos?per_page=100&page=${page}&sort=updated&direction=desc`,
+            {
+              headers: {
+                Accept: 'application/vnd.github.v3+json',
+              },
+            },
+          );
+
+          if (response.data.length === 0) {
+            hasMore = false;
+          } else {
+            allRepos = [...allRepos, ...response.data];
+            page++;
+
+            if (page % 5 === 0) {
+              await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+          }
+        }
+
+        setRepos(allRepos);
+        setFilteredRepos(allRepos);
+        setCacheAge(0);
+
+        CacheService.set(
+          CACHE_CONFIG.REPOSITORIES.KEY,
+          allRepos,
+          CACHE_CONFIG.REPOSITORIES.EXPIRY,
+        );
+      } catch (error) {
+        console.error('Error fetching repositories:', error);
+
+        const cachedRepos = CacheService.get<Repository[]>(
+          CACHE_CONFIG.REPOSITORIES.KEY,
         );
 
-        if (response.data.length === 0) {
-          hasMore = false;
+        if (cachedRepos) {
+          const age = CacheService.getAge(CACHE_CONFIG.REPOSITORIES.KEY);
+          setCacheAge(age);
+          setRepos(cachedRepos);
+          setFilteredRepos(cachedRepos);
+          setError('Using cached data. Failed to fetch fresh repositories.');
         } else {
-          allContributors = [...allContributors, ...response.data];
-          page++;
+          setError('Failed to load repositories. Please try again later.');
         }
+      } finally {
+        setRepoLoading(false);
       }
+    },
+    [fetchAllReposBackground],
+  );
 
-      setContributors(allContributors);
-    } catch (error) {
-      console.error('Error fetching contributors:', error);
-      setError('Failed to load contributors. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
+  const fetchContributorsBackground = useCallback(
+    async (repoName: string, cacheKey: string) => {
+      try {
+        const response = await axios.get(
+          `https://api.github.com/repos/sugarlabs/${repoName}/contributors?per_page=100`,
+          {
+            headers: {
+              Accept: 'application/vnd.github.v3+json',
+            },
+          },
+        );
+
+        if (response.data && response.data.length > 0) {
+          CacheService.set(
+            cacheKey,
+            response.data,
+            CACHE_CONFIG.CONTRIBUTORS.EXPIRY,
+          );
+        }
+      } catch (error) {
+        console.error('Background contributors refresh failed:', error);
+      }
+    },
+    [],
+  );
+
+  const fetchAllContributors = useCallback(
+    async (repoName: string, force = false) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const cacheKey = `${CACHE_CONFIG.CONTRIBUTORS.KEY_PREFIX}${repoName}`;
+
+        if (!force) {
+          const cachedContributors = CacheService.get<Contributor[]>(cacheKey);
+
+          if (cachedContributors) {
+            setContributors(cachedContributors);
+            setLoading(false);
+
+            setTimeout(
+              () => fetchContributorsBackground(repoName, cacheKey),
+              100,
+            );
+            return;
+          }
+        }
+
+        let allContributors: Contributor[] = [];
+        let page = 1;
+        let hasMore = true;
+
+        while (hasMore) {
+          const response = await axios.get(
+            `https://api.github.com/repos/sugarlabs/${repoName}/contributors?per_page=100&page=${page}`,
+            {
+              headers: {
+                Accept: 'application/vnd.github.v3+json',
+              },
+            },
+          );
+
+          if (response.data.length === 0) {
+            hasMore = false;
+          } else {
+            allContributors = [...allContributors, ...response.data];
+            page++;
+
+            if (page % 3 === 0) {
+              await new Promise((resolve) => setTimeout(resolve, 150));
+            }
+          }
+        }
+
+        setContributors(allContributors);
+        CacheService.set(
+          cacheKey,
+          allContributors,
+          CACHE_CONFIG.CONTRIBUTORS.EXPIRY,
+        );
+      } catch (error) {
+        console.error('Error fetching contributors:', error);
+
+        const cacheKey = `${CACHE_CONFIG.CONTRIBUTORS.KEY_PREFIX}${repoName}`;
+        const cachedContributors = CacheService.get<Contributor[]>(cacheKey);
+
+        if (cachedContributors) {
+          setContributors(cachedContributors);
+          setError('Using cached data. Failed to fetch fresh contributors.');
+        } else {
+          setError('Failed to load contributors. Please try again later.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fetchContributorsBackground],
+  );
+
+  const handleRepoClick = useCallback((repoName: string) => {
+    setSelectedRepo(repoName);
+    sessionStorage.setItem(CACHE_CONFIG.SESSION.SELECTED_REPO, repoName);
   }, []);
+
+  const handleForceRefresh = useCallback(() => {
+    if (selectedRepo) {
+      CacheService.clear(CACHE_CONFIG.REPOSITORIES.KEY);
+      CacheService.clear(
+        `${CACHE_CONFIG.CONTRIBUTORS.KEY_PREFIX}${selectedRepo}`,
+      );
+      fetchAllRepos(true);
+      fetchAllContributors(selectedRepo, true);
+    } else {
+      CacheService.clear(CACHE_CONFIG.REPOSITORIES.KEY);
+      fetchAllRepos(true);
+    }
+  }, [selectedRepo, fetchAllRepos, fetchAllContributors]);
+
+  const handleClearCache = useCallback(() => {
+    CacheService.clearAll();
+    setRepos([]);
+    setFilteredRepos([]);
+    setContributors([]);
+    setSelectedRepo(null);
+    sessionStorage.removeItem(CACHE_CONFIG.SESSION.SELECTED_REPO);
+    setCacheAge(0);
+    fetchAllRepos(true);
+  }, [fetchAllRepos]);
 
   useEffect(() => {
     fetchAllRepos();
@@ -128,10 +393,6 @@ const Contributors: React.FC = () => {
 
     fetchAllContributors(selectedRepo);
   }, [selectedRepo, fetchAllContributors]);
-
-  const handleRepoClick = useCallback((repoName: string) => {
-    setSelectedRepo(repoName);
-  }, []);
 
   const formatDate = useCallback((dateString: string) => {
     const date = new Date(dateString);
@@ -185,7 +446,7 @@ const Contributors: React.FC = () => {
                   : 'hover:bg-gray-50 border-transparent hover:border-gray-200 dark:hover:bg-gray-800 dark:hover:border-gray-700'
               }`}
             >
-              <h3 className="font-medium text-lg text-gray-800 break-words dark:text-gray-100">
+              <h3 className="font-medium text-lg text-gray-800 wrap-break-word dark:text-gray-100">
                 {repo.name}
               </h3>
               <p className="text-sm text-gray-600 line-clamp-2 mt-1 dark:text-gray-400">
@@ -261,14 +522,21 @@ const Contributors: React.FC = () => {
 
     return (
       <>
-        <p className="text-sm text-gray-500 mb-4 dark:text-gray-400">
-          Showing all {contributors.length} contributors
-        </p>
-        <div className="max-h-[65vh] overflow-y-auto pr-1">
-          <motion.div
-            // variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        <div className="flex justify-between items-center mb-4">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Showing all {contributors.length} contributors
+          </p>
+          <button
+            onClick={() => fetchAllContributors(selectedRepo, true)}
+            className="text-xs flex items-center gap-1 text-[#D4B062] hover:text-[#c19d4b] transition-colors"
+            title="Refresh contributors"
           >
+            <RefreshCw className="h-3 w-3" />
+            Refresh
+          </button>
+        </div>
+        <div className="max-h-[65vh] overflow-y-auto pr-1">
+          <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {contributors.map((contributor) => (
               <motion.a
                 key={contributor.id}
@@ -294,7 +562,7 @@ const Contributors: React.FC = () => {
                       : contributor.contributions}
                   </div>
                 </div>
-                <h3 className="font-medium text-gray-800 text-center break-words w-full dark:text-gray-100">
+                <h3 className="font-medium text-gray-800 text-center wrap-break-word w-full dark:text-gray-100">
                   {contributor.login}
                 </h3>
                 <div className="mt-2 flex items-center text-xs text-[#D4B062] opacity-0 group-hover:opacity-100 transition-opacity">
@@ -306,7 +574,7 @@ const Contributors: React.FC = () => {
         </div>
       </>
     );
-  }, [selectedRepo, loading, error, contributors]);
+  }, [selectedRepo, loading, error, contributors, fetchAllContributors]);
 
   return (
     <>
@@ -317,7 +585,7 @@ const Contributors: React.FC = () => {
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          className="relative py-16 sm:py-20 overflow-hidden bg-gradient-to-b from-black via-gray-800 to-gray-600"
+          className="relative py-16 sm:py-20 overflow-hidden bg-linear-to-b from-black via-gray-800 to-gray-600"
         >
           <div className="absolute inset-0 z-0 overflow-hidden">
             <div className="absolute inset-0 opacity-10"></div>
@@ -361,6 +629,39 @@ const Contributors: React.FC = () => {
         </motion.section>
 
         <div className="container mx-auto px-4 py-12">
+          {/* Cache Info and Controls */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex justify-between items-center mb-6 px-2"
+          >
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              {cacheAge > 0 ? (
+                <span>Using cached data ({cacheAge} minutes old)</span>
+              ) : (
+                <span>Fresh data loaded</span>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handleForceRefresh}
+                className="text-xs flex items-center gap-1 px-3 py-1.5 bg-[#D4B062] text-white rounded-full hover:bg-[#c19d4b] transition-colors"
+                title="Force refresh all data"
+              >
+                <RefreshCw className="h-3 w-3" />
+                Refresh All
+              </button>
+              <button
+                onClick={handleClearCache}
+                className="text-xs px-3 py-1.5 border border-gray-300 text-gray-600 rounded-full hover:bg-gray-100 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
+                title="Clear all cached data"
+              >
+                Clear Cache
+              </button>
+            </div>
+          </motion.div>
+
           {/* Search input */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -380,6 +681,7 @@ const Contributors: React.FC = () => {
             </div>
             <p className="text-sm text-gray-500 mt-2 text-center dark:text-gray-400">
               Showing {filteredRepos.length} repositories.
+              {cacheAge > 0 && ' (Cached)'}
             </p>
           </motion.div>
 
@@ -391,13 +693,22 @@ const Contributors: React.FC = () => {
               variants={staggerContainer}
               className="lg:col-span-5 bg-white rounded-xl shadow-md p-6 overflow-hidden border border-gray-100 dark:bg-[#1a1b26] dark:border-gray-800"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-[#D4B062] p-3 rounded-full text-white">
-                  <Code className="h-5 w-5" />
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="bg-[#D4B062] p-3 rounded-full text-white">
+                    <Code className="h-5 w-5" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                    Repositories
+                  </h2>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                  Repositories
-                </h2>
+                <button
+                  onClick={() => fetchAllRepos(true)}
+                  className="p-2 text-gray-500 hover:text-[#D4B062] transition-colors"
+                  title="Refresh repositories"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </button>
               </div>
 
               {repositoryList}
@@ -410,15 +721,17 @@ const Contributors: React.FC = () => {
               variants={staggerContainer}
               className="lg:col-span-7 bg-white rounded-xl shadow-md p-6 overflow-hidden border border-gray-100 dark:bg-[#1a1b26] dark:border-gray-800"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-[#D4B062] p-3 rounded-full text-white">
-                  <Users className="h-5 w-5" />
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="bg-[#D4B062] p-3 rounded-full text-white">
+                    <Users className="h-5 w-5" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                    {selectedRepo
+                      ? `Contributors for ${selectedRepo}`
+                      : 'Select a repository'}
+                  </h2>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                  {selectedRepo
-                    ? `Contributors for ${selectedRepo}`
-                    : 'Select a repository'}
-                </h2>
               </div>
 
               {contributorsList}
