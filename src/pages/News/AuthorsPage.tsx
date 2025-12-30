@@ -7,7 +7,7 @@ import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import { fetchAllAuthors, Author } from '@/utils/author-utils';
 import { getPostsByAuthor } from '@/utils/posts-utils';
-import AuthorCardSkeleton from '@/components/AuthorCardSkeleton';
+import AuthorCardSkeleton from '@/components/skeletons/AuthorCardSkeleton';
 
 type AuthorWithPostCount = Author & {
   postCount: number | null;
