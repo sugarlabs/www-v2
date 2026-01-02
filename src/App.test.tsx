@@ -1,11 +1,17 @@
 import { vi } from "vitest";
 
-// ✅ mock FIRST, before anything else
+// ✅ Mock react-router-dom safely (no `any`)
 vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual<any>("react-router-dom");
+  const actual = await vi.importActual<
+    typeof import("react-router-dom")
+  >("react-router-dom");
+
   return {
     ...actual,
     RouterProvider: () => null,
+    useNavigate: () => vi.fn(),
+    useLocation: () => ({ pathname: "/" }),
+    useParams: () => ({}),
   };
 });
 
