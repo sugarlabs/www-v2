@@ -442,8 +442,8 @@ const Contributors: React.FC = () => {
               onClick={() => handleRepoClick(repo.name)}
               className={`p-4 rounded-lg cursor-pointer transition duration-300 border-l-4 ${
                 selectedRepo === repo.name
-                  ? 'bg-[#D4B062]/10 border-[#D4B062] dark:bg-[#D4B062]/20'
-                  : 'hover:bg-gray-50 border-transparent hover:border-gray-200 dark:hover:bg-gray-800 dark:hover:border-gray-700'
+                  ? 'bg-[#FFF4E6] border-[#D4B062] dark:bg-[#D4B062]/20'
+                  : 'hover:bg-gray-100 border-transparent hover:border-gray-200 dark:hover:bg-gray-800 dark:hover:border-gray-700'
               }`}
             >
               <h3 className="font-medium text-lg text-gray-800 wrap-break-word dark:text-gray-100">
@@ -544,7 +544,7 @@ const Contributors: React.FC = () => {
                 href={contributor.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center p-5 bg-gray-50 rounded-lg transition duration-300 hover:bg-[#D4B062]/5 hover:shadow-md border border-gray-100 dark:bg-gray-800 dark:hover:bg-[#D4B062]/10 dark:border-gray-700"
+                className="group flex flex-col items-center p-5 bg-gray-100 rounded-lg transition duration-300 hover:bg-[#FFF4E6] border border-gray-100 dark:bg-gray-800 dark:hover:bg-[#D4B062]/10 dark:border-gray-700"
               >
                 <div className="relative mb-3">
                   <img
