@@ -1,22 +1,23 @@
 import path from 'path';
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config'; // 👈 IMPORTANT
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   base: './',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'), // Allows using "@" as an alias for "src"
+      '@': path.resolve(__dirname, './src'),
     },
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.ts',
+    globals: true,
   },
   build: {
     rollupOptions: {
-      /**
-       * Ignore "use client" warning since we are not using SSR
-       */
       onwarn(warning, warn) {
         if (
           warning.code === 'MODULE_LEVEL_DIRECTIVE' &&
@@ -28,15 +29,8 @@ export default defineConfig({
       },
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules')) {
-            // Split vendor code into separate chunks
-            return 'vendor';
-          }
-          if (id.includes('src/constants/MarkdownFiles')) {
-            // Split Markdown related pages into a separate chunk
-            return 'mdfiles';
-          }
-          // Add more custom chunking logic as needed
+          if (id.includes('node_modules')) return 'vendor';
+          if (id.includes('src/constants/MarkdownFiles')) return 'mdfiles';
         },
       },
     },

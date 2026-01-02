@@ -31,7 +31,7 @@ const frontmatterToString = (
 export const fetchMorePages = async (): Promise<MorePage[]> => {
   try {
     const markdownFiles = import.meta.glob(
-      '@/constants/MarkdownFiles/more/*.md',
+      '/src/constants/MarkdownFiles/more/*.md',
       {
         query: '?raw',
         import: 'default',

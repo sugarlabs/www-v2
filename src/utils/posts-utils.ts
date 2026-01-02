@@ -96,7 +96,7 @@ export const fetchMarkdownPostsMetadata = async (
 ): Promise<PostMetaData[]> => {
   try {
     const markdownFiles = import.meta.glob(
-      '@/constants/MarkdownFiles/posts/*.md',
+      '/src/constants/MarkdownFiles/posts/*.md',
       {
         query: '?raw',
         import: 'default',
@@ -161,7 +161,6 @@ export const fetchMarkdownPostBySlug = async (
   slug: string,
 ): Promise<Post | null> => {
   try {
-    // Get all posts metadata first to find the correct file
     const allPostsMetadata = await fetchMarkdownPostsMetadata();
     const targetPost = allPostsMetadata.find((post) => post.slug === slug);
 
@@ -169,20 +168,17 @@ export const fetchMarkdownPostBySlug = async (
       return null;
     }
 
-    // Dynamically import only the needed file
     const markdownFiles = import.meta.glob(
-      '@/constants/MarkdownFiles/posts/*.md',
+      '/src/constants/MarkdownFiles/posts/*.md',
       {
         query: '?raw',
         import: 'default',
       },
     );
 
-    // Find the file that matches the slug
     for (const [filePath, importFn] of Object.entries(markdownFiles)) {
       const fileName = filePath.split('/').pop()?.replace('.md', '') || '';
 
-      // Check if this file corresponds to our post
       if (fileName === targetPost.id) {
         const fileContent = await importFn();
         const { content } = parseFrontmatter(fileContent as string);

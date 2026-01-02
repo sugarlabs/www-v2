@@ -37,7 +37,7 @@ const frontmatterToString = (
 export const fetchAllAuthors = async (): Promise<Author[]> => {
   try {
     const authorFiles = import.meta.glob(
-      '@/constants/MarkdownFiles/authors/*.md',
+      '/src/constants/MarkdownFiles/authors/*.md',
       {
         query: '?raw',
         import: 'default',
