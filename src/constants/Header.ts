@@ -8,6 +8,7 @@ export const navigationData = {
         { label: 'Authors', path: '/authors' },
         { label: 'Contact Us', path: '/contact-us' },
         { label: 'FAQs', path: '/faqs' },
+        { label: 'Mentoring', path: '/mentoring' },
       ],
     },
   },
