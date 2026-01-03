@@ -78,8 +78,8 @@ const Footer = () => {
                 <span className="absolute -bottom-2 left-0 w-8 sm:w-12 h-1 bg-pink-500"></span>
               </h2>
 
-              {/* Social Links */}
-              <div className="flex flex-wrap items-center gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8">
+              {/* Social Links - ENHANCED SECTION */}
+              <div className="flex flex-wrap items-center gap-4 sm:gap-5 mb-6 sm:mb-8">
                 {socialLinks.map((social) => (
                   <a
                     key={social.href}
@@ -87,29 +87,27 @@ const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Visit our ${social.name} page`}
-                    className="group relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 
-                      bg-gray-800/30 hover:bg-gray-700 rounded-xl 
-                      transition-all duration-300 ease-in-out
-                      hover:scale-110
-                      before:absolute before:inset-0 before:rounded-xl
-                      before:bg-gradient-to-r before:from-blue-500/20 before:to-purple-500/20
-                      before:opacity-0 before:transition-opacity before:duration-300
-                      hover:before:opacity-100 hover:shadow-lg hover:shadow-blue-500/10"
+                    className="group relative flex items-center justify-center 
+                      w-12 h-12 sm:w-14 sm:h-14
+                      bg-gray-800 border border-gray-700 rounded-xl
+                      hover:border-pink-500/50 hover:bg-gray-700
+                      hover:shadow-[0_0_15px_rgba(236,72,153,0.3)]
+                      transition-all duration-300 ease-in-out hover:-translate-y-1"
                   >
                     <img
                       src={social.icon}
                       alt={social.name}
-                      width={18}
-                      height={18}
-                      className="relative z-10 transition-transform duration-300
-                        filter brightness-0 invert opacity-90 
-                        group-hover:opacity-100 group-hover:scale-110
-                        sm:w-5 sm:h-5"
+                      className="relative z-10 w-6 h-6 sm:w-7 sm:h-7
+                        filter brightness-0 invert
+                        transition-transform duration-300
+                        group-hover:scale-110 opacity-90 group-hover:opacity-100"
                     />
+                    {/* Tooltip */}
                     <span
-                      className="absolute -bottom-6 left-1/2 -translate-x-1/2 
-                      whitespace-nowrap text-xs sm:text-sm opacity-0 group-hover:opacity-100
-                      transition-opacity duration-300 pointer-events-none"
+                      className="absolute -bottom-8 left-1/2 -translate-x-1/2 
+                      px-2 py-1 bg-gray-900 text-pink-500 text-xs rounded border border-gray-700
+                      whitespace-nowrap opacity-0 group-hover:opacity-100
+                      transition-opacity duration-300 pointer-events-none shadow-xl z-20"
                     >
                       {social.name}
                     </span>
