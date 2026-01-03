@@ -42,8 +42,11 @@ const Contributors: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [contributorSearchTerm, setContributorSearchTerm] = useState<string>('');
-  const [filteredContributors, setFilteredContributors] = useState<Contributor[]>([]);
+  const [contributorSearchTerm, setContributorSearchTerm] =
+    useState<string>('');
+  const [filteredContributors, setFilteredContributors] = useState<
+    Contributor[]
+  >([]);
 
   const fetchAllRepos = useCallback(async () => {
     setRepoLoading(true);
@@ -124,10 +127,11 @@ const Contributors: React.FC = () => {
   }, [searchTerm, repos]);
 
   useEffect(() => {
+    setContributorSearchTerm('');
+
     if (!selectedRepo) {
       setContributors([]);
       setFilteredContributors([]);
-      setContributorSearchTerm('');
       return;
     }
 
@@ -135,20 +139,22 @@ const Contributors: React.FC = () => {
   }, [selectedRepo, fetchAllContributors]);
 
   useEffect(() => {
-  const timer = setTimeout(() => {
-    if (!contributorSearchTerm.trim()) {
-      setFilteredContributors(contributors);
-      return;
-    }
+    const timer = setTimeout(() => {
+      if (!contributorSearchTerm.trim()) {
+        setFilteredContributors(contributors);
+        return;
+      }
 
-    const filtered = contributors.filter((contributor) =>
-      contributor.login.toLowerCase().includes(contributorSearchTerm.toLowerCase())
-    );
-    setFilteredContributors(filtered);
-  }, 300);
+      const filtered = contributors.filter((contributor) =>
+        contributor.login
+          .toLowerCase()
+          .includes(contributorSearchTerm.toLowerCase()),
+      );
+      setFilteredContributors(filtered);
+    }, 300);
 
-  return () => clearTimeout(timer);
-}, [contributorSearchTerm, contributors]);
+    return () => clearTimeout(timer);
+  }, [contributorSearchTerm, contributors]);
 
   const handleRepoClick = useCallback((repoName: string) => {
     setSelectedRepo(repoName);
@@ -281,24 +287,23 @@ const Contributors: React.FC = () => {
     }
 
     if (filteredContributors.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center h-64 text-center">
-        <Users className="h-16 w-16 text-gray-300 mb-4 dark:text-gray-600" />
-        <p className="text-gray-500 dark:text-gray-400">
-          No contributors match your search
-        </p>
-      </div>
-    );
-  }
+      return (
+        <div className="flex flex-col items-center justify-center h-64 text-center">
+          <Users className="h-16 w-16 text-gray-300 mb-4 dark:text-gray-600" />
+          <p className="text-gray-500 dark:text-gray-400">
+            No contributors match your search
+          </p>
+        </div>
+      );
+    }
 
     return (
       <>
         <p className="text-sm text-gray-500 mb-4 dark:text-gray-400">
-  {contributorSearchTerm.trim() 
-    ? `Showing ${filteredContributors.length} of ${contributors.length} contributors`
-    : `Showing all ${contributors.length} contributors`
-  }
-</p>
+          {contributorSearchTerm.trim()
+            ? `Showing ${filteredContributors.length} of ${contributors.length} contributors`
+            : `Showing all ${contributors.length} contributors`}
+        </p>
         <div className="max-h-[65vh] overflow-y-auto pr-1">
           <motion.div
             // variants={staggerContainer}
