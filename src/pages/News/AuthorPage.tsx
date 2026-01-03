@@ -122,10 +122,99 @@ const AuthorPage: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen">
-          <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mb-4"></div>
-            <p className="text-gray-600">Loading author profile...</p>
+        <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+          <div className="container mx-auto px-4 py-8 max-w-7xl">
+            <div className="mb-6 w-20 h-10 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse"></div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 mb-8 animate-pulse">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 lg:gap-8">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-gray-200 dark:bg-gray-700 rounded-full shrink-0"></div>
+
+                <div className="flex-1 text-center sm:text-left">
+                  <div className="h-8 sm:h-10 lg:h-12 bg-gray-200 dark:bg-gray-700 rounded mb-2 w-3/4 mx-auto sm:mx-0"></div>
+                  <div className="h-6 lg:h-7 bg-gray-200 dark:bg-gray-700 rounded mb-3 w-1/2 mx-auto sm:mx-0"></div>
+                  <div className="h-4 lg:h-5 bg-gray-200 dark:bg-gray-700 rounded mb-2 w-full"></div>
+                  <div className="h-4 lg:h-5 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-3/4"></div>
+
+                  <div className="flex flex-wrap justify-center sm:justify-start gap-4">
+                    <div className="h-8 w-24 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                    <div className="h-8 w-32 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 lg:gap-8">
+              <div className="xl:col-span-3 order-2 xl:order-1">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 mb-6 lg:mb-8 animate-pulse">
+                  <div className="space-y-3">
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/6"></div>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 animate-pulse">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <div className="h-10 w-48 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                      <div className="h-10 w-32 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                      <div className="h-10 w-32 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                      <div className="h-10 w-20 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {[...Array(6)].map((_, index) => (
+                      <div
+                        key={index}
+                        className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 animate-pulse"
+                      >
+                        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-2 w-5/6"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2 w-full"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-3 w-4/6"></div>
+                        <div className="flex justify-between items-center">
+                          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
+                          <div className="h-6 w-16 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="order-1 xl:order-2">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 mb-6 animate-pulse">
+                  <div className="h-6 w-32 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                      <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    </div>
+                    <div className="flex justify-between">
+                      <div className="h-4 w-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                      <div className="h-4 w-6 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 animate-pulse">
+                  <div className="h-6 w-24 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+                  <div className="space-y-2">
+                    {[...Array(4)].map((_, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between items-center p-2"
+                      >
+                        <div className="h-4 w-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                        <div className="h-6 w-8 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <Footer />
