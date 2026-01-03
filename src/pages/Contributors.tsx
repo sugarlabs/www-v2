@@ -346,7 +346,7 @@ const Contributors: React.FC = () => {
         </div>
       </>
     );
-  }, [selectedRepo, loading, error, contributors, filteredContributors]);
+  }, [selectedRepo, loading, error, contributors, filteredContributors, contributorSearchTerm]);
 
   return (
     <>
