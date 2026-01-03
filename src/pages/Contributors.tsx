@@ -42,6 +42,8 @@ const Contributors: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [contributorSearchTerm, setContributorSearchTerm] = useState<string>('');
+  const [filteredContributors, setFilteredContributors] = useState<Contributor[]>([]);
 
   const fetchAllRepos = useCallback(async () => {
     setRepoLoading(true);
@@ -128,6 +130,22 @@ const Contributors: React.FC = () => {
 
     fetchAllContributors(selectedRepo);
   }, [selectedRepo, fetchAllContributors]);
+
+  useEffect(() => {
+  const timer = setTimeout(() => {
+    if (!contributorSearchTerm.trim()) {
+      setFilteredContributors(contributors);
+      return;
+    }
+
+    const filtered = contributors.filter((contributor) =>
+      contributor.login.toLowerCase().includes(contributorSearchTerm.toLowerCase())
+    );
+    setFilteredContributors(filtered);
+  }, 300);
+
+  return () => clearTimeout(timer);
+}, [contributorSearchTerm, contributors]);
 
   const handleRepoClick = useCallback((repoName: string) => {
     setSelectedRepo(repoName);
