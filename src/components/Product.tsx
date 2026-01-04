@@ -62,9 +62,9 @@ const ProductCard = ({ product }: { product: ProductType }) => {
             onClick={() => setCurrentImage((prev) => prev - 1)}
           >
             <div className="absolute left-4 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-black/30 rounded-full flex items-center justify-center">
-    <div className="w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-white" />
-  </div>
-</div>
+              <div className="w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-white" />
+            </div>
+          </div>
         )}
 
         {/* RIGHT hover zone */}
@@ -74,9 +74,9 @@ const ProductCard = ({ product }: { product: ProductType }) => {
             onClick={() => setCurrentImage((prev) => prev + 1)}
           >
             <div className="absolute right-4 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-black/30 rounded-full flex items-center justify-center">
-    <div className="w-0 h-0 border-t-4 border-b-4 border-l-4 border-transparent border-l-white" />
-  </div>
-</div>
+              <div className="w-0 h-0 border-t-4 border-b-4 border-l-4 border-transparent border-l-white" />
+            </div>
+          </div>
         )}
       </div>
 
