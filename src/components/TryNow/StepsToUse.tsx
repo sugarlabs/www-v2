@@ -95,7 +95,7 @@ const StepsToUse = ({ heading, StepData }: steps) => {
                     </button>
                     <button
                       onClick={() => clicktocopy(step.commands || '')}
-                      className="p-2 text-white rounded cursor-pointer whitespace-nowrap font-mono text-sm text-gray-200 truncate"
+                      className="p-2 rounded cursor-pointer whitespace-nowrap font-mono text-sm text-gray-200 truncate"
                     >
                       {`$ ${step.commands}`}
                     </button>
