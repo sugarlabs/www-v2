@@ -1,0 +1,370 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for src/constants/Leadership.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/constants</a> Leadership.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>1/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/0</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/0</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>1/1</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line high'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export interface Director {
+  id: number;
+  name: string;
+  bio: string;
+  imageUrl: string;
+  position: string;
+  socialLinks?: {
+    linkedin?: string;
+    github?: string;
+    wiki?: string;
+  };
+}
+&nbsp;
+export interface DirectorCardProps {
+  director: Director;
+}
+&nbsp;
+export interface SocialLinkProps {
+  href: string;
+  aria: string;
+  icon: React.ReactNode;
+}
+&nbsp;
+export const directors: Director[] = [
+  {
+    id: 1,
+    name: 'Claudia Urrea',
+    position: 'Treasurer, Sugar Labs',
+    bio: "Claudia Urrea is the Senior Associate Director for pK-12 at the MIT Abdul Latif Jameel World Education Lab (J-WEL). Claudia was born in Colombia, where she received an undergraduate degree in Computer Science from EAFIT University. Claudia received her master's degree in Educational Media and Technology from Boston University, and her doctorate degree from the MIT Media Laboratory. Her Ph.D. thesis studied the implications of one-to-one learning in a rural setting in Costa Rica. Claudia worked for 5 years as the Director of Learning for One Laptop Per Child, collaborating with SugarLabs in that role. She has been in the board of SugarLabs since 2010.\n\nFor the past 25 years, Claudia has helped multiple governments and non-government agencies- The New York Academy of Sciences, Schlumberger Excellence in Education Development, International Development Research Centre, among others- to empower and support schools and communities of learners to evolve from traditional teaching methods into progressive learning environments. She has also a research scientist position with the Lifelong Kindergarten group at the MIT Media Lab. She has taught several classes at the Harvard Summer Program and Early Childhood Development program at Tufts University.",
+    imageUrl: 'assets/Images/BoardMembers/Claudia.webp',
+    socialLinks: {
+      linkedin: 'https://www.linkedin.com/in/claudia-urrea-ph-d-0335041/',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Claudia_Urrea',
+    },
+  },
+  {
+    id: 2,
+    name: 'Devin Ulibarri',
+    position: 'Executive Director, Sugar Labs',
+    bio: "Devin Ulibarri has been involved in Sugar Labs for over a decade. Ulibarri has been involved in education for twenty years, and he's advocated for free/libre/open (FLO) source software, particularly in education, for the past decade. For two years from 2022 to 2024, he worked as Outreach and Communications Coordinator at the Free Software Foundation.\n\nAt Sugar Labs, Ulibarri has worked closely with Walter Bender to create Music Blocks visual programming language. In addition to this, he's mentored for Google Summer of Code (GSoC) and Google Code-In (GCI), and he regularly teaches students as young as five years old using a rich variety of Sugar tools. Ulibarri plays classical guitar, and he is the Dungeon Master for his family on the weekends.",
+    imageUrl: 'assets/Images/BoardMembers/Devin.webp',
+    socialLinks: {
+      github: 'https://github.com/pikurasa',
+      linkedin: 'https://www.linkedin.com/in/devin-ulibarri-76277a300/',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Pikurasa',
+    },
+  },
+  {
+    id: 3,
+    name: 'Samson Goddy',
+    position: 'Board Member, Sugar Labs',
+    bio: 'Samson is an open source advocate who is very passionate about Edtech. He is currently working with International Telecommunication Union (ITU) to bring more African girls into Technology. He is the co-founder of Open Source Community Africa, a movement that promotes and educate everything open source within Africa.',
+    imageUrl: 'assets/Images/BoardMembers/Samson.webp',
+    socialLinks: {
+      github: 'https://github.com/samswag',
+      linkedin: 'https://www.linkedin.com/in/samsongoddy/',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Samson_Goddy',
+    },
+  },
+  {
+    id: 4,
+    name: 'Sebastian Silva',
+    position: 'Board Member, Sugar Labs',
+    bio: 'Sebastian Silva learned Logo as a 5-year-old child in a workshop in Lima in the 1980s. Later, he taught himself Basic, Pascal, Python, JS, etc... but most importantly, through exploring GNU/Linux, he became enamoured with the philosophy of Software Freedom. He went on to study Psychology to satisfy his curiosity. Soon, he was involved with the original Sugar deployments on OLPC laptops in Peru, Colombia, and Uruguay - organizing local groups to promote software freedom in the region. SomosAzucar initiative (a SL local lab) was responsible for the addition of Quechua, Aymara and Awajún system locales to GLIBC in order to support these deployments. Currently, Silva works as Senior Programming Coach at Laboratoria, a feminist organization. In his spare time, he has written a few programming-learning gadgets such as SUPER-8 and Jappy Creator, and he\'s the Software Curator for the laptop-deployment projects of Repurpose-IT.org. He misses having a viable constructivist learning environment that "free desktops" can use, so he has returned to the Sugar Labs board.',
+    imageUrl: 'assets/Images/BoardMembers/Silva.webp',
+    socialLinks: {
+      github: 'https://github.com/icarito',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Sebastian',
+    },
+  },
+  {
+    id: 5,
+    name: 'Sumit Srivastava',
+    position: 'Board Member, Sugar Labs',
+    bio: 'Sumit Srivastava is a recipient of Stability AI supercomputer grant for open source AI research and is currently working on a new AI project called Cotyper. Prior to this, he started a leading medical search engine and was a part of the leading talent investor Entrepreneur First. He is a maintainer of the Music Blocks programming language. Sumit started many learning groups in Asia where people learn by doing and get iterative feedback. For fun, he plays ukulele and flute, and he builds things like livestreaming software and air purifiers.',
+    imageUrl: 'assets/Images/BoardMembers/Sumit.webp',
+    socialLinks: {
+      github: 'https://github.com/sum2it',
+      linkedin: 'https://www.linkedin.com/in/sumsri/',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Sum2it',
+    },
+  },
+  {
+    id: 6,
+    name: 'Walter Bender',
+    position: 'Secretary, Sugar Labs',
+    bio: 'Founder of Sugar Labs and co-founder of One Laptop Per Child (OLPC), Walter Bender has more than thirty years experience as an academic advisor at MIT. He has more than forty years experience as a software developer. Author of numerous learning tools, Bender is the original author of Turtle Blocks and Music Blocks, as well as many Sugar Activities.',
+    imageUrl: 'assets/Images/BoardMembers/Walter.webp',
+    socialLinks: {
+      github: 'https://github.com/walterbender',
+      linkedin: 'https://www.linkedin.com/in/walterbender/',
+      wiki: 'https://wiki.sugarlabs.org/go/User:Walter',
+    },
+  },
+];
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-01-02T11:02:54.091Z
+            </div>
+        <script src="../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
+    </body>
+</html>
+    

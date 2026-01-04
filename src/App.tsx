@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import router from '@/routes';
+
 import ScrollToTop from './components/ScrollToTop';
 import { Toaster } from 'react-hot-toast';
 const App = () => {
