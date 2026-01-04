@@ -159,7 +159,7 @@ const AuthorPage: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+      <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           {/* Back Button */}
           <motion.button
@@ -181,7 +181,7 @@ const AuthorPage: React.FC = () => {
           >
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 lg:gap-8">
               {/* Avatar */}
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 {author.avatar ? (
                   <img
                     src={author.avatar}
@@ -390,7 +390,7 @@ const AuthorPage: React.FC = () => {
                             whileHover={{ scale: 1.02 }}
                           >
                             {viewMode === 'list' && post.image && (
-                              <div className="w-24 h-24 flex-shrink-0">
+                              <div className="w-24 h-24 shrink-0">
                                 <img
                                   src={post.image}
                                   alt={post.title}

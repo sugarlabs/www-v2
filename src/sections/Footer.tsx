@@ -10,9 +10,9 @@ import {
 const Footer = () => {
   return (
     <>
-      <footer className="bg-gradient-to-b from-gray-900 to-gray-950 text-gray-300 py-10 sm:py-16 px-4 sm:px-6 relative">
+      <footer className="bg-linear-to-b from-gray-900 to-gray-950 text-gray-300 py-10 sm:py-16 px-4 sm:px-6 relative">
         {/* Decorative top border */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-500 via-purple-500 to-pink-500"></div>
 
         <div className="max-w-7xl mx-auto">
           {/* Main Footer Content */}
@@ -92,7 +92,7 @@ const Footer = () => {
                       transition-all duration-300 ease-in-out
                       hover:scale-110
                       before:absolute before:inset-0 before:rounded-xl
-                      before:bg-gradient-to-r before:from-blue-500/20 before:to-purple-500/20
+                      before:bg-linear-to-r before:from-blue-500/20 before:to-purple-500/20
                       before:opacity-0 before:transition-opacity before:duration-300
                       hover:before:opacity-100 hover:shadow-lg hover:shadow-blue-500/10"
                   >

@@ -29,7 +29,7 @@ const NotFoundPage: React.FC = () => {
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          className="relative py-5 md:py-15 overflow-hidden bg-gradient-to-b from-black via-gray-800 to-white"
+          className="relative py-5 md:py-15 overflow-hidden bg-linear-to-b from-black via-gray-800 to-white"
         >
           <div className="absolute inset-0 z-0 overflow-hidden">
             <div className="absolute inset-0 opacity-10"></div>

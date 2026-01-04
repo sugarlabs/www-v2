@@ -121,7 +121,7 @@ const FlatHubPage = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center px-6 py-3 rounded-xl font-semibold
-                        text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700
+                        text-white bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700
                         hover:to-blue-800 transition-all duration-300"
               >
                 <span className="mr-2">View Developer Guide</span>

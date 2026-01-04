@@ -56,7 +56,7 @@ const PromoBanner: React.FC<PromoBannerProps> = ({
     setIsVisible(false);
   };
 
-  const buttonClasses = `inline-flex items-center justify-center px-3.5 py-1.5 sm:px-5 sm:py-2 border border-transparent rounded-full shadow-sm sm:text-l font-medium text-white bg-gradient-to-r ${styles.button} transition-all duration-200 whitespace-nowrap`;
+  const buttonClasses = `inline-flex items-center justify-center px-3.5 py-1.5 sm:px-5 sm:py-2 border border-transparent rounded-full shadow-sm sm:text-l font-medium text-white bg-linear-to-r ${styles.button} transition-all duration-200 whitespace-nowrap`;
   const buttonAnimationProps = {
     whileHover: { scale: 1.03 },
     whileTap: { scale: 0.97 },
@@ -107,7 +107,7 @@ const PromoBanner: React.FC<PromoBannerProps> = ({
     <AnimatePresence>
       {isVisible && (
         <div
-          className={`w-full bg-gradient-to-r ${styles.background} border-b ${styles.border} shadow-sm overflow-hidden`}
+          className={`w-full bg-linear-to-r ${styles.background} border-b ${styles.border} shadow-sm overflow-hidden`}
         >
           <div className="max-w-7xl mx-auto px-3 py-6 sm:px-6 md:px-8 relative">
             <AnimatePresence initial={false} custom={direction} mode="wait">
