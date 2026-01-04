@@ -279,7 +279,7 @@ const TagPage: React.FC = () => {
                       <select
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm dark:bg-gray-800"
                       >
                         {getUniqueCategories().map((category) => (
                           <option key={category} value={category}>
@@ -296,7 +296,7 @@ const TagPage: React.FC = () => {
                             e.target.value as 'date' | 'title' | 'relevance',
                           )
                         }
-                        className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm dark:bg-gray-800"
                       >
                         <option value="date">Latest First</option>
                         <option value="title">A-Z</option>
