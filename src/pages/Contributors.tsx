@@ -42,6 +42,11 @@ const Contributors: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [contributorSearchTerm, setContributorSearchTerm] =
+    useState<string>('');
+  const [filteredContributors, setFilteredContributors] = useState<
+    Contributor[]
+  >([]);
 
   const fetchAllRepos = useCallback(async () => {
     setRepoLoading(true);
@@ -98,6 +103,7 @@ const Contributors: React.FC = () => {
       }
 
       setContributors(allContributors);
+      setFilteredContributors(allContributors);
     } catch (error) {
       console.error('Error fetching contributors:', error);
       setError('Failed to load contributors. Please try again later.');
@@ -121,13 +127,34 @@ const Contributors: React.FC = () => {
   }, [searchTerm, repos]);
 
   useEffect(() => {
+    setContributorSearchTerm('');
+
     if (!selectedRepo) {
       setContributors([]);
+      setFilteredContributors([]);
       return;
     }
 
     fetchAllContributors(selectedRepo);
   }, [selectedRepo, fetchAllContributors]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!contributorSearchTerm.trim()) {
+        setFilteredContributors(contributors);
+        return;
+      }
+
+      const filtered = contributors.filter((contributor) =>
+        contributor.login
+          .toLowerCase()
+          .includes(contributorSearchTerm.toLowerCase()),
+      );
+      setFilteredContributors(filtered);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [contributorSearchTerm, contributors]);
 
   const handleRepoClick = useCallback((repoName: string) => {
     setSelectedRepo(repoName);
@@ -259,17 +286,30 @@ const Contributors: React.FC = () => {
       );
     }
 
+    if (filteredContributors.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center h-64 text-center">
+          <Users className="h-16 w-16 text-gray-300 mb-4 dark:text-gray-600" />
+          <p className="text-gray-500 dark:text-gray-400">
+            No contributors match your search
+          </p>
+        </div>
+      );
+    }
+
     return (
       <>
         <p className="text-sm text-gray-500 mb-4 dark:text-gray-400">
-          Showing all {contributors.length} contributors
+          {contributorSearchTerm.trim()
+            ? `Showing ${filteredContributors.length} of ${contributors.length} contributors`
+            : `Showing all ${contributors.length} contributors`}
         </p>
         <div className="max-h-[65vh] overflow-y-auto pr-1">
           <motion.div
             // variants={staggerContainer}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           >
-            {contributors.map((contributor) => (
+            {filteredContributors.map((contributor) => (
               <motion.a
                 key={contributor.id}
                 whileHover="hover"
@@ -306,7 +346,14 @@ const Contributors: React.FC = () => {
         </div>
       </>
     );
-  }, [selectedRepo, loading, error, contributors]);
+  }, [
+    selectedRepo,
+    loading,
+    error,
+    contributors,
+    filteredContributors,
+    contributorSearchTerm,
+  ]);
 
   return (
     <>
@@ -421,6 +468,21 @@ const Contributors: React.FC = () => {
                 </h2>
               </div>
 
+              {/* Add Contributor Search Bar */}
+              {selectedRepo && contributors.length > 0 && (
+                <div className="max-w-md mx-auto mb-6">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Search contributors..."
+                      value={contributorSearchTerm}
+                      onChange={(e) => setContributorSearchTerm(e.target.value)}
+                      className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4B062] shadow-sm bg-white text-gray-700 dark:border-gray-700 dark:bg-[#1a1b26] dark:text-gray-200 dark:placeholder:text-gray-500"
+                    />
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 dark:text-gray-500" />
+                  </div>
+                </div>
+              )}
               {contributorsList}
             </motion.div>
           </div>
