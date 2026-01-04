@@ -18,6 +18,13 @@ import Footer from '@/sections/Footer';
 import MarkdownRenderer from '@/utils/MarkdownRenderer';
 import { getAuthorBySlug, Author } from '@/utils/author-utils';
 import { getPostsByAuthor, PostMetaData } from '@/utils/posts-utils';
+import AuthorProfileSkeleton from '@/components/skeletons/AuthorProfileSkeleton';
+import {
+  AboutSectionSkeleton,
+  ArticlesSectionSkeleton,
+  ProfileStatsSkeleton,
+  CategoriesSkeleton,
+} from '@/components/skeletons/AuthorContentSkeleton';
 
 const AuthorPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -122,10 +129,25 @@ const AuthorPage: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen">
-          <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mb-4"></div>
-            <p className="text-gray-600">Loading author profile...</p>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+          <div className="container mx-auto px-4 py-8 max-w-7xl">
+            {/* Author Profile Skeleton */}
+            <AuthorProfileSkeleton />
+
+            {/* 2-Column Layout */}
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 lg:gap-8">
+              {/* Main Content - Left */}
+              <div className="xl:col-span-3 order-2 xl:order-1">
+                <AboutSectionSkeleton />
+                <ArticlesSectionSkeleton />
+              </div>
+
+              {/* Sidebar - Right */}
+              <div className="order-1 xl:order-2">
+                <ProfileStatsSkeleton />
+                <CategoriesSkeleton />
+              </div>
+            </div>
           </div>
         </div>
         <Footer />
