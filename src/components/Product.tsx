@@ -58,21 +58,25 @@ const ProductCard = ({ product }: { product: ProductType }) => {
         {/* LEFT hover zone */}
         {hasMultipleImages && currentImage > 0 && (
           <div
-            className="absolute left-0 top-0 h-full w-1/4 bg-gradient-to-r from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer z-10"
+            className="absolute left-0 top-0 h-full w-1/4 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer z-10"
             onClick={() => setCurrentImage((prev) => prev - 1)}
           >
-            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-white" />
-          </div>
+            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-black/30 rounded-full flex items-center justify-center">
+    <div className="w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-white" />
+  </div>
+</div>
         )}
 
         {/* RIGHT hover zone */}
         {hasMultipleImages && currentImage < imageUrls.length - 1 && (
           <div
-            className="absolute right-0 top-0 h-full w-1/4 bg-gradient-to-l from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer z-10"
+            className="absolute right-0 top-0 h-full w-1/4 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer z-10"
             onClick={() => setCurrentImage((prev) => prev + 1)}
           >
-            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-8 border-b-8 border-l-8 border-transparent border-l-white" />
-          </div>
+            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-black/30 rounded-full flex items-center justify-center">
+    <div className="w-0 h-0 border-t-4 border-b-4 border-l-4 border-transparent border-l-white" />
+  </div>
+</div>
         )}
       </div>
 
