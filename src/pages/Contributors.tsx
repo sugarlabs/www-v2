@@ -73,9 +73,13 @@ const Contributors: React.FC = () => {
     'musicblocks',
   );
   const [contributors, setContributors] = useState<Contributor[]>([]);
+  const [visibleContributors, setVisibleContributors] = useState<Contributor[]>(
+    [],
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [contributorProgress, setContributorProgress] = useState<number>(0);
 
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -138,6 +142,8 @@ const Contributors: React.FC = () => {
 
     setLoading(true);
     setError(null);
+    setVisibleContributors([]);
+    setContributorProgress(0);
 
     try {
       let allContributors: Contributor[] = [];
@@ -159,10 +165,32 @@ const Contributors: React.FC = () => {
         } else {
           allContributors = [...allContributors, ...response.data];
           contributorPage++;
+
+          // Update progress indicator..
+          setContributorProgress(
+            Math.min(90, Math.round((allContributors.length / 150) * 100)),
+          );
         }
       }
 
       setContributors(allContributors);
+      setContributorProgress(100);
+
+      setVisibleContributors(allContributors.slice(0, 9));
+
+      // OPTIMIZATION: PreLoad first 9 avatar images with smaller size
+      const firstNine = allContributors.slice(0, 9);
+      firstNine.forEach((contributor) => {
+        const img = new Image();
+        img.src = `${contributor.avatar_url}&s=80`;
+      });
+
+      // Load remaining contributors after a short delay..!
+      if (allContributors.length > 9) {
+        setTimeout(() => {
+          setVisibleContributors(allContributors);
+        }, 300);
+      }
     } catch (error) {
       console.error('Error fetching contributors:', error);
       setError('Failed to load contributors. Please try again later.');
@@ -351,15 +379,25 @@ const Contributors: React.FC = () => {
       );
     }
 
-    if (loading && contributors.length === 0) {
+    if (loading && visibleContributors.length === 0) {
       return (
-        <div className="max-h-[65vh] overflow-y-auto pr-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Array.from({ length: 9 }).map((_, index) => (
-              <ContributorSkeleton key={index} />
-            ))}
+        <>
+          <div className="max-h-[65vh] overflow-y-auto pr-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Array.from({ length: 9 }).map((_, index) => (
+                <ContributorSkeleton key={index} />
+              ))}
+            </div>
           </div>
-        </div>
+          {contributorProgress > 0 && (
+            <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 mt-4">
+              <div
+                className="bg-[#D4B062] h-1.5 rounded-full transition-all duration-300"
+                style={{ width: `${contributorProgress}%` }}
+              ></div>
+            </div>
+          )}
+        </>
       );
     }
 
@@ -371,7 +409,7 @@ const Contributors: React.FC = () => {
       );
     }
 
-    if (contributors.length === 0) {
+    if (visibleContributors.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center h-64 text-center">
           <Users className="h-16 w-16 text-gray-300 mb-4 dark:text-gray-600" />
@@ -382,10 +420,15 @@ const Contributors: React.FC = () => {
       );
     }
 
+    const displayContributors =
+      visibleContributors.length > 0 ? visibleContributors : contributors;
+
     return (
       <>
         <p className="text-sm text-gray-500 mb-4 dark:text-gray-400">
-          Showing all {contributors.length} contributors
+          {visibleContributors.length < contributors.length
+            ? `Showing ${visibleContributors.length} of ${contributors.length} contributors (loading more...)`
+            : `Showing all ${contributors.length} contributors`}
         </p>
         <div className="max-h-[65vh] overflow-y-auto pr-1">
           <motion.div
@@ -394,7 +437,7 @@ const Contributors: React.FC = () => {
             animate="visible"
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           >
-            {contributors.map((contributor) => (
+            {displayContributors.map((contributor) => (
               <motion.a
                 key={contributor.id}
                 variants={fadeIn}
@@ -406,9 +449,10 @@ const Contributors: React.FC = () => {
               >
                 <div className="relative mb-3">
                   <img
-                    src={contributor.avatar_url}
+                    src={`${contributor.avatar_url}&s=80`}
                     alt={`${contributor.login}'s avatar`}
                     className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm dark:border-gray-700"
+                    loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src =
                         'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.webp';
@@ -430,9 +474,21 @@ const Contributors: React.FC = () => {
             ))}
           </motion.div>
         </div>
+        {visibleContributors.length < contributors.length && (
+          <p className="text-center text-sm text-gray-500 mt-4 dark:text-gray-400">
+            Loading all contributors...
+          </p>
+        )}
       </>
     );
-  }, [selectedRepo, loading, error, contributors]);
+  }, [
+    selectedRepo,
+    loading,
+    error,
+    contributors,
+    visibleContributors,
+    contributorProgress,
+  ]);
 
   return (
     <>
@@ -567,9 +623,12 @@ const Contributors: React.FC = () => {
                     )}
                   </h2>
                   {loading && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Loading contributors...
-                    </p>
+                    <div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Loading contributors...{' '}
+                        {contributorProgress > 0 && `${contributorProgress}%`}
+                      </p>
+                    </div>
                   )}
                 </div>
               </div>
