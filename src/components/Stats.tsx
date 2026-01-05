@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { stats, statisticsData } from '@/constants/Stats.ts';
 import {
   headerReveal,
@@ -10,51 +9,6 @@ import {
 } from '@/styles/Animations';
 
 const Stats = () => {
-  const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
-  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
-  const [isTouchDevice] = useState(
-    () => 'ontouchstart' in window || navigator.maxTouchPoints > 0,
-  );
-  const gridRef = useRef<HTMLDivElement>(null);
-  const prevIsMobileRef = useRef<boolean>(window.innerWidth < 1024);
-
-  // Reset component state when switching between mobile and desktop views
-  useEffect(() => {
-    const handleResize = () => {
-      const isMobile = window.innerWidth < 1024;
-      const prevIsMobile = prevIsMobileRef.current;
-
-      // Reset states when switching between mobile and desktop
-      if (isMobile !== prevIsMobile) {
-        setActiveCardIndex(null);
-        setHoveredCardIndex(null);
-        prevIsMobileRef.current = isMobile;
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Handle click outside to reset active state
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-      if (gridRef.current && !gridRef.current.contains(event.target as Node)) {
-        setActiveCardIndex(null);
-        setHoveredCardIndex(null);
-      }
-    };
-
-    // Add event listeners for both mouse and touch
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('touchstart', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
-    };
-  }, []);
-
   return (
     <section className="max-w-7xl mx-auto py-10 sm:py-16 md:py-20 px-4 sm:px-6 bg-white dark:bg-gray-900">
       <div className="relative mb-12 sm:mb-16 md:mb-24">
@@ -251,96 +205,38 @@ const Stats = () => {
 
         {/* Interactive Stats Summary - Grid Layout */}
         <div
-          ref={gridRef}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 max-w-6xl mx-auto px-2"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4 w-full"
         >
-          {statisticsData.map((stat, index) => {
-            const isActive = activeCardIndex === index;
-            // Only use hover on non-touch devices
-            const isHovered = !isTouchDevice && hoveredCardIndex === index;
-            const showFullText = isActive || isHovered;
-
-            return (
-              <motion.div
-                key={index}
-                className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative cursor-pointer overflow-hidden`}
-                whileHover={
-                  !isTouchDevice
-                    ? {
-                        scale: 1.05,
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                      }
-                    : undefined
-                }
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  // On mobile, toggle active state; on desktop, set active and clear hover
-                  if (isActive) {
-                    setActiveCardIndex(null);
-                    setHoveredCardIndex(null);
-                  } else {
-                    setActiveCardIndex(index);
-                    setHoveredCardIndex(null);
-                  }
-                }}
-                onHoverStart={() => {
-                  if (!isTouchDevice) {
-                    setHoveredCardIndex(index);
-                  }
-                }}
-                onHoverEnd={() => {
-                  if (!isTouchDevice) {
-                    setHoveredCardIndex(null);
-                  }
-                }}
-                onTouchStart={(e) => {
-                  // Prevent hover from triggering on touch devices
-                  e.stopPropagation();
-                }}
-                layout
-              >
+          {statisticsData.map((stat, index) => (
+            <div
+              key={index}
+              className={`
+                group relative overflow-hidden rounded-2xl
+                ${stat.bgColor} border ${stat.borderColor} border
+                p-6 sm:p-8
+                flex flex-col items-start justify-center
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-xl
+                hover:border-opacity-50
+              `}
+            >
+              <div className="relative z-10">
                 <span
-                  className={`font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.gradient} text-base sm:text-xl md:text-2xl`}
+                  className={`font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.gradient} text-4xl sm:text-5xl mb-3 block`}
                 >
                   {stat.value}
                 </span>
-                {/* Text container with smooth animations */}
-                <motion.div
-                  className="w-full flex flex-col items-center min-h-[1.5rem]"
-                  layout
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
-                >
-                  <AnimatePresence mode="wait">
-                    {!showFullText ? (
-                      <motion.span
-                        key="truncated"
-                        className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                      >
-                        {stat.title.split('.')[0].substring(0, 12)}
-                        {stat.title.split('.')[0].length > 12 ? '...' : ''}
-                      </motion.span>
-                    ) : (
-                      <motion.span
-                        key="full"
-                        className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 whitespace-normal px-1"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                      >
-                        {stat.title}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              </motion.div>
-            );
-          })}
+                <span className="block text-gray-700 dark:text-gray-200 text-sm sm:text-base font-medium leading-relaxed">
+                  {stat.title}
+                </span>
+              </div>
+
+              {/* Subtle visual element based on gradient */}
+              <div
+                className={`absolute -right-4 -bottom-4 w-24 h-24 rounded-full opacity-10 bg-gradient-to-br ${stat.gradient} blur-xl group-hover:opacity-20 transition-opacity duration-300`}
+              />
+            </div>
+          ))}
         </div>
       </motion.div>
     </section>
