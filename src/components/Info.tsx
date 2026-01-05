@@ -11,7 +11,9 @@ import {
 } from '@/styles/Animations';
 
 const Info: React.FC = () => {
-  const [windowWidth, setWindowWidth] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 0,
+  );
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
@@ -21,8 +23,6 @@ const Info: React.FC = () => {
         setWindowWidth(window.innerWidth);
       }, 150);
     };
-    // Set initial width
-    setWindowWidth(window.innerWidth);
     // Add event listener
     window.addEventListener('resize', handleResize);
     // Cleanup event listener

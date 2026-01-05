@@ -1,6 +1,7 @@
-import { lazy, Suspense } from 'react';
+import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { redirectRoutes } from '@/redirects';
+import { withSuspense } from '@/utils/route-utils';
 
 // Lazy imports
 const MainPage = lazy(() => import('@/pages/MainPage'));
@@ -29,18 +30,6 @@ const Matrix = lazy(() => import('@/pages/Matrix'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 const Contributors = lazy(() => import('@/pages/Contributors'));
 const AuthorsPage = lazy(() => import('@/pages/News/AuthorsPage'));
-
-const Loading = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-  </div>
-);
-
-const withSuspense = (Component: React.ComponentType) => (
-  <Suspense fallback={<Loading />}>
-    <Component />
-  </Suspense>
-);
 
 const router = createBrowserRouter([
   ...redirectRoutes,
