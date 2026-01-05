@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { stats, statisticsData } from '@/constants/Stats.ts';
+import { stats, statisticsData } from '@/constants/Stats';
 import {
   headerReveal,
   numberCounter,
