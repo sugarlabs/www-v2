@@ -1,62 +1,77 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { redirectRoutes } from '@/redirects';
-import MainPage from '@/pages/MainPage';
-import AboutUs from '@/pages/About/AboutUs';
-import Leadership from '@/pages/About/Leadership';
-import ContactUs from '@/pages/About/ContactUs';
-import FAQs from '@/pages/About/FAQs';
-import TrySugar from '@/pages/TrySugar';
-import JoinDevelopment from '@/pages/JoinDevelopment';
-import Volunteer from '@/pages/Volunteer';
-import Donate from '@/pages/Donate';
-import Products from '@/pages/Products';
-import NewsPage from '@/pages/News/NewsPage';
-import NewsDetailPage from '@/pages/News/NewsDetailPage';
-import AuthorPage from '@/pages/News/AuthorPage';
-import TagPage from '@/pages/News/TagPage';
-import MorePage from '@/pages/More';
-import TurtleBlocksPage from '@/pages/TryNow/TurtleBlocks';
-import SugarizerPage from '@/pages/TryNow/Sugarizer';
-import BootableSoasPage from '@/pages/TryNow/BootableSoas';
-import TrisquelPage from '@/pages/TryNow/Trisquel';
-import RaspberryPiPage from '@/pages/TryNow/Raspberry';
-import MusicBlocksPage from '@/pages/TryNow/MusicBlocks';
-import FlatHubPage from '@/pages/TryNow/FlatHub';
-import Matrix from '@/pages/Matrix';
-import NotFoundPage from '@/pages/NotFoundPage';
-import Contributors from '@/pages/Contributors';
-import AuthorsPage from '@/pages/News/AuthorsPage';
+
+// Lazy imports
+const MainPage = lazy(() => import('@/pages/MainPage'));
+const AboutUs = lazy(() => import('@/pages/About/AboutUs'));
+const Leadership = lazy(() => import('@/pages/About/Leadership'));
+const ContactUs = lazy(() => import('@/pages/About/ContactUs'));
+const FAQs = lazy(() => import('@/pages/About/FAQs'));
+const TrySugar = lazy(() => import('@/pages/TrySugar'));
+const JoinDevelopment = lazy(() => import('@/pages/JoinDevelopment'));
+const Volunteer = lazy(() => import('@/pages/Volunteer'));
+const Donate = lazy(() => import('@/pages/Donate'));
+const Products = lazy(() => import('@/pages/Products'));
+const NewsPage = lazy(() => import('@/pages/News/NewsPage'));
+const NewsDetailPage = lazy(() => import('@/pages/News/NewsDetailPage'));
+const AuthorPage = lazy(() => import('@/pages/News/AuthorPage'));
+const TagPage = lazy(() => import('@/pages/News/TagPage'));
+const MorePage = lazy(() => import('@/pages/More'));
+const TurtleBlocksPage = lazy(() => import('@/pages/TryNow/TurtleBlocks'));
+const SugarizerPage = lazy(() => import('@/pages/TryNow/Sugarizer'));
+const BootableSoasPage = lazy(() => import('@/pages/TryNow/BootableSoas'));
+const TrisquelPage = lazy(() => import('@/pages/TryNow/Trisquel'));
+const RaspberryPiPage = lazy(() => import('@/pages/TryNow/Raspberry'));
+const MusicBlocksPage = lazy(() => import('@/pages/TryNow/MusicBlocks'));
+const FlatHubPage = lazy(() => import('@/pages/TryNow/FlatHub'));
+const Matrix = lazy(() => import('@/pages/Matrix'));
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
+const Contributors = lazy(() => import('@/pages/Contributors'));
+const AuthorsPage = lazy(() => import('@/pages/News/AuthorsPage'));
+
+const Loading = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+);
+
+const withSuspense = (Component: React.ComponentType) => (
+  <Suspense fallback={<Loading />}>
+    <Component />
+  </Suspense>
+);
 
 const router = createBrowserRouter([
   ...redirectRoutes,
-  { path: '/', element: <MainPage /> },
-  { path: '/about-us', element: <AboutUs /> },
-  { path: '/leadership', element: <Leadership /> },
-  { path: '/contact-us', element: <ContactUs /> },
-  { path: '/faqs', element: <FAQs /> },
-  { path: '/news', element: <NewsPage /> },
-  { path: '/news/:category', element: <NewsPage /> },
-  { path: '/news/:category/:slug', element: <NewsDetailPage /> },
-  { path: '/authors/:slug', element: <AuthorPage /> },
-  { path: '/authors', element: <AuthorsPage /> },
-  { path: '/tags/:tag', element: <TagPage /> },
-  { path: '/more', element: <MorePage /> },
-  { path: '/more/:slug', element: <MorePage /> },
-  { path: '/try-sugar', element: <TrySugar /> },
-  { path: '/join-development', element: <JoinDevelopment /> },
-  { path: '/volunteer', element: <Volunteer /> },
-  { path: '/donate', element: <Donate /> },
-  { path: '/products', element: <Products /> },
-  { path: '/turtleblocks', element: <TurtleBlocksPage /> },
-  { path: '/sugarizer', element: <SugarizerPage /> },
-  { path: '/bootablesoas', element: <BootableSoasPage /> },
-  { path: '/trisquel', element: <TrisquelPage /> },
-  { path: '/raspberry', element: <RaspberryPiPage /> },
-  { path: '/musicblocks', element: <MusicBlocksPage /> },
-  { path: '/flathub', element: <FlatHubPage /> },
-  { path: '/contact-us/:matrix', element: <Matrix /> },
-  { path: '/profiles', element: <Contributors /> },
-  { path: '*', element: <NotFoundPage /> },
+  { path: '/', element: withSuspense(MainPage) },
+  { path: '/about-us', element: withSuspense(AboutUs) },
+  { path: '/leadership', element: withSuspense(Leadership) },
+  { path: '/contact-us', element: withSuspense(ContactUs) },
+  { path: '/faqs', element: withSuspense(FAQs) },
+  { path: '/news', element: withSuspense(NewsPage) },
+  { path: '/news/:category', element: withSuspense(NewsPage) },
+  { path: '/news/:category/:slug', element: withSuspense(NewsDetailPage) },
+  { path: '/authors/:slug', element: withSuspense(AuthorPage) },
+  { path: '/authors', element: withSuspense(AuthorsPage) },
+  { path: '/tags/:tag', element: withSuspense(TagPage) },
+  { path: '/more', element: withSuspense(MorePage) },
+  { path: '/more/:slug', element: withSuspense(MorePage) },
+  { path: '/try-sugar', element: withSuspense(TrySugar) },
+  { path: '/join-development', element: withSuspense(JoinDevelopment) },
+  { path: '/volunteer', element: withSuspense(Volunteer) },
+  { path: '/donate', element: withSuspense(Donate) },
+  { path: '/products', element: withSuspense(Products) },
+  { path: '/turtleblocks', element: withSuspense(TurtleBlocksPage) },
+  { path: '/sugarizer', element: withSuspense(SugarizerPage) },
+  { path: '/bootablesoas', element: withSuspense(BootableSoasPage) },
+  { path: '/trisquel', element: withSuspense(TrisquelPage) },
+  { path: '/raspberry', element: withSuspense(RaspberryPiPage) },
+  { path: '/musicblocks', element: withSuspense(MusicBlocksPage) },
+  { path: '/flathub', element: withSuspense(FlatHubPage) },
+  { path: '/contact-us/:matrix', element: withSuspense(Matrix) },
+  { path: '/profiles', element: withSuspense(Contributors) },
+  { path: '*', element: withSuspense(NotFoundPage) },
 ]);
 
 export default router;

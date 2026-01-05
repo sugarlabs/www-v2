@@ -14,22 +14,38 @@ const Header: React.FC = () => {
   //
   // Handle scroll effect
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Handle window resize to close mobile menu on larger screens
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
     const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setIsMobileMenuOpen(false);
-        setActiveDropdown(null);
-      }
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        if (window.innerWidth >= 1024) {
+          setIsMobileMenuOpen(false);
+          setActiveDropdown(null);
+        }
+      }, 150);
     };
 
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   // Handle body scroll lock when mobile menu is open

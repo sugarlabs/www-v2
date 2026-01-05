@@ -14,15 +14,22 @@ const Info: React.FC = () => {
   const [windowWidth, setWindowWidth] = useState(0);
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
     const handleResize = () => {
-      setWindowWidth(window.innerWidth);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setWindowWidth(window.innerWidth);
+      }, 150);
     };
     // Set initial width
-    handleResize();
+    setWindowWidth(window.innerWidth);
     // Add event listener
     window.addEventListener('resize', handleResize);
     // Cleanup event listener
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const renderCarouselItem = (key: string, image: ImageConfig) => (
@@ -65,6 +72,7 @@ const Info: React.FC = () => {
                 src={images.main.src}
                 alt={images.main.alt}
                 className="w-full h-[350px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] object-cover"
+                fetchPriority="high"
               />
               <div
                 className="absolute inset-0 bg-gradient-to-r from-black/70 
