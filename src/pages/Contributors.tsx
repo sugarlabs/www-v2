@@ -489,7 +489,7 @@ const Contributors: React.FC = () => {
                 href={contributor.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center p-5 bg-gray-50 rounded-lg transition-all duration-300 hover:bg-[#FFF4E6] border border-gray-100 dark:bg-gray-800 dark:hover:bg-[#D4B062]/10 dark:border-gray-700"
+                className="group flex flex-col items-center p-5 bg-gray-100 rounded-lg transition-all duration-300 hover:bg-[#FFF4E6] border border-gray-100 dark:bg-gray-800 dark:hover:bg-[#D4B062]/10 dark:border-gray-700"
               >
                 <div className="relative mb-3">
                   <img
