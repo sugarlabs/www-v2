@@ -131,8 +131,8 @@ export const Activities = [
     description: 'Have fun with progressive challenges',
     icon: Maze,
     buttonText: 'Get Maze',
-    href: 'https://activities.sugarlabs.org/en-US/sugar/addon/4727',
-    version: 'v3',
+    href: 'https://v4.activities.sugarlabs.org/app/vu.lux.olpc.Maze.html',
+    version: 'v4',
   },
   {
     title: 'Measure',
@@ -187,7 +187,7 @@ export const Activities = [
     description: 'Physical world simulator and playground',
     icon: Physics,
     buttonText: 'Get Physics',
-    href: 'https://activities.sugarlabs.org/en-US/sugar/addon/4193',
-    version: 'v3',
+    href: 'https://v4.activities.sugarlabs.org/app/org.laptop.physics.html',
+    version: 'v4',
   },
 ];
