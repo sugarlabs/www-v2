@@ -13,10 +13,14 @@ const Stats = () => {
   const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
   const [isTouchDevice] = useState(
-    () => typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0),
+    () =>
+      typeof window !== 'undefined' &&
+      ('ontouchstart' in window || navigator.maxTouchPoints > 0),
   );
   const gridRef = useRef<HTMLDivElement>(null);
-  const prevIsMobileRef = useRef<boolean>(typeof window !== 'undefined' ? window.innerWidth < 1024 : false);
+  const prevIsMobileRef = useRef<boolean>(
+    typeof window !== 'undefined' ? window.innerWidth < 1024 : false,
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -169,7 +173,9 @@ const Stats = () => {
                 <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px]">
                   {stat.title}
                 </h3>
-                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}>
+                <div
+                  className={`text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}
+                >
                   {stat.value}
                 </div>
               </div>
@@ -186,13 +192,19 @@ const Stats = () => {
               whileHover={{ y: -5 }}
             >
               <div className="h-32 sm:h-36 md:h-44 relative overflow-hidden">
-                <img src={stat.imageSrc} alt={stat.imageAlt} className="w-full h-full object-cover object-center" />
+                <img
+                  src={stat.imageSrc}
+                  alt={stat.imageAlt}
+                  className="w-full h-full object-cover object-center"
+                />
               </div>
               <div className="p-4 sm:p-5 md:p-6">
                 <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px]">
                   {stat.title}
                 </h3>
-                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}>
+                <div
+                  className={`text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}
+                >
                   {stat.value}
                 </div>
               </div>
@@ -213,7 +225,9 @@ const Stats = () => {
           Join us and make a difference
         </h2>
         <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 px-4 text-sm sm:text-base md:text-lg">
-          These numbers represent more than statistics - they represent lives changed through education and technology. Sugar Labs continues to grow and impact communities worldwide.
+          These numbers represent more than statistics - they represent lives
+          changed through education and technology. Sugar Labs continues to grow
+          and impact communities worldwide.
         </p>
 
         {/* MODIFIED: items-center ensures non-expanding cards stay vertically 
@@ -236,8 +250,8 @@ const Stats = () => {
                   Spring gives it a natural feel; duration 0.4 makes it smooth.
                 */
                 transition={{
-                  layout: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.2 }
+                  layout: { type: 'spring', stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 },
                 }}
                 className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative cursor-pointer overflow-hidden h-auto`}
                 whileHover={!isTouchDevice ? { scale: 1.02 } : undefined}
@@ -245,7 +259,9 @@ const Stats = () => {
                   e.stopPropagation();
                   setActiveCardIndex(isActive ? null : index);
                 }}
-                onHoverStart={() => !isTouchDevice && setHoveredCardIndex(index)}
+                onHoverStart={() =>
+                  !isTouchDevice && setHoveredCardIndex(index)
+                }
                 onHoverEnd={() => !isTouchDevice && setHoveredCardIndex(null)}
               >
                 <motion.span
@@ -254,7 +270,7 @@ const Stats = () => {
                 >
                   {stat.value}
                 </motion.span>
-                
+
                 <motion.div
                   className="w-full flex flex-col items-center"
                   layout
