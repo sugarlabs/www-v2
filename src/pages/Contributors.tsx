@@ -685,7 +685,7 @@ const Contributors: React.FC = () => {
                     />
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 dark:text-gray-500" />
                   </div>
-                  
+
                   {/* Status line - always stays here below search bar */}
                   <p className="text-sm text-gray-500 mt-3 text-center dark:text-gray-400">
                     {loading && contributorProgress > 0
