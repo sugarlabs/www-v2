@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import axios from 'axios';
@@ -11,6 +17,7 @@ import {
   Code,
   Users,
   ExternalLink,
+  Loader2,
 } from 'lucide-react';
 import { fadeIn, staggerContainer } from '@/styles/Animations';
 
@@ -33,71 +40,157 @@ interface Contributor {
   contributions: number;
 }
 
+// Skeleton Loader Components.
+const RepositorySkeleton: React.FC = () => (
+  <div className="p-4 rounded-lg border-l-4 border-transparent animate-pulse">
+    <div className="h-6 bg-gray-200 rounded w-3/4 dark:bg-gray-700 mb-2"></div>
+    <div className="h-4 bg-gray-200 rounded w-full dark:bg-gray-700 mb-1"></div>
+    <div className="h-4 bg-gray-200 rounded w-2/3 dark:bg-gray-700 mb-3"></div>
+    <div className="flex gap-3">
+      <div className="h-4 bg-gray-200 rounded w-12 dark:bg-gray-700"></div>
+      <div className="h-4 bg-gray-200 rounded w-12 dark:bg-gray-700"></div>
+      <div className="h-4 bg-gray-200 rounded w-16 dark:bg-gray-700"></div>
+    </div>
+  </div>
+);
+
+const ContributorSkeleton: React.FC = () => (
+  <div className="flex flex-col items-center p-5 bg-gray-50 rounded-lg border border-gray-100 dark:bg-gray-800 dark:border-gray-700 animate-pulse">
+    <div className="relative mb-3">
+      <div className="w-16 h-16 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+      <div className="absolute -bottom-1 -right-4 bg-gray-200 rounded-full w-9 h-6 dark:bg-gray-700"></div>
+    </div>
+    <div className="h-5 bg-gray-200 rounded w-24 dark:bg-gray-700 mb-2"></div>
+    <div className="h-3 bg-gray-200 rounded w-16 dark:bg-gray-700"></div>
+  </div>
+);
+
 const Contributors: React.FC = () => {
   const [repos, setRepos] = useState<Repository[]>([]);
   const [filteredRepos, setFilteredRepos] = useState<Repository[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
+  const [selectedRepo, setSelectedRepo] = useState<string | null>(
+    'musicblocks',
+  );
   const [contributors, setContributors] = useState<Contributor[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [visibleContributors, setVisibleContributors] = useState<Contributor[]>(
+    [],
+  );
+  const [loading, setLoading] = useState<boolean>(true);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [contributorProgress, setContributorProgress] = useState<number>(0);
 
-  const fetchAllRepos = useCallback(async () => {
-    setRepoLoading(true);
-    setError(null);
+  const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
-    try {
-      let allRepos: Repository[] = [];
-      let page = 1;
-      let hasMore = true;
+  const observerTarget = useRef<HTMLDivElement>(null);
 
-      while (hasMore) {
+  // Fetch repositories with pagination!
+  const fetchRepos = useCallback(
+    async (pageNum: number = 1, isLoadMore: boolean = false) => {
+      if (isLoadMore) {
+        setIsLoadingMore(true);
+      } else {
+        setRepoLoading(true);
+      }
+      setError(null);
+
+      try {
         const response = await axios.get(
-          `https://api.github.com/orgs/sugarlabs/repos?per_page=100&page=${page}&sort=updated&direction=desc`,
+          `https://api.github.com/orgs/sugarlabs/repos?per_page=30&page=${pageNum}&sort=updated&direction=desc`,
+          {
+            headers: {
+              Accept: 'application/vnd.github.v3+json',
+            },
+          },
         );
 
-        if (response.data.length === 0) {
-          hasMore = false;
+        const newRepos = response.data;
+
+        if (pageNum === 1) {
+          setRepos(newRepos);
+          setFilteredRepos(newRepos);
         } else {
-          allRepos = [...allRepos, ...response.data];
-          page++;
+          setRepos((prev) => [...prev, ...newRepos]);
+          setFilteredRepos((prev) => [...prev, ...newRepos]);
+        }
+        setHasMore(newRepos.length === 30);
+        setPage(pageNum + 1);
+      } catch (error) {
+        console.error('Error fetching repositories:', error);
+        setError('Failed to load repositories. Please try again later.');
+      } finally {
+        if (isLoadMore) {
+          setIsLoadingMore(false);
+        } else {
+          setRepoLoading(false);
         }
       }
+    },
+    [],
+  );
 
-      setRepos(allRepos);
-      setFilteredRepos(allRepos);
-    } catch (error) {
-      console.error('Error fetching repositories:', error);
-      setError('Failed to load repositories. Please try again later.');
-    } finally {
-      setRepoLoading(false);
-    }
-  }, []);
+  const getSelectedRepoDetails = useCallback(() => {
+    if (!selectedRepo) return null;
+    return repos.find((repo) => repo.name === selectedRepo);
+  }, [selectedRepo, repos]);
 
   const fetchAllContributors = useCallback(async (repoName: string) => {
+    if (!repoName) return;
+
     setLoading(true);
     setError(null);
+    setVisibleContributors([]);
+    setContributorProgress(0);
 
     try {
       let allContributors: Contributor[] = [];
-      let page = 1;
-      let hasMore = true;
+      let contributorPage = 1;
+      let hasMoreContributors = true;
 
-      while (hasMore) {
+      while (hasMoreContributors) {
         const response = await axios.get(
-          `https://api.github.com/repos/sugarlabs/${repoName}/contributors?per_page=100&page=${page}`,
+          `https://api.github.com/repos/sugarlabs/${repoName}/contributors?per_page=100&page=${contributorPage}`,
+          {
+            headers: {
+              Accept: 'application/vnd.github.v3+json',
+            },
+          },
         );
 
         if (response.data.length === 0) {
-          hasMore = false;
+          hasMoreContributors = false;
         } else {
           allContributors = [...allContributors, ...response.data];
-          page++;
+          contributorPage++;
+
+          // Update progress indicator..
+          setContributorProgress(
+            Math.min(90, Math.round((allContributors.length / 150) * 100)),
+          );
         }
       }
 
       setContributors(allContributors);
+      setContributorProgress(100);
+
+      setVisibleContributors(allContributors.slice(0, 9));
+
+      // OPTIMIZATION: PreLoad first 9 avatar images with smaller size
+      const firstNine = allContributors.slice(0, 9);
+      firstNine.forEach((contributor) => {
+        const img = new Image();
+        img.src = `${contributor.avatar_url}&s=80`;
+      });
+
+      // Load remaining contributors after a short delay..!
+      if (allContributors.length > 9) {
+        setTimeout(() => {
+          setVisibleContributors(allContributors);
+        }, 300);
+      }
     } catch (error) {
       console.error('Error fetching contributors:', error);
       setError('Failed to load contributors. Please try again later.');
@@ -107,8 +200,38 @@ const Contributors: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetchAllRepos();
-  }, [fetchAllRepos]);
+    fetchRepos(1);
+    if (selectedRepo) {
+      fetchAllContributors(selectedRepo);
+    }
+  }, [fetchRepos, fetchAllContributors, selectedRepo]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          hasMore &&
+          !isLoadingMore &&
+          !repoLoading
+        ) {
+          fetchRepos(page, true);
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasMore, isLoadingMore, repoLoading, page, fetchRepos]);
 
   useEffect(() => {
     const filtered = repos.filter(
@@ -120,29 +243,30 @@ const Contributors: React.FC = () => {
     setFilteredRepos(filtered);
   }, [searchTerm, repos]);
 
-  useEffect(() => {
-    if (!selectedRepo) {
-      setContributors([]);
-      return;
-    }
-
-    fetchAllContributors(selectedRepo);
-  }, [selectedRepo, fetchAllContributors]);
-
-  const handleRepoClick = useCallback((repoName: string) => {
-    setSelectedRepo(repoName);
-  }, []);
+  const handleRepoClick = useCallback(
+    (repoName: string) => {
+      setSelectedRepo(repoName);
+      fetchAllContributors(repoName);
+    },
+    [fetchAllContributors],
+  );
 
   const formatDate = useCallback((dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString();
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
   }, []);
 
   const repositoryList = useMemo(() => {
-    if (repoLoading) {
+    if (repoLoading && page === 1) {
       return (
-        <div className="flex items-center justify-center h-40">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#D4B062]"></div>
+        <div className="space-y-3 max-h-[65vh] overflow-y-auto pr-1 -mx-2 px-2">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <RepositorySkeleton key={index} />
+          ))}
         </div>
       );
     }
@@ -172,43 +296,63 @@ const Contributors: React.FC = () => {
     }
 
     return (
-      <div className="space-y-3 max-h-[65vh] overflow-y-auto pr-1 -mx-2 px-2">
-        <AnimatePresence>
-          {filteredRepos.map((repo) => (
-            <motion.div
-              key={repo.id}
-              whileHover="hover"
-              onClick={() => handleRepoClick(repo.name)}
-              className={`p-4 rounded-lg cursor-pointer transition duration-300 border-l-4 ${
-                selectedRepo === repo.name
-                  ? 'bg-[#FFF4E6] border-[#D4B062] dark:bg-[#D4B062]/20'
-                  : 'hover:bg-gray-100 border-transparent hover:border-gray-200 dark:hover:bg-gray-800 dark:hover:border-gray-700'
-              }`}
-            >
-              <h3 className="font-medium text-lg text-gray-800 break-words dark:text-gray-100">
-                {repo.name}
-              </h3>
-              <p className="text-sm text-gray-600 line-clamp-2 mt-1 dark:text-gray-400">
-                {repo.description || 'No description'}
-              </p>
-              <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
-                <span className="flex items-center gap-1">
-                  <Star className="h-3.5 w-3.5 text-[#D4B062]" />{' '}
-                  {repo.stargazers_count}
-                </span>
-                <span className="flex items-center gap-1">
-                  <GitFork className="h-3.5 w-3.5 text-[#D4B062]" />{' '}
-                  {repo.forks_count}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Calendar className="h-3.5 w-3.5 text-[#D4B062]" />{' '}
-                  {formatDate(repo.updated_at)}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+      <>
+        <div className="space-y-3 max-h-[65vh] overflow-y-auto pr-1 -mx-2 px-2">
+          <AnimatePresence>
+            {filteredRepos.map((repo) => (
+              <motion.div
+                key={repo.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                whileHover={{ scale: 1.01 }}
+                onClick={() => handleRepoClick(repo.name)}
+                className={`p-4 rounded-lg cursor-pointer transition-all duration-300 border-l-4 ${
+                  selectedRepo === repo.name
+                    ? 'bg-[#FFF4E6] border-[#D4B062] dark:bg-[#D4B062]/20 shadow-sm'
+                    : 'hover:bg-gray-50 border-transparent hover:border-gray-200 dark:hover:bg-gray-800 dark:hover:border-gray-700'
+                }`}
+              >
+                <h3 className="font-medium text-lg text-gray-800 wrap-break-word dark:text-gray-100">
+                  {repo.name}
+                </h3>
+                <p className="text-sm text-gray-600 line-clamp-2 mt-1 dark:text-gray-400">
+                  {repo.description || 'No description'}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
+                  <span className="flex items-center gap-1">
+                    <Star className="h-3.5 w-3.5 text-[#D4B062]" />{' '}
+                    {repo.stargazers_count}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <GitFork className="h-3.5 w-3.5 text-[#D4B062]" />{' '}
+                    {repo.forks_count}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Calendar className="h-3.5 w-3.5 text-[#D4B062]" />{' '}
+                    {formatDate(repo.updated_at)}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+
+          {isLoadingMore && (
+            <div className="flex justify-center py-4">
+              <Loader2 className="h-6 w-6 text-[#D4B062] animate-spin" />
+            </div>
+          )}
+
+          <div ref={observerTarget} className="h-4" />
+        </div>
+
+        {hasMore && !isLoadingMore && filteredRepos.length > 0 && (
+          <p className="text-center text-sm text-gray-500 mt-4 dark:text-gray-400">
+            Scroll down to load more repositories
+          </p>
+        )}
+      </>
     );
   }, [
     repoLoading,
@@ -218,6 +362,9 @@ const Contributors: React.FC = () => {
     selectedRepo,
     handleRepoClick,
     formatDate,
+    isLoadingMore,
+    hasMore,
+    page,
   ]);
 
   const contributorsList = useMemo(() => {
@@ -232,11 +379,25 @@ const Contributors: React.FC = () => {
       );
     }
 
-    if (loading) {
+    if (loading && visibleContributors.length === 0) {
       return (
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#D4B062]"></div>
-        </div>
+        <>
+          <div className="max-h-[65vh] overflow-y-auto pr-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Array.from({ length: 9 }).map((_, index) => (
+                <ContributorSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+          {contributorProgress > 0 && (
+            <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 mt-4">
+              <div
+                className="bg-[#D4B062] h-1.5 rounded-full transition-all duration-300"
+                style={{ width: `${contributorProgress}%` }}
+              ></div>
+            </div>
+          )}
+        </>
       );
     }
 
@@ -248,7 +409,7 @@ const Contributors: React.FC = () => {
       );
     }
 
-    if (contributors.length === 0) {
+    if (visibleContributors.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center h-64 text-center">
           <Users className="h-16 w-16 text-gray-300 mb-4 dark:text-gray-600" />
@@ -259,30 +420,39 @@ const Contributors: React.FC = () => {
       );
     }
 
+    const displayContributors =
+      visibleContributors.length > 0 ? visibleContributors : contributors;
+
     return (
       <>
         <p className="text-sm text-gray-500 mb-4 dark:text-gray-400">
-          Showing all {contributors.length} contributors
+          {visibleContributors.length < contributors.length
+            ? `Showing ${visibleContributors.length} of ${contributors.length} contributors (loading more...)`
+            : `Showing all ${contributors.length} contributors`}
         </p>
         <div className="max-h-[65vh] overflow-y-auto pr-1">
           <motion.div
-            // variants={staggerContainer}
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           >
-            {contributors.map((contributor) => (
+            {displayContributors.map((contributor) => (
               <motion.a
                 key={contributor.id}
-                whileHover="hover"
+                variants={fadeIn}
+                whileHover={{ scale: 1.05 }}
                 href={contributor.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center p-5 bg-gray-100 rounded-lg transition duration-300 hover:bg-[#FFF4E6] border border-gray-100 dark:bg-gray-800 dark:hover:bg-[#D4B062]/10 dark:border-gray-700"
+                className="group flex flex-col items-center p-5 bg-gray-50 rounded-lg transition-all duration-300 hover:bg-[#FFF4E6] hover:shadow-md border border-gray-100 dark:bg-gray-800 dark:hover:bg-[#D4B062]/10 dark:border-gray-700"
               >
                 <div className="relative mb-3">
                   <img
-                    src={contributor.avatar_url}
+                    src={`${contributor.avatar_url}&s=80`}
                     alt={`${contributor.login}'s avatar`}
                     className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm dark:border-gray-700"
+                    loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src =
                         'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.webp';
@@ -294,7 +464,7 @@ const Contributors: React.FC = () => {
                       : contributor.contributions}
                   </div>
                 </div>
-                <h3 className="font-medium text-gray-800 text-center break-words w-full dark:text-gray-100">
+                <h3 className="font-medium text-gray-800 text-center wrap-break-word w-full dark:text-gray-100">
                   {contributor.login}
                 </h3>
                 <div className="mt-2 flex items-center text-xs text-[#D4B062] opacity-0 group-hover:opacity-100 transition-opacity">
@@ -304,9 +474,21 @@ const Contributors: React.FC = () => {
             ))}
           </motion.div>
         </div>
+        {visibleContributors.length < contributors.length && (
+          <p className="text-center text-sm text-gray-500 mt-4 dark:text-gray-400">
+            Loading all contributors...
+          </p>
+        )}
       </>
     );
-  }, [selectedRepo, loading, error, contributors]);
+  }, [
+    selectedRepo,
+    loading,
+    error,
+    contributors,
+    visibleContributors,
+    contributorProgress,
+  ]);
 
   return (
     <>
@@ -317,7 +499,7 @@ const Contributors: React.FC = () => {
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          className="relative py-16 sm:py-20 overflow-hidden bg-gradient-to-b from-black via-gray-800 to-gray-600"
+          className="relative py-16 sm:py-20 overflow-hidden bg-linear-to-b from-black via-gray-800 to-gray-600"
         >
           <div className="absolute inset-0 z-0 overflow-hidden">
             <div className="absolute inset-0 opacity-10"></div>
@@ -379,7 +561,8 @@ const Contributors: React.FC = () => {
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 dark:text-gray-500" />
             </div>
             <p className="text-sm text-gray-500 mt-2 text-center dark:text-gray-400">
-              Showing {filteredRepos.length} repositories.
+              Showing {filteredRepos.length} repositories.{' '}
+              {hasMore && 'Scroll to load more.'}
             </p>
           </motion.div>
 
@@ -398,6 +581,11 @@ const Contributors: React.FC = () => {
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
                   Repositories
                 </h2>
+                {repoLoading && (
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    Loading...
+                  </span>
+                )}
               </div>
 
               {repositoryList}
@@ -414,11 +602,35 @@ const Contributors: React.FC = () => {
                 <div className="bg-[#D4B062] p-3 rounded-full text-white">
                   <Users className="h-5 w-5" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                  {selectedRepo
-                    ? `Contributors for ${selectedRepo}`
-                    : 'Select a repository'}
-                </h2>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                    {selectedRepo ? (
+                      <>
+                        Contributors for{' '}
+                        <a
+                          href={getSelectedRepoDetails()?.html_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium cursor-pointer text-blue-600 hover:text-blue-800 hover:underline dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                          title="View repository on GitHub"
+                        >
+                          {selectedRepo}
+                          <ExternalLink className="inline-block ml-1 h-4 w-4" />
+                        </a>
+                      </>
+                    ) : (
+                      'Select a repository'
+                    )}
+                  </h2>
+                  {loading && (
+                    <div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Loading contributors...{' '}
+                        {contributorProgress > 0 && `${contributorProgress}%`}
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {contributorsList}
