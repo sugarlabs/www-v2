@@ -13,18 +13,16 @@ const Stats = () => {
   const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
   const [isTouchDevice] = useState(
-    () => 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+    () => typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0),
   );
   const gridRef = useRef<HTMLDivElement>(null);
-  const prevIsMobileRef = useRef<boolean>(window.innerWidth < 1024);
+  const prevIsMobileRef = useRef<boolean>(typeof window !== 'undefined' ? window.innerWidth < 1024 : false);
 
-  // Reset component state when switching between mobile and desktop views
   useEffect(() => {
     const handleResize = () => {
       const isMobile = window.innerWidth < 1024;
       const prevIsMobile = prevIsMobileRef.current;
 
-      // Reset states when switching between mobile and desktop
       if (isMobile !== prevIsMobile) {
         setActiveCardIndex(null);
         setHoveredCardIndex(null);
@@ -36,7 +34,6 @@ const Stats = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Handle click outside to reset active state
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (gridRef.current && !gridRef.current.contains(event.target as Node)) {
@@ -45,7 +42,6 @@ const Stats = () => {
       }
     };
 
-    // Add event listeners for both mouse and touch
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('touchstart', handleClickOutside);
 
@@ -57,6 +53,7 @@ const Stats = () => {
 
   return (
     <section className="max-w-7xl mx-auto py-10 sm:py-16 md:py-20 px-4 sm:px-6 bg-white dark:bg-gray-900">
+      {/* Header Section */}
       <div className="relative mb-12 sm:mb-16 md:mb-24">
         <div className="absolute left-0 top-1/2 w-full h-0.5 sm:h-1 bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500 transform -translate-y-1/2 opacity-30"></div>
 
@@ -103,6 +100,7 @@ const Stats = () => {
         </motion.div>
       </div>
 
+      {/* Primary Impact Card */}
       <motion.div
         className="mb-8 sm:mb-12 md:mb-16"
         variants={container}
@@ -143,7 +141,7 @@ const Stats = () => {
         </motion.div>
       </motion.div>
 
-      {/* Stats Grid */}
+      {/* Stats Grid Sections */}
       <motion.div
         className="flex flex-col items-center gap-6 sm:gap-8 md:gap-10"
         variants={container}
@@ -151,88 +149,59 @@ const Stats = () => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
       >
-        {/* Top Row - 2 Items */}
+        {/* Row logic remains same for visual consistency */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full justify-items-center max-w-3xl">
           {statisticsData.slice(1, 3).map((stat, index) => (
             <motion.div
               key={index}
               className={`rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 ${stat.bgColor} border ${stat.borderColor} w-full max-w-sm`}
               variants={item}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              whileHover={{ y: -5 }}
             >
-              <motion.div
-                className="h-32 sm:h-36 md:h-44 relative overflow-hidden"
-                variants={imageReveal}
-              >
+              <div className="h-32 sm:h-36 md:h-44 relative overflow-hidden">
                 <img
                   src={stat.imageSrc}
                   alt={stat.imageAlt}
                   className="w-full h-full object-cover object-center"
                 />
-                <div
-                  className={`absolute inset-0 opacity-10 bg-gradient-to-br ${stat.gradient}`}
-                ></div>
-              </motion.div>
+              </div>
               <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px] leading-relaxed">
+                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px]">
                   {stat.title}
                 </h3>
-                <motion.div
-                  className={`text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat whitespace-nowrap`}
-                  variants={numberCounter}
-                >
+                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}>
                   {stat.value}
-                </motion.div>
-                <div
-                  className={`w-12 sm:w-16 md:w-20 h-0.5 sm:h-1 bg-gradient-to-r ${stat.gradient} opacity-50 rounded-full mt-1 sm:mt-2`}
-                ></div>
+                </div>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Bottom Row - 3 Items */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 w-full justify-items-center max-w-5xl">
           {statisticsData.slice(3).map((stat, index) => (
             <motion.div
               key={index}
               className={`rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 ${stat.bgColor} border ${stat.borderColor} w-full max-w-sm`}
               variants={item}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              whileHover={{ y: -5 }}
             >
-              <motion.div
-                className="h-32 sm:h-36 md:h-44 relative overflow-hidden"
-                variants={imageReveal}
-              >
-                <img
-                  src={stat.imageSrc}
-                  alt={stat.imageAlt}
-                  className="w-full h-full object-cover object-center"
-                />
-                <div
-                  className={`absolute inset-0 opacity-10 bg-gradient-to-br ${stat.gradient}`}
-                ></div>
-              </motion.div>
+              <div className="h-32 sm:h-36 md:h-44 relative overflow-hidden">
+                <img src={stat.imageSrc} alt={stat.imageAlt} className="w-full h-full object-cover object-center" />
+              </div>
               <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px] leading-relaxed">
+                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px]">
                   {stat.title}
                 </h3>
-                <motion.div
-                  className={`text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat whitespace-nowrap`}
-                  variants={numberCounter}
-                >
+                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}>
                   {stat.value}
-                </motion.div>
-                <div
-                  className={`w-12 sm:w-16 md:w-20 h-0.5 sm:h-1 bg-gradient-to-r ${stat.gradient} opacity-50 rounded-full mt-1 sm:mt-2`}
-                ></div>
+                </div>
               </div>
             </motion.div>
           ))}
         </div>
       </motion.div>
 
-      {/* Closing Section with Interactive Element */}
+      {/* Join Us Section with Smooth Interactive Cards */}
       <motion.div
         className="text-center mt-10 sm:mt-12 md:mt-16 pt-8 sm:pt-12 md:pt-16 border-t border-gray-200 dark:border-gray-700"
         initial={{ opacity: 0, y: 20 }}
@@ -244,94 +213,72 @@ const Stats = () => {
           Join us and make a difference
         </h2>
         <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 px-4 text-sm sm:text-base md:text-lg">
-          These numbers represent more than statistics - they represent lives
-          changed through education and technology. Sugar Labs continues to grow
-          and impact communities worldwide.
+          These numbers represent more than statistics - they represent lives changed through education and technology. Sugar Labs continues to grow and impact communities worldwide.
         </p>
 
-        {/* Interactive Stats Summary - Grid Layout */}
+        {/* MODIFIED: items-center ensures non-expanding cards stay vertically 
+          centered in the row during a neighbor's expansion.
+        */}
         <div
           ref={gridRef}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 max-w-6xl mx-auto px-2"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 max-w-6xl mx-auto px-2 items-center"
         >
           {statisticsData.map((stat, index) => {
             const isActive = activeCardIndex === index;
-            // Only use hover on non-touch devices
             const isHovered = !isTouchDevice && hoveredCardIndex === index;
             const showFullText = isActive || isHovered;
 
             return (
               <motion.div
                 key={index}
-                className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative cursor-pointer overflow-hidden`}
-                whileHover={
-                  !isTouchDevice
-                    ? {
-                        scale: 1.05,
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                      }
-                    : undefined
-                }
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                layout
+                /* MODIFIED: Smooth transition for the layout (size/height) change. 
+                  Spring gives it a natural feel; duration 0.4 makes it smooth.
+                */
+                transition={{
+                  layout: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 }
+                }}
+                className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative cursor-pointer overflow-hidden h-auto`}
+                whileHover={!isTouchDevice ? { scale: 1.02 } : undefined}
                 onClick={(e) => {
                   e.stopPropagation();
-                  // On mobile, toggle active state; on desktop, set active and clear hover
-                  if (isActive) {
-                    setActiveCardIndex(null);
-                    setHoveredCardIndex(null);
-                  } else {
-                    setActiveCardIndex(index);
-                    setHoveredCardIndex(null);
-                  }
+                  setActiveCardIndex(isActive ? null : index);
                 }}
-                onHoverStart={() => {
-                  if (!isTouchDevice) {
-                    setHoveredCardIndex(index);
-                  }
-                }}
-                onHoverEnd={() => {
-                  if (!isTouchDevice) {
-                    setHoveredCardIndex(null);
-                  }
-                }}
-                onTouchStart={(e) => {
-                  // Prevent hover from triggering on touch devices
-                  e.stopPropagation();
-                }}
-                layout
+                onHoverStart={() => !isTouchDevice && setHoveredCardIndex(index)}
+                onHoverEnd={() => !isTouchDevice && setHoveredCardIndex(null)}
               >
-                <span
+                <motion.span
+                  layout="position"
                   className={`font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.gradient} text-base sm:text-xl md:text-2xl`}
                 >
                   {stat.value}
-                </span>
-                {/* Text container with smooth animations */}
+                </motion.span>
+                
                 <motion.div
-                  className="w-full flex flex-col items-center min-h-[1.5rem]"
+                  className="w-full flex flex-col items-center"
                   layout
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
                 >
                   <AnimatePresence mode="wait">
                     {!showFullText ? (
                       <motion.span
                         key="truncated"
                         className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
                       >
-                        {stat.title.split('.')[0].substring(0, 12)}
-                        {stat.title.split('.')[0].length > 12 ? '...' : ''}
+                        {stat.title.split('.')[0].substring(0, 10)}...
                       </motion.span>
                     ) : (
                       <motion.span
                         key="full"
                         className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 whitespace-normal px-1"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 5 }}
+                        transition={{ duration: 0.3 }}
                       >
                         {stat.title}
                       </motion.span>
