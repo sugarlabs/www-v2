@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   getMorePageBySlug,
@@ -96,6 +96,11 @@ const MorePage: React.FC = () => {
     }
   }, [isLoading, zoomableImages]);
 
+  const closeImageModal = useCallback(() => {
+    setModalImage(null);
+    document.body.classList.remove('overflow-hidden');
+  }, []);
+
   // Handle escape key for modal
   useEffect(() => {
     const handleEscKey = (e: KeyboardEvent) => {
@@ -106,12 +111,7 @@ const MorePage: React.FC = () => {
 
     window.addEventListener('keydown', handleEscKey);
     return () => window.removeEventListener('keydown', handleEscKey);
-  }, [modalImage]);
-
-  const closeImageModal = () => {
-    setModalImage(null);
-    document.body.classList.remove('overflow-hidden');
-  };
+  }, [modalImage, closeImageModal]);
 
   if (isLoading) {
     return (
