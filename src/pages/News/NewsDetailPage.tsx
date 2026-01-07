@@ -74,6 +74,11 @@ const NewsDetailPage: React.FC = () => {
     }
   }, [isLoading, zoomableImages]);
 
+  const closeImageModal = useCallback(() => {
+    setModalImage(null);
+    document.body.classList.remove('overflow-hidden');
+  }, []);
+
   useEffect(() => {
     const handleEscKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && modalImage) {
@@ -83,7 +88,7 @@ const NewsDetailPage: React.FC = () => {
 
     window.addEventListener('keydown', handleEscKey);
     return () => window.removeEventListener('keydown', handleEscKey);
-  });
+  }, [modalImage, closeImageModal]);
 
   const handleGoBack = useCallback(() => {
     const search = location.search || '';
@@ -95,11 +100,6 @@ const NewsDetailPage: React.FC = () => {
         : 'all';
     navigate(`/news/${derivedCategory}${search}`);
   }, [navigate, category, location.search, post?.category]);
-
-  const closeImageModal = useCallback(() => {
-    setModalImage(null);
-    document.body.classList.remove('overflow-hidden');
-  }, []);
 
   const handleTagClick = useCallback(
     (tag: string) => {

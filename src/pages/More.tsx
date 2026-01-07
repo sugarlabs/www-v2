@@ -106,7 +106,7 @@ const MorePage: React.FC = () => {
 
     window.addEventListener('keydown', handleEscKey);
     return () => window.removeEventListener('keydown', handleEscKey);
-  });
+  }, [modalImage]);
 
   const closeImageModal = () => {
     setModalImage(null);
