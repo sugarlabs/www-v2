@@ -175,7 +175,6 @@ const Stats = () => {
               </motion.div>
               <div className="p-4 sm:p-5 md:p-6">
                 <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro leading-relaxed">
-
                   {stat.title}
                 </h3>
                 <motion.div
@@ -216,7 +215,6 @@ const Stats = () => {
               </motion.div>
               <div className="p-4 sm:p-5 md:p-6">
                 <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro leading-relaxed">
-
                   {stat.title}
                 </h3>
                 <motion.div
