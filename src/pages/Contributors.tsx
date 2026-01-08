@@ -333,7 +333,7 @@ const Contributors: React.FC = () => {
 
     return (
       <>
-        <div className="space-y-3 max-h-[65vh] overflow-y-auto pr-1 -mx-2 px-2">
+        <div className="space-y-3 max-h-[65vh] overflow-y-auto pr-1 -mx-2 px-2 custom-scrollbar">
           <AnimatePresence>
             {filteredRepos.map((repo) => (
               <motion.div
@@ -472,7 +472,7 @@ const Contributors: React.FC = () => {
 
     return (
       <>
-        <div className="max-h-[65vh] overflow-y-auto pr-1">
+        <div className="max-h-[65vh] overflow-y-auto pr-1 custom-scrollbar">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
