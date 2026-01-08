@@ -174,7 +174,7 @@ const Stats = () => {
                 ></div>
               </motion.div>
               <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px] leading-relaxed">
+                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-3 min-h-[3.5rem] sm:min-h-[4rem] leading-relaxed">
                   {stat.title}
                 </h3>
                 <motion.div
@@ -192,7 +192,7 @@ const Stats = () => {
         </div>
 
         {/* Bottom Row - 3 Items */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 w-full justify-items-center max-w-5xl">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 w-full justify-items-center max-w-6xl">
           {statisticsData.slice(3).map((stat, index) => (
             <motion.div
               key={index}
@@ -214,7 +214,7 @@ const Stats = () => {
                 ></div>
               </motion.div>
               <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-2 min-h-[56px] leading-relaxed">
+                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro line-clamp-3 min-h-[3.5rem] sm:min-h-[4rem] leading-relaxed">
                   {stat.title}
                 </h3>
                 <motion.div
