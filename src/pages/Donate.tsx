@@ -14,11 +14,46 @@ import {
 import Footer from '@/sections/Footer';
 import Header from '@/sections/Header';
 import { motion } from 'framer-motion';
+import PdfModal from '@/components/Donate/PdfModal';
+import { ExternalLink } from 'lucide-react';
 
 const Donate: React.FC = () => {
   const [showAllFilings, setShowAllFilings] = useState(false);
   const initialFilingsToShow = 5;
   const hasMoreFilings = FINANCIAL_FILINGS.length > initialFilingsToShow;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFilingIndex, setSelectedFilingIndex] = useState(0);
+  const modalRef = React.useRef<HTMLDivElement>(null);
+
+  const handleFilingClick = (index: number) => {
+    setSelectedFilingIndex(index);
+    setIsModalOpen(true);
+  };
+
+  const openPdfInNewTab = (link: string) => {
+    window.open(link, '_blank');
+  };
+
+  // Handle outside clicks..
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setIsModalOpen(false);
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isModalOpen]);
 
   const visibleFilings = showAllFilings
     ? FINANCIAL_FILINGS
@@ -221,19 +256,34 @@ const Donate: React.FC = () => {
               </h3>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-                {visibleFilings.map((filing) => (
-                  <a
-                    key={filing.year}
-                    href={filing.link}
-                    className="bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors p-3 sm:p-4 rounded-lg flex flex-col items-center text-center"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <img src={Img[2]} alt="PDF Icon" className="h-8 w-8 mb-2" />
-                    <span className="font-medium text-xs sm:text-sm dark:text-gray-300">
-                      {filing.year} Filings
-                    </span>
-                  </a>
+                {visibleFilings.map((filing, index) => (
+                  <div key={filing.year} className="group relative">
+                    <button
+                      onClick={() => handleFilingClick(index)}
+                      className="w-full bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors p-3 sm:p-4 rounded-lg flex flex-col items-center text-center cursor-pointer"
+                    >
+                      <img
+                        src={Img[2]}
+                        alt="PDF Icon"
+                        className="h-8 w-8 mb-2"
+                      />
+                      <span className="font-medium text-xs sm:text-sm dark:text-gray-300">
+                        {filing.year} Filings
+                      </span>
+                    </button>
+                    <div className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openPdfInNewTab(filing.link);
+                        }}
+                        className="p-1 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-full dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800"
+                        title="Open in new tab"
+                      >
+                        <ExternalLink className="h-6 w-6 cursor-pointer" />
+                      </button>
+                    </div>
+                  </div>
                 ))}
               </div>
 
@@ -304,6 +354,14 @@ const Donate: React.FC = () => {
           </motion.div>
         </div>
       </div>
+      {/* Tax Filings PDF Modal */}
+      <PdfModal
+        ref={modalRef}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        filings={FINANCIAL_FILINGS}
+        initialIndex={selectedFilingIndex}
+      />
       <Footer />
     </>
   );
