@@ -84,6 +84,8 @@ Feel free. But, please don't spam :p.
 - Format code you've modified. Run `npm run format`.
   - _To verify code formatting without making changes._ Run `npm run format:check`.
 
+- **To run all required linting and formatting checks together, run `npm run check`.**
+
 **Note for Windows users:** To format a specific file, run `npm run format:file <file-path>`.
 
 - Make sure the application builds successfully. Run `npm run build` to verify.
