@@ -54,7 +54,7 @@ To get started with development, refer to the [Developer Guide](docs/dev_guide.m
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, project structure, and contribution guidelines.
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for development setup, project structure, and contribution guidelines.
 
 ## Contributors
 
