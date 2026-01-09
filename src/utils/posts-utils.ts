@@ -90,66 +90,40 @@ const processImageUrl = (imageValue: string | string[] | undefined): string => {
 
 /**
  * Fetch and parse metadata only (without content) for all markdown posts
+ * Uses build-time JSON cache (requires running npm run build:blog first)
  */
 export const fetchMarkdownPostsMetadata = async (
   category?: string,
 ): Promise<PostMetaData[]> => {
   try {
-    const markdownFiles = import.meta.glob(
-      '@/constants/MarkdownFiles/posts/*.md',
-      {
-        query: '?raw',
-        import: 'default',
-      },
-    );
+    // Load from the JSON cache (must be built first)
+    const response = await fetch('/blog-data/metadata.json');
 
-    const allPosts: PostMetaData[] = [];
-
-    for (const [filePath, importFn] of Object.entries(markdownFiles)) {
-      try {
-        const fileContent = await importFn();
-        const { frontmatter } = parseFrontmatter(fileContent as string);
-        const fileName = filePath.split('/').pop()?.replace('.md', '') || '';
-
-        // Parse author reference
-        const author = await parseAuthorReference(
-          frontmatterToString(frontmatter.author),
-          frontmatterToString(frontmatter.description),
-        );
-
-        const post: PostMetaData = {
-          id: fileName,
-          title: frontmatterToString(frontmatter.title, 'Untitled'),
-          excerpt: frontmatterToString(frontmatter.excerpt),
-          category: frontmatterToString(frontmatter.category, 'UNCATEGORIZED'),
-          date: frontmatterToString(frontmatter.date, 'No date'),
-          slug: frontmatterToString(frontmatter.slug, fileName),
-          author,
-          tags: Array.isArray(frontmatter.tags)
-            ? frontmatter.tags
-            : frontmatter.tags
-              ? [frontmatter.tags]
-              : [],
-          image: processImageUrl(frontmatter.image),
-        };
-
-        allPosts.push(post);
-      } catch (error) {
-        console.error(`Error processing ${filePath}:`, error);
-      }
+    if (!response.ok) {
+      throw new Error(
+        'Blog metadata cache not found. ' +
+          'Please run `npm run build:blog` to generate the cache before running the application.',
+      );
     }
 
-    const sortedPosts = allPosts.sort((a, b) => {
+    const allMetadata = await response.json();
+
+    const sortedPosts = allMetadata.sort((a: PostMetaData, b: PostMetaData) => {
       const dateA = new Date(a.date).getTime() || 0;
       const dateB = new Date(b.date).getTime() || 0;
       return dateB - dateA;
     });
 
     return category
-      ? sortedPosts.filter((post) => post.category === category)
+      ? sortedPosts.filter((post: PostMetaData) => post.category === category)
       : sortedPosts;
   } catch (error) {
-    console.error('Error fetching markdown posts metadata:', error);
+    console.error(
+      '❌ Error loading blog metadata:\n',
+      error instanceof Error ? error.message : error,
+      '\n\nTo fix this:\n1. Run: npm run build:blog\n' +
+        '2. Then restart your development server',
+    );
     return [];
   }
 };
