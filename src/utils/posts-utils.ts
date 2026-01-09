@@ -2,7 +2,7 @@
  * Blog post utility functions - Updated with author support
  */
 
-import { parseAuthorReference, AuthorReference } from '@/utils/author-utils';
+import { AuthorReference } from '@/utils/author-utils';
 
 export interface PostMetaData {
   id: string;
@@ -58,34 +58,6 @@ export const parseFrontmatter = (
   });
 
   return { frontmatter, content: mainContent };
-};
-
-/**
- * Convert frontmatter value to string with fallback
- */
-const frontmatterToString = (
-  value: string | string[] | undefined,
-  fallback = '',
-): string =>
-  Array.isArray(value) ? value.join(' ').trim() : value?.trim() || fallback;
-
-/**
- * Process image URL with validation and fallback
- */
-const processImageUrl = (imageValue: string | string[] | undefined): string => {
-  let imageUrl = frontmatterToString(
-    imageValue,
-    '/assets/Images/SugarNewsLogo.webp',
-  );
-
-  if (
-    imageUrl !== '/assets/Images/SugarNewsLogo.webp' &&
-    !/^https?:\/\//.test(imageUrl)
-  ) {
-    imageUrl = '/' + imageUrl.replace(/^\/+/, '');
-  }
-
-  return imageUrl;
 };
 
 /**

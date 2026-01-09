@@ -3,8 +3,6 @@
  * Clean and simple version
  */
 
-import { parseFrontmatter } from '@/utils/posts-utils';
-
 export interface Author {
   slug: string;
   name: string;
@@ -21,15 +19,6 @@ export interface AuthorReference {
   slug: string;
   avatar?: string;
 }
-
-/**
- * Convert frontmatter value to string with fallback
- */
-const frontmatterToString = (
-  value: string | string[] | undefined,
-  fallback = '',
-): string =>
-  Array.isArray(value) ? value.join(' ').trim() : value?.trim() || fallback;
 
 /**
  * Fetch all authors from JSON cache
