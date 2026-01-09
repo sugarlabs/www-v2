@@ -32,46 +32,32 @@ const frontmatterToString = (
   Array.isArray(value) ? value.join(' ').trim() : value?.trim() || fallback;
 
 /**
- * Fetch and parse all author markdown files
+ * Fetch all authors from JSON cache
  */
 export const fetchAllAuthors = async (): Promise<Author[]> => {
   try {
-    const authorFiles = import.meta.glob(
-      '@/constants/MarkdownFiles/authors/*.md',
-      {
-        query: '?raw',
-        import: 'default',
-      },
-    );
+    // Load from the JSON cache (must be built first)
+    const response = await fetch('/blog-data/authors.json');
 
-    const allAuthors: Author[] = [];
-
-    for (const [filePath, importFn] of Object.entries(authorFiles)) {
-      try {
-        const fileContent = await importFn();
-        const { frontmatter, content } = parseFrontmatter(
-          fileContent as string,
-        );
-
-        const author: Author = {
-          slug: frontmatterToString(frontmatter.slug),
-          name: frontmatterToString(frontmatter.name),
-          title: frontmatterToString(frontmatter.title),
-          organization: frontmatterToString(frontmatter.organization),
-          description: frontmatterToString(frontmatter.description),
-          avatar: frontmatterToString(frontmatter.avatar),
-          content,
-        };
-
-        allAuthors.push(author);
-      } catch (error) {
-        console.error(`Error processing author file ${filePath}:`, error);
-      }
+    if (!response.ok) {
+      throw new Error(
+        'Authors cache not found. ' +
+          'Please run `npm run build:blog` to generate the cache before running the application.',
+      );
     }
 
-    return allAuthors.sort((a, b) => a.name.localeCompare(b.name));
+    const allAuthors = await response.json();
+
+    return allAuthors.sort((a: Author, b: Author) =>
+      a.name.localeCompare(b.name),
+    );
   } catch (error) {
-    console.error('Error fetching authors:', error);
+    console.error(
+      '❌ Error loading authors cache:\n',
+      error instanceof Error ? error.message : error,
+      '\n\nTo fix this:\n1. Run: npm run build:blog\n' +
+        '2. Then restart your development server',
+    );
     return [];
   }
 };
