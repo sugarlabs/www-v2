@@ -8,6 +8,8 @@ import DarkModeToggle from '@/components/shared/DarkModeToggle';
 
 const Header: React.FC = () => {
   const location = useLocation();
+  const isTrySugarPage = location.pathname === '/try-sugar';
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -156,6 +158,7 @@ const Header: React.FC = () => {
                 <DarkModeToggle />
 
                 {/* CTA Button (slightly reduced padding at lg so it fits tighter layouts) */}
+                {!isTrySugarPage && (
                 <Link
                   to="/try-sugar"
                   className="inline-flex items-center px-3 lg:px-4 py-2 rounded-full font-semibold text-white
@@ -166,6 +169,7 @@ const Header: React.FC = () => {
                 >
                   TRY NOW
                 </Link>
+                )}
               </div>
             </nav>
           </div>
@@ -192,6 +196,7 @@ const Header: React.FC = () => {
         activeDropdown={activeDropdown}
         setActiveDropdown={setActiveDropdown}
         onClose={handleNavigation}
+        isTrySugarPage={isTrySugarPage}
       />
 
       {/* Space holder to prevent content from being hidden under fixed header */}
@@ -206,7 +211,8 @@ const MobileNavDrawer: React.FC<{
   activeDropdown: string | null;
   setActiveDropdown: (id: string | null) => void;
   onClose: () => void;
-}> = ({ isOpen, activeDropdown, setActiveDropdown, onClose }) => {
+  isTrySugarPage: boolean;
+}> = ({ isOpen, activeDropdown, setActiveDropdown, onClose, isTrySugarPage }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -317,6 +323,7 @@ const MobileNavDrawer: React.FC<{
 
             {/* CTA button footer */}
             <div className="p-4 border-t border-gray-200 dark:border-gray-700 sticky bottom-0 bg-white dark:bg-gray-900">
+              {!isTrySugarPage && (
               <Link
                 to="/try-sugar"
                 onClick={onClose}
@@ -326,6 +333,9 @@ const MobileNavDrawer: React.FC<{
               >
                 TRY NOW
               </Link>
+              )}
+              
+
             </div>
           </div>
         </motion.div>
