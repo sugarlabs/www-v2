@@ -52,10 +52,6 @@ SugarWeb is a client-side web application written in TypeScript. It utilizes Rea
 
 To get started with development, refer to the [Developer Guide](docs/dev_guide.md).
 
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, project structure, and contribution guidelines.
-
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=sugarlabs/www-v2&type=Date)](https://star-history.com/#sugarlabs/www-v2&Date)
