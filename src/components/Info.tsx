@@ -95,7 +95,7 @@ const Info: React.FC = () => {
 
             {/* Desktop Image Grid */}
             <motion.div
-              className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
+              className="hidden md:grid grid-cols-3 gap-3 sm:gap-4"
               variants={simpleGridContainer}
               initial="hidden"
               whileInView="visible"
