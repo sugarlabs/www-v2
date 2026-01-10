@@ -1,5 +1,7 @@
 # Contributing Guide
 
+> MAKING SOME CHANGES
+
 ## New Contributors
 
 Use the [discussions](https://github.com/sugarlabs/www-v2/discussions/) tab at the top of
