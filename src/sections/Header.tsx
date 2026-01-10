@@ -8,8 +8,6 @@ import DarkModeToggle from '@/components/shared/DarkModeToggle';
 
 const Header: React.FC = () => {
   const location = useLocation();
-  const isTrySugarPage = location.pathname === '/try-sugar';
-
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -158,18 +156,16 @@ const Header: React.FC = () => {
                 <DarkModeToggle />
 
                 {/* CTA Button (slightly reduced padding at lg so it fits tighter layouts) */}
-                {!isTrySugarPage && (
-                  <Link
-                    to="/try-sugar"
-                    className="inline-flex items-center px-3 lg:px-4 py-2 rounded-full font-semibold text-white
+                <Link
+                  to="/try-sugar"
+                  className="inline-flex items-center px-3 lg:px-4 py-2 rounded-full font-semibold text-white
                             bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
                             transition-all duration-300 transform hover:scale-105 hover:shadow-lg
                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm"
-                    onClick={handleNavigation}
-                  >
-                    TRY NOW
-                  </Link>
-                )}
+                  onClick={handleNavigation}
+                >
+                  TRY NOW
+                </Link>
               </div>
             </nav>
           </div>
@@ -196,7 +192,6 @@ const Header: React.FC = () => {
         activeDropdown={activeDropdown}
         setActiveDropdown={setActiveDropdown}
         onClose={handleNavigation}
-        isTrySugarPage={isTrySugarPage}
       />
 
       {/* Space holder to prevent content from being hidden under fixed header */}
@@ -211,14 +206,7 @@ const MobileNavDrawer: React.FC<{
   activeDropdown: string | null;
   setActiveDropdown: (id: string | null) => void;
   onClose: () => void;
-  isTrySugarPage: boolean;
-}> = ({
-  isOpen,
-  activeDropdown,
-  setActiveDropdown,
-  onClose,
-  isTrySugarPage,
-}) => {
+}> = ({ isOpen, activeDropdown, setActiveDropdown, onClose }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -329,17 +317,15 @@ const MobileNavDrawer: React.FC<{
 
             {/* CTA button footer */}
             <div className="p-4 border-t border-gray-200 dark:border-gray-700 sticky bottom-0 bg-white dark:bg-gray-900">
-              {!isTrySugarPage && (
-                <Link
-                  to="/try-sugar"
-                  onClick={onClose}
-                  className="flex items-center justify-center px-6 py-3 rounded-xl font-semibold
+              <Link
+                to="/try-sugar"
+                onClick={onClose}
+                className="flex items-center justify-center px-6 py-3 rounded-xl font-semibold
                         text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700
                         hover:to-blue-800 transition-all duration-300 w-full"
-                >
-                  TRY NOW
-                </Link>
-              )}
+              >
+                TRY NOW
+              </Link>
             </div>
           </div>
         </motion.div>
