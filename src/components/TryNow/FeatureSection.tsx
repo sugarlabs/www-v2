@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { featureSectionAnimations } from '@/styles/Animations';
+import '@/styles/FeatureSection.css';
 
 interface FeatureData {
   title: string;
@@ -15,6 +16,7 @@ interface FeatureData {
 
 const FeatureSection = ({ data }: { data: FeatureData }) => {
   const [currentImage, setCurrentImage] = useState(0);
+  const hasMultipleImages = data.images && data.images.length > 1;
 
   return (
     <motion.section
@@ -43,36 +45,61 @@ const FeatureSection = ({ data }: { data: FeatureData }) => {
 
       {/* Right Side: Image Carousel */}
       <motion.div
-        className="md:w-1/2 flex flex-col justify-center items-center relative"
+        className="md:w-1/2 flex flex-col justify-center items-center"
         variants={featureSectionAnimations.imageContainer}
       >
         {data.images && data.images.length > 0 ? (
-          <Carousel
-            selectedItem={currentImage}
-            onChange={(index) => setCurrentImage(index)}
-            showThumbs={false}
-            showStatus={false}
-            infiniteLoop
-            autoPlay
-            interval={3000}
-            transitionTime={600}
-            emulateTouch
-            dynamicHeight
-          >
-            {data.images.map((image, index) => (
-              <motion.div key={index} className="w-full max-w-lg">
-                <motion.img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full rounded-lg shadow-md"
-                  initial="hidden"
-                  animate="visible"
-                  whileHover="hover"
-                  variants={featureSectionAnimations.image}
-                />
-              </motion.div>
-            ))}
-          </Carousel>
+          <div className="relative group w-full">
+            <Carousel
+              selectedItem={currentImage}
+              onChange={(index) => setCurrentImage(index)}
+              showArrows={false}
+              showThumbs={false}
+              showStatus={false}
+              showIndicators={hasMultipleImages}
+              infiniteLoop={hasMultipleImages}
+              autoPlay={hasMultipleImages}
+              interval={3000}
+              transitionTime={600}
+              useKeyboardArrows={hasMultipleImages}
+              swipeable={hasMultipleImages}
+              emulateTouch={hasMultipleImages}
+            >
+              {data.images.map((image, index) => (
+                <motion.div key={index}>
+                  <motion.img
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-full rounded-lg shadow-md"
+                    initial="hidden"
+                    animate="visible"
+                    whileHover="hover"
+                    variants={featureSectionAnimations.image}
+                  />
+                </motion.div>
+              ))}
+            </Carousel>
+
+            {/* LEFT hover zone */}
+            {hasMultipleImages && currentImage > 0 && (
+              <div
+                className="absolute left-0 top-0 h-full w-1/4 bg-gradient-to-r from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer z-10"
+                onClick={() => setCurrentImage((prev) => prev - 1)}
+              >
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-white" />
+              </div>
+            )}
+
+            {/* RIGHT hover zone */}
+            {hasMultipleImages && currentImage < data.images.length - 1 && (
+              <div
+                className="absolute right-0 top-0 h-full w-1/4 bg-gradient-to-l from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer z-10"
+                onClick={() => setCurrentImage((prev) => prev + 1)}
+              >
+                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-8 border-b-8 border-l-8 border-transparent border-l-white" />
+              </div>
+            )}
+          </div>
         ) : (
           <motion.div
             className="w-full max-w-lg h-64 bg-gray-300 dark:bg-gray-700 rounded-lg flex items-center justify-center"
