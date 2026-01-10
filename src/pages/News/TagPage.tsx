@@ -17,14 +17,14 @@ import {
 
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
-import { getPostsByTag, Post, getAllTags } from '@/utils/posts-utils';
+import { getPostsByTag, PostMetaData, getAllTags } from '@/utils/posts-utils';
 
 const TagPage: React.FC = () => {
   const { tag } = useParams<{ tag: string }>();
   const navigate = useNavigate();
 
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostMetaData[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostMetaData[]>([]);
   const [, setAllTags] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -105,7 +105,7 @@ const TagPage: React.FC = () => {
     setDisplayCount(8);
   }, [posts, searchTerm, selectedCategory, sortBy, tag]);
 
-  const handlePostClick = (post: Post) => {
+  const handlePostClick = (post: PostMetaData) => {
     const categoryPath = post.category.toLowerCase().replace(/\s+/g, '-');
     navigate(`/news/${categoryPath}/${post.slug}`);
   };
@@ -279,7 +279,7 @@ const TagPage: React.FC = () => {
                       <select
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm dark:bg-gray-800"
                       >
                         {getUniqueCategories().map((category) => (
                           <option key={category} value={category}>
@@ -296,7 +296,7 @@ const TagPage: React.FC = () => {
                             e.target.value as 'date' | 'title' | 'relevance',
                           )
                         }
-                        className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm dark:bg-gray-800"
                       >
                         <option value="date">Latest First</option>
                         <option value="title">A-Z</option>

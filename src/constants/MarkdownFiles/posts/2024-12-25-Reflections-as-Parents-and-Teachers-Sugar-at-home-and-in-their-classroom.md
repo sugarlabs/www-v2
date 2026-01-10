@@ -4,8 +4,7 @@ excerpt: "Sugar Labs Executive Director Devin Ulibarri shares personal experienc
 category: "SUGAR STORIES"
 date: "2024-12-25"
 slug: "reflections-as-parents-and-teachers-sugar-at-home-and-in-classroom"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "education,parenting,classroom,sugar-activities,learning,teaching,literacy,programming"
 ---
 <!-- markdownlint-disable -->

@@ -32,7 +32,7 @@ const ReviewCard = ({
 
   return (
     <motion.div
-      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-lg border border-gray-200 dark:border-gray-700 mx-2 justify-between"
+      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-md border border-gray-200 dark:border-gray-700 m-2 justify-between"
       variants={testimonialCard}
       initial="hidden"
       whileInView="visible"
@@ -68,7 +68,7 @@ const ReviewCard = ({
           />
         ) : (
           <motion.div
-            className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-300 bg-gray-400 text-white text-lg font-bold"
+            className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-300 bg-gray-400 text-white text-lg font-bold shrink-0"
             variants={avatarReveal}
           >
             {initial}
@@ -93,7 +93,7 @@ export function Testimonials() {
   const secondRow = testimonials.slice(Math.ceil(testimonials.length / 2));
 
   return (
-    <div className="w-full bg-gradient-to-b from-white-800 to-[#F5DDC8] dark:from-gray-900 dark:to-gray-800">
+    <div className="w-full bg-linear-to-b from-white-800 to-[#F5DDC8] dark:from-gray-900  dark:via-gray-950 dark:to-gray-950">
       {/* Heading Section with Hearts */}
       <motion.div
         className="flex items-center justify-center gap-4 md:gap-6 mb-12"
@@ -156,7 +156,7 @@ export function Testimonials() {
 
       {/* Testimonials Section */}
       <motion.div
-        className="relative flex flex-col items-center justify-center w-full overflow-hidden mt-6"
+        className="relative flex flex-col items-center justify-center w-full overflow-hidden mt-6 mask-r-from-80% mask-l-from-80%"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
@@ -174,7 +174,7 @@ export function Testimonials() {
         </Marquee>
 
         {/* Second Row */}
-        <Marquee reverse pauseOnHover className="w-full mt-4">
+        <Marquee reverse pauseOnHover className="w-full">
           {secondRow.map((review, index) => (
             <ReviewCard
               key={review.username}
@@ -183,10 +183,6 @@ export function Testimonials() {
             />
           ))}
         </Marquee>
-
-        {/* Gradient Fades */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-6 md:w-10 bg-gradient-to-r from-[#F5DDC8] dark:from-gray-800"></div>
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-6 md:w-10 bg-gradient-to-l from-[#F5DDC8] dark:from-gray-800"></div>
       </motion.div>
     </div>
   );

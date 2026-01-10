@@ -1,3 +1,14 @@
+:root {
+  --toast-bg: #ffffff;
+  --toast-text: #000000;
+  --toast-border: #000000;
+}
+
+.dark {
+  --toast-bg: #3f3f46;
+  --toast-text: #e5e5e5;
+  --toast-border: #a1a1aa;
+}
 @font-face {
   font-family: 'Caveat';
   src: url('/fonts/Caveat-Regular.ttf');
@@ -179,6 +190,7 @@
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -207,4 +219,89 @@
 .dark .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #555 #2d2d2d;
+}
+
+/* Horizontal-only scrollbar for command rows.
+   Keep identical appearance in light and dark modes.
+*/
+.commands-scroll::-webkit-scrollbar {
+  height: 10px; /* horizontal scrollbar height only */
+}
+.commands-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.commands-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.4);
+  border-radius: 6px;
+}
+.commands-scroll::-webkit-scrollbar-button {
+  display: none; /* remove arrow buttons on WebKit browsers */
+}
+.commands-scroll::-webkit-scrollbar-corner {
+  background: transparent; /* remove corner square */
+}
+.commands-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
+}
+
+/*Global scrollbar styling to keep it consistent throughout*/
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a0a0a0 #f0f0f0;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #a0a0a0;
+  border-radius: 4px;
+}
+
+/* Dark mode */
+.dark * {
+  scrollbar-color: #555 #2d2d2d;
+}
+
+.dark *::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.dark *::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+/* Dark mode for main body scrollbar*/
+html.dark,
+html.dark body {
+  scrollbar-color: #555 #2d2d2d;
+}
+
+html.dark::-webkit-scrollbar-track,
+html.dark body::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+html.dark::-webkit-scrollbar-thumb,
+html.dark body::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+/*shimmer animation for skeleton*/
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }

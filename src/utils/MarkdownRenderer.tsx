@@ -59,33 +59,33 @@ const EMOJI_MAP: Record<string, string> = {
 const ALERT_TYPES = {
   note: {
     icon: 'ℹ️',
-    bg: 'bg-blue-50',
-    border: 'border-blue-200',
-    text: 'text-blue-800',
+    bg: 'bg-blue-50 dark:bg-blue-900',
+    border: 'border-blue-200 dark:border-blue-700',
+    text: 'text-blue-800 dark:text-blue-200',
   },
   tip: {
     icon: '💡',
-    bg: 'bg-green-50',
-    border: 'border-green-200',
-    text: 'text-green-800',
+    bg: 'bg-green-50 dark:bg-green-900',
+    border: 'border-green-200 dark:border-green-700',
+    text: 'text-green-800 dark:text-green-200',
   },
   important: {
     icon: '❗',
-    bg: 'bg-purple-50',
-    border: 'border-purple-200',
-    text: 'text-purple-800',
+    bg: 'bg-purple-50 dark:bg-purple-900',
+    border: 'border-purple-200 dark:border-purple-700',
+    text: 'text-purple-800 dark:text-purple-200',
   },
   warning: {
     icon: '⚠️',
-    bg: 'bg-yellow-50',
-    border: 'border-yellow-200',
-    text: 'text-yellow-800',
+    bg: 'bg-yellow-50 dark:bg-yellow-900',
+    border: 'border-yellow-200 dark:border-yellow-700',
+    text: 'text-yellow-800 dark:text-yellow-200',
   },
   caution: {
     icon: '🚨',
-    bg: 'bg-red-50',
-    border: 'border-red-200',
-    text: 'text-red-800',
+    bg: 'bg-red-50 dark:bg-red-900',
+    border: 'border-red-200 dark:border-red-700',
+    text: 'text-red-800 dark:text-red-200',
   },
 };
 
@@ -167,9 +167,9 @@ const processMarkdownContent = (content: string): string => {
   // Collapsible sections
   processed = processed.replace(
     /:::details\s+(.*?)\n([\s\S]*?):::/gim,
-    '<details class="my-4 border border-gray-200 rounded-lg overflow-hidden bg-white">' +
-      '<summary class="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">$1</summary>' +
-      '<div class="px-4 py-3 text-gray-700">$2</div></details>',
+    '<details class="my-4 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800">' +
+      '<summary class="bg-gray-50 dark:bg-gray-700 px-4 py-3 cursor-pointer font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors border-b border-gray-200 dark:border-gray-600">$1</summary>' +
+      '<div class="px-4 py-3 text-gray-700 dark:text-gray-300">$2</div></details>',
   );
 
   // GitHub-style alerts
@@ -355,7 +355,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     blockquote: ({ children, ...props }) => (
       <blockquote
         {...props}
-        className="border-l-3 border-blue-500 bg-blue-50 pl-5 pr-5 py-2 my-4 italic text-blue-800 rounded-r-2xl shadow-sm hover:shadow-md transition-shadow duration-200 "
+        className="border-l-3 border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-gray-800/40 pl-5 pr-5 py-2 my-4 italic text-blue-800 dark:text-blue-300 rounded-r-2xl shadow-sm hover:shadow-md transition-shadow duration-200"
       >
         <div className="relative z-10">{children}</div>
       </blockquote>
@@ -392,20 +392,20 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       const language = className?.replace('language-', '') || 'text';
 
       return (
-        <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-800 bg-gray-900 my-6 group">
+        <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 my-6 group">
           {/* Header with language and copy button */}
-          <div className="flex items-center justify-between px-6 py-3 bg-gray-200 border-b border-gray-200">
+          <div className="flex items-center justify-between px-6 py-3 bg-gray-100 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
               <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
               <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <span className="text-xs font-semibold text-gray-600 uppercase">
+              <span className="text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase">
                 {language}
               </span>
             </div>
             <div className="flex items-center space-x-2">
               <button
-                className="copy-code-btn bg-gray-200 hover:bg-gray-300 text-gray-700  text-xs px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 hover:scale-105 shadow-sm hover:shadow-md"
+                className="copy-code-btn bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 text-xs px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 hover:scale-105 shadow-sm hover:shadow-md"
                 data-code={codeText}
                 aria-label="Copy code to clipboard"
               >
@@ -424,15 +424,15 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
                 </svg>
                 <span className="font-medium">Copy</span>
               </button>
-              <div className="copy-success-message hidden items-center space-x-2 bg-green-100 text-green-800 text-xs px-4 py-2 rounded-lg border border-green-200">
+              <div className="copy-success-message hidden items-center space-x-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs px-4 py-2 rounded-lg border border-green-200 dark:border-green-700">
                 <span className="font-medium">Copied!</span>
               </div>
             </div>
           </div>
           <div className="overflow-x-auto">
-            <pre className="p-6 bg-gray-50 text-sm leading-relaxed">
+            <pre className="p-6 bg-gray-50 dark:bg-gray-900 text-sm leading-relaxed">
               <code
-                className={`${className || ''} text-gray-800 font-mono block whitespace-pre`}
+                className={`${className || ''} text-gray-800 dark:text-gray-100 font-mono block whitespace-pre`}
               >
                 {children}
               </code>
@@ -613,14 +613,14 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     ),
     details: ({ children, ...props }) => (
       <details
-        className="my-4 border border-gray-200 rounded-lg overflow-hidden bg-white"
+        className="my-4 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800"
         {...props}
       >
         {children}
       </details>
     ),
     summary: ({ children }) => (
-      <summary className="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">
+      <summary className="bg-gray-50 dark:bg-gray-700 px-4 py-3 cursor-pointer font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors border-b border-gray-200 dark:border-gray-600">
         {children}
       </summary>
     ),

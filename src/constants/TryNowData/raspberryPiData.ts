@@ -1,3 +1,5 @@
+import { steps } from './bootableSoasData';
+
 export const raspberrydata = {
   title: 'Raspberry-Pi',
   subtitle: 'Sugar on RaspberryPi',
@@ -43,64 +45,229 @@ export const raspberryLogoCards = [
   {
     logo: 'assets/TryMoreSvgs/trisquel-desktop.svg',
     title: 'using Raspbian',
-    description: [
-      'Raspbian (now known as Raspberry Pi OS) is the most widely used OS for Raspberry Pi and is based on Debian.',
-      'You can install the Sugar learning environment using package managers or custom scripts.',
-      'It’s lightweight, actively maintained, and optimized for Raspberry Pi hardware.',
-      'Best suited for users already familiar with Raspberry Pi setups.',
-    ],
-    buttons: [
-      {
-        text: 'Read Raspbian installation guide',
-        link: 'https://wiki.sugarlabs.org/go/Raspbian',
-      },
-    ],
   },
   {
     logo: 'assets/TryMoreSvgs/fedora.svg',
     title: 'using Fedora',
-    description: [
-      'Fedora offers a reliable and cutting-edge platform to run Sugar on various hardware, including Raspberry Pi.',
-      'Sugar on a Stick (SoaS) is a Fedora-based spin tailored for educational purposes.',
-      'You can run Sugar live from a USB stick or install it on the Pi directly with some configuration.',
-      'Suitable for users seeking a polished Linux experience with SELinux and Wayland support.',
-    ],
-    buttons: [
-      {
-        text: 'View Fedora instructions',
-        link: 'https://github.com/sugarlabs/sugar/blob/master/docs/fedora.md',
-      },
-    ],
   },
   {
     logo: 'assets/TryMoreSvgs/debian.svg',
     title: 'using Debian',
-    description: [
-      'Debian is the upstream source of Raspbian and offers a very stable environment for Sugar.',
-      'You can install Sugar via APT repositories or build it from source for more customization.',
-      'Recommended for developers and advanced users familiar with Debian packaging and systems.',
-      'You gain fine-grained control over packages and system updates.',
-    ],
-    buttons: [
-      {
-        text: 'Read Debian instructions',
-        link: 'https://github.com/sugarlabs/sugar/blob/master/docs/debian.md',
-      },
-    ],
   },
   {
     logo: 'assets/TryMoreSvgs/ubuntu.svg',
     title: 'using Ubuntu',
-    description: [
-      'Ubuntu is a user-friendly Linux distribution and supports running Sugar with a few extra steps.',
-      'You can install Sugar directly via terminal or explore Ubuntu derivatives for a lighter setup.',
-      'Popular among new users due to its graphical interface and large support community.',
-      'Ideal if you’re already using Ubuntu on other machines and want consistency.',
-    ],
-    buttons: [
+  },
+];
+
+export const raspberrySteps: steps[] = [
+  {
+    heading: 'Steps to install Sugar using Raspbian',
+    StepData: [
       {
-        text: 'View Ubuntu setup guide',
-        link: 'https://github.com/sugarlabs/sugar/blob/master/docs/ubuntu.md',
+        step: 1,
+        title: 'Download Raspberry Pi OS',
+        description:
+          'Download the latest Raspberry Pi OS image formerly known as Raspbian from the official Raspberry Pi website',
+        links: [
+          {
+            text: 'website',
+            url: 'https://www.raspberrypi.com/software/',
+          },
+        ],
+        image: 'assets/TryNowImages/raspbian-step1.webp',
+      },
+      {
+        step: 2,
+        title: 'Flash the OS to an SD Card',
+        description:
+          'You can use Raspberry app interface and select desired models to be flashed.',
+        image: 'assets/TryNowImages/raspbian-step2.webp',
+      },
+      {
+        step: 3,
+        title: 'Boot Raspberry Pi',
+        description:
+          'Insert the microSD card into your Raspberry Pi and power it on. Follow the on-screen prompts to set up the Raspberry Pi OS.',
+        image: 'assets/TryNowImages/raspbian-step3.webp',
+      },
+      {
+        step: 4,
+        title: 'Update System Packages',
+        description: 'Once Raspberry Pi OS is up, update the system packages:',
+        commands: 'sudo apt update; sudo apt upgrade',
+        image: 'assets/TryNowImages/raspbian-step4.webp',
+      },
+      {
+        step: 5,
+        title: 'Install Sugar Desktop Environment',
+        description:
+          'Run the following commands to install the Sugar desktop environment:',
+        commands: 'sudo apt install sucrose',
+        image: 'assets/TryNowImages/raspberry-install.webp',
+      },
+      {
+        step: 6,
+        title: 'Configure Sugar',
+        description: 'Configure Sugar as the default desktop environment:',
+        commands: 'sudo update-alternatives --config x-session-manager',
+        image: 'assets/TryNowImages/raspbian-step6.webp',
+      },
+      {
+        step: 7,
+        title: 'Reboot Raspberry Pi',
+        description:
+          'Reboot your Raspberry Pi to apply the changes and start using Sugar:',
+        commands: 'sudo reboot',
+        image: 'assets/TryNowImages/raspberry-reboot.webp',
+      },
+      {
+        step: 8,
+        title: 'Enjoy Sugar',
+        description:
+          'After rebooting, your Raspberry Pi should boot into the Sugar desktop environment. You can now explore and use Sugar activities!',
+        image: 'assets/TryNowImages/step7.webp',
+      },
+    ],
+  },
+  {
+    heading: 'Steps to install Sugar using Fedora',
+    StepData: [
+      {
+        step: 1,
+        title: 'Download Fedora for Raspberry Pi',
+        description:
+          'Download and install the Fedora for Raspberry Pi from the official Fedora website.',
+        links: [
+          {
+            text: 'website',
+            url: 'https://getfedora.org/en/workstation/download/',
+          },
+        ],
+        image: 'assets/TryNowImages/fedora-step1.webp',
+      },
+      {
+        step: 2,
+        title: 'Install Sugar on Fedora using Sugar desktop environment',
+        description:
+          'Open a terminal and run the following command to install Sugar:',
+        commands: 'sudo dnf install sugar',
+        image: 'assets/TryNowImages/fedora-step2.webp',
+      },
+      {
+        step: 3,
+        title: 'Install Sugar using with another desktop environment',
+        description:
+          'If you are using another desktop environment, you can install Sugar with the following command:',
+        commands:
+          'sudo dnf group install sugar-desktop; sudo dnf install sugar-runner; sugar-runner --set-default',
+        image: 'assets/TryNowImages/fedora-step3.webp',
+      },
+      {
+        step: 4,
+        title: 'Reboot Fedora',
+        description: 'Reboot your Fedora system to apply the changes',
+        commands: 'sudo reboot',
+        image: 'assets/TryNowImages/raspberry-reboot.webp',
+      },
+      {
+        step: 5,
+        title: 'Enjoy Sugar',
+        description:
+          'After rebooting, your Fedora system should boot into the Sugar desktop environment. You can now explore and use Sugar activities!',
+        image: 'assets/TryNowImages/step7.webp',
+      },
+    ],
+  },
+  {
+    heading: 'Steps to install Sugar using Debian',
+    StepData: [
+      {
+        step: 1,
+        title: 'Download Debian for Raspberry Pi',
+        description:
+          'Download and install the Debian for Raspberry Pi from the official Debian website.',
+        links: [
+          {
+            text: 'website',
+            url: 'https://www.debian.org/',
+          },
+        ],
+        image: 'assets/TryNowImages/debian-step1.webp',
+      },
+      {
+        step: 2,
+        title: 'Install Sugar on Debian ',
+        description:
+          'Open a terminal and run the following command to install Sugar:',
+        commands: 'sudo apt install sucrose',
+        image: 'assets/TryNowImages/raspberry-install.webp',
+      },
+      {
+        step: 3,
+        title: 'Reboot Debian',
+        description: 'Reboot your Debian system to apply the changes.',
+        image: 'assets/TryNowImages/raspberry-reboot.webp',
+      },
+      {
+        step: 4,
+        title: 'Login with Sugar',
+        description:
+          'At the login screen, select Sugar from the session options before logging in.',
+        image: 'assets/TryNowImages/debian-step4.webp',
+      },
+      {
+        step: 5,
+        title: 'Enjoy Sugar',
+        description:
+          'After rebooting, your Debian system should boot into the Sugar desktop environment. You can now explore and use Sugar activities!',
+        image: 'assets/TryNowImages/step7.webp',
+      },
+    ],
+  },
+  {
+    heading: 'Steps to install Sugar using Ubuntu',
+    StepData: [
+      {
+        step: 1,
+        title: 'Download Ubuntu for Raspberry Pi',
+        description:
+          'Download and Install the Ubuntu for Raspberry Pi from the official Ubuntu website.',
+        links: [
+          {
+            text: 'website',
+            url: 'https://ubuntu.com/download/raspberry-pi',
+          },
+        ],
+        image: 'assets/TryNowImages/ubuntu-step1.webp',
+      },
+      {
+        step: 2,
+        title: 'Install Sugar on Ubuntu',
+        description:
+          'Open a terminal and run the following command to install Sugar:',
+        commands: 'sudo apt update; sudo apt install sucrose',
+        image: 'assets/TryNowImages/raspberry-install.webp',
+      },
+      {
+        step: 3,
+        title: 'Reboot Ubuntu',
+        description: 'Reboot your Ubuntu system to apply the changes',
+        image: 'assets/TryNowImages/raspberry-reboot.webp',
+      },
+      {
+        step: 4,
+        title: 'Login with Sugar',
+        description:
+          'At the login screen, select Sugar from the session options before logging in.',
+        image: 'assets/TryNowImages/ubuntu-step4.webp',
+      },
+      {
+        step: 5,
+        title: 'Enjoy Sugar',
+        description:
+          'After rebooting, your Ubuntu system should boot into the Sugar desktop environment. You can now explore and use Sugar activities!',
+        image: 'assets/TryNowImages/step7.webp',
       },
     ],
   },

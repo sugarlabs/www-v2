@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import logo from '/assets/Icons/logo.svg';
 import NavDropdown from '@/sections/NavDropdown';
@@ -7,6 +7,7 @@ import { navigationData } from '@/constants/Header';
 import DarkModeToggle from '@/components/shared/DarkModeToggle';
 
 const Header: React.FC = () => {
+  const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -16,6 +17,19 @@ const Header: React.FC = () => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Handle window resize to close mobile menu on larger screens
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsMobileMenuOpen(false);
+        setActiveDropdown(null);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Handle body scroll lock when mobile menu is open
@@ -120,17 +134,23 @@ const Header: React.FC = () => {
               )}
 
               {/* Regular links */}
-              {navigationData.links.map((link) => (
-                <Link
-                  key={link.label}
-                  to={link.path}
-                  className="px-2 lg:px-2 py-2 text-gray-700 dark:text-gray-200 hover:text-blue-600 font-medium rounded-md
-                            transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm lg:text-sm whitespace-nowrap"
-                  onClick={handleNavigation}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navigationData.links.map((link) => {
+                const isActive =
+                  location.pathname === link.path ||
+                  location.pathname.startsWith(link.path + '/');
+                return (
+                  <Link
+                    key={link.label}
+                    to={link.path}
+                    className={`px-2 lg:px-2 py-2 font-medium rounded-md
+                              transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm lg:text-sm whitespace-nowrap
+                              ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-200 hover:text-blue-600'}`}
+                    onClick={handleNavigation}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
 
               <div className="flex items-center gap-3">
                 <DarkModeToggle />
@@ -160,7 +180,7 @@ const Header: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/30 md:hidden z-40"
+            className="fixed inset-0 bg-black/30 lg:hidden z-40"
             onClick={() => setIsMobileMenuOpen(false)}
           />
         )}
@@ -195,8 +215,7 @@ const MobileNavDrawer: React.FC<{
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: '100%' }}
           transition={{ type: 'tween', duration: 0.3 }}
-          className="fixed md:hidden top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white dark:bg-gray-900 shadow-xl z-40
-                    flex flex-col h-full"
+          className="fixed lg:hidden top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white dark:bg-gray-900 shadow-xl z-40 flex flex-col h-full"
         >
           <div className="flex flex-col h-full">
             {/* Space to avoid overlay with main header */}
@@ -245,17 +264,25 @@ const MobileNavDrawer: React.FC<{
                             className="overflow-hidden"
                           >
                             <div className="pl-4 space-y-1 pb-2">
-                              {dropdown.items.map((item) => (
-                                <Link
-                                  key={item.path}
-                                  to={item.path}
-                                  onClick={onClose}
-                                  className="flex items-center px-4 py-2 text-sm text-gray-600 dark:text-gray-300
-                                      rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600"
-                                >
-                                  {item.label}
-                                </Link>
-                              ))}
+                              {dropdown.items.map((item) => {
+                                const isItemActive =
+                                  window.location.pathname === item.path ||
+                                  window.location.pathname.startsWith(
+                                    item.path + '/',
+                                  );
+                                return (
+                                  <Link
+                                    key={item.path}
+                                    to={item.path}
+                                    onClick={onClose}
+                                    className={`flex items-center px-4 py-2 text-sm rounded-lg
+                                        hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600
+                                        ${isItemActive ? 'text-blue-600 dark:text-blue-400 bg-gray-50 dark:bg-gray-800' : 'text-gray-600 dark:text-gray-300'}`}
+                                  >
+                                    {item.label}
+                                  </Link>
+                                );
+                              })}
                             </div>
                           </motion.div>
                         )}
@@ -265,17 +292,23 @@ const MobileNavDrawer: React.FC<{
                 )}
 
                 {/* Regular links */}
-                {navigationData.links.map((link) => (
-                  <Link
-                    key={link.label}
-                    to={link.path}
-                    onClick={onClose}
-                    className="block px-4 py-2 text-gray-700 dark:text-gray-200 font-medium rounded-lg
-                            hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                {navigationData.links.map((link) => {
+                  const isActive =
+                    window.location.pathname === link.path ||
+                    window.location.pathname.startsWith(link.path + '/');
+                  return (
+                    <Link
+                      key={link.label}
+                      to={link.path}
+                      onClick={onClose}
+                      className={`block px-4 py-2 font-medium rounded-lg
+                              hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600
+                              ${isActive ? 'text-blue-600 dark:text-blue-400 bg-gray-50 dark:bg-gray-800' : 'text-gray-700 dark:text-gray-200'}`}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
               </div>
               <div className="px-4 py-2">
                 <DarkModeToggle />

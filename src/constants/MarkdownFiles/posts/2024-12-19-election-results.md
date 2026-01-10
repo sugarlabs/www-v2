@@ -4,8 +4,7 @@ excerpt: "The election results for the Sugar Labs Board of Directors have been a
 category: "COMMUNITY NEWS"
 date: "2024-12-19"
 slug: "board-election-results-2025-26"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "elections,governance,board,community,leadership,voting"
 ---
 <!-- markdownlint-disable -->

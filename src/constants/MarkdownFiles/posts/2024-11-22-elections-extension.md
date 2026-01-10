@@ -4,8 +4,7 @@ excerpt: "Sugar Labs has extended the deadline for board of directors election p
 category: "COMMUNITY NEWS"
 date: "2024-11-22"
 slug: "elections-extension-november-2024"
-author: "Devin Ulibarri"
-description: "Executive Director"
+author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "elections,governance,board,voting,deadline,community,membership"
 ---
 <!-- markdownlint-disable -->
