@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { ComponentPropsWithoutRef } from 'react';
+import { ComponentPropsWithoutRef, useState } from 'react';
 
 interface MarqueeProps extends ComponentPropsWithoutRef<'div'> {
   /**
@@ -41,9 +41,18 @@ export function Marquee({
   repeat = 4,
   ...props
 }: MarqueeProps) {
+  const [isPaused, setIsPaused] = useState(false)
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === 'touch') {
+      setIsPaused(p => !p)
+    }
+  }
+
   return (
     <div
       {...props}
+      onPointerDown={handlePointerDown}
       className={cn(
         'group flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]',
         {
@@ -58,12 +67,16 @@ export function Marquee({
         .map((_, i) => (
           <div
             key={i}
-            className={cn('flex shrink-0 justify-around [gap:var(--gap)]', {
-              'animate-marquee flex-row': !vertical,
-              'animate-marquee-vertical flex-col': vertical,
-              'group-hover:[animation-play-state:paused]': pauseOnHover,
-              '[animation-direction:reverse]': reverse,
-            })}
+            className={cn(
+              'flex shrink-0 justify-around [gap:var(--gap)]',
+              {
+                'animate-marquee flex-row': !vertical,
+                'animate-marquee-vertical flex-col': vertical,
+                'group-hover:[animation-play-state:paused]': pauseOnHover,
+                '[animation-direction:reverse]': reverse,
+                '[animation-play-state:paused]': isPaused,
+              }
+            )}
           >
             {children}
           </div>
