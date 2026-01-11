@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { stats, statisticsData } from '@/constants/Stats.ts';
+import { statisticsData } from '@/constants/Stats.ts';
 import {
   headerReveal,
   numberCounter,
@@ -103,6 +103,7 @@ const Stats = () => {
         </motion.div>
       </div>
 
+      {/* Main Statistic Card - Full width at top */}
       <motion.div
         className="mb-8 sm:mb-12 md:mb-16"
         variants={container}
@@ -117,14 +118,13 @@ const Stats = () => {
         >
           <div className="w-full lg:w-1/2 p-5 sm:p-8 lg:p-12">
             <h3 className="text-gray-700 dark:text-gray-200 text-xl sm:text-2xl font-medium mb-3 sm:mb-4 font-AnonymousPro">
-              Kids whose lives have been enriched by using the Sugar Learning
-              Platform.
+              {statisticsData[0].title}
             </h3>
             <motion.div
               className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-8 bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent font-Caveat"
               variants={numberCounter}
             >
-              3,000,000+
+              {statisticsData[0].value}
             </motion.div>
             <div className="w-24 sm:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-green-600 to-green-400 rounded-full"></div>
           </div>
@@ -134,8 +134,8 @@ const Stats = () => {
             variants={imageReveal}
           >
             <img
-              src={stats.kidlaptop}
-              alt="Student with laptop"
+              src={statisticsData[0].imageSrc}
+              alt={statisticsData[0].imageAlt}
               className="w-full h-full object-cover object-center"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-transparent"></div>
