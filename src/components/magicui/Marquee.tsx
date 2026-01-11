@@ -41,13 +41,13 @@ export function Marquee({
   repeat = 4,
   ...props
 }: MarqueeProps) {
-  const [isPaused, setIsPaused] = useState(false)
+  const [isPaused, setIsPaused] = useState(false);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     if (e.pointerType === 'touch') {
-      setIsPaused(p => !p)
+      setIsPaused((p) => !p);
     }
-  }
+  };
 
   return (
     <div
@@ -67,16 +67,13 @@ export function Marquee({
         .map((_, i) => (
           <div
             key={i}
-            className={cn(
-              'flex shrink-0 justify-around [gap:var(--gap)]',
-              {
-                'animate-marquee flex-row': !vertical,
-                'animate-marquee-vertical flex-col': vertical,
-                'group-hover:[animation-play-state:paused]': pauseOnHover,
-                '[animation-direction:reverse]': reverse,
-                '[animation-play-state:paused]': isPaused,
-              }
-            )}
+            className={cn('flex shrink-0 justify-around [gap:var(--gap)]', {
+              'animate-marquee flex-row': !vertical,
+              'animate-marquee-vertical flex-col': vertical,
+              'group-hover:[animation-play-state:paused]': pauseOnHover,
+              '[animation-direction:reverse]': reverse,
+              '[animation-play-state:paused]': isPaused,
+            })}
           >
             {children}
           </div>
