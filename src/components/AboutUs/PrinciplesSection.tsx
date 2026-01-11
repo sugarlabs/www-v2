@@ -34,6 +34,7 @@ const PrinciplesSection = () => {
           />
         </div>
 
+        {/* Featured section */}
         <div className="flex flex-col lg:flex-row justify-between items-center gap-16 mb-20">
           <motion.div
             className="w-full lg:w-1/2"
@@ -56,13 +57,16 @@ const PrinciplesSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="rounded-lg overflow-hidden shadow-lg relative">
-              <img
+            {/* Featured image + gradient with hover zoom */}
+            <div className="rounded-lg overflow-hidden shadow-lg relative cursor-pointer">
+              <motion.img
                 src={principlesContent.featuredImage}
                 alt="Our Principles"
                 className="w-full h-[350px] object-cover"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-80"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-80 pointer-events-none"></div>
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                 <h3 className="text-xl font-semibold">
                   Our Guiding Principles
@@ -88,10 +92,13 @@ const PrinciplesSection = () => {
             >
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden h-full flex flex-col border border-slate-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px]">
                 <div className="h-48 overflow-hidden relative">
-                  <img
+                  {/* Zoom only the image, parent handles clipping */}
+                  <motion.img
                     src={principle.image}
                     alt={principle.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover cursor-pointer"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
                   />
                 </div>
 
