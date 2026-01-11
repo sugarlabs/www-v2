@@ -65,10 +65,10 @@ const Header: React.FC = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
           isScrolled
             ? 'backdrop-blur-md bg-white/90 dark:bg-gray-900/80 shadow-lg'
-            : 'bg-white dark:bg-gray-900'
+            : 'bg-white/0 dark:bg-gray-900/0'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -143,7 +143,7 @@ const Header: React.FC = () => {
                     key={link.label}
                     to={link.path}
                     className={`px-2 lg:px-2 py-2 font-medium rounded-md
-                              transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm lg:text-sm whitespace-nowrap
+                              transition-colors duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm lg:text-sm whitespace-nowrap
                               ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-200 hover:text-blue-600'}`}
                     onClick={handleNavigation}
                   >
@@ -233,7 +233,7 @@ const MobileNavDrawer: React.FC<{
                           setActiveDropdown(activeDropdown === key ? null : key)
                         }
                         className="flex items-center justify-between w-full text-left px-2 py-2
-                              text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                              text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
                         aria-expanded={activeDropdown === key}
                       >
                         <span>{dropdown.label}</span>
@@ -276,7 +276,7 @@ const MobileNavDrawer: React.FC<{
                                     to={item.path}
                                     onClick={onClose}
                                     className={`flex items-center px-4 py-2 text-sm rounded-lg
-                                        hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600
+                                        hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600 transition-colors duration-200
                                         ${isItemActive ? 'text-blue-600 dark:text-blue-400 bg-gray-50 dark:bg-gray-800' : 'text-gray-600 dark:text-gray-300'}`}
                                   >
                                     {item.label}
