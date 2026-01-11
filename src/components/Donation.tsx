@@ -150,10 +150,10 @@ const Donation: React.FC = () => {
               action="https://buttondown.com/api/emails/embed-subscribe/sugarlabs"
               method="post"
               onSubmit={() => setTimeout(() => setEmail(''), 500)}
-              className="flex"
+              className="flex max-w-full"
             >
               <input
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-full focus:outline-none bg-white dark:bg-gray-800 text-black dark:text-white"
+                className="flex-1 min-w-0 px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-l-full focus:outline-none bg-white dark:bg-gray-800 text-black dark:text-white"
                 placeholder="Enter your email"
                 type="email"
                 name="email"
@@ -163,7 +163,7 @@ const Donation: React.FC = () => {
               />
               <input value="1" type="hidden" name="embed" />
               <motion.button
-                className="px-6 py-2 bg-red-500 text-white font-bold rounded-r-full shadow-lg hover:bg-red-600 cursor-pointer transition duration-300"
+                className="flex-shrink-0 px-3 sm:px-6 py-2 text-sm sm:text-base bg-red-500 text-white font-bold rounded-r-full shadow-lg hover:bg-red-600 cursor-pointer transition duration-300"
                 variants={buttonAnimation}
                 whileHover="whileHover"
                 whileTap="whileTap"
