@@ -89,7 +89,7 @@ export function TryMore() {
           rel="noopener noreferrer"
         >
           <motion.button
-            className="mt-6 px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition"
+            className="mt-6 px-6 py-3 cursor-pointer bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition"
             variants={bounce}
             custom={4}
             whileHover={{
