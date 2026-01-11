@@ -9,6 +9,7 @@
   --toast-text: #e5e5e5;
   --toast-border: #a1a1aa;
 }
+
 @font-face {
   font-family: 'Caveat';
   src: url('/fonts/Caveat-Regular.ttf');
@@ -17,22 +18,27 @@
 @plugin 'tailwindcss-animate';
 
 @custom-variant dark (&:is(.dark *));
+
 @font-face {
   font-family: 'Roboto';
   src: url('/fonts/Roboto-Regular.ttf');
 }
+
 @font-face {
   font-family: 'Pacifico';
   src: url('/fonts/Pacifico-Regular.ttf');
 }
+
 @font-face {
   font-family: 'AnonymousPro';
   src: url('/fonts/AnonymousPro-Regular.ttf');
 }
+
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/Inter_28pt-Regular.ttf');
 }
+
 @font-face {
   font-family: 'Oswald';
   src: url('/fonts/Oswald-Regular.ttf');
@@ -164,6 +170,7 @@
     from {
       transform: translateX(0);
     }
+
     to {
       transform: translateX(calc(-100% - var(--gap)));
     }
@@ -173,6 +180,7 @@
     from {
       transform: translateY(0);
     }
+
     to {
       transform: translateY(calc(-100% - var(--gap)));
     }
@@ -183,8 +191,9 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-500;
   }
 }
 
@@ -225,21 +234,29 @@
    Keep identical appearance in light and dark modes.
 */
 .commands-scroll::-webkit-scrollbar {
-  height: 10px; /* horizontal scrollbar height only */
+  height: 10px;
+  /* horizontal scrollbar height only */
 }
+
 .commands-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .commands-scroll::-webkit-scrollbar-thumb {
   background-color: rgba(148, 163, 184, 0.4);
   border-radius: 6px;
 }
+
 .commands-scroll::-webkit-scrollbar-button {
-  display: none; /* remove arrow buttons on WebKit browsers */
+  display: none;
+  /* remove arrow buttons on WebKit browsers */
 }
+
 .commands-scroll::-webkit-scrollbar-corner {
-  background: transparent; /* remove corner square */
+  background: transparent;
+  /* remove corner square */
 }
+
 .commands-scroll {
   scrollbar-width: thin;
   scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
@@ -301,6 +318,7 @@ html.dark body::-webkit-scrollbar-thumb {
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(100%);
   }
