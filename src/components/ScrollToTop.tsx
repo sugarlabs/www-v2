@@ -10,24 +10,36 @@ export default function ScrollToTop() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  if (!visible) return null;
 
   return (
     <button
       aria-label="Scroll to top"
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       style={{ zIndex: 9999 }}
-      className="
-        fixed right-5 bottom-6
-        w-12 h-12 sm:w-14 sm:h-14 rounded-lg
-        bg-emerald-500 text-white border-2 border-emerald-600
-        dark:bg-slate-800 dark:text-white dark:border-transparent
-        shadow-xl shadow-emerald-300/40 dark:shadow-black/30
-        cursor-pointer flex items-center justify-center
-        opacity-100 hover:opacity-100 hover:-translate-y-[3px] hover:scale-105
-        transform transition-transform duration-200 ease-in-out
-        focus:outline-none focus:ring-2 focus:ring-emerald-300/60 dark:focus:ring-blue-300/30 focus:ring-offset-2
-      "
+className={`
+    fixed right-6 bottom-7
+    w-14 h-14 rounded-full
+    bg-gradient-to-br from-emerald-400 to-emerald-600
+    dark:bg-none dark:bg-gray-800
+    text-white
+
+    border-2 border-emerald-300/90
+    dark:border-white/10
+
+    shadow-[0_10px_25px_rgba(16,185,129,0.55)]
+    hover:shadow-[0_18px_40px_rgba(16,185,129,0.75)]
+    dark:shadow-[0_10px_25px_rgba(0,0,0,0.8)]
+
+    cursor-pointer flex items-center justify-center
+    transition-all duration-500 ease
+    hover:-translate-y-4 hover:scale-110 active:scale-90
+    focus:outline-none focus:ring-4 focus:ring-emerald-400/40
+
+    ${visible
+      ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+      : "opacity-0 translate-y-3 scale-90 pointer-events-none"
+    }
+  `}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
