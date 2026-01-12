@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import toast from 'react-hot-toast';
 interface ShareModalProps {
   open: boolean;
@@ -131,6 +131,17 @@ const ShareModal: React.FC<ShareModalProps> = ({
   title,
   excerpt,
 }) => {
+  useEffect(() => {
+    const handleEscKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && open) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscKey);
+    return () => window.removeEventListener('keydown', handleEscKey);
+  }, [open, onClose]);
+
   if (!open) return null;
 
   const handleWebShare = () => {
