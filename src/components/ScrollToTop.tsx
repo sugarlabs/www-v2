@@ -18,7 +18,7 @@ export default function ScrollToTop() {
       className={`
     fixed right-6 bottom-7
     w-14 h-14 rounded-full
-    bg-gradient-to-br from-emerald-400 to-emerald-600
+    bg-linear-to-br from-emerald-400 to-emerald-600
     dark:bg-none dark:bg-gray-800
     text-white
 
