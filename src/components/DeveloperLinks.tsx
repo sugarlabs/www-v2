@@ -68,7 +68,7 @@ const DeveloperLinks = () => {
               <div
                 className="
                     flex-shrink-0 w-10 h-10 rounded-full
-                    bg-red-100 dark:bg-[#FFFFFF]
+                    bg-red-100 dark:bg-gray-600
                     flex items-center justify-center
                     group-hover:bg-red-200 dark:group-hover:bg-orange-200 transition-colors
                   "
@@ -96,7 +96,7 @@ const DeveloperLinks = () => {
             <div
               className="
                   relative z-10 flex items-center justify-center w-8 h-8 rounded-full
-                  bg-red-100 dark:bg-[#FFFFFF]
+                  bg-red-100 dark:bg-gray-600
                   group-hover:bg-red-200 dark:group-hover:bg-orange-200 transition-colors
                   ml-4 flex-shrink-0
                 "
