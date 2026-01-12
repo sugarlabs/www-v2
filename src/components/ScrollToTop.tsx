@@ -10,13 +10,12 @@ export default function ScrollToTop() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-
   return (
     <button
       aria-label="Scroll to top"
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       style={{ zIndex: 9999 }}
-className={`
+      className={`
     fixed right-6 bottom-7
     w-14 h-14 rounded-full
     bg-gradient-to-br from-emerald-400 to-emerald-600
@@ -35,9 +34,10 @@ className={`
     hover:-translate-y-4 hover:scale-110 active:scale-90
     focus:outline-none focus:ring-4 focus:ring-emerald-400/40
 
-    ${visible
-      ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
-      : "opacity-0 translate-y-3 scale-90 pointer-events-none"
+    ${
+      visible
+        ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
+        : 'opacity-0 translate-y-3 scale-90 pointer-events-none'
     }
   `}
     >
