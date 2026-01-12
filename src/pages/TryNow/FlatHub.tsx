@@ -40,7 +40,7 @@ const FlatHubPage = () => {
         <img
           src="assets/FloatingSVGs/flathub-2.svg"
           alt="Flathub SVG 2"
-          className="w-[clamp(40px,9vw,16px)]"
+          className="w-10 sm:w-12 md:w-16"
         />
       </motion.div>
 
