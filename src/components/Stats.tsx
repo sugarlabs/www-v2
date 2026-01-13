@@ -270,7 +270,10 @@ const Stats = () => {
                   maxHeight: isActive || isHovered ? 500 : 80, // 500 is big enough for long text
                   paddingTop: isActive || isHovered ? 16 : 8,
                   paddingBottom: isActive || isHovered ? 16 : 8,
-                  boxShadow: isActive || isHovered ? '0 12px 25px rgba(0,0,0,0.18)' : '0 0px 0px rgba(0,0,0,0)',
+                  boxShadow:
+                    isActive || isHovered
+                      ? '0 12px 25px rgba(0,0,0,0.18)'
+                      : '0 0px 0px rgba(0,0,0,0)',
                 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                 onClick={(e) => {
@@ -293,8 +296,6 @@ const Stats = () => {
                   e.stopPropagation();
                 }}
               >
-
-
                 <motion.div
                   className="flex flex-col items-center justify-center"
                   transition={{ type: 'spring', stiffness: 400, damping: 10 }}
@@ -306,7 +307,7 @@ const Stats = () => {
                   </span>
 
                   <div className="w-full overflow-hidden">
-                    <AnimatePresence mode='sync'>
+                    <AnimatePresence mode="sync">
                       {!showFullText ? (
                         <motion.span
                           key={`truncated-${index}`}
@@ -315,7 +316,6 @@ const Stats = () => {
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                         >
-
                           {stat.title.split('.')[0].substring(0, 12)}
                           {stat.title.split('.')[0].length > 12 ? '...' : ''}
                         </motion.span>
@@ -327,15 +327,12 @@ const Stats = () => {
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                         >
-
                           {stat.title}
                         </motion.span>
                       )}
                     </AnimatePresence>
-
                   </div>
                 </motion.div>
-
               </motion.div>
             );
           })}
