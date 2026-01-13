@@ -263,19 +263,18 @@ const Stats = () => {
             return (
               <motion.div
                 key={index}
-                className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative cursor-pointer overflow-hidden`}
-                whileHover={
-                  !isTouchDevice
-                    ? {
-                        scale: 1.05,
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                      }
-                    : undefined
-                }
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                className={`px-2 sm:px-3 md:px-4 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-start relative cursor-pointer overflow-hidden`}
+                style={{ transformOrigin: 'top center' }}
+                initial={{ maxHeight: 80, paddingTop: 8, paddingBottom: 8 }}
+                animate={{
+                  maxHeight: isActive || isHovered ? 500 : 80, // 500 is big enough for long text
+                  paddingTop: isActive || isHovered ? 16 : 8,
+                  paddingBottom: isActive || isHovered ? 16 : 8,
+                  boxShadow: isActive || isHovered ? '0 12px 25px rgba(0,0,0,0.18)' : '0 0px 0px rgba(0,0,0,0)',
+                }}
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                 onClick={(e) => {
                   e.stopPropagation();
-                  // On mobile, toggle active state; on desktop, set active and clear hover
                   if (isActive) {
                     setActiveCardIndex(null);
                     setHoveredCardIndex(null);
@@ -285,59 +284,58 @@ const Stats = () => {
                   }
                 }}
                 onHoverStart={() => {
-                  if (!isTouchDevice) {
-                    setHoveredCardIndex(index);
-                  }
+                  if (!isTouchDevice && !isActive) setHoveredCardIndex(index);
                 }}
                 onHoverEnd={() => {
-                  if (!isTouchDevice) {
-                    setHoveredCardIndex(null);
-                  }
+                  if (!isTouchDevice && !isActive) setHoveredCardIndex(null);
                 }}
                 onTouchStart={(e) => {
-                  // Prevent hover from triggering on touch devices
                   e.stopPropagation();
                 }}
-                layout
               >
-                <span
-                  className={`font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.gradient} text-base sm:text-xl md:text-2xl`}
-                >
-                  {stat.value}
-                </span>
-                {/* Text container with smooth animations */}
+
+
                 <motion.div
-                  className="w-full flex flex-col items-center min-h-[1.5rem]"
-                  layout
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  className="flex flex-col items-center justify-center"
+                  transition={{ type: 'spring', stiffness: 400, damping: 10 }}
                 >
-                  <AnimatePresence mode="wait">
-                    {!showFullText ? (
-                      <motion.span
-                        key="truncated"
-                        className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                      >
-                        {stat.title.split('.')[0].substring(0, 12)}
-                        {stat.title.split('.')[0].length > 12 ? '...' : ''}
-                      </motion.span>
-                    ) : (
-                      <motion.span
-                        key="full"
-                        className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 whitespace-normal px-1"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                      >
-                        {stat.title}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
+                  <span
+                    className={`font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.gradient} text-base sm:text-xl md:text-2xl`}
+                  >
+                    {stat.value}
+                  </span>
+
+                  <div className="w-full overflow-hidden">
+                    <AnimatePresence mode='sync'>
+                      {!showFullText ? (
+                        <motion.span
+                          key={`truncated-${index}`}
+                          className="flex items-center justify-center text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm px-1 text-center"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+
+                          {stat.title.split('.')[0].substring(0, 12)}
+                          {stat.title.split('.')[0].length > 12 ? '...' : ''}
+                        </motion.span>
+                      ) : (
+                        <motion.span
+                          key={`full-${index}`}
+                          className="flex items-center justify-center text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm px-1 text-center"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+
+                          {stat.title}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+
+                  </div>
                 </motion.div>
+
               </motion.div>
             );
           })}
