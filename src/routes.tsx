@@ -54,7 +54,7 @@ const router = createBrowserRouter([
   { path: '/raspberry', element: <RaspberryPiPage /> },
   { path: '/musicblocks', element: <MusicBlocksPage /> },
   { path: '/flathub', element: <FlatHubPage /> },
-  { path: '/contact-us/:matrix', element: <Matrix /> },
+  { path: '/contact-us/matrix', element: <Matrix /> },
   { path: '/profiles', element: <Contributors /> },
   { path: '*', element: <NotFoundPage /> },
 ]);
