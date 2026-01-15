@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import MarkdownRenderer from '@/utils/MarkdownRenderer';
+import MorePageSkeleton from '@/components/skeletons/MorePageSkeleton';
 
 const MorePage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -115,9 +116,11 @@ const MorePage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
-      </div>
+      <>
+        <Header />
+        <MorePageSkeleton />
+        <Footer />
+      </>
     );
   }
 
