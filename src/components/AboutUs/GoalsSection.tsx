@@ -1,15 +1,19 @@
 import { motion } from 'framer-motion';
 import { goals, sectionContent, animations } from '@/constants/aboutUs/goals';
 import { FC } from 'react';
+import ResponsiveCarousel from './ResponsiveCarousel';
 
 const GoalsSection: FC = () => {
   return (
-    <section id="goals" className="w-full py-24 bg-white dark:bg-gray-900">
+    <section
+      id="goals"
+      className="w-full py-12 md:py-24 bg-white dark:bg-gray-900"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 md:mb-16">
           <motion.h2
-            className="text-3xl font-semibold text-slate-800 dark:text-slate-200 sm:text-4xl mb-4 tracking-tight"
+            className="text-2xl md:text-3xl font-semibold text-slate-800 dark:text-slate-200 sm:text-3xl md:sm:text-4xl mb-4 tracking-tight"
             initial={animations.flowContainer.initial}
             whileInView={animations.flowContainer.whileInView}
             viewport={{ once: true }}
@@ -24,15 +28,15 @@ const GoalsSection: FC = () => {
           </motion.h2>
 
           <motion.div
-            className="h-0.5 w-24 bg-gradient-to-r from-blue-600 to-rose-400 mx-auto mb-8"
+            className="h-0.5 w-16 md:w-24 bg-gradient-to-r from-blue-600 to-rose-400 mx-auto mb-6 md:mb-8"
             initial={{ width: 0 }}
-            whileInView={{ width: 96 }}
+            whileInView={{ width: '4rem' }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           />
 
           <motion.p
-            className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto"
+            className="text-sm sm:text-base md:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto"
             initial={animations.flowContainer.initial}
             whileInView={animations.flowContainer.whileInView}
             viewport={{ once: true }}
@@ -42,8 +46,8 @@ const GoalsSection: FC = () => {
           </motion.p>
         </div>
 
-        {/* Modular Goals Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Desktop Goals Grid */}
+        <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {goals.map((goal, i) => (
             <motion.div
               key={i}
@@ -92,14 +96,71 @@ const GoalsSection: FC = () => {
           ))}
         </div>
 
+        {/* Mobile Carousel */}
+        <div className="md:hidden">
+          <ResponsiveCarousel autoScrollInterval={4000}>
+            {goals.map((goal, i) => (
+              <div key={i} className="px-2 py-4">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-slate-100 dark:border-gray-700 group relative overflow-hidden h-full">
+                  {/* Animated gradient border */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-emerald-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                  {/* Decorative element - colored top border */}
+                  <div
+                    className={`absolute top-0 left-0 right-0 h-1 
+                      ${
+                        i % 3 === 0
+                          ? 'bg-gradient-to-r from-blue-600 to-blue-400'
+                          : i % 3 === 1
+                            ? 'bg-gradient-to-r from-emerald-500 to-emerald-400'
+                            : 'bg-gradient-to-r from-blue-600 via-emerald-500 to-emerald-400'
+                      }`}
+                  />
+
+                  {/* Goal number indicator */}
+                  <div className="flex items-center mb-4 relative z-10">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-emerald-500 flex items-center justify-center text-white font-semibold text-base shadow-md">
+                      {i + 1}
+                    </div>
+                    <div className="h-px flex-grow bg-gradient-to-r from-blue-600/20 to-emerald-500/20 ml-4"></div>
+                  </div>
+
+                  {/* Goal content */}
+                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-lg mb-3 relative z-10">
+                    {goal.title}
+                  </h4>
+                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed relative z-10">
+                    {goal.description}
+                  </p>
+
+                  {/* Category tag with gradient */}
+                  {goal.category && (
+                    <div className="mt-4 inline-block px-4 py-1.5 bg-gradient-to-r from-blue-50 to-emerald-50 dark:from-gray-800 dark:to-gray-700 text-xs font-medium text-blue-700 dark:text-emerald-300 rounded-full border border-blue-200 dark:border-emerald-900/50 relative z-10">
+                      {goal.category}
+                    </div>
+                  )}
+
+                  {/* Floating decorative elements */}
+                  <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-gradient-to-br from-blue-600/5 to-emerald-500/5 rounded-full blur-xl"></div>
+                  <div className="absolute -top-4 -left-4 w-16 h-16 bg-gradient-to-br from-blue-600/5 to-emerald-500/5 rounded-full blur-xl"></div>
+                </div>
+              </div>
+            ))}
+          </ResponsiveCarousel>
+        </div>
+
         {/* Call to action */}
         <motion.div
-          className="mt-16 text-center"
+          className="mt-12 md:mt-16 text-center"
           initial={animations.flowContainer.initial}
           whileInView={animations.flowContainer.whileInView}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.5 }}
-        ></motion.div>
+        >
+          <div className="text-sm text-slate-500 dark:text-slate-400">
+            Scroll horizontally or use arrows to explore all goals
+          </div>
+        </motion.div>
       </div>
     </section>
   );
