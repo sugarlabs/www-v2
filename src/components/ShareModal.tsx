@@ -151,8 +151,17 @@ const ShareModal: React.FC<ShareModalProps> = ({
     }
   };
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-transparent transition-all backdrop-blur-sm">
+    <div
+      onClick={handleBackdropClick}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-transparent transition-all backdrop-blur-sm"
+    >
       <div className="relative w-full max-w-sm mx-auto bg-gradient-to-br from-blue-50 via-white to-green-50 rounded-2xl shadow-2xl p-7 animate-fadeIn border border-blue-100">
         <button
           className="absolute top-4 right-4 text-gray-500 hover:text-blue-600 bg-white rounded-full shadow p-1 cursor-pointer transition-colors duration-200 border border-gray-200"
