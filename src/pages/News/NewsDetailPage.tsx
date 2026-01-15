@@ -7,6 +7,7 @@ import { getPostBySlug, Post } from '@/utils/posts-utils';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import MarkdownRenderer from '@/utils/MarkdownRenderer';
+import ArticleSkeleton from '@/components/skeletons/ArticlesSkeleton';
 
 const NewsDetailPage: React.FC = () => {
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -122,14 +123,7 @@ const NewsDetailPage: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen bg-white dark:bg-gray-900">
-          <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 dark:border-blue-400 mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-400">
-              Loading article...
-            </p>
-          </div>
-        </div>
+        <ArticleSkeleton />
         <Footer />
       </>
     );
