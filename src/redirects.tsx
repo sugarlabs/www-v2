@@ -5,6 +5,7 @@ export const redirectMap: Record<string, string> = {
   '/go/Sugar_Labs/Donate': '/donate',
   '/booting-soas': '/bootablesoas',
   '/community-news': '/news/community-news',
+  '/volunteering': '/volunteer',
 
   // Example redirects:
   // '/old-path-1': '/new-path-1',

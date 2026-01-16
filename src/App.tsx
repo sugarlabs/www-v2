@@ -4,6 +4,7 @@ import router from '@/routes';
 import ScrollToTop from './components/ScrollToTop';
 import BackToTop from './components/BackToTop';
 
+import { Toaster } from 'react-hot-toast';
 const App = () => {
   useEffect(() => {
     const unsubscribe = router.subscribe(() => {
@@ -12,7 +13,6 @@ const App = () => {
     const handleRedirect = () => {
       const redirectPath = sessionStorage.getItem('gh_redirect');
       if (redirectPath) {
-        console.log('Restoring route:', redirectPath);
         sessionStorage.removeItem('gh_redirect');
         setTimeout(() => {
           router.navigate(redirectPath);
@@ -26,6 +26,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
+      <Toaster position="top-right" />
       <ScrollToTop />
       <RouterProvider router={router} />
       <BackToTop />

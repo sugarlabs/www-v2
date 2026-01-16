@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
+import toast from 'react-hot-toast';
 interface ShareModalProps {
   open: boolean;
   onClose: () => void;
@@ -13,7 +13,20 @@ const shareOptions = [
     name: 'Copy Link',
     action: async (url: string) => {
       await navigator.clipboard.writeText(url);
-      alert('Link copied to clipboard!');
+      toast.success('Link copied to clipboard!', {
+        duration: 3000,
+        icon: null,
+        position: 'top-right',
+        style: {
+          background: 'var(--toast-bg, #ffffff)',
+          color: 'var(--toast-text, #000000)',
+          border: '1px solid var(--toast-border, #000000)',
+          fontWeight: '500',
+          padding: '16px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+        },
+      });
     },
     icon: (
       <svg
@@ -118,6 +131,17 @@ const ShareModal: React.FC<ShareModalProps> = ({
   title,
   excerpt,
 }) => {
+  useEffect(() => {
+    const handleEscKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && open) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscKey);
+    return () => window.removeEventListener('keydown', handleEscKey);
+  }, [open, onClose]);
+
   if (!open) return null;
 
   const handleWebShare = () => {

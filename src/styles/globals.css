@@ -1,3 +1,14 @@
+:root {
+  --toast-bg: #ffffff;
+  --toast-text: #000000;
+  --toast-border: #000000;
+}
+
+.dark {
+  --toast-bg: #3f3f46;
+  --toast-text: #e5e5e5;
+  --toast-border: #a1a1aa;
+}
 @font-face {
   font-family: 'Caveat';
   src: url('/fonts/Caveat-Regular.ttf');
@@ -232,4 +243,65 @@
 .commands-scroll {
   scrollbar-width: thin;
   scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
+}
+
+/*Global scrollbar styling to keep it consistent throughout*/
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a0a0a0 #f0f0f0;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #a0a0a0;
+  border-radius: 4px;
+}
+
+/* Dark mode */
+.dark * {
+  scrollbar-color: #555 #2d2d2d;
+}
+
+.dark *::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.dark *::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+/* Dark mode for main body scrollbar*/
+html.dark,
+html.dark body {
+  scrollbar-color: #555 #2d2d2d;
+}
+
+html.dark::-webkit-scrollbar-track,
+html.dark body::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+html.dark::-webkit-scrollbar-thumb,
+html.dark body::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+/*shimmer animation for skeleton*/
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }

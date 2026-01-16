@@ -32,7 +32,7 @@ const ReviewCard = ({
 
   return (
     <motion.div
-      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-lg border border-gray-200 dark:border-gray-700 mx-2 justify-between"
+      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-md border border-gray-200 dark:border-gray-700 m-2 justify-between"
       variants={testimonialCard}
       initial="hidden"
       whileInView="visible"
@@ -153,7 +153,7 @@ export function DeveloperTestimonials() {
 
       {/* Testimonials Section */}
       <motion.div
-        className="relative flex flex-col items-center justify-center w-full overflow-hidden mt-6"
+        className="relative flex flex-col items-center justify-center w-full overflow-hidden mt-6 mask-r-from-80% mask-l-from-80%"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
@@ -168,10 +168,6 @@ export function DeveloperTestimonials() {
             />
           ))}
         </Marquee>
-
-        {/* Gradient edges */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background"></div>
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background"></div>
       </motion.div>
     </div>
   );

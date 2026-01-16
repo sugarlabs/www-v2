@@ -18,7 +18,7 @@ const LogoCard = ({ logo, title, onClick, selected }: LogoCard) => {
       viewport={{ once: true, amount: 0.2 }}
       variants={logoCardAnimations.card}
       whileHover="hover"
-      animate={selected ? 'hover' : 'visible'}
+      animate="visible"
     >
       <motion.div
         className="w-24 h-24 bg-yellow-300 flex items-center justify-center rounded-full"

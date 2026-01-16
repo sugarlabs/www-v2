@@ -10,27 +10,35 @@ import {
   Grid,
   List,
   Search,
-  ChevronDown,
 } from 'lucide-react';
+import Pagination from '@/components/Pagination';
 
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import MarkdownRenderer from '@/utils/MarkdownRenderer';
 import { getAuthorBySlug, Author } from '@/utils/author-utils';
-import { getPostsByAuthor, Post } from '@/utils/posts-utils';
+import { getPostsByAuthor, PostMetaData } from '@/utils/posts-utils';
+import AuthorProfileSkeleton from '@/components/skeletons/AuthorProfileSkeleton';
+import {
+  AboutSectionSkeleton,
+  ArticlesSectionSkeleton,
+  ProfileStatsSkeleton,
+  CategoriesSkeleton,
+} from '@/components/skeletons/AuthorContentSkeleton';
 
 const AuthorPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
   const [author, setAuthor] = useState<Author | null>(null);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostMetaData[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostMetaData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // UI State
-  const [displayCount, setDisplayCount] = useState(6);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -98,16 +106,17 @@ const AuthorPage: React.FC = () => {
     });
 
     setFilteredPosts(filtered);
-    setDisplayCount(6); // Reset display count when filters change
+    setCurrentPage(1); // Reset page when filters change
   }, [posts, searchTerm, selectedCategory, sortBy]);
 
-  const handlePostClick = (post: Post) => {
+  const handlePostClick = (post: PostMetaData) => {
     const categoryPath = post.category.toLowerCase().replace(/\s+/g, '-');
     navigate(`/news/${categoryPath}/${post.slug}`);
   };
 
-  const handleShowMore = () => {
-    setDisplayCount((prev) => Math.min(prev + 6, filteredPosts.length));
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const getUniqueCategories = () => {
@@ -115,17 +124,35 @@ const AuthorPage: React.FC = () => {
     return ['All', ...categories.sort()];
   };
 
-  const visiblePosts = filteredPosts.slice(0, displayCount);
-  const hasMore = filteredPosts.length > displayCount;
+  const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
+  const visiblePosts = filteredPosts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   if (isLoading) {
     return (
       <>
         <Header />
-        <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen">
-          <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mb-4"></div>
-            <p className="text-gray-600">Loading author profile...</p>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+          <div className="container mx-auto px-4 py-8 max-w-7xl">
+            {/* Author Profile Skeleton */}
+            <AuthorProfileSkeleton />
+
+            {/* 2-Column Layout */}
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 lg:gap-8">
+              {/* Main Content - Left */}
+              <div className="xl:col-span-3 order-2 xl:order-1">
+                <AboutSectionSkeleton />
+                <ArticlesSectionSkeleton />
+              </div>
+
+              {/* Sidebar - Right */}
+              <div className="order-1 xl:order-2">
+                <ProfileStatsSkeleton />
+                <CategoriesSkeleton />
+              </div>
+            </div>
           </div>
         </div>
         <Footer />
@@ -435,24 +462,11 @@ const AuthorPage: React.FC = () => {
                       </AnimatePresence>
                     </motion.div>
 
-                    {/* Load More Button */}
-                    {hasMore && (
-                      <div className="text-center mt-8">
-                        <motion.button
-                          onClick={handleShowMore}
-                          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white 
-                          rounded-lg transition-colors font-medium flex items-center gap-2 mx-auto shadow-md dark:shadow-blue-500/20"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          Load More Articles
-                          <ChevronDown className="w-4 h-4" />
-                          <span className="text-xs bg-blue-500 dark:bg-blue-600 px-2 py-1 rounded-full">
-                            +{Math.min(6, filteredPosts.length - displayCount)}
-                          </span>
-                        </motion.button>
-                      </div>
-                    )}
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
                   </>
                 )}
               </div>

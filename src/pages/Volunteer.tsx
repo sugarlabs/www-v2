@@ -156,7 +156,7 @@ const Volunteer = () => {
                   ))}
                 </ul>
                 {role.extra && (
-                  <p className="text-gray-700 dark:text-gray-300 text-sm mt-3">
+                  <p className="text-gray-700 dark:text-gray-300 text-sm mt-3 break-words">
                     {role.extra}{' '}
                     {role.link && (
                       <a
@@ -197,7 +197,7 @@ const Volunteer = () => {
             <div className="w-full max-w-3xl aspect-video">
               <iframe
                 className="w-full h-full rounded-lg"
-                src="https://www.youtube.com/embed/W5ZLFBZkE34"
+                src="https://www.youtube.com/embed/W5ZLFBZkE34?rel=0"
                 title="YouTube Video"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

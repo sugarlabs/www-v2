@@ -7,6 +7,7 @@ import { getPostBySlug, Post } from '@/utils/posts-utils';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import MarkdownRenderer from '@/utils/MarkdownRenderer';
+import ArticleSkeleton from '@/components/skeletons/ArticlesSkeleton';
 
 const NewsDetailPage: React.FC = () => {
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -122,14 +123,7 @@ const NewsDetailPage: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen bg-white dark:bg-gray-900">
-          <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 dark:border-blue-400 mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-400">
-              Loading article...
-            </p>
-          </div>
-        </div>
+        <ArticleSkeleton />
         <Footer />
       </>
     );
@@ -361,33 +355,6 @@ const NewsDetailPage: React.FC = () => {
             </div>
           </div>
         )}
-
-        {/* Back to Top Button */}
-        <div className="fixed bottom-8 right-8 z-50">
-          <motion.button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-            aria-label="Back to top"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 15l7-7 7 7"
-              />
-            </svg>
-          </motion.button>
-        </div>
       </div>
 
       {/* Image Modal */}

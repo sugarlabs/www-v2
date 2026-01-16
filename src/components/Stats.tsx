@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { stats, statisticsData } from '@/constants/Stats.ts';
 import {
   headerReveal,
@@ -11,6 +11,49 @@ import {
 
 const Stats = () => {
   const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
+  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+  const [isTouchDevice] = useState(
+    () => 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+  );
+  const gridRef = useRef<HTMLDivElement>(null);
+  const prevIsMobileRef = useRef<boolean>(window.innerWidth < 1024);
+
+  // Reset component state when switching between mobile and desktop views
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 1024;
+      const prevIsMobile = prevIsMobileRef.current;
+
+      // Reset states when switching between mobile and desktop
+      if (isMobile !== prevIsMobile) {
+        setActiveCardIndex(null);
+        setHoveredCardIndex(null);
+        prevIsMobileRef.current = isMobile;
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Handle click outside to reset active state
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (gridRef.current && !gridRef.current.contains(event.target as Node)) {
+        setActiveCardIndex(null);
+        setHoveredCardIndex(null);
+      }
+    };
+
+    // Add event listeners for both mouse and touch
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
 
   return (
     <section className="max-w-7xl mx-auto py-10 sm:py-16 md:py-20 px-4 sm:px-6 bg-white dark:bg-gray-900">
@@ -131,11 +174,11 @@ const Stats = () => {
                 ></div>
               </motion.div>
               <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-2 sm:mb-3 font-AnonymousPro line-clamp-2 h-10 sm:h-12">
+                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro leading-relaxed">
                   {stat.title}
                 </h3>
                 <motion.div
-                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}
+                  className={`text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat whitespace-nowrap`}
                   variants={numberCounter}
                 >
                   {stat.value}
@@ -171,11 +214,11 @@ const Stats = () => {
                 ></div>
               </motion.div>
               <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-2 sm:mb-3 font-AnonymousPro line-clamp-2 h-10 sm:h-12">
+                <h3 className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg font-medium mb-3 font-AnonymousPro leading-relaxed">
                   {stat.title}
                 </h3>
                 <motion.div
-                  className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat`}
+                  className={`text-2xl sm:text-3xl md:text-4xl font-bold mt-2 mb-3 sm:mb-4 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent font-Caveat whitespace-nowrap`}
                   variants={numberCounter}
                 >
                   {stat.value}
@@ -207,40 +250,94 @@ const Stats = () => {
         </p>
 
         {/* Interactive Stats Summary - Grid Layout */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 max-w-6xl mx-auto px-2">
+        <div
+          ref={gridRef}
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 max-w-6xl mx-auto px-2"
+        >
           {statisticsData.map((stat, index) => {
             const isActive = activeCardIndex === index;
-            const showFullText = isActive;
+            // Only use hover on non-touch devices
+            const isHovered = !isTouchDevice && hoveredCardIndex === index;
+            const showFullText = isActive || isHovered;
 
             return (
               <motion.div
                 key={index}
-                className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative group cursor-pointer`}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                }}
+                className={`px-2 sm:px-3 md:px-4 py-2 sm:py-3 rounded-md sm:rounded-lg ${stat.bgColor} border ${stat.borderColor} flex flex-col items-center justify-center relative cursor-pointer overflow-hidden`}
+                whileHover={
+                  !isTouchDevice
+                    ? {
+                        scale: 1.05,
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                      }
+                    : undefined
+                }
                 transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                onClick={() => setActiveCardIndex(isActive ? null : index)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // On mobile, toggle active state; on desktop, set active and clear hover
+                  if (isActive) {
+                    setActiveCardIndex(null);
+                    setHoveredCardIndex(null);
+                  } else {
+                    setActiveCardIndex(index);
+                    setHoveredCardIndex(null);
+                  }
+                }}
+                onHoverStart={() => {
+                  if (!isTouchDevice) {
+                    setHoveredCardIndex(index);
+                  }
+                }}
+                onHoverEnd={() => {
+                  if (!isTouchDevice) {
+                    setHoveredCardIndex(null);
+                  }
+                }}
+                onTouchStart={(e) => {
+                  // Prevent hover from triggering on touch devices
+                  e.stopPropagation();
+                }}
+                layout
               >
                 <span
                   className={`font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.gradient} text-base sm:text-xl md:text-2xl`}
                 >
                   {stat.value}
                 </span>
-                {/* Truncated text - visible by default, hidden on hover (desktop) or when active (mobile) */}
-                <span
-                  className={`text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1 ${showFullText ? 'hidden' : ''} lg:block lg:group-hover:hidden`}
+                {/* Text container with smooth animations */}
+                <motion.div
+                  className="w-full flex flex-col items-center min-h-[1.5rem]"
+                  layout
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
                 >
-                  {stat.title.split('.')[0].substring(0, 12)}
-                  {stat.title.split('.')[0].length > 12 ? '...' : ''}
-                </span>
-                {/* Full text - visible on hover (desktop) or when active (mobile) */}
-                <span
-                  className={`text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 whitespace-normal px-1 ${showFullText ? 'block' : 'hidden'} lg:hidden lg:group-hover:block`}
-                >
-                  {stat.title}
-                </span>
+                  <AnimatePresence mode="wait">
+                    {!showFullText ? (
+                      <motion.span
+                        key="truncated"
+                        className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 line-clamp-1"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      >
+                        {stat.title.split('.')[0].substring(0, 12)}
+                        {stat.title.split('.')[0].length > 12 ? '...' : ''}
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="full"
+                        className="text-gray-700 dark:text-gray-300 text-2xs sm:text-xs md:text-sm text-center mt-0.5 sm:mt-1 whitespace-normal px-1"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      >
+                        {stat.title}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               </motion.div>
             );
           })}

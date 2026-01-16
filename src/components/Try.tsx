@@ -66,7 +66,7 @@ const Try: React.FC = () => {
       animate="visible"
       variants={fadeIn}
     >
-      <motion.main className="flex-grow bg-[#F6DEC9] dark:bg-gray-900/95 px-3 sm:px-4 md:px-8 lg:px-16 py-6 sm:py-8 md:py-12 lg:py-16">
+      <motion.main className="flex-grow bg-[#F6DEC9] dark:bg-gray-950 px-3 sm:px-4 md:px-8 lg:px-16 py-6 sm:py-8 md:py-12 lg:py-16">
         <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
           <motion.header
             className="space-y-3 sm:space-y-4 md:space-y-6"

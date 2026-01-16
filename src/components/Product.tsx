@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { products, ProductType } from '@/constants/ProductsData';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import '@/styles/Products.css';
 
 const Product = () => {
   return (

@@ -13,8 +13,6 @@ const NavigationLinks = () => {
   const foundSections = useRef<Record<string, boolean>>({});
 
   useEffect(() => {
-    console.log('Checking for all section elements...');
-
     navigationSections.forEach((section) => {
       const element = document.getElementById(section.id);
       foundSections.current[section.id] = !!element;
@@ -23,8 +21,6 @@ const NavigationLinks = () => {
         console.warn(
           `Section with ID "${section.id}" not found in the document!`,
         );
-      } else {
-        console.log(`Found section: ${section.id}`);
       }
     });
   }, []);
@@ -84,7 +80,6 @@ const NavigationLinks = () => {
       for (const altId of alternativeIds) {
         element = document.getElementById(altId);
         if (element) {
-          console.log(`Found roadmap with alternative ID: ${altId}`);
           break;
         }
       }
@@ -97,16 +92,12 @@ const NavigationLinks = () => {
               heading.closest('section') ||
               heading.closest('div') ||
               heading.parentElement;
-            console.log('Found roadmap section via heading text');
             break;
           }
         }
       }
 
       if (!element) {
-        console.log(
-          'Roadmap section not found - scrolling to bottom of the page',
-        );
         window.scrollTo({
           top: document.documentElement.scrollHeight,
           behavior: 'smooth',

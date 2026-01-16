@@ -1,100 +1,9 @@
 import React, { useState } from 'react';
-import { DirectorCardProps, SocialLinkProps } from '@/constants/Leadership';
-
-const DirectorCard: React.FC<DirectorCardProps> = ({ director }) => {
-  const [imageError, setImageError] = useState(false);
-  const showPlaceholder = imageError || !director.imageUrl;
-
-  return (
-    <div className="flex flex-col h-full bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-      <div className="flex justify-center pt-8 pb-4 relative">
-        <div className="absolute top-0 left-0 w-1 h-full bg-red-500 dark:bg-red-400"></div>
-        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-md">
-          {showPlaceholder ? (
-            <div className="flex items-center justify-center w-full h-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-2xl font-bold">
-              {director.name
-                .split(' ')
-                .map((n) => n[0])
-                .join('')}
-            </div>
-          ) : (
-            <img
-              src={director.imageUrl}
-              alt={`${director.name}`}
-              className="w-full h-full object-cover"
-              onError={() => setImageError(true)}
-            />
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-col flex-grow p-5 gap-3">
-        <div className="text-center">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-            {director.name}
-          </h3>
-          {director.position && (
-            <p className="text-sm font-medium text-red-500 dark:text-red-400 mt-1">
-              {director.position}
-            </p>
-          )}
-        </div>
-
-        <div className="w-16 h-0.5 bg-gray-200 dark:bg-gray-700 mx-auto"></div>
-        <div className="flex-grow">
-          <div className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed max-h-28 overflow-y-auto pr-1 custom-scrollbar">
-            {director.bio || 'No biography available.'}
-          </div>
-        </div>
-
-        <div className="pt-3 mt-auto border-t border-gray-100 dark:border-gray-700">
-          <div className="flex items-center justify-center gap-4">
-            {director.socialLinks?.linkedin && (
-              <SocialLink
-                href={director.socialLinks.linkedin}
-                aria="LinkedIn"
-                icon={<LinkedInIcon />}
-              />
-            )}
-            {director.socialLinks?.github && (
-              <SocialLink
-                href={director.socialLinks.github}
-                aria="GitHub"
-                icon={<GitHubIcon />}
-              />
-            )}
-            {director.socialLinks?.wiki && (
-              <SocialLink
-                href={director.socialLinks.wiki}
-                aria="Wiki"
-                icon={<WikiIcon />}
-              />
-            )}
-            {!director.socialLinks?.linkedin &&
-              !director.socialLinks?.github &&
-              !director.socialLinks?.wiki && (
-                <span className="text-xs text-gray-400 dark:text-gray-500">
-                  No social links available
-                </span>
-              )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const SocialLink: React.FC<SocialLinkProps> = ({ href, aria, icon }) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
-    aria-label={aria}
-  >
-    {icon}
-  </a>
-);
+import {
+  Director,
+  DirectorCardProps,
+  SocialLinkProps,
+} from '@/constants/Leadership';
 
 const LinkedInIcon = () => (
   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -111,10 +20,145 @@ const GitHubIcon = () => (
     />
   </svg>
 );
+
 const WikiIcon = () => (
   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
     <path d="M4 5h2l2.5 9L12 5h2l3.5 9L20 5h2l-4 14h-2l-4-10-4 10H6L2 5z" />
   </svg>
 );
+
+const SocialLink: React.FC<SocialLinkProps> = ({ href, aria, icon }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+    aria-label={aria}
+    onClick={(e) => e.stopPropagation()}
+  >
+    {icon}
+  </a>
+);
+
+interface SocialFooterProps {
+  socialLinks: Director['socialLinks'];
+}
+
+const SocialFooter: React.FC<SocialFooterProps> = ({ socialLinks }) => (
+  <div className="pt-3 pb-5 mt-auto border-t border-gray-100 dark:border-gray-700 w-full bg-white dark:bg-gray-800 z-20">
+    <div className="flex items-center justify-center gap-4">
+      {socialLinks?.linkedin && (
+        <SocialLink
+          href={socialLinks.linkedin}
+          aria="LinkedIn"
+          icon={<LinkedInIcon />}
+        />
+      )}
+      {socialLinks?.github && (
+        <SocialLink
+          href={socialLinks.github}
+          aria="GitHub"
+          icon={<GitHubIcon />}
+        />
+      )}
+      {socialLinks?.wiki && (
+        <SocialLink href={socialLinks.wiki} aria="Wiki" icon={<WikiIcon />} />
+      )}
+      {!socialLinks?.linkedin && !socialLinks?.github && !socialLinks?.wiki && (
+        <span className="text-xs text-gray-400 dark:text-gray-500">
+          No social links available
+        </span>
+      )}
+    </div>
+  </div>
+);
+
+const DirectorCard: React.FC<DirectorCardProps> = ({ director }) => {
+  const [imageError, setImageError] = useState(false);
+  const showPlaceholder = imageError || !director.imageUrl;
+
+  return (
+    <div className="group w-full h-full min-h-[420px] flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 relative overflow-hidden">
+      <div className="flex-grow relative z-0" style={{ perspective: '1000px' }}>
+        <div className="absolute top-0 left-0 w-1 h-full bg-red-500 dark:bg-red-400 z-10 pointer-events-none"></div>
+
+        <div
+          className="relative w-full h-full transition-all duration-500"
+          style={{ transformStyle: 'preserve-3d' }}
+        >
+          <style>{`
+            .group:hover .relative > div[style*="preserve-3d"], 
+            .group:focus-within .relative > div[style*="preserve-3d"] {
+              transform: rotateY(180deg);
+            }
+          `}</style>
+
+          <div
+            className="absolute inset-0 w-full h-full flex flex-col bg-white dark:bg-gray-800"
+            style={{
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+            }}
+          >
+            <div className="flex flex-col flex-grow p-5 gap-3 items-center justify-center">
+              <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-md mb-4">
+                {showPlaceholder ? (
+                  <div className="flex items-center justify-center w-full h-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-2xl font-bold">
+                    {director.name
+                      .split(' ')
+                      .map((n) => n[0])
+                      .join('')}
+                  </div>
+                ) : (
+                  <img
+                    src={director.imageUrl}
+                    alt={`${director.name}`}
+                    className="w-full h-full object-cover"
+                    onError={() => setImageError(true)}
+                  />
+                )}
+              </div>
+
+              <div className="text-center">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                  {director.name}
+                </h3>
+                {director.position && (
+                  <p className="text-sm font-medium text-red-500 dark:text-red-400 mt-1">
+                    {director.position}
+                  </p>
+                )}
+              </div>
+              <div className="w-16 h-0.5 bg-gray-200 dark:bg-gray-700 mx-auto mt-2"></div>
+            </div>
+          </div>
+
+          <div
+            className="absolute inset-0 w-full h-full flex flex-col bg-white dark:bg-gray-800"
+            style={{
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg)',
+            }}
+          >
+            <div className="flex flex-col flex-grow p-6 h-full justify-center">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 text-center mb-4">
+                About
+              </h3>
+
+              <div className="overflow-y-auto custom-scrollbar pr-2 relative max-h-[280px]">
+                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed text-justify">
+                  {director.bio || 'No details available.'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <SocialFooter socialLinks={director.socialLinks} />
+    </div>
+  );
+};
 
 export default DirectorCard;

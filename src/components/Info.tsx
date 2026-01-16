@@ -36,7 +36,7 @@ const Info: React.FC = () => {
       {image.caption && (
         <div
           className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 
-                   to-transparent p-3 sm:p-4"
+                   to-transparent p-3 sm:p-4 pb-8"
         >
           <p className="text-white font-normal text-sm sm:text-base">
             {image.caption}

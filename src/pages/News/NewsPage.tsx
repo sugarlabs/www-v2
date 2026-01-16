@@ -1,43 +1,41 @@
-import React, { useState, useEffect, useMemo, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ShareModal from '@/components/ShareModal';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { getAllPosts, groupPostsByCategory, Post } from '@/utils/posts-utils';
+import {
+  getAllPosts,
+  groupPostsByCategory,
+  PostMetaData,
+} from '@/utils/posts-utils';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { fadeIn, slideInBottom, floatUpAndFade } from '@/styles/Animations';
 import {
-  fadeIn,
-  slideInBottom,
-  bounce,
-  simpleFadeIn,
-  floatUpAndFade,
-} from '@/styles/Animations';
-import {
-  CalendarRange,
-  ArrowRight,
   Grid3X3,
   List,
   Search,
   TrendingUp,
-  Share2,
   Sparkles,
   Tag,
   Info,
   X,
 } from 'lucide-react';
+import PostCard from '@/components/PostCard';
+import Pagination from '@/components/Pagination';
 
 const NewsPage: React.FC = () => {
   const [shareModalOpen, setShareModalOpen] = useState(false);
-  const [sharePostData, setSharePostData] = useState<Post | null>(null);
+  const [sharePostData, setSharePostData] = useState<PostMetaData | null>(null);
   const navigate = useNavigate();
   const { category: categoryParam } = useParams<{ category?: string }>();
 
   const [postsByCategory, setPostsByCategory] = useState<
-    Record<string, Post[]>
+    Record<string, PostMetaData[]>
   >({});
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
-  const [displayCount, setDisplayCount] = useState<number>(6);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 9;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'magazine'>(
@@ -48,18 +46,6 @@ const NewsPage: React.FC = () => {
     const params = new URLSearchParams(location.search);
     return params.get('q') || '';
   });
-
-  useLayoutEffect(() => {
-    if (!isLoading) {
-      const savedY = Number(sessionStorage.getItem('newsScrollY') || 0);
-      if (savedY > 0) {
-        requestAnimationFrame(() => {
-          window.scrollTo({ top: savedY, behavior: 'auto' });
-        });
-      }
-      sessionStorage.removeItem('newsScrollY');
-    }
-  }, [isLoading, activeCategory, searchTerm]);
 
   useEffect(() => {
     async function load() {
@@ -90,6 +76,7 @@ const NewsPage: React.FC = () => {
       }
     }
     setActiveCategory('All');
+    setCurrentPage(1);
   }, [categoryParam, categories]);
 
   // Keep searchTerm in sync with the URL (?q=)
@@ -97,18 +84,8 @@ const NewsPage: React.FC = () => {
     const params = new URLSearchParams(location.search);
     const q = params.get('q') || '';
     setSearchTerm(q);
+    setCurrentPage(1);
   }, [location.search]);
-
-  useEffect(() => {
-    if (!categories.length) return;
-    const pathCat =
-      activeCategory === 'All'
-        ? 'all'
-        : activeCategory.toLowerCase().replace(/\s+/g, '-');
-    const query = searchTerm ? `?q=${encodeURIComponent(searchTerm)}` : '';
-    navigate(`/news/${pathCat}${query}`, { replace: true });
-    setDisplayCount(6);
-  }, [activeCategory, navigate, searchTerm, categories.length]);
 
   const sortedCategories = useMemo(() => {
     const others = categories
@@ -133,20 +110,21 @@ const NewsPage: React.FC = () => {
     return posts;
   }, [postsByCategory, activeCategory, searchTerm]);
 
-  const visiblePosts = useMemo(() => {
-    return filteredPosts.slice(0, displayCount);
-  }, [filteredPosts, displayCount]);
+  const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
 
-  const hasMore = filteredPosts.length > displayCount;
+  const visiblePosts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredPosts.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredPosts, currentPage]);
 
   const handleCategoryClick = (cat: string) => {
-    sessionStorage.setItem('newsScrollY', String(window.scrollY));
     setActiveCategory(cat);
+    setCurrentPage(1);
   };
 
-  const handleShowMore = () => {
-    const total = filteredPosts.length;
-    setDisplayCount((prev) => Math.min(prev + 6, total));
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePostClick = (slug: string) => {
@@ -158,52 +136,11 @@ const NewsPage: React.FC = () => {
     navigate(`/news/${catPath}/${slug}${query}`);
   };
 
-  const handleShareClick = (post: Post, e: React.MouseEvent) => {
+  const handleShareClick = (post: PostMetaData, e: React.MouseEvent) => {
     e.stopPropagation();
     setSharePostData(post);
     setShareModalOpen(true);
   };
-
-  if (isLoading) {
-    return (
-      <>
-        <Header />
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-black dark:to-gray-800">
-          <div className="container mx-auto px-4 py-20">
-            <motion.div
-              className="text-center max-w-2xl mx-auto"
-              variants={floatUpAndFade}
-              initial="hidden"
-              animate="visible"
-            >
-              <div className="relative mb-9">
-                <h1 className="text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
-                  NEWS
-                </h1>
-                <div className="absolute -top-4 -right-5">
-                  <Sparkles
-                    className="text-yellow-400 animate-pulse"
-                    size={30}
-                  />
-                </div>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mx-auto mb-6" />
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                  Loading Latest News
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Fetching the most recent stories from Sugar Labs community...
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
 
   if (error) {
     return (
@@ -254,373 +191,284 @@ const NewsPage: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-black dark:to-gray-800">
-        {/* Enhanced Hero Section */}
-        <div className="relative overflow-hidden">
-          <div className="absolute inset-0">
-            <div className="absolute top-10 left-10 w-32 h-32 bg-blue-200 opacity-20 rounded-full"></div>
-            <div className="absolute bottom-10 right-10 w-48 h-48 bg-green-200 opacity-15 rounded-full"></div>
-            <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-blue-300 opacity-10 rounded-full"></div>
+      <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-black dark:to-gray-800">
+        <section className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6">
+          <div className="relative overflow-hidden">
+            <div className="absolute inset-0">
+              <div className="absolute top-10 left-10 w-32 h-32 bg-blue-200 opacity-20 rounded-full"></div>
+              <div className="absolute bottom-10 right-10 w-48 h-48 bg-green-200 opacity-15 rounded-full"></div>
+              <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-blue-300 opacity-10 rounded-full"></div>
+            </div>
+
+            <div className="relative container mx-auto px-4 py-20">
+              <motion.div
+                className="text-center max-w-4xl mx-auto"
+                variants={fadeIn}
+                initial="hidden"
+                animate="visible"
+              >
+                <div className="flex items-center justify-center mb-6">
+                  <Sparkles
+                    className="text-blue-500 mr-4 animate-pulse"
+                    size={32}
+                  />
+                  <h1 className="p-4 text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
+                    NEWS
+                  </h1>
+                  <TrendingUp
+                    className="text-green-500 ml-4 animate-bounce"
+                    size={32}
+                  />
+                </div>
+
+                <p className="text-xl mb-8 text-gray-700 dark:text-gray-300 leading-relaxed ">
+                  Discover the latest innovations, community updates, and
+                  educational insights from the Sugar Labs ecosystem
+                </p>
+
+                <div className="flex flex-wrap justify-center gap-4 text-sm"></div>
+              </motion.div>
+            </div>
           </div>
 
-          <div className="relative container mx-auto px-4 py-20">
-            <motion.div
-              className="text-center max-w-4xl mx-auto"
-              variants={fadeIn}
-              initial="hidden"
-              animate="visible"
-            >
-              <div className="flex items-center justify-center mb-6">
-                <Sparkles
-                  className="text-blue-500 mr-4 animate-pulse"
-                  size={32}
-                />
-                <h1 className="p-4 text-8xl font-bold font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
-                  NEWS
-                </h1>
-                <TrendingUp
-                  className="text-green-500 ml-4 animate-bounce"
-                  size={32}
-                />
-              </div>
-
-              <p className="text-xl mb-8 text-gray-700 dark:text-gray-300 leading-relaxed ">
-                Discover the latest innovations, community updates, and
-                educational insights from the Sugar Labs ecosystem
-              </p>
-
-              <div className="flex flex-wrap justify-center gap-4 text-sm"></div>
-            </motion.div>
-          </div>
-        </div>
-
-        <div className="container mx-auto px-4 py-8">
-          {/* Enhanced Filters and Controls */}
-          <div className="bg-white dark:bg-gray-800/50 dark:backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-8 border border-gray-100 dark:border-gray-700">
-            <div className="flex flex-col lg:flex-row gap-6">
-              {/* Search Bar */}
-              <div className="flex-1">
-                <div className="relative">
-                  <Search
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    size={20}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Search articles, topics, or categories..."
-                    value={searchTerm}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      sessionStorage.setItem(
-                        'newsScrollY',
-                        String(window.scrollY),
-                      );
-                      setSearchTerm(value);
-                      const catPath =
-                        activeCategory === 'All'
-                          ? 'all'
-                          : activeCategory.toLowerCase().replace(/\s+/g, '-');
-                      const query = value
-                        ? `?q=${encodeURIComponent(value)}`
-                        : '';
-                      navigate(`/news/${catPath}${query}`, { replace: true });
-                    }}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
-                  />
-                  {searchTerm && (
-                    <button
-                      onClick={() => {
-                        setSearchTerm('');
+          <div className="container mx-auto px-4 py-8">
+            {/* Enhanced Filters and Controls */}
+            <div className="bg-white dark:bg-gray-800/50 dark:backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-8 border border-gray-100 dark:border-gray-700">
+              <div className="flex flex-col lg:flex-row gap-6">
+                {/* Search Bar */}
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                      size={20}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Search articles, topics, or categories..."
+                      value={searchTerm}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setSearchTerm(value);
                         const catPath =
                           activeCategory === 'All'
                             ? 'all'
                             : activeCategory.toLowerCase().replace(/\s+/g, '-');
-                        navigate(`/news/${catPath}`, { replace: true });
+                        const query = value
+                          ? `?q=${encodeURIComponent(value)}`
+                          : '';
+                        navigate(`/news/${catPath}${query}`, { replace: true });
                       }}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                      aria-label="Clear search"
-                    >
-                      <X size={20} />
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* View Mode Toggle */}
-              <div className="flex items-center gap-4">
-                <div className="flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
-                  <button
-                    onClick={() => setViewMode('grid')}
-                    className={`p-3 rounded-lg transition-all duration-300 ${
-                      viewMode === 'grid'
-                        ? 'bg-white dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-blue-600'
-                    }`}
-                    title="Grid View"
-                  >
-                    <Grid3X3 size={18} />
-                  </button>
-                  <button
-                    onClick={() => setViewMode('list')}
-                    className={`p-3 rounded-lg transition-all duration-300 ${
-                      viewMode === 'list'
-                        ? 'bg-white  dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
-                        : 'text-gray-600  dark:text-gray-400 hover:text-blue-600'
-                    }`}
-                    title="List View"
-                  >
-                    <List size={18} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Category Filters - Always Visible */}
-            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex items-center mb-4">
-                <Tag
-                  className="text-gray-600 dark:text-gray-400 mr-2"
-                  size={20}
-                />
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                  Categories
-                </h3>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {sortedCategories.map((cat) => (
-                  <motion.button
-                    key={cat}
-                    onClick={() => handleCategoryClick(cat)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                      activeCategory === cat
-                        ? 'bg-[#144EEC] text-white shadow-lg'
-                        : 'bg-gray-100 dark:bg-gray-700 dark:text-gray-300 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                    }`}
-                    whileHover={{ scale: 1.05, cursor: 'pointer' }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {cat}
-                    {activeCategory === cat && (
-                      <span className="ml-2 text-xs bg-white text-black bg-opacity-30 rounded-full px-2 py-1">
-                        {(postsByCategory[cat] || []).length}
-                      </span>
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                    />
+                    {searchTerm && (
+                      <button
+                        onClick={() => {
+                          setSearchTerm('');
+                          const catPath =
+                            activeCategory === 'All'
+                              ? 'all'
+                              : activeCategory
+                                  .toLowerCase()
+                                  .replace(/\s+/g, '-');
+                          navigate(`/news/${catPath}`, { replace: true });
+                        }}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label="Clear search"
+                      >
+                        <X size={20} />
+                      </button>
                     )}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-          </div>
+                  </div>
+                </div>
 
-          {/* Template Category Note */}
-          {activeCategory.toLowerCase() === 'template' && (
-            <motion.div
-              className="bg-amber-50 dark:bg-amber-900/50 border border-amber-200 dark:border-amber-700/50 rounded-2xl p-6 mb-8 shadow-sm"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="flex items-start gap-3">
-                <Info
-                  className="text-amber-600 dark:text-amber-500 mt-1 flex-shrink-0"
-                  size={20}
-                />
-                <div>
-                  <p className="text-amber-800 dark:text-amber-300 font-medium">
-                    <strong>Note:</strong> These are developer templates for
-                    post formatting.
-                  </p>
+                {/* View Mode Toggle */}
+                <div className="flex items-center gap-4">
+                  <div className="flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
+                    <button
+                      onClick={() => setViewMode('grid')}
+                      className={`p-3 rounded-lg transition-all duration-300 ${
+                        viewMode === 'grid'
+                          ? 'bg-white dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
+                          : 'text-gray-600 dark:text-gray-400 hover:text-blue-600'
+                      }`}
+                      title="Grid View"
+                    >
+                      <Grid3X3 size={18} />
+                    </button>
+                    <button
+                      onClick={() => setViewMode('list')}
+                      className={`p-3 rounded-lg transition-all duration-300 ${
+                        viewMode === 'list'
+                          ? 'bg-white  dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
+                          : 'text-gray-600  dark:text-gray-400 hover:text-blue-600'
+                      }`}
+                      title="List View"
+                    >
+                      <List size={18} />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </motion.div>
-          )}
 
-          {/* Current Category Display */}
-          <motion.div
-            className="text-center mb-8"
-            variants={slideInBottom}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-5xl font-Caveat text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600 mb-2">
-              {activeCategory} {searchTerm && `· "${searchTerm}"`}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
-              <span>{filteredPosts.length} articles found</span>
-              {searchTerm && (
-                <button
-                  onClick={() => {
-                    setSearchTerm('');
-                    const catPath =
-                      activeCategory === 'All'
-                        ? 'all'
-                        : activeCategory.toLowerCase().replace(/\s+/g, '-');
-                    navigate(`/news/${catPath}`, { replace: true });
-                  }}
-                  className="text-blue-600 hover:text-blue-700 underline text-sm"
-                >
-                  Clear search
-                </button>
-              )}
-            </p>
-          </motion.div>
-
-          {/* Posts Display */}
-          <AnimatePresence mode="wait">
-            {visiblePosts.length === 0 ? (
-              <motion.div
-                className="text-center py-20"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 shadow-xl max-w-md mx-auto">
-                  <div className="text-6xl mb-6">🔍</div>
-                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-                    No articles found
+              {/* Category Filters - Always Visible */}
+              <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex items-center mb-4">
+                  <Tag
+                    className="text-gray-600 dark:text-gray-400 mr-2"
+                    size={20}
+                  />
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    Categories
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6">
-                    {searchTerm
-                      ? `No articles match "${searchTerm}" in this category.`
-                      : 'There are no articles in this category yet.'}
-                  </p>
-                  {searchTerm && (
-                    <button
-                      onClick={() => setSearchTerm('')}
-                      className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {sortedCategories.map((cat) => (
+                    <motion.button
+                      key={cat}
+                      onClick={() => handleCategoryClick(cat)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                        activeCategory === cat
+                          ? 'bg-[#144EEC] text-white shadow-lg'
+                          : 'bg-gray-100 dark:bg-gray-700 dark:text-gray-300 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                      }`}
+                      whileHover={{ scale: 1.05, cursor: 'pointer' }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      Clear Search
-                    </button>
-                  )}
+                      {cat}
+                      {activeCategory === cat && (
+                        <span className="ml-2 text-xs bg-white text-black bg-opacity-30 rounded-full px-2 py-1">
+                          {(postsByCategory[cat] || []).length}
+                        </span>
+                      )}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Template Category Note */}
+            {activeCategory.toLowerCase() === 'template' && (
+              <motion.div
+                className="bg-amber-50 dark:bg-amber-900/50 border border-amber-200 dark:border-amber-700/50 rounded-2xl p-6 mb-8 shadow-sm"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex items-start gap-3">
+                  <Info
+                    className="text-amber-600 dark:text-amber-500 mt-1 flex-shrink-0"
+                    size={20}
+                  />
+                  <div>
+                    <p className="text-amber-800 dark:text-amber-300 font-medium">
+                      <strong>Note:</strong> These are developer templates for
+                      post formatting.
+                    </p>
+                  </div>
                 </div>
               </motion.div>
-            ) : (
-              <motion.div
-                className={`mb-12 ${
+            )}
+
+            {/* Current Category Display */}
+            <motion.div
+              className="text-center mb-8"
+              variants={slideInBottom}
+              initial="hidden"
+              animate="visible"
+            >
+              <h2 className="text-5xl font-Caveat text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-green-600 mb-2">
+                {activeCategory} {searchTerm && `· "${searchTerm}"`}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
+                <span>{filteredPosts.length} articles found</span>
+                {searchTerm && (
+                  <button
+                    onClick={() => {
+                      setSearchTerm('');
+                      const catPath =
+                        activeCategory === 'All'
+                          ? 'all'
+                          : activeCategory.toLowerCase().replace(/\s+/g, '-');
+                      navigate(`/news/${catPath}`, { replace: true });
+                    }}
+                    className="text-blue-600 hover:text-blue-700 underline text-sm"
+                  >
+                    Clear search
+                  </button>
+                )}
+              </p>
+            </motion.div>
+
+            {/* Posts Display */}
+            <div className="mb-12">
+              <div
+                className={`${
                   viewMode === 'grid'
                     ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'
                     : viewMode === 'list'
                       ? 'space-y-8'
                       : 'grid grid-cols-1 lg:grid-cols-2 gap-8'
                 }`}
-                initial="hidden"
-                animate="visible"
               >
-                {visiblePosts.map((post, index) => (
-                  <motion.article
-                    key={post.slug}
-                    className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden group ${
-                      viewMode === 'list' ? 'flex' : ''
-                    }`}
-                    onClick={() => handlePostClick(post.slug)}
-                    variants={simpleFadeIn}
-                    custom={index}
-                    layout
-                    whileHover={{ y: -5 }}
+                {isLoading ? (
+                  Array.from({ length: 6 }).map((_, index) => (
+                    <PostCard
+                      key={`skeleton-${index}`}
+                      viewMode={viewMode}
+                      index={index}
+                      isLoading={true}
+                    />
+                  ))
+                ) : visiblePosts.length === 0 ? (
+                  // Empty state as a grid item
+                  <motion.div
+                    className="col-span-full text-center py-20"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                   >
-                    <div
-                      className={`${viewMode === 'list' ? 'w-1/3' : ''} relative`}
-                    >
-                      <div
-                        className={`${viewMode === 'list' ? 'h-full' : 'h-56'} overflow-hidden`}
-                      >
-                        {post.image ? (
-                          <img
-                            src={post.image}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-blue-100 via-purple-50 to-green-100 dark:from-blue-900/50 dark:via-purple-900/50 dark:to-green-900/50 flex items-center justify-center">
-                            <div className="text-6xl opacity-50">📰</div>
-                          </div>
-                        )}
-                      </div>
-
-                      {post.category && (
-                        <span className="absolute top-4 left-4 px-3 py-1 text-xs font-bold bg-green-500 text-white rounded-full shadow-lg">
-                          {post.category}
-                        </span>
-                      )}
-
-                      <div className="absolute top-4 right-4 flex gap-2">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 shadow-xl max-w-md mx-auto">
+                      <div className="text-6xl mb-6">🔍</div>
+                      <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+                        No articles found
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-400 mb-6">
+                        {searchTerm
+                          ? `No articles match "${searchTerm}" in this category.`
+                          : 'There are no articles in this category yet.'}
+                      </p>
+                      {searchTerm && (
                         <button
-                          onClick={(e) => handleShareClick(post, e)}
-                          className="p-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow hover:from-blue-700 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 cursor-pointer"
-                          title="Share"
-                          type="button"
+                          onClick={() => setSearchTerm('')}
+                          className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
                         >
-                          <Share2 size={16} className="text-white" />
+                          Clear Search
                         </button>
-                      </div>
+                      )}
                     </div>
-
-                    <div
-                      className={`${viewMode === 'list' ? 'w-2/3' : ''} p-6 flex flex-col justify-between`}
-                    >
-                      <div>
-                        <h3
-                          className={`font-bold text-gray-800 dark:text-gray-200 mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors ${
-                            viewMode === 'list' ? 'text-xl' : 'text-lg'
-                          }`}
-                        >
-                          {post.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 mb-4 leading-relaxed">
-                          {post.excerpt}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        {post.date && (
-                          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                            <CalendarRange size={14} className="mr-2" />
-                            {post.date}
-                          </div>
-                        )}
-                        <div className="flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300">
-                          Read more
-                          <ArrowRight
-                            size={14}
-                            className="ml-1 mt-1 group-hover:translate-x-1 transition-transform duration-300"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Enhanced Load More Button */}
-          {hasMore && (
-            <div className="flex justify-center">
-              <motion.button
-                onClick={handleShowMore}
-                className="relative px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 text-white hover:from-blue-700 hover:to-green-700 cursor-pointer transition-all duration-300 rounded-2xl shadow-lg hover:shadow-2xl font-medium flex items-center gap-3 group"
-                variants={bounce}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-                whileTap="tap"
-              >
-                <div className="relative group rounded-xl overflow-hidden">
-                  <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl"></div>
-                </div>
-                <span className="relative z-10">Load More Articles</span>
-                <ArrowRight
-                  size={18}
-                  className="relative z-10 group-hover:translate-x-1 transition-transform duration-300"
-                />
-                <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
-                  <span className="text-xs font-bold text-gray-800">
-                    {Math.min(6, filteredPosts.length - displayCount)}
-                  </span>
-                </div>
-              </motion.button>
+                  </motion.div>
+                ) : (
+                  visiblePosts.map((post, index) => (
+                    <PostCard
+                      key={post.slug}
+                      post={post}
+                      viewMode={viewMode}
+                      index={index}
+                      onPostClick={handlePostClick}
+                      onShareClick={handleShareClick}
+                    />
+                  ))
+                )}
+              </div>
             </div>
-          )}
-        </div>
-      </div>
+
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </section>
+      </main>
       <ShareModal
         open={shareModalOpen}
         onClose={() => setShareModalOpen(false)}
