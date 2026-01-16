@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import router from '@/routes';
 import ScrollToTop from './components/ScrollToTop';
+import BackToTop from './components/BackToTop';
 
 const App = () => {
   useEffect(() => {
@@ -27,6 +28,7 @@ const App = () => {
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <ScrollToTop />
       <RouterProvider router={router} />
+      <BackToTop />
     </div>
   );
 };
