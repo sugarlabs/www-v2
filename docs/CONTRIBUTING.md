@@ -14,6 +14,7 @@
   - [3. Make Your Changes](#3-make-your-changes)
   - [4. Committing Changes](#4-committing-changes)
 - [Checklist before Commits](#checklist-before-commits)
+- [Pushing Changes](#pushing-changes)
 
 ## New Contributors
 
@@ -214,3 +215,21 @@ git rebase main
 ```
 
 Resolve any conflicts if they arise.
+
+## Pushing Changes
+
+After making your changes and verifying that all checks pass, add, commit and push your branch to your fork:
+
+```bash
+git add .
+git commit -m "your commit message"
+git push -u origin <your-branch-name>
+```
+
+> The `-u` flag sets the upstream tracking for the branch. You only need to do this for the first push of a new branch.
+
+For subsequent pushes, simply run:
+
+```bash
+git push
+```
