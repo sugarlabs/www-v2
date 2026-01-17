@@ -23,6 +23,20 @@ import {
 import PostCard from '@/components/PostCard';
 import Pagination from '@/components/Pagination';
 
+const getSavedViewPreference = (): 'grid' | 'list' | 'magazine' => {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const saved = localStorage.getItem('sugarlabs_news_view_preference');
+      if (saved === 'grid' || saved === 'list' || saved === 'magazine') {
+        return saved;
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to read view preference from localStorage:', error);
+  }
+  return 'grid';
+};
+
 const NewsPage: React.FC = () => {
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [sharePostData, setSharePostData] = useState<PostMetaData | null>(null);
@@ -38,14 +52,27 @@ const NewsPage: React.FC = () => {
   const itemsPerPage = 9;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'magazine'>(
-    'grid',
+  const [viewMode, setViewModeState] = useState<'grid' | 'list' | 'magazine'>(
+    getSavedViewPreference,
   );
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState<string>(() => {
     const params = new URLSearchParams(location.search);
     return params.get('q') || '';
   });
+
+  const setViewMode = (newMode: 'grid' | 'list' | 'magazine') => {
+    setViewModeState(newMode);
+
+    // Save to localStorage
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem('sugarlabs_news_view_preference', newMode);
+      }
+    } catch (error) {
+      console.error('Failed to save view preference to localStorage:', error);
+    }
+  };
 
   useEffect(() => {
     async function load() {
@@ -86,6 +113,26 @@ const NewsPage: React.FC = () => {
     setSearchTerm(q);
     setCurrentPage(1);
   }, [location.search]);
+
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'sugarlabs_news_view_preference' && e.newValue) {
+        if (
+          e.newValue === 'grid' ||
+          e.newValue === 'list' ||
+          e.newValue === 'magazine'
+        ) {
+          setViewModeState(e.newValue);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   const sortedCategories = useMemo(() => {
     const others = categories
