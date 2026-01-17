@@ -1,6 +1,19 @@
-# Contributing Guide
+# Contributing Guide for SugarLabs Website ([www-v2](https://github.com/sugarlabs/www-v2))
 
-> MAKING SOME CHANGES
+## Table of Contents
+
+- [New Contributors](#new-contributors)
+- [Keep in Mind](#keep-in-mind)
+- [Code Quality Notes](#code-quality-notes)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Setup and Installation](#setup-and-installation)
+- [Development Workflow](#development-workflow)
+  - [1. Sync with Upstream](#1-sync-with-upstream)
+  - [2. Create a New Branch](#2-create-a-new-branch)
+  - [3. Make Your Changes](#3-make-your-changes)
+  - [4. Committing Changes](#4-committing-changes)
+- [Checklist before Commits](#checklist-before-commits)
 
 ## New Contributors
 
@@ -77,19 +90,127 @@ Feel free. But, please don't spam :p.
    for review. In case testing is done via some non-standard method, adequate description of the method/s
    need/s to be specified in the PR body.
 
+## Getting Started
+
+Ready to contribute? Here's how to set up [www-v2](https://sugarlabs.org) for local development.
+
+### Prerequisites
+
+- **Node.js**: Make sure you have Node.js installed. We recommend using the latest LTS version.
+- **Git**: Ensure Git is installed on your machine.
+
+### Setup and Installation
+
+1. **Fork the repository**: Click the "Fork" button at the top right of the repository page to create your own copy.
+
+2. **Clone your fork**:
+
+   ```bash
+   git clone https://github.com/<your-username>/www-v2.git
+   cd www-v2
+   ```
+
+3. **Add upstream remote**:
+   This ensures you can keep your fork synced with the original repository.
+
+   ```bash
+   git remote add upstream https://github.com/sugarlabs/www-v2.git
+   ```
+
+   - confirm: run `git remote -v`. You should see two remotes: `origin` and `upstream`.
+
+4. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+5. **Start the development server**:
+
+   ```bash
+   npm run dev
+   ```
+
+   Open your browser and navigate to the URL shown (usually `http://localhost:5173`) to see the application running.
+
+## Development Workflow
+
+### 1. Sync with Upstream
+
+Before starting any new work, make sure your local `main` branch is up to date.
+
+```bash
+git checkout main
+git pull upstream main
+git push origin main
+```
+
+### 2. Create a New Branch
+
+Always create a new branch for your changes. Use descriptive names with prefixes like `feat` or `bug`/`fix`.
+
+```bash
+# For a new feature
+git switch -c feat/my-new-feature
+
+# For a bug fix
+git switch -c fix/issue-number-description
+```
+
+### 3. Make Your Changes
+
+Implement your feature or fix. Remember to follow the [Code Quality Notes](#code-quality-notes).
+
+### 4. Committing Changes
+
+We follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+
+- Use prefixes: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`.
+- Example: `feat: add new gallery component` or `fix: resolve navigation bug`.
+
 ## Checklist before Commits
 
-- Make sure there are no _TypeScript_ warnings/errors. Run `npm run lint:ts` to verify.
+Before submitting a Pull Request, please ensure you have checked the following:
 
-- Make sure there are no linting errors in the Markdown. Run `npm run lint:md` to verify.
+- **Linting (TypeScript/JavaScript)**: Ensure there are no linting errors.
 
-- Format code you've modified. Run `npm run format`.
-  - _To verify code formatting without making changes._ Run `npm run format:check`.
+  ```bash
+  npm run lint:ts
+  ```
 
-**Note for Windows users:** To format a specific file, run `npm run format:file <file-path>`.
+- **Linting (Markdown)**: Ensure documentation is correctly formatted.
 
-- Make sure the application builds successfully. Run `npm run build` to verify.
+  ```bash
+  npm run lint:md
+  ```
 
-- Add meaningful documentation to every new function/method/class/type added.
+- **Formatting**: Format your code using Prettier.
 
-- One commit must address only one concept. Do not add multiple unrelated changes in one commit.
+  ```bash
+  npm run format
+  ```
+
+  - To verify formatting without changing files:
+
+      ```bash
+      npm run format:check
+      ```
+
+- **Build Check**: Verify that the application builds successfully.
+
+  ```bash
+  npm run build
+  ```
+
+### Keeping your Branch Up-to-Date
+
+If the upstream `main` branch has moved forward while you were working:
+
+```bash
+git checkout main
+git pull upstream main
+git checkout your-branch-name
+git rebase main
+```
+
+Resolve any conflicts if they arise.
