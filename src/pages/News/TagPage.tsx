@@ -10,10 +10,10 @@ import {
   Grid,
   List,
   Filter,
-  ChevronDown,
   BookOpen,
   TrendingUp,
 } from 'lucide-react';
+import Pagination from '@/components/Pagination';
 
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
@@ -30,7 +30,8 @@ const TagPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // UI State
-  const [displayCount, setDisplayCount] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -102,7 +103,7 @@ const TagPage: React.FC = () => {
     });
 
     setFilteredPosts(filtered);
-    setDisplayCount(8);
+    setCurrentPage(1);
   }, [posts, searchTerm, selectedCategory, sortBy, tag]);
 
   const handlePostClick = (post: PostMetaData) => {
@@ -116,8 +117,9 @@ const TagPage: React.FC = () => {
     }
   };
 
-  const handleShowMore = () => {
-    setDisplayCount((prev) => Math.min(prev + 8, filteredPosts.length));
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const getUniqueCategories = () => {
@@ -141,8 +143,11 @@ const TagPage: React.FC = () => {
       .map(([tagName]) => tagName);
   };
 
-  const visiblePosts = filteredPosts.slice(0, displayCount);
-  const hasMore = filteredPosts.length > displayCount;
+  const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
+  const visiblePosts = filteredPosts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
   const relatedTags = getRelatedTags();
 
   if (isLoading) {
@@ -486,23 +491,11 @@ const TagPage: React.FC = () => {
                     </AnimatePresence>
                   </motion.div>
 
-                  {/* Load More Button */}
-                  {hasMore && (
-                    <div className="text-center">
-                      <motion.button
-                        onClick={handleShowMore}
-                        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2 mx-auto"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Load More Articles
-                        <ChevronDown className="w-4 h-4" />
-                        <span className="text-xs bg-blue-500 px-2 py-1 rounded-full">
-                          +{Math.min(8, filteredPosts.length - displayCount)}
-                        </span>
-                      </motion.button>
-                    </div>
-                  )}
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
                 </>
               )}
             </div>

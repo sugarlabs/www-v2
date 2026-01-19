@@ -10,6 +10,8 @@ import { motion } from 'framer-motion';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import MarkdownRenderer from '@/utils/MarkdownRenderer';
+import MorePageSkeleton from '@/components/skeletons/MorePageSkeleton';
+import { ArrowLeft } from 'lucide-react';
 
 const MorePage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -115,9 +117,11 @@ const MorePage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
-      </div>
+      <>
+        <Header />
+        <MorePageSkeleton />
+        <Footer />
+      </>
     );
   }
 
@@ -129,25 +133,14 @@ const MorePage: React.FC = () => {
         <div className="mb-8">
           <Link
             to="/"
-            className="text-blue-600 hover:underline mb-2 inline-block"
+            className="text-blue-600 hover:no-underline mb-2 inline-block"
           >
             <motion.button
-              className="mb-6 px-4 py-2 flex items-center text-blue-600 hover:text-blue-700 transition-colors rounded-md hover:bg-blue-50"
+              className="mb-6 px-4 py-2 flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-2"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <ArrowLeft className="h-5 w-5 mr-2" />
               Back to Home
             </motion.button>
           </Link>
