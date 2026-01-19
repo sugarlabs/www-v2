@@ -87,6 +87,7 @@ const FAQItem = ({ index, question, answer }: FAQItemProps) => {
       >
         <p
           className="px-6 pb-4 text-gray-700 dark:text-gray-300"
+          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
         />
       </motion.div>
