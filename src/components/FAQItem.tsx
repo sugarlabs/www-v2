@@ -1,6 +1,6 @@
-import DOMPurify from "dompurify";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import DOMPurify from 'dompurify';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 type FAQItemProps = {
   index: number;
@@ -14,13 +14,13 @@ const faqItemVariants = {
 };
 
 const faqQuestionButtonVariants = {
-  initial: { backgroundColor: "rgba(0,0,0,0)", y: 0 },
+  initial: { backgroundColor: 'rgba(0,0,0,0)', y: 0 },
   hover: {
     scale: 1.02,
-    backgroundColor: "rgba(0,0,0,0.12)",
+    backgroundColor: 'rgba(0,0,0,0.12)',
     y: -1,
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-    transition: { type: "spring" as const, stiffness: 300, damping: 15 },
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    transition: { type: 'spring' as const, stiffness: 300, damping: 15 },
   },
 };
 
@@ -32,7 +32,7 @@ const faqToggleIconVariants = (isOpen: boolean) => ({
 const faqAnswerVariants = (isOpen: boolean) => ({
   initial: { height: 0, opacity: 0 },
   animate: {
-    height: isOpen ? "auto" : 0,
+    height: isOpen ? 'auto' : 0,
     opacity: isOpen ? 1 : 0,
     transition: { duration: 0.3 },
   },
@@ -44,8 +44,7 @@ const FAQItem = ({ index, question, answer }: FAQItemProps) => {
   const toggleFAQ = () => setIsOpen((prev) => !prev);
 
   /**
-   * 1. Convert plain URLs into clickable links
-   * 2. Sanitize the resulting HTML to prevent XSS
+   * Convert URLs into clickable links, then sanitize HTML to prevent XSS.
    */
   const linkedAnswer = answer.replace(
     /(https?:\/\/[^\s]+)/g,
@@ -75,7 +74,7 @@ const FAQItem = ({ index, question, answer }: FAQItemProps) => {
           animate="animate"
           className="text-gray-600 dark:text-gray-400 ml-2"
         >
-          {isOpen ? "-" : "+"}
+          {isOpen ? '-' : '+'}
         </motion.span>
       </motion.button>
 
@@ -83,11 +82,10 @@ const FAQItem = ({ index, question, answer }: FAQItemProps) => {
         variants={faqAnswerVariants(isOpen)}
         initial="initial"
         animate="animate"
-        style={{ overflow: "hidden" }}
+        style={{ overflow: 'hidden' }}
       >
         <p
           className="px-6 pb-4 text-gray-700 dark:text-gray-300"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
         />
       </motion.div>
