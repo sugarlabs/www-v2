@@ -129,7 +129,6 @@ At Sugar Labs, Ulibarri has worked closely with Walter Bender to create Music Bl
                   group-hover:bg-red-200 dark:group-hover:bg-orange-200 transition-colors
                   ml-4 flex-shrink-0
                 `,children:t.jsx("span",{className:`
-                    -mt-1
                     text-gray-800 dark:text-gray-800
                     group-hover:text-red-700 dark:group-hover:text-orange-600
                     transform group-hover:translate-x-1
