@@ -127,6 +127,7 @@ const PromoBanner: React.FC<PromoBannerProps> = ({
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
               >
+                {/* Banner Content */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-y-3 sm:gap-y-0">
                   <div className="flex items-center w-full sm:w-auto">
                     {shouldRotate && (
@@ -211,7 +212,7 @@ const PromoBanner: React.FC<PromoBannerProps> = ({
                     )}
                   </div>
 
-                  <div className="flex items-center space-x-3 mt-2 sm:mt-0 self-end sm:self-auto">
+                  <div className="flex items-center space-x-3 mt-2 sm:mt-0">
                     {renderButton()}
 
                     <motion.button
@@ -243,6 +244,54 @@ const PromoBanner: React.FC<PromoBannerProps> = ({
                 </div>
               </motion.div>
             </AnimatePresence>
+
+            {/* Indicator Dots Below Banner */}
+            {shouldRotate && (
+              <motion.div
+                className="flex justify-center items-center mt-4 gap-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                {bannerConfigsArray.map((_, index) => {
+                  const isActive = index === currentBannerIndex;
+                  const dotActiveColor = styles.text.includes('dark:')
+                    ? `bg-blue-950 dark:bg-blue-100 shadow-lg`
+                    : `bg-blue-950 dark:bg-blue-100 shadow-lg`;
+                  const dotInactiveColor = styles.text.includes('dark:')
+                    ? `bg-blue-950/50 dark:bg-blue-100/50 hover:bg-blue-950/70 dark:hover:bg-blue-100/70`
+                    : `bg-blue-950/50 dark:bg-blue-100/50 hover:bg-blue-950/70 dark:hover:bg-blue-100/70`;
+
+                  return (
+                    <motion.button
+                      key={index}
+                      onClick={() => {
+                        setDirection(index > currentBannerIndex ? 1 : -1);
+                        setCurrentBannerIndex(index);
+                      }}
+                      className={`rounded-full transition-all duration-300 ${
+                        isActive
+                          ? `w-8 h-2.5 ${dotActiveColor}`
+                          : `w-2.5 h-2.5 ${dotInactiveColor}`
+                      }`}
+                      initial={false}
+                      animate={{
+                        scale: isActive ? 1 : 0.8,
+                      }}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 400,
+                        damping: 30,
+                      }}
+                      whileHover={{ scale: isActive ? 1 : 1 }}
+                      whileTap={{ scale: 0.95 }}
+                      aria-label={`Go to banner ${index + 1}`}
+                      aria-current={isActive}
+                    />
+                  );
+                })}
+              </motion.div>
+            )}
           </div>
         </div>
       )}
