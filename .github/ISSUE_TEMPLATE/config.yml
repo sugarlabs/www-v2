@@ -1,8 +1,0 @@
-blank_issues_enabled: true
-contact_links:
-  - name: 💬 Sugar Labs Community Chat
-    url: https://matrix.to/#/#sugarlabs-web:matrix.org
-    about: Chat with the Sugar Labs community for quick questions and discussions
-  - name: 📖 Contributing Guidelines
-    url: https://github.com/sugarlabs/www-v2/blob/main/docs/CONTRIBUTING.md
-    about: Please read our contributing guidelines before creating an issue
