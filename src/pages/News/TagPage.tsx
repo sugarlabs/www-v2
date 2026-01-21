@@ -18,6 +18,7 @@ import Pagination from '@/components/Pagination';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import { getPostsByTag, PostMetaData, getAllTags } from '@/utils/posts-utils';
+import { Dropdown } from '@/components/shared/Dropdown';
 
 const TagPage: React.FC = () => {
   const { tag } = useParams<{ tag: string }>();
@@ -281,32 +282,27 @@ const TagPage: React.FC = () => {
                       </div>
 
                       {/* Category Filter */}
-                      <select
+                      <Dropdown
+                        options={getUniqueCategories().map((category) => ({
+                          value: category,
+                          label: category,
+                        }))}
                         value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm dark:bg-gray-800"
-                      >
-                        {getUniqueCategories().map((category) => (
-                          <option key={category} value={category}>
-                            {category}
-                          </option>
-                        ))}
-                      </select>
+                        onChange={setSelectedCategory}
+                        className="w-40"
+                      />
 
                       {/* Sort */}
-                      <select
+                      <Dropdown
+                        options={[
+                          { value: 'date', label: 'Latest First' },
+                          { value: 'title', label: 'A-Z' },
+                          { value: 'relevance', label: 'Most Relevant' },
+                        ]}
                         value={sortBy}
-                        onChange={(e) =>
-                          setSortBy(
-                            e.target.value as 'date' | 'title' | 'relevance',
-                          )
-                        }
-                        className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm dark:bg-gray-800"
-                      >
-                        <option value="date">Latest First</option>
-                        <option value="title">A-Z</option>
-                        <option value="relevance">Most Relevant</option>
-                      </select>
+                        onChange={setSortBy}
+                        className="w-35"
+                      />
 
                       {/* View Toggle */}
                       <div className="flex bg-gray-100 rounded-lg p-1">

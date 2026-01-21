@@ -25,6 +25,7 @@ import {
   ProfileStatsSkeleton,
   CategoriesSkeleton,
 } from '@/components/skeletons/AuthorContentSkeleton';
+import { Dropdown } from '@/components/shared/Dropdown';
 
 const AuthorPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -308,31 +309,26 @@ const AuthorPage: React.FC = () => {
                       </div>
 
                       {/* Category Filter */}
-                      <select
+                      <Dropdown
+                        options={getUniqueCategories().map((cat) => ({
+                          value: cat,
+                          label: cat,
+                        }))}
                         value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="px-3 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-sm"
-                      >
-                        {getUniqueCategories().map((category) => (
-                          <option key={category} value={category}>
-                            {category}
-                          </option>
-                        ))}
-                      </select>
+                        onChange={setSelectedCategory}
+                        className="w-40"
+                      />
 
                       {/* Sort */}
-                      <select
+                      <Dropdown
+                        options={[
+                          { value: 'date', label: 'Sort by Date' },
+                          { value: 'title', label: 'Sort by Title' },
+                        ]}
                         value={sortBy}
-                        onChange={(e) =>
-                          setSortBy(e.target.value as 'date' | 'title')
-                        }
-                        className="px-3 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 
-                        text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 
-                        focus:border-transparent text-sm"
-                      >
-                        <option value="date">Sort by Date</option>
-                        <option value="title">Sort by Title</option>
-                      </select>
+                        onChange={setSortBy}
+                        className="w-40"
+                      />
 
                       {/* View Toggle */}
                       <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
