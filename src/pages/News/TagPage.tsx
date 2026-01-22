@@ -19,6 +19,7 @@ import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import { getPostsByTag, PostMetaData, getAllTags } from '@/utils/posts-utils';
 import { Dropdown } from '@/components/shared/Dropdown';
+import TagPageSkeleton from '@/components/skeletons/TagPageSkeleton';
 
 const TagPage: React.FC = () => {
   const { tag } = useParams<{ tag: string }>();
@@ -155,12 +156,7 @@ const TagPage: React.FC = () => {
     return (
       <>
         <Header />
-        <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen">
-          <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mb-4"></div>
-            <p className="text-gray-600">Loading posts...</p>
-          </div>
-        </div>
+        <TagPageSkeleton />
         <Footer />
       </>
     );
