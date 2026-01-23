@@ -100,7 +100,9 @@ const Donate: React.FC = () => {
             viewport={{ once: true, amount: 0.5 }}
           >
             <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">
-              Your <span className="font-bold text-red-500 text-4xl">Donation</span> Directly Assists Our Mission
+              Your{' '}
+              <span className="font-bold text-red-500 text-4xl">Donation</span>{' '}
+              Directly Assists Our Mission
             </h2>
 
             <div className="prose prose-base sm:prose-lg max-w-none dark:text-gray-300">
