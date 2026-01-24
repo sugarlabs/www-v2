@@ -133,6 +133,11 @@ export const fetchMarkdownPostsMetadata = async (
           image: processImageUrl(frontmatter.image),
         };
 
+        // Filter out template and test posts
+        if (post.category === 'TEMPLATE') {
+          continue;
+        }
+
         allPosts.push(post);
       } catch (error) {
         console.error(`Error processing ${filePath}:`, error);
