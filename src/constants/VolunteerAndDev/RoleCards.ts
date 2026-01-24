@@ -10,7 +10,7 @@ export const roleCards = [
     ],
     extra: `Educators are encouraged to contact iaep@sugarlabs.org and ask education-specific questions. "IAEP" stands for "It's an education project". 
               You may also subscribe to our group mailing list at,`,
-    link: 'http://lists.sugarlabs.org/listinfo/iaep',
+    link: 'https://lists.sugarlabs.org/postorius/lists/iaep.lists.sugarlabs.org',
   },
   {
     title: 'Communicator',

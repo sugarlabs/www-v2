@@ -161,6 +161,7 @@ const Volunteer = () => {
                     {role.link && (
                       <a
                         href={role.link}
+                        target="_blank"
                         className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 underline"
                       >
                         {role.link}
