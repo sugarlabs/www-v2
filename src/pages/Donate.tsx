@@ -39,11 +39,24 @@ const Donate: React.FC = () => {
               whileInView="visible"
               viewport={{ once: true, amount: 0.5 }}
             >
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 sm:mb-8 leading-tight">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 sm:mb-8 leading-[0.8] overflow-visible">
                 Make a Lasting{' '}
-                <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 font-Caveat text-6xl sm:text-7xl md:text-8xl font-bold hover:-translate-y-2 hover:scale-110 hover:rotate-2 transition-all duration-300 pb-2 cursor-pointer">
+                <span
+                  className="
+    relative inline-block
+    translate-y-2
+    pb-8 pr-6
+    text-transparent bg-clip-text
+    bg-gradient-to-r from-red-500 to-orange-500
+    font-Caveat font-extrabold
+    text-6xl sm:text-7xl md:text-8xl
+    hover:-translate-y-1 hover:scale-110 hover:rotate-2
+    transition-all duration-300
+    cursor-pointer
+  "
+                >
                   Impact
-                </span>{' '}
+                </span>
                 in Education
               </h1>
 
@@ -86,7 +99,7 @@ const Donate: React.FC = () => {
               <img
                 src={Img[0]}
                 alt="Children asking for donations"
-                className="w-full rounded-2xl shadow-lg object-cover object-center aspect-[4/3] transform hover:scale-105 hover:shadow-[0_20px_50px_rgba(34,197,94,0.15)] transition-all duration-500"
+                className="w-full rounded-2xl shadow-lg object-cover object-center aspect-[4/3] transform hover:scale-[1.01] hover:shadow-[0_20px_50px_rgba(34,197,94,0.15)] transition-all duration-500 ease-out"
               />
             </motion.div>
           </div>
@@ -143,7 +156,7 @@ const Donate: React.FC = () => {
               {IMPACT_STATS.map((stat) => (
                 <div
                   key={stat.title}
-                  className="bg-white dark:bg-gray-800 p-5 sm:p-6 rounded-lg shadow-xl border border-gray-100 dark:border-gray-700 hover:shadow-[0_20px_50px_rgba(34,197,94,0.15)] hover:-translate-y-2 hover:scale-105 transition-all duration-300"
+                  className="bg-white dark:bg-gray-800 p-5 sm:p-6 rounded-lg shadow-xl border border-gray-100 dark:border-gray-700 hover:-translate-y-2 hover:opacity-90 hover:shadow-[0_10px_30px_rgba(34,197,94,0.1)] transition-all duration-300"
                 >
                   <div className="text-green-500 text-3xl sm:text-4xl font-bold mb-2 sm:mb-3">
                     {stat.value}
@@ -167,7 +180,7 @@ const Donate: React.FC = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.5 }}
           >
-            <div className="bg-gray-50 dark:bg-gray-800 p-5 sm:p-6 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-[0_20px_50px_rgba(34,197,94,0.15)] hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300">
+            <div className="bg-gray-50 dark:bg-gray-800 p-5 sm:p-6 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-2 hover:opacity-90 hover:shadow-[0_10px_30px_rgba(34,197,94,0.1)] transition-all duration-300">
               <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-gray-800 dark:text-white">
                 Our Mission
               </h2>
@@ -214,7 +227,7 @@ const Donate: React.FC = () => {
               Financial Transparency
             </h2>
 
-            <div className="bg-white dark:bg-gray-800 p-5 sm:p-8 rounded-xl shadow-lg hover:shadow-[0_20px_50px_rgba(34,197,94,0.15)] hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300">
+            <div className="bg-white dark:bg-gray-800 p-5 sm:p-8 rounded-xl shadow-lg hover:-translate-y-2 hover:opacity-90 hover:shadow-[0_10px_30px_rgba(34,197,94,0.1)] transition-all duration-300">
               <p className="mb-5 sm:mb-6 text-sm sm:text-base dark:text-gray-300">
                 Sugar Labs is committed to full financial transparency. As a
                 501(c)(3) nonprofit organization, we make our tax filings
