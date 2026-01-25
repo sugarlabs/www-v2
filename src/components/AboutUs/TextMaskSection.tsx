@@ -106,7 +106,7 @@ const TextMaskSection = () => {
 
           <div className="py-8 px-6 md:px-12 bg-white dark:bg-gray-800 text-center">
             <motion.h3
-              className="text-lg md:text-xl font-medium text-blue-600 dark:text-blue-400 mb-3"
+              className="text-lg md:text-xl font-medium text-amber-600 dark:text-amber-400 mb-2"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
