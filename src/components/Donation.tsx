@@ -9,8 +9,7 @@ import {
   slideInRight,
   slideInBottom,
   bounce,
-  staggerContainer,
-  buttonAnimation,
+  staggerContainer
 } from '@/styles/Animations';
 
 const Donation: React.FC = () => {
