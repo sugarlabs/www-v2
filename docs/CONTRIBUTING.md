@@ -82,6 +82,7 @@ Feel free. But, please don't spam :p.
 - Make sure there are no linting errors in the Markdown. Run `npm run lint:md` to verify.
 
 - Format code you've modified. Run `npm run format`.
+  - _To verify code formatting without making changes._ Run `npm run format:check`.
 
 **Note for Windows users:** To format a specific file, run `npm run format:file <file-path>`.
 

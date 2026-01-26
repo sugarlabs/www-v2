@@ -10,8 +10,8 @@ import {
   Grid,
   List,
   Search,
-  ChevronDown,
 } from 'lucide-react';
+import Pagination from '@/components/Pagination';
 
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
@@ -25,6 +25,7 @@ import {
   ProfileStatsSkeleton,
   CategoriesSkeleton,
 } from '@/components/skeletons/AuthorContentSkeleton';
+import { Dropdown } from '@/components/shared/Dropdown';
 
 const AuthorPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -37,7 +38,8 @@ const AuthorPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // UI State
-  const [displayCount, setDisplayCount] = useState(6);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -105,7 +107,7 @@ const AuthorPage: React.FC = () => {
     });
 
     setFilteredPosts(filtered);
-    setDisplayCount(6); // Reset display count when filters change
+    setCurrentPage(1); // Reset page when filters change
   }, [posts, searchTerm, selectedCategory, sortBy]);
 
   const handlePostClick = (post: PostMetaData) => {
@@ -113,8 +115,9 @@ const AuthorPage: React.FC = () => {
     navigate(`/news/${categoryPath}/${post.slug}`);
   };
 
-  const handleShowMore = () => {
-    setDisplayCount((prev) => Math.min(prev + 6, filteredPosts.length));
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const getUniqueCategories = () => {
@@ -122,8 +125,11 @@ const AuthorPage: React.FC = () => {
     return ['All', ...categories.sort()];
   };
 
-  const visiblePosts = filteredPosts.slice(0, displayCount);
-  const hasMore = filteredPosts.length > displayCount;
+  const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
+  const visiblePosts = filteredPosts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   if (isLoading) {
     return (
@@ -303,31 +309,26 @@ const AuthorPage: React.FC = () => {
                       </div>
 
                       {/* Category Filter */}
-                      <select
+                      <Dropdown
+                        options={getUniqueCategories().map((cat) => ({
+                          value: cat,
+                          label: cat,
+                        }))}
                         value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="px-3 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-sm"
-                      >
-                        {getUniqueCategories().map((category) => (
-                          <option key={category} value={category}>
-                            {category}
-                          </option>
-                        ))}
-                      </select>
+                        onChange={setSelectedCategory}
+                        className="w-40"
+                      />
 
                       {/* Sort */}
-                      <select
+                      <Dropdown
+                        options={[
+                          { value: 'date', label: 'Sort by Date' },
+                          { value: 'title', label: 'Sort by Title' },
+                        ]}
                         value={sortBy}
-                        onChange={(e) =>
-                          setSortBy(e.target.value as 'date' | 'title')
-                        }
-                        className="px-3 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 
-                        text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 
-                        focus:border-transparent text-sm"
-                      >
-                        <option value="date">Sort by Date</option>
-                        <option value="title">Sort by Title</option>
-                      </select>
+                        onChange={setSortBy}
+                        className="w-40"
+                      />
 
                       {/* View Toggle */}
                       <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
@@ -457,24 +458,11 @@ const AuthorPage: React.FC = () => {
                       </AnimatePresence>
                     </motion.div>
 
-                    {/* Load More Button */}
-                    {hasMore && (
-                      <div className="text-center mt-8">
-                        <motion.button
-                          onClick={handleShowMore}
-                          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white 
-                          rounded-lg transition-colors font-medium flex items-center gap-2 mx-auto shadow-md dark:shadow-blue-500/20"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          Load More Articles
-                          <ChevronDown className="w-4 h-4" />
-                          <span className="text-xs bg-blue-500 dark:bg-blue-600 px-2 py-1 rounded-full">
-                            +{Math.min(6, filteredPosts.length - displayCount)}
-                          </span>
-                        </motion.button>
-                      </div>
-                    )}
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
                   </>
                 )}
               </div>

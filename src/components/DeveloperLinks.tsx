@@ -103,7 +103,6 @@ const DeveloperLinks = () => {
             >
               <span
                 className="
-                    -mt-1
                     text-gray-800 dark:text-gray-800
                     group-hover:text-red-700 dark:group-hover:text-orange-600
                     transform group-hover:translate-x-1

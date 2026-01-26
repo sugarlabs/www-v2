@@ -9,14 +9,8 @@ import {
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import { motion } from 'framer-motion';
+import { fadeIn, slideInBottom, floatUpAndFade } from '@/styles/Animations';
 import {
-  fadeIn,
-  slideInBottom,
-  bounce,
-  floatUpAndFade,
-} from '@/styles/Animations';
-import {
-  ArrowRight,
   Grid3X3,
   List,
   Search,
@@ -27,6 +21,21 @@ import {
   X,
 } from 'lucide-react';
 import PostCard from '@/components/PostCard';
+import Pagination from '@/components/Pagination';
+
+const getSavedViewPreference = (): 'grid' | 'list' | 'magazine' => {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const saved = localStorage.getItem('sugarlabs_news_view_preference');
+      if (saved === 'grid' || saved === 'list' || saved === 'magazine') {
+        return saved;
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to read view preference from localStorage:', error);
+  }
+  return 'grid';
+};
 
 const NewsPage: React.FC = () => {
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -39,17 +48,31 @@ const NewsPage: React.FC = () => {
   >({});
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
-  const [displayCount, setDisplayCount] = useState<number>(6);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 9;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'magazine'>(
-    'grid',
+  const [viewMode, setViewModeState] = useState<'grid' | 'list' | 'magazine'>(
+    getSavedViewPreference,
   );
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState<string>(() => {
     const params = new URLSearchParams(location.search);
     return params.get('q') || '';
   });
+
+  const setViewMode = (newMode: 'grid' | 'list' | 'magazine') => {
+    setViewModeState(newMode);
+
+    // Save to localStorage
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem('sugarlabs_news_view_preference', newMode);
+      }
+    } catch (error) {
+      console.error('Failed to save view preference to localStorage:', error);
+    }
+  };
 
   useEffect(() => {
     async function load() {
@@ -80,6 +103,7 @@ const NewsPage: React.FC = () => {
       }
     }
     setActiveCategory('All');
+    setCurrentPage(1);
   }, [categoryParam, categories]);
 
   // Keep searchTerm in sync with the URL (?q=)
@@ -87,7 +111,28 @@ const NewsPage: React.FC = () => {
     const params = new URLSearchParams(location.search);
     const q = params.get('q') || '';
     setSearchTerm(q);
+    setCurrentPage(1);
   }, [location.search]);
+
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'sugarlabs_news_view_preference' && e.newValue) {
+        if (
+          e.newValue === 'grid' ||
+          e.newValue === 'list' ||
+          e.newValue === 'magazine'
+        ) {
+          setViewModeState(e.newValue);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   const sortedCategories = useMemo(() => {
     const others = categories
@@ -112,19 +157,21 @@ const NewsPage: React.FC = () => {
     return posts;
   }, [postsByCategory, activeCategory, searchTerm]);
 
-  const visiblePosts = useMemo(() => {
-    return filteredPosts.slice(0, displayCount);
-  }, [filteredPosts, displayCount]);
+  const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
 
-  const hasMore = filteredPosts.length > displayCount;
+  const visiblePosts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredPosts.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredPosts, currentPage]);
 
   const handleCategoryClick = (cat: string) => {
     setActiveCategory(cat);
+    setCurrentPage(1);
   };
 
-  const handleShowMore = () => {
-    const total = filteredPosts.length;
-    setDisplayCount((prev) => Math.min(prev + 6, total));
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePostClick = (slug: string) => {
@@ -461,34 +508,11 @@ const NewsPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Enhanced Load More Button */}
-            {hasMore && (
-              <div className="flex justify-center">
-                <motion.button
-                  onClick={handleShowMore}
-                  className="relative px-8 py-4 bg-linear-to-r from-blue-600 to-green-600 text-white hover:from-blue-700 hover:to-green-700 cursor-pointer transition-all duration-300 rounded-2xl shadow-lg hover:shadow-2xl font-medium flex items-center gap-3 group"
-                  variants={bounce}
-                  initial="hidden"
-                  animate="visible"
-                  whileHover="hover"
-                  whileTap="tap"
-                >
-                  <div className="relative group rounded-xl overflow-hidden">
-                    <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl"></div>
-                  </div>
-                  <span className="relative z-10">Load More Articles</span>
-                  <ArrowRight
-                    size={18}
-                    className="relative z-10 group-hover:translate-x-1 transition-transform duration-300"
-                  />
-                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold text-gray-800">
-                      {Math.min(6, filteredPosts.length - displayCount)}
-                    </span>
-                  </div>
-                </motion.button>
-              </div>
-            )}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </div>
         </section>
       </main>

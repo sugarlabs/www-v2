@@ -79,6 +79,11 @@ const Contributors: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [contributorSearchTerm, setContributorSearchTerm] =
+    useState<string>('');
+  const [filteredContributors, setFilteredContributors] = useState<
+    Contributor[]
+  >([]);
   const [contributorProgress, setContributorProgress] = useState<number>(0);
 
   const [page, setPage] = useState<number>(1);
@@ -174,6 +179,7 @@ const Contributors: React.FC = () => {
       }
 
       setContributors(allContributors);
+      setFilteredContributors(allContributors);
       setContributorProgress(100);
 
       setVisibleContributors(allContributors.slice(0, 9));
@@ -243,6 +249,36 @@ const Contributors: React.FC = () => {
     setFilteredRepos(filtered);
   }, [searchTerm, repos]);
 
+  useEffect(() => {
+    setContributorSearchTerm('');
+
+    if (!selectedRepo) {
+      setContributors([]);
+      setFilteredContributors([]);
+      return;
+    }
+
+    fetchAllContributors(selectedRepo);
+  }, [selectedRepo, fetchAllContributors]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!contributorSearchTerm.trim()) {
+        setFilteredContributors(contributors);
+        return;
+      }
+
+      const filtered = contributors.filter((contributor) =>
+        contributor.login
+          .toLowerCase()
+          .includes(contributorSearchTerm.toLowerCase()),
+      );
+      setFilteredContributors(filtered);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [contributorSearchTerm, contributors]);
+
   const handleRepoClick = useCallback(
     (repoName: string) => {
       setSelectedRepo(repoName);
@@ -297,7 +333,7 @@ const Contributors: React.FC = () => {
 
     return (
       <>
-        <div className="space-y-3 max-h-[65vh] overflow-y-auto pr-1 -mx-2 px-2">
+        <div className="space-y-3 max-h-[65vh] overflow-y-auto pr-1 -mx-2 px-2 custom-scrollbar">
           <AnimatePresence>
             {filteredRepos.map((repo) => (
               <motion.div
@@ -311,7 +347,7 @@ const Contributors: React.FC = () => {
                 className={`p-4 rounded-lg cursor-pointer transition-all duration-300 border-l-4 ${
                   selectedRepo === repo.name
                     ? 'bg-[#FFF4E6] border-[#D4B062] dark:bg-[#D4B062]/20 shadow-sm'
-                    : 'hover:bg-gray-50 border-transparent hover:border-gray-200 dark:hover:bg-gray-800 dark:hover:border-gray-700'
+                    : 'hover:bg-gray-100 border-transparent hover:border-gray-200 dark:hover:bg-gray-800 dark:hover:border-gray-700'
                 }`}
               >
                 <h3 className="font-medium text-lg text-gray-800 wrap-break-word dark:text-gray-100">
@@ -420,32 +456,40 @@ const Contributors: React.FC = () => {
       );
     }
 
+    if (filteredContributors.length === 0 && contributorSearchTerm.trim()) {
+      return (
+        <div className="flex flex-col items-center justify-center h-64 text-center">
+          <Users className="h-16 w-16 text-gray-300 mb-4 dark:text-gray-600" />
+          <p className="text-gray-500 dark:text-gray-400">
+            No contributors match your search
+          </p>
+        </div>
+      );
+    }
+
     const displayContributors =
       visibleContributors.length > 0 ? visibleContributors : contributors;
 
     return (
       <>
-        <p className="text-sm text-gray-500 mb-4 dark:text-gray-400">
-          {visibleContributors.length < contributors.length
-            ? `Showing ${visibleContributors.length} of ${contributors.length} contributors (loading more...)`
-            : `Showing all ${contributors.length} contributors`}
-        </p>
-        <div className="max-h-[65vh] overflow-y-auto pr-1">
+        <div className="max-h-[65vh] overflow-y-auto pr-1 custom-scrollbar">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           >
-            {displayContributors.map((contributor) => (
+            {(contributorSearchTerm.trim()
+              ? filteredContributors
+              : displayContributors
+            ).map((contributor) => (
               <motion.a
                 key={contributor.id}
                 variants={fadeIn}
-                whileHover={{ scale: 1.05 }}
                 href={contributor.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center p-5 bg-gray-50 rounded-lg transition-all duration-300 hover:bg-[#FFF4E6] hover:shadow-md border border-gray-100 dark:bg-gray-800 dark:hover:bg-[#D4B062]/10 dark:border-gray-700"
+                className="group flex flex-col items-center p-5 bg-gray-100 rounded-lg transition-all duration-300 hover:bg-[#FFF4E6] border border-gray-100 dark:bg-gray-800 dark:hover:bg-[#D4B062]/10 dark:border-gray-700"
               >
                 <div className="relative mb-3">
                   <img
@@ -486,6 +530,8 @@ const Contributors: React.FC = () => {
     loading,
     error,
     contributors,
+    filteredContributors,
+    contributorSearchTerm,
     visibleContributors,
     contributorProgress,
   ]);
@@ -562,7 +608,7 @@ const Contributors: React.FC = () => {
             </div>
             <p className="text-sm text-gray-500 mt-2 text-center dark:text-gray-400">
               Showing {filteredRepos.length} repositories.{' '}
-              {hasMore && 'Scroll to load more.'}
+              {/* {hasMore && 'Scroll to load more.'} */}
             </p>
           </motion.div>
 
@@ -622,17 +668,34 @@ const Contributors: React.FC = () => {
                       'Select a repository'
                     )}
                   </h2>
-                  {loading && (
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Loading contributors...{' '}
-                        {contributorProgress > 0 && `${contributorProgress}%`}
-                      </p>
-                    </div>
-                  )}
                 </div>
               </div>
 
+              {/* Add Contributor Search Bar */}
+              {selectedRepo && (
+                <div className="max-w-md mx-auto mb-6">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Search contributors..."
+                      value={contributorSearchTerm}
+                      onChange={(e) => setContributorSearchTerm(e.target.value)}
+                      // disabled={loading || contributors.length === 0}
+                      className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4B062] shadow-sm bg-white text-gray-700 dark:border-gray-700 dark:bg-[#1a1b26] dark:text-gray-200 dark:placeholder:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 dark:text-gray-500" />
+                  </div>
+
+                  {/* Status line - always stays here below search bar */}
+                  <p className="text-sm text-gray-500 mt-3 text-center dark:text-gray-400">
+                    {loading && contributorProgress > 0
+                      ? `Loading contributors... ${contributorProgress}%`
+                      : contributorSearchTerm.trim()
+                        ? `Showing ${filteredContributors.length} of ${contributors.length} contributors`
+                        : `Showing all ${contributors.length} contributors`}
+                  </p>
+                </div>
+              )}
               {contributorsList}
             </motion.div>
           </div>
