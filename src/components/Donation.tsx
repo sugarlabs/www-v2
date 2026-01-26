@@ -15,6 +15,7 @@ import {
 
 const Donation: React.FC = () => {
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleDonateClick = () => {
     window.open(donationData.url, '_blank');
@@ -146,32 +147,60 @@ const Donation: React.FC = () => {
             className="mt-4 flex justify-center items-center"
             variants={slideInRight}
           >
-            <motion.form
-              action="https://buttondown.com/api/emails/embed-subscribe/sugarlabs"
-              method="post"
-              onSubmit={() => setTimeout(() => setEmail(''), 500)}
-              className="flex"
-            >
-              <input
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-full focus:outline-none bg-white dark:bg-gray-800 text-black dark:text-white"
-                placeholder="Enter your email"
-                type="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <input value="1" type="hidden" name="embed" />
-              <motion.button
-                className="px-6 py-2 bg-red-500 text-white font-bold rounded-r-full shadow-lg hover:bg-red-600 cursor-pointer transition duration-300"
-                variants={buttonAnimation}
-                whileHover="whileHover"
-                whileTap="whileTap"
-                type="submit"
+              <motion.form
+                action="https://buttondown.com/api/emails/embed-subscribe/sugarlabs"
+                method="post"
+                onSubmit={() => {
+                  setIsSubmitting(true);
+                  setTimeout(() => {
+                    setEmail('');
+                    setIsSubmitting(false);
+                  }, 800);
+                }}
+                className="flex items-center justify-center"
               >
-                SUBSCRIBE
-              </motion.button>
-            </motion.form>
+                <div className="flex items-center bg-gray-100 dark:bg-white/10 backdrop-blur-md border border-gray-300 dark:border-white/20 rounded-full p-1.5 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <input
+                    id="newsletter-email"
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isSubmitting}
+                    placeholder="Enter your email"
+                    className="
+                      px-6 py-3
+                      w-72
+                      bg-transparent
+                      text-gray-900 dark:text-white
+                      placeholder-gray-500 dark:placeholder-gray-400
+                      focus:outline-none
+                      border-none
+                    "
+                  />
+                  <input type="hidden" name="embed" value="1" />
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="
+                      px-8 py-3
+                      bg-red-500
+                      text-white font-bold
+                      rounded-full
+                      hover:bg-red-600
+                      transition-all duration-200
+                      disabled:opacity-60
+                      disabled:cursor-not-allowed
+                    "
+                  >
+                    {isSubmitting ? 'SUBSCRIBING…' : 'SUBSCRIBE'}
+                  </motion.button>
+                </div>
+              </motion.form>
           </motion.div>
         </motion.div>
       </div>
