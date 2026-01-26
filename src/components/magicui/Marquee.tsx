@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { ComponentPropsWithoutRef } from 'react';
+import { ComponentPropsWithoutRef, useState } from 'react';
 
 interface MarqueeProps extends ComponentPropsWithoutRef<'div'> {
   /**
@@ -41,6 +41,20 @@ export function Marquee({
   repeat = 4,
   ...props
 }: MarqueeProps) {
+  const [isPaused, setIsPaused] = useState(false);
+
+  const handleTouchStart = () => {
+    if (pauseOnHover) {
+      setIsPaused(true);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (pauseOnHover) {
+      setIsPaused(false);
+    }
+  };
+
   return (
     <div
       {...props}
@@ -52,6 +66,8 @@ export function Marquee({
         },
         className,
       )}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {Array(repeat)
         .fill(0)
@@ -62,6 +78,7 @@ export function Marquee({
               'animate-marquee flex-row': !vertical,
               'animate-marquee-vertical flex-col': vertical,
               'group-hover:[animation-play-state:paused]': pauseOnHover,
+              '[animation-play-state:paused]': pauseOnHover && isPaused,
               '[animation-direction:reverse]': reverse,
             })}
           >
