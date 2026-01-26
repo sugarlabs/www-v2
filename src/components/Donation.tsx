@@ -9,7 +9,7 @@ import {
   slideInRight,
   slideInBottom,
   bounce,
-  staggerContainer
+  staggerContainer,
 } from '@/styles/Animations';
 
 const Donation: React.FC = () => {
@@ -146,30 +146,30 @@ const Donation: React.FC = () => {
             className="mt-4 flex justify-center items-center"
             variants={slideInRight}
           >
-              <motion.form
-                action="https://buttondown.com/api/emails/embed-subscribe/sugarlabs"
-                method="post"
-                onSubmit={() => {
-                  setIsSubmitting(true);
-                  setTimeout(() => {
-                    setEmail('');
-                    setIsSubmitting(false);
-                  }, 800);
-                }}
-                className="flex items-center justify-center"
-              >
-                <div className="flex items-center bg-gray-100 dark:bg-white/10 backdrop-blur-md border border-gray-300 dark:border-white/20 rounded-full p-1.5 shadow-lg hover:shadow-xl transition-all duration-300">
-                  <input
-                    id="newsletter-email"
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={isSubmitting}
-                    placeholder="Enter your email"
-                    className="
+            <motion.form
+              action="https://buttondown.com/api/emails/embed-subscribe/sugarlabs"
+              method="post"
+              onSubmit={() => {
+                setIsSubmitting(true);
+                setTimeout(() => {
+                  setEmail('');
+                  setIsSubmitting(false);
+                }, 800);
+              }}
+              className="flex items-center justify-center"
+            >
+              <div className="flex items-center bg-gray-100 dark:bg-white/10 backdrop-blur-md border border-gray-300 dark:border-white/20 rounded-full p-1.5 shadow-lg hover:shadow-xl transition-all duration-300">
+                <input
+                  id="newsletter-email"
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isSubmitting}
+                  placeholder="Enter your email"
+                  className="
                       px-6 py-3
                       w-72
                       bg-transparent
@@ -178,14 +178,14 @@ const Donation: React.FC = () => {
                       focus:outline-none
                       border-none
                     "
-                  />
-                  <input type="hidden" name="embed" value="1" />
-                  <motion.button
-                    type="submit"
-                    disabled={isSubmitting}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="
+                />
+                <input type="hidden" name="embed" value="1" />
+                <motion.button
+                  type="submit"
+                  disabled={isSubmitting}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="
                       px-8 py-3
                       bg-red-500
                       text-white font-bold
@@ -195,11 +195,11 @@ const Donation: React.FC = () => {
                       disabled:opacity-60
                       disabled:cursor-not-allowed
                     "
-                  >
-                    {isSubmitting ? 'SUBSCRIBING…' : 'SUBSCRIBE'}
-                  </motion.button>
-                </div>
-              </motion.form>
+                >
+                  {isSubmitting ? 'SUBSCRIBING…' : 'SUBSCRIBE'}
+                </motion.button>
+              </div>
+            </motion.form>
           </motion.div>
         </motion.div>
       </div>
