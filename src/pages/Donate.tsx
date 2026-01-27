@@ -74,7 +74,7 @@ const Donate: React.FC = () => {
                 whileTap="tap"
               >
                 <a href={donationData.url} target="_blank" rel="noreferrer">
-                  <button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-700 hover:to-emerald-600 hover:cursor-pointer text-white font-extrabold px-8 py-3 rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(34,197,94,0.6)] transition-all duration-300 transform hover:scale-105 ease-in-out">
+                  <button className="bg-green-600 hover:bg-green-700 cursor-pointer transition-colors text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md">
                     Donate Now
                   </button>
                 </a>
@@ -99,7 +99,7 @@ const Donate: React.FC = () => {
               <img
                 src={Img[0]}
                 alt="Children asking for donations"
-                className="w-full rounded-2xl shadow-lg object-cover object-center aspect-[4/3] transform hover:scale-[1.01] hover:shadow-[0_20px_50px_rgba(34,197,94,0.15)] transition-all duration-500 ease-out"
+                className="w-full rounded-2xl shadow-lg object-cover object-center aspect-[4/3]"
               />
             </motion.div>
           </div>
@@ -113,9 +113,7 @@ const Donate: React.FC = () => {
             viewport={{ once: true, amount: 0.5 }}
           >
             <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">
-              Your{' '}
-              <span className="font-bold text-red-500 text-4xl">Donation</span>{' '}
-              Directly Assists Our Mission
+              Your Donation Directly Assists Our Mission
             </h2>
 
             <div className="prose prose-base sm:prose-lg max-w-none dark:text-gray-300">
@@ -156,7 +154,7 @@ const Donate: React.FC = () => {
               {IMPACT_STATS.map((stat) => (
                 <div
                   key={stat.title}
-                  className="bg-white dark:bg-gray-800 p-5 sm:p-6 rounded-lg shadow-xl border border-gray-100 dark:border-gray-700 hover:-translate-y-2 hover:opacity-90 hover:shadow-[0_10px_30px_rgba(34,197,94,0.1)] transition-all duration-300"
+                  className="bg-white dark:bg-gray-800 p-5 sm:p-6 rounded-lg shadow-md border border-gray-100 dark:border-gray-700"
                 >
                   <div className="text-green-500 text-3xl sm:text-4xl font-bold mb-2 sm:mb-3">
                     {stat.value}
@@ -180,7 +178,7 @@ const Donate: React.FC = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.5 }}
           >
-            <div className="bg-gray-50 dark:bg-gray-800 p-5 sm:p-6 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-2 hover:opacity-90 hover:shadow-[0_10px_30px_rgba(34,197,94,0.1)] transition-all duration-300">
+            <div className="bg-gray-50 dark:bg-gray-800 p-5 sm:p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
               <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-gray-800 dark:text-white">
                 Our Mission
               </h2>
@@ -201,13 +199,13 @@ const Donate: React.FC = () => {
                   href={donationData.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-green-600 hover:text-green-500 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.6)] font-bold inline-flex items-center gap-2 text-sm sm:text-base group transition-all duration-300"
+                  className="text-green-600 hover:text-green-700 font-medium flex items-center text-sm sm:text-base"
                 >
                   Help support our mission
                   <img
                     src={Img[1]}
                     alt="Right Arrow"
-                    className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300 pt-0.5 hover:group-hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.6)] hover:group-hover:text-green-500"
+                    className="h-4 w-4 ml-1"
                   />
                 </a>
               </div>
@@ -227,7 +225,7 @@ const Donate: React.FC = () => {
               Financial Transparency
             </h2>
 
-            <div className="bg-white dark:bg-gray-800 p-5 sm:p-8 rounded-xl shadow-lg hover:-translate-y-2 hover:opacity-90 hover:shadow-[0_10px_30px_rgba(34,197,94,0.1)] transition-all duration-300">
+            <div className="bg-white dark:bg-gray-800 p-5 sm:p-8 rounded-xl shadow-md">
               <p className="mb-5 sm:mb-6 text-sm sm:text-base dark:text-gray-300">
                 Sugar Labs is committed to full financial transparency. As a
                 501(c)(3) nonprofit organization, we make our tax filings
@@ -243,7 +241,7 @@ const Donate: React.FC = () => {
                   <a
                     key={filing.year}
                     href={filing.link}
-                    className="bg-gray-50 hover:cursor-pointer hover:scale-105 ease-in-out hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors p-3 sm:p-4 rounded-lg flex flex-col items-center text-center"
+                    className="bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors p-3 sm:p-4 rounded-lg flex flex-col items-center text-center"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -309,12 +307,12 @@ const Donate: React.FC = () => {
 
             <div className="flex justify-center gap-3 sm:gap-4 flex-wrap">
               <a href={donationData.url} target="_blank" rel="noreferrer">
-                <button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(34,197,94,0.6)] transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer text-base sm:text-lg">
+                <button className="bg-green-600 hover:bg-green-700 cursor-pointer transition-colors text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md text-sm sm:text-base">
                   Make a One-Time Donation
                 </button>
               </a>
               <a href={donationData.urlMonth} target="_blank" rel="noreferrer">
-                <button className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(59,130,246,0.6)] transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer text-base sm:text-lg">
+                <button className="bg-blue-600 hover:bg-blue-700 cursor-pointer transition-colors text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-medium shadow-md text-sm sm:text-base">
                   Become a Monthly Supporter
                 </button>
               </a>
