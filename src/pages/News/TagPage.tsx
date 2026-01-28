@@ -301,13 +301,13 @@ const TagPage: React.FC = () => {
                       />
 
                       {/* View Toggle */}
-                      <div className="flex bg-gray-100 rounded-lg p-1">
+                      <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
                         <button
                           onClick={() => setViewMode('grid')}
                           className={`p-2 rounded-md transition-colors ${
                             viewMode === 'grid'
-                              ? 'bg-white text-blue-600 shadow-sm'
-                              : 'text-gray-600'
+                              ? 'bg-white dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
+                              : 'text-gray-600 dark:text-gray-400 hover:text-blue-600'
                           }`}
                         >
                           <Grid className="w-4 h-4" />
@@ -316,8 +316,8 @@ const TagPage: React.FC = () => {
                           onClick={() => setViewMode('list')}
                           className={`p-2 rounded-md transition-colors ${
                             viewMode === 'list'
-                              ? 'bg-white text-blue-600 shadow-sm'
-                              : 'text-gray-600'
+                              ? 'bg-white dark:bg-blue-600 dark:text-white text-blue-600 shadow-md'
+                              : 'text-gray-600 dark:text-gray-400 hover:text-blue-600'
                           }`}
                         >
                           <List className="w-4 h-4" />

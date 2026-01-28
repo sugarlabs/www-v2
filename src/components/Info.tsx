@@ -201,7 +201,7 @@ const Info: React.FC = () => {
               </motion.h2>
 
               <motion.h4
-                className="text-base sm:text-lg md:text-xl font-bold text-gray-800 dark:text-gray-200"
+                className="text-base sm:text-lg md:text-xl font-bold text-gray-800 dark:text-gray-200 mb-2"
                 variants={subtleRise}
               >
                 Igniting Curiosity through Project Based Learning
@@ -236,7 +236,7 @@ const Info: React.FC = () => {
                   >
                     {windowWidth >= 355 && (
                       <>
-                        <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1 md:mb-2 text-gray-100 font-AnonymousPro">
+                        <h3 className="text-base sm:text-lg font-bold mb-1 text-amber-100 font-AnonymousPro">
                           Project Based Learning
                         </h3>
                         <p className="text-white text-xs sm:text-sm leading-tight sm:leading-snug">
@@ -247,7 +247,7 @@ const Info: React.FC = () => {
                       </>
                     )}
                     {windowWidth < 355 && windowWidth >= 250 && (
-                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-100 font-AnonymousPro">
+                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-amber-100 font-AnonymousPro">
                         Project Based Learning
                       </h3>
                     )}

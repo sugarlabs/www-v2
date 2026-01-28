@@ -39,9 +39,25 @@ const Donate: React.FC = () => {
               whileInView="visible"
               viewport={{ once: true, amount: 0.5 }}
             >
-              <h1 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">
-                Make a Lasting <span className="text-red-500">Impact</span> in
-                Education
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 sm:mb-8 leading-[0.8] overflow-visible">
+                Make a Lasting{' '}
+                <span
+                  className="
+    relative inline-block
+    translate-y-2
+    pb-8 pr-6
+    text-transparent bg-clip-text
+    bg-gradient-to-r from-red-500 to-orange-500
+    font-Caveat font-extrabold
+    text-6xl sm:text-7xl md:text-8xl
+    hover:-translate-y-1 hover:scale-110 hover:rotate-2
+    transition-all duration-300
+    cursor-pointer
+  "
+                >
+                  Impact
+                </span>
+                in Education
               </h1>
 
               <p className="text-gray-700 dark:text-gray-300 mb-6 sm:mb-8 text-base sm:text-lg">
@@ -83,7 +99,7 @@ const Donate: React.FC = () => {
               <img
                 src={Img[0]}
                 alt="Children asking for donations"
-                className="w-full rounded-lg shadow-lg object-cover h-64 sm:h-full"
+                className="w-full rounded-2xl shadow-lg object-cover object-center aspect-[4/3]"
               />
             </motion.div>
           </div>
