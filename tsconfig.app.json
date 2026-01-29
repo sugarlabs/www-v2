@@ -23,7 +23,7 @@
     "noUncheckedSideEffectImports": true,
 
     /* Path Aliases */
-    "baseUrl": ".",
+    "baseUrl": "",
     "paths": {
       "@/*": ["./src/*"]
     }
