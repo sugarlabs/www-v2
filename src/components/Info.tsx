@@ -228,7 +228,7 @@ const Info: React.FC = () => {
                 {/* Card on Top Left */}
                 {windowWidth >= 270 && (
                   <motion.div
-                    className="absolute top-1 left-2 bg-black/60
+                    className="absolute top-3 left-1 md:-translate-x-1/3 bg-black/60
                     backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
                     max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
                     transition-all duration-300 ease-out z-10 border border-white/50"
@@ -257,7 +257,7 @@ const Info: React.FC = () => {
                 {/* Card on Bottom Right */}
                 {windowWidth >= 270 && (
                   <motion.div
-                    className="absolute bottom-1 right-2 bg-black/60
+                    className="absolute bottom-3 right-5 md:translate-x-1/3 bg-black/60
                     backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
                     max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
                     transition-all duration-300 ease-out z-10 border border-white/50"
