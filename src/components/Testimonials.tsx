@@ -62,7 +62,7 @@ const ReviewCard = ({
           <motion.img
             src={img}
             alt={name}
-            className="w-12 h-12 rounded-full border border-gray-300 dark:border-gray-600"
+            className="w-12 h-12 shrink-0 object-cover rounded-full border border-gray-300 dark:border-gray-600 "
             variants={avatarReveal}
             onError={() => setImgError(true)}
           />
