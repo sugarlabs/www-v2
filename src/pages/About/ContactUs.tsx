@@ -57,7 +57,7 @@ const ContactUs = () => {
           variants={fadeIn}
         >
           <div className="max-w-4xl w-4/5 flex flex-col md:flex-row justify-between items-center">
-            <motion.div
+            <motion.div 
               className="md:w-1/2 text-left md:pr-8"
               variants={slideInLeft}
             >
@@ -193,9 +193,9 @@ const ContactUs = () => {
               variants={fadeIn}
             >
               {socialLinks.map((social) => (
-                <div className="flex justify-center">
+                <div key={social.href} className="flex justify-center">
                   <motion.a
-                    key={social.href}
+                    
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
