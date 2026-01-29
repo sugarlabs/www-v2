@@ -332,7 +332,7 @@ const AuthorPage: React.FC = () => {
 
                       {/* View Toggle */}
                       <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
-                        <button 
+                        <button
                           onClick={() => setViewMode('grid')}
                           aria-label="Switch to grid view"
                           title="Grid view"
