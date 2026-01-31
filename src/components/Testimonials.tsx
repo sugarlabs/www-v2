@@ -11,7 +11,6 @@ import {
   marqueeContainer,
 } from '@/styles/Animations';
 
-
 const ReviewCard = ({
   img,
   name,
