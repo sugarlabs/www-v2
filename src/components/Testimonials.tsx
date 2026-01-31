@@ -32,11 +32,8 @@ const ReviewCard = ({
 
   return (
     <motion.div
-      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-md border border-gray-200 dark:border-gray-700 m-2 justify-between"
-      variants={testimonialCard}
-      initial="hidden"
-      whileInView="visible"
-      whileHover="hover"
+      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[95vw] sm:max-w-[350px] shadow-md border border-gray-200 dark:border-gray-700 m-2 justify-between"
+
       viewport={{ once: true, amount: 0.1 }}
       transition={{ delay }}
     >
