@@ -193,9 +193,8 @@ const ContactUs = () => {
               variants={fadeIn}
             >
               {socialLinks.map((social) => (
-                <div className="flex justify-center">
+                <div key={social.href} className="flex justify-center">
                   <motion.a
-                    key={social.href}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
