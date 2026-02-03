@@ -40,6 +40,54 @@ interface Contributor {
   contributions: number;
 }
 
+const handleApiError = (
+  error: any,
+  context: 'repositories' | 'contributors',
+) => {
+  if (axios.isAxiosError(error)) {
+    // Check for rate limit (GitHub returns 403 with specific headers)
+    if (error.response?.status === 403) {
+      const remaining = error.response.headers['x-ratelimit-remaining'];
+
+      if (remaining === '0') {
+        const resetTime = error.response.headers['x-ratelimit-reset'];
+        const resetDate = resetTime
+          ? new Date(parseInt(resetTime) * 1000).toLocaleTimeString()
+          : 'approximately 1 hour';
+
+        return {
+          type: 'rate_limit' as const,
+          message: `Too many requests. Please try again after ${resetDate}.`,
+        };
+      }
+    }
+
+    // Server errors (5xx)
+    if (error.response?.status && error.response.status >= 500) {
+      return {
+        type: 'server' as const,
+        message:
+          'The service is temporarily unavailable. Please try again in a few minutes.',
+      };
+    }
+
+    // Network errors (no response)
+    if (!error.response) {
+      return {
+        type: 'network' as const,
+        message:
+          'Unable to connect. Please check your internet connection and try again.',
+      };
+    }
+  }
+
+  // Generic error fallback
+  return {
+    type: 'generic' as const,
+    message: `Unable to load ${context}. Please try again later.`,
+  };
+};
+
 // Skeleton Loader Components.
 const RepositorySkeleton: React.FC = () => (
   <div className="p-4 rounded-lg border-l-4 border-transparent animate-pulse">
@@ -78,7 +126,14 @@ const Contributors: React.FC = () => {
   );
   const [loading, setLoading] = useState<boolean>(true);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [repoError, setRepoError] = useState<{
+    type: 'rate_limit' | 'server' | 'network' | 'generic';
+    message: string;
+  } | null>(null);
+  const [contributorError, setContributorError] = useState<{
+    type: 'rate_limit' | 'server' | 'network' | 'generic';
+    message: string;
+  } | null>(null);
   const [contributorSearchTerm, setContributorSearchTerm] =
     useState<string>('');
   const [filteredContributors, setFilteredContributors] = useState<
@@ -100,7 +155,7 @@ const Contributors: React.FC = () => {
       } else {
         setRepoLoading(true);
       }
-      setError(null);
+      setRepoError(null);
 
       try {
         const response = await axios.get(
@@ -125,7 +180,8 @@ const Contributors: React.FC = () => {
         setPage(pageNum + 1);
       } catch (error) {
         console.error('Error fetching repositories:', error);
-        setError('Failed to load repositories. Please try again later.');
+        const errorInfo = handleApiError(error, 'repositories');
+        setRepoError(errorInfo);
       } finally {
         if (isLoadMore) {
           setIsLoadingMore(false);
@@ -146,7 +202,7 @@ const Contributors: React.FC = () => {
     if (!repoName) return;
 
     setLoading(true);
-    setError(null);
+    setContributorError(null);
     setVisibleContributors([]);
     setContributorProgress(0);
 
@@ -199,7 +255,8 @@ const Contributors: React.FC = () => {
       }
     } catch (error) {
       console.error('Error fetching contributors:', error);
-      setError('Failed to load contributors. Please try again later.');
+      const errorInfo = handleApiError(error, 'contributors');
+      setContributorError(errorInfo);
     } finally {
       setLoading(false);
     }
@@ -307,10 +364,53 @@ const Contributors: React.FC = () => {
       );
     }
 
-    if (error) {
+    if (repoError) {
       return (
-        <div className="text-red-500 text-center py-10 dark:text-red-400">
-          {error}
+        <div className="rounded-xl bg-rose-50 border border-rose-200 p-6 text-center my-4 dark:bg-rose-950/20 dark:border-rose-900/40">
+          <div className="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-3 dark:bg-rose-900/40">
+            <svg
+              className="w-6 h-6 text-rose-600 dark:text-pink-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+          </div>
+          <h3 className="text-rose-950 font-semibold mb-1 dark:text-rose-100">
+            {repoError.type === 'rate_limit'
+              ? 'Rate Limit Exceeded'
+              : 'Unable to load repositories'}
+          </h3>
+          <p className="text-rose-800/80 text-sm mb-4 dark:text-rose-200/70">
+            {repoError.message}
+          </p>
+          <div className="flex gap-3 justify-center flex-wrap">
+            {repoError.type !== 'rate_limit' && (
+              <button
+                onClick={() => {
+                  setRepoError(null);
+                  fetchRepos(1);
+                }}
+                className="px-4 py-2 bg-white border border-rose-300 rounded-lg text-rose-700 hover:bg-rose-50 hover:scale-105 hover:shadow-md transition-colors text-sm font-medium dark:bg-rose-900/30 dark:border-rose-800 dark:text-rose-200 dark:hover:bg-rose-900/50 dark:hover:scale-105 dark:hover:shadow-[0_0_15px_rgba(225,29,72,0.2)]"
+              >
+                Try Again
+              </button>
+            )}
+            {repoError.type === 'rate_limit' && (
+              <button
+                onClick={() => (window.location.href = '/')}
+                className="px-4 py-2 bg-[#2563eb] border border-[#2563eb] rounded-lg text-white text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-md hover:bg-[#1d4ed8] hover:border-[#1d4ed8] dark:bg-[#3b82f6] dark:border-[#3b82f6] dark:hover:bg-[#2563eb] dark:hover:border-[#2563eb] dark:hover:shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+              >
+                Go to Homepage
+              </button>
+            )}
+          </div>
         </div>
       );
     }
@@ -392,7 +492,7 @@ const Contributors: React.FC = () => {
     );
   }, [
     repoLoading,
-    error,
+    repoError,
     repos,
     filteredRepos,
     selectedRepo,
@@ -401,6 +501,7 @@ const Contributors: React.FC = () => {
     isLoadingMore,
     hasMore,
     page,
+    fetchRepos,
   ]);
 
   const contributorsList = useMemo(() => {
@@ -437,10 +538,55 @@ const Contributors: React.FC = () => {
       );
     }
 
-    if (error) {
+    if (contributorError) {
       return (
-        <div className="text-red-500 text-center py-10 dark:text-red-400">
-          {error}
+        <div className="rounded-xl bg-rose-50 border border-rose-200 p-6 text-center my-4 dark:bg-rose-950/20 dark:border-rose-900/40">
+          <div className="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-3 dark:bg-rose-900/40">
+            <svg
+              className="w-6 h-6 text-rose-600 dark:text-pink-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+          </div>
+          <h3 className="text-rose-950 font-semibold mb-1 dark:text-rose-100">
+            {contributorError.type === 'rate_limit'
+              ? 'Rate Limit Exceeded'
+              : 'Unable to load contributors'}
+          </h3>
+          <p className="text-rose-800/80 text-sm mb-4 dark:text-rose-200/70">
+            {contributorError.message}
+          </p>
+          <div className="flex gap-3 justify-center flex-wrap">
+            {contributorError.type !== 'rate_limit' && (
+              <button
+                onClick={() => {
+                  setContributorError(null);
+                  if (selectedRepo) {
+                    fetchAllContributors(selectedRepo);
+                  }
+                }}
+                className="px-4 py-2 bg-white border border-rose-300 rounded-lg text-rose-700 hover:bg-rose-50 hover:scale-105 hover:shadow-md transition-colors text-sm font-medium dark:bg-rose-900/30 dark:border-rose-800 dark:text-rose-200 dark:hover:bg-rose-900/50 dark:hover:scale-105 dark:hover:shadow-[0_0_15px_rgba(225,29,72,0.2)]"
+              >
+                Try Again
+              </button>
+            )}
+            {contributorError.type === 'rate_limit' && (
+              <button
+                onClick={() => (window.location.href = '/')}
+                className="px-4 py-2 bg-[#2563eb] border border-[#2563eb] rounded-lg text-white text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-md hover:bg-[#1d4ed8] hover:border-[#1d4ed8] dark:bg-[#3b82f6] dark:border-[#3b82f6] dark:hover:bg-[#2563eb] dark:hover:border-[#2563eb] dark:hover:shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+              >
+                Go to Homepage
+              </button>
+            )}
+          </div>
         </div>
       );
     }
@@ -528,12 +674,13 @@ const Contributors: React.FC = () => {
   }, [
     selectedRepo,
     loading,
-    error,
+    contributorError,
     contributors,
     filteredContributors,
     contributorSearchTerm,
     visibleContributors,
     contributorProgress,
+    fetchAllContributors,
   ]);
 
   return (
@@ -608,7 +755,6 @@ const Contributors: React.FC = () => {
             </div>
             <p className="text-sm text-gray-500 mt-2 text-center dark:text-gray-400">
               Showing {filteredRepos.length} repositories.{' '}
-              {/* {hasMore && 'Scroll to load more.'} */}
             </p>
           </motion.div>
 
@@ -680,7 +826,6 @@ const Contributors: React.FC = () => {
                       placeholder="Search contributors..."
                       value={contributorSearchTerm}
                       onChange={(e) => setContributorSearchTerm(e.target.value)}
-                      // disabled={loading || contributors.length === 0}
                       className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4B062] shadow-sm bg-white text-gray-700 dark:border-gray-700 dark:bg-[#1a1b26] dark:text-gray-200 dark:placeholder:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 dark:text-gray-500" />
