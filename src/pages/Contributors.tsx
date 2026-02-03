@@ -41,7 +41,7 @@ interface Contributor {
 }
 
 const handleApiError = (
-  error: any,
+  error: unknown,
   context: 'repositories' | 'contributors',
 ) => {
   if (axios.isAxiosError(error)) {
