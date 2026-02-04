@@ -56,11 +56,11 @@ const PrinciplesSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="rounded-lg overflow-hidden shadow-lg relative">
+          <div className="rounded-lg overflow-hidden shadow-lg relative group">
               <img
                 src={principlesContent.featuredImage}
                 alt="Our Principles"
-                className="w-full h-[350px] object-cover"
+                className="w-full h-[350px] object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-80"></div>
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
@@ -72,7 +72,8 @@ const PrinciplesSection = () => {
                   Values that drive our organization forward
                 </p>
               </div>
-            </div>
+            </div> 
+
           </motion.div>
         </div>
 
