@@ -73,10 +73,6 @@ const PrinciplesSection = () => {
                 </p>
               </div>
             </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> 2e05de6 (chore: fix formatting)
           </motion.div>
         </div>
 
