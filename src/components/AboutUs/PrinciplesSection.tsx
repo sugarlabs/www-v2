@@ -56,7 +56,7 @@ const PrinciplesSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-          <div className="rounded-lg overflow-hidden shadow-lg relative group">
+            <div className="rounded-lg overflow-hidden shadow-lg relative group">
               <img
                 src={principlesContent.featuredImage}
                 alt="Our Principles"
@@ -73,7 +73,10 @@ const PrinciplesSection = () => {
                 </p>
               </div>
             </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2e05de6 (chore: fix formatting)
           </motion.div>
         </div>
 
