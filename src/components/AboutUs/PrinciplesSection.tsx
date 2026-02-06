@@ -72,7 +72,7 @@ const PrinciplesSection = () => {
                   Values that drive our organization forward
                 </p>
               </div>
-            </div> 
+            </div>
 
           </motion.div>
         </div>
