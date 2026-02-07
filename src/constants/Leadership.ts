@@ -92,4 +92,15 @@ export const directors: Director[] = [
       wiki: 'https://wiki.sugarlabs.org/go/User:Walter',
     },
   },
+  {
+    id: 7,
+    name: 'Krish Pandya',
+    position: 'Board Member, Sugar Labs',
+    bio: 'Krish Pandya is an open source contributor with Sugar Labs, where he works on modernizing core infrastructure, including migration to GTK4. His interests span computer vision research, developer tooling, and building robust systems. As a board member, he aims to strengthen Sugar Labs technical foundations and long-term sustainability.',
+    imageUrl: 'assets/Images/BoardMembers/krish.webp',
+    socialLinks: {
+      github: 'https://github.com/MostlyKIGuess',
+      linkedin: 'https://www.linkedin.com/in/krish-pandya-020aaa261/',
+    },
+  },
 ];
