@@ -173,13 +173,6 @@ const PromoBanner: React.FC<PromoBannerProps> = ({
                       >
                         {currentBanner.title}
                       </p>
-                      {currentBanner.description && (
-                        <p
-                          className={`text-xs sm:text-sm ${styles.text} opacity-80 mt-0.5 line-clamp-2 sm:line-clamp-none`}
-                        >
-                          {currentBanner.description}
-                        </p>
-                      )}
                     </div>
 
                     {shouldRotate && (
