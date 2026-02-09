@@ -1,47 +1,81 @@
 ---
 title: "Removing an Outdated Banner from the Sugar Labs Website"
-excerpt: "Contributor Divyanshi Jadon shares her experience removing an outdated banner excerpt and YouTube reminder button to improve the website UI."
+excerpt: "Contributor Divyanshi Jadon shares her experience removing an outdated banner and YouTube reminder button to improve the website UI."
 category: "DEVELOPER NEWS"
 date: "2026-02-09"
 slug: "removing-outdated-banner-from-sugar-labs"
 author: "@/constants/MarkdownFiles/authors/divyanshi-jadon.md"
 tags: "frontend,ui,cleanup,Sugar Labs"
-image: "assets/Images/banner-cleanup.png"
+image: "assets/Images/removed-banner.webp"
 ---
-
-<!-- markdownlint-disable -->
 
 # Removing an Outdated Banner from the Sugar Labs Website
 
-## Introduction
-Sugar Labs is an open-source community dedicated to building educational software that makes learning playful and accessible. As part of my contribution, I worked on improving the Sugar Labs website by removing outdated UI content. This blog post shares the problem I encountered,
-how I fixed it, and what I learned from the experience.
-Repository: [https://github.com/sugarlabs/www-v2](https://github.com/sugarlabs/www-v2)
+## 🚀 Introduction
+Sugar Labs is an open-source community dedicated to creating playful and accessible educational software.  
 
-## The Problem
-While exploring the Sugar Labs GitHub issues, I picked up an issue that was already labeled and ready to be worked on. The issue involved an
-outdated banner excerpt on the homepage, including a “Subscribe for reminders” button that redirected users to YouTube and was no longer aligned with the project’s goals.
+As part of my contribution, I worked on **improving the Sugar Labs website** by removing outdated UI content.  
 
-## Debugging and Solution
-I referred to the issue description on GitHub to understand the expected behavior before tracing the banner’s source in the codebase. After tracing how the excerpt was rendered, I confirmed that the banner was no longer required.
+This blog post shares:  
+- The problem I encountered  
+- How I fixed it  
+- Lessons learned from the experience  
 
-To resolve the issue:
-- I removed the outdated excerpt from the relevant markdown metadata.
-- I removed the “Subscribe for reminders” button and its YouTube link.
-- I verified that removing the banner did not affect the layout or other components of the homepage.
+Repository: [Sugar Labs Website GitHub](https://github.com/sugarlabs/www-v2)
 
-After testing across different screen sizes, I confirmed that the UI remained consistent and clean.
+---
 
-## Challenges and Takeaways
-One challenge was ensuring that the removal of the banner did not break any shared layout styles or dependencies.
+## 🛑 The Problem
+While exploring GitHub issues, I found one labeled **“ready to be worked on”** that involved:  
+- An **outdated banner excerpt** on the homepage  
+- A **“Subscribe for reminders” button** redirecting to YouTube  
+- Misalignment with the project’s current goals  
 
-This experience taught me:
-- The importance of reviewing legacy UI content
-- How small UI cleanups can significantly improve user experience
-- The value of testing changes carefully, even for simple fixes
+The banner was no longer useful and could confuse users.
 
-## Impact and Conclusion
-Removing the outdated banner improved clarity and usability of the Sugar Labs website. Although this was a small contribution, it helped align
-the interface with the project’s current goals and reduced user confusion.
+---
 
-By sharing my experience, I hope to encourage other contributors to get involved with Sugar Labs and make meaningful improvements through open-source collaboration.
+## 🛠️ Debugging and Solution
+Here’s how I approached the problem:
+
+1. **Reviewed the GitHub issue** to understand expected behavior.  
+2. **Traced the banner’s source** in the codebase.  
+3. **Confirmed the banner was no longer needed.**  
+
+**Steps to resolve:**
+- Removed the outdated excerpt from the markdown metadata.  
+- Deleted the “Subscribe for reminders” button and YouTube link.  
+- Verified that the homepage layout remained consistent.  
+- Tested across **desktop, tablet, and mobile** for responsive design.  
+
+✅ Result: The website UI is now cleaner and up-to-date.
+
+---
+
+## ⚠️ Challenges and Takeaways
+**Challenges:**  
+- Ensuring that removal of the banner **did not break layout styles or dependencies**.  
+
+**Key lessons learned:**  
+- Reviewing legacy UI content is crucial for maintaining a clean interface.  
+- Even **small UI cleanups** can significantly improve user experience.  
+- Always **test changes carefully**, even for simple fixes.
+
+---
+
+## 🌟 Impact and Conclusion
+By removing the outdated banner:  
+- The homepage is **clearer and more user-friendly**  
+- The UI aligns with current **project goals**  
+- User confusion is reduced  
+
+Even small contributions like this help maintain a **professional, polished website** and encourage other contributors to get involved with Sugar Labs.
+
+---
+
+### 💡 Tips for Contributors
+If you want to improve the website like I did:  
+- Check GitHub issues labeled **“ready to be worked on”**  
+- Focus on small, visible changes first (UI text, banners, buttons)  
+- Test changes across devices and browsers  
+- Document your process in a **blog post** to share with the community
