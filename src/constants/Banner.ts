@@ -59,16 +59,6 @@ export const bannerConfigs = {
     theme: 'success' as const,
   },
 
-  webinar: {
-    title: 'Live online events',
-    description:
-      'Join us Fridays, starting 4/25/25 at 17:00 UTC (1:00pm EDT) to celebrate our website launch and learn more about Sugar Labs.',
-    buttonText: 'Subscribe for reminders',
-    buttonLink: 'https://www.youtube.com/@SugarlabsOrg-EN',
-    theme: 'info' as const,
-    isExternalLink: true,
-  },
-
   feedback: {
     title: 'We value your feedback',
     description: 'Take our short survey and help us improve your experience.',
