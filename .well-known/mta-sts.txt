@@ -1,5 +1,0 @@
-version: STSv1
-mode: enforce
-mx: sunjammer.sugarlabs.org
-mx: *.sugarlabs.org
-max_age: 86400
