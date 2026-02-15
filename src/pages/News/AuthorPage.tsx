@@ -45,6 +45,12 @@ const AuthorPage: React.FC = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'date' | 'title'>('date');
 
+  const hasAuthorAbout =
+    author?.content &&
+    author.content
+      .replace(/<!--[\s\S]*?-->/g, '') // removes HTML comments
+      .trim().length > 0;
+
   useEffect(() => {
     const loadAuthorData = async () => {
       if (!slug) return;
@@ -279,9 +285,11 @@ const AuthorPage: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               {/* About Section */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl dark:shadow-black/20 p-4 sm:p-6 lg:p-8 mb-6 lg:mb-8">
-                <MarkdownRenderer content={author.content} />
-              </div>
+              {hasAuthorAbout && (
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl dark:shadow-black/20 p-4 sm:p-6 lg:p-8 mb-6 lg:mb-8">
+                  <MarkdownRenderer content={author.content} />
+                </div>
+              )}
 
               {/* Articles Section */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl dark:shadow-black/20 p-4 sm:p-6 lg:p-8">
