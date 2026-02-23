@@ -26,6 +26,8 @@ import Matrix from '@/pages/Matrix';
 import NotFoundPage from '@/pages/NotFoundPage';
 import Contributors from '@/pages/Contributors';
 import AuthorsPage from '@/pages/News/AuthorsPage';
+import Feedback from '@/pages/About/Feedback';
+import path from 'node:path';
 
 const router = createBrowserRouter([
   ...redirectRoutes,
@@ -56,6 +58,8 @@ const router = createBrowserRouter([
   { path: '/flathub', element: <FlatHubPage /> },
   { path: '/contact-us/:matrix', element: <Matrix /> },
   { path: '/profiles', element: <Contributors /> },
+  { path: '/feedback' ,element: <Feedback /> },
+  
   { path: '*', element: <NotFoundPage /> },
 ]);
 
