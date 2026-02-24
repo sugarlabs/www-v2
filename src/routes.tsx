@@ -27,7 +27,7 @@ import NotFoundPage from '@/pages/NotFoundPage';
 import Contributors from '@/pages/Contributors';
 import AuthorsPage from '@/pages/News/AuthorsPage';
 import Feedback from '@/pages/About/Feedback';
-import path from 'node:path';
+
 
 const router = createBrowserRouter([
   ...redirectRoutes,

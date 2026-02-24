@@ -89,5 +89,5 @@ export const quickLinks = [
   { to: '/donate', text: 'Donate to Sugar Labs' },
   { to: '/leadership', text: 'Leadership and Governance' },
   { to: '/contact-us', text: 'Contact Us' },
-  {  to: "/feedback", text: "Feedback" },
+  { to: '/feedback', text: 'Feedback' },
 ];
