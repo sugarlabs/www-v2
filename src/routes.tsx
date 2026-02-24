@@ -28,7 +28,6 @@ import Contributors from '@/pages/Contributors';
 import AuthorsPage from '@/pages/News/AuthorsPage';
 import Feedback from '@/pages/About/Feedback';
 
-
 const router = createBrowserRouter([
   ...redirectRoutes,
   { path: '/', element: <MainPage /> },
@@ -58,8 +57,8 @@ const router = createBrowserRouter([
   { path: '/flathub', element: <FlatHubPage /> },
   { path: '/contact-us/:matrix', element: <Matrix /> },
   { path: '/profiles', element: <Contributors /> },
-  { path: '/feedback' ,element: <Feedback /> },
-  
+  { path: '/feedback', element: <Feedback /> },
+
   { path: '*', element: <NotFoundPage /> },
 ]);
 
