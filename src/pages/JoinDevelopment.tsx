@@ -39,7 +39,17 @@ const JoinDevelopment = () => {
             link to our Code of Conduct.
           </p>
           <p className="text-lg text-gray-700 dark:text-gray-300 font-[Inter] mt-4 leading-relaxed font-semibold">
-            Before getting your hands in the codebase, we highly encourage you to <a href="https://musicblocks.sugarlabs.org/" target="_blank" rel="noopener noreferrer" className="text-red-600 dark:text-red-400 hover:underline">try MusicBlocks</a> and experience the project from a user's perspective first!
+            Before getting your hands in the codebase, we highly encourage you
+            to{' '}
+            <a
+              href="https://musicblocks.sugarlabs.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-red-600 dark:text-red-400 hover:underline"
+            >
+              try MusicBlocks
+            </a>{' '}
+            and experience the project from a user's perspective first!
           </p>
         </motion.div>
 
