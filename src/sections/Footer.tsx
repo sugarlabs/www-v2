@@ -147,12 +147,12 @@ const Footer = () => {
           </div>
 
           {/* Bottom Navigation */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 py-6 sm:py-8 border-t border-gray-800">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 py-6 sm:py-8 border-t border-gray-800">
             {quickLinks.map((link) => (
               <Link
                 key={link.to}
                 to={`${link.to}`}
-                className="hover:text-white transition-all duration-300 text-xs sm:text-sm"
+                className="hover:text-white transition-all duration-300 text-xs sm:text-sm text-center justify-self-center"
               >
                 {link.text}
               </Link>

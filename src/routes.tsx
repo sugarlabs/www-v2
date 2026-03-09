@@ -26,6 +26,7 @@ import Matrix from '@/pages/Matrix';
 import NotFoundPage from '@/pages/NotFoundPage';
 import Contributors from '@/pages/Contributors';
 import AuthorsPage from '@/pages/News/AuthorsPage';
+import Feedback from '@/pages/feedback';
 
 const router = createBrowserRouter([
   ...redirectRoutes,
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
   { path: '/about-us', element: <AboutUs /> },
   { path: '/leadership', element: <Leadership /> },
   { path: '/contact-us', element: <ContactUs /> },
+  { path: '/feedback', element: <Feedback /> },
   { path: '/faqs', element: <FAQs /> },
   { path: '/news', element: <NewsPage /> },
   { path: '/news/:category', element: <NewsPage /> },
