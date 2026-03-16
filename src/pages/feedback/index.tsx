@@ -1,16 +1,16 @@
-import { useState } from "react";
-import Header from "@/sections/Header";
-import Footer from "@/sections/Footer";
-import toast from "react-hot-toast";
-import { motion } from "framer-motion";
+import { useState } from 'react';
+import Header from '@/sections/Header';
+import Footer from '@/sections/Footer';
+import toast from 'react-hot-toast';
+import { motion } from 'framer-motion';
 
 const ratingLabels = [
-  "",
-  "Poor",
-  "Needs Improvement",
-  "Good",
-  "Very Good",
-  "Excellent",
+  '',
+  'Poor',
+  'Needs Improvement',
+  'Good',
+  'Very Good',
+  'Excellent',
 ];
 
 const Feedback = () => {
@@ -19,18 +19,18 @@ const Feedback = () => {
   const [charCount, setCharCount] = useState(0);
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    category: "",
-    message: "",
+    name: '',
+    email: '',
+    category: '',
+    message: '',
   });
 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
-    if (e.target.name === "message") {
+    if (e.target.name === 'message') {
       setCharCount(e.target.value.length);
     }
 
@@ -48,13 +48,13 @@ const Feedback = () => {
       rating,
     });
 
-    toast.success("Thank you for your feedback!");
+    toast.success('Thank you for your feedback!');
 
     setFormData({
-      name: "",
-      email: "",
-      category: "",
-      message: "",
+      name: '',
+      email: '',
+      category: '',
+      message: '',
     });
 
     setCharCount(0);
@@ -72,47 +72,44 @@ const Feedback = () => {
       >
         {/* Title */}
         <motion.div
-         initial={{ opacity: 0, y: 40 }}
-         animate={{ opacity: 1, y: 0 }}
-         transition={{ duration: 0.6 }}
-         className="relative max-w-4xl mx-auto text-center mb-20"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="relative max-w-4xl mx-auto text-center mb-20"
         >
-          
           {/* Decorative background glow */}
           <div className="absolute -top-20 -left-20 w-72 h-72 bg-purple-400/20 blur-3xl rounded-full"></div>
           <div className="absolute -top-10 -right-20 w-72 h-72 bg-blue-400/20 blur-3xl rounded-full"></div>
-            
+
           {/* Icon */}
-          <div className="text-5xl mb-6">
-          💬
-          </div>
-            
+          <div className="text-5xl mb-6">💬</div>
+
           {/* Title */}
-          <h1 className="text-5xl font-extrabold mb-6
+          <h1
+            className="text-5xl font-extrabold mb-6
           bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500
-          bg-clip-text text-transparent">
-          
-          Website Feedback
-            
+          bg-clip-text text-transparent"
+          >
+            Website Feedback
           </h1>
-            
+
           {/* Description */}
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            
-          Help us improve the <span className="font-semibold text-gray-800 dark:text-white">Sugar Labs</span> website.  
-          Share your <span className="text-purple-500 font-semibold">experience</span>,  
-          <span className="text-blue-500 font-semibold"> suggestions</span>, or  
-          report usability issues.
-            
-          Your feedback helps us build a better platform for the community.
-            
+            Help us improve the{' '}
+            <span className="font-semibold text-gray-800 dark:text-white">
+              Sugar Labs
+            </span>{' '}
+            website. Share your{' '}
+            <span className="text-purple-500 font-semibold">experience</span>,
+            <span className="text-blue-500 font-semibold"> suggestions</span>,
+            or report usability issues. Your feedback helps us build a better
+            platform for the community.
           </p>
-            
+
           {/* Decorative divider */}
           <div className="mt-10 flex justify-center">
-          <div className="h-1 w-24 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+            <div className="h-1 w-24 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
           </div>
-            
         </motion.div>
 
         {/* Enhanced Community Stats */}
@@ -205,8 +202,8 @@ const Feedback = () => {
                   className={`transition transform duration-200
                   ${
                     (hover || rating) >= star
-                      ? "text-yellow-400 scale-110 drop-shadow-lg"
-                      : "text-gray-300 dark:text-gray-600"
+                      ? 'text-yellow-400 scale-110 drop-shadow-lg'
+                      : 'text-gray-300 dark:text-gray-600'
                   }
                   hover:scale-125 hover:rotate-6`}
                 >
@@ -324,6 +321,5 @@ const Feedback = () => {
     </div>
   );
 };
-
 
 export default Feedback;
