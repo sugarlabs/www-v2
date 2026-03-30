@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import logo from '/assets/Icons/logo.svg';
+const logo = `${import.meta.env.BASE_URL}assets/Icons/logo.svg`;
 import NavDropdown from '@/sections/NavDropdown';
 import { navigationData } from '@/constants/Header';
 import DarkModeToggle from '@/components/shared/DarkModeToggle';
