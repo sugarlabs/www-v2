@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-const logo = `${import.meta.env.BASE_URL}assets/Icons/logo.svg`;
 import NavDropdown from '@/sections/NavDropdown';
 import { navigationData } from '@/constants/Header';
 import DarkModeToggle from '@/components/shared/DarkModeToggle';
+
+const LOGO_PATH = '/assets/Icons/logo.svg';
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -80,7 +81,7 @@ const Header: React.FC = () => {
               onClick={handleNavigation}
             >
               <img
-                src={logo}
+                src={LOGO_PATH}
                 alt="Sugar Labs"
                 className="h-8 md:h-12 w-auto transition-transform hover:scale-105"
               />
