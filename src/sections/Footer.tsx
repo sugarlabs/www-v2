@@ -88,6 +88,7 @@ const Footer = () => {
                     rel="noopener noreferrer"
                     aria-label={`Visit our ${social.name} page`}
                     className="group relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 
+                  
                       bg-gray-200/30 dark:bg-gray-800/30 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-xl 
                       transition-all duration-300 ease-in-out
                       hover:scale-110
@@ -96,13 +97,14 @@ const Footer = () => {
                       before:opacity-0 before:transition-opacity before:duration-300
                       hover:before:opacity-100 hover:shadow-lg hover:shadow-blue-500/10"
                   >
+                    
                     <img
                       src={social.icon}
                       alt={social.name}
                       width={18}
                       height={18}
                       className="relative z-10 transition-transform duration-300
-                        filter brightness-0 invert opacity-90 
+                        filter brightness-0 dark:invert opacity-90 
                         group-hover:opacity-100 group-hover:scale-110
                         sm:w-5 sm:h-5"
                     />
@@ -130,9 +132,9 @@ const Footer = () => {
                   src={GithubIcon}
                   alt="GitHub"
                   width={18}
-                  className="filter brightness-0 invert"
+                  className="filter brightness-0 dark:invert"
                 />
-                <span className="text-gray-900 dark:text-white">Contribute to this website</span>
+                <span className="text-gray-800 dark:text-white">Contribute to this website</span>
               </a>
 
               {/* Organization Info */}
