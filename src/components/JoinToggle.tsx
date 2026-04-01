@@ -26,7 +26,7 @@ const JoinToggle = () => {
             className="text-4xl md:text-[5rem] font-extralight pb-1 md:pb-2 cursor-pointer transition-colors"
             initial={{ opacity: 0.6, scale: 0.95 }}
             animate={{
-              color: isVolunteerPage ? '#EF4444' : '#D1D5DB',
+              color: isVolunteerPage ? '#EF4444' : 'text-gray-500 dark:text-gray-400',
               opacity: isVolunteerPage ? 1 : 0.7,
               scale: isVolunteerPage ? 1.1 : 1,
             }}
@@ -44,7 +44,7 @@ const JoinToggle = () => {
             className="text-4xl md:text-[5rem] font-extralight pt-1 md:pt-2 cursor-pointer transition-colors"
             initial={{ opacity: 0.6, scale: 0.95 }}
             animate={{
-              color: isDevPage ? '#EF4444' : '#D1D5DB',
+              color: isDevPage ? '#EF4444' : 'text-gray-500 dark:text-gray-400',
               opacity: isDevPage ? 1 : 0.7,
               scale: isDevPage ? 1.1 : 1,
             }}
