@@ -97,7 +97,6 @@ const Footer = () => {
                       before:opacity-0 before:transition-opacity before:duration-300
                       hover:before:opacity-100 hover:shadow-lg hover:shadow-blue-500/10"
                   >
-                    
                     <img
                       src={social.icon}
                       alt={social.name}
@@ -134,7 +133,9 @@ const Footer = () => {
                   width={18}
                   className="filter brightness-0 dark:invert"
                 />
-                <span className="text-gray-800 dark:text-white">Contribute to this website</span>
+                <span className="text-gray-800 dark:text-white">
+                  Contribute to this website
+                </span>
               </a>
 
               {/* Organization Info */}
