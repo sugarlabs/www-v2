@@ -173,7 +173,10 @@ const NewsPage: React.FC = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     if (articlesRef.current) {
-      articlesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      articlesRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
     }
   };
 
