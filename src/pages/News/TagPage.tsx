@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -33,6 +33,7 @@ const TagPage: React.FC = () => {
 
   // UI State
   const [currentPage, setCurrentPage] = useState(1);
+  const articlesRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 8;
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -121,7 +122,9 @@ const TagPage: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (articlesRef.current) {
+      articlesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   const getUniqueCategories = () => {
@@ -246,7 +249,7 @@ const TagPage: React.FC = () => {
 
           <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 lg:gap-8">
             {/* Main Content */}
-            <div className="xl:col-span-3">
+            <div ref={articlesRef} className="xl:col-span-3">
               {/* Controls */}
               {posts.length > 0 && (
                 <motion.div

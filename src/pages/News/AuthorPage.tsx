@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -39,6 +39,7 @@ const AuthorPage: React.FC = () => {
 
   // UI State
   const [currentPage, setCurrentPage] = useState(1);
+  const articlesRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 6;
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -123,7 +124,14 @@ const AuthorPage: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (articlesRef.current) {
+      const navbarOffset = 80;
+      const top =
+        articlesRef.current.getBoundingClientRect().top +
+        window.scrollY -
+        navbarOffset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
   };
 
   const getUniqueCategories = () => {
@@ -292,7 +300,7 @@ const AuthorPage: React.FC = () => {
               )}
 
               {/* Articles Section */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl dark:shadow-black/20 p-4 sm:p-6 lg:p-8">
+              <div ref={articlesRef} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl dark:shadow-black/20 p-4 sm:p-6 lg:p-8">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
