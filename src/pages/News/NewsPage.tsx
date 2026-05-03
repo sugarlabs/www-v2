@@ -284,7 +284,10 @@ const NewsPage: React.FC = () => {
             </div>
           </div>
 
-          <div ref={articlesRef} className="container mx-auto px-4 py-8">
+          <div
+            ref={articlesRef}
+            className="container mx-auto px-4 py-8 scroll-mt-16 md:scroll-mt-20"
+          >
             {/* Enhanced Filters and Controls */}
             <div className="bg-white dark:bg-gray-800/50 dark:backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-8 border border-gray-100 dark:border-gray-700">
               <div className="flex flex-col lg:flex-row gap-6">

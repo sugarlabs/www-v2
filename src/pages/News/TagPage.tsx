@@ -252,7 +252,10 @@ const TagPage: React.FC = () => {
 
           <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 lg:gap-8">
             {/* Main Content */}
-            <div ref={articlesRef} className="xl:col-span-3">
+            <div
+              ref={articlesRef}
+              className="xl:col-span-3 scroll-mt-16 md:scroll-mt-20"
+            >
               {/* Controls */}
               {posts.length > 0 && (
                 <motion.div

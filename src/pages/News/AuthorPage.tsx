@@ -124,14 +124,7 @@ const AuthorPage: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    if (articlesRef.current) {
-      const navbarOffset = 80;
-      const top =
-        articlesRef.current.getBoundingClientRect().top +
-        window.scrollY -
-        navbarOffset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
+    articlesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const getUniqueCategories = () => {
@@ -302,7 +295,7 @@ const AuthorPage: React.FC = () => {
               {/* Articles Section */}
               <div
                 ref={articlesRef}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl dark:shadow-black/20 p-4 sm:p-6 lg:p-8"
+                className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-2xl dark:shadow-black/20 p-4 sm:p-6 lg:p-8 scroll-mt-16 md:scroll-mt-20"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                   <div className="flex items-center gap-2">
