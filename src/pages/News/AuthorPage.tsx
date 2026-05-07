@@ -342,6 +342,8 @@ const AuthorPage: React.FC = () => {
                       <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
                         <button
                           onClick={() => setViewMode('grid')}
+                          aria-label="Switch to grid view"
+                          title="Grid view"
                           className={`p-2 rounded-md transition-colors ${
                             viewMode === 'grid'
                               ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm dark:shadow-black/20'
@@ -352,6 +354,8 @@ const AuthorPage: React.FC = () => {
                         </button>
                         <button
                           onClick={() => setViewMode('list')}
+                          aria-label="Switch to list view"
+                          title="List view"
                           className={`p-2 rounded-md transition-colors ${
                             viewMode === 'list'
                               ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm dark:shadow-black/20'
