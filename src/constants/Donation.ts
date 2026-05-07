@@ -48,7 +48,7 @@ export const IMPACT_STATS = [
 export const FINANCIAL_FILINGS = [
   {
     year: '2024',
-    link: 'assets/tax-filings/2024-Form-990EZ.pdf',
+    link: '/assets/990s/2024-Form-990EZ.pdf',
   },
   {
     year: '2023',
