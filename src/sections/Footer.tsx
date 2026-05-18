@@ -1,25 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 import {
   socialLinks,
   resourceLinks,
   developmentLinks,
   quickLinks,
-} from "@/constants/Footer";
+} from '@/constants/Footer';
 
 const Footer = () => {
   return (
     <>
       <footer className="bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-950 text-gray-600 dark:text-gray-300 py-10 sm:py-16 px-4 sm:px-6 relative">
-        
         {/* Decorative top border */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
 
         <div className="max-w-7xl mx-auto">
-          
           {/* Main Footer Content */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 mb-8 sm:mb-12">
-
             {/* Resources Section */}
             <div className="lg:col-span-3">
               <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white relative inline-block">
@@ -64,7 +61,7 @@ const Footer = () => {
                       </a>
                     ) : (
                       <Link
-                        to={link.to}
+                        to={link.to!}
                         className="hover:text-gray-900 dark:hover:text-white transition-all duration-300 flex items-center group"
                       >
                         <span className="w-0 group-hover:w-2 h-2 bg-purple-500 rounded-full mr-0 group-hover:mr-2 transition-all duration-300"></span>
@@ -157,14 +154,15 @@ const Footer = () => {
             <p>Copyright © {new Date().getFullYear()} Sugar Labs (R)</p>
 
             <p className="text-center sm:text-right">
-              Available under the{" "}
+              Available under the{' '}
               <a
                 href="https://creativecommons.org/licenses/by-sa/4.0/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-300 underline decoration-dotted"
               >
-                Creative Commons Attribution-ShareAlike 4.0 International License
+                Creative Commons Attribution-ShareAlike 4.0 International
+                License
               </a>
             </p>
           </div>
