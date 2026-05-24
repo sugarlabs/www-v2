@@ -1,6 +1,6 @@
 ---
-title: "GSoC '26 Week 1 Blog by Sonal Gaud"
-excerpt: "Week 1 of my GSoC '26 project on Automated Release Pipeline for Music Blocks — Infrastructure Audit and Documentation."
+title: "GSoC '26 Community Bonding Blog by Sonal Gaud"
+excerpt: "Introducing my GSoC '26 project on Automated Release Pipeline for Music Blocks"
 category: "DEVELOPER NEWS"
 date: "2026-05-24"
 slug: "2026-05-24-gsoc-26-sonal-gaud-week1"
