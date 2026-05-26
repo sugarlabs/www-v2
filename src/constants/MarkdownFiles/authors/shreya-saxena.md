@@ -13,7 +13,7 @@ avatar: "https://avatars.githubusercontent.com/u/204754569?v=4"
 
 I’m a second-year B.Tech student in Smart Manufacturing at the Indian Institute of Information Technology (IIIT), Jabalpur, with a strong interest in open-source development, performance engineering, and educational technology. I enjoy building systems that stay responsive, reliable, and accessible even under real-world complexity.
 
-I’ve contributed to open-source projects including Music Blocks under Sugar Labs, where I’m currently focusing on runtime performance, UI responsiveness, and execution flow as part of Google Summer of Code 2026. I’m particularly interested in building tools that empower learners to explore and create without technical barriers.
+I’ve contributed to open-source projects including [Music Blocks](https://github.com/sugarlabs/musicblocks) under Sugar Labs, where I’m currently focusing on runtime performance, UI responsiveness, and execution flow as part of Google Summer of Code 2026. I’m particularly interested in building tools that empower learners to explore and create without technical barriers.
 
 ## Experience
 
@@ -22,7 +22,7 @@ I’ve contributed to open-source projects including Music Blocks under Sugar La
 - **Open Source Contributor:** Previously contributed to AOSSIE's PictoPy project, developing and improving the platform's onboarding flow.
 
 ## Current Projects
-* **Music Blocks v3 Performance Optimization (GSoC ’26)** - Improving execution responsiveness and runtime performance in Sugar Labs’ Music Blocks through profiling, scheduler improvements, memory stability, and automated regression testing.
+* [Music Blocks v3 Performance (GSoC ’26)](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#music-blocks-performance) - Improving execution responsiveness and runtime performance in Sugar Labs’ Music Blocks through profiling, scheduler improvements, memory stability, and automated regression testing.
 
 ## Connect with Me
 

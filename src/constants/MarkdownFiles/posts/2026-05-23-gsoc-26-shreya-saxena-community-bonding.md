@@ -12,7 +12,7 @@ image: "assets/Images/GSOC.webp"
 <!-- markdownlint-disable -->
 ## Community Bonding Reflections for GSoC 2026
 
-**Project:** Music Blocks Performance  
+**Project:** [Music Blocks Performance](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#music-blocks-performance)  
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  
 **Organization:** [Sugar Labs](https://sugarlabs.org)  
 **Reporting Period:** May 8, 2026 – May 24, 2026
@@ -21,7 +21,7 @@ image: "assets/Images/GSOC.webp"
 
 ## About Me
 
-Hello everyone, I'm Shreya Saxena, a second-year B.Tech student in Smart Manufacturing at IIIT Jabalpur. I'll be working on **Music Blocks Performance** at Sugar Labs this summer as a Google Summer of Code 2026 contributor.
+Hello everyone, I'm Shreya Saxena, a second-year B.Tech student in Smart Manufacturing at IIIT Jabalpur. I'll be working on [Music Blocks Performance](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#music-blocks-performance) at Sugar Labs this summer as a Google Summer of Code 2026 contributor.
 
 I've been contributing to Music Blocks since early 2026, with merged PRs covering bug fixes, documentation, and test coverage including fixes for runtime and internationalization issues, along with unit tests for core graphics and rhythm components. That work gave me hands-on familiarity with the execution pipeline, rendering stack, and global singleton architecture that my GSoC project will be working around.
 
@@ -33,7 +33,7 @@ Outside of code, I enjoy blogging, reading, and writing especially about technol
 
 Music Blocks v3 is a browser-based visual programming environment used by students and educators worldwide. As projects grow in complexity, with more voices, larger block graphs, and MIDI imports, users hit a wall: the interface freezes with no indication of whether it's working, stuck, or crashed. Students in time-limited classroom sessions often end up force-refreshing the browser and losing their work.
 
-The core problem is that long-running operations like LilyPond export, MIDI import, and complex block graph execution all run synchronously on the main thread with no yielding, no progress feedback, and no way to cancel. On top of that, there's no systematic measurement of where things degrade, so optimization efforts have historically been reactive rather than evidence-based.
+The core problem is that long-running operations like [LilyPond](https://lilypond.org/) export, [MIDI](https://en.wikipedia.org/wiki/MIDI) import, and complex block graph execution all run synchronously on the main thread with no yielding, no progress feedback, and no way to cancel. On top of that, there's no systematic measurement of where things degrade, so optimization efforts have historically been reactive rather than evidence-based.
 
 My project takes a measurement-first approach. The main goals for the summer are:
 
@@ -47,15 +47,13 @@ My project takes a measurement-first approach. The main goals for the summer are
 ## Community Bonding Activities
 The community bonding period has focused on connecting with the Music Blocks community, discussing project direction and expectations with mentors, collaborating with contributors, and helping newcomers get familiar with the codebase and contribution workflow. Alongside this, I’ve been building the instrumentation and profiling foundation required for the project.
 
-A major focus has been `crabcanon-plot.html`, which Walter suggested as an initial benchmark due to noticeable performance regressions over time. The project plays a melody forwards and backwards simultaneously across parallel voices, with rendering and execution tightly coupled on the main thread.
+A major focus has been [crabcanon-plot.html](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html), which Walter suggested as an initial benchmark due to noticeable performance regressions over time. The project plays a melody forwards and backwards simultaneously across parallel voices, with rendering and execution tightly coupled on the main thread.
 
-To analyze this, I built a Phase 1 instrumentation layer (`performanceTracker.js`) with operation-scoped timing hooks, along with a Playwright headless benchmark setup that exports JSON baseline results.
+To analyze this, I built a Phase 1 instrumentation layer [performanceTracker.js](https://github.com/sugarlabs/musicblocks/blob/master/js/utils/performanceTracker.js) with operation-scoped timing hooks, along with a Playwright headless benchmark setup that exports JSON baseline results.
 
-<a href="https://postimg.cc/w3VhyhQd">
-<img src="https://i.postimg.cc/65szPc7T/Crabcanon-plot-research.jpg" alt="Crabcanon Performance Profiling Baseline Results" border="0">
-</a>
+![Crabcanon Performance Profiling Baseline Results](assets/Developers/shreya-saxena/Crabcanon-plot-research.jpg)
 
-**Baseline results from `crabcanon-plot.html`:**
+**Baseline results from [crabcanon-plot.html](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html):**
 
 | Metric | Value |
 |---|---|
@@ -85,9 +83,9 @@ The first two weeks are Phase 1 of my proposal: completing the instrumentation l
 
 Specifically, I'll be:
 
-- Finishing and validating the `performanceTracker.js` instrumentation hooks for LilyPond export (per-stage timing), MIDI import (block instantiation count and duration), and block graph execution (frame drops, execution duration, recursion depth)
+- Finishing and validating the [performanceTracker.js](https://github.com/sugarlabs/musicblocks/blob/master/js/utils/performanceTracker.js) instrumentation hooks for LilyPond export (per-stage timing), MIDI import (block instantiation count and duration), and block graph execution (frame drops, execution duration, recursion depth)
 - Running the Playwright benchmark script across small (~50 blocks), medium (~300 blocks), and large (~1000+ blocks) project sizes to understand how each operation scales with complexity
-- Completing the isolation of canvas rendering time versus traversal time in `crabcanon-plot.html` to confirm where the 48-second execution budget is actually going
+- Completing the isolation of canvas rendering time versus traversal time in [crabcanon-plot.html](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html) to confirm where the 48-second execution budget is actually going
 - Generating initial profiling reports identifying the highest-impact bottlenecks
 - Validating findings against community-reported pain points and mentor feedback before moving into the progress feedback and scheduling work in Phase 2
 
@@ -99,6 +97,10 @@ The frame-budget scheduler, Web Worker offloading, progress indicators, and canc
 
 - **Music Blocks Repository:** [Music Blocks on GitHub](https://github.com/sugarlabs/musicblocks)
 - **Crabcanon Performance Profiling Research:** [Initial Profiling and Instrumentation Notes](https://docs.google.com/document/d/1Gf53RNNLc0IDzUPz8uInUBqBPkSda8KbJC5uAa2S9mI/edit?usp=sharing)
+- **LilyPond:** [LilyPond – Music Notation for Everyone](https://lilypond.org)
+- **LilyPond in Music Blocks:** [LilyPond with Music Blocks](https://github.com/sugarlabs/musicblocks/blob/master/lilypond/README.md)
+- **MIDI:** [MIDI – Wikipedia](https://en.wikipedia.org/wiki/MIDI)
+- **Performance Tracker:** [performanceTracker.js](https://github.com/sugarlabs/musicblocks/blob/master/js/utils/performanceTracker.js)
 - **Organization:** [Sugar Labs](https://sugarlabs.org)
 
 ---
