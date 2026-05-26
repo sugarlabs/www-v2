@@ -13,26 +13,26 @@ image: "assets/Images/GSOC.webp"
 
 # Community Bonding Period Report by Parth Dagia
 
-**Project:** [Music Blocks 4 Program Builder](https://github.com/sugarlabs/musicblocks-v4)
-**Mentors:** [Anindya Kundu](https://github.com/meganindya), [Justin Charles](https://github.com/justin212407), [Safwan Sayeed](https://github.com/sa-fw-an)
-**Organization:** Sugar Labs
-**Reporting Period:** 2026-05-08 – 2026-05-24
+**Project:** [Music Blocks 4 Program Builder](https://github.com/sugarlabs/musicblocks-v4)  
+**Mentors:** [Anindya Kundu](https://github.com/meganindya), [Justin Charles](https://github.com/justin212407), [Safwan Sayeed](https://github.com/sa-fw-an)  
+**Organization:** Sugar Labs  
+**Reporting Period:** 2026-05-08 – 2026-05-24  
 
 ---
 
 ## Introduction & About Me
 
-Hi everyone, I'm Parth Dagia, a second-year Computer Science student. I'll be working on the **Music Blocks 4 Program Builder** at Sugar Labs this summer as a Google Summer of Code 2026 contributor.
+Hi everyone, I'm Parth Dagia, a second-year Computer Science student. I'll be working on the [Music Blocks 4 Program Builder](https://musicblocks.net/2022/02/12/public-release-of-music-blocks-v4-0-for-testing/) at Sugar Labs this summer as a Google Summer of Code 2026 contributor.
 
 I have been contributing to Music Blocks since early 2026. So far I have 55+ merged PRs on the v3 codebase across performance fixes, bug fixes, and tests, and I shipped three end-to-end features along the way. That work is how I got familiar with how bricks are structured, validated, connected, and executed, which is the area my GSoC project lives in.
 
-A fun fact about me: I like building things from scratch to understand how the layers underneath actually work. I built a small RAG chatbot without any frameworks, and a multi-threaded HTTP/1.1 server on raw sockets, just for that reason.
+A fun fact about me: I like building things from scratch to understand how the layers underneath actually work.
 
 ---
 
 ## About the Project
 
-Music Blocks v4 is a redesign of v3 in TypeScript, React, and Vite. A lot of the pieces already exist: an editor, a p5.js painter, a Tone.js singer, a compiler, and an interpreter. There is also the Masonry brick editor, built over GSoC 2024 and 2025, with hundreds of bricks and drag-and-drop support.
+Music Blocks v4 is a redesign of [v3](https://github.com/sugarlabs/musicblocks) in [TypeScript](https://www.typescriptlang.org/), [React](https://react.dev/), and [Vite](https://vitejs.dev/). A lot of the pieces already exist: an editor, a [p5.js](https://p5js.org/) painter, a [Tone.js](https://tonejs.github.io/) singer, a compiler, and an interpreter. There is also the [Masonry](https://github.com/sugarlabs/musicblocks-v4/tree/develop/modules/masonry) brick editor, built over GSoC 2024 and 2025, with hundreds of bricks and drag-and-drop support.
 
 The problem is that most of these pieces don't talk to each other yet. Masonry runs in a separate playground. The compiler and interpreter only work in tests. The Run button still uses the old v3 engine. So a user opening v4 today sees a workspace, but cannot actually build or run a brick program.
 
@@ -67,10 +67,6 @@ Right now bricks only contain basic UI metadata like label, category, color, arg
 - AST binding metadata for future engine integration
 
 I'll also update the TypeScript interfaces and wire the palette and factory components so these new schema fields are actually consumed by the UI and brick creation flow.
-
-After the schema is finalized, I'll fully define a few representative bricks first, and then expand the definitions across the remaining catalog while cleaning duplicate or leftover entries.
-
-The actual snap system, execution engine, AST conversion logic, and rendering engine are out of scope for these two weeks. This work is focused on the metadata and schema infrastructure that those systems will later depend on.
 
 ---
 
