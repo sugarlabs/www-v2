@@ -12,7 +12,7 @@ image: "assets/Images/GSOC.webp"
 
 <!-- markdownlint-disable -->
 
-**Project:** Git-Based Backend for Music Blocks  
+**Project:** [Git-Based Backend for Music Blocks](https://summerofcode.withgoogle.com/programs/2026/projects/JitsF3AX)  
 **Organization:** Sugar Labs  
 **Reporting Period:** May 8, 2026 to May 24, 2026
 
@@ -20,11 +20,11 @@ image: "assets/Images/GSOC.webp"
 
 ## Introduction
 
-Hey, I'm Hari (@zealot_zew), an Information Science undergraduate from Bangalore. This summer I'm working on the Git-Based Backend for Music Blocks with Sugar Labs for GSoC 2026.
+Hey, I'm Hari (@zealot_zew), an Information Science undergraduate from Bangalore. This summer I'm working on the [Git-Based Backend for Music Blocks](https://summerofcode.withgoogle.com/programs/2026/projects/JitsF3AX) with Sugar Labs for GSoC 2026.
 
-Though this was not my first time exploring the Planet infrastructure, since I had already spent time understanding parts of it during the proposal period, the bonding phase gave me a chance to look at it much more deeply.
+Though this was not my first time exploring [The Planet](https://github.com/sugarlabs/musicblocks/tree/master/Docs/documentation#10-planet-view) infrastructure, since I had already spent time understanding parts of it during the proposal period, the bonding phase gave me a chance to look at it much more deeply.
 
-Planet currently contains 3,085 Music Blocks projects and 2,457 Turtle Blocks projects as of May 23rd. That is 5,547 student creations sitting on a small production server. The more I explored the system, the more I realized this project is not just about migration. It is about preserving student creativity and making these projects feel like they truly belong to the students who created them.
+The Planet currently contains 3,085 Music Blocks projects and 2,457 Turtle Blocks projects as of May 23rd. That is 5,547 student creations sitting on a small production server. The more I explored the system, the more I realized this project is not just about migration. It is about preserving student creativity and making these projects feel like they truly belong to the students who created them.
 
 Right now, when a student saves a Music Blocks project, it goes into a MySQL database they will probably never directly interact with again. There is no proper ownership model, version history, or visibility into how their projects evolve over time. My goal is to move these projects onto GitHub repositories while introducing concepts like commits, forks, and version history in a way that feels natural for students.
 
@@ -32,7 +32,7 @@ Right now, when a student saves a Music Blocks project, it goes into a MySQL dat
 
 One thing I was very careful about during bonding was the fact that I was dealing with a real production server. I did not want to accidentally break anything while experimenting or testing ideas.
 
-At the same time, I was extremely curious about how everything was structured internally. I spent time exploring the database schema, checking tables, comparing project counts with APIs, and understanding how data flows between Planet and the frontend.
+At the same time, I was extremely curious about how everything was structured internally. I spent time exploring the database schema, checking tables, comparing project counts with APIs, and understanding how data flows between The Planet and the frontend.
 
 A lot of my time went into validating assumptions from my proposal and figuring out whether the architecture I initially designed would still hold up with real production data. Thankfully, most of the core decisions still made sense, which gave me confidence in the direction of the project.
 
@@ -40,9 +40,9 @@ One interesting detail was understanding how project data is actually stored. Pr
 
 ## Thinking Beyond Migration
 
-Devin Ulibarri’s insights from his everyday classroom experience helped me better understand how students behave and encouraged me to think more from a student’s perspective.
+[Devin Ulibarri](https://github.com/pikurasa/)’s insights from his everyday classroom experience helped me better understand how students behave and encouraged me to think more from a student’s perspective.
 
-Initially, my proposal was heavily focused on migration and backend infrastructure. But after discussions with my mentors, especially Nikhil Bhatt, I started looking at the project from the perspective of students actually using Music Blocks.
+Initially, my proposal was heavily focused on migration and backend infrastructure. But after discussions with my mentors, especially [Nikhil Bhatt](https://github.com/benikk), I started looking at the project from the perspective of students actually using Music Blocks.
 
 While planning frontend changes and workflows, I kept trying to think like a curious student using the platform for the first time. I constantly asked myself questions like:
 
@@ -58,11 +58,11 @@ One of the most valuable parts of bonding was the architectural discussions with
 
 During the proposal period, my project was mainly focused on migration itself. Conversations with Nikhil Bhatt helped broaden the scope toward frontend improvements and student-facing features rather than treating the project as only backend infrastructure work.
 
-I also discussed deployment and migration strategies with Walter Bender. Initially I considered running migration directly on the Sunjammer server, but that quickly raised concerns about production load and long-running scripts on infrastructure already serving live users.
+I also discussed deployment and migration strategies with [Walter Bender](https://github.com/walterbender/). Initially I considered running migration directly on the Sunjammer server, but that quickly raised concerns about production load and long-running scripts on infrastructure already serving live users.
 
-The current direction is to run the migration pipeline on AWS EC2 instead, which is something I am genuinely excited about because it gives me a chance to learn how large migration scripts are handled in real production environments.
+The current direction is to run the migration pipeline on [AWS EC2](https://aws.amazon.com/ec2/) instead, which is something I am genuinely excited about because it gives me a chance to learn how large migration scripts are handled in real production environments.
 
-Another huge help during bonding was from Ibiam, who helped me get shell access to Sunjammer through SSH and patiently answered many of the questions I had while exploring the infrastructure.
+Another huge help during bonding was from [Ibiam](https://github.com/chimosky), who helped me get shell access to Sunjammer through SSH and patiently answered many of the questions I had while exploring the infrastructure.
 
 ## Migration Challenges
 
@@ -70,7 +70,7 @@ One of the biggest challenges I spent time thinking about was figuring out how m
 
 The difficult part was deciding when migration should run, how the backend would stay connected with migrated data during development, and how everything would safely come together in production.
 
-Another surprisingly important issue was duplicate projects. Planet contains many projects that are either exact duplicates or slightly modified versions of older saves. Removing duplicates safely became important both for storage and for keeping the migrated ecosystem clean and searchable.
+Another surprisingly important issue was duplicate projects. The Planet contains many projects that are either exact duplicates or slightly modified versions of older saves. Removing duplicates safely became important both for storage and for keeping the migrated ecosystem clean and searchable.
 
 I also spent time thinking about reliability during migration itself. Since the scripts would handle thousands of projects over long-running sessions, I wanted the workflow to safely recover from interruptions instead of restarting everything from scratch.
 
