@@ -45,21 +45,20 @@ During the community bonding period, I have been actively interacting with mento
 
 ## Plan for Weeks 1 & 2 (May 25 – Jun 7)
 
-For the first two weeks, my focus is on expanding the brick definition system.
+During the first two weeks, my primary focus will be on expanding and stabilizing the brick generation system in Music Blocks v4.
 
-Right now bricks only contain basic UI metadata like label, category, color, argument count, and notches. My work will be to help design and implement a richer brick schema that fully describes each brick. This includes:
+Currently, several bricks are either missing or not being generated correctly. This includes important root compound bricks such as `start`, `action`, and others, along with multiple missing bricks across different categories in the palette. My initial goal will be to systematically identify all missing and incorrectly generated bricks in Music Blocks.
 
-- argument slot types and default values
-- output / value types
-- socket / body metadata
-- tooltip / help metadata
-- highlight / display properties
-- connection compatibility rules
-- AST binding metadata for future engine integration
+After identifying them, I will document:
+- Missing brick
+- Missing brick generation parameters
+- Parameters that exist but are not functioning correctly
+- Different brick generation patterns required across categories
 
-I'll also update the TypeScript interfaces and wire the palette and factory components so these new schema fields are actually consumed by the UI and brick creation flow.
+Once the analysis is complete, I will begin implementing support for all missing parameters in the codebase to ensure every required brick pattern can be generated correctly. I will verify the implementation through Storybook by manually testing different brick configurations and generation scenarios.
 
-After the schema is finalized, I'll fully define a few representative bricks first, and then expand the definitions across the remaining catalog while cleaning duplicate or leftover entries.
+Following this, I will define all missing bricks inside the `brick-config.json` file and update incorrectly configured bricks to ensure accurate rendering of all the bricks in the palette.
+ 
 
 ## Resources & References
 
