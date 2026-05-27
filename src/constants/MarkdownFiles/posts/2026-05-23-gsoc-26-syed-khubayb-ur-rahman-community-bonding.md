@@ -23,7 +23,7 @@ image: "assets/Images/GSOC.webp"
 
 ## Introduction & About Me
 
-Hi everyone, I'm Syed Khubayb ur Rahman, a third-year Computer Science student. I'll be working on the **Music Blocks 4 Program Builder** at Sugar Labs this summer as a Google Summer of Code 2026 contributor.
+Hi everyone, I'm Syed Khubayb ur Rahman, a third-year Computer Science student. I'll be working on the [Music Blocks 4 Program Builder](https://musicblocks.net/2022/02/12/public-release-of-music-blocks-v4-0-for-testing/) at Sugar Labs this summer as a Google Summer of Code 2026 contributor.
 I have been actively contributing to multiple repositories within the Sugar Labs ecosystem since August 2025, gaining valuable experience working with the codebase and collaborating with the community Many of these pull requests fixed issues and bugs, introduced new features and improvements, and several contributions focused on expanding automated test coverage. All of these pull requests were meaningful contributions aimed at improving the stability, functionality, and maintainability of the Sugar Labs projects.
 
 ---
@@ -65,6 +65,7 @@ After the schema is finalized, I'll fully define a few representative bricks fir
 
 - **Project:** [Music Blocks v4 on GitHub](https://github.com/sugarlabs/musicblocks-v4)
 - **Organization:** [Sugar Labs](https://sugarlabs.org)
+- **AST Reference:** [AST Reference](https://www.geeksforgeeks.org/compiler-design/abstract-syntax-tree-vs-parse-tree/)
 
 ---
 
