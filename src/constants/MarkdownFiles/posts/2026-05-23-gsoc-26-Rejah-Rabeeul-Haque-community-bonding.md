@@ -12,10 +12,10 @@ image: "assets/Images/GSOC.webp"
 <!-- markdownlint-disable -->
 ## Community Bonding Reflections for GSoC 2026
 
-**Project:** Sugarizer Connect The Dots Activity 
-**Mentors:** [Lionel Laské](https://github.com/llaske) 
-**Organization:** [Sugar Labs](https://sugarlabs.org) 
-**Reporting Period:** May 8, 2026 – May 24, 2026
+**Project:** Sugarizer Connect The Dots Activity  
+**Mentors:** [Lionel Laské](https://github.com/llaske)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** May 8, 2026 – May 24, 2026  
 
 ---
 
