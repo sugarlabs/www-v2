@@ -12,10 +12,10 @@ image: "assets/Images/GSOC.webp"
 <!-- markdownlint-disable -->
 ## Community Bonding Reflections for GSoC 2026
 
-**Project:** Automated Release Pipeline for Music Blocks
-**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)
-**Organization:** [Sugar Labs](https://sugarlabs.org)
-**Reporting Period:** May 8, 2026 – May 24, 2026
+**Project:** Automated Release Pipeline for Music Blocks  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** May 8, 2026 – May 24, 2026  
 
 ---
 
