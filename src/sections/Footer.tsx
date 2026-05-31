@@ -104,7 +104,6 @@ const Footer = () => {
                       filter brightness-0 dark:invert opacity-90 
                       group-hover:opacity-100 group-hover:scale-110
                       sm:w-5 sm:h-5"
-
                     />
                     <span
                       className="absolute -bottom-6 left-1/2 -translate-x-1/2 
@@ -125,8 +124,6 @@ const Footer = () => {
                 className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-200/50 hover:bg-gray-300 dark:bg-gray-800/50 dark:hover:bg-gray-700 
                 rounded-lg transition-all duration-300 transform hover:-translate-y-1 
                 hover:shadow-lg hover:shadow-gray-200/30 dark:hover:shadow-gray-800/30 mb-6 sm:mb-8 text-sm sm:text-base"
-
-
               >
                 <img
                   src={GithubIcon}
