@@ -33,7 +33,7 @@ Before working with Sugar Labs, I mostly knew GTK only at a surface level. I had
 
 At first I thought Sugar was just another Linux application. Then I actually started using it. 
 
-![Sugar Desktop](/news/2026-05-24-gsoc-26-dev-community-bonding/sugar-desktop.png)
+![Sugar Desktop](/assets/Developers/Dev/sugar-desktop.png)
 
 Once I started running the Sugar desktop locally and exploring the Shell behavior during runtime, my understanding completely changed.
 

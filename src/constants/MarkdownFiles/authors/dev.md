@@ -4,7 +4,7 @@ slug: "dev"
 title: "GSoC'26 Contributor"
 organization: "SugarLabs"
 description: "Outside coding I usually spend time listening to music, watching anime, coding with coffee, exploring new places, and dreaming about building my own path."
-avatar: "/news/2026-05-24-gsoc-26-dev-community-bonding/profile.png"
+avatar: "/assets/Developers/Dev/dev.png"
 ---
 
 <!--markdownlint-disable-->
