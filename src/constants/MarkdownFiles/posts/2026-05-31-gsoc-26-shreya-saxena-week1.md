@@ -49,19 +49,19 @@ The collected benchmarks establish an initial performance baseline before optimi
 
   A simple introductory Music Blocks project that demonstrates melodic structure and musical form using a compact AABA pattern.
 
-  ![Hot Cross Buns Performance Profiling Baseline Results](/assets/Developers/shreya-saxena/Hot-Cross-Buns-Profiling.jpeg)
+  ![A screenshot of Music Blocks visual code with various Action Blocks and the Phrase Maker; the browser is in development mode and browser logs can be seen at right.](/assets/Developers/shreya-saxena/Hot-Cross-Buns-Profiling.jpeg "Hot Cross Buns Performance Profiling Baseline Results")
 
 - [Musical-Tree](https://github.com/sugarlabs/musicblocks/blob/master/examples/musical-tree.html) (Medium)
 
   A procedural composition project that generates branching musical patterns through repeated action execution.
 
-  ![Musical-Tree Performance Profiling Baseline Results](/assets/Developers/shreya-saxena/musical-tree.jpeg)
+  ![A screenshot of Music Blocks visual code with various Action Blocks; A geometric tree is displayed behind the code; the browser is in development mode and browser logs can be seen at right.](/assets/Developers/shreya-saxena/musical-tree.jpeg "Musical-Tree Performance Profiling Baseline Results")
 
 - [In-C](https://github.com/sugarlabs/musicblocks/blob/master/examples/In-C.html) (Large)
 
   A large-scale generative music project containing numerous actions and execution paths, making it suitable for evaluating performance under complex workloads.
 
-  ![In-C Performance Profiling Baseline Results](/assets/Developers/shreya-saxena/In-C.jpeg)
+  ![A screenshot of Music Blocks visual code with many, many Action Blocks containing musical code; the browser is in development mode and browser logs can be seen at right.](/assets/Developers/shreya-saxena/In-C.jpeg "In-C Performance Profiling Baseline Results")
 
 ### Benchmark Automation
 
