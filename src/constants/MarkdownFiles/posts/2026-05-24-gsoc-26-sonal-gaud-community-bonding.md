@@ -21,7 +21,7 @@ image: "assets/Images/GSOC.webp"
 
 ## About Me
 
-Hello everyone! I'm Sonal Gaud, based in Mumbai, India. I'll be working on the **Automated Release Pipeline for Music Blocks** at Sugar Labs this summer as a Google Summer of Code 2026 contributor.
+Hello everyone! I'm Sonal Gaud, based in Mumbai, India. I'll be working on the [Automated Release Pipeline for Music Blocks](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#automated-release-pipeline-for-music-blocks) at Sugar Labs this summer as a Google Summer of Code 2026 contributor.
 
 I enjoy building automation and CI/CD systems, things that are stable, predictable, and easy for others to work with. My open source journey includes contributing to OpenTelemetry, setting up a containerized CI pipeline with Playwright-based E2E testing for ODK-X Application Designer, and contributing to Music Blocks itself fixing build and test issues, integrating Husky pre-commit hooks with lint-staged, tightening ESLint and Prettier enforcement, and improving CI workflow reliability.
 
@@ -30,7 +30,7 @@ I enjoy building automation and CI/CD systems, things that are stable, predictab
 
 ## Project Overview
 
-Music Blocks has nine GitHub Actions workflows handling lint, tests, security, and performance, a solid CI foundation. But the moment code merges, everything goes manual. Releases to `sugarlabs.github.io/musicblocks` happen through undocumented manual pushes with no staging, no rollback, no changelog, and no smoke tests. 
+Music Blocks has nine GitHub Actions workflows handling lint, tests, security, and performance, a solid CI foundation. But the moment code merges, everything goes manual. Releases to <https://sugarlabs.github.io/musicblocks> happen through undocumented manual pushes with no staging, no rollback, no changelog, and no smoke tests. 
 
 This project builds a complete CI/CD and release automation system on top of what already exists: multi-environment deployments spanning ephemeral PR previews, auto-promoted staging, and approval-gated production; semantic versioning and automated changelog generation; a corrected and optimized Docker image; and proper rollback workflows with post-deployment health checks.
 
