@@ -29,7 +29,7 @@ const DarkModeToggle = () => {
   const thumbWidth = 28;
   const padding = 3;
 
-  const translateX = isDarkMode ? trackWidth - thumbWidth - padding : padding;
+  const translateX = isDarkMode ? padding : trackWidth - thumbWidth - padding;
 
   return (
     <button
@@ -124,20 +124,20 @@ const DarkModeToggle = () => {
         />
       </span>
 
-      <Sun
+      <Moon
         className="absolute left-2 top-1/2 -translate-y-1/2 transition-all duration-500"
         size={12}
         style={{
-          color: 'rgba(255, 255, 255, 0.9)',
-          opacity: isDarkMode ? 0.2 : 0.7,
+          color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#000000',
+          opacity: isDarkMode ? 0.2 : 0.8,
         }}
       />
-      <Moon
+      <Sun
         className="absolute right-2 top-1/2 -translate-y-1/2 transition-all duration-500"
         size={12}
         style={{
           color: 'rgba(255, 255, 255, 0.9)',
-          opacity: isDarkMode ? 0.7 : 0.2,
+          opacity: isDarkMode ? 0.8 : 0.2,
         }}
       />
     </button>
