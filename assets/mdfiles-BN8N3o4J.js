@@ -25571,6 +25571,93 @@ Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for the guidance and t
 
 ---
 `,ru=e({default:()=>iu}),iu=`---
+title: "GSoC '26 Week 1: Migrating 5,500+ Projects to GitHub & SQLite"
+excerpt: "Successfully migrated 5,543 legacy Music Blocks projects from MySQL to individual GitHub repositories with a fast SQLite index."
+category: "DEVELOPER NEWS"
+date: "2026-06-03"
+slug: "2026-06-03-gsoc-26-harihara-vardhan-week-1"
+author: "@/constants/MarkdownFiles/authors/harihara-vardhan.md"
+description: "GSoC'26 Contributor at SugarLabs working on Git-Based Backend for Music Blocks"
+tags: "gsoc26,sugarlabs,week-1,musicblocks,git-backend,migration,github,sqlite"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+**Project:** [Git-Based Backend for Music Blocks](https://summerofcode.withgoogle.com/programs/2026/projects/JitsF3AX)  
+**Organization:** Sugar Labs  
+**Reporting Period:** May 25, 2026 to June 3, 2026
+
+---
+
+## Introduction
+
+Hey again! Coding has officially started, and Week 1 was all about execution. Migrating legacy database stacks to modern, developer-friendly architectures is always full of surprises. As part of my GSoC 2026 project to build a Git-based backend for Music Blocks, I recently completed the migration of the entire database of student-created music and math projects.
+
+I originally estimated that this migration phase would take about four weeks to complete. However, because I put a lot of effort into the research and preparation during the community bonding period, the testing went much faster than expected, and I was able to run the migration much sooner. Finishing this phase early is a huge relief and gives me plenty of time to focus on researching the frontend UI with the students' experience in mind.
+
+Here is the story of how I moved 5,543 projects from a legacy MySQL database on Sunjammer to individual, public GitHub repositories and a fast, portable SQLite index. All migrated projects are now hosted in the dedicated migration organization: [musicblocks-planet](https://github.com/musicblocks-planet). This means the legacy Planet server is no longer a bottleneck, and there is now a safe place for all the projects where they can comfortably stay for a few weeks until they start getting used in real production.
+
+## The Final Numbers
+
+After refining my scripts, cleaning up test artifacts, and executing the pipeline, the final migration results are pretty exciting:
+
+| Status | Count | Description |
+| :--- | :--- | :--- |
+| **Total database projects** | 5,543 | Total projects processed from legacy Planet MySQL. |
+| **Loaded (Successfully Migrated)** | 5,300 | Repositories successfully created on GitHub with metadata and thumbnails, and indexed in SQLite. |
+| **Duplicates (Skipped)** | 243 | Content-identical projects (identical SHA-256 blocks) skipped to prevent spam. |
+| **Failures (Unrecovered)** | 0 | Every single project was successfully accounted for. |
+
+As part of my post-migration verification, I also successfully purged 113 junk test repositories from the GitHub organization and cleaned up the local index, achieving complete data consistency.
+
+## The Architecture & Why My Expectations Held True
+
+In the early planning stages during the community bonding period, I made several key architectural decisions. Running the migration at scale proved every single one of these hypotheses correct:
+
+### Zero Intermediate Storage (RAM-only Processing)
+* **Expectation:** Avoid generating large temporary files on the migration server.
+* **Reality:** Each project row was streamed from MySQL, decoded, validated, transformed, pushed to GitHub, and indexed in SQLite entirely in memory in under 5 seconds. I didn't have any temporary disk overhead.
+
+### SQLite as the Social/Search Index
+* **Expectation:** SQLite's embedded file database would offer sub-millisecond local reads, eliminating database server overhead and network latency.
+* **Reality:** Querying the completed \`projects.sqlite\` locally takes less than a millisecond. I am using SQLite FTS5 for full-text search, which is incredibly fast and completely avoids the need to run a separate database server.
+
+### The \`migration_log.json\` Checkpoint System
+* **Expectation:** A state-tracking log would make the long-running migration (which took about 7 to 8 hours) completely resumable.
+* **Reality:** This was the single most important safety net of the project. Whenever network failures or timeouts occurred, I could just restart the script and instantly skip the projects I had already migrated.
+
+## Key Challenges Faced & Overcome
+
+No major database migration goes completely according to plan. I encountered three major technical hurdles during execution:
+
+### 1. The MySQL Connection Loss (Mid-Stream Timeout)
+* **The Problem:** The migration script streams projects from Sunjammer via a secure SSH tunnel. Because I used an unbuffered MySQL cursor, after about 40 minutes, the MySQL connection would drop mid-stream with a \`Lost connection to MySQL server during query\` error.
+* **The Solution:** I built a resilient bash wrapper (\`run_migration.sh\`) that automatically restarted the Python script whenever it crashed. Combined with the checkpoint system, the script resumed right where it left off, making the whole migration self-healing. I also removed \`set -e\` in the wrapper so the restart logic could properly handle the Python exit codes.
+
+### 2. The Non-ASCII Project Naming Challenge
+* **The Problem:** Many student projects had names using Japanese, Korean, Arabic, or emojis. GitHub repository naming rules only allow alphanumeric characters, hyphens, and periods. When I ran these names through my sanitizer, they were stripped down to empty strings, which caused API errors.
+* **The Solution:** I implemented a deterministic fallback rule. If a project name sanitized to an empty string, I defaulted it to \`"project"\`. If a name collision happened (for example, if multiple projects had non-ASCII names), the script appended the original database project ID to the repository name (like \`project-1523987537164737\`), guaranteeing unique and valid GitHub names.
+
+### 3. The "Tulip Project" Recovery
+* **The Problem:** One specific project (a Japanese "Tulip" project, チューリップ) failed to upload because both the fallback \`project\` and \`project-1523987537164737\` names were taken by leftover junk test repositories from previous runs. This was my only permanent failure.
+* **The Solution:** I manually purged the legacy test repository \`project-1523987537164737\` from the Sugar Labs organization, reset the checkpoint status to interrupted, and ran the script again. The retry mechanism immediately picked it up, uploaded it, and successfully populated both the GitHub repository and SQLite database, bringing my unrecovered failures down to exactly 0.
+
+## How Testing Saved the Day
+
+If I had run the migration script in one shot without rigorous testing, I would have run into severe API blocks. Testing helped in two major areas:
+
+* **Dry-Run Verification:** I implemented a \`--dry-run\` flag which queried MySQL, parsed and decoded JSON payloads, validated schema constraints, and checked for duplicates, all without making any write calls to GitHub or SQLite. This allowed me to verify that my base64 and URI decoding logic worked across 100% of the database rows.
+* **The 25-Project Test Batch:** I ran a test batch of 25 projects against a test GitHub organization (\`mb-migration-test\`). This revealed a crucial detail: GitHub caches deleted repository names for several minutes. If you delete a repository and immediately try to recreate it with the same name, GitHub returns a 422 error. Because I discovered this during testing, I was able to write logic to gracefully handle name collisions and transient caching delays before doing the actual production run.
+
+## What's Next?
+
+With 5,300 repositories live on GitHub and the portable \`projects.sqlite\` verified and downloaded locally, Phase 2 is complete.
+
+The next step for Phase 3 is to build the TypeScript Express backend endpoints (\`GET /allRepos\`, \`GET /search\`, \`POST /like\`, etc.) and wire them up to read directly from my newly created SQLite index. 
+
+Stay tuned for the next update as I bring the Git-based backend fully online!
+`,au=e({default:()=>ou}),ou=`---
 title: "GSoC '26 Week 1 Update by Rejah Rabeeul Haque"
 excerpt: "Completed mockup designs for Number Mode and Game Mode in the Connect The Dots activity, and fixed bugs in the Paint activity"
 category: "DEVELOPER NEWS"
@@ -25641,7 +25728,7 @@ I would like to thank my mentor Lionel Laské for his constant guidance and supp
 ---
 
 *Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*
-`,au=e({default:()=>ou}),ou=`---
+`,su=e({default:()=>cu}),cu=`---
 title: "GSoC '26 Week 01 Update by Shubham Sharma"
 excerpt: "From standalone simulation to a real Sugarizer prototype with working activities and AI reflection"
 category: "DEVELOPER NEWS"
@@ -25783,7 +25870,7 @@ Thanks to Walter, Ibiam, Mebin, Harshit, Diwangshu, and Aman for the calls and f
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,su=e({default:()=>cu}),cu=`---
+`,lu=e({default:()=>uu}),uu=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -25932,7 +26019,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,lu=e({default:()=>uu}),uu=`---
+`,du=e({default:()=>fu}),fu=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -26035,7 +26122,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,du=e({default:()=>fu}),fu=`---
+`,pu=e({default:()=>mu}),mu=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -26508,7 +26595,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,pu=e({default:()=>mu}),mu=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,hu=e({default:()=>gu}),gu=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -26595,7 +26682,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,hu=e({default:()=>gu}),gu=`---\r
+`,_u=e({default:()=>vu}),vu=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -26688,7 +26775,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,_u=e({default:()=>vu}),vu=`---\r
+`,yu=e({default:()=>bu}),bu=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -26782,7 +26869,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,yu=e({default:()=>bu}),bu=`---\r
+`,xu=e({default:()=>Su}),Su=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -26870,7 +26957,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,xu=e({default:()=>Su}),Su=`---\r
+`,Cu=e({default:()=>wu}),wu=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -26953,7 +27040,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Cu=e({default:()=>wu}),wu=`---\r
+`,Tu=e({default:()=>Eu}),Eu=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -27019,7 +27106,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Tu=e({default:()=>Eu}),Eu=`---
+`,Du=e({default:()=>Ou}),Ou=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -27101,7 +27188,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Du=e({default:()=>Ou}),Ou=`---
+---`,ku=e({default:()=>Au}),Au=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -27194,7 +27281,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,ku=e({default:()=>Au}),Au=`---
+`,ju=e({default:()=>Mu}),Mu=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -27283,7 +27370,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,ju=e({default:()=>Mu}),Mu=`---
+--- `,Nu=e({default:()=>Pu}),Pu=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -27428,7 +27515,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Nu=e({default:()=>Pu}),Pu=`---
+--- `,Fu=e({default:()=>Iu}),Iu=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -27616,7 +27703,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Fu=e({default:()=>Iu}),Iu=`---
+--- `,Lu=e({default:()=>Ru}),Ru=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -27711,7 +27798,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Lu=e({default:()=>Ru}),Ru=`---
+`,zu=e({default:()=>Bu}),Bu=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -27800,7 +27887,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,zu=e({default:()=>Bu}),Bu=`---
+`,Vu=e({default:()=>Hu}),Hu=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -27887,7 +27974,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Vu=e({default:()=>Hu}),Hu=`---
+---`,Uu=e({default:()=>Wu}),Wu=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -27970,7 +28057,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Uu=e({default:()=>Wu}),Wu=`---
+---`,Gu=e({default:()=>Ku}),Ku=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28053,7 +28140,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Gu=e({default:()=>Ku}),Ku=`---
+---`,qu=e({default:()=>Ju}),Ju=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -28358,4 +28445,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Yc as $,qe as $i,Ji as $n,Jn as $r,Yo as $t,Vl as A,z as Aa,zt as Ai,Ba as An,Br as Ar,Vs as At,xl as B,y as Ba,yt as Bi,ba as Bn,br as Br,xs as Bt,tu as C,$ as Ca,$t as Ci,eo as Cn,ei as Cr,tc as Ct,ql as D,G as Da,Gt as Di,Ka as Dn,Kr as Dr,qs as Dt,Yl as E,q as Ea,qt as Ei,Ja as En,Jr as Er,Ys as Et,jl as F,k as Fa,kt as Fi,Aa as Fn,Ar as Fr,js as Ft,dl as G,l as Ga,lt as Gi,ua as Gn,ur as Gr,ds as Gt,_l as H,h as Ha,ht as Hi,ga as Hn,gr as Hr,_s as Ht,kl as I,D as Ia,Dt as Ii,Oa as In,Or as Ir,ks as It,al as J,r as Ja,rt as Ji,ia as Jn,ir as Jr,as as Jt,ll as K,s as Ka,st as Ki,ca as Kn,cr as Kr,ls as Kt,Dl as L,T as La,Tt as Li,Ea as Ln,Er as Lr,Ds as Lt,Ll as M,F as Ma,Ft as Mi,Ia as Mn,Ir as Mr,Ls as Mt,Fl as N,N as Na,Nt as Ni,Pa as Nn,Pr as Nr,Fs as Nt,Gl as O,U as Oa,Ut as Oi,Wa as On,Wr as Or,Gs as Ot,Nl as P,j as Pa,jt as Pi,Ma as Pn,Mr as Pr,Ns as Pt,Zc as Q,Ye as Qi,Xi as Qn,Xn as Qr,Zo as Qt,Tl as R,C as Ra,Ct as Ri,wa as Rn,wr as Rr,Ts as Rt,ru as S,te as Sa,tn as Si,no as Sn,ni as Sr,rc as St,Zl as T,Y as Ta,Yt as Ti,Xa as Tn,Xr as Tr,Zs as Tt,hl as U,p as Ua,pt as Ui,ma as Un,mr as Ur,hs as Ut,yl as V,_ as Va,_t as Vi,va as Vn,vr as Vr,ys as Vt,pl as W,d as Wa,dt as Wi,fa as Wn,fr as Wr,ps as Wt,tl as X,$e as Xi,ea as Xn,er as Xr,ts as Xt,rl as Y,t as Ya,tt as Yi,na as Yn,nr as Yr,rs as Yt,$c as Z,Ze as Zi,Qi as Zn,Qn as Zr,$o as Zt,pu as _,de as _a,fn as _i,po as _n,fi as _r,pc as _t,Lu as a,Fe as aa,In as ai,Lo as an,Ii as ar,Lc as at,su as b,ae as ba,on as bi,oo as bn,oi as br,sc as bt,ju as c,ke as ca,An as ci,jo as cn,Ai as cr,jc as ct,Tu as d,Ce as da,wn as di,To as dn,wi as dr,Tc as dt,Ge as ea,Kn as ei,qo as en,Ki as er,qc as et,Cu as f,xe as fa,Sn as fi,Co as fn,Si as fr,Cc as ft,hu as g,pe as ga,mn as gi,ho as gn,mi as gr,hc as gt,_u as h,he as ha,gn as hi,_o as hn,gi as hr,_c as ht,zu as i,Le as ia,Rn as ii,zo as in,Ri as ir,zc as it,zl as j,L as ja,Lt as ji,Ra as jn,Rr as jr,zs as jt,Ul as k,V as ka,Vt as ki,Ha as kn,Hr as kr,Us as kt,ku as l,De as la,On as li,ko as ln,Oi as lr,kc as lt,yu as m,_e as ma,vn as mi,yo as mn,vi as mr,yc as mt,Uu as n,Ve as na,Hn as ni,Uo as nn,Hi as nr,Uc as nt,Fu as o,Ne as oa,Pn as oi,Fo as on,Pi as or,Fc as ot,xu as p,ye as pa,bn as pi,xo as pn,bi as pr,xc as pt,sl as q,a as qa,at as qi,oa as qn,or as qr,ss as qt,Vu as r,ze as ra,Bn as ri,Vo as rn,Bi as rr,Vc as rt,Nu as s,je as sa,Mn as si,No as sn,Mi as sr,Nc as st,Gu as t,Ue as ta,Wn as ti,Go as tn,Wi as tr,Gc as tt,Du as u,Te as ua,En as ui,Do as un,Ei as ur,Dc as ut,du as v,le as va,un as vi,uo as vn,ui as vr,dc as vt,$l as w,Z as wa,Zt as wi,Qa as wn,Qr as wr,$s as wt,au as x,re as xa,rn as xi,io as xn,ii as xr,ac as xt,lu as y,se as ya,cn as yi,co as yn,ci as yr,lc as yt,Cl as z,x as za,xt as zi,Sa as zn,Sr as zr,Cs as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Zc as $,Ye as $i,Xi as $n,Xn as $r,Zo as $t,Ul as A,V as Aa,Vt as Ai,Ha as An,Hr as Ar,Us as At,Cl as B,x as Ba,xt as Bi,Sa as Bn,Sr as Br,Cs as Bt,ru as C,te as Ca,tn as Ci,no as Cn,ni as Cr,rc as Ct,Yl as D,q as Da,qt as Di,Ja as Dn,Jr as Dr,Ys as Dt,Zl as E,Y as Ea,Yt as Ei,Xa as En,Xr as Er,Zs as Et,Nl as F,j as Fa,jt as Fi,Ma as Fn,Mr as Fr,Ns as Ft,pl as G,d as Ga,dt as Gi,fa as Gn,fr as Gr,ps as Gt,yl as H,_ as Ha,_t as Hi,va as Hn,vr as Hr,ys as Ht,jl as I,k as Ia,kt as Ii,Aa as In,Ar as Ir,js as It,sl as J,a as Ja,at as Ji,oa as Jn,or as Jr,ss as Jt,dl as K,l as Ka,lt as Ki,ua as Kn,ur as Kr,ds as Kt,kl as L,D as La,Dt as Li,Oa as Ln,Or as Lr,ks as Lt,zl as M,L as Ma,Lt as Mi,Ra as Mn,Rr as Mr,zs as Mt,Ll as N,F as Na,Ft as Ni,Ia as Nn,Ir as Nr,Ls as Nt,ql as O,G as Oa,Gt as Oi,Ka as On,Kr as Or,qs as Ot,Fl as P,N as Pa,Nt as Pi,Pa as Pn,Pr,Fs as Pt,$c as Q,Ze as Qi,Qi as Qn,Qn as Qr,$o as Qt,Dl as R,T as Ra,Tt as Ri,Ea as Rn,Er as Rr,Ds as Rt,au as S,re as Sa,rn as Si,io as Sn,ii as Sr,ac as St,$l as T,Z as Ta,Zt as Ti,Qa as Tn,Qr as Tr,$s as Tt,_l as U,h as Ua,ht as Ui,ga as Un,gr as Ur,_s as Ut,xl as V,y as Va,yt as Vi,ba as Vn,br as Vr,xs as Vt,hl as W,p as Wa,pt as Wi,ma as Wn,mr as Wr,hs as Wt,rl as X,t as Xa,tt as Xi,na as Xn,nr as Xr,rs as Xt,al as Y,r as Ya,rt as Yi,ia as Yn,ir as Yr,as as Yt,tl as Z,$e as Zi,ea as Zn,er as Zr,ts as Zt,hu as _,pe as _a,mn as _i,ho as _n,mi as _r,hc as _t,zu as a,Le as aa,Rn as ai,zo as an,Ri as ar,zc as at,lu as b,se as ba,cn as bi,co as bn,ci as br,lc as bt,Nu as c,je as ca,Mn as ci,No as cn,Mi as cr,Nc as ct,Du as d,Te as da,En as di,Do as dn,Ei as dr,Dc as dt,qe as ea,Jn as ei,Yo as en,Ji as er,Yc as et,Tu as f,Ce as fa,wn as fi,To as fn,wi as fr,Tc as ft,_u as g,he as ga,gn as gi,_o as gn,gi as gr,_c as gt,yu as h,_e as ha,vn as hi,yo as hn,vi as hr,yc as ht,Vu as i,ze as ia,Bn as ii,Vo as in,Bi as ir,Vc as it,Vl as j,z as ja,zt as ji,Ba as jn,Br as jr,Vs as jt,Gl as k,U as ka,Ut as ki,Wa as kn,Wr as kr,Gs as kt,ju as l,ke as la,An as li,jo as ln,Ai as lr,jc as lt,xu as m,ye as ma,bn as mi,xo as mn,bi as mr,xc as mt,Gu as n,Ue as na,Wn as ni,Go as nn,Wi as nr,Gc as nt,Lu as o,Fe as oa,In as oi,Lo as on,Ii as or,Lc as ot,Cu as p,xe as pa,Sn as pi,Co as pn,Si as pr,Cc as pt,ll as q,s as qa,st as qi,ca as qn,cr as qr,ls as qt,Uu as r,Ve as ra,Hn as ri,Uo as rn,Hi as rr,Uc as rt,Fu as s,Ne as sa,Pn as si,Fo as sn,Pi as sr,Fc as st,qu as t,Ge as ta,Kn as ti,qo as tn,Ki as tr,qc as tt,ku as u,De as ua,On as ui,ko as un,Oi as ur,kc as ut,pu as v,de as va,fn as vi,po as vn,fi as vr,pc as vt,tu as w,$ as wa,$t as wi,eo as wn,ei as wr,tc as wt,su as x,ae as xa,on as xi,oo as xn,oi as xr,sc as xt,du as y,le as ya,un as yi,uo as yn,ui as yr,dc as yt,Tl as z,C as za,Ct as zi,wa as zn,wr as zr,Ts as zt};
