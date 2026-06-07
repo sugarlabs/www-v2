@@ -131,7 +131,6 @@ image: "assets/Images/GSOC.webp"
   [Crabcanon-Plot (Large)](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html)
   - **Performance Instrumentation References:** [Monkey-Patching Technique](https://www.geeksforgeeks.org/javascript/monkey-patching-in-javascript/)
   
-
 ---
 
 ## Acknowledgments
