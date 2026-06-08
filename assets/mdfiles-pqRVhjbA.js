@@ -25873,6 +25873,179 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors for the quick guidance on the Casilda source installation and the Sugar Labs community for their amazing support as I kick off this project!
 `,lu=e({default:()=>uu}),uu=`---
+title: "GSoC '26 Week 01 Update by Ashutosh Singh"
+excerpt: "Building the entire GTK3 frontend for Sugar Activity on Demand, from prompt screen to Reflective Studio."
+category: "DEVELOPER NEWS"
+date: "2026-06-03"
+slug: "2026-06-03-gsoc-26-ashutoshx7-week01"
+author: "@/constants/MarkdownFiles/authors/ashutosh-singh.md"
+description: "GSoC'26 Contributor at SugarLabs working on Sugar Activity on Demand"
+tags: "gsoc26,sugarlabs,week01,ashutoshx7,ai,frontend,gtk3,sugar-activity-on-demand"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 01 Progress Report by Ashutosh Singh
+
+**Project:** [Sugar Activity on Demand](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#sugar-activity-on-demand)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya](https://github.com/chimosky)  
+**Reporting Period:** May 26, 2026 to June 1, 2026  
+
+---
+
+## Goals for This Week
+
+- Design and build the complete GTK3 frontend for the Activity on Demand system
+- Implement the Prompt Screen with suggestion chips, template selection, and planner/policy controls
+- Build the Reflective Studio screen with AI co-designer chat, activity preview, code review, version history, and a learning sidebar
+- Wire up the Use, Modify, Create progression flow
+
+---
+
+## This Week's Achievements
+
+This was one of those weeks where I basically locked in and didn't come up for air. The plan was simple: get the entire frontend done before any backend work started, so that Walter and Devin could see the full vision and give feedback early. That's exactly what happened. Every screen, every panel, every button is in place. The backend will plug into a UI that's already been tested and reviewed by my mentors. Here's a full video walkthrough of everything I built:
+
+[youtube: ApgKoOP22is]
+
+Here's what I built.
+
+### 1. The Use, Modify, Create Flow
+
+The very first thing a learner sees when they open Activity on Demand is a choice: how do you want to start? This follows Papert's constructionist progression: first use something, then modify it, then create from scratch.
+
+![Use Modify Create mode selector](assets/Images/gsoc26-ashutoshx7/aod-modify-create.png)
+
+**Modify** lets the learner "change an existing activity. Pick a starter activity and modify it with guided challenges and hints." This is the gentle on-ramp. The learner doesn't start from zero. They start from something that works and make it their own.
+
+**Create** lets the learner "describe something new. Describe an activity in your own words and the AI will generate it for you." This is the full experience.
+
+The bottom of each card has a little motivational nudge: "Then try changing things" and "Then create your own!" Small touches, but they make a difference in how learners perceive the progression.
+
+### 2. The Prompt Screen
+
+Once the learner picks "Create," they land on the Prompt Screen. I wanted it to feel inviting, not intimidating. The screen opens with a warm headline: "Let's make a playful learning activity" and a subtitle that tells learners to describe what they want in plain language.
+
+![Prompt Screen with suggestion chips, template selector, and planner controls](assets/Images/gsoc26-ashutoshx7/aod-prompt-screen.png)
+
+There are a few key pieces on this screen:
+
+The **mode selector** sits at the top with three buttons: Make (create something new), Play (try an existing activity), and Share (prepare an XO bundle). Make is selected by default. Below that there's a **template picker** with Auto, Starter, Game, and Quiz options. The "Auto" option analyzes the prompt and picks the right template automatically. If the learner wants more control, they can pick one themselves.
+
+Then there's the **planner and policy controls**. This is where the system configuration lives. Planner options include Default (balanced plan), RAG (use Sugar examples), and Validate (AST safety checks). Policy options include Standard (cloud preferred, safe default), Local (offline-first), and Strict (kid-safe limits). These toggle buttons are styled to make the active choices really obvious at a glance.
+
+The **learning prompt area** is a big text area where the learner types their description. There's a character counter (max 500), and below it, a suggestion chip that rotates examples like "Try: treasure-map quest where teams solve clues and explain each step." Clicking the chip fills the prompt area. A **status bar** at the bottom shows the current planner mode and policy configuration.
+
+The whole screen is designed so a 10-year-old could use it without any guidance, but a technical teacher could also fine-tune the planner and policy to their classroom's needs.
+
+### 3. The Reflective Studio
+
+This is the heart of the whole project. Once an activity is generated, the learner lands in the Studio, which is a three-panel workspace where they can understand, modify, and learn from the code.
+
+![Reflective Studio with AI co-designer and learning sidebar](assets/Images/gsoc26-ashutoshx7/aod-studio-preview.png)
+
+The layout has three panels:
+
+**Left panel: AI Co-designer Chat.** This isn't just a chatbot. It's a co-design partner. When the learner submits a prompt, the AI responds with context about what it's doing: "Planner: Gemini LLM. Grounding Sugar Activity patterns, GTK3 widgets, Journal hooks, and safe bundle structure." It tells the learner about age ranges, materials, and how children can share results. The learner can keep refining here, asking for changes or asking questions, while the Studio stays open.
+
+**Center panel: Classroom Preview.** Three tabs at the top: Preview, Review, and Versions. Preview shows a live preview of the generated activity with "Make / Play / Share" buttons. The preview area also has a Live Edit Mode toggle that lets learners click on parts of the preview to target specific areas for modification.
+
+**Right panel: Learning Sidebar.** This is where the constructionist magic happens. Three sub-tabs: Challenges, Reflections, and Annotations. Challenges start at Level 1 (Cosmetic), things like "Rename the activity title in your own words" or "Change one greeting to include the learner's name." There are 8 starter challenges, each with a Hint button and a Done button. Level 2 unlocks after the learner completes Level 1 challenges. Level 3 gets into actual structural modifications.
+
+At the bottom there's a refinement bar: "Ask for refinements, teamwork ideas..." with a Send button. And action buttons: Back, Rebuild, Export XO, and Install & Open.
+
+### 4. The Code Review Tab
+
+Switch to the Review tab and the center panel transforms into a full code editor view.
+
+![Studio Review mode showing generated activity.py with file tree](assets/Images/gsoc26-ashutoshx7/aod-studio-review.png)
+
+On the left is a file tree showing the generated project structure: \`README.md\`, \`activity/\`, \`activity.py\`, \`add_pangolin\`, \`setup.py\`. Clicking any file shows its source.
+
+The code viewer shows proper syntax highlighting, with imports in blue, class names in dark, strings in green, keywords in purple. You can see the full Sugar Activity lifecycle here: the \`GeneratedActivity\` class extending \`activity.Activity\`, the \`__init__\` method, \`build_toolbar()\`, \`_build_canvas()\`, \`write_file()\`, and \`read_file()\`.
+
+Above the code there are two buttons: "Explain project" and "Explain file". These trigger the AI to give a learner-friendly explanation of what the code does. The source is marked as "(editable)" so learners know they can modify it directly.
+
+### 5. The Version History Tab
+
+This one I'm really proud of. Switch to the Versions tab and you get a full diff viewer showing the evolution of the generated activity.
+
+![Studio Versions tab with diff view comparing v1 to v6](assets/Images/gsoc26-ashutoshx7/aod-studio-versions.png)
+
+The left side shows a version history timeline: v1 through v6, each with a timestamp and description:
+- v1: "Initial activity scaffold from the first learning prompt."
+- v2: "Added learner-facing prompt copy and starter canvas structures."
+- v3: "Connected toolbar actions and preview metadata."
+- v4: "Prepared Journal save and restore hooks."
+- v5: "Added safety checks and guided edit notes."
+- v6: "Lazy version with preview bridge and export metadata ready."
+
+Each version has a "View Source" button. Above the diff viewer there's a compare dropdown so you can pick which two versions to compare.
+
+The diff itself uses red/green coloring, with removed lines in red and added lines in green. You can see real changes happening across versions: constants being renamed, new flags being added (\`JOURNAL_ENABLED\`, \`PREVIEW_BRIDGE\`, \`SAFETY_CHECKS\`), and methods being refined with proper docstrings.
+
+This isn't just version tracking. It's a learning tool. When a learner can see *how* their activity evolved through six iterations, they start to understand what the AI actually did, and more importantly, *why*.
+
+---
+
+## Architecture Notes
+
+The whole frontend is built in a single \`activityondemand.py\` module, a full-screen GTK3 window using the Sugar toolkit. A few key design decisions worth calling out:
+
+**All UI updates go through \`GLib.idle_add()\`.** The generation will eventually run in a worker thread, and GTK3 is not thread-safe, so this pattern is baked in from the start.
+
+**Lazy imports only.** The AOD module isn't loaded until the learner clicks "Create with AI" in the Home View. This keeps Sugar's startup time impact under 50ms.
+
+**Component isolation.** Each screen (Prompt, Studio Preview, Studio Review, Studio Versions) is a separate builder method, making it straightforward to iterate on individual screens without touching the others.
+
+**Sugar design language.** Every widget uses GTK3 + Sugar toolkit conventions. No custom frameworks, no web views. It's native GTK all the way down.
+
+---
+
+## Challenges & How I Overcame Them
+
+**Designing a three-panel layout that works on small screens (including OLPC XO laptops).** I used \`Gtk.Paned\` with sensible default proportions and minimum widths. The sidebar collapses on narrow screens, and the code viewer wraps properly.
+
+**Making the Learning Sidebar feel non-intrusive while still being discoverable.** Challenges default to Level 1 (simple, encouraging tasks). Reflections and Annotations are on separate tabs, not all visible at once. The sidebar doesn't compete with the main preview/review area for attention.
+
+**The Version History diff view needed to show meaningful changes without overwhelming the learner.** I used a simple compare dropdown and color-coded diff rendering. Descriptions on each version use plain language, not git-style commit messages.
+
+---
+
+## Key Learnings
+
+Building the frontend first was the right call. Walter and Devin could see the full user flow before any backend existed, and their feedback shaped decisions I would have gotten wrong otherwise.
+
+The constructionist learning layer (Challenges, Reflections, Annotations) is what separates this from a generic code generator. Without it, we're just building another AI tool. With it, we're building a learning environment.
+
+GTK3's layout system is actually quite capable for complex multi-panel UIs once you get comfortable with \`Gtk.Box\`, \`Gtk.Paned\`, and \`Gtk.Notebook\`. No need for web technologies.
+
+---
+
+## Next Week's Roadmap
+
+- Start building \`aodgenerator.py\`, the template rendering engine that produces real Sugar Activity code from structured specs
+- Implement all 5 template archetypes: Hello, Story, Typing, Quiz, and Notebook
+- Begin wiring the LLM pipeline with the system prompt and RAG context injection
+- Get at least 10 test prompts producing valid, installable \`.xo\` bundles end-to-end
+
+---
+
+## Acknowledgments
+
+Thanks to Walter Bender for the constructionist framing that keeps this project honest. It would be easy to build "just another AI code generator," and the constant reminder that learners should understand what they're creating is what makes AOD different.
+
+---
+
+## Connect with Me
+
+- GitHub: [@Ashutoshx7](https://github.com/Ashutoshx7)
+- Email: [ashutoshx002@gmail.com](mailto:ashutoshx002@gmail.com)
+- Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
+
+---
+`,du=e({default:()=>fu}),fu=`---
 title: "GSoC '26 Week 1: Migrating 5,500+ Projects to GitHub & SQLite"
 excerpt: "Successfully migrated 5,543 legacy Music Blocks projects from MySQL to individual GitHub repositories with a fast SQLite index."
 category: "DEVELOPER NEWS"
@@ -25959,7 +26132,7 @@ With 5,300 repositories live on GitHub and the portable \`projects.sqlite\` veri
 The next step for Phase 3 is to build the TypeScript Express backend endpoints (\`GET /allRepos\`, \`GET /search\`, \`POST /like\`, etc.) and wire them up to read directly from my newly created SQLite index. 
 
 Stay tuned for the next update as I bring the Git-based backend fully online!
-`,du=e({default:()=>fu}),fu=`---
+`,pu=e({default:()=>mu}),mu=`---
 title: "GSoC '26 Week 1 Update by Rejah Rabeeul Haque"
 excerpt: "Completed mockup designs for Number Mode and Game Mode in the Connect The Dots activity, and fixed bugs in the Paint activity"
 category: "DEVELOPER NEWS"
@@ -26030,7 +26203,7 @@ I would like to thank my mentor Lionel Laské for his constant guidance and supp
 ---
 
 *Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*
-`,pu=e({default:()=>mu}),mu=`---
+`,hu=e({default:()=>gu}),gu=`---
 title: "GSoC '26 Week 01 Update by Shubham Sharma"
 excerpt: "From standalone simulation to a real Sugarizer prototype with working activities and AI reflection"
 category: "DEVELOPER NEWS"
@@ -26172,7 +26345,7 @@ Thanks to Walter, Ibiam, Mebin, Harshit, Diwangshu, and Aman for the calls and f
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,hu=e({default:()=>gu}),gu=`---
+`,_u=e({default:()=>vu}),vu=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -26321,7 +26494,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,_u=e({default:()=>vu}),vu=`---
+`,yu=e({default:()=>bu}),bu=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -26424,7 +26597,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,yu=e({default:()=>bu}),bu=`---
+`,xu=e({default:()=>Su}),Su=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -26897,7 +27070,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,xu=e({default:()=>Su}),Su=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Cu=e({default:()=>wu}),wu=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -26984,7 +27157,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Cu=e({default:()=>wu}),wu=`---\r
+`,Tu=e({default:()=>Eu}),Eu=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -27077,7 +27250,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Tu=e({default:()=>Eu}),Eu=`---\r
+`,Du=e({default:()=>Ou}),Ou=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -27171,7 +27344,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Du=e({default:()=>Ou}),Ou=`---\r
+`,ku=e({default:()=>Au}),Au=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -27259,7 +27432,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,ku=e({default:()=>Au}),Au=`---\r
+`,ju=e({default:()=>Mu}),Mu=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -27342,7 +27515,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,ju=e({default:()=>Mu}),Mu=`---\r
+`,Nu=e({default:()=>Pu}),Pu=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -27408,7 +27581,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Nu=e({default:()=>Pu}),Pu=`---
+`,Fu=e({default:()=>Iu}),Iu=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -27490,7 +27663,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Fu=e({default:()=>Iu}),Iu=`---
+---`,Lu=e({default:()=>Ru}),Ru=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -27583,7 +27756,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Lu=e({default:()=>Ru}),Ru=`---
+`,zu=e({default:()=>Bu}),Bu=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -27672,7 +27845,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,zu=e({default:()=>Bu}),Bu=`---
+--- `,Vu=e({default:()=>Hu}),Hu=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -27817,7 +27990,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Vu=e({default:()=>Hu}),Hu=`---
+--- `,Uu=e({default:()=>Wu}),Wu=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28005,7 +28178,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Uu=e({default:()=>Wu}),Wu=`---
+--- `,Gu=e({default:()=>Ku}),Ku=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28100,7 +28273,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Gu=e({default:()=>Ku}),Ku=`---
+`,qu=e({default:()=>Ju}),Ju=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28189,7 +28362,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,qu=e({default:()=>Ju}),Ju=`---
+`,Yu=e({default:()=>Xu}),Xu=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28276,7 +28449,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Yu=e({default:()=>Xu}),Xu=`---
+---`,Zu=e({default:()=>Qu}),Qu=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28359,7 +28532,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Zu=e({default:()=>Qu}),Qu=`---
+---`,$u=e({default:()=>ed}),ed=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28442,7 +28615,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,$u=e({default:()=>ed}),ed=`---
+---`,td=e({default:()=>nd}),nd=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -28747,4 +28920,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{rl as $,t as $a,tt as $i,na as $n,nr as $r,rs as $t,Yl as A,q as Aa,qt as Ai,Ja as An,Jr as Ar,Ys as At,kl as B,D as Ba,Dt as Bi,Oa as Bn,Or as Br,ks as Bt,lu as C,se as Ca,cn as Ci,co as Cn,ci as Cr,lc as Ct,tu as D,$ as Da,$t as Di,eo as Dn,ei as Dr,tc as Dt,ru as E,te as Ea,tn as Ei,no as En,ni as Er,rc as Et,zl as F,L as Fa,Lt as Fi,Ra as Fn,Rr as Fr,zs as Ft,yl as G,_ as Ga,_t as Gi,va as Gn,vr as Gr,ys as Gt,Tl as H,C as Ha,Ct as Hi,wa as Hn,wr as Hr,Ts as Ht,Ll as I,F as Ia,Ft as Ii,Ia as In,Ir,Ls as It,pl as J,d as Ja,dt as Ji,fa as Jn,fr as Jr,ps as Jt,_l as K,h as Ka,ht as Ki,ga as Kn,gr as Kr,_s as Kt,Fl as L,N as La,Nt as Li,Pa as Ln,Pr as Lr,Fs as Lt,Gl as M,U as Ma,Ut as Mi,Wa as Mn,Wr as Mr,Gs as Mt,Ul as N,V as Na,Vt as Ni,Ha as Nn,Hr as Nr,Us as Nt,$l as O,Z as Oa,Zt as Oi,Qa as On,Qr as Or,$s as Ot,Vl as P,z as Pa,zt as Pi,Ba as Pn,Br as Pr,Vs as Pt,al as Q,r as Qa,rt as Qi,ia as Qn,ir as Qr,as as Qt,Nl as R,j as Ra,jt as Ri,Ma as Rn,Mr as Rr,Ns as Rt,du as S,le as Sa,un as Si,uo as Sn,ui as Sr,dc as St,au as T,re as Ta,rn as Ti,io as Tn,ii as Tr,ac as Tt,Cl as U,x as Ua,xt as Ui,Sa as Un,Sr as Ur,Cs as Ut,Dl as V,T as Va,Tt as Vi,Ea as Vn,Er as Vr,Ds as Vt,xl as W,y as Wa,yt as Wi,ba as Wn,br as Wr,xs as Wt,ll as X,s as Xa,st as Xi,ca as Xn,cr as Xr,ls as Xt,dl as Y,l as Ya,lt as Yi,ua as Yn,ur as Yr,ds as Yt,sl as Z,a as Za,at as Zi,oa as Zn,or as Zr,ss as Zt,xu as _,ye as _a,bn as _i,xo as _n,bi as _r,xc as _t,Gu as a,Ue as aa,Wn as ai,Go as an,Wi as ar,Gc as at,hu as b,pe as ba,mn as bi,ho as bn,mi as br,hc as bt,zu as c,Le as ca,Rn as ci,zo as cn,Ri as cr,zc as ct,Nu as d,je as da,Mn as di,No as dn,Mi as dr,Nc as dt,$e as ea,er as ei,ts as en,ea as er,tl as et,ju as f,ke as fa,An as fi,jo as fn,Ai as fr,jc as ft,Cu as g,xe as ga,Sn as gi,Co as gn,Si as gr,Cc as gt,Tu as h,Ce as ha,wn as hi,To as hn,wi as hr,Tc as ht,qu as i,Ge as ia,Kn as ii,qo as in,Ki as ir,qc as it,ql as j,G as ja,Gt as ji,Ka as jn,Kr as jr,qs as jt,Zl as k,Y as ka,Yt as ki,Xa as kn,Xr as kr,Zs as kt,Lu as l,Fe as la,In as li,Lo as ln,Ii as lr,Lc as lt,Du as m,Te as ma,En as mi,Do as mn,Ei as mr,Dc as mt,Zu as n,Ye as na,Xn as ni,Zo as nn,Xi as nr,Zc as nt,Uu as o,Ve as oa,Hn as oi,Uo as on,Hi as or,Uc as ot,ku as p,De as pa,On as pi,ko as pn,Oi as pr,kc as pt,hl as q,p as qa,pt as qi,ma as qn,mr as qr,hs as qt,Yu as r,qe as ra,Jn as ri,Yo as rn,Ji as rr,Yc as rt,Vu as s,ze as sa,Bn as si,Vo as sn,Bi as sr,Vc as st,$u as t,Ze as ta,Qn as ti,$o as tn,Qi as tr,$c as tt,Fu as u,Ne as ua,Pn as ui,Fo as un,Pi as ur,Fc as ut,yu as v,_e as va,vn as vi,yo as vn,vi as vr,yc as vt,su as w,ae as wa,on as wi,oo as wn,oi as wr,sc as wt,pu as x,de as xa,fn as xi,po as xn,fi as xr,pc as xt,_u as y,he as ya,gn as yi,_o as yn,gi as yr,_c as yt,jl as z,k as za,kt as zi,Aa as zn,Ar as zr,js as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{al as $,r as $a,rt as $i,ia as $n,ir as $r,as as $t,Zl as A,Y as Aa,Yt as Ai,Xa as An,Xr as Ar,Zs as At,jl as B,k as Ba,kt as Bi,Aa as Bn,Ar as Br,js as Bt,du as C,le as Ca,un as Ci,uo as Cn,ui as Cr,dc as Ct,ru as D,te as Da,tn as Di,no as Dn,ni as Dr,rc as Dt,au as E,re as Ea,rn as Ei,io as En,ii as Er,ac as Et,Vl as F,z as Fa,zt as Fi,Ba as Fn,Br as Fr,Vs as Ft,xl as G,y as Ga,yt as Gi,ba as Gn,br as Gr,xs as Gt,Dl as H,T as Ha,Tt as Hi,Ea as Hn,Er as Hr,Ds as Ht,zl as I,L as Ia,Lt as Ii,Ra as In,Rr as Ir,zs as It,hl as J,p as Ja,pt as Ji,ma as Jn,mr as Jr,hs as Jt,yl as K,_ as Ka,_t as Ki,va as Kn,vr as Kr,ys as Kt,Ll as L,F as La,Ft as Li,Ia as Ln,Ir as Lr,Ls as Lt,ql as M,G as Ma,Gt as Mi,Ka as Mn,Kr as Mr,qs as Mt,Gl as N,U as Na,Ut as Ni,Wa as Nn,Wr as Nr,Gs as Nt,tu as O,$ as Oa,$t as Oi,eo as On,ei as Or,tc as Ot,Ul as P,V as Pa,Vt as Pi,Ha as Pn,Hr as Pr,Us as Pt,sl as Q,a as Qa,at as Qi,oa as Qn,or as Qr,ss as Qt,Fl as R,N as Ra,Nt as Ri,Pa as Rn,Pr as Rr,Fs as Rt,pu as S,de as Sa,fn as Si,po as Sn,fi as Sr,pc as St,su as T,ae as Ta,on as Ti,oo as Tn,oi as Tr,sc as Tt,Tl as U,C as Ua,Ct as Ui,wa as Un,wr as Ur,Ts as Ut,kl as V,D as Va,Dt as Vi,Oa as Vn,Or as Vr,ks as Vt,Cl as W,x as Wa,xt as Wi,Sa as Wn,Sr as Wr,Cs as Wt,dl as X,l as Xa,lt as Xi,ua as Xn,ur as Xr,ds as Xt,pl as Y,d as Ya,dt as Yi,fa as Yn,fr as Yr,ps as Yt,ll as Z,s as Za,st as Zi,ca as Zn,cr as Zr,ls as Zt,Cu as _,xe as _a,Sn as _i,Co as _n,Si as _r,Cc as _t,qu as a,Ge as aa,Kn as ai,qo as an,Ki as ar,qc as at,_u as b,he as ba,gn as bi,_o as bn,gi as br,_c as bt,Vu as c,ze as ca,Bn as ci,Vo as cn,Bi as cr,Vc as ct,Fu as d,Ne as da,Pn as di,Fo as dn,Pi as dr,Fc as dt,tt as ea,nr as ei,rs as en,t as eo,na as er,rl as et,Nu as f,je as fa,Mn as fi,No as fn,Mi as fr,Nc as ft,Tu as g,Ce as ga,wn as gi,To as gn,wi as gr,Tc as gt,Du as h,Te as ha,En as hi,Do as hn,Ei as hr,Dc as ht,Yu as i,qe as ia,Jn as ii,Yo as in,Ji as ir,Yc as it,Yl as j,q as ja,qt as ji,Ja as jn,Jr as jr,Ys as jt,$l as k,Z as ka,Zt as ki,Qa as kn,Qr as kr,$s as kt,zu as l,Le as la,Rn as li,zo as ln,Ri as lr,zc as lt,ku as m,De as ma,On as mi,ko as mn,Oi as mr,kc as mt,$u as n,Ze as na,Qn as ni,$o as nn,Qi as nr,$c as nt,Gu as o,Ue as oa,Wn as oi,Go as on,Wi as or,Gc as ot,ju as p,ke as pa,An as pi,jo as pn,Ai as pr,jc as pt,_l as q,h as qa,ht as qi,ga as qn,gr as qr,_s as qt,Zu as r,Ye as ra,Xn as ri,Zo as rn,Xi as rr,Zc as rt,Uu as s,Ve as sa,Hn as si,Uo as sn,Hi as sr,Uc as st,td as t,$e as ta,er as ti,ts as tn,ea as tr,tl as tt,Lu as u,Fe as ua,In as ui,Lo as un,Ii as ur,Lc as ut,xu as v,ye as va,bn as vi,xo as vn,bi as vr,xc as vt,lu as w,se as wa,cn as wi,co as wn,ci as wr,lc as wt,hu as x,pe as xa,mn as xi,ho as xn,mi as xr,hc as xt,yu as y,_e as ya,vn as yi,yo as yn,vi as yr,yc as yt,Nl as z,j as za,jt as zi,Ma as zn,Mr as zr,Ns as zt};
