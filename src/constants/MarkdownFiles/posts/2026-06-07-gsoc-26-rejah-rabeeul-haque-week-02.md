@@ -44,7 +44,7 @@ After creating the grid canvas, I needed to test it across multiple resolutions,
 
 Beyond this testing, I tested the activity by creating and installing my own Android APK through
 
-**Sugarizer-apkbuilder Repository**:[https://github.com/llaske/sugarizer-apkbuilder#change-activity-set](https://github.com/llaske/sugarizer-apkbuilder#change-activity-set)
+**Sugarizer-apkbuilder Repository**: [https://github.com/llaske/sugarizer-apkbuilder#change-activity-set](https://github.com/llaske/sugarizer-apkbuilder#change-activity-set)
 
 
 ---
