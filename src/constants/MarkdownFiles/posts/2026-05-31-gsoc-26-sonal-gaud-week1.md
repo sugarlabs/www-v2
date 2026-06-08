@@ -25,7 +25,7 @@ image: "assets/Images/GSOC.webp"
 
 No workflow gets touched until the current state is formally documented - every design decision must be grounded in verified facts, not assumptions.
 
-This week's focus was creating `Docs/RELEASE_AUDIT_CURRENT_STATE.md`, a ground-truth snapshot covering all CI/CD workflows, the Gulp build pipeline, the Express development server, the service worker, and the translation pipeline. Alongside the audit: mapping the full end-to-end deployment flow from a developer fork all the way to `musicblocks.sugarlabs.org`, and building a workflow dependency graph to identify duplicate `npm ci` runs, caching gaps, and consolidation opportunities.
+This week's focus was creating `Docs/RELEASE_AUDIT_CURRENT_STATE.md`, a ground-truth snapshot covering all CI/CD workflows, the Gulp build pipeline, the Express development server, the service worker, and the translation pipeline. Alongside the audit: mapping the full end-to-end deployment flow from a developer fork all the way to [musicblocks.sugarlabs.org](https://musicblocks.sugarlabs.org), and building a workflow dependency graph to identify duplicate `npm ci` runs, caching gaps, and consolidation opportunities.
 
 ---
 
@@ -57,8 +57,8 @@ Two distinct deployment paths were mapped:
 
 | Environment | URL | Update Mechanism |
 |---|---|---|
-| Preview | `sugarlabs.github.io/musicblocks` | Automatic - every push to master via GitHub Pages (no build step) |
-| Production | `musicblocks.sugarlabs.org` | **Manual** - performed by Walter Bender; no workflow, no runbook, no backup deployer |
+| Preview | [sugarlabs.github.io/musicblocks](https://sugarlabs.github.io/musicblocks) | Automatic - every push to master via GitHub Pages (no build step) |
+| Production | [musicblocks.sugarlabs.org](https://musicblocks.sugarlabs.org) | **Manual** - performed by Walter Bender; no workflow, no runbook, no backup deployer |
 
 The production deployment mechanism is entirely undocumented in-repo. No workflow file, Dockerfile, or deployment script exists for it. This is the single largest operational gap in the project.
 
