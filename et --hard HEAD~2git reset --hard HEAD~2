@@ -1,0 +1,244 @@
+[33m5b6e6f9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mweek14[m[33m, [m[1;31morigin/week14[m[33m, [m[1;31morigin/week12[m[33m)[m Revise DMP '25 Week-12 Report by Aman Chadha
+[33mc505b92[m[33m ([m[1;32mweek12[m[33m)[m Add Week 12 Report by Aman Chadha
+[33mf0459e0[m[33m ([m[1;31mupstream/main[m[33m)[m DMP '25 Final Report by Harshit Verma (#420)
+[33m00240e1[m GSoC 25 week 13 update by Bishoy Wadea (#430)
+[33maffe5e6[m GSoC 25 week 12 update by Bishoy Wadea (#429)
+[33m28645b0[m GSoC 25 week 11 update by Bishoy Wadea (#428)
+[33m6cd3336[m GSoC 25 week 10 update by Bishoy Wadea (#427)
+[33meed422b[m Gsoc week 17 update (#421)
+[33mc28570d[m DMP '25 Week12 update by Harshit Verma (#407)
+[33meb0356c[m fixed category navigation (#425)
+[33mf038b69[m chore: update lucide-react and tailwindcss versions in package.json and package-lock.json
+[33m5919ffa[m chore: update dependencies and devDependencies in package.json
+[33me700bc1[m Increase chunk size warning limit to 2000
+[33m846b0ca[m fix: add avatar fallback in testimonial and developer testimonial com… (#423)
+[33m430ad17[m GSoC '25 Week 12 update by Safwan Sayeed (#393)
+[33m1cd0831[m Clear search button (#419)
+[33mc2cc19e[m DMP-2025 Week 10 update by Justin Charles (#417)
+[33mf03d084[m DMP 2025 Week 9 updates by Justin Charles (#416)
+[33mc245f1d[m GSoC Week 12 report + Final Report by Mebin Thattil (#415)
+[33m1f90a11[m GSoC'25 Final report by Diwangshu Kakoty (#406)
+[33m5af797c[m GSoC '25 Week 11 update by Safwan Sayeed (#392)
+[33me1ad554[m Fixed preserve search query after navigating back from article (#411)
+[33m820082f[m Week 11,12 and Final Updates by Krish (#414)
+[33m6eaf0c2[m Gsoc 25 Week 12 update by Nikhil (#400)
+[33m5a461cf[m ssoc-week12-update (#404)
+[33m589ad7b[m ssoc-week11-update (#399)
+[33m8a45f1b[m Final report by Om Santosh Suneri (#398)
+[33m4b7823b[m gsoc-25-week11-shubham-singh (#403)
+[33mf09cd1a[m gsoc-2025-week-10-shubham-singh (#397)
+[33mf88b33c[m gsoc-25-week-09-shubham-singh (#396)
+[33mfbb3217[m week12 report (#395)
+[33m3e1b645[m week11 report (#394)
+[33me7f4d0d[m GSoC'25 Week 10 Update by Safwan Sayeed (#391)
+[33m197c1ad[m ADD: week 16 blog by AdityaKrSingh26 (#401)
+[33mb7ad979[m ADD: final blog by AdityaKrSingh26 (#402)
+[33mb7e2611[m ADD : gsoc week 15 blog by AdityaKrSingh26 (#390)
+[33mf38491d[m Week 12 updates by Aman Naik (#409)
+[33m3d3e48b[m Week 11 updates by Aman Naik (#408)
+[33m4f838bf[m DMP-2025 Week 07 update by Justin Charles (#412)
+[33m1bf9b91[m DMP-2025 Week 08 update by Justin Charles (#413)
+[33m1ddd2e5[m DMP '25 Week 11 Update by Harshit Verma (#389)
+[33m0d2f256[m Update the .png Images to .webp
+[33m02c4006[m gsoc 25 week 11 update by nikhil (#388)
+[33md352f50[m DMP'25 Week-09 Update by Anvita Prasad  (#366)
+[33m9e43395[m GSoC'25 Week 09 Update by Krish (#360)
+[33m4561a8b[m  ssoc-week10-update (#387)
+[33mdb6ba13[m gsoc25-week10 (#386)
+[33ma9a95cd[m week 12 update by Om Santosh Suneri (#385)
+[33m9c4c229[m ADD: week 14 blog by AdityaKrSingh26 (#384)
+[33md1ff646[m SSoC' 25 blog post for week 09 by Muhammad Haroon (#383)
+[33m6114dc7[m GSoC Week 11 report by Mebin Thattil (#382)
+[33m825dc24[m GSoC Week 10 report by Mebin Thattil (#381)
+[33m2226631[m week 11 updates by om santosh suneri (#379)
+[33mb6d754a[m DMP '25 Week 10 update by Harshit Verma (#380)
+[33mc1f66d0[m week 10 update by om santosh suneri (#378)
+[33m00cfef9[m GSoC 25 week 9 update by Bishoy Wadea (#376)
+[33m562f473[m gsoc 25 week 10 update by Nikhil bhatt (#375)
+[33m23e8eb2[m Week 10 updates by Aman Naik (#374)
+[33m7277186[m Week 9 blog by Aman Naik (#373)
+[33me834edc[m GSoC'25 Week 10 Update by Krish (#372)
+[33m15937c0[m GSoC'25 Week 09 Update by Diwangshu Kakoty  (#369)
+[33mab8f2db[m GSoC 25 week 10 update by Elwin Li (#368)
+[33mce2c3eb[m DMP'25 Week-06 Update and mide term report by Justin Charles (#367)
+[33m8afb6a0[m Add Week 08 blog post (#365)
+[33m0ce5e7c[m  Gsoc 25 Week 09 Update by Nikhil Bhatt (#361)
+[33m450a384[m gsoc-week08-report-shubham-singh (#359)
+[33md74f261[m GSoC Week 8 Report - Mebin Thattil (#354)
+[33m14ec8e9[m Change .png to .webp format
+[33m357c15e[m All images converted to webp and changed imports in all files (#377)
+[33m2898c68[m Update Dependencies (#371)
+[33m4db9d49[m fix #344: the notification badge made unclipped (#345)
+[33md87dd79[m GSoC '25 week09 update by Elwin Li (#355)
+[33me7028ed[m GSoC 25 week 8 update by Elwin Li (#340)
+[33mbf86793[m DMP '25 Week09 update by Harshit Verma (#364)
+[33mbefebd7[m ADD: Week 13 blog for GSoC'25 by AdityaKrSingh26 (#363)
+[33m8ef0d5a[m ADD: Week 12 blog for GSoC'25 by AdityaKrSingh26 (#362)
+[33m94e6449[m week 08 update by bishoy (#358)
+[33m63d0360[m GSoC Week 9 report by Mebin Thattil (#357)
+[33m943ce20[m DMP '25 Week08 update by Harshit Verma (#356)
+[33mf06455f[m ssoc-week08-update (#353)
+[33m5c51464[m GSoC '25 Week 9 update by Safwan Sayeed (#352)
+[33m0dfa17a[m Week 09 update by Om Santosh Suneri (#351)
+[33m72eb525[m week 08 update by om santosh suneri (#350)
+[33m79cf0f0[m GSoC '25 Week 8 update by Safwan Sayeed (#349)
+[33m642e332[m GSoC ’25 Week 11 Update by Aditya Kumar Singh (#342)
+[33me438f54[m gsoc week07 shubham singh (#337)
+[33md66dab7[m GSoC ’25 Week 08 Update by Diwangshu Kakoty (#346)
+[33m370c77d[m SSoC' 25 blog post for week 07 by Muhammad Haroon (#329)
+[33m140af0c[m SSoC' 25 blog post for week 06 by Muhammad Haroon (#306)
+[33me1fb263[m gsoc 25 week 07 update by Nikhil (#331)
+[33mdc8b0f5[m Gsoc 25 week 08 update by Nikhil-bhatt (#348)
+[33mefe3190[m GSoC '25 Week 8 update by Krish (#347)
+[33mba452fb[m Week 8 blog by Aman Naik (#341)
+[33m3ae6b82[m Week 7 blog post by Aman Naik (#339)
+[33m2e736ad[m GSoC '25 Week 07 Report - Mebin Thattil (#338)
+[33m2d7b5f1[m DMP '25 Week07 progress report by Anvita Prasad (#336)
+[33m8bff779[m GSoC'25 Week 7 Update By Safwan Sayeed (#335)
+[33m905ba05[m GSoC'25 Week 07 Update by Krish (#334)
+[33mbfa1cb6[m GSoC'25 week 07 update by Om Santosh Suneri (#326)
+[33m8f52957[m Update npm packages
+[33m6f5ccbc[m GSoC 25 week 6 update by Bishoy Wadea (#318)
+[33m6dc62c7[m DMP '25  Week07 update by Harshit Verma (#333)
+[33mf7ce0c7[m ADD: GSoC'25 week 10 blog by Aditya (#332)
+[33m850994b[m gsoc-week07 (#330)
+[33maead597[m GSoC'25 week07 update by Elwin Li (#328)
+[33m7385852[m Gsoc week06 shubham singh (#327)
+[33m64dd8be[m DMP'25 Week 5 Update by Justin Charles (#324)
+[33mbfd0319[m GSoC Week 6 report + Mid-Term Summary by Mebin Thattil (#313)
+[33md90c950[m GSoC-week05-Shubham-Singh (#304)
+[33m3d6c26b[m GSoC'25 Week 6 Update By Safwan Sayeed (#302)
+[33ma77703a[m GSoC'25 blog week05 06 by Saumya Shahi (#320)
+[33mc92dbbb[m GSoC'25 Week 06 Update by Krish (#319)
+[33m134537e[m GSoC 25 Week 06 Update by Nikhil (#307)
+[33m607fcc7[m GSoC ’25 Week 08 Update by Aditya Kumar Singh (#298)
+[33m2ee4309[m ADD: GSoC'25 Week 09 update by AdityaKrSingh26 (#316)
+[33m2192324[m DMP '25 Week06 & Midterm progress report by Anvita Prasad (#315)
+[33mad2ff5a[m Week 6 progress report by Aman Naik (#308)
+[33m7e7727f[m gsoc-week06-diwangshu (#305)
+[33m68d6972[m Week 06 update by Om Santosh Suneri GSoC'25 (#300)
+[33m8ee0c4f[m Add Week 05 DMP blog post (#299)
+[33m17452d4[m GSoC'25 Week 5 Update By Safwan Sayeed (#292)
+[33md023470[m DMP '25 Week06 and Midterm progress report by Harshit Verma (#309)
+[33m0c007a2[m DMP '25 Week05 Update by Harshit Verma (#290)
+[33m448ecc2[m GSoC Week 5 report by Mebin Thattil (#289)
+[33m11c8f5d[m DMP `25 week 5 updates by Aman Naik (#286)
+[33m826b658[m SSoC' 25 blog post for week 05 by Muhammad Haroon (#281)
+[33m1cae750[m GSoC ’25 Week 07 Update by Aditya Kumar Singh (#268)
+[33mf23932f[m Gsoc week03 report by Shubham Singh (#263)
+[33meff0629[m DMP '25 Week04 Update by Harshit Verma (#254)
+[33m1c53dcf[m GSoC'25 Week 6 Update by Elwin Li (#303)
+[33me659173[m Update npm packages
+[33mc864d89[m All the links are properly alligned (#297)
+[33mbbbbc82[m Changes all the clickable content to cursor pointer when we hover on them (#295)
+[33m017afaa[m Minor newline improvement for challenge --> solution section Bishw (#294)
+[33m09e457d[m GSoC'25 Week 05 Update by Bishoy (#282)
+[33m71fc8fa[m gsoc-week05-diwangshu (#280)
+[33m123ac25[m Create newlines for "Challenge" to "Solution" (#293)
+[33m0ff4173[m Gsoc week5 nikhil bhatt (#278)
+[33m49adfff[m DMP 25 week 04 blog by Aman Chadha (#275)
+[33m05f33d2[m week05 update by Elwin Li (#274)
+[33mfb7384e[m  GSoC'25 Week-05 Update by Krish (#272)
+[33mc1cc9c9[m week 05 update by Om Santosh Suneri (#271)
+[33mc0318e2[m Gsoc-week04-blog-FirePheonix (#264)
+[33mb3acd6a[m Update npm packages
+[33m76c2e74[m Change the "Donate Now", "Subscribe" button cursor to pointer. And made the "Join the volunteer" button to clickable without the entire row (#288)
+[33md4c2bbf[m DMP'25 week 4 updates by Aman Naik (#262)
+[33m7292c3f[m Force indents (#291)
+[33mf30e99c[m DMP'25 Week 4 Update by Justin Charles (#259)
+[33m72e874e[m DMP'25 Week 03 update by Justin Charles (#247)
+[33m22d82b8[m DMP'25 week 04 by Anvita Prasad (#258)
+[33m269a901[m ssoc-week04-update (#257)
+[33m33eced3[m GSoC'25 Week 04 Blog Report by Saumya Shahi (#256)
+[33ma9a87ec[m GSoC'25  Week 4 Update By Safwan Sayeed (#255)
+[33m7ebd2d1[m GSoC Week 4 report by Mebin Thattil (#253)
+[33m061d85f[m Gsoc 25 Week 04 Update by Nikhil-bhatt (#252)
+[33me697b89[m GSoC'25 Week-04 Update by Diwangshu Kakoty (#251)
+[33m70e442e[m Add week4 blog for Elwin Li (#250)
+[33mff4e1be[m   GSoC'25 Week-04 Update by Krish   (#249)
+[33mfdc0801[m Week 04 updates by om santosh suneri (#248)
+[33mb5017cd[m Week 3 updates by Aman Naik (#239)
+[33m41fc47c[m GSoC '25 week 3 report by Elwin Li (#237)
+[33m2a4bf4c[m Bishoy date fix (#260)
+[33m4dbc16b[m GSoC '25 Third Week report by Bishoy Wadea (#236)
+[33mbc60e09[m DMP'25 blog post for week 03 by Anvita Prasad (#246)
+[33m434f8da[m DMP '25 Week03 Update by Harshit Verma (#245)
+[33mac40d9b[m DMP 25 week 03 blog by Aman Chadha (#244)
+[33md0e4f1c[m SSoC' 25 blog post for week 03 by Muhammad Haroon (#241)
+[33m19992ec[m GSoC '25 Week 03 Update by Diwangshu Kakoty (#238)
+[33m9f8035f[m FirePheonix GSOC'25 week-02 report (#224)
+[33m1d711ea[m Add GSoC week-3 progress report for saumyashahi (#243)
+[33mbb225be[m GSoC'25 Week 3 Blog Post By Safwan Sayeed (#242)
+[33m79ced7f[m Gsoc 25 Week 03 Update by Nikhil-Bhatt (#240)
+[33m8e3b03d[m Week'3 GSoC'25 Update by Krish (#234)
+[33mca657f9[m Week 03 update by Om Santosh Suneri (#233)
+[33mcb74bcb[m GSoC Week 3 report by Mebin Thattil (#232)
+[33m5c698dc[m GSoC ’25 Week 06 Update by Aditya Kumar Singh (#231)
+[33m3ebc94d[m Week 2 blog by Aman Naik (#228)
+[33m60e5e0e[m reverting my last blog push
+[33m1317f28[m Week 03 update by Om Santosh Suneri
+[33m31c9b40[m DMP '25 Week01 Update by Anvita Prasad (#223)
+[33mae3140e[m ADD: week 05 report by AdityKrSingh26 (#230)
+[33m69de81a[m update week01 and week02 blog post (#226)
+[33m0daa226[m fix author file path for saumya-shahi (#227)
+[33m89dec37[m ADD: author page for AdityKrSingh26 (#229)
+[33mb3e74fd[m Week 01 blog post (#192)
+[33m8f69b80[m Add GSoC Week 02 Progress Report: Saumya Shahi (#221)
+[33m502c492[m GSoC '25 - week02 report by Elwin Li (#208)
+[33m475e7db[m DMP 25 week 02 blog by Aman Chadha (#222)
+[33m6e302b6[m Adding saumya's authors page (#220)
+[33m5de260b[m DMP '25 Week02 Update by Justin Charles  (#219)
+[33m710ec70[m DMP '25 Week02 Update by Harshit Verma & Add Author (#218)
+[33m728cee3[m Anvita Prasad DMP'25 Week 02 report (#217)
+[33mc1444c7[m ssoc-week02-update (#215)
+[33me202220[m Add author profile (#209)
+[33m0b270d4[m GSoC '25 Second Week report by Bishoy Wadea (#207)
+[33mc5402a5[m GSoC '25 Week 02 Report - Mebin Thattil + Added Author Info (#204)
+[33m79c750b[m Refine Markdown Parser
+[33m6e8536b[m Copyedits
+[33mee8b552[m Fix #214 - Fixes the anchor links redirecting to the homepage problem
+[33m188ba8e[m GSoC '25 Week 02 Update by Diwangshu Kakoty (#210)
+[33m0eea69a[m Gsoc 25 Week 02 Update by Nikhil-Bhatt (#213)
+[33ma1da945[m GSoC Week 2 Blog By Safwan Sayeed (#212)
+[33m992c0cb[m Add author profile for Krish ,  updates for week2 (#206)
+[33m06b0e9c[m GSoc'25 Week02 Update by Om Santosh Suneri (#203)
+[33m6019428[m feat: add share component and add it to news, newsDetails page (#211)
+[33m32191ad[m Updating the style to write Blogs/Update Blog Template for GSoC_DMP_SSoC
+[33m6e0831c[m Revert "Updating the style to write Blogs/Update Blog Template for GSoC_DMP_SSoC"
+[33m1e73254[m Update=ing the style to write Blogs/Update Blog Template for GSoC_DMP_SSoC
+[33m9002165[m Merge pull request #193 from ac-mmi/main
+[33m56bc06a[m Merge branch 'main' into main
+[33m5b4b727[m Merge pull request #202 from ebeetles/week01
+[33mfa0173d[m add week01 gsoc update for JSeditor
+[33m43b8aa1[m Fix linting
+[33ma91aa25[m Merge pull request #196 from AdityaKrSingh26/aditya-gsoc-report-4
+[33mb394ff0[m Merge branch 'main' of https://github.com/ac-mmi/www-v2
+[33m1b0943a[m Corrected the blog
+[33m9ea2185[m Fix linting
+[33m1de7511[m Adds some of the features mentioned in #198
+[33ma78731e[m Refine the Markdown template to add more details
+[33m3d019a4[m Enhanced Markdown Rendering with Github Style
+[33mff39396[m Merge branch 'main' into main
+[33m19e85f1[m Update Bot working
+[33mebc9324[m Adding Bot For PR's
+[33md2b2838[m Update dependecies and fix breaking changes in framer motion
+[33mf0c40c7[m Auditing package-lock.json
+[33mf075b12[m Revert "Fix Dependency installation error in the workflow"
+[33md0b8cbd[m Fix Dependency installation error in the workflow
+[33mff40baf[m Fix Copyedits of Karan Palans Blog
+[33mf7f378f[m MBV4 Community bonding and Week 1 blog: Karan Palan (#194)
+[33m5c8b510[m Redesigned the News Page (#197)
+[33m65608bb[m GSoC week 04 report by AdityaKrSingh26
+[33m882c3b8[m DMP 25 week 01 blog by Aman Chadha
+[33m2e55f41[m DMP 25 week 01 blog by Aman Chadha
+[33m4cbef0c[m DMP 25 week 01 blog by Aman Chadha
+[33m4b553dc[m 2025 06 09 copyedits (#191)
+[33maa97d7c[m add c4gt_DMP image to blogs of DMP mentees (#190)
+[33m7216ad1[m Fix Saumyas Blog Section (Changed category from GSoC to DEVELOPER NEWS )
+[33me63183c[m Merge pull request #179 from FirePheonix/gsoc25-week01-shubhamsingh
+[33m7eb7cc9[m Merge pull request #189 from justin212407/dmp25-week1-justin212497
+[33m1ae3abd[m Merge pull request #187 from saumyashahi/main
+[33m8dccc33[m Merge pull request #186 from therealharshit/dmp-week01-therealharshit
+[33mc1238b4[m Merge pull request #185 from AnvitaPrasad/anvita-week01-blog
+[33m26dba80[m Merge pull request #184 from haroon10725/week1-blogpost
+[33m12b3ac5[m Merge pull request #183 from sugarlabs/safwan-week1-update
