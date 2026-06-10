@@ -28,8 +28,9 @@ const NavDropdown: React.FC<NavDropdownProps> = ({
       onMouseLeave={() => setActive(null)}
     >
       <button
-        className={`px-2 lg:px-3 py-2 text-gray-700 dark:text-gray-200 hover:text-blue-600 font-medium rounded-md
+        className={`px-2 lg:px-2 py-2 text-gray-700 dark:text-gray-200 hover:text-blue-600 font-medium rounded-md
                   transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center space-x-1
+                  text-sm lg:text-sm whitespace-nowrap
                   ${isActive ? 'text-blue-600 dark:text-blue-400' : ''}`}
         aria-expanded={isActive}
       >
