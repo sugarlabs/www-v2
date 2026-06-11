@@ -10,9 +10,19 @@ email: "pahalvanshikaa@gmail.com"
 
 # About Vanshika Pahal
 
-I am a first-year B.Tech student in AI & ML at the Polaris School of Technology, as well as an open-source contributor and full-stack developer passionate about backend systems, data engineering, and autonomous architectures. Coming from a self-taught background, I focus on building responsive, data-driven applications. My project experience includes developing EcoBite (a sustainable food tracker), engineering smart portfolio platforms in hackathons, and designing MedShield AI, an autonomous multi-agent fraud investigation system.
+I am a first-year B.Tech student in AI & ML at the Polaris School of Technology, as well as an open-source contributor and full-stack developer passionate about backend systems, data engineering, and autonomous architectures. Coming from a self-taught background, I focus on building responsive, data-driven applications.
 
-In open source, I have contributed to CNCF communities and Oppia, where I implemented statistics reporting modules and collaborated on a resume dashboard using Python, Angular, TypeScript, and Google Cloud Datastore. Currently, I am working with Sugar Labs on Music Blocks v3 - Test Coverage, Refactoring & Dependency Updates to refactor legacy modules, decouple global state, and build a comprehensive automated testing suite.
+I enjoy collaborating on complex software projects, debugging structural bottlenecks, and learning modern development workflows. Currently, I am working with Sugar Labs on the Music Blocks v3 codebase to improve test coverage, resolve dependency drift, and streamline development architecture.
+
+## Experience
+
+- **DMP '26 Contributor:** Refactoring legacy modules, decoupling global state, and building the automated testing suite for Music Blocks v3 at Sugar Labs.
+- **Open Source Contributor:** Contributed to Oppia's repository, implementing statistics report features and collaborating on the resume creator dashboard.
+- **Open Source Developer:** Contributed to CNCF community projects and participated in workshops like Build On Flare.
+
+## Current Projects
+
+* [Music Blocks v3 - Test Coverage, Refactoring & Dependency Updates (DMP '26)](https://github.com/sugarlabs/musicblocks) - Establishing unit-and-integration test coverage, extracting the block registration lifecycle, and reducing implicit global dependencies to enable reliable CI workflows.
 
 ## Connect with Me
 
