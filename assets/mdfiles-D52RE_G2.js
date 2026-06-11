@@ -870,6 +870,38 @@ Khubayb is a passionate open-source contributor and a Google Summer of Code 2026
 - **Email**: [khubayb05@gmail.com](mailto:khubayb05@gmail.com) 
 - **LinkedIn**: [Syed Khubayb Ur Rahman](https://www.linkedin.com/in/syed-khubayb-ur-rahman-a0b34a2a5/) 
 - **Website**: [website](https://kh-ub-ayb.github.io/khubayb-portfolio/)`,ae=e({default:()=>oe}),oe=`---
+name: "Vanshika Pahal"
+slug: "vanshika2720"
+title: "DMP'26 Contributor"
+organization: "SugarLabs"
+description: "DMP'26 Contributor at SugarLabs working on Music Blocks v3 Test Coverage, Refactoring & Dependency Updates"
+avatar: "https://github.com/vanshika2720.png"
+email: "pahalvanshikaa@gmail.com"
+---
+
+# About Vanshika Pahal
+
+I am a first-year B.Tech student in AI & ML at the Polaris School of Technology, as well as an open-source contributor and full-stack developer passionate about backend systems, data engineering, and autonomous architectures. Coming from a self-taught background, I focus on building responsive, data-driven applications.
+
+I enjoy collaborating on complex software projects, debugging structural bottlenecks, and learning modern development workflows. Currently, I am working with Sugar Labs on the Music Blocks v3 codebase to improve test coverage, resolve dependency drift, and streamline development architecture.
+
+## Experience
+
+- **DMP '26 Contributor:** Refactoring legacy modules, decoupling global state, and building the automated testing suite for Music Blocks v3 at Sugar Labs.
+- **Open Source Contributor:** Contributed to Oppia's repository, implementing statistics report features and collaborating on the resume creator dashboard.
+- **Open Source Developer:** Contributed to CNCF community projects and participated in workshops like Build On Flare.
+
+## Current Projects
+
+* [Music Blocks v3 - Test Coverage, Refactoring & Dependency Updates (DMP '26)](https://github.com/sugarlabs/musicblocks) - Establishing unit-and-integration test coverage, extracting the block registration lifecycle, and reducing implicit global dependencies to enable reliable CI workflows.
+
+## Connect with Me
+
+- **GitHub**: [@vanshika2720](https://github.com/vanshika2720)
+- **Email**: [pahalvanshikaa@gmail.com](mailto:pahalvanshikaa@gmail.com)
+- **LinkedIn**: [Vanshika Pahal](https://www.linkedin.com/in/vanshika-pahal-a3055a369/)
+- **Matrix**: [@vanshikapahal:matrix.org](https://matrix.to/#/@vanshikapahal:matrix.org)
+`,se=e({default:()=>ce}),ce=`---
 title: Culture and Pedagogy
 slug: culture
 author: Sugar Labs Team
@@ -931,7 +963,7 @@ Plus, cross-community collaboration between technologists and teachers ensures t
 The Sugar pedagogy is embodied in the culture of Free/Libre Software; teachers and students are empowered with both the freedom to actively participate and the freedom to be critical.  
 
 Criticism of ideas is a powerful force in learning, as well as in fostering economic development; unleashing this potential is an important part of our mission.
-`,se=e({default:()=>ce}),ce=`---
+`,le=e({default:()=>ue}),ue=`---
 title: 'Markdown Test Page'
 slug: 'markdown-test'
 category: 'MarkdownData'
@@ -1070,7 +1102,7 @@ after a blank line.
 
 This Markdown file has been designed to demonstrate multiple aspects of our custom Markdown parser. Every section shows different capabilities from formatting to embedded media.
 
-Thank you for reading this detailed Markdown test document! :heart:`,le=e({default:()=>ue}),ue=`---
+Thank you for reading this detailed Markdown test document! :heart:`,de=e({default:()=>fe}),fe=`---
 title: Sugar Labs For Parents
 slug: parents
 author: Sugar Labs Team
@@ -1115,7 +1147,7 @@ This aligns with research by Daniel Pink, who reviewed four decades of studies s
 2. **Mastery** – confidence and space to develop expertise  
 3. **Purpose** – authentic problem-solving opportunities  
 
-A key insight of Minsky, Papert, and Solomon is to give children tools they can explore, master, and apply to problems they care about. Children using Sugar are **motivated learners**, pursuing meaningful goals that help them build their own “cognitive towers.”`,de=e({default:()=>fe}),fe=`---
+A key insight of Minsky, Papert, and Solomon is to give children tools they can explore, master, and apply to problems they care about. Children using Sugar are **motivated learners**, pursuing meaningful goals that help them build their own “cognitive towers.”`,pe=e({default:()=>me}),me=`---
 title: Sugar Labs For School Administrators
 slug: school-admin
 author: Sugar Labs Team
@@ -1187,7 +1219,7 @@ The primary function of the journal is as a **time-based view** of the activitie
 
 ## Where to get resources?
 
-For more information, visit the **official Sugar Labs website** and explore its resources on **collaborative learning, development tools, and community support**.`,pe=e({default:()=>me}),me=`---
+For more information, visit the **official Sugar Labs website** and explore its resources on **collaborative learning, development tools, and community support**.`,he=e({default:()=>ge}),ge=`---
 title: Student Learning Goals and Sugar
 slug: students
 author: Sugar Labs Team
@@ -1221,7 +1253,7 @@ These books are recommended as a rich source of ideas on how to use Sugar in and
 - **Papert, S. & Solomon, C.** (1971). *Twenty Things to Do with a Computer.* *Artificial Intelligence Memo No. 248* and *Logo Memo No. 3.*
 - **Pink, D.** (2009). *Drive: The Surprising Truth About What Motivates Us.* Riverhead Press.
 - **Stefanakis, E.** (2002). *Multiple Intelligences and Portfolios: A Window into the Learner's Mind.* Greenwood Press.
-- **Trinidad, G.** (2013). *Física con XO.*`,he=e({default:()=>ge}),ge=`---
+- **Trinidad, G.** (2013). *Física con XO.*`,_e=e({default:()=>ve}),ve=`---
 title: "New foundation focused on taking the Sugar user interface to the next level of usability and utility"
 category: "PRESS RELEASE"
 date: "2008-05-15"
@@ -1247,7 +1279,7 @@ Many of the core Sugar developers are participating in the launch, including Mar
 Bert Freudenberg, one of the developers of the Etoys activity, commented, “Expanding Sugar to more hardware platforms gives a great boost to all developers of educational software. Sugar is the first system specifically aimed at helping children to learn while supporting a rich variety of contributed applications. As third-party developers, my colleagues at Viewpoints Research Institute look forward to a great relationship with Sugar Labs.”
 
 Tomeu Vizoso added, “Sugar has been brought to maturity by OLPC and a relatively small team of community supporters. The time has come to unlock Sugar’s potential as a global education project; the creation of Sugar Labs is the next step — expanding upon a project where people from all around the world can contribute to improving education, with the assurance that their efforts will be of benefit to everyone.”
-`,_e=e({default:()=>ve}),ve=`---
+`,ye=e({default:()=>be}),be=`---
 title: "Sugar Labs joins the Software Freedom Conservancy"
 category: "PRESS RELEASE"
 date: "2008-12-09"
@@ -1261,7 +1293,7 @@ Boston, MA, December 9, 2008 — Sugar Labs today announced its membership in th
 In May 2008, the Sugar project became independent of OLPC, making Sugar available to a wider community of developers and users. Subsequently, Sugar has been ported to Debian, Ubuntu, and other GNU/Linux distributions. Sugar can now run on almost any computer hardware. In October 2008, Sugar Labs released Sugar Version 0.82, which features enhanced usability and stability. In November, Sugar announced the availability of the pre-alpha version of “Sugar on a Stick,” a LiveUSB image of Sugar that gives children access to Sugar on any computer using just a USB key. Joining the Conservancy is an important milestone in the path toward making Sugar available to children everywhere.
 
 Founded in March 2006, the Conservancy allows developers of its member projects to unite under a common organization that provides much-needed administrative services. This structure spares each software project the burden of starting and maintaining its own independent non-profit organization. Sugar Labs has joined as the Conservancy’s fifteenth member project.
-`,ye=e({default:()=>be}),be=`---
+`,xe=e({default:()=>Se}),Se=`---
 title: "La Asociación sin fines de lucro Sugar Labs Anuncia su Nueva Versión de la Plataforma de Aprendizaje Sugar para Niños que Funciona en Notebooks y PCs"
 category: "PRESS RELEASE"
 date: "2009-03-16"
@@ -1285,7 +1317,7 @@ La plataforma de aprendizaje de Sugar forma parte de la colección permanente de
 El Sr. Bender comentó lo siguiente: “Sugar 0.84 representa un paso importante a medida que se trabaja para lograr la versión 1.0 de Sugar en formato de tarjeta de memoria extraíble que simplificará, en gran medida, la evaluación y el uso de Sugar en el aula. Asimismo, este formato de tarjeta de memoria extraíble hace posible que Sugar se ejecute a partir de un simple formato de memoria USB en casi cualquier computadora actual desde las notebooks (computadora portátil) hasta las desktops (computadora personal), así como en la mayoría de PCs más antiguas, sin interferir con las instalaciones de software preexistente.”
 
 “A medida que nos aproximamos al millón de niños “aprendiendo a aprender” con Sugar en la XO-1 de OLPC, solicitamos voluntarios que se unan a nosotros — un reto para los programadores, diseñadores, traductores e implementadores”, refirió el Sr. Bender. “Necesitamos especialmente probadores de software que nos ayuden a hacer de Sugar en formato de tarjeta de memoria extraíble una sólida solución que se encuentre disponible dondequiera que exista una computadora.”
-`,xe=e({default:()=>Se}),Se=`---
+`,Ce=e({default:()=>we}),we=`---
 title: "Sugar Labs, organisation à but non lucratif, annonce la sortie de la nouvelle version de la plateforme d’apprentissage pour enfants Sugar pour PC et netbooks"
 category: "PRESS RELEASE"
 date: "2009-03-16"
@@ -1308,7 +1340,7 @@ La plateforme d’apprentissage Sugar fait partie de la collection permanente du
 Selon M. Bender, “Sugar 0.84 est une étape importante vers la version 1.0 de Sugar on a Stick, qui va considérablement simplifier l’évaluation et l’utilisation de Sugar en classe. Avec Sugar on a Stick, on pourra lancer Sugar à partir d’une simple clé USB sur la plupart des ordinateurs récents, des netbooks aux ordinateurs de bureau, et aussi sur la plupart des vieux PC, sans perturber les logiciels déjà installés.”
 
 “Alors que nous nous approchons du millionième enfant “apprenant à apprendre” avec Sugar sur le XO-1 de One Laptop per Child, nous appelons de nouveau bénévoles à venir nous aider à relever ce défi éducatif: développeurs, concepteurs, traducteurs, et déployeurs”, a déclaré M. Bender. “Nous avons notamment besoin de testeurs pour nous aider à faire de Sugar on a Stick une solution robuste qui fonctionnera avec n’importe quel ordinateur.”
-`,Ce=e({default:()=>we}),we=`---
+`,Te=e({default:()=>Ee}),Ee=`---
 title: "Sugar Labs Nonprofit Announces New Version of Sugar Learning Platform for Children, Runs on Netbooks and PCs"
 category: "PRESS RELEASE"
 date: "2009-03-16"
@@ -1330,7 +1362,7 @@ The Sugar Learning Platform is part of the permanent collection of the Museum of
 Mr. Bender commented, “Sugar 0.84 is an important step as we work toward version 1.0 of Sugar on a Stick, which will greatly simplify evaluation and use of Sugar in the classroom. Sugar on a Stick will start Sugar from a simple USB memory stick on nearly any recent computer from netbooks to desktops, and most older PCs as well, without interfering with pre-existing software installations.”
 
 “As we approach the one-millionth child ‘learning to learn’ with Sugar on the OLPC XO-1, we call for volunteers to join us—a challenge to educate for developers, designers, translators, and deployers,” Mr. Bender said. “In particular, we need testers to help us make Sugar on a Stick a robust solution available anywhere there is a computer.”
-`,Te=e({default:()=>Ee}),Ee=`---
+`,De=e({default:()=>Oe}),Oe=`---
 title: "Sugar Labs kündigt neue Version von Sugar an—die Lernplattform für Kinder läuft auf Netbooks und PCs"
 category: "PRESS RELEASE"
 date: "2009-03-16"
@@ -1352,7 +1384,7 @@ Die Lernplattform Sugar ist Teil der ständigen Ausstellung des Museum of Modern
 Bender fügt hinzu: “Sugar 0.84 ist ein wichtiger Schritt im Hinblick auf die Version 1.0 von Sugar on a Stick, die die Evaluation und die Anwendung von Sugar im Unterricht vereinfachen wird. Sugar on a Stick lädt Sugar von einem USB-Speichermedium auf nahezu jedem gängigen Computer, ob Netbook oder Desktop PC, ohne dabei mit der bereits installierten Software in Konflikt zu geraten.”
 
 “Weil bald das millionste Kind mit Sugar auf dem OLPC XO-1 ‘lernt zu lernen’ laden wir alle Freiwilligen dazu ein, mitzumachen—eine Herausforderung für Entwickler, Pädagogen, Designer, Übersetzer und Anwender,” sagt Bender. “Vor allem brauchen wir Software-Tester, die uns helfen aus Sugar on a Stick eine Alternative zu vorhandener Software auf allen verfügbaren Computern zu machen.”
-`,De=e({default:()=>Oe}),Oe=`---
+`,ke=e({default:()=>Ae}),Ae=`---
 title: "Sugar Labs Announces Beta‑1 of Sugar on a Stick, LiveUSB Version of Sugar Learning Platform for Children"
 category: "PRESS RELEASE"
 date: "2009-04-22"
@@ -1372,7 +1404,7 @@ Walter Bender, Executive Director of Sugar Labs, said: “Sugar is perfectly sui
 Caroline Meeks of Solution Grove ([www.solutiongrove.com](http://www.solutiongrove.com)), the Sugar on a Stick project manager, commented: “We’re counting on teachers to help us improve Sugar on a Stick as we work towards our Version‑1 release scheduled for Q3 2009. We just presented Sugar on a Stick at the FOSS\xA0VT conference (<http://www.ncose.org/node/47>) where it generated great interest, and our real-world tests at local sites with varied aging PCs have been very encouraging.”
 
 Sugar testers are invited to send bug information and constructive criticism to [feedback@sugarlabs.org](mailto:feedback@sugarlabs.org). “We won’t be able to reply to every message,” continued Ms. Meeks, “but we will read every one in order to make Sugar on a Stick a reliable learning tool in budget-stretched classrooms by the fall.”
-`,ke=e({default:()=>Ae}),Ae=`---
+`,je=e({default:()=>Me}),Me=`---
 title: "Sugar Labs annonce la bêta-1 de Sugar on a Stick, version LiveUSB de Sugar, la plate-forme d’apprentissage pour enfants"
 category: "PRESS RELEASE"
 date: "2009-04-22"
@@ -1393,7 +1425,7 @@ Walter Bender, le directeur exécutif de Sugar Labs, a dit : “Sugar est parfai
 Caroline Meeks de Solution Grove ([www.solutiongrove.com](http://www.solutiongrove.com)), gestionnaire du projet Sugar on a Stick, a commenté : “Nous comptons sur les enseignants pour nous aider à améliorer Sugar on a Stick tandis que nous continuons à travailler sur la Version-1 prévue pour le troisième trimestre 2009. Nous venons de présenter Sugar on a Stick à la conférence FOSS VT (<http://www.ncose.org/node/47>) où il a suscité beaucoup d’intérêt, et nos tests sur le terrain avec des PCs variés et anciens ont été très encourageants.”
 
 Les testeurs de Sugar sont invités à envoyer des informations sur tout bogue et autres critiques constructives à l’adresse suivante : [feedback@sugarlabs.org](mailto:feedback@sugarlabs.org). “Nous ne pourrons pas répondre à chaque message,” a continué Mme Meeks, “mais nous allons lire chacun afin de rendre Sugar on a Stick un outil fiable dans les classes qui manquent de ressources d’ici la rentrée.”
-`,je=e({default:()=>Me}),Me=`---
+`,Ne=e({default:()=>Pe}),Pe=`---
 title: "Sugar Labs Announces Immediate Availability of Sugar on a Stick; Learning Platform Runs on Any PC or Netbook In The Classroom"
 category: "PRESS RELEASE"
 date: "2009-06-24"
@@ -1413,7 +1445,7 @@ As part of an ongoing effort to make Sugar on a Stick classroom-ready, Sugar Lab
 Learning Activities are at the heart of Sugar. Sugar on a Stick includes 40 Activities to interest young learners such as Read, Write, Paint, and Etoys. Hundreds more Activities are available free for download at the [Sugar Activity Library](http://activities.sugarlabs.org). Most “Sugarized” Activities have student collaboration built-in; students and teachers work, play, and learn on the same Activities together. The Sugar Learning Platform is open, so by leveraging the work of other open source projects, existing software for children can be integrated; for example, the acclaimed GCompris suite of 100 Activities developed over the past five years by Bruno Coudoin was recently added to Sugar, including Activities such as Chess, Geography, and Sudoku. Teachers and parents interested in Sugar’s Activities and its modern interface for children can watch short videos on the recently opened [Sugar Labs Dailymotion channel](http://www.dailymotion.com/sugarlabs).
 
 Visitors to LinuxTag are welcome to speak with Sugar Labs contributors at booth 7.2a 110a.
-`,Ne=e({default:()=>Pe}),Pe=`---
+`,Fe=e({default:()=>Ie}),Ie=`---
 title: "Sugar Labs annonce la disponibilité immédiate de « Sugar on a Stick », une plate-forme d’apprentissage qui fonctionne sur n’importe quel PC ou netbook dans la salle de classe"
 category: "PRESS RELEASE"
 date: "2009-06-24"
@@ -1434,7 +1466,7 @@ L’effort pour rendre Sugar on a Stick prêt pour la salle de classe continue ;
 Les Activités pour apprendre sont au cœur de Sugar. Sugar on a Stick est fourni avec 40 Activités intéressantes pour des jeunes apprenants tels que Lire, Écrire, Dessiner, et EToys. Des centaines d’autres Activités sont disponibles gratuitement sur la [Bibliothèque d’Activités Sugar](http://activities.sugarlabs.org). La plupart d’activités « sucrées » offrent la collaboration en natif ; les étudiants et enseignants travaillent, jouent, et apprennent ensemble sur les mêmes Activités. La plate-forme d’apprentissage Sugar est ouverte et bénéficie des travaux d’autres projets ; des logiciels existants peuvent être intégrés. Par exemple, plus de 100 activités tels que Échecs, Géographie, et Sudoku de la suite acclamée GCompris développée depuis cinq ans par Bruno Coudoin ont été ajoutés récemment à Sugar. Des enseignants et parents qui s’intéressent aux activités de Sugar et à son interface moderne pour enfants peuvent visionner de courtes vidéos sur le nouveau canal [Dailymotion de Sugar Labs](http://www.dailymotion.com/sugarlabs).
 
 Les visiteurs à LinuxTag sont invités à dialoguer avec des contributeurs de Sugar Labs au stand 7.2a 110a.
-`,Fe=e({default:()=>Ie}),Ie=`---
+`,Le=e({default:()=>Re}),Re=`---
 title: "Sugar Labs annuncia l’immediata disponibilità di Sugar on a Stick; La Piattaforma di Apprendimento in grado di funzionare su qualsiasi PC o Netbook disponibile in classe"
 category: "PRESS RELEASE"
 date: "2009-06-24"
@@ -1454,7 +1486,7 @@ Come supporto allo sforzo di rendere “Sugar on a Stick” pronto per l’utili
 Le Attività di Apprendimento sono il cuore di Sugar. “Sugar on a Stick” include 40 attività preinstallate per catturare l’interesse dei giovani studenti, fra queste Leggi, Scrivi, Disegna, e l’ambiente Etoys. Altre centinaia di attività sono disponibili per essere liberamente scaricate dalla [Sugar Activity Library](http://activities.sugarlabs.org). La maggior parte delle attività "Sugarized" possiedono funzionalità di collaborazione native; gli studenti ed i docenti possono lavorare, giocare ed imparare tutti insieme condividendo le stesse attività. La “Sugar Learning Platform” è aperta, quindi approfittando del lavoro di altri progetti OpenSource, software didattico per bambini già esistente può essere integrato; per esempio, la famosa suite GCompris comprendente più di 100 attività didattiche e ludiche sviluppata nel corso degli scorsi cinque anni da Bruno Coudoin è stata recentemente integrata, comprendendo fra le altre Attività come Scacchi, Geografia e Sudoku. Docenti e genitori interessati a valutare le attività di Sugar e la sua innovativa interfaccia utente specificamente progettata per i bambini possono visionare i filmati disponibili sul canale recentemente attivato da [Sugar Labs su Dailymotion](http://www.dailymotion.com/sugarlabs).
 
 I partecipanti a LinuxTag sono caldamente invitati ad incontrare i collaboratori di Sugar Labs presso lo stand 7.2a 110a.
-`,Le=e({default:()=>Re}),Re=`---
+`,ze=e({default:()=>Be}),Be=`---
 title: "Sugar Labs anuncia la disponibilidad inmediata de Sugar On A Stick (Sugar en un pendrive). El plataforma de aprendizaje funciona en casi cualquier PC o portátil que hay en el aula."
 category: "PRESS RELEASE"
 date: "2009-06-24"
@@ -1477,7 +1509,7 @@ Actividades dirigidas al aprendizaje están en el corazón de Sugar. Sugar on a 
 
 La plataforma de aprendizaje de Sugar es abierta. Por lo tanto, Sugar utiliza el trabajo de otros proyectos de código abierto. El software existente para los niños se puede integrar a Sugar. Por ejemplo, el reconocido GCompris, junto con 100 actividades desarrolladas en los últimos cinco años por Bruno Coudoin, fueron añadidos recientemente a Sugar; incluye actividades como Ajedrez, Geografía y Sudoku. Los maestros y padres de familia interesados en las Actividades de Sugar y su interfaz moderna pueden ver videos cortos en el recientemente inaugurado canal de [Sugar Labs Dailymotion](http://www.dailymotion.com/sugarlabs).
 
-Los visitantes a LinuxTag son bienvenidos a hablar con los contribuyentes de Sugar Labs en el mostrador 7.2a 110a.`,ze=e({default:()=>Be}),Be=`---
+Los visitantes a LinuxTag son bienvenidos a hablar con los contribuyentes de Sugar Labs en el mostrador 7.2a 110a.`,Ve=e({default:()=>He}),He=`---
 title: "Sugar Labs gibt die Veröffentlichung von Sugar on a Stick bekannt; die Lernplattform läuft auf jedem PC oder Netbook im Klassenzimmer."
 category: "PRESS RELEASE"
 date: "2009-06-24"
@@ -1497,7 +1529,7 @@ Als Teil der andauernden Bemühungen, Sugar on a Stick für den Einsatz im Klass
 Lernaktivitäten bilden das Herzstück von Sugar. Sugar on a Stick umfasst 40 Aktivitäten, um das Interesse junger Lernender zu wecken, beispielsweise Lesen, Schreiben, Malen oder Etoys. Hunderte weiterer Aktivitäten stehen in der [Sugar-Aktivitätenbibliothek](http://activities.sugarlabs.org) zum freien Download bereit. Die meisten "ver-Sugar-ten" Aktivitäten ermöglichen die Zusammenarbeit von Schülern: Schüler und Lehrer arbeiten, spielen und lernen gemeinsam in denselben Aktivitäten. Die Sugar-Lernplattform ist offen, sodass durch Einsatz anderer Open-Source-Produkte vorhandene Software für Kinder integriert werden kann. So wurde etwa die gefeierte GCompris-Suite aus 100 Aktivitäten, die die letzten fünf Jahre über von Bruno Coudoin entwickelt wurde, erst kürzlich zu Sugar hinzugefügt, darunter Aktivitäten wie Schach, Geographie oder Sudoku. Lehrer und Eltern, die sich für Sugars Aktivitäten und sein modernes Interface für Kinder interessieren, finden im unlängst eröffneten [Sugar Labs Dailymotion-Kanal](http://www.dailymotion.com/sugarlabs) kurze Videos.
 
 Besucher des LinuxTages sind herzlich eingeladen, mit Beitragenden zu Sugar Labs am Stand 7.2a 110a zu sprechen.
-`,Ve=e({default:()=>He}),He=`---
+`,Ue=e({default:()=>We}),We=`---
 title: "Sugar Labs kondigt aan dat Sugar on a Stick nu beschikbaar is; dit leerplatform draait op elke pc of netbook."
 category: "PRESS RELEASE"
 date: "2009-06-24"
@@ -1523,7 +1555,7 @@ Het Sugar Leerplatform is open, dus andere bestaande open-sourceprojecten voor k
 
 Leerkrachten en ouders die geïnteresseerd zijn in Sugar-activiteiten en de moderne interface voor kinderen kunnen korte video’s bekijken op het onlangs geopende [Sugar Labs Dailymotion-kanaal](http://www.dailymotion.com/sugarlabs).
 
-Bezoekers aan LinuxTag zijn welkom bij stand **7.2a 110a** om te komen praten met Sugar Labs-medewerkers.`,Ue=e({default:()=>We}),We=`---
+Bezoekers aan LinuxTag zijn welkom bij stand **7.2a 110a** om te komen praten met Sugar Labs-medewerkers.`,Ge=e({default:()=>Ke}),Ke=`---
 title: "Sugar Labs and Free Software Foundation Celebrate Software Freedom Day, Announce Joint Efforts to Promote the Sugar Learning Platform for Children Worldwide"
 category: "PRESS RELEASE"
 date: "2009-11-18"
@@ -1562,7 +1594,7 @@ For example, **Uruguay** has distributed a Sugar-equipped OLPC laptop to every s
 
 Sugar Labs relies on the efforts of **software developers** who donate their skills to the project. Mr. Bender continued:
 
-> “We are looking for developers with experience in GNU/Linux, Python and/or Gtk+ for contributing to the Sugar shell and educational Activities for children. We also need testers, experienced packagers, and educators willing to contribute their ideas for Sugar in the classroom.”`,Ge=e({default:()=>Ke}),Ke=`---
+> “We are looking for developers with experience in GNU/Linux, Python and/or Gtk+ for contributing to the Sugar shell and educational Activities for children. We also need testers, experienced packagers, and educators willing to contribute their ideas for Sugar in the classroom.”`,qe=e({default:()=>Je}),Je=`---
 title: "L’association à but non lucratif Sugar Labs annonce la version 2 de “Sugar on a Stick” qui améliore la lecture de livres électroniques et transforme n’importe quelle clé USB en une plate-forme éducative pour les enfants ; partenariat avec Nexcopy, Inc."
 category: "PRESS RELEASE"
 date: "2009-12-08"
@@ -1616,7 +1648,7 @@ Nexcopy Incorporated est spécialisée dans le développement d’outils de dupl
 ---
 
 Sugar Labs est une marque déposée de la Software Freedom Conservancy. Les autres marques déposées sont la propriété respective de leurs auteurs.
-`,qe=e({default:()=>Je}),Je=`---
+`,Ye=e({default:()=>Xe}),Xe=`---
 title: "Sugar Labs Nonprofit Announces v2 of Sugar on a Stick with Improved E-Book Readers, Recycles Any USB Stick Into Learning Environment for Children; Partners with Nexcopy, Inc."
 category: "PRESS RELEASE"
 date: "2009-12-08"
@@ -1643,7 +1675,7 @@ Greg Morris, President of Nexcopy, commented, “Nexcopy is proud to partner wit
 
 **About Nexcopy Incorporated**: Nexcopy Incorporated specializes in developing and manufacturing the finest and most feature-rich flash memory duplicators in the market. Pioneering the solid-state memory duplication market, Nexcopy supplies Central and South America, Europe, India, Asia, Pacific Rim and serves the U.S. market through its headquarters in California.
 
-Sugar Labs is a registered trademark of the Software Freedom Conservancy. Other names are trademarks of their respective owners.`,Ye=e({default:()=>Xe}),Xe=`---
+Sugar Labs is a registered trademark of the Software Freedom Conservancy. Other names are trademarks of their respective owners.`,Ze=e({default:()=>Qe}),Qe=`---
 title: "L'Office de secours et de travaux des Nations unies choisi les ordinateurs du projet One Laptop per Child et la plate-forme Sugar pour un projet majeur d'éducation au proche orient"
 category: "PRESS RELEASE"
 date: "2010-04-29"
@@ -1664,7 +1696,7 @@ Les contenus existant de l'UNRWA seront adaptés à Sugar et la formation des en
 
 A propos du Sugar Labs: Sugar Labs est un organisation non lucrative de volontaires, membre du projet Software Freedom Conservancy. A l’origine intégré au projet One Laptop Per Child, Sugar Labs coordonne les volontaires dans le monde qui sont passionés par l’idée de fournir des opportunités d’éducation à travers la plate-forme éducative Sugar. Sugar Labs est soutenu par des donations et cherche des fonds pour accélérer son développement. Pour plus d’information, voir [http://www.sugarlabs.org](http://www.sugarlabs.org)
 
-Sugar Labs est une marque déposée de la Software Freedom Conservancy. Les autres marques déposées sont la propriété respective de leur auteurs.`,Ze=e({default:()=>Qe}),Qe=`---
+Sugar Labs est une marque déposée de la Software Freedom Conservancy. Les autres marques déposées sont la propriété respective de leur auteurs.`,$e=e({default:()=>et}),et=`---
 title: "United Nations Relief and Works Agency Sceglie i Laptop di One Laptop per Child con  Sugar per un Importante Progetto Educativo in Medio Oriente"
 category: "PRESS RELEASE"
 date: "2010-04-29"
@@ -1681,7 +1713,7 @@ Walter Bender, fondatore e Direttore Esecutivo di Sugar Labs, dichiara: “Ad og
 
 Al cuore di Sugar sono le Attività: [http://activities.sugarlabs.org](http://activities.sugarlabs.org) – programmi divertenti e appassionanti, nati per leggere libri elettronici, scrivere, disegnare, navigare la rete Internet, programmare, e molto altro ancora. Sugar integra capacità di collaborazione fra utenti e di memorizzazione dei dati in una struttura organizzata in base temporale (Diario), funzionalità estremamente adatte sia ad un utilizzo in classe che per continuare ad apprendere e studiare anche al di fuori della scuola. Il sistema XS School Server, basato su software libero, reso disponibile da One Laptop per Child, permette un accesso sicuro e filtrato alla rete Internet per i giovani studenti.
 
-I materiali didattici di UNRWA esistenti saranno adattati a Sugar e si sta già provvedendo anche alla formazione dei docenti. Il progetto di UNRWA segue le orme della distribuzione avvenuta lo scorso anno di 1000 laptops XO nelle scuole della Palestina a cura della Palestine Education Initiative ([http://www.pei.gov.ps](http://www.pei.gov.ps), [http://en.palexo.com](http://en.palexo.com)). Sugar Labs è lieta di accogliere sviluppatori e volontari che vogliano collaborare alla riuscita di questa iniziativa.`,$e=e({default:()=>et}),et=`---
+I materiali didattici di UNRWA esistenti saranno adattati a Sugar e si sta già provvedendo anche alla formazione dei docenti. Il progetto di UNRWA segue le orme della distribuzione avvenuta lo scorso anno di 1000 laptops XO nelle scuole della Palestina a cura della Palestine Education Initiative ([http://www.pei.gov.ps](http://www.pei.gov.ps), [http://en.palexo.com](http://en.palexo.com)). Sugar Labs è lieta di accogliere sviluppatori e volontari che vogliano collaborare alla riuscita di questa iniziativa.`,tt=e({default:()=>nt}),nt=`---
 title: "United Nations Relief and Works Agency chooses One Laptop per Child Laptops with Sugar for Major Education Project in Mideast"
 category: "PRESS RELEASE"
 date: "2010-04-29"
@@ -1700,7 +1732,7 @@ The heart of Sugar is its Activities for children ([http://activities.sugarlabs.
 
 Existing UNRWA learning content will be adapted to Sugar and teacher training is underway. The UNRWA project follows last year’s deployment of 1000 XO laptops in Palestinian schools by the Palestine Education Initiative ([http://www.pei.gov.ps](http://www.pei.gov.ps), [http://en.palexo.com](http://en.palexo.com)). Sugar Labs welcomes developers and volunteers to make this important endeavor successful.
 
-About Sugar Labs: Sugar Labs, a volunteer-driven, nonprofit organization, is a member project of the Software Freedom Conservancy. Originally part of the One Laptop Per Child project, Sugar Labs coordinates volunteers around the world who are passionate about providing educational opportunities to children through the Sugar Learning Platform. Sugar Labs is supported by donations and is seeking funding to accelerate development. For more information, please visit [http://www.sugarlabs.org](http://www.sugarlabs.org).`,tt=e({default:()=>nt}),nt=`---
+About Sugar Labs: Sugar Labs, a volunteer-driven, nonprofit organization, is a member project of the Software Freedom Conservancy. Originally part of the One Laptop Per Child project, Sugar Labs coordinates volunteers around the world who are passionate about providing educational opportunities to children through the Sugar Learning Platform. Sugar Labs is supported by donations and is seeking funding to accelerate development. For more information, please visit [http://www.sugarlabs.org](http://www.sugarlabs.org).`,rt=e({default:()=>it}),it=`---
 title: "La Plataforma de Aprendizaje Sugar y el Escritorio GNOME se distribuirán hoy en la One Laptop per Child modelo XO-1.5; también se ejecutará en el nuevo XO-HS High School Edition"
 category: "PRESS RELEASE"
 date: "2010-06-04"
@@ -1727,7 +1759,7 @@ Walter Bender, director ejecutivo de Sugar Labs, dijo que "la fluidez de cambio 
 
 **Acerca de GNOME:** GNOME es un proyecto de software libre que desarrolla un estándar de escritorio completo, accesible y fácil de utilizar en todas las distribuciones principales de GNU/Linux y Unix. Popular en instalaciones corporativas grandes y entre millones de pequeñas y medianas empresas y usuarios domésticos a lo largo del mundo, incluye un entorno de desarrollo para crear nuevas aplicaciones. La Fundación GNOME se compone de cientos de desarrolladores voluntarios y compañías líderes de la industria. Se puede obtener mayor información en [http://www.gnome.org](http://www.gnome.org) y [http://foundation.gnome.org](http://foundation.gnome.org).
 
-**Acerca de One Laptop per Child:** ([http://www.laptop.org](http://www.laptop.org)) OLPC es una organización sin ánimo de lucro creada por Nicholas Negroponte y otros del Media Lab del MIT para diseñar, fabricar y distribuir portátiles lo suficientemente baratos como para proporcionar a cada niño en el mundo acceso al conocimiento y a las formas modernas de educación.`,rt=e({default:()=>it}),it=`---
+**Acerca de One Laptop per Child:** ([http://www.laptop.org](http://www.laptop.org)) OLPC es una organización sin ánimo de lucro creada por Nicholas Negroponte y otros del Media Lab del MIT para diseñar, fabricar y distribuir portátiles lo suficientemente baratos como para proporcionar a cada niño en el mundo acceso al conocimiento y a las formas modernas de educación.`,at=e({default:()=>ot}),ot=`---
 title: "Sugar Labs Announces New Version of Sugar on a Stick, Educational Software for Children"
 category: "PRESS RELEASE"
 date: "2010-06-10"
@@ -1748,7 +1780,7 @@ Thomas Gilliard, a Sugar Labs contributor, said, "The Sugar Creation Kit turns a
 
 Visitors to LinuxTag are invited to meet Sugar Labs contributors at Hall 7.2a, Booth 115.
 
-**About Sugar Labs**: Sugar Labs, a volunteer-driven, nonprofit organization, is a member project of the Software Freedom Conservancy. Originally part of the One Laptop Per Child project, Sugar Labs coordinates volunteers around the world who are passionate about providing educational opportunities to children through the Sugar Learning Platform. Sugar Labs is supported by donations and is seeking funding to accelerate development. For more information, please visit [http://www.sugarlabs.org](http://www.sugarlabs.org).`,at=e({default:()=>ot}),ot=`---
+**About Sugar Labs**: Sugar Labs, a volunteer-driven, nonprofit organization, is a member project of the Software Freedom Conservancy. Originally part of the One Laptop Per Child project, Sugar Labs coordinates volunteers around the world who are passionate about providing educational opportunities to children through the Sugar Learning Platform. Sugar Labs is supported by donations and is seeking funding to accelerate development. For more information, please visit [http://www.sugarlabs.org](http://www.sugarlabs.org).`,st=e({default:()=>ct}),ct=`---
 title: "Sugar Labs Annuncia una Nuova Versione di Sugar on a Stick, piattaforma software educativa per bambini"
 category: "PRESS RELEASE"
 date: "2010-06-10"
@@ -1773,7 +1805,7 @@ Thomas Gilliard, un contributore di Sugar Labs, commenta:
 > “Il *Sugar Creation Kit* trasforma ogni PC in una stazione in grado di produrre istanze di Sugar on a Stick. Strumenti e documentazione sono tutti raccolti in un unico disco; gli insegnanti non perderanno tempo nella ricerca di quanto possa essere utile alla loro attività didattica.  
 > Questo strumento permette inoltre di lavorare via 'sneaker net' (non connessi a Internet) e in aule protette da firewall.”
 
-I visitatori del LinuxTag sono invitati ad incontrare gli sviluppatori di Sugar Labs presso il **Booth 115, Hall 7.2a**.`,st=e({default:()=>ct}),ct=`---
+I visitatori del LinuxTag sono invitati ad incontrare gli sviluppatori di Sugar Labs presso il **Booth 115, Hall 7.2a**.`,lt=e({default:()=>ut}),ut=`---
 title: "Sugar Labs annonce la nouvelle version de «Sugar-On-A-Stick», son système éducatif à destination des enfants"
 category: "PRESS RELEASE"
 date: "2010-06-10"
@@ -1797,7 +1829,7 @@ Sugar Labs sera présent pour toute la durée du salon LinuxTag 2010 au stand 11
 
 **À propos du Sugar Labs** : Sugar Labs est une organisation non lucrative de volontaires, membre du projet Software Freedom Conservancy. À l’origine intégré au projet One Laptop Per Child, Sugar Labs coordonne les volontaires dans le monde qui sont passionnés par l’idée de fournir des opportunités d’éducation à travers la plate-forme éducative Sugar. Sugar Labs est soutenu par des donations et cherche des fonds pour accélérer son développement. Pour plus d’informations, voir [http://www.sugarlabs.org](http://www.sugarlabs.org)
 
-Sugar Labs est une marque déposée de la Software Freedom Conservancy. Les autres marques déposées sont la propriété respective de leurs auteurs.`,lt=e({default:()=>ut}),ut=`---
+Sugar Labs est une marque déposée de la Software Freedom Conservancy. Les autres marques déposées sont la propriété respective de leurs auteurs.`,dt=e({default:()=>ft}),ft=`---
 title: "La plateforme éducative Sugar et l'interface bureautique GNOME désormais présents sur le nouvel XO 1.5 de la fondation OLPC, ainsi que le nouveau modèle XO-HS High School Edition"
 category: "PRESS RELEASE"
 date: "2010-01-14"
@@ -1829,7 +1861,7 @@ GNOME est un projet de logiciel libre qui développe, pour toutes les distributi
 **À propos de One Laptop per Child**  
 ([http://www.laptop.org](http://www.laptop.org)) : OLPC est une organisation à but non-lucratif créée par Nicholas Negroponte et d'autres membres du Media Lab du MIT afin de concevoir, produire et distribuer des ordinateurs portables suffisamment abordables pour permettre à chaque enfant du monde d'avoir un accès au savoir et aux formes modernes d'éducation.
 
-*Sugar Labs est une marque déposée de la Software Freedom Conservancy. Les autres marques déposées sont la propriété respective de leurs auteurs.*`,dt=e({default:()=>ft}),ft=`---
+*Sugar Labs est une marque déposée de la Software Freedom Conservancy. Les autres marques déposées sont la propriété respective de leurs auteurs.*`,pt=e({default:()=>mt}),mt=`---
 title: "Sugar Learning Platform and GNOME Desktop Now Shipping on the One Laptop per Child XO-1.5; Will Run On New XO-HS"
 category: "PRESS RELEASE"
 date: "2010-06-14"
@@ -1862,7 +1894,7 @@ GNOME is a free-software project which develops a complete, accessible and easy-
 
 ### About One Laptop per Child
 
-[http://www.laptop.org](http://www.laptop.org): OLPC is a non-profit organization created by Nicholas Negroponte and others from the MIT Media Lab to design, manufacture and distribute laptop computers that are inexpensive enough to provide every child in the world access to knowledge and modern forms of education.`,pt=e({default:()=>mt}),mt=`---
+[http://www.laptop.org](http://www.laptop.org): OLPC is a non-profit organization created by Nicholas Negroponte and others from the MIT Media Lab to design, manufacture and distribute laptop computers that are inexpensive enough to provide every child in the world access to knowledge and modern forms of education.`,ht=e({default:()=>gt}),gt=`---
 title: "Sugar Learning Platform e GNOME Desktop sono disponibili per gli XO-1.5 di One Laptop per Child; Compatibili anche per i nuovi XO-HS High School Edition"
 category: "PRESS RELEASE"
 date: "2010-06-14"
@@ -1889,7 +1921,7 @@ Walter Bender, Direttore Esecutivo di Sugar Labs, dichiara “la fluidità di mo
 
 **In merito a GNOME**: GNOME è un progetto di free-software che sviluppa un desktop standard completo, accessibile e di facile utilizzo, per tutte le principali distribuzioni GNU/Linux e Unix. Ampiamente conosciuto e utilizzato nelle grandi imprese e in milioni di piccole aziende e utenti privati nel mondo, include anche un ambiente completo di sviluppo per creare nuovi programmi. La nonprofit GNOME Foundation è costituita da centinaia di sviluppatori volontari e da industrie-leader. Ulteriori informazioni possono essere reperite presso: [http://www.gnome.org](http://www.gnome.org) e [http://foundation.gnome.org](http://foundation.gnome.org).
 
-**In merito a One Laptop per Child** ([http://www.laptop.org](http://www.laptop.org)): OLPC è una organizzazione non-profit creata da Nicholas Negroponte ed altri del MIT Media Lab per progettare, produrre e distribuire laptop computers che siano così economici da poter fornire ad ogni bambino del mondo accesso alla conoscenza e alle più moderne forme di apprendimento.`,ht=e({default:()=>gt}),gt=`---
+**In merito a One Laptop per Child** ([http://www.laptop.org](http://www.laptop.org)): OLPC è una organizzazione non-profit creata da Nicholas Negroponte ed altri del MIT Media Lab per progettare, produrre e distribuire laptop computers che siano così economici da poter fornire ad ogni bambino del mondo accesso alla conoscenza e alle più moderne forme di apprendimento.`,_t=e({default:()=>vt}),vt=`---
 title: "La organización sin fines de lucro Sugar Labs patrocina el equipo de ciclistas Team Chipotle para dar a conocer su misión educativa."
 excerpt: "Sugar Labs se asocia con el equipo de ciclismo Team Chipotle en un acuerdo innovador de patrocinio para recaudar fondos y dar a conocer su misión educativa, involucrando a niños en Uruguay para documentar la carrera usando sus laptops XO."
 category: "PRESS RELEASE"
@@ -1921,7 +1953,7 @@ Image: ![ChipotleDevelopmentTeam_RedlandsCyclingClassic.webp](/assets/post-asset
 
 *Sugar Labs es una marca registrada de Software Freedom Conservancy. Otros nombres son marcas registradas de sus respectivos dueños.*
 
-**NOTA:** El equipo Chipotle Development desafortunadamente no va a participar de la 68a. Vuelta Ciclista del Uruguay este año.`,_t=e({default:()=>vt}),vt=`---
+**NOTA:** El equipo Chipotle Development desafortunadamente no va a participar de la 68a. Vuelta Ciclista del Uruguay este año.`,yt=e({default:()=>bt}),bt=`---
 title: "Sugar Labs Nonprofit Sponsoring Team Chipotle to Raise Awareness of Educational Mission"
 excerpt: "Sugar Labs partners with Team Chipotle cycling team in an innovative sponsorship arrangement to raise awareness and funds for its educational mission while engaging children in Uruguay to document the race using their XO laptops."
 category: "PRESS RELEASE"
@@ -1998,7 +2030,7 @@ Sugar Labs is a registered trademark of the Software Freedom Conservancy.
 Other names are trademarks of their respective owners.
 
 NOTE: The Chipotle Development Team will unfortunately not race in the Vuelta
-Ciclista del Uruguay this year.`,yt=e({default:()=>bt}),bt=`---
+Ciclista del Uruguay this year.`,xt=e({default:()=>St}),St=`---
 title: "La organización educacional sin fines de lucro Sugar Labs(R) celebra el Día del Aprendizaje Digital con dos ganadores del premio Google Code-In"
 excerpt: "Sugar Labs anuncia que dos estudiantes, Agustín Zubiaga Sánchez y Aneesh Dogra, han sido ganadores del premio principal de Google Code-In por sus significativas contribuciones a la plataforma de aprendizaje Sugar."
 category: "PRESS RELEASE"
@@ -2049,7 +2081,7 @@ Sugar Labs, una organización sin fines de lucro, conducida por voluntarios, es 
 Sugar Labs se mantiene en base a donaciones y está buscando financiación y voluntarios para acelerar su desarrollo.  
 **Sitio oficial:** [www.sugarlabs.org](http://www.sugarlabs.org)
 
-*Sugar Labs es una marca registrada de la Software Freedom Conservancy. Otros nombres y marcas corresponden a sus respectivos dueños.*`,xt=e({default:()=>St}),St=`---
+*Sugar Labs es una marca registrada de la Software Freedom Conservancy. Otros nombres y marcas corresponden a sus respectivos dueños.*`,Ct=e({default:()=>wt}),wt=`---
 title: "Le Sugar Labs(R), organisme non lucratif à but éducatif, célèbre le 'Digital Learning Day' avec deux lauréats au grand prix du 'Google Code-In'"
 excerpt: "Sugar Labs annonce deux étudiants, Agustin Zubiaga Sanchez et Aneesh Dogra, comme lauréats du grand prix Google Code-In qui ont apporté des contributions significatives à la plateforme d'apprentissage Sugar."
 category: "PRESS RELEASE"
@@ -2100,7 +2132,7 @@ Le Sugar Labs tient à exprimer sa gratitude à Google et tout particulièrement
 **À propos de Sugar Labs(R)**  
 Sugar Labs(R) est une organisation non lucrative de volontaires, membre du projet Software Freedom Conservancy. À l’origine intégré au projet One Laptop Per Child, Sugar Labs coordonne les volontaires dans le monde qui sont passionnés par l’idée de fournir des opportunités d’éducation à travers la plate-forme éducative Sugar. Sugar Labs(R) est soutenu par des donations et cherche des fonds pour accélérer son développement. Pour plus d’information, voir [www.sugarlabs.org/press](http://www.sugarlabs.org/press) ou contacter **pr@sugarlabs.org**.
 
-*Sugar Labs(R) est une marque déposée de la Software Freedom Conservancy. Les autres marques déposées sont la propriété respective de leur auteurs.*`,Ct=e({default:()=>wt}),wt=`---
+*Sugar Labs(R) est une marque déposée de la Software Freedom Conservancy. Les autres marques déposées sont la propriété respective de leur auteurs.*`,Tt=e({default:()=>Et}),Et=`---
 title: "Sugar Labs(R) Educational Nonprofit Celebrates Digital Learning Day With Two Google Code-In Grand Prize Winners"
 excerpt: "Sugar Labs announces two students, Agustin Zubiaga Sanchez and Aneesh Dogra, as Google Code-In grand prize winners who made significant contributions to the Sugar Learning Platform."
 category: "PRESS RELEASE"
@@ -2136,7 +2168,7 @@ Sugar Labs wishes to thank Google and in particular Bradley Kuhn, executive dire
 **About Sugar Labs(R):**  
 Sugar Labs(R), a volunteer-driven, educational nonprofit organization, is a member project of the Software Freedom Conservancy. Originally part of the One Laptop Per Child project, Sugar Labs coordinates volunteers around the world who are passionate about providing educational opportunities to children through the Sugar Learning Platform. Sugar Labs(R) is supported by donations and is seeking funding to accelerate development. For more information, please visit [sugarlabs.org/press](http://www.sugarlabs.org/press) or contact pr@sugarlabs.org.
 
-Sugar Labs(R) is a registered trademark of the Software Freedom Conservancy. Other names are trademarks of their respective owners.`,Tt=e({default:()=>Et}),Et=`---
+Sugar Labs(R) is a registered trademark of the Software Freedom Conservancy. Other names are trademarks of their respective owners.`,Dt=e({default:()=>Ot}),Ot=`---
 title: "Children Programmers Abound at First International TurtleArt Day"
 excerpt: "Sugar Labs celebrates the first TurtleArt Day in Caacupé, Paraguay, with 275 students and 77 teachers exploring creative programming through the TurtleArt environment."
 category: "PRESS RELEASE"
@@ -2187,7 +2219,7 @@ Sugar Labs, a volunteer-driven, nonprofit organization, is a member project of t
 
 For more information, please visit [sugarlabs.org/press](http://www.sugarlabs.org/press) or contact **pr@sugarlabs.org**.
 
-*Sugar Labs® is a registered trademark of the Software Freedom Conservancy. Other names are trademarks of their respective owners.*`,Dt=e({default:()=>Ot}),Ot=`---
+*Sugar Labs® is a registered trademark of the Software Freedom Conservancy. Other names are trademarks of their respective owners.*`,kt=e({default:()=>At}),At=`---
 title: "Programadores niños abundan en el primer Día Internacional de TurtleArt"
 excerpt: "Sugar Labs celebra el primer Día de Tortugarte en Caacupé, Paraguay, con 275 estudiantes y 77 profesores explorando programación creativa a través del entorno TurtleArt."
 category: "PRESS RELEASE"
@@ -2232,7 +2264,7 @@ Andrés Aguirre, del proyecto Butiá —un robot programado con Tortugarte—, d
 **Sobre Sugar Labs®:**  
 Es una organización sin fines de lucro dirigida por voluntarios, miembro de la Software Freedom Conservancy. Sugar Labs coordina alrededor del mundo a voluntarios apasionados por proveer oportunidades educativas a través de la plataforma de aprendizaje Sugar. Sugar se encuentra instalada en más de tres millones de computadoras. Sugar Labs se mantiene a base de donaciones y busca fondos para acelerar su desarrollo. Para más información visita [sugarlabs.org/press](http://www.sugarlabs.org/press) o escribe a [pr@sugarlabs.org](mailto:pr@sugarlabs.org).
 
-Sugar Labs es una marca registrada de la Software Freedom Conservancy. Otros nombres y marcas mencionados corresponden a sus respectivos dueños.`,kt=e({default:()=>At}),At=`---
+Sugar Labs es una marca registrada de la Software Freedom Conservancy. Otros nombres y marcas mencionados corresponden a sus respectivos dueños.`,jt=e({default:()=>Mt}),Mt=`---
 title: "Une foule d'enfants programmeurs participe à la 1ère Journée Internationale TurtleArt"
 excerpt: "Sugar Labs célèbre la première Journée TurtleArt à Caacupé, Paraguay, avec 275 élèves, 77 professeurs et des participants internationaux explorant la programmation créative à travers l'environnement TurtleArt."
 category: "PRESS RELEASE"
@@ -2278,7 +2310,7 @@ Image: ![Journée TurtleArt Caacupé](/assets/post-assets/press/caacupe-turtlear
 **À propos de Sugar Labs(R)**  
 Sugar Labs(R) est une organisation non lucrative de volontaires, membre du projet Software Freedom Conservancy. Sugar Labs coordonne les volontaires dans le monde qui sont passionnés par l'idée de fournir des opportunités d'éducation à travers la plate-forme éducative Sugar; installée sur plus de 3 millions d'ordinateurs. Sugar Labs(R) est soutenu par des donations et cherche des fonds pour accélérer son développement. Pour plus d'information, voir [http://www.sugarlabs.org/press](http://www.sugarlabs.org/press) ou contacter **pr@sugarlabs.org**.
 
-Sugar Labs(R) est une marque déposée de la Software Freedom Conservancy. Les autres marques déposées sont la propriété respective de leurs auteurs.`,jt=e({default:()=>Mt}),Mt=`---
+Sugar Labs(R) est une marque déposée de la Software Freedom Conservancy. Les autres marques déposées sont la propriété respective de leurs auteurs.`,Nt=e({default:()=>Pt}),Pt=`---
 title: "Sugar Labs(R), organización sin fines de lucro para la Educación celebra dos Ganadores del Gran Premio de Google Code-In"
 excerpt: "Sugar Labs reconoce a los estudiantes Ignacio Rodríguez y Jorge Alberto Gómez López como ganadores del gran premio de Google Code-In, quienes contribuyeron significativamente a mejorar la plataforma de aprendizaje Sugar."
 category: "PRESS RELEASE"
@@ -2329,7 +2361,7 @@ Sugar Labs se mantiene en base a donaciones y está buscando financiación y vol
 
 Sugar Labs es una marca registrada de la Software Freedom Conservancy. Otros nombres y marcas corresponden a sus respectivos dueños.
 
----`,Nt=e({default:()=>Pt}),Pt=`---
+---`,Ft=e({default:()=>It}),It=`---
 title: "Sugar Labs(R) Educational Nonprofit Celebrates Two Google Code-In Grand Prize Winners"
 excerpt: "Sugar Labs recognizes students Ignacio Rodríguez and Jorge Alberto Gómez López as winners of the Google Code-In Contest, who contributed significantly to improving the Sugar Learning Platform used by over three million children worldwide."
 category: "PRESS RELEASE"
@@ -2379,7 +2411,7 @@ Sugar Labs®️ is a volunteer-driven member project of [Software Freedom Conser
 
 Sugar Labs®️ is supported by donations and is seeking funding to accelerate development. For more information, please visit [www.sugarlabs.org/press](http://www.sugarlabs.org/press) or contact \`pr@sugarlabs.org\`.
 
-Sugar Labs®️ is a registered trademark of the Software Freedom Conservancy. Other names are trademarks of their respective owners.`,Ft=e({default:()=>It}),It=`---
+Sugar Labs®️ is a registered trademark of the Software Freedom Conservancy. Other names are trademarks of their respective owners.`,Lt=e({default:()=>Rt}),Rt=`---
 title: "The connection between Sugar - Students - Teachers"
 excerpt: "This Sugar Story explores how the Sugar learning platform connects students and teachers, highlighting user contributions, educational impact, and how the platform's open design encourages innovation from its community."
 category: "SUGAR STORIES"
@@ -2441,7 +2473,7 @@ References
 - **Platform:** [Sugar Labs YouTube Channel](https://www.youtube.com/@SugarlabsOrg-EN/streams)
 
 - Ceibal Jam (2009). Convenio marco entre la Asociación Civil Ceibal Jam y la Universidad de la República.
-- DSPE-ANEP (2011). Informe de evaluación del Plan Ceibal 2010. Administración Nacional de Educación Pública Dirección Sectorial de Planificación Educativa Área de Evaluación del Plan Ceibal.`,Lt=e({default:()=>Rt}),Rt=`---
+- DSPE-ANEP (2011). Informe de evaluación del Plan Ceibal 2010. Administración Nacional de Educación Pública Dirección Sectorial de Planificación Educativa Área de Evaluación del Plan Ceibal.`,zt=e({default:()=>Bt}),Bt=`---
 title: "Sugar Labs receives eleven contributor projects for GSoC 2024"
 excerpt: "Sugar Labs announces acceptance of eleven programming projects for Google Summer of Code 2024, including work on Music Blocks, Sugarizer, AI tools, and more."
 category: "PRESS RELEASE"
@@ -2493,7 +2525,7 @@ Since 2019, Sugar Labs has published projects it is considering for Google Summe
 
 Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a global mission to create educational opportunities in technology to youth around the world. Volunteer mentors and contributors work together to develop activity-focused software for children. All software is developed with learning as the primary goal, necessitating the need for source code to be published publicly for study, licensed under a Free/Libre license for explicit permission to share and remix, and openly worked upon within a community where students are invited to make contributions, under guidance of experienced mentors.
 
-Donations to support the work of Sugar Labs can be made at [https://wiki.sugarlabs.org/go/Sugar_Labs/Donate](https://wiki.sugarlabs.org/go/Sugar_Labs/Donate).`,zt=e({default:()=>Bt}),Bt=`---
+Donations to support the work of Sugar Labs can be made at [https://wiki.sugarlabs.org/go/Sugar_Labs/Donate](https://wiki.sugarlabs.org/go/Sugar_Labs/Donate).`,Vt=e({default:()=>Ht}),Ht=`---
 title: "Sugar Labs: Past, present, and future"
 excerpt: "Join Sugar Labs for the kickoff of our new event series exploring our history, current projects, and vision for the future of educational technology for youth around the world."
 category: "EVENTS"
@@ -2537,7 +2569,7 @@ Volunteer mentors and contributors work together to develop activity-focused sof
 Support our work: [Donate here](https://www.sugarlabs.org/donate/)
 
 ---
-`,Vt=e({default:()=>Ht}),Ht=`---
+`,Ut=e({default:()=>Wt}),Wt=`---
 title: "Sugar Labs announces nonprofit status, new executive director"
 excerpt: "Sugar Labs officially announces its 501(c)(3) nonprofit status and the appointment of long-time contributor Devin Ulibarri as its first full-time executive director."
 category: "PRESS RELEASE"
@@ -2576,7 +2608,7 @@ Of the hiring, Sugar Labs board member and founder Walter Bender said, "Devin is
 The officers of Sugar Labs Inc. are currently: Devin Ulibarri, executive director; Claudia Urrea, treasurer; and Walter Bender, secretary. The current board is Samson Goddy, Lionel Laské, Claudia Urrea, Walter Bender, and Alex Perez.
 
 **More Info:**  
-- [Sugar Labs Oversight Board](https://wiki.sugarlabs.org/go/Oversight_Board)`,Ut=e({default:()=>Wt}),Wt=`---
+- [Sugar Labs Oversight Board](https://wiki.sugarlabs.org/go/Oversight_Board)`,Gt=e({default:()=>Kt}),Kt=`---
 title: "Musical Squares: From Turtle Blocks to Music Blocks and Beyond"
 excerpt: "Learn about Music Blocks, a visual programming language that combines music and coding, with a hands-on demonstration during this educational Sugar Labs livestream event."
 category: "EVENTS"
@@ -2602,7 +2634,7 @@ tags: "music,programming,education,turtle-blocks,visual-programming,livestream,c
 
 ## About Sugar Labs
 
-Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a global mission to create educational opportunities`,Gt=e({default:()=>Kt}),Kt=`---
+Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a global mission to create educational opportunities`,qt=e({default:()=>Jt}),Jt=`---
 title: "Learn to make games with Gameeky!"
 excerpt: "Join developer Martin Abente Lahaye for a hands-on tutorial on creating games with Gameeky, a platform that empowers young learners and educators to build cooperative games and learning experiences."
 category: "EVENTS"
@@ -2638,7 +2670,7 @@ Volunteer mentors and contributors work together to develop activity-focused sof
 - Contributions from students under experienced guidance
 
 Support our work: [Donate here](https://www.sugarlabs.org/donate/)
-`,qt=e({default:()=>Jt}),Jt=`---
+`,Yt=e({default:()=>Xt}),Xt=`---
 title: "An OLPC update with Lylian Peraza"
 excerpt: "Sugar Labs hosts Lylian Peraza, Vice President of Project Development at OLPC, for a livestream discussion about the latest developments and projects from One Laptop Per Child."
 category: "EVENTS"
@@ -2674,7 +2706,7 @@ Volunteer mentors and contributors work together to develop activity-focused sof
 - Contributions from students under experienced guidance
 
 Support our work: [Donate here](https://www.sugarlabs.org/donate/)
-`,Yt=e({default:()=>Xt}),Xt=`---
+`,Zt=e({default:()=>Qt}),Qt=`---
 title: "Learn: How to git involved with Sugar Labs this summer"
 excerpt: "Join Sugar Labs Executive Director Devin Ulibarri for a live session on how to get involved with Sugar Labs this summer while learning valuable programming skills and contributing to educational software."
 category: "EVENTS"
@@ -2701,7 +2733,7 @@ tags: "volunteer,git,programming,education,summer-programs,open-source,mentorshi
 Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a global mission to create educational opportunities in technology to youth around the world. Volunteer mentors and contributors work together to develop activity-focused software for children. All software is developed with learning as the primary goal, necessitating the need for source code to be published publicly for study, licensed under a free/libre license for explicit permission to share and remix, and openly worked upon within a community where students are invited to make contributions, under guidance of experienced mentors.
 
 Support our work: [Donate here](https://www.sugarlabs.org/donate/)
-`,Zt=e({default:()=>Qt}),Qt=`---
+`,$t=e({default:()=>en}),en=`---
 title: "GSoC+DMP contributors initial check-in 1 of 2: Music Blocks projects"
 excerpt: "Join Sugar Labs for an introduction to Google Summer of Code (GSoC) and DMP projects this summer, presented by GSoC and DMP interns andfacilitated by their mentors, Devin Ulibarri, Walter Bender, and Anindya Kundu. Watch live on Friday, June 7, 2024 at 13:00 ET (17:00UTC)."
 category: "EVENTS"
@@ -2731,7 +2763,7 @@ Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a global missio
 Volunteer mentors and contributors work together to develop activity-focused software for children. All software is developed with learning as the primary goal, necessitating the need for source code to be published publicly for study, licensed under a free/libre license for explicit permission to share and remix, and openly worked upon within a community where students are invited to make contributions, under guidance of experienced mentors.
 
 Support our work: [Donate here](https://www.sugarlabs.org/donate/)
-`,$t=e({default:()=>en}),en=`---
+`,tn=e({default:()=>nn}),nn=`---
 title: "Writing new Activities and sharing sugar with Youth"
 excerpt: "James Simmons shares his journey of contributing to Sugar Labs since 2007, including developing Activities for reading e-texts and creating resources to help others build their own Sugar Activities."
 category: "SUGAR STORIES"
@@ -2755,7 +2787,7 @@ At the time, the best, and maybe only, way to learn how to create Activities was
 
 My personal involvement in Sugar Labs did not require any direct work with children, but, recently, I had the opportunity to introduce a young boy to Sugar. I had an old computer that I was going to give to a family friend, who was studying computer programming in college. His nine-year-old brother found out about it and wanted it for himself, so I installed the latest [Sugar Learning Platform](https://wiki.sugarlabs.org/go/What_is_Sugar#About_the_Sugar_Learning_Platform) and updated my old Activities to run on Python 3. He is pleased to have [the same operating system (OS) used by astronauts on the International Space Station (ISS)](https://www.fsf.org/blogs/community/gnu-linux-chosen-as-operating-system-of-the-international-space-station) and enjoys playing [Tux Kart](https://supertuxkart.net/Main_Page). I look forward to introducing him to even more that Sugar has to offer in the coming months.
 
-It's nice to have the [Sugar environment](https://wiki.sugarlabs.org/go/What_is_Sugar) as an option for kids, as well as ways for the community to participate in the creation of new Activities.`,tn=e({default:()=>nn}),nn=`---
+It's nice to have the [Sugar environment](https://wiki.sugarlabs.org/go/What_is_Sugar) as an option for kids, as well as ways for the community to participate in the creation of new Activities.`,rn=e({default:()=>an}),an=`---
 title: "The Sweet Spot – Issue 001"
 excerpt: "The inaugural issue of Sugar Labs' newsletter covering recent updates, GSoC projects, ways to get involved, and community news."
 category: "COMMUNITY NEWS"
@@ -2908,7 +2940,7 @@ under a Free/Libre license for explicit permission to share and remix,
 and openly worked upon within a community where students are invited
 to make contributions, under guidance of experienced mentors.
 Donations to support the work of Sugar Labs can be made at
-<https://wiki.sugarlabs.org/go/Sugar_Labs/Donate>.`,rn=e({default:()=>an}),an=`---
+<https://wiki.sugarlabs.org/go/Sugar_Labs/Donate>.`,on=e({default:()=>sn}),sn=`---
 title: "Fall board elections: How to participate"
 excerpt: "Sugar Labs will be running an election this fall for three seats to its board of directors. Sugar Labs community members are encouraged to participate."
 category: "COMMUNITY NEWS"
@@ -2972,7 +3004,7 @@ can be found here:
 Again, we encourage you to take the first step and apply for a ballot
 via our [application form](https://forms.gle/48F6h5wdV6BpSro66), and
 we look forward to your involvement.
-`,on=e({default:()=>sn}),sn=`---
+`,cn=e({default:()=>ln}),ln=`---
 title: "Deadline extended to November 24 to apply for a ballot and apply for candidacy"
 excerpt: "Sugar Labs has extended the deadline for board of directors election participation to November 24, including both ballot applications and candidacy submissions for the upcoming election cycle."
 category: "COMMUNITY NEWS"
@@ -3030,7 +3062,7 @@ The updated timeline of the election is planned as follows, with a deadline to r
 After doing research on various [election software recommended by the FLOSS community](https://github.com/sugarlabs/elections-research), we have decided to use [bettervoting.com](http://bettervoting.com). The software is licensed under the AGPLv3, and the system supports automatic runoff vote tallying. Our internal research on the system can be found in [this document](https://docs.google.com/document/d/1kuXXL-tVgB1Ptu50cTonWtRnAuKmWn1jyKd1qPgqFJY/edit?tab=t.0).
 
 Again, we encourage you to take the first step and apply for a ballot via our [application form](https://forms.gle/48F6h5wdV6BpSro66), and we look forward to your involvement.
-`,cn=e({default:()=>ln}),ln=`---
+`,un=e({default:()=>dn}),dn=`---
 title: "Today, help Sugar Labs continue to transform education"
 excerpt: "Sugar Labs Executive Director Devin Ulibarri shares the organization's vision and growth plans, highlighting achievements and requesting community support through donations to expand their educational initiatives."
 category: "COMMUNITY NEWS"
@@ -3150,7 +3182,7 @@ Sincerely,
 Devin Ulibarri  
 Executive Director, Sugar Labs Inc.
 
-P.S. Visit [https://www.sugarlabs.org/donate/](https://www.sugarlabs.org/donate/) to donate to, and support, our mission today!`,un=e({default:()=>dn}),dn=`---
+P.S. Visit [https://www.sugarlabs.org/donate/](https://www.sugarlabs.org/donate/) to donate to, and support, our mission today!`,fn=e({default:()=>pn}),pn=`---
 title: "Board election results announcement: Three new members for the 2025-26 cycle"
 excerpt: "The election results for the Sugar Labs Board of Directors have been announced. Devin Ulibarri, Sumit Srivastava, and Sebastian Silva will serve on the board for the 2025-26 cycle."
 category: "COMMUNITY NEWS"
@@ -3181,7 +3213,7 @@ If you were a member in the past but [did not vote in this election](https://www
 If you are interested in volunteering to assist with the next election in 2025, please contact <volunteering@sugarlabs.org> with your interest.
 
 On behalf of the [Sugar Labs Board of Directors](https://www.sugarlabs.org/leadership/), we offer a big **Thank you!** to all who participated in this year's election.
-`,fn=e({default:()=>pn}),pn=`---
+`,mn=e({default:()=>hn}),hn=`---
 title: "Reflections as Parents and Teachers Sugar at home and in their classroom"
 excerpt: "Sugar Labs Executive Director Devin Ulibarri shares personal experiences using the Sugar Learning Platform both as a parent with his son and as an educator in various classroom settings."
 category: "SUGAR STORIES"
@@ -3246,7 +3278,7 @@ As I alluded to earlier, I have sometimes heard criticism of the Sugar Learning 
 ![Student 5](/assets/post-assets/stories/student5.webp)
 *One of the students in my Sugar class. She surprised me by coming in with this hand-drawn computer, which she made just a few days after taking one of her first classes.*
 
-I'm more proud than I ever have been to be a part of the Sugar community, and my decades' long experience with youth from ages five through college, only gives me stronger conviction that we're creating something of unique value for education.`,mn=e({default:()=>hn}),hn=`---
+I'm more proud than I ever have been to be a part of the Sugar community, and my decades' long experience with youth from ages five through college, only gives me stronger conviction that we're creating something of unique value for education.`,gn=e({default:()=>_n}),_n=`---
 title: "The Sweet Spot – Issue 002"
 excerpt: "The second issue of Sugar Labs' newsletter covering recent updates, events, volunteer opportunities, and community news from December 2024."
 category: "COMMUNITY NEWS"
@@ -3459,7 +3491,7 @@ Conduct](https://github.com/sugarlabs/sugar-docs/blob/master/src/CODE_OF_CONDUCT
 ## Back issues of “The Sweet Spot”
 
 You can find this issue and past issues of “The Sweet Spot” at
-<https://www.sugarlabs.org/community-news/>`,gn=e({default:()=>_n}),_n=`---
+<https://www.sugarlabs.org/community-news/>`,vn=e({default:()=>yn}),yn=`---
 title: "Get and gift Sugar: Purchase new Sugar on a Stick USBs"
 excerpt: "Sugar Labs now offers pre-installed Sugar on a Stick USB drives for purchase, making it easier for educators and supporters to use and share our educational software."
 category: "COMMUNITY NEWS"
@@ -3497,7 +3529,7 @@ If you purchase a USB or clothing merchandise, **please let us know about it!** 
 📹 And if you create a video of your experience on YouTube, let us know and we can add it to [our Sugar on a Stick playlist](https://www.youtube.com/playlist?list=PLyTz5XRZyi-xuPdS7kReqP5Nu5TAlTu4f).
 
 We love hearing from you!
-`,vn=e({default:()=>yn}),yn=`---
+`,bn=e({default:()=>xn}),xn=`---
 title: "2024 Annual Report"
 excerpt: "A comprehensive overview of Sugar Labs' accomplishments, activities, and financial status throughout 2024, including development projects, outreach efforts, classroom implementations, and community growth."
 category: "COMMUNITY NEWS"
@@ -3928,7 +3960,7 @@ Learn more about the process and outcomes here:
 
 ## Management and Board
 
-In 2024, [Devin Ulibarri was appointed Executive Director](https://www.sugarlabs.org/press/2024/05/08/Sugar-Labs-announces-nonprofit-status-new-executive-director/). Alongside his leadership, our membership also voted in three new board members, as noted in the section above, including one seat that had been previously vacant.`,bn=e({default:()=>xn}),xn=`---
+In 2024, [Devin Ulibarri was appointed Executive Director](https://www.sugarlabs.org/press/2024/05/08/Sugar-Labs-announces-nonprofit-status-new-executive-director/). Alongside his leadership, our membership also voted in three new board members, as noted in the section above, including one seat that had been previously vacant.`,Sn=e({default:()=>Cn}),Cn=`---
 title: "The Sweet Spot – Issue 003"
 excerpt: "Recent news from Sugar Labs including Sugarizer v1.9 release, annual report for 2024, contributor stories, and more community updates."
 category: "COMMUNITY NEWS"
@@ -4169,7 +4201,7 @@ Conduct](https://github.com/sugarlabs/sugar-docs/blob/master/src/CODE_OF_CONDUCT
 ## Back issues of *The Sweet Spot*
 
 You can find this issue and past issues of *The Sweet Spot* at
-<https://www.sugarlabs.org/community-news/>`,Sn=e({default:()=>Cn}),Cn=`---
+<https://www.sugarlabs.org/community-news/>`,wn=e({default:()=>Tn}),Tn=`---
 title: "Live Session: Role of generative AI in education"
 excerpt: "Join us with guest speaker Ken Kahn, PhD for a live session on the role of generative AI in education"
 category: "EVENTS"
@@ -4196,7 +4228,7 @@ tags: "gen-ai,education,live-session,guest-talk"
 Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a global mission to create educational opportunities in technology to youth around the world. Volunteer mentors and contributors work together to develop activity-focused software for children. All software is developed with learning as the primary goal, necessitating the need for source code to be published publicly for study, licensed under a free/libre license for explicit permission to share and remix, and openly worked upon within a community where students are invited to make contributions, under guidance of experienced mentors.
 
 Support our work: [Donate here](https://www.sugarlabs.org/donate/)
-`,wn=e({default:()=>Tn}),Tn=`---
+`,En=e({default:()=>Dn}),Dn=`---
 title: "JavaScript Editor Updates and Future Features"
 excerpt: "Overview of changes being made to the JavaScript editor tool in MusicBlocks v3, and future plans"
 category: "DEVELOPER NEWS"
@@ -4290,7 +4322,7 @@ part of the project being the fastest, as there are many established libraries t
 
 ---
 
-This concludes the first report on the MusicBlocks JavaScript editor enhancement project for GSoC 2025. Thanks for reading, and more updates will come soon!`,En=e({default:()=>Dn}),Dn=`---
+This concludes the first report on the MusicBlocks JavaScript editor enhancement project for GSoC 2025. Thanks for reading, and more updates will come soon!`,On=e({default:()=>kn}),kn=`---
 title: "GSoC ’25 Week 01 Update by Aditya Kumar Singh"
 excerpt: "Refining human anatomy models and improving Sugarizer’s 3D Human Activity"
 category: "DEVELOPER NEWS"
@@ -4397,7 +4429,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 - Twitter: [@AdityaKrSingh26](https://x.com/AdityaKrSingh26)
 
 ---
-`,On=e({default:()=>kn}),kn=`---
+`,An=e({default:()=>jn}),jn=`---
 title: "GSoC ’25 Week 02 Update by Aditya Kumar Singh"
 excerpt: "Merging anatomical models and enhancing Sugarizer’s Human Body Activity"
 category: "DEVELOPER NEWS"
@@ -4509,7 +4541,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 - Twitter: [@AdityaKrSingh26](https://x.com/AdityaKrSingh26)
 
 ---
-`,An=e({default:()=>jn}),jn=`---
+`,Mn=e({default:()=>Nn}),Nn=`---
 title: "GSoC '25 Week 1 Update by Elwin Li"
 excerpt: "Weekly progress report for JSEditor updates"
 category: "DEVELOPER NEWS"
@@ -4633,7 +4665,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 - LinkedIn: [Elwin Li](https://www.linkedin.com/in/elwinsli/)
 
 ---
-`,Mn=e({default:()=>Nn}),Nn=`---
+`,Pn=e({default:()=>Fn}),Fn=`---
 title: "DMP ’25 Week 1 Update by Aman Naik"
 excerpt: "This week's focus was exploring the write-activity codebase, finding appropriate grammar correction models & understanding Abiword documentations."
 category: "DEVELOPER NEWS"
@@ -4718,7 +4750,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow contributors for y
 - LinkedIn: [Aman Naik](https://www.linkedin.com/in/aman-naik/)
 
 ---
-`,Pn=e({default:()=>Fn}),Fn=`---
+`,In=e({default:()=>Ln}),Ln=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Improving Synth and Sample Features in Music Blocks"
 category: "DEVELOPER NEWS"
@@ -4787,7 +4819,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow DMP contributors f
 - GitHub: [@AnvitaPrasad](https://github.com/AnvitaPrasad)
 - Email: [anvita.prasad1@gmail.com](mailto:anvita.prasad1@gmail.com)
 - LinkedIn: [Anvita Prasad](https://www.linkedin.com/in/anvita-prasad)
-`,In=e({default:()=>Ln}),Ln=`---
+`,Rn=e({default:()=>zn}),zn=`---
 title: "DMP ’25 Week 01 Update by Justin Charles"
 excerpt: "Week 01 focused on understanding and creating the path file to render the outlines for the SVG Paths for different brick types."
 category: "DEVELOPER NEWS"
@@ -4870,7 +4902,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow contributors for y
 - GitHub: [@justin212407](https://github.com/justin212407)
 - Gmail: [charlesjustin2124@gmail.com](mailto:charlesjustin2124@gmail.com)
 - LinkedIn: [Justin Charles](https://www.linkedin.com/in/justin-c-663840297/)
-`,Rn=e({default:()=>zn}),zn=`---
+`,Bn=e({default:()=>Vn}),Vn=`---
 title: "DMP ’25 Week 01 Update by Harshit Verma"
 excerpt: "Week 01 focused on understanding the Pippy codebase, testing Sugar-AI endpoints, and evaluating AI models for the debugger."
 category: "DEVELOPER NEWS"
@@ -4946,7 +4978,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,Bn=e({default:()=>Vn}),Vn=`---
+`,Hn=e({default:()=>Un}),Un=`---
 title: "GSoC ’25 Week 03 Update by Aditya Kumar Singh"
 excerpt: "Organ integration, anatomical bisection, and open-source attributions in Sugarizer's Human Body Activity"
 category: "DEVELOPER NEWS"
@@ -5050,7 +5082,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 - Twitter: [@AdityaKrSingh26](https://x.com/AdityaKrSingh26)
 
 ---
-`,Hn=e({default:()=>Un}),Un=`---
+`,Wn=e({default:()=>Gn}),Gn=`---
 title: "GSoC ’25 Week 01 Update by Bishoy Wadea"
 excerpt: "Bonding and Four Color Map puzzle"
 category: "DEVELOPER NEWS"
@@ -5131,7 +5163,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for the warm support and constant feedback during this bonding period.
 
----`,Wn=e({default:()=>Gn}),Gn=`---
+---`,Kn=e({default:()=>qn}),qn=`---
 title: "GSoC ’25 Week 01 Update by Shubham Singh"
 excerpt: "Creating UIs and visuals for addition of Lego Bricks "
 category: "DEVELOPER NEWS"
@@ -5226,7 +5258,7 @@ Thanks to some old pull requests and documentation available in music blocks, I 
 - Twitter: [@DevNinjaShubham](https://x.com/DevNinjaShubham)
 
 ---
-`,Kn=e({default:()=>qn}),qn=`---
+`,Jn=e({default:()=>Yn}),Yn=`---
 title: "GSoC ’25 Week 01 Update by Mebin J Thattil"
 excerpt: "Experimenting, Benchmarking and Researching"
 category: "DEVELOPER NEWS"
@@ -5311,7 +5343,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Jn=e({default:()=>Yn}),Yn=`---
+`,Xn=e({default:()=>Zn}),Zn=`---
 title: "GSoC ’25 Week 01 Update by Nikhil"
 excerpt: "Implemented repository creation via GitHub App, secure key generation, and metadata integration"
 category: "DEVELOPER NEWS"
@@ -5416,7 +5448,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 - Twitter: [Nikhil Bhatt](https://x.com/Be_Nikkk)
 
 ---
-`,Xn=e({default:()=>Zn}),Zn=`---
+`,Qn=e({default:()=>$n}),$n=`---
 title: "GSoC ’25 Week 1 Update by Safwan Sayeed"
 excerpt: "Kickoff of Music Blocks 4 Program Engine development"
 category: "DEVELOPER NEWS"
@@ -5518,7 +5550,7 @@ Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their continu
 - Twitter: [@safwan_say](https://twitter.com/safwan_say)
 
 ---
-`,Qn=e({default:()=>$n}),$n=`---
+`,er=e({default:()=>tr}),tr=`---
 title: "GSoC ’25 Week 01 Update by Saumya Shahi"
 excerpt: "Weekly Progress Report on the Masonry Module for GSoC '25"
 category: "DEVELOPER NEWS"
@@ -5624,7 +5656,7 @@ Grateful to my mentors Anindya, Walter, and Devin for their constant guidance an
 - LinkedIn: [Saumya Shahi](https://www.linkedin.com/in/saumya-shahi/)
 
 ---
-`,er=e({default:()=>tr}),tr=`---
+`,nr=e({default:()=>rr}),rr=`---
 title: "GSoC ’25 Week 01 Update by Diwangshu Kakoty"
 excerpt: "Deploying a Streamlit app for testing"
 category: "DEVELOPER NEWS"
@@ -5701,7 +5733,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,nr=e({default:()=>rr}),rr=`---
+---`,ir=e({default:()=>ar}),ar=`---
 title: "GSoC '25 Community Bonding and First Week by Krish"
 excerpt: "A deep dive into the GTK4 migration journey for Sugar Labs - exploring the challenges, progress, and tooling setup"
 category: "DEVELOPER NEWS"
@@ -5852,7 +5884,7 @@ Looking forward to sharing more updates,
 
 
 ---
-`,ir=e({default:()=>ar}),ar=`---
+`,or=e({default:()=>sr}),sr=`---
 title: "GSoC ’25 Week 01 Update by Om Santosh Suneri"
 excerpt: "Refining the JSON to text convertor code and creating a basic streamlit debugger app UI"
 category: "DEVELOPER NEWS"
@@ -5934,7 +5966,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,or=e({default:()=>sr}),sr=`---
+`,cr=e({default:()=>lr}),lr=`---
 title: "SSoC ’25 Week 01 Update by Muhammad Haroon"
 excerpt: "Kick off Generative AI Instrument Sample Generation for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -5970,7 +6002,7 @@ I will begin by testing some prompts and generating some samples from it, to tes
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,cr=e({default:()=>lr}),lr=`---
+---`,ur=e({default:()=>dr}),dr=`---
 
 title: "Community Bonding & Week 1 Update by Karan Palan"
 excerpt: "From compiler theory deep-dives to brick-rendering math—mentoring the 2025 Music Blocks Masonry & Engine cohorts."
@@ -6081,7 +6113,7 @@ Huge thanks to **Anindya** for the deep-dive lectures and mentoring, and to **Ju
 * Twitter: [Karan_Palan7](https://x.com/Karan_Palan7)
 
 ---
-`,ur=e({default:()=>dr}),dr=`---
+`,fr=e({default:()=>pr}),pr=`---
 title: "GSoC ’25 Week 04 Update by Aditya Kumar Singh"
 excerpt: "localization for 3D Human Activity in Sugarizer, palette switcher, and skeletal improvements."
 category: "DEVELOPER NEWS"
@@ -6188,7 +6220,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 - Twitter: [@AdityaKrSingh26](https://x.com/AdityaKrSingh26)
 
 ---
-`,fr=e({default:()=>pr}),pr=`---
+`,mr=e({default:()=>hr}),hr=`---
 title: "GSoC '25 Week 2 Update by Elwin Li"
 excerpt: "Weekly progress report for JSEditor updates"
 category: "DEVELOPER NEWS"
@@ -6266,7 +6298,7 @@ The code to blocks project has been complete and deployed, as seen in this [merg
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,mr=e({default:()=>hr}),hr=`---
+`,gr=e({default:()=>_r}),_r=`---
 title: "GSoC ’25 Week 02 Update by Mebin J Thattil"
 excerpt: "Fine-Tuning, Deploying, Testing & Evaluations"
 category: "DEVELOPER NEWS"
@@ -6397,7 +6429,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,gr=e({default:()=>_r}),_r=`---
+`,vr=e({default:()=>yr}),yr=`---
 title: "GSoC '25 Week 2 Update by Shubham Singh"
 excerpt: "Adding the entire prototyped interface ON TO the music blocks"
 category: "DEVELOPER NEWS"
@@ -6491,7 +6523,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. Special thanks to Walter for his advice during our biweekly meeting on how the phrase maker exports output as ACTION blocks.
 
----`,vr=e({default:()=>yr}),yr=`---
+---`,br=e({default:()=>xr}),xr=`---
 title: "GSoC '25 Week 2 Update by Krish Pandya"
 excerpt: "From initial GTK4 porting to building a solid foundation with separate C and Python libraries"
 category: "DEVELOPER NEWS"
@@ -6777,7 +6809,7 @@ Huge thanks to Juan Pablo Ugarte first of all for being the official mentor and 
 
 THe architecture is building itself, and I'm excited to lay down the foundations!
 
-`,br=e({default:()=>xr}),xr=`---
+`,Sr=e({default:()=>Cr}),Cr=`---
 title: "GSoC '25 Week 02 Update by Saumya Shahi"
 excerpt: "This week focused on documenting the brick tree structure, refining SVG path generation, and learning testing tools like Storybook."
 category: "DEVELOPER NEWS"
@@ -6875,7 +6907,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for support and insightful feedback throughout the week.
 
 ---
-`,Sr=e({default:()=>Cr}),Cr=`---
+`,wr=e({default:()=>Tr}),Tr=`---
 title: "DMP ’25 Week 2 Update by Aman Naik"
 excerpt: "This week's focus was on creating a story builder feature in such a way that it engages creativity of the children."
 category: "DEVELOPER NEWS"
@@ -6968,7 +7000,7 @@ Here’s an insightful video shared by Walter Bender:
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for their continued support and encouragement!
 
 ---
-`,wr=e({default:()=>Tr}),Tr=`---
+`,Er=e({default:()=>Dr}),Dr=`---
 title: "DMP’25 Week 02 Update by Justin Charles"
 excerpt: "Completed SVG path logic for all brick types and documented props and rendering states"
 category: "DEVELOPER NEWS"
@@ -7072,7 +7104,7 @@ Bricks share many layout rules, but also diverge in rendering.
 Thanks to my mentors for helping review the rendering logic and for encouraging a structured approach to SVG layout systems. Their early feedback made the path code significantly more robust and maintainable.
 
 ---
-`,Er=e({default:()=>Dr}),Dr=`---
+`,Or=e({default:()=>kr}),kr=`---
 title: "DMP ’25 Week 02 Update by Harshit Verma"
 excerpt: "To develop a basic FastAPI server and integrate it with Pippy."
 category: "DEVELOPER NEWS"
@@ -7173,7 +7205,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,Or=e({default:()=>kr}),kr=`---
+`,Ar=e({default:()=>jr}),jr=`---
 title: "GSoC ’25 Week 02 Update by Bishoy Wadea"
 excerpt: "Broken Calculator"
 category: "DEVELOPER NEWS"
@@ -7283,7 +7315,7 @@ image: "assets/Images/GSOC.webp"
   Polish button styles, spacing, theme consistency (light/dark), and overall visual clarity based on user feedback.
 
 ---
-`,Ar=e({default:()=>jr}),jr=`---
+`,Mr=e({default:()=>Nr}),Nr=`---
 title: "GSoC '25 Week 02 Update by Nikhil Bhatt"
 excerpt: "Implemented edit functionality for project repositories and introduced a forking mechanism for collaborative workflows."
 category: "DEVELOPER NEWS"
@@ -7369,7 +7401,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors and the Sugar Labs community for guidance and feedback, and to the GitHub community for their detailed API documentation and tooling support.
 
 ---
-`,Mr=e({default:()=>Nr}),Nr=`---
+`,Pr=e({default:()=>Fr}),Fr=`---
 title: "GSoC '25 Week 2 Update by Safwan Sayeed"
 excerpt: "Memory Module Architecture and CRUD Operations Development"
 category: "DEVELOPER NEWS"
@@ -7457,7 +7489,7 @@ Working alongside Karan Palan, we expanded our tech spec to include detailed mem
 
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their detailed guidance on memory architecture design and scope management. Their clarification on keeping the focus on memory module fundamentals was crucial for this week's progress.
 
----`,Pr=e({default:()=>Fr}),Fr=`---
+---`,Ir=e({default:()=>Lr}),Lr=`---
 title: "GSoC ’25 Week 02 Update by Diwangshu Kakoty"
 excerpt: "Multi-AI Agent Chat Model"
 category: "DEVELOPER NEWS"
@@ -7557,7 +7589,7 @@ This way the LLM can understand block structure and their meaning as well.
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Ir=e({default:()=>Lr}),Lr=`---
+---`,Rr=e({default:()=>zr}),zr=`---
 title: "GSoC ’25 Week 02 Update by Om Santosh Suneri"
 excerpt: "To Develop a Basic RAG Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -7648,7 +7680,7 @@ While building the RAG debugger, I realized the importance of designing componen
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,Rr=e({default:()=>zr}),zr=`---
+`,Br=e({default:()=>Vr}),Vr=`---
 title: "SSoC ’25 Week 02 Update by Muhammad Haroon"
 excerpt: "Setting up AudioGen locally and building a simple user interface using Streamlit for generating audio from text."
 category: "DEVELOPER NEWS"
@@ -7711,7 +7743,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Br=e({default:()=>Vr}),Vr=`---
+---`,Hr=e({default:()=>Ur}),Ur=`---
 title: "GSoC ’25 Week 05 Update by Aditya Kumar Singh"
 excerpt: "UI improvements, model fixes, skeletal updates, and continued localization work for the 3D Human Activity in Sugarizer."
 category: "DEVELOPER NEWS"
@@ -7831,7 +7863,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 - Twitter: [@AdityaKrSingh26](https://x.com/AdityaKrSingh26)
 
 ---
-`,Hr=e({default:()=>Ur}),Ur=`---
+`,Wr=e({default:()=>Gr}),Gr=`---
 title: "GSoC ’25 Week 06 Update by Aditya Kumar Singh"
 excerpt: "Model optimizations, onboarding tutorial, adding json for body parts, and Shared mode enhancements in Paint Mode for the 3D Human Activity in Sugarizer."
 category: "DEVELOPER NEWS"
@@ -7945,7 +7977,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,Wr=e({default:()=>Gr}),Gr=`---
+`,Kr=e({default:()=>qr}),qr=`---
 title: "DMP ’25 Week 3 Update by Aman Naik"
 excerpt: "This week's focus was developing a working demo for the Story Builder feature using Streamlit and gathering mentor feedback for further improvements."
 category: "DEVELOPER NEWS"
@@ -8018,7 +8050,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for their continuous guidance and valuable feedback!
 
 ---
-`,Kr=e({default:()=>qr}),qr=`---
+`,Jr=e({default:()=>Yr}),Yr=`---
 title: "GSoC '25 Week 3 Update by Elwin Li"
 excerpt: "Weekly progress report for JSEditor updates"
 category: "DEVELOPER NEWS"
@@ -8087,7 +8119,7 @@ Also, I made block highlights contrast much more from original block colors, for
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,Jr=e({default:()=>Yr}),Yr=`---
+`,Xr=e({default:()=>Zr}),Zr=`---
 title: "GSoC ’25 Week 03 Update by Mebin J Thattil"
 excerpt: "Re-thinking training dataset structure"
 category: "DEVELOPER NEWS"
@@ -8148,7 +8180,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Xr=e({default:()=>Zr}),Zr=`---
+`,Qr=e({default:()=>$r}),$r=`---
 title: "GSoC '25 Week 3 Update by Krish Pandya"
 excerpt: "From initial GTK4 porting to building a solid foundation with separate C and Python libraries"
 category: "DEVELOPER NEWS"
@@ -8263,7 +8295,7 @@ These small problems that I tackle using my pre-existing knowledge on LLMs and P
 ## Acknowledgments
 
 Huge thanks to Juan Pablo Ugarte first of all for being the official mentor and Ibiam Chihurumnaya for the guidance that that changed this project's direction. Their architectural vision has transformed porting into a comprehensive modernization effort. Thanks also to Walter Bender for mentorship.
-`,Qr=e({default:()=>$r}),$r=`---
+`,ei=e({default:()=>ti}),ti=`---
 title: "DMP’25 Week 03 Update by Justin Charles"
 excerpt: "Completed SVG path logic for all brick types and documented props and rendering states"
 category: "DEVELOPER NEWS"
@@ -8363,7 +8395,7 @@ Data Structure Mapping: Understanding how to translate tree data structures into
 Thanks to my mentors for helping review the algorithm logic for rendering the tree. Their early feedback made the path code significantly more robust and maintainable.
 
 ---
-`,ei=e({default:()=>ti}),ti=`---
+`,ni=e({default:()=>ri}),ri=`---
 title: "DMP '25 Week 03 Update by Anvita Prasad"
 excerpt: "Implementation of tuner visualization system and dual-mode interface"
 category: "DEVELOPER NEWS"
@@ -8461,7 +8493,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support. 
 
---- `,ni=e({default:()=>ri}),ri=`---
+--- `,ii=e({default:()=>ai}),ai=`---
 title: "GSoC ’25 Week 03 Update by Bishoy Wadea"
 excerpt: "Broken Calculator"
 category: "DEVELOPER NEWS"
@@ -8555,7 +8587,7 @@ image: "assets/Images/GSOC.webp"
   The activity isn't pep8 compliant.
 
 ---
-`,ii=e({default:()=>ai}),ai=`---
+`,oi=e({default:()=>si}),si=`---
 title: "GSoC '25 Week 03 Update by Nikhil Bhatt"
 excerpt: "Set up backend routes for creating and viewing pull requests on MusicBlocks project repositories."
 category: "DEVELOPER NEWS"
@@ -8645,7 +8677,7 @@ As a workaround, fork project's details can now be stored in the \`metaData.json
 Big thanks to my mentors and the Sugar Labs community for their guidance and patience. Also grateful to GitHub’s documentation which helped solve tricky API issues.
 
 ---
-`,oi=e({default:()=>si}),si=`---
+`,ci=e({default:()=>li}),li=`---
 title: "GSoC '25 Week 3 Update by Safwan Sayeed"
 excerpt: "AST to IR Compilation Logic and Pseudocode Implementation"
 category: "DEVELOPER NEWS"
@@ -8741,7 +8773,7 @@ Our mentors provided invaluable guidance on maintaining the static nature of the
 
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their crucial guidance on compiler design principles and static compilation concepts. Their clarification on the AST-to-IR translation approach and emphasis on maintaining clean instruction generation patterns was essential for this week's successful progress.
 
----`,ci=e({default:()=>li}),li=`---
+---`,ui=e({default:()=>di}),di=`---
 title: "GSoC ’25 Week 03 Update by Diwangshu Kakoty"
 excerpt: "AI with Reasoning Capabilities"
 category: "DEVELOPER NEWS"
@@ -8826,7 +8858,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,ui=e({default:()=>di}),di=`---
+---`,fi=e({default:()=>pi}),pi=`---
 title: "GSoC’25 Week 03 Update by Om Santosh Suneri"
 excerpt: "To Develop a Basic RAG Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -8913,7 +8945,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,fi=e({default:()=>pi}),pi=`---
+`,mi=e({default:()=>hi}),hi=`---
 title: "GSoC '25 Week 03 Update by Saumya Shahi"
 excerpt: "This week focused on implementing a comprehensive brick tree model with hierarchical connections, graph-like notch connections, and robust tree management for the Masonry module."
 category: "DEVELOPER NEWS"
@@ -9072,7 +9104,7 @@ interface BrickTree {
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for their guidance and support. Special thanks to the community for providing valuable feedback on the tree model design and implementation.
 
 ---
-`,mi=e({default:()=>hi}),hi=`---
+`,gi=e({default:()=>_i}),_i=`---
 title: "SSoC ’25 Week 03 Update by Muhammad Haroon"
 excerpt: "Experimenting with temperature and top_p parameters in AudioGen model."
 category: "DEVELOPER NEWS"
@@ -9128,7 +9160,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,gi=e({default:()=>_i}),_i=`---
+---`,vi=e({default:()=>yi}),yi=`---
 title: "DMP ’25 Week 03 Update by Harshit Verma"
 excerpt: "Week 3 focused on refining the AI prompt for better debugging suggestions, exploring UI ideas for displaying tips, and testing Sugar AI integration with Pippy."
 category: "DEVELOPER NEWS"
@@ -9213,7 +9245,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,vi=e({default:()=>yi}),yi=`---
+`,bi=e({default:()=>xi}),xi=`---
 title: "GSoC '25 Week 03 Update by Shubham Singh"
 excerpt: "Mapped Music from Synthutils to LegoBricks. Completed LegoBricks Wdiget UIs"
 category: "DEVELOPER NEWS"
@@ -9309,7 +9341,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. Special thanks to Walter. A lot of code of Music Blocks was written by Walter, he has a very good knowledge of this code base. Can completely rely on him for help. He also helped this week as well.
 
----`,bi=e({default:()=>xi}),xi=`---
+---`,Si=e({default:()=>Ci}),Ci=`---
 title: "DMP ’25 Week 4 Update by Aman Naik"
 excerpt: "This week focused on building a basic UI for the chatbot within Sugar and implementing a book recommendation system using the Google Books API."
 category: "DEVELOPER NEWS"
@@ -9391,7 +9423,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Grateful to my mentors, the Sugar Labs community, and fellow contributors for their continuous support and insightful suggestions throughout the week!
 
 ---
-`,Si=e({default:()=>Ci}),Ci=`---
+`,wi=e({default:()=>Ti}),Ti=`---
 title: "GSoC ’25 Week 04 Update by Bishoy Wadea"
 excerpt: "Soma Cube"
 category: "DEVELOPER NEWS"
@@ -9493,7 +9525,7 @@ image: "assets/Images/GSOC.webp"
 - Fix any feedback provided by members of the organization.  
 - Start implementing the 16-puzzle game.
 ---
-`,wi=e({default:()=>Ti}),Ti=`---
+`,Ei=e({default:()=>Di}),Di=`---
 title: "GSoC '25 Week 4 Update by Elwin Li"
 excerpt: "Weekly progress report for JSEditor updates"
 category: "DEVELOPER NEWS"
@@ -9579,7 +9611,7 @@ How the debugger tool currently works:
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,Ei=e({default:()=>Di}),Di=`---
+`,Oi=e({default:()=>ki}),ki=`---
 title: "GSoC '25 Week 4 Update by Krish Pandya"
 excerpt: "Python Library Graphics "
 category: "DEVELOPER NEWS"
@@ -9666,7 +9698,7 @@ Ideally I want to have some sort of more quick start activity which uses bunch o
 ## Acknowledgments
 
 Thanks to all the mentors whose guidance and support have been strong in helping me navigate the Port.
-`,Oi=e({default:()=>ki}),ki=`---
+`,Ai=e({default:()=>ji}),ji=`---
 title: "DMP’25 Week 04 Update by Justin Charles"
 excerpt: "Completed SVG path logic for all brick types and documented props and rendering states"
 category: "DEVELOPER NEWS"
@@ -9754,7 +9786,7 @@ A few bricks had similar or identical display labels, which caused confusion in 
 Thanks to my mentors for helping review the UI and desgin for the palette. Their early feedback made the path code significantly more robust and maintainable.
 
 ---
-`,Ai=e({default:()=>ji}),ji=`---
+`,Mi=e({default:()=>Ni}),Ni=`---
 title: "DMP '25 Week 04 Update by Anvita Prasad"
 excerpt: "Completion of target pitch mode and implementation of manual cent adjustments pie menu"
 category: "DEVELOPER NEWS"
@@ -9858,7 +9890,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support and valuable feedback on the new features.
 
---- `,Mi=e({default:()=>Ni}),Ni=`---
+--- `,Pi=e({default:()=>Fi}),Fi=`---
 title: "DMP ’25 Week 04 Update by Harshit Verma"
 excerpt: "Developed a working prototype."
 category: "DEVELOPER NEWS"
@@ -9952,7 +9984,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,Pi=e({default:()=>Fi}),Fi=`---
+`,Ii=e({default:()=>Li}),Li=`---
 title: "GSoC ’25 Week 04 Update by Mebin J Thattil"
 excerpt: "A new voice for Speak & laying down pipelines"
 category: "DEVELOPER NEWS"
@@ -10039,7 +10071,7 @@ _Note that the recording has a slight echo, but that's the recordings issue, it 
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for their ongoing support.
 
----`,Ii=e({default:()=>Li}),Li=`---
+---`,Ri=e({default:()=>zi}),zi=`---
 title: "GSoC '25 Week 04 Update by Nikhil Bhatt"
 excerpt: "Integrated the frontend with the Git backend and enabled project creation, editing, and forking via the UI in MusicBlocks."
 category: "DEVELOPER NEWS"
@@ -10151,7 +10183,7 @@ But it confirmed my fork metadata system worked perfectly across multiple levels
 Thanks again to my mentors and the Sugar Labs community for feedback and support!  
 Looking forward to next week’s frontend PR features. 
 
-`,Ri=e({default:()=>zi}),zi=`---
+`,Bi=e({default:()=>Vi}),Vi=`---
 title: "GSoC '25 Week 4 Update by Safwan Sayeed"
 excerpt: "AST to IR Implementation"
 category: "DEVELOPER NEWS"
@@ -10231,7 +10263,7 @@ This week marked a significant milestone in our Music Blocks program engine deve
 
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their crucial guidance on compiler design principles and static compilation concepts. Their clarification on the AST-to-IR translation approach and emphasis on maintaining clean instruction generation patterns was essential for this week's successful progress.
 
----`,Bi=e({default:()=>Vi}),Vi=`---
+---`,Hi=e({default:()=>Ui}),Ui=`---
 title: "GSoC ’25 Week 04 Update by Diwangshu Kakoty"
 excerpt: "Implementing a Reasoning-Enabled AI Model"
 category: "DEVELOPER NEWS"
@@ -10315,7 +10347,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Hi=e({default:()=>Ui}),Ui=`---
+---`,Wi=e({default:()=>Gi}),Gi=`---
 title: "GSoC’25 Week 04 Update by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -10399,7 +10431,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,Wi=e({default:()=>Gi}),Gi=`---
+`,Ki=e({default:()=>qi}),qi=`---
 
 title: "GSoC '25 Week 04 Update by Saumya Shahi"
 excerpt: "This week focused on implementing advanced tree rendering with nested, stacked, and argument brick support, dynamic sizing for the masonry module."
@@ -10587,7 +10619,7 @@ function validateBrickConnection(parent: BrickModel, child: BrickModel, type: Co
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for their guidance and support. Special thanks to the community for providing valuable feedback on the tree model design and implementation.
 
 ---
-`,Ki=e({default:()=>qi}),qi=`---
+`,Ji=e({default:()=>Yi}),Yi=`---
 title: "GSoC ’25 Week 07 Update by Aditya Kumar Singh"
 excerpt: "Enhanced shared mode synchronization for Tour and Doctor activities, improved scoring visualization, and camera state persistence in the 3D Human Activity."
 category: "DEVELOPER NEWS"
@@ -10729,7 +10761,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,Ji=e({default:()=>Yi}),Yi=`---
+`,Xi=e({default:()=>Zi}),Zi=`---
 title: "SSoC ’25 Week 04 Update by Muhammad Haroon"
 excerpt: "Experimenting with prompts parameter in AudioGen model."
 category: "DEVELOPER NEWS"
@@ -10780,7 +10812,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Xi=e({default:()=>Zi}),Zi=`---
+---`,Qi=e({default:()=>$i}),$i=`---
 title: "GSoC '25 Week 04 Update by Shubham Singh"
 excerpt: "Pivoted from Point Scanner to Line Scanner, got some real results."
 category: "DEVELOPER NEWS"
@@ -10883,7 +10915,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. Special thanks to Devin. I had typhoid last week due which I had a week of backlog in my work. He didn't mind at all. Happy have such cooperative mentors :p .
 P.S.: I've finally caught up to the work I missed.
 
----`,Qi=e({default:()=>$i}),$i=`---
+---`,ea=e({default:()=>ta}),ta=`---
 title: "DMP ’25 Week 5 Update by Aman Naik"
 excerpt: "This week focused on improving the story framework display UI and attempting to deploy an LLM model on AWS."
 category: "DEVELOPER NEWS"
@@ -10964,7 +10996,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors and the Sugar Labs community for their continued feedback, guidance, and patience as I work through these technical and design challenges.
 
 ---
-`,ea=e({default:()=>ta}),ta=`---
+`,na=e({default:()=>ra}),ra=`---
 title: "GSoC '25 Week 5 Update by Krish Pandya"
 excerpt: "Animations, Toolbars, and a Playable Game"
 category: "DEVELOPER NEWS"
@@ -11080,7 +11112,7 @@ It's funny how animations were the thing that got me into this headspace of _I G
 Until next week,
 Krish!
 (P.S. If you couldn’t tell already , I love hiding pop culture references and breaking the fourth wall in these posts. So yes, you, yup, you alright, the reader.... enjoy.)
-`,na=e({default:()=>ra}),ra=`---
+`,ia=e({default:()=>aa}),aa=`---
 title: "GSoC ’25 Week 05 Update by Bishoy Wadea"
 excerpt: "Fifteen Puzzle"
 category: "DEVELOPER NEWS"
@@ -11158,7 +11190,7 @@ image: "assets/Images/GSOC.webp"
 - Fix any feedback provided by members of the organization.  
 - Start implementing the Euclid’s Game.
 ---
-`,ia=e({default:()=>aa}),aa=`---
+`,oa=e({default:()=>sa}),sa=`---
 title: "GSoC '25 Week 5 Update by Elwin Li"
 excerpt: "Weekly progress report for JSEditor updates"
 category: "DEVELOPER NEWS"
@@ -11221,7 +11253,7 @@ I've added basic syntax highlighting to the JS editor, making it more pleasing t
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,oa=e({default:()=>sa}),sa=`---
+`,ca=e({default:()=>la}),la=`---
 title: "GSoC ’25 Week 05 Update by Mebin J Thattil"
 excerpt: "New brains and new voices for Speak!"
 category: "DEVELOPER NEWS"
@@ -11386,7 +11418,7 @@ But...
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for their ongoing support.
 
----`,ca=e({default:()=>la}),la=`---
+---`,ua=e({default:()=>da}),da=`---
 title: "GSoC '25 Week 05 Update by Shubham Singh"
 excerpt: "Building and testing out the Image to video player"
 category: "DEVELOPER NEWS"
@@ -11497,7 +11529,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. I like how Devin actually reads everyone's blogs every single week. He's an inspiring person.
 PS: If you're reading this blog Devin, I hope you're enjoying the details.
 
----`,ua=e({default:()=>da}),da=`---
+---`,fa=e({default:()=>pa}),pa=`---
 title: "GSoC '25 Week 05 Update by Nikhil Bhatt"
 excerpt: "Implemented historical forking using Git CLI to preserve commit history and securely update metadata for downstream workflows."
 category: "DEVELOPER NEWS"
@@ -11586,7 +11618,7 @@ To fix this:
 
 Thanks again to my mentors and the Sugar Labs community for feedback and support!  
 Looking forward to next week’s frontend PR features. 
-`,fa=e({default:()=>pa}),pa=`---
+`,ma=e({default:()=>ha}),ha=`---
 title: "GSoC '25 Week 5 Update by Safwan Sayeed"
 excerpt: "Implementing the Symbol Table and Memory Module Integration"
 category: "DEVELOPER NEWS"
@@ -11661,7 +11693,7 @@ This week I implemented the Symbol Table and integrated it with the Memory Modul
 
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their crucial guidance on compiler design principles and static compilation concepts. Their clarification on the AST-to-IR translation approach and emphasis on maintaining clean instruction generation patterns was essential for this week's successful progress.
 
----`,ma=e({default:()=>ha}),ha=`---
+---`,ga=e({default:()=>_a}),_a=`---
 title: "GSoC ’25 Week 05 Update by Diwangshu Kakoty"
 excerpt: "Reflection Learning Widget in Music Blocks"
 category: "DEVELOPER NEWS"
@@ -11751,7 +11783,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,ga=e({default:()=>_a}),_a=`---
+---`,va=e({default:()=>ya}),ya=`---
 title: "GSoC’25 Week 05 Update by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -11894,7 +11926,7 @@ Rewriting an entire logic-heavy JavaScript app into Python was both challenging 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,va=e({default:()=>ya}),ya=`---
+`,ba=e({default:()=>xa}),xa=`---
 title: "SSoC ’25 Week 05 Update by Muhammad Haroon"
 excerpt: "Generated additional samples using various prompts, which were then evaluated by mentors."
 category: "DEVELOPER NEWS"
@@ -11943,7 +11975,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,ba=e({default:()=>xa}),xa=`---
+---`,Sa=e({default:()=>Ca}),Ca=`---
 title: "DMP’25 Week 05 Update by Justin Charles"
 excerpt: "Setup a visual playground with drag-and-drop brick placement from a palette UI"
 category: "DEVELOPER NEWS"
@@ -12049,7 +12081,7 @@ Supports extensibility for:
 Thanks to the my mentor Anindya Kundu team for helping me align on visual structure of palette.
 
 ---
-`,Sa=e({default:()=>Ca}),Ca=`---
+`,wa=e({default:()=>Ta}),Ta=`---
 title: "DMP ’25 Week 05 Update by Harshit Verma"
 excerpt: "This week, I built a custom Markdown parser for VTE (Virtual Terminal Emulator), began evaluating model performance, and discussed age appropriate debugging practices with mentors."
 category: "DEVELOPER NEWS"
@@ -12126,7 +12158,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,wa=e({default:()=>Ta}),Ta=`---
+`,Ea=e({default:()=>Da}),Da=`---
 title: "GSoC ’25 Week 08 Update by Aditya Kumar Singh"
 excerpt: "Resolved key issues in shared Paint & Tour workflows, introduced a real-time XO-icon leaderboard in Doctor mode, and bootstrapped the Stickman activity scaffold."
 category: "DEVELOPER NEWS"
@@ -12244,7 +12276,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,Ea=e({default:()=>Da}),Da=`---
+`,Oa=e({default:()=>ka}),ka=`---
 title: "DMP ’25 Week 6 Update by Aman Naik"
 excerpt: "This week involved integrating the LLM's story framework into the UI, user testing with school children, and successfully resolving AWS deployment issues."
 category: "DEVELOPER NEWS"
@@ -12388,7 +12420,7 @@ These weeks have been packed with learning—from UI design for young learners t
 A huge thank you to my mentors, especially Devin Ulibarri for arranging the user testing session. I’m also grateful to Walter, Ibiam, and the Sugar Labs community for their continued support and constructive feedback every week.
 
 ---
-`,Oa=e({default:()=>ka}),ka=`---
+`,Aa=e({default:()=>ja}),ja=`---
 title: "DMP’25 Week 06 Update by Justin Charles"
 excerpt: "Added drag and drop support from palette to workspace, rendered interactive blocks, and built a collision map with linear and quad tree detection"
 category: "DEVELOPER NEWS"
@@ -12511,7 +12543,7 @@ The focus shifted to interactivity and spatial intelligence. I enabled in-canvas
 Thanks to my mentor Anindya Kundu for for the consistent feedback and support.
 
 ---
-`,Aa=e({default:()=>ja}),ja=`---
+`,Ma=e({default:()=>Na}),Na=`---
 title: "GSoC '25 Week 6 Update by Elwin Li"
 excerpt: "Weekly progress report for JSEditor updates"
 category: "DEVELOPER NEWS"
@@ -12622,7 +12654,7 @@ This week, I have also made a gemini wrapper that takes in a prompt such as "Pla
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,Ma=e({default:()=>Na}),Na=`---
+`,Pa=e({default:()=>Fa}),Fa=`---
 title: "GSoC '25 Week 6 Update by Krish Pandya"
 excerpt: "Palettes, Groups, and GTK4 Decisions "
 category: "DEVELOPER NEWS"
@@ -12731,7 +12763,7 @@ And YESS NOW YOU CAN PLAY THE GAME HEHE.
 
 Until next week (on time, I promise!),
 Krish
-`,Pa=e({default:()=>Fa}),Fa=`---
+`,Ia=e({default:()=>La}),La=`---
 title: "GSoC '25 Week 7 Update by Krish Pandya"
 excerpt: "Bundling, Post MidTerm"
 category: "DEVELOPER NEWS"
@@ -12839,7 +12871,7 @@ As mentioned in the previous blog, I’ve started by adding the profile and envi
 -   [New Python Library (sugar-toolkit-gtk4-py)](https://github.com/MostlyKIGuess/sugar-toolkit-gtk4-py)
 -   [New C Library (sugar-ext)](https://github.com/sugarlabs/sugar-ext)
 -   [Game Demo Video](https://youtu.be/B517C_LTCns)
-`,Ia=e({default:()=>La}),La=`---
+`,Ra=e({default:()=>za}),za=`---
 title: "GSoC '25 Week 05, 06 Update by Saumya Shahi"
 excerpt: "This week, I focused on building drag-and-drop utilities for bricks, developed a reverse mapping utility for coordinate-to-brick/tower lookup, and integrated these with the new collision map. Next up: visual interactions and user feedback!"
 category: "DEVELOPER NEWS"
@@ -12932,7 +12964,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-<!-- markdownlint-enable -->`,Ra=e({default:()=>za}),za=`---
+<!-- markdownlint-enable -->`,Ba=e({default:()=>Va}),Va=`---
 title: "GSoC ’25 Week 06 Update by Mebin J Thattil"
 excerpt: "Optimizations and reading documentation"
 category: "DEVELOPER NEWS"
@@ -13039,7 +13071,7 @@ However, due to the model’s small size, the initial responses were underwhelmi
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for their ongoing support.
 
----`,Ba=e({default:()=>Va}),Va=`---
+---`,Ha=e({default:()=>Ua}),Ua=`---
 title: "GSoC '25 Week 06 Update by Nikhil Bhatt"
 excerpt: "Implemented commit history viewer and version loading system using Git CLI and new backend routes, enabling seamless time-travel across project states."
 category: "DEVELOPER NEWS"
@@ -13135,7 +13167,7 @@ Both routes use secure Git Rest API methods.
 Thanks again to my mentors and the Sugar Labs community for feedback and support!  
 Looking forward to next week’s frontend PR features. 
 
-`,Ha=e({default:()=>Ua}),Ua=`---
+`,Wa=e({default:()=>Ga}),Ga=`---
 title: "GSoC '25 Week 6 Update by Safwan Sayeed"
 excerpt: "Symbol Table Refinements, IR Instructions Design, and Interpreter Architecture"
 category: "DEVELOPER NEWS"
@@ -13242,7 +13274,7 @@ This progression has taken us from initial planning to having a complete compila
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their continued guidance on compiler design principles and execution engine architecture. Their emphasis on maintaining clean separation between compilation and execution phases was crucial for this week's successful progress.
 
 ---
-`,Wa=e({default:()=>Ga}),Ga=`---
+`,Ka=e({default:()=>qa}),qa=`---
 title: "GSoC ’25 Week 06 Update by Diwangshu Kakoty"
 excerpt: "Reflection Learning Widget in Music Blocks"
 category: "DEVELOPER NEWS"
@@ -13340,7 +13372,7 @@ The first six weeks of GSoC'25 have been highly productive, with several key mil
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Ka=e({default:()=>qa}),qa=`---
+---`,Ja=e({default:()=>Ya}),Ya=`---
 title: "GSoC '25 Week 06 Update by Shubham Singh"
 excerpt: "Music Player + Mid Term Evaluation"
 category: "DEVELOPER NEWS"
@@ -13421,7 +13453,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. 
 
----`,Ja=e({default:()=>Ya}),Ya=`---
+---`,Xa=e({default:()=>Za}),Za=`---
 title: "GSoC’25 Week 06 Update by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -13577,7 +13609,7 @@ Technically, it deepened my understanding of state management, error handling, a
 Thanks to my mentors Walter Bender for the consistent feedback and support, and to Devin Ulibarri for assisting with insights into Music Blocks educational usage. The Sugar Labs community continue to be an invaluable support system.
 
 ---
-`,Xa=e({default:()=>Za}),Za=`---
+`,Qa=e({default:()=>$a}),$a=`---
 title: "SSoC ’25 Week 06 Update by Muhammad Haroon"
 excerpt: "Find another open-source model that can generate sound samples from prompts."
 category: "DEVELOPER NEWS"
@@ -13654,7 +13686,7 @@ Since current LLMs are not capable of generating audio that can be used directly
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Qa=e({default:()=>$a}),$a=`---
+---`,eo=e({default:()=>to}),to=`---
 title: "DMP ’25 Week 06 Update by Harshit Verma"
 excerpt: "I added a new step to help students understand their code’s intent before debugging begins. I also worked on improving the terminal’s formatting and finalized Mistral 7B as the debugging model to be integrated with Sugar AI"
 category: "DEVELOPER NEWS"
@@ -13782,7 +13814,7 @@ Please watch the project demo to see the progress I've made so far.
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,eo=e({default:()=>to}),to=`---
+`,no=e({default:()=>ro}),ro=`---
 title: "GSoC ’25 Week 06 Update by Bishoy Wadea"
 excerpt: "Mid term evaluation reflection"
 category: "DEVELOPER NEWS"
@@ -13902,7 +13934,7 @@ This progress would not have been possible without the patient guidance of my me
 - Fix any feedback provided by members of the organization.  
 - Start implementing the Magic moving game.
 ---
-`,no=e({default:()=>ro}),ro=`---
+`,io=e({default:()=>ao}),ao=`---
 title: "GSoC ’25 Week 09 Update by Aditya Kumar Singh and Midterm Summary"
 excerpt: "Enhanced collaboration in Human Body activity by refining Paint and Tour interactions, improved UX in Doctor mode, and launched key features in Stickman like frame handling and animation controls."
 category: "DEVELOPER NEWS"
@@ -14055,7 +14087,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,io=e({default:()=>ao}),ao=`---
+`,oo=e({default:()=>so}),so=`---
 title: "DMP ’25 Week 7 Update by Aman Naik"
 excerpt: "This week focused on UI enhancements for toggling the chat sidebar and setting up an AWS SageMaker endpoint for LLM inferencing."
 category: "DEVELOPER NEWS"
@@ -14142,7 +14174,7 @@ _AWS SageMaker Deployment Guide: [Amazon SageMaker documentation](https://docs.a
 Thank you to my mentors for their consistent guidance. Special thanks to the open-source contributors and AWS documentation community whose detailed resources helped me overcome deployment challenges.
 
 ---
-`,oo=e({default:()=>so}),so=`---
+`,co=e({default:()=>lo}),lo=`---
 title: "GSoC '25 Week 7 Update by Elwin Li"
 excerpt: "MusicBlocks generation model"
 category: "DEVELOPER NEWS"
@@ -14228,7 +14260,7 @@ After completing these achievements, I realized that since I didn't have much da
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
---- `,co=e({default:()=>lo}),lo=`---
+--- `,uo=e({default:()=>fo}),fo=`---
 title: "DMP’25 Week 07 Update by Justin Charles"
 excerpt: "Implemented tower-level dragging in the workspace, enabling grouped brick movement and refining state synchronization across collisions"
 category: "DEVELOPER NEWS"
@@ -14321,7 +14353,7 @@ Worked on [PR #450](https://github.com/sugarlabs/musicblocks-v4/pull/450) to add
 ## Acknowledgments
 
 Thanks to my mentors for guiding me through scaling drag logic from bricks to full towers.
-`,uo=e({default:()=>fo}),fo=`---
+`,po=e({default:()=>mo}),mo=`---
 title: "GSoC ’25 Week 10 Update by Aditya Kumar Singh"
 excerpt: "Improved UX and syncing in Human Body activity, enhanced Stickman dashboard visuals, redesigned proportions, and implemented Journal save & multi-stickman support."
 category: "DEVELOPER NEWS"
@@ -14458,7 +14490,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,po=e({default:()=>mo}),mo=`---
+`,ho=e({default:()=>go}),go=`---
 title: "GSoC ’25 Week 07 Update by Mebin J Thattil"
 excerpt: "Benchmarking and community feedback"
 category: "DEVELOPER NEWS"
@@ -14537,7 +14569,7 @@ Both surveys include links to test out the TTS voices and view the SLM responses
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for their ongoing support.
 
----`,ho=e({default:()=>go}),go=`---
+---`,_o=e({default:()=>vo}),vo=`---
 title: "GSoC '25 Week 07 Update by Nikhil Bhatt"
 excerpt: "Implemented forking of projects in the frontend, backend route for returning project data only, and student descriptions for projects"
 category: "DEVELOPER NEWS"
@@ -14617,7 +14649,7 @@ decide whether to fork or not.
 Thanks again to my mentors and the Sugar Labs community for feedback and support!  
 Looking forward to next week’s frontend PR features. 
 
-`,_o=e({default:()=>vo}),vo=`---
+`,yo=e({default:()=>bo}),bo=`---
 title: "GSoC '25 Week 7 Update by Safwan Sayeed"
 excerpt: "Implementing the Symbol Table and Memory Module Integration"
 category: "DEVELOPER NEWS"
@@ -14697,7 +14729,7 @@ This week I worked on creating a TechSpec for the Interpreter and then Created a
 
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their crucial guidance on compiler design principles and static compilation concepts. Their clarification on the AST-to-IR translation approach and emphasis on maintaining clean instruction generation patterns was essential for this week's successful progress.
 
----`,yo=e({default:()=>bo}),bo=`---
+---`,xo=e({default:()=>So}),So=`---
 title: "GSoC ’25 Week 07 Update by Diwangshu Kakoty"
 excerpt: "Reflection Learning Widget in Music Blocks"
 category: "DEVELOPER NEWS"
@@ -14781,7 +14813,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,xo=e({default:()=>So}),So=`---
+---`,Co=e({default:()=>wo}),wo=`---
 title: "GSoC’25 Week 07 Update by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -14899,7 +14931,7 @@ This week marked a turning point in the architecture of the debugger. With a cle
 Huge thanks to my mentors and the Sugar Labs community for always guiding me to think pedagogically, build modularly, and focus on what helps learners most.
 
 ---
-`,Co=e({default:()=>wo}),wo=`---
+`,To=e({default:()=>Eo}),Eo=`---
 title: "SSoC ’25 Week 07 Update by Muhammad Haroon"
 excerpt: "Create sketches of user interface showing how students will interact with the GenAI and the audio trimming tool."
 category: "DEVELOPER NEWS"
@@ -14959,7 +14991,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,To=e({default:()=>Eo}),Eo=`---
+---`,Do=e({default:()=>Oo}),Oo=`---
 title: "DMP ’25 Week 07 Update by Harshit Verma"
 excerpt: "Presented my work on Pippy Debugger to mentors and also started working on developing API endpoint in Sugar-AI."
 category: "DEVELOPER NEWS"
@@ -15037,7 +15069,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,Do=e({default:()=>Oo}),Oo=`---
+`,ko=e({default:()=>Ao}),Ao=`---
 title: "GSoC '25 Week 07 Update by Shubham Singh"
 excerpt: "Method to simplify musical notes and export as action block."
 category: "DEVELOPER NEWS"
@@ -15118,7 +15150,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. Thanks to Devin and Walter for suggesting methods to make this process easy.
 
----`,ko=e({default:()=>Ao}),Ao=`---
+---`,jo=e({default:()=>Mo}),Mo=`---
 title: "DMP ’25 Week 8 Update by Aman Naik"
 excerpt: "This week focused on improving model response quality, optimizing inference costs, and enhancing the UX logic of the story framework display."
 category: "DEVELOPER NEWS"
@@ -15265,7 +15297,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thanks to my mentors and the Sugar Labs community. Special thanks to the open-source contributors whose documentation around Qwen models and SageMaker integration helped resolve key technical issues this week.
 
 ---
-`,jo=e({default:()=>Mo}),Mo=`---
+`,No=e({default:()=>Po}),Po=`---
 title: "GSoC '25 Week 8 Update by Elwin Li"
 excerpt: "MusicBlocks generation model"
 category: "DEVELOPER NEWS"
@@ -15377,7 +15409,7 @@ This was done by the following:
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
---- `,No=e({default:()=>Po}),Po=`---
+--- `,Fo=e({default:()=>Io}),Io=`---
 title: "GSoC '25 Week 8 Update by Krish Pandya"
 excerpt: "Palettes, Groups, and GTK4 Decisions "
 category: "DEVELOPER NEWS"
@@ -15435,7 +15467,7 @@ A lot of decisions make sense now after one writes on the same system and builds
 - [New Python Library (sugar-toolkit-gtk4-py)](https://github.com/MostlyKIGuess/sugar-toolkit-gtk4-py)
 - [New C Library (sugar-ext)](https://github.com/sugarlabs/sugar-ext)
 - [Game Demo Video](https://youtu.be/B517C_LTCns)
-`,Fo=e({default:()=>Io}),Io=`---
+`,Lo=e({default:()=>Ro}),Ro=`---
 title: "DMP’25 Week 08 Update by Justin Charles"
 excerpt: "Implemented brick disconnection logic for towers, enabling subtree detachment and independent movement of child groups"
 category: "DEVELOPER NEWS"
@@ -15529,7 +15561,7 @@ Expanded [PR #450](https://github.com/sugarlabs/musicblocks-v4/pull/450) to supp
 ## Acknowledgments
 
 Thanks to my mentors for helping validate the disconnection workflow and ensuring robustness of the tower model.
-`,Lo=e({default:()=>Ro}),Ro=`---
+`,zo=e({default:()=>Bo}),Bo=`---
 title: "GSoC ’25 Week 11 Update by Aditya Kumar Singh"
 excerpt: "Polished multi-stickman support with per-frame rendering, single-shadow enforcement, per-joint visibility, and safe delete flow. Also increased stickman size for better canvas presence."
 category: "DEVELOPER NEWS"
@@ -15774,7 +15806,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,zo=e({default:()=>Bo}),Bo=`---
+`,Vo=e({default:()=>Ho}),Ho=`---
 title: "GSoC ’25 Week 08 Update by Mebin J Thattil"
 excerpt: "Platform Agnostic Inference, Profanity Filters and Kokoro Optimizations"
 category: "DEVELOPER NEWS"
@@ -15867,7 +15899,7 @@ When working with SLMs, it’s crucial to put these strong guardrails in place, 
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for their ongoing support.
 
----`,Vo=e({default:()=>Ho}),Ho=`---
+---`,Uo=e({default:()=>Wo}),Wo=`---
 title: "GSoC '25 Week 08 Update by Nikhil Bhatt"
 excerpt: "Implemented Local Projects display enabling students to switch between different projects they created "
 category: "DEVELOPER NEWS"
@@ -15937,7 +15969,7 @@ Till last week, students were able to create a new project and view its history,
 Thanks again to my mentors and the Sugar Labs community for feedback and support!  
 Looking forward to next week’s frontend PR features. 
 
-`,Uo=e({default:()=>Wo}),Wo=`---
+`,Go=e({default:()=>Ko}),Ko=`---
 title: "GSoC '25 Week 8 Update by Safwan Sayeed"
 excerpt: "Implementing the Interpreter and Symbol Table Integration"
 category: "DEVELOPER NEWS"
@@ -16031,7 +16063,7 @@ This week I implemented the Interpreter and integrated it with the Symbol Table 
 
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their crucial guidance on compiler design principles and static compilation concepts. Their clarification on the AST-to-IR translation approach and emphasis on maintaining clean instruction generation patterns was essential for this week's successful progress.
 
----`,Go=e({default:()=>Ko}),Ko=`---
+---`,qo=e({default:()=>Jo}),Jo=`---
 title: "GSoC’25 Week 08 Update by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -16135,7 +16167,7 @@ Working on the UI this week was both **technically enriching** and **pedagogical
 Grateful as always to my mentors and the Sugar Labs community for their thoughtful feedback, patience, and encouragement as I shape this into a usable tool for learners.
 
 ---
-`,qo=e({default:()=>Jo}),Jo=`---
+`,Yo=e({default:()=>Xo}),Xo=`---
 title: "SSoC ’25 Week 08 Update by Muhammad Haroon"
 excerpt: "Code the sketches of the user interface in Music Blocks."
 category: "DEVELOPER NEWS"
@@ -16206,7 +16238,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Yo=e({default:()=>Xo}),Xo=`---
+---`,Zo=e({default:()=>Qo}),Qo=`---
 title: "GSoC '25 Week 08 Update by Shubham Singh"
 excerpt: ""
 category: "DEVELOPER NEWS"
@@ -16295,7 +16327,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. 
 
----`,Zo=e({default:()=>Qo}),Qo=`---
+---`,$o=e({default:()=>es}),es=`---
 title: "GSoC ’25 Week 08 Update by Diwangshu Kakoty"
 excerpt: "Reflection Learning Widget in Music Blocks"
 category: "DEVELOPER NEWS"
@@ -16370,7 +16402,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,$o=e({default:()=>es}),es=`---
+`,ts=e({default:()=>ns}),ns=`---
 title: "DMP ’25 Week 9 Update by Aman Naik"
 excerpt: "This week focused on improving the clarity and intuitiveness of the UI, refining UX elements, and aligning LLM integration plans with Sugar AI's upcoming deployment."
 category: "DEVELOPER NEWS"
@@ -16449,7 +16481,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thanks to my mentors for their honest feedback during meetings, which helped me identify and correct unintuitive UI elements.
 
 ---
-`,ts=e({default:()=>ns}),ns=`---
+`,rs=e({default:()=>is}),is=`---
 title: "DMP ’25 Week 08 Update by Harshit Verma"
 excerpt: "This week I was focused on backend integration for the Pippy Debugger. I developed and refined the /debug endpoint in Sugar-AI, this work is key to making the debugger responsive, modular, and ready for full integration."
 category: "DEVELOPER NEWS"
@@ -16528,7 +16560,7 @@ Although this week involved less visible UI development, the backend enhancement
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,rs=e({default:()=>is}),is=`---
+`,as=e({default:()=>os}),os=`---
 title: "GSoC '25 Week 9 Update by Elwin Li"
 excerpt: "Improvements on the musicblocks generation RAG pipeline and a new MIDI file uploading widget"
 category: "DEVELOPER NEWS"
@@ -16593,7 +16625,7 @@ Connect the MIDI generation pipeline with the MIDI upload widget, so that the ge
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,as=e({default:()=>os}),os=`---
+`,ss=e({default:()=>cs}),cs=`---
 title: "GSoC '25 Week 9 Update by Krish Pandya"
 excerpt: "Hello-World, Radio Palettes, and PyPI Release!"
 category: "DEVELOPER NEWS"
@@ -16686,7 +16718,7 @@ Next up:
 - [PyPI Release](https://pypi.org/project/sugar-toolkit-gtk4/#description)
 - [Stack Overflow: GTK4 GestureClick](https://stackoverflow.com/questions/72303475/gtk4-gestureclick-no-released-signal-emitted)
 - [GNOME Discourse: GTK4 Button Signals](https://discourse.gnome.org/t/gtk4-need-button-pressed-and-released-signals/8506)
-`,ss=e({default:()=>cs}),cs=`---
+`,ls=e({default:()=>us}),us=`---
 title: "DMP’25 Week 09 Update by Justin Charles"
 excerpt: "Mapped out the integration plan for brick connections in Music Blocks 4, including collision maps, detection workflow, and tower merge/stale strategies"
 category: "DEVELOPER NEWS"
@@ -16802,7 +16834,7 @@ This allows collision queries to resolve directly into the correct brick and tow
 ## Acknowledgments
 
 Thanks to my mentor Anindya Kundu on revisiting the basic of brick connections and helping me refine the connection lifecycle and reviewing the mapping approach. 
-`,ls=e({default:()=>us}),us=`---
+`,ds=e({default:()=>fs}),fs=`---
 title: "GSoC ’25 Week 08 Update by Bishoy Wadea"
 excerpt: "Fixing Sugar OS compatibility and enhancing Euclid’s Game"
 category: "DEVELOPER NEWS"
@@ -16878,7 +16910,7 @@ Multiplayer Support Across Devices [youtube: 42-uk2LwToo]
 - Fix any feedback provided by members of the organization.  
 - Start implementing the Magic moving game.
 ---
-`,ds=e({default:()=>fs}),fs=`---
+`,ps=e({default:()=>ms}),ms=`---
 title: "GSoC ’25 Week 09 Update by Mebin J Thattil"
 excerpt: "Critical fixes and breathing life back into Speak"
 category: "DEVELOPER NEWS"
@@ -16951,7 +16983,7 @@ Here’s a demo of the new Speak activity (excluding LLM and LLM-exclusive featu
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for their ongoing support.
 
----`,ps=e({default:()=>ms}),ms=`---
+---`,hs=e({default:()=>gs}),gs=`---
 title: "GSoC '25 Week 09 Update by Nikhil Bhatt"
 excerpt: "Implemented theme selection via GitHub topics, added fetch-all-repositories route, and introduced download project as ZIP functionality."
 category: "DEVELOPER NEWS"
@@ -17044,7 +17076,7 @@ Here's an example of a repository actually created in the Music Blocks GitHub or
 Thanks again to my mentors and the Sugar Labs community for feedback and support!  
 Looking forward to next week.  
 
-`,hs=e({default:()=>gs}),gs=`---
+`,_s=e({default:()=>vs}),vs=`---
 title: "GSoC '25 Week 9 Update by Safwan Sayeed"
 excerpt: "Design and Implementation of Compiler for Music Blocks 4"
 category: "DEVELOPER NEWS"
@@ -17129,7 +17161,7 @@ This week I Designed and Implemented the Compiler. The work involved translating
 
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their crucial guidance on compiler design principles and static compilation concepts. Their clarification on the AST-to-IR translation approach and emphasis on maintaining clean instruction generation patterns was essential for this week's successful progress.
 
----`,_s=e({default:()=>vs}),vs=`---
+---`,ys=e({default:()=>bs}),bs=`---
 title: "SSoC ’25 Week 09 Update by Muhammad Haroon"
 excerpt: "Create a FastAPI for connecting frontend with backend for AI Sample Generation."
 category: "DEVELOPER NEWS"
@@ -17201,7 +17233,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,ys=e({default:()=>bs}),bs=`---
+---`,xs=e({default:()=>Ss}),Ss=`---
 title: "DMP ’25 Week 09 Update by Harshit Verma"
 excerpt: "Finalized the /debug endpoint in Sugar-AI and tested its performance using buggy Python code. I also plan to experimented with a larger model to evaluate debugging responses and began refining them to be more age-appropriate."
 category: "DEVELOPER NEWS"
@@ -17279,7 +17311,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,xs=e({default:()=>Ss}),Ss=`---
+`,Cs=e({default:()=>ws}),ws=`---
 title: "GSoC '25 Week 12 Update by Aditya Kumar Singh"
 excerpt: "Enhanced user experience with image export functionality for Human Body activity, improved stickman visual design, comprehensive localization support, and interactive tutorial system implementation."
 category: "DEVELOPER NEWS"
@@ -17385,7 +17417,7 @@ image: "assets/Images/GSOC.webp"
 
 Special thanks to my mentors for their guidance on user experience design and internationalization best practices. Gratitude to the Sugar Labs community for testing the localization features and providing valuable feedback on the tutorial system effectiveness.
 
----`,Cs=e({default:()=>ws}),ws=`---
+---`,Ts=e({default:()=>Es}),Es=`---
 title: "GSoC’25 Week 09 Update by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -17541,7 +17573,7 @@ As a developer, this week helped me deeply understand:
 Grateful as always to my mentors and the Sugar Labs community for their thoughtful feedback, patience, and encouragement as I shape this into a usable tool for learners.
 
 ---
-`,Ts=e({default:()=>Es}),Es=`---
+`,Ds=e({default:()=>Os}),Os=`---
 title: "GSoC '25 Week 09 Update by Shubham Singh"
 excerpt: "Successfully implemented action block export functionality."
 category: "DEVELOPER NEWS"
@@ -17638,7 +17670,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. Special appreciation for their feedback during the live demonstration and their continued support in refining the project's technical implementation.
 
----`,Ds=e({default:()=>Os}),Os=`---
+---`,ks=e({default:()=>As}),As=`---
 title: "GSoC '25 Week 08 Update by Shubham Singh"
 excerpt: ""
 category: "DEVELOPER NEWS"
@@ -17727,7 +17759,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. 
 
----`,ks=e({default:()=>As}),As=`---
+---`,js=e({default:()=>Ms}),Ms=`---
 title: "GSoC '25 Week 13 Update by Aditya Kumar Singh"
 excerpt: "Fixed critical model switching bugs in Human Body activity, enhanced Stickman animation with individual frame management, transitioned to relative positioning, and began implementing shared mode functionality."
 category: "DEVELOPER NEWS"
@@ -17858,7 +17890,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,js=e({default:()=>Ms}),Ms=`---
+`,Ns=e({default:()=>Ps}),Ps=`---
 title: "DMP ’25 Week 10 Update by Aman Naik"
 excerpt: "This week focused on adding an advice feature powered by the LLM, and refactoring the ChatSidebar using Gtk.Stack to resolve UI toggling issues."
 category: "DEVELOPER NEWS"
@@ -17948,7 +17980,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors for helping me validate the UX flow for the new advice feature and suggesting improvements for sidebar state management.
 
 ---
-`,Ns=e({default:()=>Ps}),Ps=`---
+`,Fs=e({default:()=>Is}),Is=`---
 title: "GSoC '25 Week 10 Update by Elwin Li"
 excerpt: "Weekly progress report for JSEditor updates - Continuing work on the RAG pipeline and MIDI widget improvements"
 category: "DEVELOPER NEWS"
@@ -18012,7 +18044,7 @@ This week I made a lot of progress on the Music Blocks generation project. I suc
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,Fs=e({default:()=>Is}),Is=`---
+`,Ls=e({default:()=>Rs}),Rs=`---
 title: "DMP’25 Week 10 Update by Justin Charles"
 excerpt: "Finalized brick connection infrastructure in the workspace and began defining AST parsing constraints for mapping between Masonry and program representation"
 category: "DEVELOPER NEWS"
@@ -18116,7 +18148,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 
 Thanks to my mentors for guiding me through both the technical and architectural aspects of connection logic and AST design.
-`,Ls=e({default:()=>Rs}),Rs=`---
+`,zs=e({default:()=>Bs}),Bs=`---
 title: "GSoC ’25 Week 10 Update by Mebin J Thattil"
 excerpt: "Deploying SugarAI"
 category: "DEVELOPER NEWS"
@@ -18199,7 +18231,7 @@ docker run --gpus all -it --rm sugar-ai
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for their ongoing support.
 
----`,zs=e({default:()=>Bs}),Bs=`---
+---`,Vs=e({default:()=>Hs}),Hs=`---
 title: "GSoC '25 Week 10 Update by Nikhil Bhatt"
 excerpt: "Wrote 160 backend tests using Jest with controller mocking, and restructured several APIs for improved maintainability."
 category: "DEVELOPER NEWS"
@@ -18281,7 +18313,7 @@ Thanks to my mentors and the Sugar Labs community for their support and feedback
 This week was a major milestone towards making the backend **production-ready**.  
 Looking forward to refining it even further next week.
 
-`,Vs=e({default:()=>Hs}),Hs=`---
+`,Us=e({default:()=>Ws}),Ws=`---
 title: "GSoC '25 Week 10 Update by Safwan Sayeed"
 excerpt: "Design and Implementation of Scheduler for Music Blocks 4"
 category: "DEVELOPER NEWS"
@@ -18361,7 +18393,7 @@ This week I Designed and Implemented the Scheduler for Music Blocks 4. The Sched
 =======
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their invaluable support and guidance throughout this project.
 
----`,Us=e({default:()=>Ws}),Ws=`---
+---`,Gs=e({default:()=>Ks}),Ks=`---
 title: "GSoC ’25 Week 09 Update by Diwangshu Kakoty"
 excerpt: "Reflection Learning Widget in Music Blocks"
 category: "DEVELOPER NEWS"
@@ -18446,7 +18478,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Gs=e({default:()=>Ks}),Ks=`---
+---`,qs=e({default:()=>Js}),Js=`---
 title: "GSoC '25 Week 10 Update by Krish Pandya"
 excerpt: "20,000 Lines, Datastore, ObjectChooser, and Sugar Widgets!"
 category: "DEVELOPER NEWS"
@@ -18519,7 +18551,7 @@ This week’s commits were all about foundational infrastructure:
 - [New Python Library (sugar-toolkit-gtk4-py)](https://github.com/MostlyKIGuess/sugar-toolkit-gtk4-py)
 - [New C Library (sugar-ext)](https://github.com/sugarlabs/sugar-ext)
 - [Game Demo Video](https://youtu.be/B517C_LTCns)
-`,qs=e({default:()=>Js}),Js=`---
+`,Ys=e({default:()=>Xs}),Xs=`---
 title: "GSoC’25 Week 10 Update by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -18655,7 +18687,7 @@ This week’s work made the debugger more polished, focused, and learner-friendl
 Grateful as always to my mentors and the Sugar Labs community for their thoughtful feedback, patience, and encouragement as I shape this into a usable tool for learners.
 
 ---
-`,Ys=e({default:()=>Xs}),Xs=`---
+`,Zs=e({default:()=>Qs}),Qs=`---
 title: "SSoC ’25 Week 10 Update by Muhammad Haroon"
 excerpt: "Create a FastAPI for connecting frontend with backend for Audio Trimmer."
 category: "DEVELOPER NEWS"
@@ -18718,7 +18750,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Zs=e({default:()=>Qs}),Qs=`---
+---`,$s=e({default:()=>ec}),ec=`---
 title: "GSoC ’25 Week 09 Update by Bishoy Wadea"
 excerpt: "Odd Scoring game"
 category: "DEVELOPER NEWS"
@@ -18788,7 +18820,7 @@ Multiplayer Support Across Devices [youtube: MMVlzYffTiE]
 - Address any feedback provided by organization members regarding multiplayer flow, UI alignment, and performance.  
 - Begin development of a new Sugar activity **Magic Number Grid** 
 
-`,$s=e({default:()=>ec}),ec=`---
+`,tc=e({default:()=>nc}),nc=`---
 title: "GSoC '25 Week 10 Update by Shubham Singh"
 excerpt: "Successfully implemented action block export functionality."
 category: "DEVELOPER NEWS"
@@ -18878,7 +18910,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. Special appreciation for their feedback during the live demonstration and their continued support in refining the project's technical implementation.
 
----`,tc=e({default:()=>nc}),nc=`---
+---`,rc=e({default:()=>ic}),ic=`---
 title: "DMP ’25 Week 11 Update by Aman Naik"
 excerpt: "This week focused on restructuring the advice feature for persistent visibility within the sidebar and refining the UX to better support students’ writing flow."
 category: "DEVELOPER NEWS"
@@ -18956,7 +18988,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thanks to my mentors for guiding me through iterative design discussions and encouraging me to prioritize the student’s perspective in UI/UX decisions.  
 
 ---
-`,rc=e({default:()=>ic}),ic=`---
+`,ac=e({default:()=>oc}),oc=`---
 title: "DMP ’25 Week 10 Update by Harshit Verma"
 excerpt: "Focused on refining the Pippy Debugger’s responses to be more age-appropriate by using a larger model, enhancing the prompt workflow, and testing with multiple buggy code examples."
 category: "DEVELOPER NEWS"
@@ -19043,7 +19075,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,ac=e({default:()=>oc}),oc=`---
+`,sc=e({default:()=>cc}),cc=`---
 title: "GSoC '25 Week 14 Update by Aditya Kumar Singh"
 excerpt: "Enhanced shared mode ownership & visibility for Stickman, added Journal import functionality for saved stickmen, and export-to-video integration with Journal storage."
 category: "DEVELOPER NEWS"
@@ -19126,7 +19158,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,sc=e({default:()=>cc}),cc=`---
+`,lc=e({default:()=>uc}),uc=`---
 title: "GSoC ’25 Week 11 Update by Mebin J Thattil"
 excerpt: "Deploying SugarAI Continued"
 category: "DEVELOPER NEWS"
@@ -19221,7 +19253,7 @@ So finally SugarAI is live!! You can access it via the API. For docs take a look
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for their ongoing support. Special thanks to [Krish](https://www.sugarlabs.org/authors/krish-pandya), who also helped with the deployment and development of SugarAI.
 
----`,lc=e({default:()=>uc}),uc=`---
+---`,dc=e({default:()=>fc}),fc=`---
 title: "GSoC '25 Week 11 Update by Nikhil Bhatt"
 excerpt: "Focused on writing detailed backend and frontend documentation for MusicBlocks, improving developer onboarding and API clarity."
 category: "DEVELOPER NEWS"
@@ -19313,7 +19345,7 @@ This week was heavily centered on **documentation** for both the backend and fro
 Thanks to my mentors and the Sugar Labs community for providing feedback and guidance while drafting the documentation.  
 This week’s work makes the MusicBlocks Git backend easier to adopt and extend — a key step towards long-term sustainability and community contributions.
 
-`,dc=e({default:()=>fc}),fc=`---
+`,pc=e({default:()=>mc}),mc=`---
 title: "GSoC '25 Week 11 Update by Safwan Sayeed"
 excerpt: "Integration of Engine with Masonry"
 category: "DEVELOPER NEWS"
@@ -19387,7 +19419,7 @@ This Week Me and [Justin](https://github.com/justin212407) collaborated on the I
 
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their invaluable support and guidance throughout this project.
 
----`,pc=e({default:()=>mc}),mc=`---
+---`,hc=e({default:()=>gc}),gc=`---
 title: "GSoC '25 Week 11 Update by Krish Pandya"
 excerpt: "Tray Widgets, Activity Examples, and More!"
 category: "DEVELOPER NEWS"
@@ -19458,7 +19490,7 @@ This after updating the datastore and objectchooser modules, I focused on portin
 - [New Python Library (sugar-toolkit-gtk4-py)](https://github.com/MostlyKIGuess/sugar-toolkit-gtk4-py)
 - [New C Library (sugar-ext)](https://github.com/sugarlabs/sugar-ext)
 - [Game Demo Video](https://youtu.be/B517C_LTCns)
-`,hc=e({default:()=>gc}),gc=`---
+`,_c=e({default:()=>vc}),vc=`---
 title: "GSoC’25 Week 11 Update by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -19632,7 +19664,7 @@ These will be hosted within the project repository and made available via the in
 Grateful as always to my mentors and the Sugar Labs community especially for pushing me to meet upstream standards, prioritize accessibility, and always keep the **user's learning journey** front and center.
 
 ---
-`,_c=e({default:()=>vc}),vc=`---
+`,yc=e({default:()=>bc}),bc=`---
 title: "SSoC ’25 Week 11 Update by Muhammad Haroon"
 excerpt: "Test the changes and document the entire process."
 category: "DEVELOPER NEWS"
@@ -19698,7 +19730,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,yc=e({default:()=>bc}),bc=`---
+---`,xc=e({default:()=>Sc}),Sc=`---
 title: "GSoC '25 Week 10 Update by Bishoy Wadea"
 excerpt: "Magic Number Grid"
 category: "DEVELOPER NEWS"
@@ -19796,7 +19828,7 @@ image: "assets/Images/GSOC.webp"
 - Begin development of new Sugar activity: **Rubik's Cube**
   - Research 3D rendering options compatible with Sugar
   - Design intuitive touch/click controls for cube manipulation
-`,xc=e({default:()=>Sc}),Sc=`---
+`,Cc=e({default:()=>wc}),wc=`---
 title: "GSoC '25 Week 11 Update by Shubham Singh"
 excerpt: "Added SVGs, more instruments, auto arrange method in LegoBricks widget."
 category: "DEVELOPER NEWS"
@@ -19898,7 +19930,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors [Walter Bender](https://github.com/walterbender) and [Devin Ulibarri](https://github.com/pikurasa) for invaluable guidance throughout this development phase. Special appreciation for their feedback on the instrument integration and auto-arrange functionality.
 
----`,Cc=e({default:()=>wc}),wc=`---
+---`,Tc=e({default:()=>Ec}),Ec=`---
 title: "GSoC ’25 Week 10 Update by Diwangshu Kakoty"
 excerpt: "Reflection Widget"
 category: "DEVELOPER NEWS"
@@ -19977,7 +20009,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Tc=e({default:()=>Ec}),Ec=`---
+---`,Dc=e({default:()=>Oc}),Oc=`---
 title: "DMP ’25 Week 12 Update by Aman Naik"
 excerpt: "This week focused on implementing persistent storage for chat history by integrating with Sugar’s Journal, ensuring continuity for students across sessions."
 category: "DEVELOPER NEWS"
@@ -20061,7 +20093,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thanks to my mentor Ibiam for pointing me towards Sugar’s Journal \`read_file\`/\`write_file\` workflow, which turned out to be the correct and elegant solution for persisting chat history.  
 
 ---
-`,Dc=e({default:()=>Oc}),Oc=`---
+`,kc=e({default:()=>Ac}),Ac=`---
 title: "GSoC ’25 Week 12 + Final Report by Mebin J Thattil"
 excerpt: "Integrating everything, wrapping up the project & Final Report"
 category: "DEVELOPER NEWS"
@@ -20299,7 +20331,7 @@ The modernized Speak activity demonstrates how AI can enhance education while ma
 
 ---
 
-`,kc=e({default:()=>Ac}),Ac=`---
+`,jc=e({default:()=>Mc}),Mc=`---
 title: "GSoC '25 Week 12 Update by Safwan Sayeed"
 excerpt: "Integration of Engine with Masonry"
 category: "DEVELOPER NEWS"
@@ -20366,7 +20398,7 @@ This Week Me and [Justin](https://github.com/justin212407) discussed on the Crea
 
 Special thanks to my mentors Anindya, Sumit, Devin, and Walter for their invaluable support and guidance throughout this project.
 
----`,jc=e({default:()=>Mc}),Mc=`---
+---`,Nc=e({default:()=>Pc}),Pc=`---
 title: "GSoC’25 Week 12 Update by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -20532,7 +20564,7 @@ I look forward to staying active in this community, contributing more, and suppo
 ---
 *Made with ❤️ for Music, Open Source, and Learning.*
 
-`,Nc=e({default:()=>Pc}),Pc=`---
+`,Fc=e({default:()=>Ic}),Ic=`---
 title: "SSoC ’25 Week 12 Update by Muhammad Haroon"
 excerpt: "Deploying the backend on AWS and My Journey in the Sugar Summer of Code 2025"
 category: "DEVELOPER NEWS"
@@ -20615,7 +20647,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,Fc=e({default:()=>Ic}),Ic=`---
+---`,Lc=e({default:()=>Rc}),Rc=`---
 title: "DMP ’25 Week 11 Update by Harshit Verma"
 excerpt: "This week I focused on implementing the \`/debug\` endpoint in Sugar-AI, which will serve as the backbone for the Pippy Debugger."
 category: "DEVELOPER NEWS"
@@ -20694,7 +20726,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,Lc=e({default:()=>Rc}),Rc=`---
+`,zc=e({default:()=>Bc}),Bc=`---
 title: "GSoC '25 Week 15 Update by Aditya Kumar Singh"
 excerpt: "Enhanced shared mode position handling, optimized export-to-video with bounding box stabilization, and introduced AI-based stickman import from video."
 category: "DEVELOPER NEWS"
@@ -20807,7 +20839,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,zc=e({default:()=>Bc}),Bc=`---
+`,Vc=e({default:()=>Hc}),Hc=`---
 title: "GSoC '25 Week 12 Update by Krish Pandya"
 excerpt: "Sphinx , Bundling Discussion, and Future Plans"
 category: "DEVELOPER NEWS"
@@ -20881,7 +20913,7 @@ Link: [GTK4-Toolkit-Documentation](https://sugar-toolkit-gtk4-py.readthedocs.io/
 - [Project Page](https://summerofcode.withgoogle.com/programs/2025/projects/rsHsYZKy)
 - [New Python Library (sugar-toolkit-gtk4-py)](https://github.com/MostlyKIGuess/sugar-toolkit-gtk4-py)
 - [Documentation](https://sugar-toolkit-gtk4-py.readthedocs.io/en/latest/)
-`,Vc=e({default:()=>Hc}),Hc=`---
+`,Uc=e({default:()=>Wc}),Wc=`---
 title: "GSoC '25 Week 12 Update by Nikhil Bhatt"
 excerpt: "Summarizing my Google Summer of Code project — Git backend for MusicBlocks. Highlights include implementing fork/PR workflows, writing detailed backend + frontend docs, and ensuring future contributors can onboard easily."
 category: "DEVELOPER NEWS"
@@ -20997,7 +21029,7 @@ A big thank you to my mentors **Walter Bender** and **Sumit Srivastava** for the
 This project has been an incredible journey — not only building new features, but also ensuring MusicBlocks is more maintainable, collaborative, and future-ready.  
 
 ---
-`,Uc=e({default:()=>Wc}),Wc=`---
+`,Gc=e({default:()=>Kc}),Kc=`---
 title: "GSoC '25 Week 11 Update by Bishoy Wadea"
 excerpt: "Rubik's Cube - 3D Puzzle Challenge"
 category: "DEVELOPER NEWS"
@@ -21086,7 +21118,7 @@ Rubik's Cube is a 3D puzzle game that brings the classic cube-solving challenge 
 - Begin development of new Sugar activity: **Sequence Wizard**
   - Design pattern recognition and sequence completion challenges
   - Implement various sequence types (arithmetic, geometric, visual patterns)
-  - Create progressive difficulty system for different age groups`,Gc=e({default:()=>Kc}),Kc=`---
+  - Create progressive difficulty system for different age groups`,qc=e({default:()=>Jc}),Jc=`---
 title: "GSoC ’25 Week 11 Update by Diwangshu Kakoty"
 excerpt: "Reflection Widget"
 category: "DEVELOPER NEWS"
@@ -21161,7 +21193,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,qc=e({default:()=>Jc}),Jc=`---
+---`,Yc=e({default:()=>Xc}),Xc=`---
 title: "DMP ’25 Week 12 Update by Harshit Verma"
 excerpt: "Progress on implementing debug history saving in the Journal and polishing code for final review."
 category: "DEVELOPER NEWS"
@@ -21254,7 +21286,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for your continued guidance and support!
 
 ---
-`,Yc=e({default:()=>Xc}),Xc=`---
+`,Zc=e({default:()=>Qc}),Qc=`---
 title: "GSoC '25 Week 16 Update by Aditya Kumar Singh"
 excerpt: "Advanced shared mode with global vs local moves, extended PoseNet-based video import with MobileNet/ResNet, template palette with event-driven design, and multiple UX refinements."
 category: "DEVELOPER NEWS"
@@ -21383,7 +21415,7 @@ image: "assets/Images/GSOC.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
 ---
-`,Zc=e({default:()=>Qc}),Qc=`---
+`,$c=e({default:()=>el}),el=`---
 title: "GSoC ’25 Week 12 Update by Diwangshu Kakoty"
 excerpt: "Reflection Widget"
 category: "DEVELOPER NEWS"
@@ -21443,7 +21475,7 @@ image: "assets/Images/GSOC.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors for ongoing support.
 
----`,$c=e({default:()=>el}),el=`---
+---`,tl=e({default:()=>nl}),nl=`---
 title: "DMP’25 Week 11–12 Update by Justin Charles"
 excerpt: "Parsing the tree: building the AST pipeline to connect Masonry’s brick towers with the Program execution layer"
 category: "DEVELOPER NEWS"
@@ -21521,7 +21553,7 @@ The steps taken to ensure the completion of this objective are:
 ## Acknowledgments
 
 Thanks to my mentors for their guidance through this milestone: bridging Masonry’s visual towers with actual program execution.
-`,tl=e({default:()=>nl}),nl=`---
+`,rl=e({default:()=>il}),il=`---
 title: "Google Summer of Code 2025 – Final Report by Aditya Kumar Singh"
 excerpt: "Final report summarizing the achievements and outcomes of the GSoC 2025 project."
 category: "DEVELOPER NEWS"
@@ -21881,7 +21913,7 @@ The journey through GSoC 2025 has been transformative, providing invaluable expe
 
 ---
 
-*This report represents 16 weeks of dedicated development contributing to Sugar Labs' mission of providing accessible, high-quality educational technology for all students worldwide.*`,rl=e({default:()=>il}),il=`---
+*This report represents 16 weeks of dedicated development contributing to Sugar Labs' mission of providing accessible, high-quality educational technology for all students worldwide.*`,al=e({default:()=>ol}),ol=`---
 title: "GSoC’25 Final Report by Om Santosh Suneri"
 excerpt: "AI-powered Debugger for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -22178,7 +22210,7 @@ This project was completed under the mentorship of Walter Bender, Sumit Srivasta
 Special recognition to the broader Music Blocks community for providing feedback during development and testing phases, and to Google Summer of Code for enabling this contribution to educational technology infrastructure.
 
 ---
-`,al=e({default:()=>ol}),ol=`---
+`,sl=e({default:()=>cl}),cl=`---
 title: "GSoC’25 Final Report by Diwangshu Kakoty"
 excerpt: "Reflection Widget for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -22346,7 +22378,7 @@ This project was carried out under the mentorship of **Walter Bender**, **Sumit 
 
 Special thanks to the wider **Music Blocks community** for their valuable feedback during development and testing, and to **Google Summer of Code** for making this contribution to educational technology possible.  
 
----`,sl=e({default:()=>cl}),cl=`---
+---`,ll=e({default:()=>ul}),ul=`---
 title: "GSoC '25 Week 12 Update by Bishoy Wadea"
 excerpt: "Sequence Wizard - AI-Powered Pattern Learning"
 category: "DEVELOPER NEWS"
@@ -22459,7 +22491,7 @@ Sequence Wizard is an innovative AI-powered educational tool that learns to pred
 
 ## Next Week's Roadmap
 
-- Begin development of new Sugar activity: **AI Organizer**`,ll=e({default:()=>ul}),ul=`---
+- Begin development of new Sugar activity: **AI Organizer**`,dl=e({default:()=>fl}),fl=`---
 title: "DMP ’25 Final Report by Harshit Verma"
 excerpt: "Final Report for the project LLM Powered Debugger for Pippy"
 category: "DEVELOPER NEWS"
@@ -22636,7 +22668,7 @@ I sincerely thank my mentors, the Sugar Labs, and C4GT community for their conti
 
 It has been an incredibly rewarding summer working on this project, where I not only had the opportunity to contribute to open-source development but also to learn, grow, and collaborate with an inspiring community. This experience has motivated me to carry forward the spirit of open source, to continue contributing, and to build tools and software that make technology more accessible and impactful for everyone.
 
----`,dl=e({default:()=>fl}),fl=`---
+---`,pl=e({default:()=>ml}),ml=`---
 title: "GSoC '25 Week 17 and Bug Fixes Update by Aditya Kumar Singh"
 excerpt: "Final polish: template palette, fullscreen mode implemented, export/import refinements, shared-mode fixes, localization and final report PRs."
 category: "DEVELOPER NEWS"
@@ -22718,7 +22750,7 @@ image: "assets/Images/GSOC.webp"
 Thanks to Lionel Laské and Samarth Bagga for patient guidance and code review, and to the Sugar Labs community for testing and helpful UX feedback. The work this week packaged final UX polish, export/import stability, and the template system into a form ready for the wider community to try and extend.
 
 ---
-`,pl=e({default:()=>ml}),ml=`---
+`,hl=e({default:()=>gl}),gl=`---
 title: "GSoC '25 Week 13 Update by Bishoy Wadea"
 excerpt: "AI Organizer - Image Classification with Machine Learning"
 category: "DEVELOPER NEWS"
@@ -22825,7 +22857,7 @@ AI Organizer (Image Classifier) is an educational activity that introduces stude
   - Prepare comprehensive final report documenting all 10 activities
   - Compile user feedback and testing results
   - Prepare presentation materials for final evaluation
-  - Submit pull requests for official Sugar Labs activity repository`,hl=e({default:()=>gl}),gl=`---
+  - Submit pull requests for official Sugar Labs activity repository`,_l=e({default:()=>vl}),vl=`---
 title: "GSoC’25 Final Report by Bishoy Wadea"
 excerpt: "Developing 10 Math Sugar Activities"
 category: "DEVELOPER NEWS"
@@ -23115,7 +23147,7 @@ This GSoC journey has been transformative. The ten activities created represent 
 
 I'm grateful for the opportunity to contribute to Sugar Labs and excited about the potential impact of these tools on education. The open source nature ensures they will continue to evolve, reaching more children and adapting to new educational needs.
 
-Thank you to everyone who made this journey possible. Here's to the future of open source education!`,_l=e({default:()=>vl}),vl=`---
+Thank you to everyone who made this journey possible. Here's to the future of open source education!`,yl=e({default:()=>bl}),bl=`---
 title: "Adding dark mode to the Sugar Labs homepage"
 excerpt: "New developer Syed Khubayb Ur Rahman shares how he implemented dark mode, what issues he faced and how he debugged them."
 category: "DEVELOPER NEWS"
@@ -23184,7 +23216,7 @@ The dark mode toggle button is available on the top-right corner of the page.
 ![Dark mode toggle location in light mode](/assets/Images/dark_mode_toggle.png)
 ![Dark mode toggle location in dark mode](/assets/Images/dark_mode_toggle2.png)
 
-*Look for this button to switch between light and dark themes!*`,yl=e({default:()=>bl}),bl=`---
+*Look for this button to switch between light and dark themes!*`,xl=e({default:()=>Sl}),Sl=`---
 title: "Adding steps to install Sugar on Raspberry Pi"
 excerpt: "New developer Daksh Kaushik shares how he implemented the steps to
 install Sugar on Raspberry Pi, what issues he faced, and how he
@@ -23264,7 +23296,7 @@ The guide for installing Sugar on Raspberry Pi is available on the
 ![Logocards for switching between guides](/assets/Images/logocard.webp)
 
 *Look for these logocards to switch between different guides!*
-`,xl=e({default:()=>Sl}),Sl=`---
+`,Cl=e({default:()=>wl}),wl=`---
 title: "Fall board elections: How to participate"
 excerpt: "Sugar Labs will be running an election this fall for three seats to its board of directors for the 2026–2027 term. Sugar Labs community members are encouraged to participate." 
 category: "COMMUNITY NEWS"
@@ -23311,7 +23343,7 @@ The timeline of the election is planned as follows, with a deadline to receive c
 This election is being run by [Safwan Sayeed](https://www.sugarlabs.org/authors/safwan-sayeed). We welcome volunteers to assist in running our elections; please email [volunteering@sugarlabs.org](mailto:volunteering@sugarlabs.org) if you are interested in volunteering. 
 
 Again, you are encouraged to take the first step and apply for a ballot via our [application form](https://forms.gle/2F5PjLHZpzPq2ssL7), and we look forward to your involvement. 
-`,Cl=e({default:()=>wl}),wl=`---
+`,Tl=e({default:()=>El}),El=`---
 title: "The Sweet Spot – Issue 004"
 excerpt: "Recent news from Sugar Labs, including GSoC '25 Final Reports, elections, and more community updates."
 category: "COMMUNITY NEWS"
@@ -23515,7 +23547,7 @@ Communications on our official channels must abide by our [Code of Conduct](http
 ## Back issues of *The Sweet Spot*
 
 You can find this issue and past issues of *The Sweet Spot* at  [https://www.sugarlabs.org/news/community-news](https://www.sugarlabs.org/news/community-news?q=sweet%20spot) 
-`,Tl=e({default:()=>El}),El=`---
+`,Dl=e({default:()=>Ol}),Ol=`---
 title: "Deadline extended to December 26 to apply for a ballot and apply for candidacy"
 excerpt: "Sugar Labs has extended the deadline for board of directors election participation to December 26, including both ballot applications and candidacy submissions for the upcoming election cycle."
 category: "COMMUNITY NEWS"
@@ -23573,7 +23605,7 @@ Best wishes,
 
 Safwan Sayeed, Maintainer at Sugar Labs and 2025 Elections Volunteer Coordinator
 
-P.S. If you are interested in volunteering to assist with the next election in that fall of 2026, please contact [volunteering@sugarlabs.org](mailto:volunteering@sugarlabs.org) with your interest.`,Dl=e({default:()=>Ol}),Ol=`---
+P.S. If you are interested in volunteering to assist with the next election in that fall of 2026, please contact [volunteering@sugarlabs.org](mailto:volunteering@sugarlabs.org) with your interest.`,kl=e({default:()=>Al}),Al=`---
 title: "GSoC '25 Final Week Update by Krish Pandya"
 excerpt: "Everything Everywhere all at Once"
 category: "DEVELOPER NEWS"
@@ -23651,7 +23683,7 @@ _Update with the final Sugar Presentation video once available_
 - [Menu and Style Video](https://youtu.be/-WTojjHpQLs)
 - [Animations, ToolBox and Super Ball Dodge](https://youtu.be/B517C_LTCns)
 - [Palettes, Popovers and Bundling](https://youtu.be/gbaG9CaJJ-U)
-`,kl=e({default:()=>Al}),Al=`---
+`,jl=e({default:()=>Ml}),Ml=`---
 title: "Board election results announcement: Three new members for the 2026-27 cycle"
 excerpt: "The election results for the Sugar Labs Board of Directors have been announced. Krish Pandya, Walter Bender, and Samson Goddy will serve on the board for the 2026-27 cycle."
 category: "COMMUNITY NEWS"
@@ -23676,7 +23708,7 @@ The next election for three seats to the 2027-28 cycle is planned for August of 
 And if you are interested in volunteering to assist with the next election in 2026, please contact [volunteering@sugarlabs.org](mailto:volunteering@sugarlabs.org) with your interest.
 
 On behalf of the [Sugar Labs Board of Directors](https://www.sugarlabs.org/leadership), we offer a big *Thank you\\!* to all who participated in this year's election.
-`,jl=e({default:()=>Ml}),Ml=`---
+`,Nl=e({default:()=>Pl}),Pl=`---
 title: "My GSoC Journey at Sugar Labs: Contributions, Constructionism, and How My Thinking Changed"
 excerpt: "A personal long-form reflection on my Sugar Labs contribution journey, the work I shipped, the struggles I faced, and how constructionism changed how I learn."
 category: "DEVELOPER NEWS"
@@ -24284,7 +24316,7 @@ And then do it again, better.
     https://billkerr2.blogspot.com/2008/06/untangling-free-sugar-and.html
 
 Note: I could not reliably fetch content from links 11 and 12 in this environment, so I did not quote them directly.
-`,Nl=e({default:()=>Pl}),Pl=`---
+`,Fl=e({default:()=>Il}),Il=`---
 title: "Kicking off GSoC 2026: Modernizing the Sugar Desktop with GTK4"
 excerpt: "A deep dive into the GTK4 migration journey for the Fructose suite, bypassing the legacy shell, and Week 1 progress."
 category: "DEVELOPER NEWS"
@@ -24400,7 +24432,7 @@ My immediate goal is to finalize the architectural blockers for Calculate and Lo
 
 A huge thanks to my mentors, Krish Pandya, Ibiam Chihurumnaya, and Walter Bender , for their guidance, and to the wider Sugar Labs community for maintaining such a welcoming ecosystem. 
 
-I'll be sharing another update next week once these initial ports are finalized. Let the coding period begin!`,Fl=e({default:()=>Il}),Il=`---
+I'll be sharing another update next week once these initial ports are finalized. Let the coding period begin!`,Ll=e({default:()=>Rl}),Rl=`---
 title: "GSoC '26 Community Bonding Report by Rejah Rabeeul Haque"
 excerpt: "Introducing my GSoC '26 project: Connect The Dot activity for Sugarizer, and what I'll be working on this summer."
 category: "DEVELOPER NEWS"
@@ -24498,7 +24530,7 @@ Thanks to my mentor Lionel Laské for the constant guidance, valuable suggestion
 
 
 *This is Week 0 of my GSoC 2026 weekly blog series. Stay tuned for updates every week! :)*
-`,Ll=e({default:()=>Rl}),Rl=`---
+`,zl=e({default:()=>Bl}),Bl=`---
 title: "GSoC '26 Community Bonding: Sugar Activity on Demand by Ashutosh Singh"
 excerpt: "Can an LLM write a working Sugar activity from a one-line description? That's what I'm spending this summer finding out."
 category: "DEVELOPER NEWS"
@@ -24653,7 +24685,7 @@ I'll be posting weekly updates here. See you next week.
 Thanks to Walter Bender for the conversations during bonding that really shaped how I'm thinking about this project. Thanks to the Sugar Labs community for being welcoming from the start, the Matrix channels and PR reviews made it easy to find my footing. And thanks to everyone who built Sugar in the first place. The idea that kids should be creators, not just consumers, is something worth building for.
 
 ---
-`,zl=e({default:()=>Bl}),Bl=`---
+`,Vl=e({default:()=>Hl}),Hl=`---
 title: "GSoC '26 Community Bonding: Git-Based Backend for Music Blocks"
 excerpt: "Moving student creations from a local MySQL database to structured GitHub repositories, bringing version history, ownership, and collaboration to Music Blocks."
 category: "DEVELOPER NEWS"
@@ -24754,7 +24786,7 @@ See you in the next update.
 Huge thanks to Nikhil Bhatt for helping shape the direction of the project during the proposal and bonding period, Walter Bender for the architectural and deployment discussions, and Ibiam for helping me get shell access to Sunjammer through SSH and guiding me during the bonding phase.
 
 Also thanks to the Sugar Labs community for being welcoming from the very beginning.
-`,Vl=e({default:()=>Hl}),Hl=`---
+`,Ul=e({default:()=>Wl}),Wl=`---
 title: "GSoC '26 Community Bonding by Parth Dagia"
 excerpt: "Introducing my GSoC '26 project on Music Blocks 4 and what I'll be working on this summer."
 category: "DEVELOPER NEWS"
@@ -24839,7 +24871,7 @@ I'll also update the TypeScript interfaces and wire the palette and factory comp
 Thanks to my mentors Anindya Kundu, Justin Charles, and Safwan Sayeed for their guidance during community bonding. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community for the warm welcome.
 
 ---
-`,Ul=e({default:()=>Wl}),Wl=`---
+`,Gl=e({default:()=>Kl}),Kl=`---
 title: "GSoC '26 Community Bonding Blog by Shreya Saxena"
 excerpt: "Introducing my GSoC '26 project on Music Blocks Performance and what I'll be working on this summer."
 category: "DEVELOPER NEWS"
@@ -24948,7 +24980,7 @@ The frame-budget scheduler, Web Worker offloading, progress indicators, and canc
 
 ## Acknowledgments
 
-Thanks to my mentors Walter Bender and Om Santosh Suneri for their guidance, insightful feedback, and continuous support throughout the community bonding period. I’m also grateful to Devin Ulibarri and the broader Sugar Labs community for the engaging discussions, encouragement, and sense of community that made the bonding phase genuinely enjoyable.`,Gl=e({default:()=>Kl}),Kl=`---
+Thanks to my mentors Walter Bender and Om Santosh Suneri for their guidance, insightful feedback, and continuous support throughout the community bonding period. I’m also grateful to Devin Ulibarri and the broader Sugar Labs community for the engaging discussions, encouragement, and sense of community that made the bonding phase genuinely enjoyable.`,ql=e({default:()=>Jl}),Jl=`---
 title: "GSoC '26 Community Bonding by Syed Khubayb ur Rahman"
 excerpt: "Introducing my GSoC '26 project on Music Blocks 4 and what I'll be working on this summer."
 category: "DEVELOPER NEWS"
@@ -25022,7 +25054,7 @@ Following this, I will define all missing bricks inside the \`brick-config.json\
 
 Thanks to my mentors Anindya Kundu, Safwan Sayeed and Justin Charles for their guidance and support during the community bonding period. I’m also grateful to Devin Ulibarri, Walter Bender and the entire Sugar Labs community for the warm welcome
 
----`,ql=e({default:()=>Jl}),Jl=`---
+---`,Yl=e({default:()=>Xl}),Xl=`---
 title: "GSoC '26 Introductory Blog by Shubham Sharma"
 excerpt: "Building AI-powered reflection into the Sugar Journal"
 category: "DEVELOPER NEWS"
@@ -25171,7 +25203,7 @@ I'll be sharing progress in weekly blog posts :)
 Thanks to Walter for the bonding period conversations that shaped the thinking in this post.
 To [Jonas](https://wiki.debian.org/JonasSmedegaard) for months of discussions that helped me understand what reflection actually means in a constructionist context.
 To Ibiam and Devin for the organizational support, Diwangshu for the Music Blocks reflection foundation, and to the Sugar Labs community for being welcoming since I showed up in December.
-`,Yl=e({default:()=>Xl}),Xl=`---
+`,Zl=e({default:()=>Ql}),Ql=`---
 title: "GSoC 2026 Community Bonding and First Steps into GTK4 Migration"
 excerpt: "My community bonding journey with Sugar Labs while preparing to work on the GTK4 Transition Part 2: Sugar Shell project."
 category: "DEVELOPER NEWS"
@@ -25374,7 +25406,7 @@ I still have a lot to learn but that is one of the most exciting parts of this j
 - Documentation - [Read the Docs](https://sugar-toolkit-gtk4.readthedocs.io/en/latest/)
 - GTK4 Migration Guide - [GNOME Docs](https://docs.gtk.org/gtk4/migrating-3to4.html)
 - PyPI Package - [sugar-toolkit-gtk4](https://pypi.org/project/sugar-toolkit-gtk4/)
-`,Zl=e({default:()=>Ql}),Ql=`---
+`,$l=e({default:()=>eu}),eu=`---
 title: "GSoC '26 Community Bonding Blog by Sonal Gaud"
 excerpt: "Introducing my GSoC '26 project on Automated Release Pipeline for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -25436,7 +25468,7 @@ This week I'll be creating Docs/RELEASE_AUDIT_CURRENT_STATE.md covering all nine
 Thanks to my mentors Walter Bender and Om Santosh Suneri for their guidance and support throughout the community bonding period, and to the broader Sugar Labs community for the warm welcome and engaging discussions.
 
 ---
-`,$l=e({default:()=>eu}),eu=`---
+`,tu=e({default:()=>nu}),nu=`---
 title: "GSoC '26 Week 1 Update by Shreya Saxena"
 excerpt: "Runtime instrumentation validation and baseline benchmark collection for Music Blocks."
 category: "DEVELOPER NEWS"
@@ -25557,7 +25589,7 @@ Building on this week's findings, I plan to focus on the following areas:
 ## Acknowledgments
 
 Thanks to Walter Bender for his valuable feedback and for helping steer my research in the right direction. Thanks also to Om Santosh Suneri, Devin Ulibarri, and the Sugar Labs community for their guidance, support, and encouragement throughout the process.
-`,tu=e({default:()=>nu}),nu=`---
+`,ru=e({default:()=>iu}),iu=`---
 title: "GSoC '26 Community Bonding Blog by Sonal Gaud"
 excerpt: "Introducing my GSoC '26 project on Automated Release Pipeline for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -25647,7 +25679,7 @@ The Music Blocks project has a known tension between feature development cycles 
 
 Thank you to Walter Bender and Om Santosh Suneri for the guidance and context during week one. Also thanks to SugarLabs community Looking forward to moving from observation to design in Week 2.
 
----`,ru=e({default:()=>iu}),iu=`---
+---`,au=e({default:()=>ou}),ou=`---
 title: "GSoC '26 Week 1: Calculate and Log GTK4 Ports"
 excerpt: "Finalizing the GTK4 migrations for Calculate and Log, navigating Python 3.12+ AST changes, and planning the Chat and ImageViewer ports."
 category: "DEVELOPER NEWS"
@@ -25695,7 +25727,7 @@ With both draft PRs up, next week I'll be moving on to:
 
 ## Acknowledgments
 Thanks to MostlyK, Ibiam, and Walter for the reviews and guidance this week. Also thanks to quozl for helping me untangle some of the Sugar build system issues.
-`,au=e({default:()=>ou}),ou=`---
+`,su=e({default:()=>cu}),cu=`---
 title: "GSoC '26 Week 1 Update by Parth Dagia"
 excerpt: "Designing an outline-only brick definition for Music Blocks v4 and a separate SVG path generator file built around it."
 category: "DEVELOPER NEWS"
@@ -25780,7 +25812,7 @@ I broke it into two passes instead: outline first (this week), then everything e
 Thanks to Anindya Kundu, Justin Charles, and Safwan Sayeed for the back-and-forth on which parameters belong to the outline layer. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,su=e({default:()=>cu}),cu=`---
+`,lu=e({default:()=>uu}),uu=`---
 title: "GSoC '26 Week 1 Update by Syed Khubayb Ur Rahman"
 excerpt: "Designing an outline-only brick definition for Music Blocks v4 and a separate SVG path generator file built around it."
 category: "DEVELOPER NEWS"
@@ -25883,7 +25915,7 @@ Keeping shape generation separate from rendering logic results in a more modular
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for the guidance and the help during the back-and-forth on which parameters belong to the outline layer. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,lu=e({default:()=>uu}),uu=`---
+`,du=e({default:()=>fu}),fu=`---
 title: "GSoC '26 Week 01 Update by Dev"
 excerpt: "Setting up the GTK4 environment, tracing Casilda dependencies, and discussing the SugarExt namespace hurdles."
 category: "DEVELOPER NEWS"
@@ -25962,7 +25994,7 @@ image: "assets/Images/GSOC.webp"
 ## Acknowledgments
 
 Thank you to my mentors for the quick guidance on the Casilda source installation and the Sugar Labs community for their amazing support as I kick off this project!
-`,du=e({default:()=>fu}),fu=`---
+`,pu=e({default:()=>mu}),mu=`---
 title: "GSoC '26 Week 01 Update by Ashutosh Singh"
 excerpt: "Building the entire GTK3 frontend for Sugar Activity on Demand, from prompt screen to Reflective Studio."
 category: "DEVELOPER NEWS"
@@ -26135,7 +26167,7 @@ Thanks to Walter Bender for the constructionist framing that keeps this project 
 - Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
 
 ---
-`,pu=e({default:()=>mu}),mu=`---
+`,hu=e({default:()=>gu}),gu=`---
 title: "GSoC '26 Week 1: Migrating 5,500+ Projects to GitHub & SQLite"
 excerpt: "Successfully migrated 5,543 legacy Music Blocks projects from MySQL to individual GitHub repositories with a fast SQLite index."
 category: "DEVELOPER NEWS"
@@ -26222,7 +26254,7 @@ With 5,300 repositories live on GitHub and the portable \`projects.sqlite\` veri
 The next step for Phase 3 is to build the TypeScript Express backend endpoints (\`GET /allRepos\`, \`GET /search\`, \`POST /like\`, etc.) and wire them up to read directly from my newly created SQLite index. 
 
 Stay tuned for the next update as I bring the Git-based backend fully online!
-`,hu=e({default:()=>gu}),gu=`---
+`,_u=e({default:()=>vu}),vu=`---
 title: "GSoC '26 Week 1 Update by Rejah Rabeeul Haque"
 excerpt: "Completed mockup designs for Number Mode and Game Mode in the Connect The Dots activity, and fixed bugs in the Paint activity"
 category: "DEVELOPER NEWS"
@@ -26293,7 +26325,7 @@ I would like to thank my mentor Lionel Laské for his constant guidance and supp
 ---
 
 *Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*
-`,_u=e({default:()=>vu}),vu=`---
+`,yu=e({default:()=>bu}),bu=`---
 title: "GSoC '26 Week 01 Update by Shubham Sharma"
 excerpt: "From standalone simulation to a real Sugarizer prototype with working activities and AI reflection"
 category: "DEVELOPER NEWS"
@@ -26435,7 +26467,7 @@ Thanks to Walter, Ibiam, Mebin, Harshit, Diwangshu, and Aman for the calls and f
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,yu=e({default:()=>bu}),bu='---\ntitle: "GSoC \'26 Week 2: Chat and Image Viewer Ports"\nexcerpt: "Porting Chat and Image Viewer activities to GTK4, refactoring touch interactions, and resolving environment execution issues."\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-07"\nslug: "2026-06-07-gsoc-26-divyam-week2"\nauthor: "@/constants/MarkdownFiles/authors/divyam-agarwal.md"\ntags: "gsoc26,sugarlabs,gtk4,wayland,fructose,week2"\nimage: "assets/Images/GSOC.webp"\n---\n\n# Week 2: Chat and Image Viewer\n\n**Project:** [GTK4 Transition Part 1 Fructose](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md)  \n**Mentors:** [Krish (MostlyK)](https://github.com/MostlyKIGuess), [Ibiam](https://github.com/chimosky), [Walter Bender](https://github.com/walterbender)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-01 to 2026-06-07\n\n---\n\n## Introduction\nI spent most of this week porting the **Chat** and **Image Viewer** activities to GTK4. Chat took way longer than expected—replacing the containers was fine, but porting the custom `RoundBox` speech bubbles to the new snapshot API was a massive headache. Image Viewer was easier, but ripping out the old gesture system still took some work.\n\n## What I Worked On\n\n### Chat Activity\nFor the [Chat Activity](https://github.com/sugarlabs/chat), I\'ve been working on a local draft before opening a pull request. GTK4 removes `Gtk.VBox`, `Gtk.Fixed`, and `Gtk.Alignment`, so I had to refactor the whole Chat frontend to use a `Gtk.Box` hierarchy with native margins (`margin-start`, `margin-end`).\n\n![Chat Activity GTK4 Layout](/assets/post-assets/chat-running-1.png "Chat Activity GTK4 port layout")\n![Chat Activity Emoji Picker](/assets/post-assets/chat-running-2.png "Emoji Picker with corrected SVG scaling in GTK4")\n\nThe `RoundBox` widget for speech bubbles was the main time-sink. Since the `draw` signal is gone, I had to port the logic to the `do_snapshot` API using [`Gtk.Snapshot`](https://docs.gtk.org/gtk4/class.Snapshot.html) and Graphene. I\'m still fighting with child margins since the spacing logic here isn\'t quite the same as the old callbacks. \n\nI also hit a weird scaling issue with emoji assets. I thought the emoji issue was a CSS problem at first, but it turned out to be GTK4 sizing the SVGs differently, which completely threw off the grid. I ended up downscaling double-resolution `Gdk.Texture` into a `Gtk.Picture` and switching the layout to `Gtk.FlowBox`. Finally, I cleaned up some old styling: replaced `modify_bg` with scoped CSS providers and switched text buffer insertions to `Gtk.TextBuffer.insert_paintable()`.\n\n### Image Viewer Activity\nFor the Image Viewer Activity ([PR #34](https://github.com/sugarlabs/imageviewer-activity/pull/34)), the work was mostly about ripping out legacy gesture code and fixing the canvas rendering.\n\n![Image Viewer Activity running on GTK4](/assets/post-assets/image-viewer-running.png "Image Viewer running on GTK4 without legacy gestures")\n\n* **Gesture Migration:** Removed `EventBox` and `SugarGestures`. Switched to native `Gtk.GestureDrag`, `Gtk.GestureZoom`, and `Gtk.EventControllerKey` handlers. GTK4 handles touch points naturally, so a lot of the old zoom/pan bookkeeping just went away.\n* **Canvas Updates:** Swapped `draw` for `set_draw_func()`, updated the Cairo API callback arguments (`ctx` to `cr`), and ditched all the redundant `show_all()` calls.\n* **Toolkit Bug:** Kept hitting a `_buffer` `AttributeError` in `sugar4.graphics.icon.Icon` on a blank canvas. After a lot of tracing, realized the crash wasn\'t in Image Viewer—it was coming from the icon module whenever colors were set. Patched it and sent the fix upstream to [`sugar-toolkit-gtk4` (PR #31)](https://github.com/sugarlabs/sugar-toolkit-gtk4/pull/31).\n\n## Debugging Hurdles and Workarounds\nI spent almost as much time fighting my test environment as I did coding.\n\nSince the old `sugar-activity4` wrapper no longer exists, I had to run activities as standalone apps. I wrote a `run_chat.py` launcher, but the window kept vanishing because Python\'s garbage collector was killing the activity object. Stashing a reference to the object in the script stopped the crash.\n\nNetworking was another mess. The Chat UI stays disabled without a network connection, but my cloned VMs had conflicting IDs and were silently dropping multicast packets. I lost a stupid amount of time debugging mDNS with `tcpdump` and `avahi-browse` before realizing the network was the problem—it ended up being embarrassingly simple once I noticed the overlapping MAC addresses. I temporarily added a "developer bypass" flag in `chat/box.py` to force an online state during testing so I could actually see the UI. \n\nFor Image Viewer, I bypassed the journal database by hardcoding a local path via `self.view.set_file_location()` for testing, and wrapped `CollabWrapper` in `try/except` to skip D-Bus session dependencies.\n\n## What\'s Next for Week 3\n* **Debian 13 Environment:** Need to finish the Debian 13 VM setup so my local environment matches upstream. Carrying this over from [Week 1](/news/all/2026-06-01-gsoc-26-divyam-week1).\n* **Collaboration Testing:** Once I drop the developer bypasses, I\'ll test the Chat activity over a real network connection to ensure messages send and receive correctly with the new GTK4 frontend.\n\n---\n\n## Acknowledgments\nThanks to my mentors for helping me work through the GTK4 and environment issues this week. Looking forward to review comments on these drafts once the maintainers get a chance to look through them.\n',xu=e({default:()=>Su}),Su=`---
+`,xu=e({default:()=>Su}),Su='---\ntitle: "GSoC \'26 Week 2: Chat and Image Viewer Ports"\nexcerpt: "Porting Chat and Image Viewer activities to GTK4, refactoring touch interactions, and resolving environment execution issues."\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-07"\nslug: "2026-06-07-gsoc-26-divyam-week2"\nauthor: "@/constants/MarkdownFiles/authors/divyam-agarwal.md"\ntags: "gsoc26,sugarlabs,gtk4,wayland,fructose,week2"\nimage: "assets/Images/GSOC.webp"\n---\n\n# Week 2: Chat and Image Viewer\n\n**Project:** [GTK4 Transition Part 1 Fructose](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md)  \n**Mentors:** [Krish (MostlyK)](https://github.com/MostlyKIGuess), [Ibiam](https://github.com/chimosky), [Walter Bender](https://github.com/walterbender)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-01 to 2026-06-07\n\n---\n\n## Introduction\nI spent most of this week porting the **Chat** and **Image Viewer** activities to GTK4. Chat took way longer than expected—replacing the containers was fine, but porting the custom `RoundBox` speech bubbles to the new snapshot API was a massive headache. Image Viewer was easier, but ripping out the old gesture system still took some work.\n\n## What I Worked On\n\n### Chat Activity\nFor the [Chat Activity](https://github.com/sugarlabs/chat), I\'ve been working on a local draft before opening a pull request. GTK4 removes `Gtk.VBox`, `Gtk.Fixed`, and `Gtk.Alignment`, so I had to refactor the whole Chat frontend to use a `Gtk.Box` hierarchy with native margins (`margin-start`, `margin-end`).\n\n![Chat Activity GTK4 Layout](/assets/post-assets/chat-running-1.png "Chat Activity GTK4 port layout")\n![Chat Activity Emoji Picker](/assets/post-assets/chat-running-2.png "Emoji Picker with corrected SVG scaling in GTK4")\n\nThe `RoundBox` widget for speech bubbles was the main time-sink. Since the `draw` signal is gone, I had to port the logic to the `do_snapshot` API using [`Gtk.Snapshot`](https://docs.gtk.org/gtk4/class.Snapshot.html) and Graphene. I\'m still fighting with child margins since the spacing logic here isn\'t quite the same as the old callbacks. \n\nI also hit a weird scaling issue with emoji assets. I thought the emoji issue was a CSS problem at first, but it turned out to be GTK4 sizing the SVGs differently, which completely threw off the grid. I ended up downscaling double-resolution `Gdk.Texture` into a `Gtk.Picture` and switching the layout to `Gtk.FlowBox`. Finally, I cleaned up some old styling: replaced `modify_bg` with scoped CSS providers and switched text buffer insertions to `Gtk.TextBuffer.insert_paintable()`.\n\n### Image Viewer Activity\nFor the Image Viewer Activity ([PR #34](https://github.com/sugarlabs/imageviewer-activity/pull/34)), the work was mostly about ripping out legacy gesture code and fixing the canvas rendering.\n\n![Image Viewer Activity running on GTK4](/assets/post-assets/image-viewer-running.png "Image Viewer running on GTK4 without legacy gestures")\n\n* **Gesture Migration:** Removed `EventBox` and `SugarGestures`. Switched to native `Gtk.GestureDrag`, `Gtk.GestureZoom`, and `Gtk.EventControllerKey` handlers. GTK4 handles touch points naturally, so a lot of the old zoom/pan bookkeeping just went away.\n* **Canvas Updates:** Swapped `draw` for `set_draw_func()`, updated the Cairo API callback arguments (`ctx` to `cr`), and ditched all the redundant `show_all()` calls.\n* **Toolkit Bug:** Kept hitting a `_buffer` `AttributeError` in `sugar4.graphics.icon.Icon` on a blank canvas. After a lot of tracing, realized the crash wasn\'t in Image Viewer—it was coming from the icon module whenever colors were set. Patched it and sent the fix upstream to [`sugar-toolkit-gtk4` (PR #31)](https://github.com/sugarlabs/sugar-toolkit-gtk4/pull/31).\n\n## Debugging Hurdles and Workarounds\nI spent almost as much time fighting my test environment as I did coding.\n\nSince the old `sugar-activity4` wrapper no longer exists, I had to run activities as standalone apps. I wrote a `run_chat.py` launcher, but the window kept vanishing because Python\'s garbage collector was killing the activity object. Stashing a reference to the object in the script stopped the crash.\n\nNetworking was another mess. The Chat UI stays disabled without a network connection, but my cloned VMs had conflicting IDs and were silently dropping multicast packets. I lost a stupid amount of time debugging mDNS with `tcpdump` and `avahi-browse` before realizing the network was the problem—it ended up being embarrassingly simple once I noticed the overlapping MAC addresses. I temporarily added a "developer bypass" flag in `chat/box.py` to force an online state during testing so I could actually see the UI. \n\nFor Image Viewer, I bypassed the journal database by hardcoding a local path via `self.view.set_file_location()` for testing, and wrapped `CollabWrapper` in `try/except` to skip D-Bus session dependencies.\n\n## What\'s Next for Week 3\n* **Debian 13 Environment:** Need to finish the Debian 13 VM setup so my local environment matches upstream. Carrying this over from [Week 1](/news/all/2026-06-01-gsoc-26-divyam-week1).\n* **Collaboration Testing:** Once I drop the developer bypasses, I\'ll test the Chat activity over a real network connection to ensure messages send and receive correctly with the new GTK4 frontend.\n\n---\n\n## Acknowledgments\nThanks to my mentors for helping me work through the GTK4 and environment issues this week. Looking forward to review comments on these drafts once the maintainers get a chance to look through them.\n',Cu=e({default:()=>wu}),wu=`---
 title: "GSoC '26 Week 2 Update by Rejah Rabeeul Haque"
 excerpt: "Started creation of the Connect The Dots activity."
 category: "DEVELOPER NEWS"
@@ -26516,7 +26548,7 @@ I would like to thank my mentor Lionel Laské for his constant guidance and supp
 ---
 
 *Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*
-`,Cu=e({default:()=>wu}),wu=`---
+`,Tu=e({default:()=>Eu}),Eu=`---
 title: "GSoC '26 Week 2 Update by Shreya Saxena"
 excerpt: "Brief description of this week's progress"
 category: "DEVELOPER NEWS"
@@ -26653,7 +26685,7 @@ image: "assets/Images/GSOC.webp"
 
 ## Acknowledgments
 
-Thank you to Walter Bender and Om Santosh Suneri for their guidance throughout the week, and to Devin Ulibarri and the broader Sugar Labs community for their continued support and valuable feedback.`,Tu=e({default:()=>Eu}),Eu=`---
+Thank you to Walter Bender and Om Santosh Suneri for their guidance throughout the week, and to Devin Ulibarri and the broader Sugar Labs community for their continued support and valuable feedback.`,Du=e({default:()=>Ou}),Ou=`---
 title: "GSoC '26 Week 2 Update by Syed Khubayb Ur Rahman"
 excerpt: "Redesigning the brick outline generator with new architecture "
 category: "DEVELOPER NEWS"
@@ -26738,7 +26770,7 @@ By isolating the generation structure into three clear phases (\`computeDimensio
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for catching the coupling problem in the original design and for whiteboarding the dimension math. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,Du=e({default:()=>Ou}),Ou=`---
+`,ku=e({default:()=>Au}),Au=`---
 title: "GSoC '26 Week 02 Update by Shubham Sharma"
 excerpt: "Activity-agnostic preview capture, multimodal reflection, and metadata-driven context"
 category: "DEVELOPER NEWS"
@@ -26861,7 +26893,208 @@ Walter and Aman raised the question of where the reflection should be invoked. R
 Thanks to Walter for pushing the game activity addition and to Aman for suggesting Write. Both helped uncover edge cases in the reflection design. Thanks to Ibiam, Mebin, Harshit, and Diwangshu for the continued feedback.
 
 ---
-`,ku=e({default:()=>Au}),Au=`---
+`,ju=e({default:()=>Mu}),Mu=`---
+title: "DMP '26 Week 01 Update by Vanshika Pahal"
+excerpt: "Introductory week: establishing the current state of Music Blocks v3, coverage baseline, security audit, structural bottleneck analysis, and the plan ahead."
+category: "DEVELOPER NEWS"
+date: "2026-06-10"
+slug: "2026-06-10-dmp-26-vanshika-week01"
+author: "@/constants/MarkdownFiles/authors/vanshika2720.md"
+tags: "dmp26,sugarlabs,musicblocks,introduction,week01,vanshika"
+image: "assets/Images/c4gt-official-logo.png"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 01 Progress Report by Vanshika Pahal
+
+**Project:** [Music Blocks v3 - Test Coverage, Refactoring & Dependency Updates](https://github.com/sugarlabs/musicblocks)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  
+**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Week:** Introduction & Baseline Investigation  
+**Reporting Period:** 2026-06-01 – 2026-06-10
+
+---
+
+## Overview
+
+This is my first weekly blog post for DMP 2026. This week was focused on introducing myself, understanding the current state of the Music Blocks v3 codebase, and establishing the baselines that will guide the rest of the summer.
+
+Following mentor feedback, the direction is clear: **structural work in \`activity.js\` comes first**. Before expanding tests or touching dependencies, the implicit global coupling in the core modules needs to be reduced because until that coupling is untangled, writing meaningful tests for these modules is impractical, and dependency upgrades remain unpredictably risky.
+
+This week is about measuring the current state so that Week 2 structural work begins on a documented, understood foundation.
+
+---
+
+## Goals for This Week
+
+- Run \`jest --coverage\` and document the current Istanbul coverage baseline.
+- Run \`npm audit\` and establish a security vulnerability baseline.
+- Analyse the [PR #5435](https://github.com/sugarlabs/musicblocks/pull/5435) dependency graph to identify the highest-coupling structural bottlenecks.
+- Review the CI pipeline configuration and identify any integrity issues.
+- Review the eight test directories established by Om Santosh Suneri during GSoC 2025.
+
+---
+
+## About the Project
+
+**Music Blocks** is an open-source creative-coding environment for children developed by Sugar Labs. Students compose music by snapping together visual blocks representing notes, rhythms, instruments, and control flow. It runs entirely in the browser with no install required, making it accessible in classrooms worldwide.
+
+Music Blocks v4 is under active development for later in 2026. Until that transition is complete, v3 is the production system used by teachers and students every day. A codebase without a complete test suite and with accumulating dependency drift poses a quiet but serious risk: bugs go undetected, security advisories go un-patched, and upgrade PRs break functionality that nobody anticipated.
+
+This project completes the unit-and-integration test suite that Om Santosh Suneri began in GSoC 2025, carries out a systematic dependency audit and update cycle, and, as the foundation for everything else, reduces the structural coupling that currently makes both testing and upgrades harder than they need to be.
+
+---
+
+## Current State of the Codebase
+
+### Coverage Baseline
+
+Running \`jest --coverage\` across the full test suite produces the following Istanbul report:
+
+<p align="center">
+  <img
+    src="assets/Developers/vanshika/jest-coverage-baseline.png"
+    alt="Istanbul coverage summary showing ~47% statement, ~39% branch, ~52% function coverage across Music Blocks v3"
+    width="800"
+  />
+</p>
+
+| Metric | Current | Target |
+| :--- | :---: | :---: |
+| Statement Coverage | ~47.06% | ≥ 80% |
+| Branch Coverage | ~38.54% | ≥ 70% |
+| Function Coverage | ~51.53% | ≥ 80% |
+| E2E Scenarios | 1 | ≥ 8 |
+
+The test suite is structured across eight directories that Om Santosh Suneri established during GSoC 2025:
+
+| Directory | Files | Scope |
+| :--- | :---: | :--- |
+| \`js/__tests__/\` | 41 | Core & integration modules |
+| \`js/blocks/__tests__/\` | 24 | Music/boolean block suites |
+| \`js/widgets/__tests__/\` | 22 | Widget interface suites |
+| \`js/utils/__tests__/\` | 7 | Mathematical & musical utilities |
+| \`js/turtleactions/__tests__/\` | 9 | Turtle execution suites |
+| \`js/js-export/__tests__/\` | 6 | JS export logic |
+| \`js/js-export/API/__tests__/\` | 11 | Individual API method tests |
+| \`planet/js/__tests__/\` | 2 | Planet backend interface suites |
+
+The gaps fall across four categories: untested core files (loader resolution, global state initialization), shallow tests (happy-path only, missing error branches), integration gaps (no tests across the block-system ↔ Logo interpreter seam), and a nearly absent E2E suite (one Cypress spec covering only page load).
+
+### Security Audit
+
+Running \`npm audit\` reveals the current vulnerability landscape before any dependency work begins:
+
+<p align="center">
+  <img
+    src="assets/Developers/vanshika/npm-audit-report.png"
+    alt="npm audit output showing 1 high and 5 moderate severity vulnerabilities"
+    width="800"
+  />
+</p>
+
+| Severity | Count |
+| :--- | :---: |
+| High | 1 |
+| Moderate | 5 |
+
+Key findings:
+- **\`@babel/plugin-transform-modules-systemjs\`** (High) arbitrary code execution risk when compiling malicious input; fix available via \`npm audit fix\`
+- **\`materialize-css\`** multiple XSS vulnerabilities; no upstream fix currently available
+- **\`follow-redirects\`** leaks authentication headers to cross-domain redirect targets
+- **\`postcss\`** XSS via unescaped \`</style>\` in CSS stringify output
+- **\`qs\`** remotely triggerable DoS via \`qs.stringify\`
+
+The \`materialize-css\` case has no upstream fix and will need a separate approach (pinning, patching, or removal).
+
+### Why Testing Is Hard: The Structural Coupling Problem
+
+The low coverage figures are not simply because nobody has written tests. The deeper problem is structural. Looking at \`logo.test.js\`, the test file requires **over 200 lines of global mock declarations** before a single assertion can run:
+
+<p align="center">
+  <img
+    src="assets/Developers/vanshika/logo-test-mock-setup.png"
+    alt="logo.test.js showing 200+ lines of global mock setup before any test assertions"
+    width="800"
+  />
+</p>
+
+This is because the Logo interpreter reads directly from unscoped globals \`Singer\`, \`Turtle\`, \`blockList\`, \`boxes\` during block execution. A test cannot import just the functionality it needs; it must simulate the entire global activity context. Every time a new global is added to \`logo.js\`, every test that imports it can silently break unless someone manually updates this 200-line mock block.
+
+The same problem exists in \`activity.js\` (8,369 lines), which mixes UI wiring, block registration, event dispatch, and global state passed as an implicit dependency container to nearly every module. This is why the dependency graph from [PR #5435](https://github.com/sugarlabs/musicblocks/pull/5435) found **123 modules** with **792 implicit global dependencies**:
+
+<p align="center">
+  <img
+    src="assets/Developers/vanshika/dependency-graph.svg"
+    alt="Module dependency graph showing 123 modules and 792 implicit global dependencies in Music Blocks v3, from PR #5435"
+    width="800"
+  />
+</p>
+
+This is why structural work in \`activity.js\` is the starting point and the mentor-confirmed priority. Extracting block registration into \`BlockRegistry.js\`, applying \`LogoDependencies\` injection to \`logo.js\`, and decoupling palette loading are the changes that make everything downstream tests, dependency updates, AI-assisted coverage significantly safer and more tractable.
+
+### Three CI Bugs Found
+
+While reviewing the pipeline, three integrity issues were identified:
+
+| Bug | Severity | Description |
+| :--- | :---: | :--- |
+| **Always-Green CI** | High | The Jest step uses a bash \`\\|\\|\` pattern CI shows green even when tests fail |
+| **Ghost Cypress** | High | \`cypress:run\` exists in \`package.json\` but never runs in CI; zero E2E tests execute on PRs |
+| **Node Version Mismatch** | Medium | CI runs Node v22; \`package.json\` declares Node v20 |
+
+These will be fixed at the start of Week 2.
+
+---
+
+## Challenge & Key Learning
+
+### Why Structural Work Has to Come First
+
+The instinct when looking at 47% statement coverage is to start writing tests immediately. But the structural coupling in \`activity.js\` and \`logo.js\` makes that a poor strategy: the mock setup required to test these files is so large and fragile that any test written against the current architecture breaks as soon as the global environment changes.
+
+**Learning:** Fixing the architecture so that modules can be tested in isolation is more valuable than writing 50 tests against the current brittle structure. Structural changes are multiplicative one well-scoped decomposition unlocks clean tests for many downstream modules, whereas tests written against implicit globals require constant maintenance.
+
+---
+
+## Next Week's Roadmap
+
+- **\`activity.js\` - Block Registration Extraction:** Extract the block registration lifecycle into a new \`js/blocks/BlockRegistry.js\` module with explicit dependency injection. This is the primary focus for Week 2.
+- **\`logo.js\` - LogoDependencies Interface:** Begin refactoring \`js/logo.js\` to accept \`LogoDependencies\` (blockList, boxes, turtleHeaps, actions) via explicit parameter injection rather than unscoped globals.
+- **Structural Audit Doc:** Document the decomposition plan in \`docs/structural-audit-2026.md\`.
+- **CI Hardening:** Fix the Node version mismatch and remove the \`||\` pattern masking Jest failures.
+
+---
+
+## Resources & References
+
+- **Repository:** [sugarlabs/musicblocks](https://github.com/sugarlabs/musicblocks)
+- **Dependency Graph:** [PR #5435](https://github.com/sugarlabs/musicblocks/pull/5435) - 123 modules, 792 implicit global dependencies
+- **Architecture References:**
+  - [logo.js](https://github.com/sugarlabs/musicblocks/blob/master/js/logo.js)
+  - [activity.js](https://github.com/sugarlabs/musicblocks/blob/master/js/activity.js)
+- **CI Workflows:** [.github/workflows](https://github.com/sugarlabs/musicblocks/tree/master/.github/workflows)
+- **Testing Guide:** [guide_addingtest.md](https://github.com/sugarlabs/musicblocks/blob/master/js/guide_addingtest.md)
+- **Istanbul Coverage:** [Jest Coverage Configuration](https://jestjs.io/docs/configuration#collectcoverage-boolean)
+
+---
+
+## Acknowledgments
+
+Thanks to [Walter Bender](https://github.com/walterbender) for the architectural guidance and for confirming the priority of structural work over raw coverage expansion.
+
+Thanks to [Devin Ulibarri](https://github.com/pikurasa) for mentorship throughout the proposal and onboarding process.
+
+Thanks to [Om Santosh Suneri](https://github.com/omsuneri), whose testing infrastructure from GSoC 2025 is the foundation this project builds upon.
+
+Thanks to [Sumit Srivastava](https://github.com/sum2it) for the mentorship support.
+
+Thanks to the entire Sugar Labs community for the welcoming environment and collaborative discussions.
+
+---
+`,Nu=e({default:()=>Pu}),Pu=`---
 title: "GSoC '26 Week 02 Update by Ashutosh Singh"
 excerpt: "Starting the backend generator, reworking templates based on mentor feedback, and adding license selection to the Prompt Screen."
 category: "DEVELOPER NEWS"
@@ -27003,7 +27236,7 @@ Thanks to Walter Bender for the feedback that reshaped this week. What started a
 - Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
 
 ---
-`,ju=e({default:()=>Mu}),Mu=`---
+`,Fu=e({default:()=>Iu}),Iu=`---
 title: "GSoC '26 Week 2: Supercharging Planet with a SQLite & Express Backend"
 excerpt: "Bringing instantaneous search and discovery to Music Blocks by replacing legacy APIs with a lightweight Express backend."
 category: "DEVELOPER NEWS"
@@ -27069,7 +27302,7 @@ Additionally, to solve the thumbnail dilemma, I will be building out a dedicated
 This approach ensures our SQLite database remains incredibly fast and our GitHub API limits stay intact, all while delivering a seamless, visual browsing experience for the students.
 
 Thanks for reading, and see you in the next update!
-`,Nu=e({default:()=>Pu}),Pu=`---
+`,Lu=e({default:()=>Ru}),Ru=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -27218,7 +27451,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Fu=e({default:()=>Iu}),Iu=`---
+`,zu=e({default:()=>Bu}),Bu=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -27321,7 +27554,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Lu=e({default:()=>Ru}),Ru=`---
+`,Vu=e({default:()=>Hu}),Hu=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -27794,7 +28027,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,zu=e({default:()=>Bu}),Bu=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Uu=e({default:()=>Wu}),Wu=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -27881,7 +28114,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Vu=e({default:()=>Hu}),Hu=`---\r
+`,Gu=e({default:()=>Ku}),Ku=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -27974,7 +28207,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Uu=e({default:()=>Wu}),Wu=`---\r
+`,qu=e({default:()=>Ju}),Ju=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -28068,7 +28301,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Gu=e({default:()=>Ku}),Ku=`---\r
+`,Yu=e({default:()=>Xu}),Xu=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -28156,7 +28389,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,qu=e({default:()=>Ju}),Ju=`---\r
+`,Zu=e({default:()=>Qu}),Qu=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -28239,7 +28472,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Yu=e({default:()=>Xu}),Xu=`---\r
+`,$u=e({default:()=>ed}),ed=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -28305,7 +28538,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Zu=e({default:()=>Qu}),Qu=`---
+`,td=e({default:()=>nd}),nd=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -28387,7 +28620,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,$u=e({default:()=>ed}),ed=`---
+---`,rd=e({default:()=>id}),id=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -28480,7 +28713,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,td=e({default:()=>nd}),nd=`---
+`,ad=e({default:()=>od}),od=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -28569,7 +28802,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,rd=e({default:()=>id}),id=`---
+--- `,sd=e({default:()=>cd}),cd=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28714,7 +28947,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,ad=e({default:()=>od}),od=`---
+--- `,ld=e({default:()=>ud}),ud=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28902,7 +29135,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,sd=e({default:()=>cd}),cd=`---
+--- `,dd=e({default:()=>fd}),fd=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28997,7 +29230,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,ld=e({default:()=>ud}),ud=`---
+`,pd=e({default:()=>md}),md=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29086,7 +29319,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,dd=e({default:()=>fd}),fd=`---
+`,hd=e({default:()=>gd}),gd=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29173,7 +29406,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,pd=e({default:()=>md}),md=`---
+---`,_d=e({default:()=>vd}),vd=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29256,7 +29489,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,hd=e({default:()=>gd}),gd=`---
+---`,yd=e({default:()=>bd}),bd=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29339,7 +29572,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,_d=e({default:()=>vd}),vd=`---
+---`,xd=e({default:()=>Sd}),Sd=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -29644,4 +29877,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{xl as $,y as $a,yt as $i,ba as $n,br as $r,xs as $t,pu as A,de as Aa,fn as Ai,po as An,fi as Ar,pc as At,ql as B,G as Ba,Gt as Bi,Ka as Bn,Kr as Br,qs as Bt,Du as C,Te as Ca,En as Ci,Do as Cn,Ei as Cr,Dc as Ct,yu as D,_e as Da,vn as Di,yo as Dn,vi as Dr,yc as Dt,xu as E,ye as Ea,bn as Ei,xo as En,bi as Er,xc as Et,ru as F,te as Fa,tn as Fi,no as Fn,ni as Fr,rc as Ft,Ll as G,F as Ga,Ft as Gi,Ia as Gn,Ir as Gr,Ls as Gt,Ul as H,V as Ha,Vt as Hi,Ha as Hn,Hr,Us as Ht,tu as I,$ as Ia,$t as Ii,eo as In,ei as Ir,tc as It,jl as J,k as Ja,kt as Ji,Aa as Jn,Ar as Jr,js as Jt,Fl as K,N as Ka,Nt as Ki,Pa as Kn,Pr as Kr,Fs as Kt,$l as L,Z as La,Zt as Li,Qa as Ln,Qr as Lr,$s as Lt,lu as M,se as Ma,cn as Mi,co as Mn,ci as Mr,lc as Mt,su as N,ae as Na,on as Ni,oo as Nn,oi as Nr,sc as Nt,_u as O,he as Oa,gn as Oi,_o as On,gi as Or,_c as Ot,au as P,re as Pa,rn as Pi,io as Pn,ii as Pr,ac as Pt,Cl as Q,x as Qa,xt as Qi,Sa as Qn,Sr as Qr,Cs as Qt,Zl as R,Y as Ra,Yt as Ri,Xa as Rn,Xr as Rr,Zs as Rt,ku as S,De as Sa,On as Si,ko as Sn,Oi as Sr,kc as St,Cu as T,xe as Ta,Sn as Ti,Co as Tn,Si as Tr,Cc as Tt,Vl as U,z as Ua,zt as Ui,Ba as Un,Br as Ur,Vs as Ut,Gl as V,U as Va,Ut as Vi,Wa as Vn,Wr as Vr,Gs as Vt,zl as W,L as Wa,Lt as Wi,Ra as Wn,Rr as Wr,zs as Wt,Dl as X,T as Xa,Tt as Xi,Ea as Xn,Er as Xr,Ds as Xt,kl as Y,D as Ya,Dt as Yi,Oa as Yn,Or as Yr,ks as Yt,Tl as Z,C as Za,Ct as Zi,wa as Zn,wr as Zr,Ts as Zt,zu as _,Le as _a,Rn as _i,zo as _n,Ri as _r,zc as _t,ld as a,st as aa,cr as ai,ls as an,s as ao,ca as ar,ll as at,Nu as b,je as ba,Mn as bi,No as bn,Mi as br,Nc as bt,rd as c,tt as ca,nr as ci,rs as cn,t as co,na as cr,rl as ct,Zu as d,Ye as da,Xn as di,Zo as dn,Xi as dr,Zc as dt,_t as ea,vr as ei,ys as en,_ as eo,va as er,yl as et,Yu as f,qe as fa,Jn as fi,Yo as fn,Ji as fr,Yc as ft,Vu as g,ze as ga,Bn as gi,Vo as gn,Bi as gr,Vc as gt,Uu as h,Ve as ha,Hn as hi,Uo as hn,Hi as hr,Uc as ht,dd as i,lt as ia,ur as ii,ds as in,l as io,ua as ir,dl as it,du as j,le as ja,un as ji,uo as jn,ui as jr,dc as jt,hu as k,pe as ka,mn as ki,ho as kn,mi as kr,hc as kt,td as l,$e as la,er as li,ts as ln,ea as lr,tl as lt,Gu as m,Ue as ma,Wn as mi,Go as mn,Wi as mr,Gc as mt,hd as n,pt as na,mr as ni,hs as nn,p as no,ma as nr,hl as nt,sd as o,at as oa,or as oi,ss as on,a as oo,oa as or,sl as ot,qu as p,Ge as pa,Kn as pi,qo as pn,Ki as pr,qc as pt,Nl as q,j as qa,jt as qi,Ma as qn,Mr as qr,Ns as qt,pd as r,dt as ra,fr as ri,ps as rn,d as ro,fa as rr,pl as rt,ad as s,rt as sa,ir as si,as as sn,r as so,ia as sr,al as st,_d as t,ht as ta,gr as ti,_s as tn,h as to,ga as tr,_l as tt,$u as u,Ze as ua,Qn as ui,$o as un,Qi as ur,$c as ut,Lu as v,Fe as va,In as vi,Lo as vn,Ii as vr,Lc as vt,Tu as w,Ce as wa,wn as wi,To as wn,wi as wr,Tc as wt,ju as x,ke as xa,An as xi,jo as xn,Ai as xr,jc as xt,Fu as y,Ne as ya,Pn as yi,Fo as yn,Pi as yr,Fc as yt,Yl as z,q as za,qt as zi,Ja as zn,Jr as zr,Ys as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Tl as $,C as $a,Ct as $i,wa as $n,wr as $r,Ts as $t,_u as A,he as Aa,gn as Ai,_o as An,gi as Ar,_c as At,Zl as B,Y as Ba,Yt as Bi,Xa as Bn,Xr as Br,Zs as Bt,ju as C,ke as Ca,An as Ci,jo as Cn,Ai as Cr,jc as Ct,Cu as D,xe as Da,Sn as Di,Co as Dn,Si as Dr,Cc as Dt,Tu as E,Ce as Ea,wn as Ei,To as En,wi as Er,Tc as Et,su as F,ae as Fa,on as Fi,oo as Fn,oi as Fr,sc as Ft,Vl as G,z as Ga,zt as Gi,Ba as Gn,Br as Gr,Vs as Gt,ql as H,G as Ha,Gt as Hi,Ka as Hn,Kr as Hr,qs as Ht,au as I,re as Ia,rn as Ii,io as In,ii as Ir,ac as It,Fl as J,N as Ja,Nt as Ji,Pa as Jn,Pr as Jr,Fs as Jt,zl as K,L as Ka,Lt as Ki,Ra as Kn,Rr as Kr,zs as Kt,ru as L,te as La,tn as Li,no as Ln,ni as Lr,rc as Lt,pu as M,de as Ma,fn as Mi,po as Mn,fi as Mr,pc as Mt,du as N,le as Na,un as Ni,uo as Nn,ui as Nr,dc as Nt,xu as O,ye as Oa,bn as Oi,xo as On,bi as Or,xc as Ot,lu as P,se as Pa,cn as Pi,co as Pn,ci as Pr,lc as Pt,Dl as Q,T as Qa,Tt as Qi,Ea as Qn,Er as Qr,Ds as Qt,tu as R,$ as Ra,$t as Ri,eo as Rn,ei as Rr,tc as Rt,Nu as S,je as Sa,Mn as Si,No as Sn,Mi as Sr,Nc as St,Du as T,Te as Ta,En as Ti,Do as Tn,Ei as Tr,Dc as Tt,Gl as U,U as Ua,Ut as Ui,Wa as Un,Wr as Ur,Gs as Ut,Yl as V,q as Va,qt as Vi,Ja as Vn,Jr as Vr,Ys as Vt,Ul as W,V as Wa,Vt as Wi,Ha as Wn,Hr as Wr,Us as Wt,jl as X,k as Xa,kt as Xi,Aa as Xn,Ar as Xr,js as Xt,Nl as Y,j as Ya,jt as Yi,Ma as Yn,Mr as Yr,Ns as Yt,kl as Z,D as Za,Dt as Zi,Oa as Zn,Or as Zr,ks as Zt,Uu as _,Ve as _a,Hn as _i,Uo as _n,Hi as _r,Uc as _t,pd as a,dt as aa,fr as ai,ps as an,d as ao,fa as ar,pl as at,Lu as b,Fe as ba,In as bi,Lo as bn,Ii as br,Lc as bt,sd as c,at as ca,or as ci,ss as cn,a as co,oa as cr,sl as ct,td as d,$e as da,er as di,ts as dn,ea as dr,tl as dt,xt as ea,Sr as ei,Cs as en,x as eo,Sa as er,Cl as et,$u as f,Ze as fa,Qn as fi,$o as fn,Qi as fr,$c as ft,Gu as g,Ue as ga,Wn as gi,Go as gn,Wi as gr,Gc as gt,qu as h,Ge as ha,Kn as hi,qo as hn,Ki as hr,qc as ht,hd as i,pt as ia,mr as ii,hs as in,p as io,ma as ir,hl as it,hu as j,pe as ja,mn as ji,ho as jn,mi as jr,hc as jt,yu as k,_e as ka,vn as ki,yo as kn,vi as kr,yc as kt,ad as l,rt as la,ir as li,as as ln,r as lo,ia as lr,al as lt,Yu as m,qe as ma,Jn as mi,Yo as mn,Ji as mr,Yc as mt,yd as n,_t as na,vr as ni,ys as nn,_ as no,va as nr,yl as nt,dd as o,lt as oa,ur as oi,ds as on,l as oo,ua as or,dl as ot,Zu as p,Ye as pa,Xn as pi,Zo as pn,Xi as pr,Zc as pt,Ll as q,F as qa,Ft as qi,Ia as qn,Ir as qr,Ls as qt,_d as r,ht as ra,gr as ri,_s as rn,h as ro,ga as rr,_l as rt,ld as s,st as sa,cr as si,ls as sn,s as so,ca as sr,ll as st,xd as t,yt as ta,br as ti,xs as tn,y as to,ba as tr,xl as tt,rd as u,tt as ua,nr as ui,rs as un,t as uo,na as ur,rl as ut,Vu as v,ze as va,Bn as vi,Vo as vn,Bi as vr,Vc as vt,ku as w,De as wa,On as wi,ko as wn,Oi as wr,kc as wt,Fu as x,Ne as xa,Pn as xi,Fo as xn,Pi as xr,Fc as xt,zu as y,Le as ya,Rn as yi,zo as yn,Ri as yr,zc as yt,$l as z,Z as za,Zt as zi,Qa as zn,Qr as zr,$s as zt};
