@@ -26766,8 +26766,8 @@ Walter and Aman raised the question of where the reflection should be invoked. R
 ## Resources & References
 
 - **Live prototype:** [sugarizer.vercel.app](https://sugarizer.vercel.app)
-- **Week 1 blog:** [GSoC '26 Week 01 Update](https://www.sugarlabs.org/news/2026-06-03-gsoc-26-vyagh-week01)
-- **Intro blog:** [GSoC '26 Introductory Blog](https://www.sugarlabs.org/news/2026-05-23-gsoc-26-vyagh-week00)
+- **Week 1 blog:** [GSoC '26 Week 01 Update](news/all/2026-06-03-gsoc-26-vyagh-week01)
+- **Intro blog:** [GSoC '26 Introductory Blog](news/all/2026-05-23-gsoc-26-vyagh-week00)
 
 ---
 
