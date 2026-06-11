@@ -26777,6 +26777,72 @@ Thanks to Walter for pushing the game activity addition and to Aman for suggesti
 
 ---
 `,Du=e({default:()=>Ou}),Ou=`---
+title: "GSoC '26 Week 2: Supercharging Planet with a SQLite & Express Backend"
+excerpt: "Bringing instantaneous search and discovery to Music Blocks by replacing legacy APIs with a lightweight Express backend."
+category: "DEVELOPER NEWS"
+date: "2026-06-10"
+slug: "2026-06-10-gsoc-26-harihara-vardhan-week-2"
+author: "@/constants/MarkdownFiles/authors/harihara-vardhan.md"
+description: "GSoC'26 Contributor at SugarLabs working on Git-Based Backend for Music Blocks"
+tags: "gsoc26,sugarlabs,week-2,musicblocks,git-backend,express,sqlite,typescript"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+**Project:** [Git-Based Backend for Music Blocks](https://summerofcode.withgoogle.com/programs/2026/projects/JitsF3AX)  
+**Organization:** Sugar Labs  
+**Reporting Period:** June 4, 2026 to June 10, 2026
+
+---
+
+## Introduction
+
+Hey everyone! Week two of coding is a wrap, and I'm thrilled to share what I've been working on. If last week was all about moving our massive library of student projects over to GitHub, this week was about making sure students can actually find and interact with those projects faster than ever before. 
+
+The old Planet server did its job, but as the community grew, it started to feel a bit heavy. My goal for this week was to cut that overhead entirely. I set out to build a standalone, lightning-fast Express and TypeScript API to serve as the new backbone for Music Blocks. 
+
+By building on top of the excellent groundwork laid by Nikhil, I was able to connect my new Express backend directly to the embedded SQLite database I generated during the migration. The result is a system that strips away the bloat of traditional database servers and delivers exactly what the app needs, instantly.
+
+## The New Endpoints
+
+To make the SQLite database accessible to the frontend, I built a set of lightweight APIs. I wanted to keep things simple, fast, and highly targeted. Here are the core endpoints I implemented:
+
+* **\`GET /allRepos\`**: Powers the main discovery feed. It handles dynamic sorting (by recent, most liked, etc.) and topic filtering natively in SQLite. Most importantly, it uses database-level pagination to keep bandwidth and memory consumption extremely low.
+* **\`GET /search\`**: Replaces slow standard queries with an embedded search engine. By using SQLite's [FTS5 extension](https://www.sqlite.org/fts5.html), it instantly parses search terms and returns highly relevant results ranked by accuracy.
+* **\`GET /project/:repoName\`**: The deep-dive tool for individual projects. When a student shares a direct link to their creation, this endpoint fetches the exact metadata instantly without having to scan the whole database.
+* **\`POST /like\` & \`GET /likes/:repoName\`**: Handles the social side of Planet. These endpoints allow users to quickly drop a like on a project and fetch live engagement stats.
+
+## Experiencing the Speed 
+
+These new APIs are a massive upgrade over the legacy Planet APIs. Music Blocks can now rely on a robust, modern infrastructure that doesn't buckle under load. 
+
+Testing these endpoints with a temporary frontend showed me just how transformative this architecture really is. The new Planet interface feels incredibly snappy. You have the same interface and the same options, but the lag is completely gone. You'll never have to hit reload to fetch projects or stare at endless loading spinners again. Searching and filtering happen instantaneously, making the whole platform feel incredibly responsive.
+
+## Infrastructure Struggles: The Thumbnail Dilemma
+
+One of the most interesting infrastructure challenges I hit this week was figuring out how to handle project thumbnails.
+
+In the new Git-based architecture, project thumbnails are stored as image files directly inside each project's GitHub repository. While this is great for data ownership, it creates a massive bottleneck for the discovery feed. If the server tries to make a GitHub API request to fetch the thumbnail for every single project as they load, we would instantly hit [API rate limits](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api), and the loading times would be completely unacceptable.
+
+I briefly considered storing the thumbnail images directly inside the [SQLite](https://www.sqlite.org/index.html) index as [base64 strings](https://en.wikipedia.org/wiki/Base64) to make fetching them instantaneous. However, I quickly realized this would compromise the entire architecture. A core design goal is keeping the SQLite file portable and lightning-fast; injecting thousands of images into it would bloat the database from a few megabytes to potentially gigabytes, ruining our sub-millisecond read times.
+
+For now, projects are gracefully falling back to default Music Blocks placeholders.
+
+## What's Next?
+
+With the high-speed discovery layer in place, my next major goal is to refine the existing Git-based API. I'll be working on solidifying the backend's direct connection to Git to ensure that reading from and writing to the student repositories is just as seamless. 
+
+Additionally, to solve the thumbnail dilemma, I will be building out a dedicated \`GET /thumbnail/:repoName\` endpoint utilizing a lazy loading strategy:
+
+* **Client-Side Lazy Loading:** The frontend will only request thumbnails from the server when a user physically scrolls the project card into view on their screen, preventing massive spikes in network requests.
+* **Backend Proxying:** Instead of exhausting GitHub API limits, the new Express endpoint will act as a proxy, fetching the images from GitHub's raw CDN and streaming them to the client.
+* **Aggressive Caching:** The backend will attach strict [\`cache-control\` headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control), forcing the user's browser to cache the images locally.
+
+This approach ensures our SQLite database remains incredibly fast and our GitHub API limits stay intact, all while delivering a seamless, visual browsing experience for the students.
+
+Thanks for reading, and see you in the next update!
+`,ku=e({default:()=>Au}),Au=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -26925,7 +26991,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,ku=e({default:()=>Au}),Au=`---
+`,ju=e({default:()=>Mu}),Mu=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -27028,7 +27094,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,ju=e({default:()=>Mu}),Mu=`---
+`,Nu=e({default:()=>Pu}),Pu=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -27501,7 +27567,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Nu=e({default:()=>Pu}),Pu=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Fu=e({default:()=>Iu}),Iu=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -27588,7 +27654,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Fu=e({default:()=>Iu}),Iu=`---\r
+`,Lu=e({default:()=>Ru}),Ru=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -27681,7 +27747,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Lu=e({default:()=>Ru}),Ru=`---\r
+`,zu=e({default:()=>Bu}),Bu=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -27775,7 +27841,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,zu=e({default:()=>Bu}),Bu=`---\r
+`,Vu=e({default:()=>Hu}),Hu=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -27863,7 +27929,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Vu=e({default:()=>Hu}),Hu=`---\r
+`,Uu=e({default:()=>Wu}),Wu=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -27946,7 +28012,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Uu=e({default:()=>Wu}),Wu=`---\r
+`,Gu=e({default:()=>Ku}),Ku=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -28012,7 +28078,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Gu=e({default:()=>Ku}),Ku=`---
+`,qu=e({default:()=>Ju}),Ju=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -28094,7 +28160,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,qu=e({default:()=>Ju}),Ju=`---
+---`,Yu=e({default:()=>Xu}),Xu=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -28187,7 +28253,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Yu=e({default:()=>Xu}),Xu=`---
+`,Zu=e({default:()=>Qu}),Qu=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -28276,7 +28342,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Zu=e({default:()=>Qu}),Qu=`---
+--- `,$u=e({default:()=>ed}),ed=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28421,7 +28487,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,$u=e({default:()=>ed}),ed=`---
+--- `,td=e({default:()=>nd}),nd=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28609,7 +28675,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,td=e({default:()=>nd}),nd=`---
+--- `,rd=e({default:()=>id}),id=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28704,7 +28770,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,rd=e({default:()=>id}),id=`---
+`,ad=e({default:()=>od}),od=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28793,7 +28859,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,ad=e({default:()=>od}),od=`---
+`,sd=e({default:()=>cd}),cd=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28880,7 +28946,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,sd=e({default:()=>cd}),cd=`---
+---`,ld=e({default:()=>ud}),ud=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28963,7 +29029,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,ld=e({default:()=>ud}),ud=`---
+---`,dd=e({default:()=>fd}),fd=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29046,7 +29112,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,dd=e({default:()=>fd}),fd=`---
+---`,pd=e({default:()=>md}),md=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -29351,4 +29417,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{hl as $,p as $a,pt as $i,ma as $n,mr as $r,hs as $t,su as A,ae as Aa,on as Ai,oo as An,oi as Ar,sc as At,Vl as B,z as Ba,zt as Bi,Ba as Bn,Br,Vs as Bt,xu as C,ye as Ca,bn as Ci,xo as Cn,bi as Cr,xc as Ct,pu as D,de as Da,fn as Di,po as Dn,fi as Dr,pc as Dt,hu as E,pe as Ea,mn as Ei,ho as En,mi as Er,hc as Et,Zl as F,Y as Fa,Yt as Fi,Xa as Fn,Xr as Fr,Zs as Ft,jl as G,k as Ga,kt as Gi,Aa as Gn,Ar as Gr,js as Gt,Ll as H,F as Ha,Ft as Hi,Ia as Hn,Ir as Hr,Ls as Ht,Yl as I,q as Ia,qt as Ii,Ja as In,Jr as Ir,Ys as It,Tl as J,C as Ja,Ct as Ji,wa as Jn,wr as Jr,Ts as Jt,kl as K,D as Ka,Dt as Ki,Oa as Kn,Or as Kr,ks as Kt,ql as L,G as La,Gt as Li,Ka as Ln,Kr as Lr,qs as Lt,ru as M,te as Ma,tn as Mi,no as Mn,ni as Mr,rc as Mt,tu as N,$ as Na,$t as Ni,eo as Nn,ei as Nr,tc as Nt,du as O,le as Oa,un as Oi,uo as On,ui as Or,dc as Ot,$l as P,Z as Pa,Zt as Pi,Qa as Pn,Qr as Pr,$s as Pt,_l as Q,h as Qa,ht as Qi,ga as Qn,gr as Qr,_s as Qt,Gl as R,U as Ra,Ut as Ri,Wa as Rn,Wr as Rr,Gs as Rt,Cu as S,xe as Sa,Sn as Si,Co as Sn,Si as Sr,Cc as St,_u as T,he as Ta,gn as Ti,_o as Tn,gi as Tr,_c as Tt,Fl as U,N as Ua,Nt as Ui,Pa as Un,Pr as Ur,Fs as Ut,zl as V,L as Va,Lt as Vi,Ra as Vn,Rr as Vr,zs as Vt,Nl as W,j as Wa,jt as Wi,Ma as Wn,Mr as Wr,Ns as Wt,xl as X,y as Xa,yt as Xi,ba as Xn,br as Xr,xs as Xt,Cl as Y,x as Ya,xt as Yi,Sa as Yn,Sr as Yr,Cs as Yt,yl as Z,_ as Za,_t as Zi,va as Zn,vr as Zr,ys as Zt,Nu as _,je as _a,Mn as _i,No as _n,Mi as _r,Nc as _t,rd as a,tt as aa,nr as ai,rs as an,t as ao,na as ar,rl as at,Du as b,Te as ba,En as bi,Do as bn,Ei as br,Dc as bt,Zu as c,Ye as ca,Xn as ci,Zo as cn,Xi as cr,Zc as ct,Gu as d,Ue as da,Wn as di,Go as dn,Wi as dr,Gc as dt,dt as ea,fr as ei,ps as en,d as eo,fa as er,pl as et,Uu as f,Ve as fa,Hn as fi,Uo as fn,Hi as fr,Uc as ft,Fu as g,Ne as ga,Pn as gi,Fo as gn,Pi as gr,Fc as gt,Lu as h,Fe as ha,In as hi,Lo as hn,Ii as hr,Lc as ht,ad as i,rt as ia,ir as ii,as as in,r as io,ia as ir,al as it,au as j,re as ja,rn as ji,io as jn,ii as jr,ac as jt,lu as k,se as ka,cn as ki,co as kn,ci as kr,lc as kt,Yu as l,qe as la,Jn as li,Yo as ln,Ji as lr,Yc as lt,zu as m,Le as ma,Rn as mi,zo as mn,Ri as mr,zc as mt,ld as n,st as na,cr as ni,ls as nn,s as no,ca as nr,ll as nt,td as o,$e as oa,er as oi,ts as on,ea as or,tl as ot,Vu as p,ze as pa,Bn as pi,Vo as pn,Bi as pr,Vc as pt,Dl as q,T as qa,Tt as qi,Ea as qn,Er as qr,Ds as qt,sd as r,at as ra,or as ri,ss as rn,a as ro,oa as rr,sl as rt,$u as s,Ze as sa,Qn as si,$o as sn,Qi as sr,$c as st,dd as t,lt as ta,ur as ti,ds as tn,l as to,ua as tr,dl as tt,qu as u,Ge as ua,Kn as ui,qo as un,Ki as ur,qc as ut,ju as v,ke as va,An as vi,jo as vn,Ai as vr,jc as vt,yu as w,_e as wa,vn as wi,yo as wn,vi as wr,yc as wt,Tu as x,Ce as xa,wn as xi,To as xn,wi as xr,Tc as xt,ku as y,De as ya,On as yi,ko as yn,Oi as yr,kc as yt,Ul as z,V as za,Vt as zi,Ha as zn,Hr as zr,Us as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{_l as $,h as $a,ht as $i,ga as $n,gr as $r,_s as $t,lu as A,se as Aa,cn as Ai,co as An,ci as Ar,lc as At,Ul as B,V as Ba,Vt as Bi,Ha as Bn,Hr as Br,Us as Bt,Cu as C,xe as Ca,Sn as Ci,Co as Cn,Si as Cr,Cc as Ct,hu as D,pe as Da,mn as Di,ho as Dn,mi as Dr,hc as Dt,_u as E,he as Ea,gn as Ei,_o as En,gi as Er,_c as Et,$l as F,Z as Fa,Zt as Fi,Qa as Fn,Qr as Fr,$s as Ft,Nl as G,j as Ga,jt as Gi,Ma as Gn,Mr as Gr,Ns as Gt,zl as H,L as Ha,Lt as Hi,Ra as Hn,Rr as Hr,zs as Ht,Zl as I,Y as Ia,Yt as Ii,Xa as In,Xr as Ir,Zs as It,Dl as J,T as Ja,Tt as Ji,Ea as Jn,Er as Jr,Ds as Jt,jl as K,k as Ka,kt as Ki,Aa as Kn,Ar as Kr,js as Kt,Yl as L,q as La,qt as Li,Ja as Ln,Jr as Lr,Ys as Lt,au as M,re as Ma,rn as Mi,io as Mn,ii as Mr,ac as Mt,ru as N,te as Na,tn as Ni,no as Nn,ni as Nr,rc as Nt,pu as O,de as Oa,fn as Oi,po as On,fi as Or,pc as Ot,tu as P,$ as Pa,$t as Pi,eo as Pn,ei as Pr,tc as Pt,yl as Q,_ as Qa,_t as Qi,va as Qn,vr as Qr,ys as Qt,ql as R,G as Ra,Gt as Ri,Ka as Rn,Kr as Rr,qs as Rt,Tu as S,Ce as Sa,wn as Si,To as Sn,wi as Sr,Tc as St,yu as T,_e as Ta,vn as Ti,yo as Tn,vi as Tr,yc as Tt,Ll as U,F as Ua,Ft as Ui,Ia as Un,Ir as Ur,Ls as Ut,Vl as V,z as Va,zt as Vi,Ba as Vn,Br as Vr,Vs as Vt,Fl as W,N as Wa,Nt as Wi,Pa as Wn,Pr as Wr,Fs as Wt,Cl as X,x as Xa,xt as Xi,Sa as Xn,Sr as Xr,Cs as Xt,Tl as Y,C as Ya,Ct as Yi,wa as Yn,wr as Yr,Ts as Yt,xl as Z,y as Za,yt as Zi,ba as Zn,br as Zr,xs as Zt,Fu as _,Ne as _a,Pn as _i,Fo as _n,Pi as _r,Fc as _t,ad as a,rt as aa,ir as ai,as as an,r as ao,ia as ar,al as at,ku as b,De as ba,On as bi,ko as bn,Oi as br,kc as bt,$u as c,Ze as ca,Qn as ci,$o as cn,Qi as cr,$c as ct,qu as d,Ge as da,Kn as di,qo as dn,Ki as dr,qc as dt,pt as ea,mr as ei,hs as en,p as eo,ma as er,hl as et,Gu as f,Ue as fa,Wn as fi,Go as fn,Wi as fr,Gc as ft,Lu as g,Fe as ga,In as gi,Lo as gn,Ii as gr,Lc as gt,zu as h,Le as ha,Rn as hi,zo as hn,Ri as hr,zc as ht,sd as i,at as ia,or as ii,ss as in,a as io,oa as ir,sl as it,su as j,ae as ja,on as ji,oo as jn,oi as jr,sc as jt,du as k,le as ka,un as ki,uo as kn,ui as kr,dc as kt,Zu as l,Ye as la,Xn as li,Zo as ln,Xi as lr,Zc as lt,Vu as m,ze as ma,Bn as mi,Vo as mn,Bi as mr,Vc as mt,dd as n,lt as na,ur as ni,ds as nn,l as no,ua as nr,dl as nt,rd as o,tt as oa,nr as oi,rs as on,t as oo,na as or,rl as ot,Uu as p,Ve as pa,Hn as pi,Uo as pn,Hi as pr,Uc as pt,kl as q,D as qa,Dt as qi,Oa as qn,Or as qr,ks as qt,ld as r,st as ra,cr as ri,ls as rn,s as ro,ca as rr,ll as rt,td as s,$e as sa,er as si,ts as sn,ea as sr,tl as st,pd as t,dt as ta,fr as ti,ps as tn,d as to,fa as tr,pl as tt,Yu as u,qe as ua,Jn as ui,Yo as un,Ji as ur,Yc as ut,Nu as v,je as va,Mn as vi,No as vn,Mi as vr,Nc as vt,xu as w,ye as wa,bn as wi,xo as wn,bi as wr,xc as wt,Du as x,Te as xa,En as xi,Do as xn,Ei as xr,Dc as xt,ju as y,ke as ya,An as yi,jo as yn,Ai as yr,jc as yt,Gl as z,U as za,Ut as zi,Wa as zn,Wr as zr,Gs as zt};
