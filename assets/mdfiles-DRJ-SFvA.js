@@ -26862,6 +26862,148 @@ Thanks to Walter for pushing the game activity addition and to Aman for suggesti
 
 ---
 `,ku=e({default:()=>Au}),Au=`---
+title: "GSoC '26 Week 02 Update by Ashutosh Singh"
+excerpt: "Starting the backend generator, reworking templates based on mentor feedback, and adding license selection to the Prompt Screen."
+category: "DEVELOPER NEWS"
+date: "2026-06-10"
+slug: "2026-06-10-gsoc-26-ashutoshx7-week02"
+author: "@/constants/MarkdownFiles/authors/ashutosh-singh.md"
+description: "GSoC'26 Contributor at SugarLabs working on Sugar Activity on Demand"
+tags: "gsoc26,sugarlabs,week02,ashutoshx7,ai,backend,templates,license,sugar-activity-on-demand"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 02 Progress Report by Ashutosh Singh
+
+**Project:** [Sugar Activity on Demand](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#sugar-activity-on-demand)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya](https://github.com/chimosky)  
+**Reporting Period:** June 2, 2026 to June 8, 2026  
+
+---
+
+## Goals for This Week
+
+- Start building the backend generator - the thing that actually turns a prompt into a real Sugar Activity
+- Act on Walter's feedback from the Week 1 review
+- Add license selection to the Prompt Screen
+
+---
+
+## This Week's Achievements
+
+If last week was all about the frontend, this week was about what happens behind it. I started writing the backend generator, the part that takes a structured spec and spits out an actual installable Sugar Activity. But honestly, the more interesting story this week is what happened when Walter reviewed my Week 1 work.
+
+He had two very specific pieces of feedback, and both of them turned out to be way more meaningful than I expected. What looked like "just change some labels" ended up reshaping how the whole system thinks about templates and licensing. Let me walk through everything.
+
+### 1. The Backend Generator
+
+This is the boring-but-important part. I started building \`aodgenerator.py\`, which is basically the engine that sits between the AI planner and the final \`.xo\` bundle. The planner figures out *what* to build, and the generator actually *builds* it.
+
+Right now it can:
+
+- **Scaffold a full project** - creates the whole directory structure (\`activity/\`, \`activity.info\`, \`setup.py\`, \`activity.py\`, \`README.md\`) from a template spec
+- **Emit template-based code** - each template archetype has its own skeleton, and the generator fills in the specifics: activity name, toolbar config, canvas widgets, Journal hooks
+- **Generate metadata** - the \`activity.info\` file gets auto-populated with the right \`bundle_id\`, \`name\`, \`summary\`, \`icon\`, and \`license\` fields
+- **Package bundles** - it can produce a \`.xo\` file that Sugar can install directly (it's just a zip with a specific structure, but getting it right matters)
+
+Nothing fancy architecturally. One module, pure Python, no dependencies beyond the Sugar toolkit. I wanted it to be dead simple to test and audit, because this code is eventually running on kids' laptops and I don't want any surprises.
+
+### 2. Walter's First Feedback - Rethinking the Templates
+
+This one caught me off guard. Remember the template picker from Week 1? It had four options: **Auto**, **Starter**, **Game**, and **Quiz**. I thought they were fine. Walter didn't.
+
+His point was that those labels are *tool-centric*. They describe what the system does internally, not what the learner is trying to create. And in a constructionist learning tool, that distinction matters a lot. A kid shouldn't be thinking "I want the Starter template." They should be thinking "I want to make something creative."
+
+So we reworked them into four new categories:
+
+- **Logic & math** - puzzles, patterns, mathematical thinking
+- **Tools/utilities** - build helpful tools that solve real problems
+- **Games** - play loops, scoring, and interactive mechanics
+- **Creation** - drawing, writing, building, and expression
+
+![Prompt Screen with reworked template categories - Creation template selected](assets/Images/gsoc26-ashutoshx7/aod-templates-creation.png)
+
+See the difference? "Starter" and "Auto" are implementation details. A learner sees those and has no idea what they mean. But "Creation" and "Logic & math"? Those are things a kid actually relates to. When they click "Creation," they're telling the system what *kind of thing* they want to make, and the system figures out the right code template behind the scenes.
+
+This also had backend implications. The generator now maps learning categories to template archetypes internally. A "Creation" prompt might pull in a canvas-based template with drawing tools. A "Logic & math" prompt might use a grid-based template with state tracking. The mapping logic lives in the generator, completely separate from the UI. That separation already proved useful - when the categories changed, I only had to touch the mapping, not the generator itself.
+
+### 3. Walter's Second Feedback - Adding License Selection
+
+The second thing Walter flagged was licensing. Every Sugar Activity needs a license, and my Week 1 Prompt Screen had... nothing for that. No way to pick one, no default, nothing. Walter's take was simple: add a license selector, default it to MIT, and give teachers the option to pick something else if they need to.
+
+So I added a license section right below the planner and policy controls. It has seven options:
+
+| License | What It Is |
+|---------|------------|
+| **MIT** | Simple permissive - the default |
+| **GPLv3+** | Sugar's own share-alike license |
+| **Apache** | Permissive with patent grant |
+| **AGPLv3** | Network share-alike |
+| **LGPLv3** | Library share-alike |
+| **MPL-2.0** | File-level share-alike |
+| **BSD-3** | Permissive with attribution |
+
+![Prompt Screen showing the new license selector - BSD-3 selected](assets/Images/gsoc26-ashutoshx7/aod-license-bsd3.png)
+
+MIT is selected by default because it's the simplest. Most learners, especially the younger ones, won't care about this at all and that's totally fine. But for teachers deploying activities in schools, or for activities that might end up on the Sugar Activity Library, having the right license baked in from the start saves a lot of headaches later.
+
+There's a nice little description line below the license buttons that updates dynamically. Pick MIT and it says "Simple permissive license. Adds LICENSE, SPDX headers, and bundle metadata. SPDX: MIT." Pick BSD-3 and it says "Permissive license with attribution..." Pick MPL-2.0 and it explains the file-level copyleft. It's a small thing, but it helps teachers understand what they're choosing without having to go read legal documents.
+
+On the backend, the generator now reads the selected license and does three things:
+
+1. Writes a full \`LICENSE\` file into the generated project
+2. Adds SPDX headers to every generated source file (like \`# SPDX-License-Identifier: MIT\`)
+3. Sets the \`license\` field in \`activity.info\` and the bundle metadata
+
+So every activity that comes out of AOD is properly licensed from the moment it's created. No need to retroactively add license files or fix metadata later.
+
+---
+
+## Challenges & How I Overcame Them
+
+**The template category -> archetype mapping isn't clean.** "Creation" could mean a drawing app, a music maker, or a story builder. For now, I'm doing keyword analysis on the prompt to pick the right archetype. It works for testing, but it's a bit hacky. Once the LLM planner is wired up, it'll handle this mapping much more intelligently. For now, good enough.
+
+**SPDX identifiers are annoyingly specific.** MIT is just \`MIT\`, but GPL v3 is \`GPL-3.0-or-later\`, and BSD 3-Clause is \`BSD-3-Clause\`. Get any of these wrong and the license metadata is technically invalid. I built a small registry in the generator that maps each UI label to its correct SPDX identifier, full license text, and header template. One source of truth, no guessing.
+
+**Seven license options is a lot for a kid.** Walter and I talked about this. His suggestion was to keep MIT as the default and just let the other options be there for teachers who know what they want. The dynamic description text helps. Down the road we might collapse the less common ones behind an "Advanced" toggle, but for now it doesn't feel overwhelming.
+
+---
+
+## Key Learnings
+
+Walter's feedback on the templates was one of those moments where you realize how much *naming* matters. From an engineering perspective, "Auto" and "Starter" made perfect sense to me. But I'm not the user. A 10-year-old in a classroom is. And to them, "Creation" means something. "Starter" doesn't. It's a small change in the UI, but it reflects a completely different way of thinking about who this tool is for.
+
+The license work was a good reminder that open-source compliance isn't just a checkbox you tick at the end. Getting SPDX headers, LICENSE files, and bundle metadata all consistent takes actual engineering. Doing it at generation time is way easier than trying to bolt it on after the fact.
+
+And honestly, building the backend in parallel with these UI changes forced me to think carefully about separation of concerns. The generator doesn't know about GTK widgets or button states. It just reads a spec dict. That paid off immediately - when the template categories changed, the generator didn't need a single line of modification.
+
+---
+
+## Next Week's Roadmap
+
+- Finish all template archetypes in the generator: Canvas, Grid, Narrative, Quiz, and Utility
+- Start wiring the LLM pipeline - system prompt design, RAG context injection, spec generation
+- Get the first end-to-end flow working: prompt -> LLM -> spec -> generator -> installable \`.xo\` bundle
+- Test with at least 5 diverse prompts to see if the template selection logic actually holds up
+
+---
+
+## Acknowledgments
+
+Thanks to Walter Bender for the feedback that reshaped this week. What started as "change some labels and add a license picker" turned into a deeper conversation about who we're building this for and what the UI should communicate. Both changes made the system better in ways I wouldn't have thought of on my own.
+
+---
+
+## Connect with Me
+
+- GitHub: [@Ashutoshx7](https://github.com/Ashutoshx7)
+- Email: [ashutoshx002@gmail.com](mailto:ashutoshx002@gmail.com)
+- Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
+
+---
+`,ju=e({default:()=>Mu}),Mu=`---
 title: "GSoC '26 Week 2: Supercharging Planet with a SQLite & Express Backend"
 excerpt: "Bringing instantaneous search and discovery to Music Blocks by replacing legacy APIs with a lightweight Express backend."
 category: "DEVELOPER NEWS"
@@ -26927,7 +27069,7 @@ Additionally, to solve the thumbnail dilemma, I will be building out a dedicated
 This approach ensures our SQLite database remains incredibly fast and our GitHub API limits stay intact, all while delivering a seamless, visual browsing experience for the students.
 
 Thanks for reading, and see you in the next update!
-`,ju=e({default:()=>Mu}),Mu=`---
+`,Nu=e({default:()=>Pu}),Pu=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -27076,7 +27218,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Nu=e({default:()=>Pu}),Pu=`---
+`,Fu=e({default:()=>Iu}),Iu=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -27179,7 +27321,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Fu=e({default:()=>Iu}),Iu=`---
+`,Lu=e({default:()=>Ru}),Ru=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -27652,7 +27794,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Lu=e({default:()=>Ru}),Ru=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,zu=e({default:()=>Bu}),Bu=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -27739,7 +27881,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,zu=e({default:()=>Bu}),Bu=`---\r
+`,Vu=e({default:()=>Hu}),Hu=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -27832,7 +27974,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Vu=e({default:()=>Hu}),Hu=`---\r
+`,Uu=e({default:()=>Wu}),Wu=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -27926,7 +28068,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Uu=e({default:()=>Wu}),Wu=`---\r
+`,Gu=e({default:()=>Ku}),Ku=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -28014,7 +28156,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Gu=e({default:()=>Ku}),Ku=`---\r
+`,qu=e({default:()=>Ju}),Ju=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -28097,7 +28239,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,qu=e({default:()=>Ju}),Ju=`---\r
+`,Yu=e({default:()=>Xu}),Xu=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -28163,7 +28305,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Yu=e({default:()=>Xu}),Xu=`---
+`,Zu=e({default:()=>Qu}),Qu=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -28245,7 +28387,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Zu=e({default:()=>Qu}),Qu=`---
+---`,$u=e({default:()=>ed}),ed=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -28338,7 +28480,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,$u=e({default:()=>ed}),ed=`---
+`,td=e({default:()=>nd}),nd=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -28427,7 +28569,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,td=e({default:()=>nd}),nd=`---
+--- `,rd=e({default:()=>id}),id=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28572,7 +28714,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,rd=e({default:()=>id}),id=`---
+--- `,ad=e({default:()=>od}),od=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28760,7 +28902,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,ad=e({default:()=>od}),od=`---
+--- `,sd=e({default:()=>cd}),cd=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28855,7 +28997,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,sd=e({default:()=>cd}),cd=`---
+`,ld=e({default:()=>ud}),ud=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28944,7 +29086,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,ld=e({default:()=>ud}),ud=`---
+`,dd=e({default:()=>fd}),fd=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29031,7 +29173,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,dd=e({default:()=>fd}),fd=`---
+---`,pd=e({default:()=>md}),md=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29114,7 +29256,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,pd=e({default:()=>md}),md=`---
+---`,hd=e({default:()=>gd}),gd=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29197,7 +29339,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,hd=e({default:()=>gd}),gd=`---
+---`,_d=e({default:()=>vd}),vd=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -29502,4 +29644,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{yl as $,_ as $a,_t as $i,va as $n,vr as $r,ys as $t,du as A,le as Aa,un as Ai,uo as An,ui as Ar,dc as At,Gl as B,U as Ba,Ut as Bi,Wa as Bn,Wr as Br,Gs as Bt,Tu as C,Ce as Ca,wn as Ci,To as Cn,wi as Cr,Tc as Ct,_u as D,he as Da,gn as Di,_o as Dn,gi as Dr,_c as Dt,yu as E,_e as Ea,vn as Ei,yo as En,vi as Er,yc as Et,tu as F,$ as Fa,$t as Fi,eo as Fn,ei as Fr,tc as Ft,Fl as G,N as Ga,Nt as Gi,Pa as Gn,Pr as Gr,Fs as Gt,Vl as H,z as Ha,zt as Hi,Ba as Hn,Br as Hr,Vs as Ht,$l as I,Z as Ia,Zt as Ii,Qa as In,Qr as Ir,$s as It,kl as J,D as Ja,Dt as Ji,Oa as Jn,Or as Jr,ks as Jt,Nl as K,j as Ka,jt as Ki,Ma as Kn,Mr as Kr,Ns as Kt,Zl as L,Y as La,Yt as Li,Xa as Ln,Xr as Lr,Zs as Lt,su as M,ae as Ma,on as Mi,oo as Mn,oi as Mr,sc as Mt,au as N,re as Na,rn as Ni,io as Nn,ii as Nr,ac as Nt,hu as O,pe as Oa,mn as Oi,ho as On,mi as Or,hc as Ot,ru as P,te as Pa,tn as Pi,no as Pn,ni as Pr,rc as Pt,xl as Q,y as Qa,yt as Qi,ba as Qn,br as Qr,xs as Qt,Yl as R,q as Ra,qt as Ri,Ja as Rn,Jr as Rr,Ys as Rt,Du as S,Te as Sa,En as Si,Do as Sn,Ei as Sr,Dc as St,xu as T,ye as Ta,bn as Ti,xo as Tn,bi as Tr,xc as Tt,zl as U,L as Ua,Lt as Ui,Ra as Un,Rr as Ur,zs as Ut,Ul as V,V as Va,Vt as Vi,Ha as Vn,Hr as Vr,Us as Vt,Ll as W,F as Wa,Ft as Wi,Ia as Wn,Ir as Wr,Ls as Wt,Tl as X,C as Xa,Ct as Xi,wa as Xn,wr as Xr,Ts as Xt,Dl as Y,T as Ya,Tt as Yi,Ea as Yn,Er as Yr,Ds as Yt,Cl as Z,x as Za,xt as Zi,Sa as Zn,Sr as Zr,Cs as Zt,Lu as _,Fe as _a,In as _i,Lo as _n,Ii as _r,Lc as _t,sd as a,at as aa,or as ai,ss as an,a as ao,oa as ar,sl as at,ju as b,ke as ba,An as bi,jo as bn,Ai as br,jc as bt,td as c,$e as ca,er as ci,ts as cn,ea as cr,tl as ct,Yu as d,qe as da,Jn as di,Yo as dn,Ji as dr,Yc as dt,ht as ea,gr as ei,_s as en,h as eo,ga as er,_l as et,qu as f,Ge as fa,Kn as fi,qo as fn,Ki as fr,qc as ft,zu as g,Le as ga,Rn as gi,zo as gn,Ri as gr,zc as gt,Vu as h,ze as ha,Bn as hi,Vo as hn,Bi as hr,Vc as ht,ld as i,st as ia,cr as ii,ls as in,s as io,ca as ir,ll as it,lu as j,se as ja,cn as ji,co as jn,ci as jr,lc as jt,pu as k,de as ka,fn as ki,po as kn,fi as kr,pc as kt,$u as l,Ze as la,Qn as li,$o as ln,Qi as lr,$c as lt,Uu as m,Ve as ma,Hn as mi,Uo as mn,Hi as mr,Uc as mt,pd as n,dt as na,fr as ni,ps as nn,d as no,fa as nr,pl as nt,ad as o,rt as oa,ir as oi,as as on,r as oo,ia as or,al as ot,Gu as p,Ue as pa,Wn as pi,Go as pn,Wi as pr,Gc as pt,jl as q,k as qa,kt as qi,Aa as qn,Ar as qr,js as qt,dd as r,lt as ra,ur as ri,ds as rn,l as ro,ua as rr,dl as rt,rd as s,tt as sa,nr as si,rs as sn,t as so,na as sr,rl as st,hd as t,pt as ta,mr as ti,hs as tn,p as to,ma as tr,hl as tt,Zu as u,Ye as ua,Xn as ui,Zo as un,Xi as ur,Zc as ut,Fu as v,Ne as va,Pn as vi,Fo as vn,Pi as vr,Fc as vt,Cu as w,xe as wa,Sn as wi,Co as wn,Si as wr,Cc as wt,ku as x,De as xa,On as xi,ko as xn,Oi as xr,kc as xt,Nu as y,je as ya,Mn as yi,No as yn,Mi as yr,Nc as yt,ql as z,G as za,Gt as zi,Ka as zn,Kr as zr,qs as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{xl as $,y as $a,yt as $i,ba as $n,br as $r,xs as $t,pu as A,de as Aa,fn as Ai,po as An,fi as Ar,pc as At,ql as B,G as Ba,Gt as Bi,Ka as Bn,Kr as Br,qs as Bt,Du as C,Te as Ca,En as Ci,Do as Cn,Ei as Cr,Dc as Ct,yu as D,_e as Da,vn as Di,yo as Dn,vi as Dr,yc as Dt,xu as E,ye as Ea,bn as Ei,xo as En,bi as Er,xc as Et,ru as F,te as Fa,tn as Fi,no as Fn,ni as Fr,rc as Ft,Ll as G,F as Ga,Ft as Gi,Ia as Gn,Ir as Gr,Ls as Gt,Ul as H,V as Ha,Vt as Hi,Ha as Hn,Hr,Us as Ht,tu as I,$ as Ia,$t as Ii,eo as In,ei as Ir,tc as It,jl as J,k as Ja,kt as Ji,Aa as Jn,Ar as Jr,js as Jt,Fl as K,N as Ka,Nt as Ki,Pa as Kn,Pr as Kr,Fs as Kt,$l as L,Z as La,Zt as Li,Qa as Ln,Qr as Lr,$s as Lt,lu as M,se as Ma,cn as Mi,co as Mn,ci as Mr,lc as Mt,su as N,ae as Na,on as Ni,oo as Nn,oi as Nr,sc as Nt,_u as O,he as Oa,gn as Oi,_o as On,gi as Or,_c as Ot,au as P,re as Pa,rn as Pi,io as Pn,ii as Pr,ac as Pt,Cl as Q,x as Qa,xt as Qi,Sa as Qn,Sr as Qr,Cs as Qt,Zl as R,Y as Ra,Yt as Ri,Xa as Rn,Xr as Rr,Zs as Rt,ku as S,De as Sa,On as Si,ko as Sn,Oi as Sr,kc as St,Cu as T,xe as Ta,Sn as Ti,Co as Tn,Si as Tr,Cc as Tt,Vl as U,z as Ua,zt as Ui,Ba as Un,Br as Ur,Vs as Ut,Gl as V,U as Va,Ut as Vi,Wa as Vn,Wr as Vr,Gs as Vt,zl as W,L as Wa,Lt as Wi,Ra as Wn,Rr as Wr,zs as Wt,Dl as X,T as Xa,Tt as Xi,Ea as Xn,Er as Xr,Ds as Xt,kl as Y,D as Ya,Dt as Yi,Oa as Yn,Or as Yr,ks as Yt,Tl as Z,C as Za,Ct as Zi,wa as Zn,wr as Zr,Ts as Zt,zu as _,Le as _a,Rn as _i,zo as _n,Ri as _r,zc as _t,ld as a,st as aa,cr as ai,ls as an,s as ao,ca as ar,ll as at,Nu as b,je as ba,Mn as bi,No as bn,Mi as br,Nc as bt,rd as c,tt as ca,nr as ci,rs as cn,t as co,na as cr,rl as ct,Zu as d,Ye as da,Xn as di,Zo as dn,Xi as dr,Zc as dt,_t as ea,vr as ei,ys as en,_ as eo,va as er,yl as et,Yu as f,qe as fa,Jn as fi,Yo as fn,Ji as fr,Yc as ft,Vu as g,ze as ga,Bn as gi,Vo as gn,Bi as gr,Vc as gt,Uu as h,Ve as ha,Hn as hi,Uo as hn,Hi as hr,Uc as ht,dd as i,lt as ia,ur as ii,ds as in,l as io,ua as ir,dl as it,du as j,le as ja,un as ji,uo as jn,ui as jr,dc as jt,hu as k,pe as ka,mn as ki,ho as kn,mi as kr,hc as kt,td as l,$e as la,er as li,ts as ln,ea as lr,tl as lt,Gu as m,Ue as ma,Wn as mi,Go as mn,Wi as mr,Gc as mt,hd as n,pt as na,mr as ni,hs as nn,p as no,ma as nr,hl as nt,sd as o,at as oa,or as oi,ss as on,a as oo,oa as or,sl as ot,qu as p,Ge as pa,Kn as pi,qo as pn,Ki as pr,qc as pt,Nl as q,j as qa,jt as qi,Ma as qn,Mr as qr,Ns as qt,pd as r,dt as ra,fr as ri,ps as rn,d as ro,fa as rr,pl as rt,ad as s,rt as sa,ir as si,as as sn,r as so,ia as sr,al as st,_d as t,ht as ta,gr as ti,_s as tn,h as to,ga as tr,_l as tt,$u as u,Ze as ua,Qn as ui,$o as un,Qi as ur,$c as ut,Lu as v,Fe as va,In as vi,Lo as vn,Ii as vr,Lc as vt,Tu as w,Ce as wa,wn as wi,To as wn,wi as wr,Tc as wt,ju as x,ke as xa,An as xi,jo as xn,Ai as xr,jc as xt,Fu as y,Ne as ya,Pn as yi,Fo as yn,Pi as yr,Fc as yt,Yl as z,q as za,qt as zi,Ja as zn,Jr as zr,Ys as zt};
