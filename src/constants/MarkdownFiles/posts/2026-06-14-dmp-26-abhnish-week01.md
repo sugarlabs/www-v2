@@ -1,5 +1,5 @@
 ---
-title: "DMP '26 Week 01 Update by Abhnish Kumar"
+title: "DMP '26 Week 00 Update by Abhnish Kumar"
 excerpt: "Kicking off WCAG 2.1 AA accessibility and touch support work on Music Blocks"
 category: "DEVELOPER NEWS"
 date: "2026-06-14"
