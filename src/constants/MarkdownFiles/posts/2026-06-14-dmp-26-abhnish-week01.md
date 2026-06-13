@@ -6,7 +6,7 @@ date: "2026-06-14"
 slug: "2026-06-14-dmp-26-abhnish-week01"
 author: "@/constants/MarkdownFiles/authors/abhnish-kumar.md"
 tags: "dmp26,sugarlabs,week01,abhnish-kumar,accessibility"
-image: "assets/Images/c4gt_DMP.webp"
+image: "assets/Images/c4gt-official-logo.png"
 ---
 
 <!-- markdownlint-disable -->
