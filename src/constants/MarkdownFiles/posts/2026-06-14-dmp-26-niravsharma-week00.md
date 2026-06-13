@@ -7,7 +7,6 @@ slug: "2026-06-14-dmp-26-niravsharma-week00"
 author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
 description: "DMP'26 Contributor at SugarLabs (Music Blocks - Refactor Temperament)"
 tags: "dmp26,sugarlabs,week00,niravsharma,musicblocks,temperament"
-image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
@@ -51,10 +50,6 @@ Music Blocks hardcodes **12** everywhere — pitch math, note names, intervals. 
 | Jun 12 | Post-exam: outlined `pitchToFrequency` refactor; **one-time mentor meeting** (Walter + Devin) |
 | Jun 13 | Console verified `getCurrentEDO("equal19")` → 19 |
 | Jun 14 | **`pitchToFrequency` + `pitchToNumber` refactored** — optional `temperament` param, `Math.pow(2, 1/currentEDO)` |
-| Jun 15 | Post-exam: traced `pitchToNumber` callers |
-| Jun 16 | **`pitchToNumber` verified** — `octave * 12` → `octave * currentEDO` |
-| Jun 17 | **`frequencyToPitch` refactored** — dynamic step, unit tests for 12/17/19/31-EDO |
-| Jun 18 | Last exam; sent Matrix update to mentors; composed Meeting 1 talking points |
 
 **Result:** Most of Goal 1a core functions done. All 5438 tests still pass.
 
@@ -63,9 +58,8 @@ Music Blocks hardcodes **12** everywhere — pitch math, note names, intervals. 
 ## Mentor Feedback (Jun 12 One-Time Meeting)
 
 1. **Goal 1 plan doc** — write problem → solution → testing (done: [`C4GT/GoalPlan.md`](https://github.com/noddy021/musicblocks/blob/main/C4GT/GoalPlan.md))
-2. **Blog post ASAP** — don't wait (this post!)
-3. **Small PRs** — not 1 PR per goal; feature-scoped PRs since goals coincide
-4. **Regular meetings** — Tuesdays 16:30 IST starting Jun 16
+2. **Small PRs** — not 1 PR per goal; feature-scoped PRs since goals coincide
+3. **Regular meetings** — Tuesdays 16:30 IST starting Jun 16
 
 ---
 
@@ -94,7 +88,7 @@ Music Blocks hardcodes **12** everywhere — pitch math, note names, intervals. 
 
 ## Acknowledgments
 
-Thanks to Walter Bender, Devin Ulibarri, and the Sugar Labs community for the opportunity. Special thanks to Mikey3600 and srajang1805 for the pre-coding PRs that gave me a running start.
+Thanks to Walter Bender, Devin Ulibarri, and the Sugar Labs community for the opportunity.
 
 ---
 
