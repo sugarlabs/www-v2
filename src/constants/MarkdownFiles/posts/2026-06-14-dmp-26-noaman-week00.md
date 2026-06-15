@@ -14,18 +14,18 @@ image: "assets/Images/c4gt_DMP.webp"
 
 # Week 00 Progress Report by Noaman Akhtar
 
-**Project:** [AI Optimization](https://github.com/sugarlabs/sugar-ai)
-**Mentors:** [sum2it](https://github.com/sum2it), [mostlyk](https://github.com/MostlyKIGuess), [chimosky](https://github.com/chimosky)
-**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)
-**Organization:** [Sugar Labs](https://sugarlabs.org)
+**Project:** [AI Optimization](https://github.com/sugarlabs/sugar-ai)  
+**Mentors:** [sum2it](https://github.com/sum2it), [mostlyk](https://github.com/MostlyKIGuess), [chimosky](https://github.com/chimosky)  
+**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
 **Reporting Period:** 2026-06-01 – 2026-06-14
 
 ---
 
 ## whoami
 
-Hey, I'm Noaman Akhtar ([@Noaman-Akhtar](https://github.com/Noaman-Akhtar)), a third-year CSE undergraduate at KIIT University, Bhubaneswar. This summer I'll be working on **AI Optimization** as a contributor for the Digital India Mentorship (DMP) 2026 cohort with Sugar Labs.
-My journey into software development started with a natural interest in systems and problem-solving. Contributing to open-source software became a major focus because I love knowing that the code I write actually runs on people's machines and solves tangible issues. Having previously contributed to the `sugarlabs/musicblocks` codebase I'm very excited to dive deep into the Python and AI backend side of the Sugar Labs ecosystem this summer by working on sugar-ai.
+Hey, I'm Noaman Akhtar ([@Noaman-Akhtar](https://github.com/Noaman-Akhtar)), a third-year CSE undergraduate at KIIT University, Bhubaneswar. This summer I'll be working on [AI Optimization](https://github.com/sugarlabs/sugar-ai) as a contributor for the Digital India Mentorship (DMP) 2026 cohort with Sugar Labs.
+My journey into software development started with a natural interest in systems and problem-solving. Contributing to open-source software became a major focus because I love knowing that the code I write actually runs on people's machines and solves tangible issues. Having previously contributed to the [sugarlabs/musicblocks](https://github.com/sugarlabs/musicblocks) codebase I'm very excited to dive deep into the Python and AI backend side of the Sugar Labs ecosystem this summer by working on sugar-ai.
 
 ---
 
@@ -35,7 +35,7 @@ The `sugar-ai` repository is a lightweight Python/FastAPI service that provides 
 
 Currently, the service relies on a monolithic `RAGAgent` class that couples model loading, RAG pipelines, and API routing directly with a local HuggingFace `pipeline()` instance. If an activity or school environment wants to leverage different hosting models (e.g., local servers like Ollama, or external cloud endpoints like OpenAI, Groq, or Gemini), the service cannot easily accommodate them.
 
-The primary goal of my project is to decouple this architecture by implementing a modular, model-agnostic **BaseProvider** interface. This abstraction will allow switching model backends via simple environment configuration edits, bringing multi-provider flexibility to Sugar Labs' educational activities.
+The primary goal of my project is to decouple this architecture by implementing a modular, model-agnostic [BaseProvider](https://github.com/sugarlabs/sugar-ai) interface. This abstraction will allow switching model backends via simple environment configuration edits, bringing multi-provider flexibility to Sugar Labs' educational activities.
 
 ---
 
