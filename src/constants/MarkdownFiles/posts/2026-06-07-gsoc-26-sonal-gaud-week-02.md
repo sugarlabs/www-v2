@@ -11,16 +11,16 @@ image: "assets/Images/GSOC.webp"
 
 # Week 2 Progress Report by Sonal Gaud
 
-**Project:** Automated Release Pipeline for Music Blocks
-**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)
-**Organization:** [Sugar Labs](https://sugarlabs.org)
+**Project:** Automated Release Pipeline for Music Blocks  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
 **Reporting Period:** 2026-06-01 – 2026-06-07
 
 ---
 
 ## Overview
 
-Week 1 was mostly about observing how Music Blocks ships today and mapping out where automation would help. Week 2 was the first hands-on step: hardening the piece of CI that touches every open contribution, the auto-rebase workflow  and starting a wider conversation about how the project routes reviews as it grows. A reliable release pipeline starts with a reliable everyday merge flow, so this felt like the right place to begin.
+[Week 1](../2026-05-31-gsoc-26-sonal-gaud-week1) was mostly about observing how Music Blocks ships today and mapping out where automation would help. Week 2 was the first hands-on step: hardening the piece of CI that touches every open contribution, the auto-rebase workflow  and starting a wider conversation about how the project routes reviews as it grows. A reliable release pipeline starts with a reliable everyday merge flow, so this felt like the right place to begin.
 
 ## Hardening the auto-rebase workflow
  
