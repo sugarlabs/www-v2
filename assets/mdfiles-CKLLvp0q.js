@@ -27303,6 +27303,172 @@ This approach ensures our SQLite database remains incredibly fast and our GitHub
 
 Thanks for reading, and see you in the next update!
 `,Lu=e({default:()=>Ru}),Ru=`---
+title: "GSoC '26 Week 03 Update by Ashutosh Singh"
+excerpt: "Designing the system prompt, wiring the LLM pipeline, and building a three-phase testing strategy after Walter asked the hard question."
+category: "DEVELOPER NEWS"
+date: "2026-06-17"
+slug: "2026-06-17-gsoc-26-ashutoshx7-week03"
+author: "@/constants/MarkdownFiles/authors/ashutosh-singh.md"
+description: "GSoC'26 Contributor at SugarLabs working on Sugar Activity on Demand"
+tags: "gsoc26,sugarlabs,week03,ashutoshx7,ai,testing,llm,system-prompt,sugar-activity-on-demand"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 03 Progress Report by Ashutosh Singh
+
+**Project:** [Sugar Activity on Demand](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#sugar-activity-on-demand)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya](https://github.com/chimosky)  
+**Reporting Period:** June 9, 2026 to June 15, 2026  
+
+---
+
+## Goals for This Week
+
+- Design the system prompt that tells the LLM how to generate Sugar Activity specs
+- Wire up the LLM pipeline end-to-end
+- Figure out a testing strategy after Walter asked how we're going to validate the generated activities
+
+---
+
+## This Week's Achievements
+
+This was the week where the project stopped being "I built a cool frontend" and started being "okay but does it actually work." The big moment was during my weekly sync with Walter when he asked a question I should've thought about earlier: "How are you going to test this?"
+
+Not like unit tests. He meant: how do you know the activities coming out of the generator are actually good? How do you know they install correctly, run on Sugar, and actually teach something? That question completely shaped this week. I ended up designing a three-phase testing strategy while also finishing the system prompt and getting the LLM pipeline wired up.
+
+### 1. The System Prompt
+
+Before I could test anything, I needed the LLM to actually produce useful output. That meant designing the system prompt, which is basically the instruction manual you hand to the model before any user input.
+
+This took way more iteration than I expected. The prompt needs to do a lot:
+
+- Tell the model it's generating Sugar Activities, not generic Python apps
+- Explain the GTK3 widget set and which widgets are safe to use
+- Describe the Sugar Activity lifecycle: \`__init__\`, \`build_toolbar()\`, \`_build_canvas()\`, \`write_file()\`, \`read_file()\`
+- Specify the project structure: \`activity/\`, \`activity.info\`, \`setup.py\`, \`activity.py\`
+- Enforce coding patterns like \`GLib.idle_add()\` for thread safety
+- Include examples of working Sugar Activities as reference
+- Tell it to respect the selected template category (Logic & math, Tools/utilities, Games, Creation) and license
+
+The first few versions of the prompt were way too long and the models kept ignoring parts of it. I ended up breaking it into sections with clear headers and priority markers. The critical constraints (like "never use Gtk.Application, always extend sugar3.activity.Activity") go at the top. The nice-to-haves (like "add docstrings to every method") go at the bottom.
+
+I also built a template system for the prompt itself. Instead of one massive string, the system prompt is assembled from modular blocks depending on the learner's choices. If they pick "Games" as the template, a games-specific block gets injected with examples of score tracking and game loops. If they pick "Creation," it includes canvas drawing patterns and file save/load examples. This keeps the prompt focused and avoids overwhelming the model with irrelevant context.
+
+### 2. Wiring the LLM Pipeline
+
+With the system prompt in place, I wired up the actual pipeline. The flow is:
+
+1. Learner types a prompt and picks a template category + license
+2. The system assembles the full prompt (system prompt + template block + user prompt)
+3. The prompt goes to the LLM API
+4. The model returns a structured spec (JSON) describing the activity
+5. The generator from Week 2 takes that spec and produces the project files
+6. The project gets packaged into a \`.xo\` bundle
+
+Right now I'm testing with multiple models to see which ones produce the best output. More on that in the testing section below.
+
+The pipeline is designed to be model-agnostic. The LLM call is behind a simple interface, so swapping models just means changing a config value. This turned out to be really important for the testing work.
+
+### 3. The Testing Strategy - Walter's Question
+
+This is the big one. When Walter asked "how will you test this?" I didn't have a great answer. I had been thinking about it as a code generation problem, where you just check if the output compiles. But Walter pushed further. A Sugar Activity isn't just code that runs. It's a learning tool. It needs to install cleanly, open in Sugar, respond to user input, save to the Journal, and actually make sense as an educational experience.
+
+So I designed a three-phase testing strategy:
+
+**Phase 1: Model Comparison (Manual, by me)**
+
+This is where I am right now. I take the same set of test prompts and run them through different LLM models to see which ones produce the best Sugar Activity code. The models I'm testing:
+
+- **ChatGPT (GPT-4o)** - strong at following structured instructions, good at Python
+- **Claude** - really good at understanding constraints and producing clean code
+- **DeepSeek** - Chinese model, surprisingly good at code generation, want to see how it handles Sugar-specific patterns
+- **Qwen** - another strong Chinese model, testing for diversity in approaches
+
+For each model, I'm evaluating on:
+- Does the generated code actually parse (no syntax errors)?
+- Does it follow the Sugar Activity structure correctly?
+- Does it use the right GTK3 widgets?
+- Does the \`.xo\` bundle install on Sugar?
+- Does the activity actually launch and do something reasonable?
+
+I'm running about 10 test prompts through each model. Things like "make a multiplication quiz for 8-year-olds," "build a drawing app where kids can save their art," "create a typing tutor that tracks words per minute." Different enough to test the template categories, simple enough that I can manually verify the output.
+
+Early results: Claude and GPT-4o are neck and neck for code quality. DeepSeek is surprisingly competitive, especially for straightforward activities. The Chinese models sometimes struggle with Sugar-specific conventions (like Journal integration) because there's less Sugar Labs content in their training data, but the system prompt helps a lot.
+
+**Phase 2: Small Group User Testing**
+
+Once I'm confident in the model output from Phase 1, the next step is putting it in front of real people. Not a big launch, just a small group of users from the Sugar community - a few learners, a couple of teachers, maybe some fellow contributors. The idea is to watch them actually use the system and see what breaks.
+
+The questions here are completely different from Phase 1:
+
+- Can someone who isn't me actually use the Prompt Screen without getting confused?
+- Do the generated activities make sense to a learner who didn't write the prompt?
+- Can they modify the activity using the Reflective Studio?
+- Do the template categories (Logic & math, Games, Creation, etc.) feel intuitive?
+- Does the Use -> Modify -> Create progression actually work as a learning path?
+
+This is the testing that matters most. I can stare at generated code all day, but until a kid actually tries to use the activity, I don't really know if it works. The feedback from this phase will directly shape what gets refined before the midterm evaluation.
+
+**Phase 3: Automated Validation + Broader Rollout**
+
+Phase 3 is about scaling. Once I know from real users what "good" looks like, I can build automated checks that catch the bad stuff before anyone sees it:
+
+- **AST parsing** - does the Python code parse without errors?
+- **Import validation** - does it only import modules available in Sugar's environment?
+- **Structure checks** - does it have \`activity.info\`, \`setup.py\`, and the right entry point?
+- **Bundle integrity** - does the \`.xo\` file have the correct internal structure?
+- **License compliance** - are SPDX headers present? Does the LICENSE file match the selected license?
+- **Safety checks** - no network calls, no file system access outside the activity directory, no subprocess spawning
+
+The automated pipeline is what lets this scale beyond "Ashutosh manually checking every generated activity." Every activity that passes the pipeline should install, launch, and be safe to run on a kid's laptop. Combined with the user feedback from Phase 2, this gives us a solid quality bar for the final release.
+
+---
+
+## Challenges & How I Overcame Them
+
+**The system prompt kept getting too long.** Models have context limits, and a 3000-word system prompt eats into the space available for the user's prompt and the model's response. The modular template approach solved this. Instead of one giant prompt, I assemble only the relevant blocks. A "Games" prompt doesn't need to see canvas drawing examples.
+
+**Different models interpret the same system prompt differently.** GPT-4o follows instructions very literally, which is great for structure but sometimes produces rigid code. Claude is better at inferring intent but occasionally gets creative in ways that break Sugar conventions. I ended up tweaking the prompt slightly for each model, with a base template and model-specific overrides.
+
+**Defining "good enough" for generated activities is hard.** A generated activity might install and launch but produce a terrible user experience. For Phase 1, I'm being pragmatic: if it installs, launches, and does roughly what the prompt asked for, it passes. Quality refinement is what the Reflective Studio and the iterative chat are for.
+
+---
+
+## Key Learnings
+
+Walter's testing question was humbling. I'd been so focused on the generation pipeline that I hadn't thought carefully about how to validate the output. Building an AI code generator is one thing. Building one you can trust to put in front of children is a completely different challenge. The three-phase approach gives me confidence at each level: I trust the model (Phase 1), I trust the code (Phase 2), and I trust the learning experience (Phase 3).
+
+Testing across multiple models taught me that the system prompt is everything. The difference between a good and bad Sugar Activity isn't the model, it's the instructions. A well-crafted system prompt makes even mid-tier models produce usable output. A vague prompt makes even GPT-4o produce garbage.
+
+The modular prompt template system was a good architectural decision. It keeps the prompts maintainable and lets me tune each template category independently. When I eventually add new categories, I just write a new prompt block. Nothing else changes.
+
+---
+
+## Next Week's Roadmap
+
+- Finish Phase 1 model comparison and pick the default model(s)
+- Start building the Phase 2 automated validation pipeline (AST parsing, import checks, bundle integrity)
+- Get at least 10 test prompts producing valid, installable \`.xo\` bundles end-to-end
+- Begin integrating the RAG context layer with real Sugar Activity examples
+
+---
+
+## Acknowledgments
+
+Thanks to Walter Bender for asking the question that reshaped this entire week. "How will you test this?" sounds simple, but answering it properly forced me to think about quality, safety, and trust in a way I hadn't before. The three-phase strategy is directly inspired by that conversation.
+
+---
+
+## Connect with Me
+
+- GitHub: [@Ashutoshx7](https://github.com/Ashutoshx7)
+- Email: [ashutoshx002@gmail.com](mailto:ashutoshx002@gmail.com)
+- Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
+
+---
+`,zu=e({default:()=>Bu}),Bu=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -27451,7 +27617,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,zu=e({default:()=>Bu}),Bu=`---
+`,Vu=e({default:()=>Hu}),Hu=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -27554,7 +27720,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Vu=e({default:()=>Hu}),Hu=`---
+`,Uu=e({default:()=>Wu}),Wu=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -28027,7 +28193,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Uu=e({default:()=>Wu}),Wu=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Gu=e({default:()=>Ku}),Ku=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -28114,7 +28280,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Gu=e({default:()=>Ku}),Ku=`---\r
+`,qu=e({default:()=>Ju}),Ju=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -28207,7 +28373,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,qu=e({default:()=>Ju}),Ju=`---\r
+`,Yu=e({default:()=>Xu}),Xu=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -28301,7 +28467,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Yu=e({default:()=>Xu}),Xu=`---\r
+`,Zu=e({default:()=>Qu}),Qu=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -28389,7 +28555,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Zu=e({default:()=>Qu}),Qu=`---\r
+`,$u=e({default:()=>ed}),ed=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -28472,7 +28638,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,$u=e({default:()=>ed}),ed=`---\r
+`,td=e({default:()=>nd}),nd=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -28538,7 +28704,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,td=e({default:()=>nd}),nd=`---
+`,rd=e({default:()=>id}),id=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -28620,7 +28786,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,rd=e({default:()=>id}),id=`---
+---`,ad=e({default:()=>od}),od=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -28713,7 +28879,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,ad=e({default:()=>od}),od=`---
+`,sd=e({default:()=>cd}),cd=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -28802,7 +28968,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,sd=e({default:()=>cd}),cd=`---
+--- `,ld=e({default:()=>ud}),ud=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -28947,7 +29113,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,ld=e({default:()=>ud}),ud=`---
+--- `,dd=e({default:()=>fd}),fd=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29135,7 +29301,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,dd=e({default:()=>fd}),fd=`---
+--- `,pd=e({default:()=>md}),md=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29230,7 +29396,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,pd=e({default:()=>md}),md=`---
+`,hd=e({default:()=>gd}),gd=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29319,7 +29485,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,hd=e({default:()=>gd}),gd=`---
+`,_d=e({default:()=>vd}),vd=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29406,7 +29572,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,_d=e({default:()=>vd}),vd=`---
+---`,yd=e({default:()=>bd}),bd=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29489,7 +29655,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,yd=e({default:()=>bd}),bd=`---
+---`,xd=e({default:()=>Sd}),Sd=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -29572,7 +29738,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,xd=e({default:()=>Sd}),Sd=`---
+---`,Cd=e({default:()=>wd}),wd=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -29877,4 +30043,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Tl as $,C as $a,Ct as $i,wa as $n,wr as $r,Ts as $t,_u as A,he as Aa,gn as Ai,_o as An,gi as Ar,_c as At,Zl as B,Y as Ba,Yt as Bi,Xa as Bn,Xr as Br,Zs as Bt,ju as C,ke as Ca,An as Ci,jo as Cn,Ai as Cr,jc as Ct,Cu as D,xe as Da,Sn as Di,Co as Dn,Si as Dr,Cc as Dt,Tu as E,Ce as Ea,wn as Ei,To as En,wi as Er,Tc as Et,su as F,ae as Fa,on as Fi,oo as Fn,oi as Fr,sc as Ft,Vl as G,z as Ga,zt as Gi,Ba as Gn,Br as Gr,Vs as Gt,ql as H,G as Ha,Gt as Hi,Ka as Hn,Kr as Hr,qs as Ht,au as I,re as Ia,rn as Ii,io as In,ii as Ir,ac as It,Fl as J,N as Ja,Nt as Ji,Pa as Jn,Pr as Jr,Fs as Jt,zl as K,L as Ka,Lt as Ki,Ra as Kn,Rr as Kr,zs as Kt,ru as L,te as La,tn as Li,no as Ln,ni as Lr,rc as Lt,pu as M,de as Ma,fn as Mi,po as Mn,fi as Mr,pc as Mt,du as N,le as Na,un as Ni,uo as Nn,ui as Nr,dc as Nt,xu as O,ye as Oa,bn as Oi,xo as On,bi as Or,xc as Ot,lu as P,se as Pa,cn as Pi,co as Pn,ci as Pr,lc as Pt,Dl as Q,T as Qa,Tt as Qi,Ea as Qn,Er as Qr,Ds as Qt,tu as R,$ as Ra,$t as Ri,eo as Rn,ei as Rr,tc as Rt,Nu as S,je as Sa,Mn as Si,No as Sn,Mi as Sr,Nc as St,Du as T,Te as Ta,En as Ti,Do as Tn,Ei as Tr,Dc as Tt,Gl as U,U as Ua,Ut as Ui,Wa as Un,Wr as Ur,Gs as Ut,Yl as V,q as Va,qt as Vi,Ja as Vn,Jr as Vr,Ys as Vt,Ul as W,V as Wa,Vt as Wi,Ha as Wn,Hr as Wr,Us as Wt,jl as X,k as Xa,kt as Xi,Aa as Xn,Ar as Xr,js as Xt,Nl as Y,j as Ya,jt as Yi,Ma as Yn,Mr as Yr,Ns as Yt,kl as Z,D as Za,Dt as Zi,Oa as Zn,Or as Zr,ks as Zt,Uu as _,Ve as _a,Hn as _i,Uo as _n,Hi as _r,Uc as _t,pd as a,dt as aa,fr as ai,ps as an,d as ao,fa as ar,pl as at,Lu as b,Fe as ba,In as bi,Lo as bn,Ii as br,Lc as bt,sd as c,at as ca,or as ci,ss as cn,a as co,oa as cr,sl as ct,td as d,$e as da,er as di,ts as dn,ea as dr,tl as dt,xt as ea,Sr as ei,Cs as en,x as eo,Sa as er,Cl as et,$u as f,Ze as fa,Qn as fi,$o as fn,Qi as fr,$c as ft,Gu as g,Ue as ga,Wn as gi,Go as gn,Wi as gr,Gc as gt,qu as h,Ge as ha,Kn as hi,qo as hn,Ki as hr,qc as ht,hd as i,pt as ia,mr as ii,hs as in,p as io,ma as ir,hl as it,hu as j,pe as ja,mn as ji,ho as jn,mi as jr,hc as jt,yu as k,_e as ka,vn as ki,yo as kn,vi as kr,yc as kt,ad as l,rt as la,ir as li,as as ln,r as lo,ia as lr,al as lt,Yu as m,qe as ma,Jn as mi,Yo as mn,Ji as mr,Yc as mt,yd as n,_t as na,vr as ni,ys as nn,_ as no,va as nr,yl as nt,dd as o,lt as oa,ur as oi,ds as on,l as oo,ua as or,dl as ot,Zu as p,Ye as pa,Xn as pi,Zo as pn,Xi as pr,Zc as pt,Ll as q,F as qa,Ft as qi,Ia as qn,Ir as qr,Ls as qt,_d as r,ht as ra,gr as ri,_s as rn,h as ro,ga as rr,_l as rt,ld as s,st as sa,cr as si,ls as sn,s as so,ca as sr,ll as st,xd as t,yt as ta,br as ti,xs as tn,y as to,ba as tr,xl as tt,rd as u,tt as ua,nr as ui,rs as un,t as uo,na as ur,rl as ut,Vu as v,ze as va,Bn as vi,Vo as vn,Bi as vr,Vc as vt,ku as w,De as wa,On as wi,ko as wn,Oi as wr,kc as wt,Fu as x,Ne as xa,Pn as xi,Fo as xn,Pi as xr,Fc as xt,zu as y,Le as ya,Rn as yi,zo as yn,Ri as yr,zc as yt,$l as z,Z as za,Zt as zi,Qa as zn,Qr as zr,$s as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Dl as $,T as $a,Tt as $i,Ea as $n,Er as $r,Ds as $t,yu as A,_e as Aa,vn as Ai,yo as An,vi as Ar,yc as At,$l as B,Z as Ba,Zt as Bi,Qa as Bn,Qr as Br,$s as Bt,Nu as C,je as Ca,Mn as Ci,No as Cn,Mi as Cr,Nc as Ct,Tu as D,Ce as Da,wn as Di,To as Dn,wi as Dr,Tc as Dt,Du as E,Te as Ea,En as Ei,Do as En,Ei as Er,Dc as Et,lu as F,se as Fa,cn as Fi,co as Fn,ci as Fr,lc as Ft,Ul as G,V as Ga,Vt as Gi,Ha as Gn,Hr as Gr,Us as Gt,Yl as H,q as Ha,qt as Hi,Ja as Hn,Jr as Hr,Ys as Ht,su as I,ae as Ia,on as Ii,oo as In,oi as Ir,sc as It,Ll as J,F as Ja,Ft as Ji,Ia as Jn,Ir as Jr,Ls as Jt,Vl as K,z as Ka,zt as Ki,Ba as Kn,Br as Kr,Vs as Kt,au as L,re as La,rn as Li,io as Ln,ii as Lr,ac as Lt,hu as M,pe as Ma,mn as Mi,ho as Mn,mi as Mr,hc as Mt,pu as N,de as Na,fn as Ni,po as Nn,fi as Nr,pc as Nt,Cu as O,xe as Oa,Sn as Oi,Co as On,Si as Or,Cc as Ot,du as P,le as Pa,un as Pi,uo as Pn,ui as Pr,dc as Pt,kl as Q,D as Qa,Dt as Qi,Oa as Qn,Or as Qr,ks as Qt,ru as R,te as Ra,tn as Ri,no as Rn,ni as Rr,rc as Rt,Fu as S,Ne as Sa,Pn as Si,Fo as Sn,Pi as Sr,Fc as St,ku as T,De as Ta,On as Ti,ko as Tn,Oi as Tr,kc as Tt,ql as U,G as Ua,Gt as Ui,Ka as Un,Kr as Ur,qs as Ut,Zl as V,Y as Va,Yt as Vi,Xa as Vn,Xr as Vr,Zs as Vt,Gl as W,U as Wa,Ut as Wi,Wa as Wn,Wr,Gs as Wt,Nl as X,j as Xa,jt as Xi,Ma as Xn,Mr as Xr,Ns as Xt,Fl as Y,N as Ya,Nt as Yi,Pa as Yn,Pr as Yr,Fs as Yt,jl as Z,k as Za,kt as Zi,Aa as Zn,Ar as Zr,js as Zt,Gu as _,Ue as _a,Wn as _i,Go as _n,Wi as _r,Gc as _t,hd as a,pt as aa,mr as ai,hs as an,p as ao,ma as ar,hl as at,zu as b,Le as ba,Rn as bi,zo as bn,Ri as br,zc as bt,ld as c,st as ca,cr as ci,ls as cn,s as co,ca as cr,ll as ct,rd as d,tt as da,nr as di,rs as dn,t as do,na as dr,rl as dt,Ct as ea,wr as ei,Ts as en,C as eo,wa as er,Tl as et,td as f,$e as fa,er as fi,ts as fn,ea as fr,tl as ft,qu as g,Ge as ga,Kn as gi,qo as gn,Ki as gr,qc as gt,Yu as h,qe as ha,Jn as hi,Yo as hn,Ji as hr,Yc as ht,_d as i,ht as ia,gr as ii,_s as in,h as io,ga as ir,_l as it,_u as j,he as ja,gn as ji,_o as jn,gi as jr,_c as jt,xu as k,ye as ka,bn as ki,xo as kn,bi as kr,xc as kt,sd as l,at as la,or as li,ss as ln,a as lo,oa as lr,sl as lt,Zu as m,Ye as ma,Xn as mi,Zo as mn,Xi as mr,Zc as mt,xd as n,yt as na,br as ni,xs as nn,y as no,ba as nr,xl as nt,pd as o,dt as oa,fr as oi,ps as on,d as oo,fa as or,pl as ot,$u as p,Ze as pa,Qn as pi,$o as pn,Qi as pr,$c as pt,zl as q,L as qa,Lt as qi,Ra as qn,Rr as qr,zs as qt,yd as r,_t as ra,vr as ri,ys as rn,_ as ro,va as rr,yl as rt,dd as s,lt as sa,ur as si,ds as sn,l as so,ua as sr,dl as st,Cd as t,xt as ta,Sr as ti,Cs as tn,x as to,Sa as tr,Cl as tt,ad as u,rt as ua,ir as ui,as as un,r as uo,ia as ur,al as ut,Uu as v,Ve as va,Hn as vi,Uo as vn,Hi as vr,Uc as vt,ju as w,ke as wa,An as wi,jo as wn,Ai as wr,jc as wt,Lu as x,Fe as xa,In as xi,Lo as xn,Ii as xr,Lc as xt,Vu as y,ze as ya,Bn as yi,Vo as yn,Bi as yr,Vc as yt,tu as z,$ as za,$t as zi,eo as zn,ei as zr,tc as zt};
