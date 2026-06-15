@@ -30,78 +30,69 @@ Functions like `pitchToNumber`, `pitchToFrequency`, and `frequencyToPitch` all a
 
 ---
 
-## Pre-Coding Prep (Jun 3–9)
+## Pre-coding prep (Jun 3–9)
 
-- Codebase audit complete — I mapped ~30 hardcoded-12 locations across 6 files
-- Line numbers verified against current codebase (many original proposal numbers were stale)
-- Three PRs already merged before coding period:
-  - [#6243](https://github.com/sugarlabs/musicblocks/pull/6243) (mine): `defineMode` validation + octave wrap fix
+- Found about 30 hardcoded-12 spots across six files
+- Verified line numbers against the current repo because older references were out of date
+- Reviewed pre-coding PRs already merged before this work:
+  - [#6243](https://github.com/sugarlabs/musicblocks/pull/6243) (mine): `defineMode` validation and octave wrap fix
   - [#7278](https://github.com/sugarlabs/musicblocks/pull/7278) (Mikey3600): `getNumNote` temperament-aware
-  - [#7317](https://github.com/sugarlabs/musicblocks/pull/7317) (srajang1805): Non-EDO constants & helpers foundation
-- Dev environment ready — `npm test`: 5438 tests passing
+  - [#7317](https://github.com/sugarlabs/musicblocks/pull/7317) (srajang1805): non-EDO constants and helper foundation
+- Confirmed the development environment is ready and `npm test` passes
 
 ---
 
-## Phase 1: Coding During Exams (Jun 10–18) ✅
+## Phase 1: coding during exams (Jun 10–18)
 
-**Constraint:** 4 exams (Jun 12, 13, 15, 18) — only ~1 hr/day on break days.
+I had four exams on Jun 12, 13, 15, and 18, so most of this week was short work sessions around study time.
 
-| Date | Work Done |
+| Date | Work done |
 |------|-----------|
-| Jun 10 | Dev env setup, `nirav-dmp` branch, grep audit of `musicutils.js` |
-| Jun 11 | **`getCurrentEDO()` helper** + 7 unit tests (all 12/17/19/31-EDO passing) |
-| Jun 12 | Post-exam: outlined `pitchToFrequency` refactor; **one-time mentor meeting** (Walter + Devin) |
-| Jun 13 | Console verified `getCurrentEDO("equal19")` → 19 |
-| Jun 14 | **`pitchToFrequency` + `pitchToNumber` refactored** — optional `temperament` param, `Math.pow(2, 1/currentEDO)` |
+| Jun 10 | Set up the dev environment, created the `nirav-dmp` branch, audited `musicutils.js` |
+| Jun 11 | Added `getCurrentEDO()` and seven unit tests; verified 12/17/19/31-EDO behavior |
+| Jun 12 | Post-exam: sketched the `pitchToFrequency` refactor; met with Walter and Devin |
+| Jun 13 | Confirmed `getCurrentEDO("equal19")` returns `19` |
+| Jun 14 | Refactored `pitchToFrequency` and `pitchToNumber` with an optional `temperament` argument |
 | Jun 15 | Post-exam: traced `pitchToNumber` callers |
-| Jun 16 | **`pitchToNumber` verified** — `octave * 12` → `octave * currentEDO` |
-| Jun 17 | **`frequencyToPitch` refactored** — dynamic step, unit tests for 12/17/19/31-EDO |
+| Jun 16 | Verified `pitchToNumber` — `octave * 12` → `octave * currentEDO` |
+| Jun 17 | Refactored `frequencyToPitch` — dynamic step, unit tests for 12/17/19/31-EDO |
 | Jun 18 | Last exam; sent Matrix update to mentors; composed Meeting 1 talking points |
 
 **Result:** Most of Goal 1 core functions done. All 5438 tests still pass.
 
 ---
 
-## Mentor Feedback (Jun 12 One-Time Meeting)
+## Mentor feedback
 
-1. **Goal 1 plan doc** — write problem → solution → testing (done: [`C4GT/GoalPlan.md`](https://github.com/noddy021/musicblocks/blob/main/C4GT/GoalPlan.md))
-2. **Blog post ASAP** — don't wait (this post!)
-3. **Small PRs** — not 1 PR per goal; feature-scoped PRs since goals coincide
-4. **Regular meetings** — Tuesdays 16:30 IST starting Jun 16
-
----
-
-## Specific Bugs Already Identified (Not in Original Proposal)
-
-- `IntervalsActions.js:157` — `totalIntervals % 12` → `% temperamentLength`
-- `IntervalsActions.js:169` — `totalIntervals > 21` → `> temperamentLength + 9`
+- Write the plan as problem → solution → testing (done in [`C4GT/GoalPlan.md`](https://github.com/noddy021/musicblocks/blob/main/C4GT/GoalPlan.md))
+- Keep PRs feature-focused instead of one PR per goal
+- Start weekly meetings on Tuesdays at 16:30 IST from Jun 16 onward
 
 ---
 
-## Next Week (Jun 19–25): Goal 1 Finish
+## Bugs I already found
 
-- Fix remaining 11 functions in `musicutils.js` (`numberToPitchSharp`, `numberToPitch`, `_calculate_pitch_number`, `getPitchInfo`, `getNotePlayedValue`, `getNote`, `calculatePitch`, `_getStepSize`, scale-inclusion, `getSolfege`, `noteToNumber`)
-- Unit tests for each at 12, 17, 19, 31-EDO
-- Regression: full `npm test`
+- `IntervalsActions.js:157`: `totalIntervals % 12` should use `% temperamentLength`
+- `IntervalsActions.js:169`: `totalIntervals > 21` should be `> temperamentLength + 9`
 
 ---
 
-## Key Learnings
+## What I learned
 
-- **Read the code first** — many line numbers in the proposal were stale; grep verification saved me hours
-- **Small, incremental refactors** — optional `temperament` param + `getCurrentEDO()` pattern keeps backward compat and lets each function be tested independently
-- **Pre-coding PRs change scope** — PR #7278 and #7317 already did a big chunk of Goal 1/3; my plan must adapt
+- Check the code before trusting old notes: line references were often stale
+- Small, targeted refactors make the work easier to test and keep backward compatibility
+- Pre-coding PRs changed this week's scope: #7278 and #7317 already handled a lot of the foundation
 
 ---
 
 ## Acknowledgments
 
-Thanks to Walter Bender, Devin Ulibarri, and the Sugar Labs community for the opportunity. Special thanks to Mikey3600 and srajang1805 for the pre-coding PRs that gave me a running start.
+Thank you to Walter Bender, Devin Ulibarri, and the Sugar Labs community for the opportunity.
 
 ---
 
-## Connect
+## Connect with Me
 
-- GitHub: [@noddy021](https://github.com/noddy021)
-- Email: [niravsharma021@gmail.com](mailto:niravsharma021@gmail.com)
-- LinkedIn: [Nirav Sharma](https://www.linkedin.com/in/nirav-sharma-021)
+- GitHub: [021nirav-blip](https://github.com/021nirav-blip)
+- Email: [021nirav@gmail.com](mailTo:021nirav@gmail.com)
+- LinkedIn: https://www.linkedin.com/in/nirav-sharma-243258382
