@@ -1,5 +1,6 @@
 ---
 name: "Nirav Sharma"
+slug: "nirav-sharma"
 title: "DMP'26 Contributor"
 organization: "SugarLabs"
 description: "DMP'26 Contributor at SugarLabs"

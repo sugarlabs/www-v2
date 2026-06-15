@@ -22,7 +22,9 @@ image: "assets/Images/c4gt_DMP.webp"
 
 ## What is this project?
 
-Music Blocks hardcodes **12** everywhere — pitch math, note names, intervals. If you pick 19-EDO, 31-EDO, or Just Intonation, half the blocks give wrong answers: wrong frequencies, wrong note names, broken intervals.
+Functions like `pitchToNumber`, `pitchToFrequency`, and `frequencyToPitch` all assume 12-EDO. So do note-naming, interval math, and scale calculations. If you pick 19-EDO, 31-EDO, or Just Intonation, many blocks produce wrong results: incorrect frequencies, mismatched note names, broken interval arithmetic.
+
+**Proposal:** [Proposal Doc (Google Drive)](https://drive.google.com/drive/u/0/folders/1rm-BMd-MManIoGKVSeqyEH_DA7UqIpw2)
 
 **Goal:** Make the temperament system dynamic so any EDO (12, 17, 19, 31…) and non-EDO temperaments (Pythagorean, Just Intonation, Meantone) work correctly across all blocks, synthesis, and widgets.
 
@@ -56,7 +58,7 @@ Music Blocks hardcodes **12** everywhere — pitch math, note names, intervals. 
 | Jun 17 | **`frequencyToPitch` refactored** — dynamic step, unit tests for 12/17/19/31-EDO |
 | Jun 18 | Last exam; sent Matrix update to mentors; composed Meeting 1 talking points |
 
-**Result:** Most of Goal 1a core functions done. All 5438 tests still pass.
+**Result:** Most of Goal 1 core functions done. All 5438 tests still pass.
 
 ---
 
@@ -76,7 +78,7 @@ Music Blocks hardcodes **12** everywhere — pitch math, note names, intervals. 
 
 ---
 
-## Next Week (Jun 19–25): Goal 1a Finish
+## Next Week (Jun 19–25): Goal 1 Finish
 
 - Fix remaining 11 functions in `musicutils.js` (`numberToPitchSharp`, `numberToPitch`, `_calculate_pitch_number`, `getPitchInfo`, `getNotePlayedValue`, `getNote`, `calculatePitch`, `_getStepSize`, scale-inclusion, `getSolfege`, `noteToNumber`)
 - Unit tests for each at 12, 17, 19, 31-EDO
