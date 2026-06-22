@@ -94,5 +94,5 @@ Thank you to Walter Bender, Devin Ulibarri, and the Sugar Labs community for the
 ## Connect with Me
 
 - GitHub: [021nirav-blip](https://github.com/021nirav-blip)
-- Email: [021nirav@gmail.com](mailTo:021nirav@gmail.com)
+- Email: [021nirav@gmail.com](mailto:021nirav@gmail.com)
 - LinkedIn: https://www.linkedin.com/in/nirav-sharma-243258382

@@ -4,7 +4,7 @@ slug: "nirav-sharma"
 title: "DMP'26 Contributor"
 organization: "SugarLabs"
 description: "DMP'26 Contributor at SugarLabs"
-avatar: "https://avatars.githubusercontent.com/u/147875261?s=400&u=e784808241accea1d4c664bba0ce7bd6ca000662&v=4"
+avatar: "https://avatars.githubusercontent.com/u/238009768?v=4"
 ---
 
 # About Nirav Sharma
