@@ -88,13 +88,13 @@ const Pagination: React.FC<PaginationProps> = ({
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex flex-wrap justify-center items-center gap-1 sm:gap-2 mt-12 mb-8">
+    <div className="flex items-center justify-center gap-1 sm:gap-2 mt-12 mb-8">
       <motion.button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className={`p-2 sm:p-3 rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300 ${
+        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300 ${
           currentPage === 1
             ? 'bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-600'
             : 'bg-gradient-to-br from-blue-500 to-green-500 text-white shadow-lg hover:shadow-xl'
@@ -104,11 +104,11 @@ const Pagination: React.FC<PaginationProps> = ({
         <ChevronLeft size={20} className="w-4 h-4 sm:w-5 sm:h-5" />
       </motion.button>
 
-      <div className="flex flex-wrap justify-center bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm px-2 sm:px-4 py-1 sm:py-2 gap-1 sm:gap-2 items-center">
+      <div className="flex items-center justify-center bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm px-2 sm:px-4 py-1 sm:py-2 gap-1 sm:gap-2">
         {getPageNumbers().map((page, index) => (
           <React.Fragment key={index}>
             {page === '...' ? (
-              <span className="text-gray-400 px-1 sm:px-2 text-xs sm:text-base">
+              <span className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-gray-400 text-xs sm:text-base">
                 ...
               </span>
             ) : (
@@ -118,7 +118,7 @@ const Pagination: React.FC<PaginationProps> = ({
                 whileTap={{ scale: 0.9 }}
                 className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-300 ${
                   currentPage === page
-                    ? 'bg-gradient-to-br from-blue-600 to-green-600 text-white shadow-md transform -translate-y-1'
+                    ? 'bg-gradient-to-br from-blue-600 to-green-600 text-white shadow-md'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                 }`}
               >
@@ -134,7 +134,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={currentPage === totalPages}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className={`p-2 sm:p-3 rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300 ${
+        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300 ${
           currentPage === totalPages
             ? 'bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-600'
             : 'bg-gradient-to-br from-blue-500 to-green-500 text-white shadow-lg hover:shadow-xl'
