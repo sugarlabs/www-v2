@@ -32,7 +32,7 @@ There were also security and correctness concerns: some of the originals used in
 
 ---
 
-## What `ci.yml` Does
+## What "ci.yml" Does
 
 The new workflow consolidates all per-PR validation into one file with six jobs that run in parallel.
 
