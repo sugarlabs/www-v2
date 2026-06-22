@@ -25,7 +25,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## whoami
 
 Hey, I'm Noaman Akhtar ([@Noaman-Akhtar](https://github.com/Noaman-Akhtar)), a third-year CSE undergraduate at KIIT University, Bhubaneswar. This summer I'll be working on [AI Optimization](https://github.com/sugarlabs/sugar-ai) as a contributor for the Digital India Mentorship (DMP) 2026 cohort with Sugar Labs.
-My journey into software development started with a natural interest in systems and problem-solving. Contributing to open-source software became a major focus because I love knowing that the code I write actually runs on people's machines and solves tangible issues. Having previously contributed to the [sugarlabs/musicblocks](https://github.com/sugarlabs/musicblocks) codebase I'm very excited to dive deep into the Python and AI backend side of the Sugar Labs ecosystem this summer by working on sugar-ai.
+My journey into software development started with a natural interest in systems and problem-solving. Contributing to open-source software became a major focus because I love knowing that the code I write actually runs on people's machines and solves tangible issues. Having previously contributed to the [https://github.com/sugarlabs/musicblocks](https://github.com/sugarlabs/musicblocks) codebase I'm very excited to dive deep into the Python and AI backend side of the Sugar Labs ecosystem this summer by working on sugar-ai.
 
 ---
 
