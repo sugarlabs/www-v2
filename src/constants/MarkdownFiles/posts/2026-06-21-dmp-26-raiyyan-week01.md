@@ -12,9 +12,13 @@ image: "assets/Images/c4gt_DMP.webp"
 <!-- markdownlint-disable -->
 # Week 01 Progress Report by NSA Raiyyan
 **Project:** [Speak-AI Multilingual Support](https://github.com/sugarlabs/speak)
+
 **Mentors:** [Mebin Thattil](https://github.com/mebinthattil), [Ibiam Chihurumnaya](https://github.com/chimosky)
+
 **Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)
+
 **Organization:** [Sugar Labs](https://sugarlabs.org)
+
 **Reporting Period:** 2026-06-15 – 2026-06-21
 ---
 
