@@ -55,7 +55,7 @@ It's one of those things that sounds simple on paper but took real effort to get
 
 ## The Offline Problem
 
-Here's where things get interesting. While testing the Git features through the debug widget, I kept asking myself: what happens if a student is working on a project at home without internet?
+Here's where things get interesting. During a discussion about the Git features, Walter raised an important question: what happens if a student is working on a project at home without internet?
 
 Right now, if you're offline, you lose access to all the Git features. No commits, no branches, no history. The project is just a file sitting in your browser. That's fine for casual use, but it defeats the whole purpose of what I'm building. The entire point of this backend is to give students ownership and version history over their work. If that only works when they have a stable connection, a huge chunk of users get left out.
 
