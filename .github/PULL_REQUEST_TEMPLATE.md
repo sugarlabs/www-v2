@@ -8,7 +8,6 @@ about: Submit changes to the Sugar Labs website for review
 <!--- Provide a clear and concise description of your changes. -->
 <!--- Explain what problem it solves or what feature/improvement it adds. -->
 
-
 ## 🔗 Related Issue
 
 <!--- If this PR is related to any issue(s), link them here using #issue_number -->
@@ -68,9 +67,9 @@ Fixes #
 
 <!--- List the specific test cases you've verified -->
 
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## ♿ Accessibility
 
@@ -99,7 +98,6 @@ Fixes #
 ## 💭 Additional Notes
 
 <!--- Add any additional context, considerations, or notes for reviewers -->
-
 
 ---
 
