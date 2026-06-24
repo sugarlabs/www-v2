@@ -28849,6 +28849,225 @@ Thanks to my mentor Lionel Laské for the continuous guidance, and the Sugar Lab
 ---
 
 *Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,xd=e({default:()=>Sd}),Sd=`---
+title: "GSoC '26 Week 4 Update by Shreya Saxena"
+excerpt: "Investigated Firefox rendering bottlenecks and optimized the Music Blocks execution engine."
+category: "DEVELOPER NEWS"
+date: "2026-06-22"
+slug:slug: "2026-06-22-gsoc-26-shreya-saxena-week04"
+author: "@/constants/MarkdownFiles/authors/shreya-saxena.md"
+tags: "gsoc26,sugarlabs,musicblocks,performance,week04,shreya-saxena"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 4 Progress Report by Shreya Saxena
+
+**Project:** [Music Blocks Performance](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#music-blocks-performance)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-06-15 – 2026-06-21
+
+---
+
+## Goals for This Week
+
+- **Goal 1:** Investigate Firefox performance degradation on [Crabcanon-plot](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html) (flagged by Devin) and identify the rendering bottleneck.
+- **Goal 2:** Optimize the Logo Execution Engine to improve Music Blocks runtime performance.
+- **Goal 3:** Define a concrete 5-step optimization roadmap for the remaining GSoC period.
+
+---
+
+## This Week's Achievements
+
+### 1. Firefox Performance Investigation: Canvas Compositing Bottleneck
+
+Devin flagged that [Crabcanon-plot](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html) performs significantly worse on Firefox than Chrome. I profiled the rendering pipeline end-to-end and identified the root cause.
+
+**The Finding:**
+
+Profiling revealed that  approx **~83.9% of \`Stage.update()\` execution time is spent inside \`drawImage()\`** the EaselJS compositing step where each turtle's off-screen canvas is rendered onto the main stage canvas every frame.
+
+<p align="center">
+  <img
+    src="assets/Developers/shreya-saxena/Firefox-Perf-Graph.jpeg"
+    alt="Firefox DevTools flame graph showing Music Blocks rendering performance"
+    width="800"
+  />
+</p>
+
+**Canvas Size Scales Without Bounds:**
+
+The critical insight: canvas dimensions are derived directly from \`window.innerWidth\` and \`window.innerHeight\` with **no upper bound**. During a stress test at 30% browser zoom:
+
+| Metric | 30% Zoom (Stress Test) | 100% Zoom (Baseline) |
+|--------|------------------------|----------------------|
+| Canvas Size | 4256 × 1483 | 1280 × 434 |
+| Pixel Count | ~6.3M | ~0.56M |
+| Frame Jank | ~53% | ~0.2% |
+| Avg Frame Time | 30.28 ms | 4.05 ms |
+| p95 Frame Time | 39 ms | 7 ms |
+| Total drawImage() Time | 15,808 ms | 2,411 ms |
+
+
+**Validation Through Experimentation:**
+
+I verified the hypothesis by temporarily capping canvas dimensions to 1920×1080, which reduced rendering cost. However, this introduced coordinate misalignment (the canvas was bounded but block layout still used full viewport dimensions), so I reverted rather than propose it as a fix.
+
+**Conclusion:**
+
+Under normal viewport sizes (100% zoom), playback remains smooth. Firefox's extreme zoom-out scenario creates an unusually large viewport that falls outside typical usage. **Canvas size is the major contributor to Firefox slowdown under extreme zoom**, not a general Firefox rendering inefficiency. This investigation established the need for cross-browser profiling. Going forward, all performance analysis will be performed on both Firefox and Chrome.
+
+**Recommended Approach & Implementation:**
+
+Rather than force a canvas cap, I implemented a **Firefox-specific warning** that detects when the viewport exceeds a reasonable threshold and displays a message suggesting the user reset zoom to 100%. This approach:
+- Maintains full compatibility
+- Guides users toward expected behavior without forcing constraints
+- Respects browser settings while educating about performance implications
+
+**Implementation complete** : warning now displays when viewport size indicates potential performance degradation. [PR #7578](https://github.com/sugarlabs/musicblocks/pull/7578)
+
+---
+
+### 2. Synth Initialization Memoization
+
+**Logo Execution Engine Optimization** : first phase of the 5-step optimization plan.
+
+Shipped a two-part fix to reduce startup overhead:
+
+- **Part A:** Added \`_synthsInitialized\` guard in \`prepSynths()\` to prevent redundant synth initialization on repeated Play clicks.  [PR #7582](https://github.com/sugarlabs/musicblocks/pull/7582)
+- **Part B:** Deferred \`hideBlocks()\` via \`requestAnimationFrame\` to prevent blocking the UI thread during the Play startup sequence. 
+[PR #7617 (In Progress)](https://github.com/sugarlabs/musicblocks/pull/7617)
+
+**Impact:**
+- Reduced main-thread long tasks during Play startup from **232–221 ms** to **114–121 ms**, improving initial Play responsiveness, especially for larger projects with many synths.
+- Reduced \`runFromBlockNow()\` execution time by approximately **~5%**, lowering interpreter overhead during program execution.
+
+<p align="center">
+  <img
+    src="assets/Developers/shreya-saxena/Performance-graph.jpeg"
+    alt="Chrome DevTools performance trace showing Play startup execution."
+    width="600"
+  />
+</p>
+
+---
+
+### 3. Block Execution Analysis Benchmark Harness
+
+Implemented a comprehensive instrumentation framework for [ActionBlocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks/ActionBlocks.js) to enable fine-grained performance measurement:
+
+- **\`window.actionStats\`:** A global object that tracks execution timing for hot functions (e.g., \`_doWait\`, \`_doRepeat\`, \`_doIf\`) using high-resolution \`performance.now()\` timestamps.
+- **Standalone Benchmark:** Created a benchmark harness that loads a project file, triggers Play, and polls for execution completion enabling automated performance regression detection.
+- **Minimal Overhead:** Instrumentation is gated behind a check, so production builds incur no cost.
+
+This benchmark harness provides the infrastructure for Phase 2 optimization work. I am currently working on the feasible optimizations (if possible) and will share the progress next week.
+
+---
+
+## Challenges & How I Overcame Them
+
+- **Challenge:** Browser-level zoom isn't directly detectable via JavaScript in Firefox; attempting to disable zoom via JavaScript or viewport meta tags doesn't work reliably.  
+  **Solution:** Shifted focus from prevention to detection. Instead of blocking zoom, we detect its effect (viewport size exceeding thresholds) and warn users a non-invasive approach that respects browser settings while guiding expected usage.
+
+- **Challenge:** The canvas compositing bottleneck only manifests under extreme viewport conditions; normal usage is unaffected.  
+  **Solution:** Treated this as a defect in edge-case behavior rather than a general rendering problem. Validated the root cause (pixel count) through experimentation before proposing solutions.
+
+- **Challenge:** Instrumentation for [ActionBlocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks/ActionBlocks.js) needed to be lightweight and not interfere with block execution timing.  
+  **Solution:** Used \`performance.now()\` for wall-clock time and kept instrumentation behind conditional checks so it can be disabled in production.
+
+---
+
+## Key Learnings
+
+- **Browser constraints matter.** Firefox's zoom behavior is a browser-level feature that applications cannot override. The performant path is to detect the effect and guide users, not fight the browser. Although I will now be profiling on both Firefox and Chrome to analyze the problem clearly.
+- **Stress-test extremes can hide real insights.** A 30% zoom stress test revealed that canvas size scales unboundedly a finding that wouldn't emerge from normal profiling but is crucial for understanding edge-case behavior.
+- **Memoization in hot paths has immediate impact.** The synth initialization fix is a one-line guard that eliminates redundant work on every Play clicksmall changes in frequently called paths compound quickly.
+- **Micro-optimizations can have big impact.** Reducing main thread long tasks from 232ms to 114ms through targeted fixes demonstrates that seemingly small optimizations in hot paths yield measurable gains when applied consistently.
+
+---
+
+## Phase 2 Optimization Roadmap: 5-Step Plan
+
+With Phase 1 instrumentation and bottleneck analysis complete, Phase 2 focuses on **targeted execution-path optimization** across five interconnected subsystems:
+
+### Step 1: Logo Execution Engine Optimization 
+- Implemented via [PR #7582](https://github.com/sugarlabs/musicblocks/pull/7582) and [PR #7617](https://github.com/sugarlabs/musicblocks/pull/7617) (synth initialization memoization).
+- Target: Reduce block execution latency for hot paths.
+
+### Step 2: Block Execution Analysis & Optimization 
+- Analyzing [blocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks.js) block handler overhead (parameter binding, queue management).
+- Profiling [ActionBlocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks/ActionBlocks.js) hot functions 
+
+- Identifying redundant parameter copies or queue traversals.
+- Determining feasibility: block execution is distributed across playback (0.1-2.5ms per block), not frame-critical. Assessing whether micro-optimizations yield meaningful per-frame gains or only cumulative improvements.
+
+### Step 3: Turtle & Music Execution Optimization 
+- Profile [turtle-singer.js](https://github.com/sugarlabs/musicblocks/blob/master/js/turtle-singer.js) and [turtle-painter.js](https://github.com/sugarlabs/musicblocks/blob/master/js/turtle-painter.js) to identify synchronization overhead.
+- Reduce context-switch costs between graphics and audio dispatch.
+- Optimize timeline reconciliation for large and representative projects.
+
+### Step 4: Memory Leak Detection & Prevention 
+- Implement heap profiling to detect object accumulation during playback.
+- Audit event listener registration/deregistration cycles.
+- Validate that \`parentFlowQueue\` and similar bookkeeping structures are properly cleaned up after execution.
+
+### Step 5: Garbage Collection & Runtime Stability 
+- Measure GC pause duration and frequency during long playbacks.
+- Batch allocations to reduce GC pressure in hot loops.
+
+<p align="center">
+  <img
+    src="assets/Developers/shreya-saxena/Optimization-Plan.jpeg"
+    alt="Music Blocks Phase 2 performance optimization workflow."
+    width="700"
+  />
+</p>
+
+---
+
+## Plans for Next Week
+
+**Step 2: Block Execution Optimization (Implementation Phase)**
+
+Profiling work on block execution is almost complete. Currently detailing profiling results on specific aspects to determine whether feasible optimizations exist. Initial findings show parameter binding and queue traversal as potential optimization targets. Now moving to implementation based on profiling findings:
+
+- Analyze profiling results from [blocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks.js) and [ActionBlocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks/ActionBlocks.js) to identify concrete optimization targets.
+- Implement targeted optimizations for highest-impact block handlers (parameter binding, queue overhead, block dispatch).
+- Measure performance gains using the [ActionBlocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks/ActionBlocks.js) instrumentation harness.
+- Validate optimizations on [Crabcanon-Plot](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html) and other representative projects to ensure correctness.
+
+---
+
+## Resources & References
+
+- **Firefox Performance Investigation Report:** [Full Analysis](https://docs.google.com/document/d/1sVVFc620a4MbxsBtp-Dg0wP4kr6kPTN4US4aZBR3U8c/edit?usp=sharing) *(link to investigation Report)*
+- **PRs This Week:**
+  - [PR #7582: Optimize logo Exceution engine (Part A)](https://github.com/sugarlabs/musicblocks/pull/7582)
+  - [PR #7617: Optimize logo execution engine (Part B)](https://github.com/sugarlabs/musicblocks/pull/7617)
+  - [PR #7578: Firefox warning implementation](https://github.com/sugarlabs/musicblocks/pull/7578)
+- **Architecture References:**
+  - [logo.js](https://github.com/sugarlabs/musicblocks/blob/master/js/logo.js)
+  - [blocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks.js)
+  - [turtle-singer.js](https://github.com/sugarlabs/musicblocks/blob/master/js/turtle-singer.js)
+  - [ActionBlocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks/ActionBlocks.js)
+- **Automation Framework:** [Playwright](https://playwright.dev/)
+- **Repository:** [Music Blocks](https://github.com/sugarlabs/musicblocks)
+- **Benchmark Workload:** [Crabcanon-Plot](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html)
+
+---
+
+## Acknowledgments
+
+Thank you to Devin Ulibarri for flagging the Firefox performance issue and pushing for a thorough investigation. Thanks to Walter Bender and Om Santosh Suneri for continued mentorship, and to Sugarlabs community for their support.
+
+---
+
+## Next Steps
+
+Proceed into Step 2 (Block Execution Analysis & Optimization) focusing on [blocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks.js) and [ActionBlocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks/ActionBlocks.js) profiling using the new instrumentation harness.
+
+`,Cd=e({default:()=>wd}),wd=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -28997,7 +29216,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Cd=e({default:()=>wd}),wd=`---
+`,Td=e({default:()=>Ed}),Ed=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -29100,7 +29319,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Td=e({default:()=>Ed}),Ed=`---
+`,Dd=e({default:()=>Od}),Od=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -29573,7 +29792,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Dd=e({default:()=>Od}),Od=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,kd=e({default:()=>Ad}),Ad=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -29660,7 +29879,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,kd=e({default:()=>Ad}),Ad=`---\r
+`,jd=e({default:()=>Md}),Md=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -29753,7 +29972,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,jd=e({default:()=>Md}),Md=`---\r
+`,Nd=e({default:()=>Pd}),Pd=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -29847,7 +30066,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Nd=e({default:()=>Pd}),Pd=`---\r
+`,Fd=e({default:()=>Id}),Id=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -29935,7 +30154,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Fd=e({default:()=>Id}),Id=`---\r
+`,Ld=e({default:()=>Rd}),Rd=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -30018,7 +30237,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Ld=e({default:()=>Rd}),Rd=`---\r
+`,zd=e({default:()=>Bd}),Bd=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -30084,7 +30303,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,zd=e({default:()=>Bd}),Bd=`---
+`,Vd=e({default:()=>Hd}),Hd=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -30166,7 +30385,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Vd=e({default:()=>Hd}),Hd=`---
+---`,Ud=e({default:()=>Wd}),Wd=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -30259,7 +30478,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Ud=e({default:()=>Wd}),Wd=`---
+`,Gd=e({default:()=>Kd}),Kd=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -30348,7 +30567,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Gd=e({default:()=>Kd}),Kd=`---
+--- `,qd=e({default:()=>Jd}),Jd=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -30493,7 +30712,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,qd=e({default:()=>Jd}),Jd=`---
+--- `,Yd=e({default:()=>Xd}),Xd=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -30681,7 +30900,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Yd=e({default:()=>Xd}),Xd=`---
+--- `,Zd=e({default:()=>Qd}),Qd=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -30776,7 +30995,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Zd=e({default:()=>Qd}),Qd=`---
+`,$d=e({default:()=>ef}),ef=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -30865,7 +31084,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,$d=e({default:()=>ef}),ef=`---
+`,tf=e({default:()=>nf}),nf=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -30952,7 +31171,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,tf=e({default:()=>nf}),nf=`---
+---`,rf=e({default:()=>af}),af=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31035,7 +31254,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,rf=e({default:()=>af}),af=`---
+---`,of=e({default:()=>sf}),sf=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31118,7 +31337,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,of=e({default:()=>sf}),sf=`---
+---`,cf=e({default:()=>lf}),lf=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -31423,4 +31642,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{lu as $,se as $a,cn as $i,co as $n,ci as $r,lc as $t,td as A,$e as Aa,er as Ai,ts as An,ea as Ar,tl as At,Fu as B,Ne as Ba,Pn as Bi,Fo as Bn,Pi as Br,Fc as Bt,hd as C,pt as Ca,mr as Ci,hs as Cn,p as Co,ma as Cr,hl as Ct,sd as D,at as Da,or as Di,ss as Dn,a as Do,oa as Dr,sl as Dt,ld as E,st as Ea,cr as Ei,ls as En,s as Eo,ca as Er,ll as Et,Gu as F,Ue as Fa,Wn as Fi,Go as Fn,Wi as Fr,Gc as Ft,Tu as G,Ce as Ga,wn as Gi,To as Gn,wi as Gr,Tc as Gt,ju as H,ke as Ha,An as Hi,jo as Hn,Ai as Hr,jc as Ht,Uu as I,Ve as Ia,Hn as Ii,Uo as In,Hi as Ir,Uc as It,yu as J,_e as Ja,vn as Ji,yo as Jn,vi as Jr,yc as Jt,Cu as K,xe as Ka,Sn as Ki,Co as Kn,Si as Kr,Cc as Kt,Vu as L,ze as La,Bn as Li,Vo as Ln,Bi as Lr,Vc as Lt,Zu as M,Ye as Ma,Xn as Mi,Zo as Mn,Xi as Mr,Zc as Mt,Yu as N,qe as Na,Jn as Ni,Yo as Nn,Ji as Nr,Yc as Nt,ad as O,rt as Oa,ir as Oi,as as On,r as Oo,ia as Or,al as Ot,qu as P,Ge as Pa,Kn as Pi,qo as Pn,Ki as Pr,qc as Pt,du as Q,le as Qa,un as Qi,uo as Qn,ui as Qr,dc as Qt,zu as R,Le as Ra,Rn as Ri,zo as Rn,Ri as Rr,zc as Rt,_d as S,ht as Sa,gr as Si,_s as Sn,h as So,ga as Sr,_l as St,dd as T,lt as Ta,ur as Ti,ds as Tn,l as To,ua as Tr,dl as Tt,ku as U,De as Ua,On as Ui,ko as Un,Oi as Ur,kc as Ut,Nu as V,je as Va,Mn as Vi,No as Vn,Mi as Vr,Nc as Vt,Du as W,Te as Wa,En as Wi,Do as Wn,Ei as Wr,Dc as Wt,hu as X,pe as Xa,mn as Xi,ho as Xn,mi as Xr,hc as Xt,_u as Y,he as Ya,gn as Yi,_o as Yn,gi as Yr,_c as Yt,pu as Z,de as Za,fn as Zi,po as Zn,fi as Zr,pc as Zt,Dd as _,Tt as _a,Er as _i,Ds as _n,T as _o,Ea as _r,Dl as _t,Zd as a,Yt as aa,Xr as ai,Zs as an,Y as ao,Xa as ar,Zl as at,xd as b,yt as ba,br as bi,xs as bn,y as bo,ba as br,xl as bt,Gd as c,Ut as ca,Wr as ci,Gs as cn,U as co,Wa as cr,Gl as ct,zd as d,Lt as da,Rr as di,zs as dn,L as do,Ra as dr,zl as dt,on as ea,oi as ei,sc as en,ae as eo,oo as er,su as et,Ld as f,Ft as fa,Ir as fi,Ls as fn,F as fo,Ia as fr,Ll as ft,kd as g,Dt as ga,Or as gi,ks as gn,D as go,Oa as gr,kl as gt,jd as h,kt as ha,Ar as hi,js as hn,k as ho,Aa as hr,jl as ht,$d as i,Zt as ia,Qr as ii,$s as in,Z as io,Qa as ir,$l as it,$u as j,Ze as ja,Qn as ji,$o as jn,Qi as jr,$c as jt,rd as k,tt as ka,nr as ki,rs as kn,t as ko,na as kr,rl as kt,Ud as l,Vt as la,Hr as li,Us as ln,V as lo,Ha as lr,Ul as lt,Nd as m,jt as ma,Mr as mi,Ns as mn,j as mo,Ma as mr,Nl as mt,rf as n,tn as na,ni,rc as nn,te as no,no as nr,ru as nt,Yd as o,qt as oa,Jr as oi,Ys as on,q as oo,Ja as or,Yl as ot,Fd as p,Nt as pa,Pr as pi,Fs as pn,N as po,Pa as pr,Fl as pt,xu as q,ye as qa,bn as qi,xo as qn,bi as qr,xc as qt,tf as r,$t as ra,ei as ri,tc as rn,$ as ro,eo as rr,tu as rt,qd as s,Gt as sa,Kr as si,qs as sn,G as so,Ka as sr,ql as st,of as t,rn as ta,ii as ti,ac as tn,re as to,io as tr,au as tt,Vd as u,zt as ua,Br as ui,Vs as un,z as uo,Ba as ur,Vl as ut,Td as v,Ct as va,wr as vi,Ts as vn,C as vo,wa as vr,Tl as vt,pd as w,dt as wa,fr as wi,ps as wn,d as wo,fa as wr,pl as wt,yd as x,_t as xa,vr as xi,ys as xn,_ as xo,va as xr,yl as xt,Cd as y,xt as ya,Sr as yi,Cs as yn,x as yo,Sa as yr,Cl as yt,Lu as z,Fe as za,In as zi,Lo as zn,Ii as zr,Lc as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{du as $,le as $a,un as $i,uo as $n,ui as $r,dc as $t,rd as A,tt as Aa,nr as Ai,rs as An,t as Ao,na as Ar,rl as At,Lu as B,Fe as Ba,In as Bi,Lo as Bn,Ii as Br,Lc as Bt,_d as C,ht as Ca,gr as Ci,_s as Cn,h as Co,ga as Cr,_l as Ct,ld as D,st as Da,cr as Di,ls as Dn,s as Do,ca as Dr,ll as Dt,dd as E,lt as Ea,ur as Ei,ds as En,l as Eo,ua as Er,dl as Et,qu as F,Ge as Fa,Kn as Fi,qo as Fn,Ki as Fr,qc as Ft,Du as G,Te as Ga,En as Gi,Do as Gn,Ei as Gr,Dc as Gt,Nu as H,je as Ha,Mn as Hi,No as Hn,Mi as Hr,Nc as Ht,Gu as I,Ue as Ia,Wn as Ii,Go as In,Wi as Ir,Gc as It,xu as J,ye as Ja,bn as Ji,xo as Jn,bi as Jr,xc as Jt,Tu as K,Ce as Ka,wn as Ki,To as Kn,wi as Kr,Tc as Kt,Uu as L,Ve as La,Hn as Li,Uo as Ln,Hi as Lr,Uc as Lt,$u as M,Ze as Ma,Qn as Mi,$o as Mn,Qi as Mr,$c as Mt,Zu as N,Ye as Na,Xn as Ni,Zo as Nn,Xi as Nr,Zc as Nt,sd as O,at as Oa,or as Oi,ss as On,a as Oo,oa as Or,sl as Ot,Yu as P,qe as Pa,Jn as Pi,Yo as Pn,Ji as Pr,Yc as Pt,pu as Q,de as Qa,fn as Qi,po as Qn,fi as Qr,pc as Qt,Vu as R,ze as Ra,Bn as Ri,Vo as Rn,Bi as Rr,Vc as Rt,yd as S,_t as Sa,vr as Si,ys as Sn,_ as So,va as Sr,yl as St,pd as T,dt as Ta,fr as Ti,ps as Tn,d as To,fa as Tr,pl as Tt,ju as U,ke as Ua,An as Ui,jo as Un,Ai as Ur,jc as Ut,Fu as V,Ne as Va,Pn as Vi,Fo as Vn,Pi as Vr,Fc as Vt,ku as W,De as Wa,On as Wi,ko as Wn,Oi as Wr,kc as Wt,_u as X,he as Xa,gn as Xi,_o as Xn,gi as Xr,_c as Xt,yu as Y,_e as Ya,vn as Yi,yo as Yn,vi as Yr,yc as Yt,hu as Z,pe as Za,mn as Zi,ho as Zn,mi as Zr,hc as Zt,kd as _,Dt as _a,Or as _i,ks as _n,D as _o,Oa as _r,kl as _t,$d as a,Zt as aa,Qr as ai,$s as an,Z as ao,Qa as ar,$l as at,Cd as b,xt as ba,Sr as bi,Cs as bn,x as bo,Sa as br,Cl as bt,qd as c,Gt as ca,Kr as ci,qs as cn,G as co,Ka as cr,ql as ct,Vd as d,zt as da,Br as di,Vs as dn,z as do,Ba as dr,Vl as dt,cn as ea,ci as ei,lc as en,se as eo,co as er,lu as et,zd as f,Lt as fa,Rr as fi,zs as fn,L as fo,Ra as fr,zl as ft,jd as g,kt as ga,Ar as gi,js as gn,k as go,Aa as gr,jl as gt,Nd as h,jt as ha,Mr as hi,Ns as hn,j as ho,Ma as hr,Nl as ht,tf as i,$t as ia,ei as ii,tc as in,$ as io,eo as ir,tu as it,td as j,$e as ja,er as ji,ts as jn,ea as jr,tl as jt,ad as k,rt as ka,ir as ki,as as kn,r as ko,ia as kr,al as kt,Gd as l,Ut as la,Wr as li,Gs as ln,U as lo,Wa as lr,Gl as lt,Fd as m,Nt as ma,Pr as mi,Fs as mn,N as mo,Pa as mr,Fl as mt,of as n,rn as na,ii as ni,ac as nn,re as no,io as nr,au as nt,Zd as o,Yt as oa,Xr as oi,Zs as on,Y as oo,Xa as or,Zl as ot,Ld as p,Ft as pa,Ir as pi,Ls as pn,F as po,Ia as pr,Ll as pt,Cu as q,xe as qa,Sn as qi,Co as qn,Si as qr,Cc as qt,rf as r,tn as ra,ni as ri,rc as rn,te as ro,no as rr,ru as rt,Yd as s,qt as sa,Jr as si,Ys as sn,q as so,Ja as sr,Yl as st,cf as t,on as ta,oi as ti,sc as tn,ae as to,oo as tr,su as tt,Ud as u,Vt as ua,Hr as ui,Us as un,V as uo,Ha as ur,Ul as ut,Dd as v,Tt as va,Er as vi,Ds as vn,T as vo,Ea as vr,Dl as vt,hd as w,pt as wa,mr as wi,hs as wn,p as wo,ma as wr,hl as wt,xd as x,yt as xa,br as xi,xs as xn,y as xo,ba as xr,xl as xt,Td as y,Ct as ya,wr as yi,Ts as yn,C as yo,wa as yr,Tl as yt,zu as z,Le as za,Rn as zi,zo as zn,Ri as zr,zc as zt};
