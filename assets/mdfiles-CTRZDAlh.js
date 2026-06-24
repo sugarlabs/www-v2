@@ -27872,6 +27872,52 @@ A main challenge was recognizing that jumping straight into implementing Ollama 
 
 Thanks to my mentors and the Sugar Labs community for their guidance on the project boundaries. Special thanks to the developers who laid the groundwork for the initial \`RAGAgent\` implementation.
 `,td=e({default:()=>nd}),nd=`---
+title: "GSoC '26 Week 3: PR Polish, Upstream Fixes, and Testing Blockers"
+excerpt: "Bulletproofing the Calculate backend, getting a toolkit fix merged upstream, and moving to the Browse activity."
+category: "DEVELOPER NEWS"
+date: "2026-06-14"
+slug: "2026-06-14-gsoc-26-divyam-week3"
+author: "@/constants/MarkdownFiles/authors/divyam-agarwal.md"
+tags: "gsoc26,sugarlabs,gtk4,calculate,week3"
+image: "assets/Images/GSOC.webp"
+---
+
+# Week 3: PR Polish and Testing Blockers
+
+**Project:** [GTK4 Transition Part 1 Fructose](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md)  
+**Mentors:** [Krish (MostlyK)](https://github.com/MostlyKIGuess), [Ibiam](https://github.com/chimosky), [Walter Bender](https://github.com/walterbender)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-06-08 to 2026-06-14
+
+---
+
+## Introduction
+This week was mostly about wrapping up work from earlier weeks instead of starting another activity port. I finalized several defensive fixes in [Calculate's](https://github.com/sugarlabs/calculate-activity) parser, had my [\`sugar-toolkit-gtk4\`](https://github.com/sugarlabs/sugar-toolkit-gtk4) patch merged upstream, and discussed testing blockers with my mentor. Since some activities depend heavily on the Sugar shell, my mentor and I decided to temporarily shift focus to the [Browse activity](https://github.com/sugarlabs/browse-activity) while those issues are worked out.
+
+## What I Worked On
+
+### Calculate Activity Parser Updates
+My main code focus was finishing the Python 3.12 updates for \`astparser.py\` in [Calculate (PR #81)](https://github.com/sugarlabs/calculate-activity/pull/81). Although I'd already migrated to [\`ast.Constant\`](https://docs.python.org/3/library/ast.html#ast.Constant) in Week 1, further testing turned up a couple of edge cases I hadn't considered. In particular, the new code path could accept unexpected values like strings or booleans, so I added explicit \`isinstance()\` checks to reject them.
+
+I also fixed a secondary crash in the \`ParserError\` handler. I noticed this issue after throwing malformed expressions at the parser during testing; if it caught an AST tree during an exception instead of a clean string, it would attempt to slice it like a string and crash. I added type checks to handle non-string inputs safely. Finally, I swapped the string replacements to raw strings (\`r''\`) to prevent any future backslash parsing bugs and added inline comments documenting the Python 3.12 changes.
+
+### Debian 13 VM & Upstream Fix
+I also finished setting up my Debian 13 VM, which should give me a more reliable environment for testing the GTK4 ports. The [\`sugar-toolkit-gtk4\` patch (PR #31)](https://github.com/sugarlabs/sugar-toolkit-gtk4/pull/31) I wrote last week while debugging the [Image Viewer](https://github.com/sugarlabs/imageviewer-activity) canvas crash was also merged upstream.
+
+## Network Testing Blockers
+Testing the [Chat](https://github.com/sugarlabs/chat) and Image Viewer activities standalone is proving difficult. Features relying on networking, [Telepathy](https://telepathy.freedesktop.org/), or [D-Bus](https://www.freedesktop.org/wiki/Software/dbus/) (like the [Portfolio activity](https://github.com/sugarlabs/portfolio-activity)) fail without the main [Sugar shell](https://github.com/sugarlabs/sugar) running.
+
+After discussing it with my mentor, we decided it was more productive to switch focus to Browse for now rather than keep fighting those testing limitations. I opened [Chat PR #50](https://github.com/sugarlabs/chat/pull/50) as a draft, which preserves the GTK4 UI layout work and the \`RoundBox\` widget migrations while the remaining testing issues are sorted out. We'll revisit the remaining network-related testing once the Sugar shell port is further along.
+
+## What's Next for Week 4
+* **Browse Activity:** Continue porting Browse while the shell-dependent activities remain blocked.
+* **GSoC Evaluation:** Prepare for Thursday's contributor evaluation session with Google.
+
+---
+
+## Acknowledgments
+Thanks to Krish for the discussion around the current testing limitations and for suggesting that I move on to Browse while we work out the remaining shell-dependent issues.
+`,rd=e({default:()=>id}),id=`---
 title: "GSoC '26 Week 3 Update by Parth Dagia"
 excerpt: "Adding semicircular notches and rounded corners to the brick outline, and making the path stroke-width aware."
 category: "DEVELOPER NEWS"
@@ -27972,7 +28018,7 @@ The other tricky piece was alignment under variable argument heights. Centring e
 Thanks to Anindya Kundu, Justin Charles, and Safwan Sayeed for the back-and-forth on the notch geometry and for spotting the stroke-width clipping issue. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,rd=e({default:()=>id}),id=`---
+`,ad=e({default:()=>od}),od=`---
 title: "GSoC '26 Week 3 Report by Rejah Rabeeul Haque"
 Week 3 update for my GSoC '26 project: Implemented the Pencil and Clear tools, determined the ideal grid size, and improved the dot wave animation.
 category: "DEVELOPER NEWS"
@@ -28042,7 +28088,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance, and the Sugar Lab
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,ad=e({default:()=>od}),od=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,sd=e({default:()=>cd}),cd=`---
 title: "GSoC '26 Week 3 Update by Shreya Saxena"
 excerpt: "Brief description of this week's progress"
 category: "DEVELOPER NEWS"
@@ -28162,7 +28208,7 @@ Verified that typing no longer fires repeated search requests, Enter triggers a 
 ## Acknowledgments
 
 Thank you to Walter Bender and Om Santosh Suneri for their continued guidance, and to Ruben Rodriguez for the feedback that directly shaped both PR #7481 and PR #7485. Thanks also to Devin Ulibarri and the broader Sugar Labs community for their support.
-`,sd=e({default:()=>cd}),cd=`---
+`,ld=e({default:()=>ud}),ud=`---
 title: "GSoC '26 Week 3 Update by Syed Khubayb Ur Rahman"
 excerpt: "Implementing connector notches with a center-based geometry approach."
 category: "DEVELOPER NEWS"
@@ -28250,7 +28296,7 @@ Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued fe
 
 
 ---
-`,ld=e({default:()=>ud}),ud=`---
+`,dd=e({default:()=>fd}),fd=`---
 title: "GSoC '26 Week 03 Update by Shubham Sharma"
 excerpt: "Rethinking the reflection engine, redesigning the Journal entry view, and exploring peer reflection"
 category: "DEVELOPER NEWS"
@@ -28387,7 +28433,7 @@ Thanks to Walter for the idea behind peer reflection, that the AI starts it and 
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,dd=e({default:()=>fd}),fd=`---
+`,pd=e({default:()=>md}),md=`---
 title: "GSoC '26 Week 03 Update by Ashutosh Singh"
 excerpt: "Designing the system prompt, wiring the LLM pipeline, and building a three-phase testing strategy after Walter asked the hard question."
 category: "DEVELOPER NEWS"
@@ -28553,7 +28599,7 @@ Thanks to Walter Bender for asking the question that reshaped this entire week. 
 - Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
 
 ---
-`,pd=e({default:()=>md}),md=`---
+`,hd=e({default:()=>gd}),gd=`---
 title: "GSoC '26 Week 3: APIs, Thumbnails & a Database Mystery"
 excerpt: "This week I shipped four new API endpoints, solved the thumbnail rate-limit problem using SQLite, and traced a legacy encoding bug back to its roots."
 category: "DEVELOPER NEWS"
@@ -28637,7 +28683,7 @@ By running this across the database, all corrupted project names were healed.
 Next week shifts focus to frontend integration. I will be wiring up the new endpoints to the Music Blocks Planet interface, replacing the legacy API calls.
 
 See you in the next update.
-`,hd=e({default:()=>gd}),gd=`---
+`,_d=e({default:()=>vd}),vd=`---
 title: "DMP '26 Week 01 Update by Abhnish Kumar"
 excerpt: "TAB trap fix, palette icon accessibility, PR reviews, and mid-point milestone progress for Music Blocks WCAG 2.1 AA project"
 category: "DEVELOPER NEWS"
@@ -28727,7 +28773,7 @@ image: "assets/Images/c4gt-official-logo.png"
 
 ## Acknowledgments
 
-Thanks to Walter Bender for tagging me on multiple PRs for review — it is a good way to stay in sync with parallel accessibility and touch work happening across the repo.`,_d=e({default:()=>vd}),vd=`---
+Thanks to Walter Bender for tagging me on multiple PRs for review — it is a good way to stay in sync with parallel accessibility and touch work happening across the repo.`,yd=e({default:()=>bd}),bd=`---
 title: "GSoC '26 Week 4 Report by Rejah Rabeeul Haque"
 excerpt: "Feature updates, implementation of color palette, fill color and erase tool."
 category: "DEVELOPER NEWS"
@@ -28802,7 +28848,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance, and the Sugar Lab
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,yd=e({default:()=>bd}),bd=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,xd=e({default:()=>Sd}),Sd=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -28951,7 +28997,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,xd=e({default:()=>Sd}),Sd=`---
+`,Cd=e({default:()=>wd}),wd=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -29054,7 +29100,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Cd=e({default:()=>wd}),wd=`---
+`,Td=e({default:()=>Ed}),Ed=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -29527,7 +29573,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Td=e({default:()=>Ed}),Ed=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Dd=e({default:()=>Od}),Od=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -29614,7 +29660,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Dd=e({default:()=>Od}),Od=`---\r
+`,kd=e({default:()=>Ad}),Ad=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -29707,7 +29753,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,kd=e({default:()=>Ad}),Ad=`---\r
+`,jd=e({default:()=>Md}),Md=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -29801,7 +29847,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,jd=e({default:()=>Md}),Md=`---\r
+`,Nd=e({default:()=>Pd}),Pd=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -29889,7 +29935,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Nd=e({default:()=>Pd}),Pd=`---\r
+`,Fd=e({default:()=>Id}),Id=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -29972,7 +30018,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Fd=e({default:()=>Id}),Id=`---\r
+`,Ld=e({default:()=>Rd}),Rd=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -30038,7 +30084,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Ld=e({default:()=>Rd}),Rd=`---
+`,zd=e({default:()=>Bd}),Bd=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -30120,7 +30166,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,zd=e({default:()=>Bd}),Bd=`---
+---`,Vd=e({default:()=>Hd}),Hd=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -30213,7 +30259,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Vd=e({default:()=>Hd}),Hd=`---
+`,Ud=e({default:()=>Wd}),Wd=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -30302,7 +30348,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Ud=e({default:()=>Wd}),Wd=`---
+--- `,Gd=e({default:()=>Kd}),Kd=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -30447,7 +30493,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Gd=e({default:()=>Kd}),Kd=`---
+--- `,qd=e({default:()=>Jd}),Jd=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -30635,7 +30681,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,qd=e({default:()=>Jd}),Jd=`---
+--- `,Yd=e({default:()=>Xd}),Xd=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -30730,7 +30776,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Yd=e({default:()=>Xd}),Xd=`---
+`,Zd=e({default:()=>Qd}),Qd=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -30819,7 +30865,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Zd=e({default:()=>Qd}),Qd=`---
+`,$d=e({default:()=>ef}),ef=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -30906,7 +30952,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,$d=e({default:()=>ef}),ef=`---
+---`,tf=e({default:()=>nf}),nf=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -30989,7 +31035,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,tf=e({default:()=>nf}),nf=`---
+---`,rf=e({default:()=>af}),af=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31072,7 +31118,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,rf=e({default:()=>af}),af=`---
+---`,of=e({default:()=>sf}),sf=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -31377,4 +31423,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{su as $,ae as $a,on as $i,oo as $n,oi as $r,sc as $t,$u as A,Ze as Aa,Qn as Ai,$o as An,Qi as Ar,$c as At,Nu as B,je as Ba,Mn as Bi,No as Bn,Mi as Br,Nc as Bt,pd as C,dt as Ca,fr as Ci,ps as Cn,d as Co,fa as Cr,pl as Ct,ad as D,rt as Da,ir as Di,as as Dn,r as Do,ia as Dr,al as Dt,sd as E,at as Ea,or as Ei,ss as En,a as Eo,oa as Er,sl as Et,Uu as F,Ve as Fa,Hn as Fi,Uo as Fn,Hi as Fr,Uc as Ft,Cu as G,xe as Ga,Sn as Gi,Co as Gn,Si as Gr,Cc as Gt,ku as H,De as Ha,On as Hi,ko as Hn,Oi as Hr,kc as Ht,Vu as I,ze as Ia,Bn as Ii,Vo as In,Bi as Ir,Vc as It,_u as J,he as Ja,gn as Ji,_o as Jn,gi as Jr,_c as Jt,xu as K,ye as Ka,bn as Ki,xo as Kn,bi as Kr,xc as Kt,zu as L,Le as La,Rn as Li,zo as Ln,Ri as Lr,zc as Lt,Yu as M,qe as Ma,Jn as Mi,Yo as Mn,Ji as Mr,Yc as Mt,qu as N,Ge as Na,Kn as Ni,qo as Nn,Ki as Nr,qc as Nt,rd as O,tt as Oa,nr as Oi,rs as On,t as Oo,na as Or,rl as Ot,Gu as P,Ue as Pa,Wn as Pi,Go as Pn,Wi as Pr,Gc as Pt,lu as Q,se as Qa,cn as Qi,co as Qn,ci as Qr,lc as Qt,Lu as R,Fe as Ra,In as Ri,Lo as Rn,Ii as Rr,Lc as Rt,hd as S,pt as Sa,mr as Si,hs as Sn,p as So,ma as Sr,hl as St,ld as T,st as Ta,cr as Ti,ls as Tn,s as To,ca as Tr,ll as Tt,Du as U,Te as Ua,En as Ui,Do as Un,Ei as Ur,Dc as Ut,ju as V,ke as Va,An as Vi,jo as Vn,Ai as Vr,jc as Vt,Tu as W,Ce as Wa,wn as Wi,To as Wn,wi as Wr,Tc as Wt,pu as X,de as Xa,fn as Xi,po as Xn,fi as Xr,pc as Xt,hu as Y,pe as Ya,mn as Yi,ho as Yn,mi as Yr,hc as Yt,du as Z,le as Za,un as Zi,uo as Zn,ui as Zr,dc as Zt,Td as _,Ct as _a,wr as _i,Ts as _n,C as _o,wa as _r,Tl as _t,Yd as a,qt as aa,Jr as ai,Ys as an,q as ao,Ja as ar,Yl as at,yd as b,_t as ba,vr as bi,ys as bn,_ as bo,va as br,yl as bt,Ud as c,Vt as ca,Hr as ci,Us as cn,V as co,Ha as cr,Ul as ct,Ld as d,Ft as da,Ir as di,Ls as dn,F as do,Ia as dr,Ll as dt,rn as ea,ii as ei,ac as en,re as eo,io as er,au as et,Fd as f,Nt as fa,Pr as fi,Fs as fn,N as fo,Pa as fr,Fl as ft,Dd as g,Tt as ga,Er as gi,Ds as gn,T as go,Ea as gr,Dl as gt,kd as h,Dt as ha,Or as hi,ks as hn,D as ho,Oa as hr,kl as ht,Zd as i,Yt as ia,Xr as ii,Zs as in,Y as io,Xa as ir,Zl as it,Zu as j,Ye as ja,Xn as ji,Zo as jn,Xi as jr,Zc as jt,td as k,$e as ka,er as ki,ts as kn,ea as kr,tl as kt,Vd as l,zt as la,Br as li,Vs as ln,z as lo,Ba as lr,Vl as lt,jd as m,kt as ma,Ar as mi,js as mn,k as mo,Aa as mr,jl as mt,tf as n,$t as na,ei as ni,tc as nn,$ as no,eo as nr,tu as nt,qd as o,Gt as oa,Kr as oi,qs as on,G as oo,Ka as or,ql as ot,Nd as p,jt as pa,Mr as pi,Ns as pn,j as po,Ma as pr,Nl as pt,yu as q,_e as qa,vn as qi,yo as qn,vi as qr,yc as qt,$d as r,Zt as ra,Qr as ri,$s as rn,Z as ro,Qa as rr,$l as rt,Gd as s,Ut as sa,Wr as si,Gs as sn,U as so,Wa as sr,Gl as st,rf as t,tn as ta,ni as ti,rc as tn,te as to,no as tr,ru as tt,zd as u,Lt as ua,Rr as ui,zs as un,L as uo,Ra as ur,zl as ut,Cd as v,xt as va,Sr as vi,Cs as vn,x as vo,Sa as vr,Cl as vt,dd as w,lt as wa,ur as wi,ds as wn,l as wo,ua as wr,dl as wt,_d as x,ht as xa,gr as xi,_s as xn,h as xo,ga as xr,_l as xt,xd as y,yt as ya,br as yi,xs as yn,y as yo,ba as yr,xl as yt,Fu as z,Ne as za,Pn as zi,Fo as zn,Pi as zr,Fc as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{lu as $,se as $a,cn as $i,co as $n,ci as $r,lc as $t,td as A,$e as Aa,er as Ai,ts as An,ea as Ar,tl as At,Fu as B,Ne as Ba,Pn as Bi,Fo as Bn,Pi as Br,Fc as Bt,hd as C,pt as Ca,mr as Ci,hs as Cn,p as Co,ma as Cr,hl as Ct,sd as D,at as Da,or as Di,ss as Dn,a as Do,oa as Dr,sl as Dt,ld as E,st as Ea,cr as Ei,ls as En,s as Eo,ca as Er,ll as Et,Gu as F,Ue as Fa,Wn as Fi,Go as Fn,Wi as Fr,Gc as Ft,Tu as G,Ce as Ga,wn as Gi,To as Gn,wi as Gr,Tc as Gt,ju as H,ke as Ha,An as Hi,jo as Hn,Ai as Hr,jc as Ht,Uu as I,Ve as Ia,Hn as Ii,Uo as In,Hi as Ir,Uc as It,yu as J,_e as Ja,vn as Ji,yo as Jn,vi as Jr,yc as Jt,Cu as K,xe as Ka,Sn as Ki,Co as Kn,Si as Kr,Cc as Kt,Vu as L,ze as La,Bn as Li,Vo as Ln,Bi as Lr,Vc as Lt,Zu as M,Ye as Ma,Xn as Mi,Zo as Mn,Xi as Mr,Zc as Mt,Yu as N,qe as Na,Jn as Ni,Yo as Nn,Ji as Nr,Yc as Nt,ad as O,rt as Oa,ir as Oi,as as On,r as Oo,ia as Or,al as Ot,qu as P,Ge as Pa,Kn as Pi,qo as Pn,Ki as Pr,qc as Pt,du as Q,le as Qa,un as Qi,uo as Qn,ui as Qr,dc as Qt,zu as R,Le as Ra,Rn as Ri,zo as Rn,Ri as Rr,zc as Rt,_d as S,ht as Sa,gr as Si,_s as Sn,h as So,ga as Sr,_l as St,dd as T,lt as Ta,ur as Ti,ds as Tn,l as To,ua as Tr,dl as Tt,ku as U,De as Ua,On as Ui,ko as Un,Oi as Ur,kc as Ut,Nu as V,je as Va,Mn as Vi,No as Vn,Mi as Vr,Nc as Vt,Du as W,Te as Wa,En as Wi,Do as Wn,Ei as Wr,Dc as Wt,hu as X,pe as Xa,mn as Xi,ho as Xn,mi as Xr,hc as Xt,_u as Y,he as Ya,gn as Yi,_o as Yn,gi as Yr,_c as Yt,pu as Z,de as Za,fn as Zi,po as Zn,fi as Zr,pc as Zt,Dd as _,Tt as _a,Er as _i,Ds as _n,T as _o,Ea as _r,Dl as _t,Zd as a,Yt as aa,Xr as ai,Zs as an,Y as ao,Xa as ar,Zl as at,xd as b,yt as ba,br as bi,xs as bn,y as bo,ba as br,xl as bt,Gd as c,Ut as ca,Wr as ci,Gs as cn,U as co,Wa as cr,Gl as ct,zd as d,Lt as da,Rr as di,zs as dn,L as do,Ra as dr,zl as dt,on as ea,oi as ei,sc as en,ae as eo,oo as er,su as et,Ld as f,Ft as fa,Ir as fi,Ls as fn,F as fo,Ia as fr,Ll as ft,kd as g,Dt as ga,Or as gi,ks as gn,D as go,Oa as gr,kl as gt,jd as h,kt as ha,Ar as hi,js as hn,k as ho,Aa as hr,jl as ht,$d as i,Zt as ia,Qr as ii,$s as in,Z as io,Qa as ir,$l as it,$u as j,Ze as ja,Qn as ji,$o as jn,Qi as jr,$c as jt,rd as k,tt as ka,nr as ki,rs as kn,t as ko,na as kr,rl as kt,Ud as l,Vt as la,Hr as li,Us as ln,V as lo,Ha as lr,Ul as lt,Nd as m,jt as ma,Mr as mi,Ns as mn,j as mo,Ma as mr,Nl as mt,rf as n,tn as na,ni,rc as nn,te as no,no as nr,ru as nt,Yd as o,qt as oa,Jr as oi,Ys as on,q as oo,Ja as or,Yl as ot,Fd as p,Nt as pa,Pr as pi,Fs as pn,N as po,Pa as pr,Fl as pt,xu as q,ye as qa,bn as qi,xo as qn,bi as qr,xc as qt,tf as r,$t as ra,ei as ri,tc as rn,$ as ro,eo as rr,tu as rt,qd as s,Gt as sa,Kr as si,qs as sn,G as so,Ka as sr,ql as st,of as t,rn as ta,ii as ti,ac as tn,re as to,io as tr,au as tt,Vd as u,zt as ua,Br as ui,Vs as un,z as uo,Ba as ur,Vl as ut,Td as v,Ct as va,wr as vi,Ts as vn,C as vo,wa as vr,Tl as vt,pd as w,dt as wa,fr as wi,ps as wn,d as wo,fa as wr,pl as wt,yd as x,_t as xa,vr as xi,ys as xn,_ as xo,va as xr,yl as xt,Cd as y,xt as ya,Sr as yi,Cs as yn,x as yo,Sa as yr,Cl as yt,Lu as z,Fe as za,In as zi,Lo as zn,Ii as zr,Lc as zt};
