@@ -24,7 +24,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 ### PR 1 merged on June 18 🎉
 
-The first PR was merged with the title **"feat: make pitch/frequency conversion temperament-aware"**. It replaced hardcoded 12-EDO assumptions in the core pitch math functions and included important review feedback from Walter.
+[PR #7561](https://github.com/sugarlabs/musicblocks/pull/7561) was merged with the title **"feat: make pitch/frequency conversion temperament-aware"**. It replaced hardcoded 12-EDO assumptions in the core pitch math functions and included important review feedback from Walter.
 
 - Added `getCurrentEDO()` helper — returns `TEMPERAMENT[temperament]?.pitchNumber ?? 12`
 - Refactored `pitchToFrequency()` — now uses `Math.pow(2, 1/currentEDO)`
@@ -32,7 +32,7 @@ The first PR was merged with the title **"feat: make pitch/frequency conversion 
 - Refactored `frequencyToPitch()` — now uses dynamic `centsPerStep = 1200/currentEDO`
 - Added 23 unit tests covering 12-EDO, 19-EDO, default behavior, and edge cases
 
-Walter reviewed the PR and asked about the 1200-cent octave assumption, which is correct and remains valid for any EDO. He also asked to move the new tests into `js/utils/__tests__/`, which I completed.
+Walter reviewed the PR and asked about the 1200-cent octave assumption. An octave is always 1200 cents regardless of EDO — 12-EDO gives 100¢/step, 19-EDO gives ~63.2¢/step, 31-EDO gives ~38.7¢/step. The 1200 is a constant, not a 12-EDO artifact. He also asked to move the new tests into `js/utils/__tests__/`, which I completed.
 
 All 5561 tests pass. 12-EDO behavior is unchanged — no regression.
 
@@ -85,9 +85,9 @@ MIDI formulas are inherently 12-EDO. Functions such as `frequencyToNote` use `12
 
 ## Reflection
 
-This week was a major milestone because PR 1 is now merged into the codebase. That means the core conversion math is temperament-aware, and the work is no longer purely experimental.
+This week was a major milestone because [PR #7561](https://github.com/sugarlabs/musicblocks/pull/7561) is now merged into the codebase. That means the core conversion math is temperament-aware, and the work is no longer purely experimental.
 
-PR 2 is more methodical and detailed, but the pattern is clear. I’m focusing on consistency so the remaining refactors stay stable and backward compatible.
+[PR #7658](https://github.com/sugarlabs/musicblocks/pull/7658) is more methodical and detailed, but the pattern is clear. I’m focusing on consistency so the remaining refactors stay stable and backward compatible.
 
 The `getSolfege` question is a good reminder that this project is not just about numeric changes — it also needs user-facing design decisions.
 
