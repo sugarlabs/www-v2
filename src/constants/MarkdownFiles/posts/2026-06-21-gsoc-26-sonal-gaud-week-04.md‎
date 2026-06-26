@@ -14,7 +14,7 @@ image: "assets/Images/GSOC.webp"
 **Project:** Automated Release Pipeline for Music Blocks
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)
 **Organization:** [Sugar Labs](https://sugarlabs.org)
-**Reporting Period:** 2026-06-15 – 2026-06-21
+**Reporting Period:** 2026-06-15 - 2026-06-21
 
 ---
 
@@ -68,7 +68,6 @@ Query params would override hostnames, which is what should make it possible to 
 - `index.html` - swap the hardcoded loading-text array for `const texts = LOADING_TEXTS;`.
 
 ---
-
 
 ## Plans for Next Week
 
