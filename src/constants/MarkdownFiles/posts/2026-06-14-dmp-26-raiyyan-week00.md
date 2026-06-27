@@ -27,18 +27,18 @@ image: "assets/Images/c4gt_DMP.webp"
 Hey, I'm NSA Raiyyan ([@7se7en72025](https://github.com/7se7en72025)). Second-year undergrad at BITS Pilani, spending my summer with Sugar Labs as part of DMP 2026.
 
 I started coding with C and C++, then switched to the JavaScript ecosystem, React, Node.js, TypeScript, Redux, Jest. Python came later through coursework and self-study, and I now use it for scripting and working with ML libraries like PyTorch and HuggingFace Transformers. I have had 26 PRs merged into Music Blocks so far, so I am familiar with the Sugar Labs codebase. This summer, I am working on the speech and language side of things, specifically getting Speak-AI to work for languages it currently does not support.
----
+
 ## Project Overview
 Speak-AI is Sugar Labs' upgraded version of the classic [Speak](https://v4.activities.sugarlabs.org/app/vu.lux.olpc.Speak.html) activity. Instead of the old espeak engine that sounds like a robot, it uses [Kokoro](https://huggingface.co/spaces/hexgrad/Kokoro-TTS), an 82-million-parameter neural TTS model that produces natural-sounding speech. This is especially useful for children learning to read and pronounce words in their native language.
 
 The issue is that Kokoro only supports 8 languages right now: English, Spanish, French, Hindi, Italian, Brazilian Portuguese, Japanese, and Mandarin. That leaves out Arabic, Swahili, Kinyarwanda, Quechua, Guarani, and Aymara, languages spoken by hundreds of millions of children. My job is to fix that by wiring up existing alt TTS backends, Piper and MMS-TTS, that are already in the codebase but not connected.
----
+
 ## Goals for This Week
 - Get the dev environment running locally.
 - Read through the codebase and understand how text goes from a child typing to audio coming out of speakers.
 - Identify what is already implemented but not being used.
 - Open PRs for missing language aliases.
----
+
 ## Achievements
 ### 1. Environment Setup
 Cloned the repo, set up a venv, installed dependencies. Speak-AI runs on GTK and needs GStreamer for audio, so there was some configuration involved. Got it working on my machine without a GPU, which matters because the target deployments are classroom laptops with limited hardware.
@@ -63,17 +63,17 @@ Opened three PRs this week:
 * **PR #107:** Caches the SLM model so it does not reload on every prompt, which was causing multi-second delays.
 * **PR #109:** Moves Kokoro voice switching to a background thread so the UI does not freeze.
 * **PR #116:** Adds sequence IDs to requests so stale AI replies from older requests get discarded.
----
+
 ## Challenge & Key Learning
 The biggest realization this week was that I do not need to build anything from scratch for the multilingual support. The code is already there, `alt_tts_backends.py` and `tts_cache.py` are complete implementations that never got wired in. The real work is integration, not creation.
 
 Spending time reading the code before writing any code also paid off. I went in thinking I would need to design a whole new backend system, and came out realizing the system already exists and just needs to be plugged in.
----
+
 ## Resources & References
 - **Speak-AI:** [sugarlabs/speak](https://github.com/sugarlabs/speak)
 - **Kokoro TTS:** [hexgrad/Kokoro-82M](https://github.com/hexgrad/Kokoro-82M)
 - **Piper TTS:** [rhasspy/piper](https://github.com/rhasspy/piper)
 - **Meta MMS-TTS:** [facebookresearch/mms](https://github.com/facebookresearch/mms)
----
+
 ## Acknowledgments
 Thanks to Mebin and Ibiam for the mentorship, and to Walter and Devin for the assisting guidance. Credit also goes to whoever wrote `alt_tts_backends.py` and `tts_cache.py`, the groundwork is already there, I just need to wire it up.
