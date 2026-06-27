@@ -29,8 +29,6 @@ image: "assets/Images/c4gt_DMP.webp"
 - Write `test_g2p_coverage.py` to verify phoneme coverage for each language.
 - Begin collecting native-speaker feedback on generated audio.
 
----
-
 ## Achievements
 
 ### 1. WAV Generation for Tier 1 Languages
@@ -42,7 +40,7 @@ Generated pronunciation samples using Kokoro for four Tier 1 languages:
 - **Portuguese (Brazilian)**
 - **Hindi**
 
-These samples will serve as the baseline for pronunciation quality scoring. Each language was tested with the 18-sentence corpus defined in the proposal (10 common phrases, 5 difficult-phoneme sentences, 3 child-targeted sentences).
+These samples will serve as the baseline for pronunciation quality scoring. Each language was tested with the 18-sentence corpus defined in the proposal (10 common phrases, 5 difficult-phoneme sentences, 3 child-targeted sentences). The generated WAV files are available [here](https://drive.google.com/drive/folders/1VWoYyCbb-YSCf_dXVt8Hxy5Zb9ROpyi_?usp=sharing).
 
 ### 2. Automated Pronunciation Scoring
 
@@ -59,24 +57,18 @@ The script generates WAV files and scores them programmatically, providing a rep
 
 Wrote `test_g2p_coverage.py` which verifies that the G2P (grapheme-to-phoneme) pipeline covers all phonemes in each target language. This ensures that Kokoro's phoneme generation does not silently drop or misrepresent characters in the input text.
 
----
-
 ## What's Next
 
 - Send generated WAV files to native speakers for the first checkpoint review.
 - Collect feedback and update scores based on human evaluation.
 - Begin wiring `alt_tts_backends.py` into `speech.py` for Tier 2 languages (Arabic, Swahili, Kinyarwanda).
 
----
-
 ## Resources & References
 
 - **Speak-AI Repository:** [sugarlabs/speak](https://github.com/sugarlabs/speak)
-- **Kokoro TTS:** [hexgrad/Kokoro-82M](https://github.com/hexgrad/Kokoro-82M)
+- **Kokoro TTS:** [hexgrad/Kokoro](https://github.com/hexgrad/Kokoro)
 - **Piper TTS:** [rhasspy/piper](https://github.com/rhasspy/piper)
 - **Meta MMS-TTS:** [facebookresearch/mms](https://github.com/facebookresearch/mms)
-
----
 
 ## Acknowledgments
 
