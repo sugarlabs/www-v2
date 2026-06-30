@@ -39,12 +39,7 @@ To verify these rules automatically after each update to the activity, I also im
 
 - Started the implementation of Number Mode, where users can select predefined drawings or create their own drawings and the activity will display dots on the canvas according to that sequence. The user has to connect the dots in the correct order to form the drawing.
 - Currently, I've implemented two libraries Basic Shapes and Objects which contains drawings.
-
-![ConnectTheDots Number Mode Library of Drawings](/assets/Developers/Rejah/connectthedots-number-mode1.webp)
-
 - After selecting a drawing, the user can connect the numbered dots and at the end, the complete drawing will be formed.
-
-![ConnectTheDots Number Mode Completing a Drawing](/assets/Developers/Rejah/connectthedots-number-mode2.webp)
 
 ---
 
