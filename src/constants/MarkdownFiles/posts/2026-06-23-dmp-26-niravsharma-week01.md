@@ -22,7 +22,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 ## What I worked on this week
 
-### PR 1 merged on June 18 🎉
+### PR 1 merged on June 18
 
 [PR #7561](https://github.com/sugarlabs/musicblocks/pull/7561) was merged with the title **"feat: make pitch/frequency conversion temperament-aware"**. It replaced hardcoded 12-EDO assumptions in the core pitch math functions and included important review feedback from Walter.
 
@@ -42,37 +42,18 @@ I began work on the follow-up PR, which targets the remaining pitch and scale fu
 
 | Function | Status |
 |----------|--------|
-| `numberToPitchSharp` | ✅ Done |
-| `_calculate_pitch_number` | ✅ Done |
-| `getPitchInfo` (1-arg) | ✅ Done |
-| `numberToPitch` equal branch | ✅ Done |
-| `getNumber` | ✅ Done |
-| `getNote` | ✅ Done |
-| `numberToPitch` fallback loop | 🔴 Remaining |
-| `_getStepSize` | 🔴 Remaining |
-| `getSolfege` | 🔴 Remaining |
-| `buildScale` | 🔴 Deferred to Goal 4 (Scale Builder) |
+| `numberToPitchSharp` |  Done |
+| `_calculate_pitch_number` |  Done |
+| `getPitchInfo` (1-arg) |  Done |
+| `numberToPitch` equal branch |  Done |
+| `getNumber` |  Done |
+| `getNote` |  Done |
+| `numberToPitch` fallback loop |  Remaining |
+| `_getStepSize` |  Remaining |
+| `getSolfege` |  Remaining |
+| `buildScale` |  Deferred to Goal 4 (Scale Builder) |
 
 The refactor pattern is consistent across functions: replace hardcoded `12` with a dynamic `currentEDO` lookup, and replace `Math.floor(i / 12)` with `Math.floor(i / currentEDO)`.
-
----
-
-## Challenges or open questions
-
-### `getSolfege` — names for pitches beyond 12
-
-The `CHROMATIC_SOLFEGE` array currently has only 12 entries. For EDO > 12, I need to decide between:
-
-- keeping a 12-name approximation, or
-- extending solfege to numbered names like `Do1`, `Do2`, `Do3`
-
-This is a design question I'll confirm with my mentors.
-
-### MIDI formulas — stay 12-EDO or adapt?
-
-MIDI formulas are inherently 12-EDO. Functions such as `frequencyToNote` use `12 * log2(...)`. I’m currently leaning toward keeping those formulas as 12-EDO-specific and documenting that limitation, then discussing a broader approach with mentors.
-
----
 
 ## What’s coming next
 
@@ -92,9 +73,3 @@ This week was a major milestone because [PR #7561](https://github.com/sugarlabs/
 The `getSolfege` question is a good reminder that this project is not just about numeric changes — it also needs user-facing design decisions.
 
 ---
-
-## Connect with me
-
-- GitHub: [021nirav-blip](https://github.com/021nirav-blip)
-- Email: [021nirav@gmail.com](mailto:021nirav@gmail.com)
-- LinkedIn: https://www.linkedin.com/in/nirav-sharma-243258382
