@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import ShareModal from '@/components/ShareModal';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import {
@@ -49,6 +49,7 @@ const NewsPage: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const articlesRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 9;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -171,7 +172,12 @@ const NewsPage: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (articlesRef.current) {
+      articlesRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
   };
 
   const handlePostClick = (slug: string) => {
@@ -278,7 +284,10 @@ const NewsPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="container mx-auto px-4 py-8">
+          <div
+            ref={articlesRef}
+            className="container mx-auto px-4 py-8 scroll-mt-16 md:scroll-mt-20"
+          >
             {/* Enhanced Filters and Controls */}
             <div className="bg-white dark:bg-gray-800/50 dark:backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-8 border border-gray-100 dark:border-gray-700">
               <div className="flex flex-col lg:flex-row gap-6">
