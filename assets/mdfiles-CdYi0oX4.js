@@ -29150,6 +29150,141 @@ image: "assets/Images/c4gt-official-logo.png"
 ## Acknowledgments
 
 Thanks to Walter Bender for tagging me on multiple PRs for review — it is a good way to stay in sync with parallel accessibility and touch work happening across the repo.`,jd=e({default:()=>Md}),Md=`---
+title: "DMP '26 Week 01 Update by Noaman Akhtar"
+excerpt: "Mentor alignment week: correcting fundamental approach flaws, establishing open-source sovereignty as a design constraint, and beginning the provider abstraction build."
+category: "DEVELOPER NEWS"
+date: "2026-06-21"
+slug: "2026-06-21-dmp-26-noaman-week01"
+author: "@/constants/MarkdownFiles/authors/noaman-akhtar.md"
+description: "DMP'26 Contributor at SugarLabs working on AI Optimization"
+tags: "dmp26,sugarlabs,week01,noaman-akhtar,sugar-ai,ai-optimization"
+image: "assets/Images/c4gt_DMP.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 01 Progress Report by Noaman Akhtar
+
+**Project:** [AI Optimization](https://github.com/sugarlabs/sugar-ai)  
+**Mentors:** [sum2it](https://github.com/sum2it), [mostlyk](https://github.com/MostlyKIGuess), [chimosky](https://github.com/chimosky)  
+**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa), [Mebin](https://github.com/mebinthattil)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-06-15 -- 2026-06-21
+
+---
+
+## Goals for This Week
+
+- Meet with mentors to validate the implementation approach from Week 00.
+- Clarify which model backends Sugar Labs should officially depend on.
+- Understand the current Sugar Labs AWS infrastructure that hosts the AI service.
+- Begin writing the [\`BaseProvider\`](https://github.com/sugarlabs/sugar-ai) abstraction and extract [\`HuggingFaceProvider\`](https://github.com/sugarlabs/sugar-ai) from the monolithic [\`RAGAgent\`](https://github.com/sugarlabs/sugar-ai).
+
+---
+
+## Key Discussions and Course Corrections
+
+This was primarily a planning and alignment week. I had two meetings that reshaped how I think about the project.
+
+### Meeting with Mebin (June 22)
+
+After the community meeting, I had a call with [Mebin](https://github.com/mebinthattil) and [Vyagh](https://github.com/vyagh). Mebin gave me context about the AWS instance that currently hosts the Sugar-AI model and about the AI Optimization project's broader goals.
+
+I walked through my initial plan, and Mebin pointed out some fundamental problems with it. My original approach included adding [Groq](https://groq.com) and [Google Gemini](https://ai.google.dev/) API support as primary providers, since both offer generous free tiers. Mebin's response was direct: **Sugar Labs cannot organizationally depend on free tiers from proprietary API providers.** The rationale is straightforward. Sugar Labs is an open-source education nonprofit. If the system relies on Groq's or Google's free tier, a policy change on their end could break every deployed Sugar activity overnight. The project needs to be self-sufficient.
+
+From that conversation, I landed on three conclusions:
+
+1. **The Sugar Labs AWS Ollama instance is the primary model source.** This is a server that Sugar Labs controls, running open-weight models through [Ollama](https://ollama.com). It should be the default backend for all production deployments.
+
+2. **Schools and individuals can self-host.** A school running Ollama on their own LAN server, or any user running it on their laptop, should be able to point Sugar-AI at their local instance and use any open-weight model they choose.
+
+3. **Content safety still needs a design.** The models will be used by children, so filtering inappropriate queries and keeping responses child-friendly is a hard requirement. But the approach for implementing this has not been decided yet. This will be discussed in a future meeting with [Ibiam](https://github.com/chimosky) and [MostlyK](https://github.com/MostlyKIGuess).
+
+One thing Mebin did confirm: my core architectural decision of **decoupling the model provider from [\`RAGAgent\`](https://github.com/sugarlabs/sugar-ai)** is the right call. The [\`BaseProvider\`](https://github.com/sugarlabs/sugar-ai) interface pattern I proposed in Week 00 will be the foundation for everything going forward.
+
+### Walter Bender's Clarification
+
+After the meeting, [Walter Bender](https://github.com/walterbender) weighed in on the question of which models to support. His position added an important nuance:
+
+> *"I think that while I agree that Sugar Labs itself should be using free models, Sugar AI should be set up to let people use any model of their choosing, including non-FOSS models. If a school has a model available, they should be able to set a config to use that model."*
+
+This means the architecture needs to support two principles simultaneously:
+
+- **Sugar Labs defaults to open-weight, self-hosted models.** No organizational dependency on proprietary services.
+- **The system is configurable.** If a school has access to GPT-4 or Claude through their own API keys, they should be able to plug that in through a config change. We build the connectors, but we do not depend on them.
+
+In practice, this validates building the [\`OpenAICompatibleProvider\`](https://github.com/sugarlabs/sugar-ai) (which covers Groq, Together.ai, OpenAI, Mistral, and others) and a [\`GeminiProvider\`](https://github.com/sugarlabs/sugar-ai), but treating them as optional advanced configurations rather than defaults.
+
+---
+
+## AWS Lambda for Cost-Optimized Hosting
+
+We also discussed the problem of keeping the cloud server running 24/7. The Sugar Labs AWS instance hosting Ollama costs money whether or not anyone is using it. During off-hours (nights, weekends, school breaks), the server sits idle but still burns compute costs.
+
+One proposed solution is to use **AWS Lambda** or a similar serverless approach, where the inference server only activates when a request arrives and deactivates when idle. The idea is:
+
+- A lightweight API gateway sits in front of the actual Ollama server.
+- When a request comes in, if the server is cold, it triggers a wake-up (starting the EC2 instance or container).
+- After a period of inactivity (say 15-30 minutes with no requests), the server shuts down automatically.
+- This converts the cost model from "always on" to "pay per use."
+
+The tradeoff is cold-start latency. Spinning up a GPU instance and loading a 9B parameter model into VRAM is not instant -- it could add 30-60 seconds to the first request after a cold period. But for an educational tool where usage is concentrated during school hours, the savings could be significant. A possible middle ground is using a scheduled warm-up: a cron job that starts the server at 8 AM local time and shuts it down at 6 PM, covering school hours without the cold-start penalty.
+
+This approach needs further discussion with the team and would likely involve changes to the deployment infrastructure rather than the Sugar-AI codebase itself.
+
+---
+
+## Technical Progress
+
+While most of the week was spent in meetings and plan revisions, I did begin writing code for the provider abstraction.
+
+### Provider Interface (\`BaseProvider\`)
+
+Created \`app/providers/base.py\` with the abstract base class that every model provider must implement:
+
+- **\`generate(prompt, params)\`** -- takes raw text, returns generated text. Covers the \`/ask\`, \`/ask-llm\`, and \`/ask-llm-prompted\` endpoints.
+- **\`chat(messages, params)\`** -- takes a list of conversation messages with system/user/assistant roles, returns the assistant response. Covers chat-mode endpoints.
+- **\`health_check()\`** -- reports whether the backend is alive and responsive.
+- **\`get_model_name()\`** -- returns the name of the currently active model.
+
+Also defined a \`GenerationParams\` frozen dataclass that bundles generation settings (\`temperature\`, \`top_p\`, \`max_new_tokens\`, etc.) into a single immutable object instead of scattering them as keyword arguments across every call site.
+
+### Updated Implementation Plan
+
+I rewrote the implementation plan from scratch to reflect the new direction. The key structural changes from the Week 00 plan:
+
+| Aspect | Week 00 Plan | Week 01 Plan |
+|--------|-------------|-------------|
+| Default provider | HuggingFace (local pipeline) | Ollama (local or remote) |
+| Groq/Gemini role | Primary providers | Optional bring-your-own-key |
+| HuggingFace provider | Kept permanently | Kept for now, may be removed later |
+| \`torch\`/\`transformers\` | Still in requirements | Targeted for removal (shrinks Docker image from ~10GB to ~200MB) |
+| Multi-model routing | Load 2+ models in GPU | Single model with think/nothink parameter gating (proposed, needs validation) |
+| Content safety | Not addressed | Flagged as a hard requirement, design pending mentor discussion |
+
+The updated plan also includes a decision tracker that separates confirmed mentor decisions from proposed ideas and open questions. This keeps the boundary clear between "things I can build now" and "things that need sign-off first."
+
+---
+
+## Plan for Next Week
+
+- Complete the [\`HuggingFaceProvider\`](https://github.com/sugarlabs/sugar-ai) extraction from [\`RAGAgent\`](https://github.com/sugarlabs/sugar-ai), ensuring all five existing endpoints produce identical output before and after the refactor.
+- Begin building the [\`OllamaProvider\`](https://github.com/sugarlabs/sugar-ai) and test it against a local Ollama instance running \`qwen3.5:1.5b\`.
+- Wire the provider factory into \`main.py\` so the active provider is selected via a single \`AI_PROVIDER\` environment variable.
+- Prepare the agenda items for the upcoming meeting with Ibiam and MostlyK (content safety design, AWS instance hardware specs, model selection).
+
+---
+
+## Acknowledgments
+
+Thanks to [Mebin](https://github.com/mebinthattil) and [Vyagh](https://github.com/vyagh) for the meeting that corrected the project direction early, and to [Walter Bender](https://github.com/walterbender) for clarifying the configurability principle.
+
+---
+
+## Summary
+
+This week had no merged PRs and no shipped features. What it did have was a set of conversations that fundamentally redirected the project. The original plan was workable but built on the wrong assumptions about which model backends Sugar Labs should depend on. After Mebin's feedback and Walter's clarification, the architecture now has a clear north star: **default to self-hosted open-weight models, but make everything configurable.** The code started moving in this direction with the \`BaseProvider\` interface, and Week 02 will be about getting the first complete provider-to-endpoint flow working end to end.
+`,Nd=e({default:()=>Pd}),Pd=`---
 title: "DMP '26 Week 01 Update by NSA Raiyyan"
 excerpt: "Pronunciation audit for Tier 1 languages, automated scoring tests, and phoneme coverage verification."
 category: "DEVELOPER NEWS"
@@ -29224,7 +29359,7 @@ Wrote \`test_g2p_coverage.py\` which verifies that the G2P (grapheme-to-phoneme)
 ## Acknowledgments
 
 Thanks to Mebin and Ibiam for the continued mentorship. Looking forward to the first native-speaker review checkpoint next week.
-`,Nd=e({default:()=>Pd}),Pd=`---
+`,Fd=e({default:()=>Id}),Id=`---
 
 title: "DMP '26 Week 2 Update by Stuti Jain"
 excerpt: "Designed and implemented a story-driven lesson framework for Music Blocks, introducing interactive quests, exploration rewards, and the first two narrative lessons."
@@ -29390,7 +29525,7 @@ While the narrative needed to be engaging enough to motivate learners, it was eq
 
 ## Acknowledgments
 Thanks to Walter Bender and Devin Ulibarri for their guidance and feedback throughout the design process. Their suggestions helped shape the transition from traditional lesson activities toward a more engaging, story-driven learning experience for young Music Blocks users. I also look forward to the upcoming classroom testing, which will provide valuable insights for refining the framework before expanding it to future lessons.
-`,Fd=e({default:()=>Id}),Id=`---
+`,Ld=e({default:()=>Rd}),Rd=`---
 title: "GSoC '26 Week 4: The GTK4 & WebKit6 Migration"
 excerpt: "Porting the Browse Activity from GTK3/WebKit2 to GTK4/WebKitGTK 6.0, updating event controllers, and fixing an upstream toolkit bug."
 category: "DEVELOPER NEWS"
@@ -29455,7 +29590,7 @@ Testing in standalone mode (\`local_run.py\`) is still throwing some expected D-
 
 ## Acknowledgments
 Thanks to my mentors and everyone who helped test things and answer questions while I was working through the Browse port. Hopefully I'll start getting review feedback on the PR next week so I can move on to Read.
-`,Ld=e({default:()=>Rd}),Rd=`---
+`,zd=e({default:()=>Bd}),Bd=`---
 title: "GSoC '26 Week 4 Report by Rejah Rabeeul Haque"
 excerpt: "Feature updates, implementation of color palette, fill color and erase tool."
 category: "DEVELOPER NEWS"
@@ -29530,7 +29665,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance, and the Sugar Lab
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,zd=e({default:()=>Bd}),Bd='---\ntitle: "GSoC \'26 Week 4 Progress Report by Sonal Gaud"\nexcerpt: "Scoping a single source of truth for release config to unify Turtle Blocks and Music Blocks"\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-21"\nslug: "2026-06-21-gsoc-26-sonal-gaud-week4"\nauthor: "@/constants/MarkdownFiles/authors/sonal-gaud.md"\ntags: "gsoc26,sugarlabs,musicblocks,ci-cd,release-automation,infrastructure"\nimage: "assets/Images/GSOC.webp"\n---\n\n# Week 4 Progress Report by Sonal Gaud\n\n**Project:** Automated Release Pipeline for Music Blocks  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-15 - 2026-06-21  \n\n---\n\n## Overview\n\n[Week 3](/news/all/2026-06-14-gsoc-26-sonal-gaud-week3) shipped `ci.yml`, the unified CI pipeline, and closed with an open question for mentors: what does the full release pipeline look like end-to-end? Week 4 was spent scoping out one piece of that answer. Turtle Blocks and Music Blocks currently ship as two codebases with duplicated config and a release flag that has to be hand-edited before every release. The plan taking shape is a single `js/releaseconfig.js` file as the source of truth, plus URL-driven detection so one bundle can eventually serve either app depending on where it\'s loaded from.\n\n---\n\n## The Problem Being Scoped\n\nThe release flag `THIS_IS_MUSIC_BLOCKS` is currently declared inline in `js/activity.js` and has to be flipped by hand for every Turtle vs. Music release, with no detection logic behind it. The splash screen is a giant base64-encoded `<img>` tag hardcoded directly into `index.html`, the tab title is static, and the rotating loading-screen text array is hardcoded too. None of it is mode-aware, so every release means editing markup by hand and hoping nothing gets missed. This week\'s work was mapping out exactly what a fix would need to touch before writing it.\n\n---\n\n## What\'s Planned: `releaseconfig.js`\n\nThe plan is for a new `js/releaseconfig.js` to consolidate everything that differs between the Turtle and Music releases into one file, loaded synchronously as the very first script in `<head>` - before requireJS even starts, so every later script would see the resolved flag.\n\n**What it would own**\n\n| Export | Purpose |\n|---|---|\n| `THIS_IS_MUSIC_BLOCKS` / `THIS_IS_TURTLE_BLOCKS` | The flags the rest of the codebase already reads |\n| `TURTLE_SPLASH_SRC` | The animated turtle SVG, lifted out of `index.html` as a `data:image/svg+xml;base64` URI |\n| `MUSIC_BLOCKS_SPLASH_SRC` | Placeholder until the real Music Blocks asset is ready |\n| `getSplashScreenSrc()` | Returns the correct splash for the active mode |\n| `RELEASE_TAB_TITLE` | `"Turtle Blocks"` or `"Music Blocks"` |\n| `LOADING_TEXTS` | The mode-specific rotating loading-screen text array |\n\n**URL-driven detection**\n\nThe proposed `resolveIsMusicBlocks()` would pick the mode at page load using this precedence:\n\n| Priority | Check | Example | Result |\n|---|---|---|---|\n| 1 | `?turtle` query param | `localhost/?turtle` | Turtle |\n| 1 | `?music` query param | `localhost/?music` | Music |\n| 2 | hostname contains "turtle" | `turtle.sugarlabs.org` | Turtle |\n| 2 | hostname contains "music" | `musicblocks.sugarlabs.org` | Music |\n| 3 | fallback `DEFAULT_IS_MUSIC_BLOCKS` | `localhost`, `file://` | Turtle (current default) |\n\nQuery params would override hostnames, which is what should make it possible to QA one mode on the other\'s domain without touching DNS.\n\n**Wiring changes to make**\n\n- `js/activity.js:51-52` - the inline `const THIS_IS_MUSIC_BLOCKS = false` will need to go once `releaseconfig.js` declares the same name first.\n- `index.html` - add `<script src="js/releaseconfig.js"><\/script>` as the first script in `<head>`, synchronous, no `defer`.\n- `index.html` - set the tab title via `document.title = RELEASE_TAB_TITLE;`.\n- `index.html` - replace the hardcoded base64 `<img src=…>` with `<img id="splash-image">`, with `src` set by `getSplashScreenSrc()`.\n- `index.html` - swap the hardcoded loading-text array for `const texts = LOADING_TEXTS;`.\n\n---\n\n## Plans for Next Week\n\n- Write `js/releaseconfig.js` and wire it into `index.html` per the plan above.\n- Drop in the real Music Blocks splash asset if it\'s ready, otherwise keep the placeholder and track it as a follow-up.\n- Run the three-path smoke test and bring the DNS and service-worker open questions to mentors.\n\n---\n\n## Acknowledgements\n\nThank you to Walter Bender and Om Santosh Suneri for continued feedback as this plan was scoped out.\n\n---\n',Vd=e({default:()=>Hd}),Hd=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Vd=e({default:()=>Hd}),Hd='---\ntitle: "GSoC \'26 Week 4 Progress Report by Sonal Gaud"\nexcerpt: "Scoping a single source of truth for release config to unify Turtle Blocks and Music Blocks"\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-21"\nslug: "2026-06-21-gsoc-26-sonal-gaud-week4"\nauthor: "@/constants/MarkdownFiles/authors/sonal-gaud.md"\ntags: "gsoc26,sugarlabs,musicblocks,ci-cd,release-automation,infrastructure"\nimage: "assets/Images/GSOC.webp"\n---\n\n# Week 4 Progress Report by Sonal Gaud\n\n**Project:** Automated Release Pipeline for Music Blocks  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-15 - 2026-06-21  \n\n---\n\n## Overview\n\n[Week 3](/news/all/2026-06-14-gsoc-26-sonal-gaud-week3) shipped `ci.yml`, the unified CI pipeline, and closed with an open question for mentors: what does the full release pipeline look like end-to-end? Week 4 was spent scoping out one piece of that answer. Turtle Blocks and Music Blocks currently ship as two codebases with duplicated config and a release flag that has to be hand-edited before every release. The plan taking shape is a single `js/releaseconfig.js` file as the source of truth, plus URL-driven detection so one bundle can eventually serve either app depending on where it\'s loaded from.\n\n---\n\n## The Problem Being Scoped\n\nThe release flag `THIS_IS_MUSIC_BLOCKS` is currently declared inline in `js/activity.js` and has to be flipped by hand for every Turtle vs. Music release, with no detection logic behind it. The splash screen is a giant base64-encoded `<img>` tag hardcoded directly into `index.html`, the tab title is static, and the rotating loading-screen text array is hardcoded too. None of it is mode-aware, so every release means editing markup by hand and hoping nothing gets missed. This week\'s work was mapping out exactly what a fix would need to touch before writing it.\n\n---\n\n## What\'s Planned: `releaseconfig.js`\n\nThe plan is for a new `js/releaseconfig.js` to consolidate everything that differs between the Turtle and Music releases into one file, loaded synchronously as the very first script in `<head>` - before requireJS even starts, so every later script would see the resolved flag.\n\n**What it would own**\n\n| Export | Purpose |\n|---|---|\n| `THIS_IS_MUSIC_BLOCKS` / `THIS_IS_TURTLE_BLOCKS` | The flags the rest of the codebase already reads |\n| `TURTLE_SPLASH_SRC` | The animated turtle SVG, lifted out of `index.html` as a `data:image/svg+xml;base64` URI |\n| `MUSIC_BLOCKS_SPLASH_SRC` | Placeholder until the real Music Blocks asset is ready |\n| `getSplashScreenSrc()` | Returns the correct splash for the active mode |\n| `RELEASE_TAB_TITLE` | `"Turtle Blocks"` or `"Music Blocks"` |\n| `LOADING_TEXTS` | The mode-specific rotating loading-screen text array |\n\n**URL-driven detection**\n\nThe proposed `resolveIsMusicBlocks()` would pick the mode at page load using this precedence:\n\n| Priority | Check | Example | Result |\n|---|---|---|---|\n| 1 | `?turtle` query param | `localhost/?turtle` | Turtle |\n| 1 | `?music` query param | `localhost/?music` | Music |\n| 2 | hostname contains "turtle" | `turtle.sugarlabs.org` | Turtle |\n| 2 | hostname contains "music" | `musicblocks.sugarlabs.org` | Music |\n| 3 | fallback `DEFAULT_IS_MUSIC_BLOCKS` | `localhost`, `file://` | Turtle (current default) |\n\nQuery params would override hostnames, which is what should make it possible to QA one mode on the other\'s domain without touching DNS.\n\n**Wiring changes to make**\n\n- `js/activity.js:51-52` - the inline `const THIS_IS_MUSIC_BLOCKS = false` will need to go once `releaseconfig.js` declares the same name first.\n- `index.html` - add `<script src="js/releaseconfig.js"><\/script>` as the first script in `<head>`, synchronous, no `defer`.\n- `index.html` - set the tab title via `document.title = RELEASE_TAB_TITLE;`.\n- `index.html` - replace the hardcoded base64 `<img src=…>` with `<img id="splash-image">`, with `src` set by `getSplashScreenSrc()`.\n- `index.html` - swap the hardcoded loading-text array for `const texts = LOADING_TEXTS;`.\n\n---\n\n## Plans for Next Week\n\n- Write `js/releaseconfig.js` and wire it into `index.html` per the plan above.\n- Drop in the real Music Blocks splash asset if it\'s ready, otherwise keep the placeholder and track it as a follow-up.\n- Run the three-path smoke test and bring the DNS and service-worker open questions to mentors.\n\n---\n\n## Acknowledgements\n\nThank you to Walter Bender and Om Santosh Suneri for continued feedback as this plan was scoped out.\n\n---\n',Ud=e({default:()=>Wd}),Wd=`---
 title: "GSoC '26 Week 4 Update by Syed Khubayb Ur Rahman"
 excerpt: "Building the new React component BrickViewFixed for generic presentation of Bricks with display widgets."
 category: "DEVELOPER NEWS"
@@ -29614,7 +29749,7 @@ Here are the variations visualized in Storybook, covering the four main stories:
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,Ud=e({default:()=>Wd}),Wd=`---
+`,Gd=e({default:()=>Kd}),Kd=`---
 title: "GSoC '26 Week 4 Update by Shreya Saxena"
 excerpt: "Investigated Firefox rendering bottlenecks and optimized the Music Blocks execution engine."
 category: "DEVELOPER NEWS"
@@ -29833,7 +29968,7 @@ Thank you to Devin Ulibarri for flagging the Firefox performance issue and pushi
 
 Proceed into Step 2 (Block Execution Analysis & Optimization) focusing on [blocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks.js) and [ActionBlocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks/ActionBlocks.js) profiling using the new instrumentation harness.
 
-`,Gd=e({default:()=>Kd}),Kd=`---
+`,qd=e({default:()=>Jd}),Jd=`---
 title: "GSoC '26 Week 04 Update by Shubham Sharma"
 excerpt: "Starting the engine rebuild, a question-quality test that passes, building the Journal redesign, and a simple start on peer reflection"
 category: "DEVELOPER NEWS"
@@ -29964,7 +30099,7 @@ Thanks to Walter for shaping the question-quality test and for calibrating the h
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,qd=e({default:()=>Jd}),Jd=`---
+`,Yd=e({default:()=>Xd}),Xd=`---
 title: "DMP '26 Week 01 Update by Nirav Sharma"
 excerpt: "PR 1 merged with temperament-aware pitch/frequency conversion, and PR 2 is progressing through remaining musicutils.js functions."
 category: "DEVELOPER NEWS"
@@ -30039,7 +30174,7 @@ This week was a major milestone because [PR #7561](https://github.com/sugarlabs/
 The \`getSolfege\` question is a good reminder that this project is not just about numeric changes — it also needs user-facing design decisions.
 
 ---
-`,Yd=e({default:()=>Xd}),Xd=`---
+`,Zd=e({default:()=>Qd}),Qd=`---
 title: "GSoC '26 Week 4: Hari - Frontend Testing, Thumbnail Pipeline & an Offline Problem"
 excerpt: "This week I completed the remaining Git-facing endpoints, tested them live with a temporary frontend widget, shipped a thumbnail migration pipeline, and discovered a tricky new challenge: offline commits."
 category: "DEVELOPER NEWS"
@@ -30109,7 +30244,7 @@ I'm still in the research and planning phase for this, so I'll have a lot more t
 This week is all about offline Git support. I'll be researching how to implement a local versioning layer that records commits without a network connection and syncs them back to GitHub when connectivity returns. The goal is to make it invisible to the student. They should be able to commit, branch, and browse history regardless of whether they're online or not.
 
 See you in the next update.
-`,Zd=e({default:()=>Qd}),Qd=`---
+`,$d=e({default:()=>ef}),ef=`---
 title: "DMP '26 Week 02 Update by NSA Raiyyan"
 excerpt: "Native speaker feedback: sending WAV samples to the Sugar Labs and Ankidroid communities for pronunciation review."
 category: "DEVELOPER NEWS"
@@ -30187,7 +30322,7 @@ Native speakers are listening to the WAV files right now. The feedback will tell
 ## Acknowledgments
 
 Thanks to Mebin and Ibiam for the continued mentorship. Also thanks to the Sugar Labs and Ankidroid communities for taking the time to review the pronunciation samples.
-`,$d=e({default:()=>ef}),ef=`---
+`,tf=e({default:()=>nf}),nf=`---
 title: "GSoC '26 Week 5 Update by Syed Khubayb Ur Rahman"
 excerpt: "Building the new React component BrickViewInput for generic presentation of Bricks with input widgets."
 category: "DEVELOPER NEWS"
@@ -30265,7 +30400,7 @@ Here are the five variations visualized in Storybook:
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,tf=e({default:()=>nf}),nf=`---
+`,rf=e({default:()=>af}),af=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -30414,7 +30549,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,rf=e({default:()=>af}),af=`---
+`,of=e({default:()=>sf}),sf=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -30517,7 +30652,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,of=e({default:()=>sf}),sf=`---
+`,cf=e({default:()=>lf}),lf=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -30990,7 +31125,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,cf=e({default:()=>lf}),lf=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,uf=e({default:()=>df}),df=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -31077,7 +31212,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,uf=e({default:()=>df}),df=`---\r
+`,ff=e({default:()=>pf}),pf=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -31170,7 +31305,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,ff=e({default:()=>pf}),pf=`---\r
+`,mf=e({default:()=>hf}),hf=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -31264,7 +31399,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,mf=e({default:()=>hf}),hf=`---\r
+`,gf=e({default:()=>_f}),_f=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -31352,7 +31487,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,gf=e({default:()=>_f}),_f=`---\r
+`,vf=e({default:()=>yf}),yf=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -31435,7 +31570,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,vf=e({default:()=>yf}),yf=`---\r
+`,bf=e({default:()=>xf}),xf=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -31501,7 +31636,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,bf=e({default:()=>xf}),xf=`---
+`,Sf=e({default:()=>Cf}),Cf=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -31583,7 +31718,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Sf=e({default:()=>Cf}),Cf=`---
+---`,wf=e({default:()=>Tf}),Tf=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -31676,7 +31811,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,wf=e({default:()=>Tf}),Tf=`---
+`,Ef=e({default:()=>Df}),Df=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -31765,7 +31900,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Ef=e({default:()=>Df}),Df=`---
+--- `,Of=e({default:()=>kf}),kf=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31910,7 +32045,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Of=e({default:()=>kf}),kf=`---
+--- `,Af=e({default:()=>jf}),jf=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32098,7 +32233,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Af=e({default:()=>jf}),jf=`---
+--- `,Mf=e({default:()=>Nf}),Nf=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32193,7 +32328,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Mf=e({default:()=>Nf}),Nf=`---
+`,Pf=e({default:()=>Ff}),Ff=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32282,7 +32417,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Pf=e({default:()=>Ff}),Ff=`---
+`,If=e({default:()=>Lf}),Lf=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32369,7 +32504,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,If=e({default:()=>Lf}),Lf=`---
+---`,Rf=e({default:()=>zf}),zf=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32452,7 +32587,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Rf=e({default:()=>zf}),zf=`---
+---`,Bf=e({default:()=>Vf}),Vf=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32535,7 +32670,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Bf=e({default:()=>Vf}),Vf=`---
+---`,Hf=e({default:()=>Uf}),Uf=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -32840,4 +32975,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Uu as $,Ve as $a,Hn as $i,Uo as $n,Hi as $r,Uc as $t,Fd as A,Nt as Aa,Pr as Ai,Fs as An,N as Ao,Pa as Ar,Fl as At,hd as B,pt as Ba,mr as Bi,hs as Bn,p as Bo,ma as Br,hl as Bt,Yd as C,qt as Ca,Jr as Ci,Ys as Cn,q as Co,Ja as Cr,Yl as Ct,Vd as D,zt as Da,Br as Di,Vs as Dn,z as Do,Ba as Dr,Vl as Dt,Ud as E,Vt as Ea,Hr as Ei,Us as En,V as Eo,Ha as Er,Ul as Et,Td as F,Ct as Fa,wr as Fi,Ts as Fn,C as Fo,wa as Fr,Tl as Ft,ad as G,rt as Ga,ir as Gi,as as Gn,r as Go,ia as Gr,al as Gt,dd as H,lt as Ha,ur as Hi,ds as Hn,l as Ho,ua as Hr,dl as Ht,Cd as I,xt as Ia,Sr as Ii,Cs as In,x as Io,Sa as Ir,Cl as It,$u as J,Ze as Ja,Qn as Ji,$o as Jn,Qi as Jr,$c as Jt,rd as K,tt as Ka,nr as Ki,rs as Kn,t as Ko,na as Kr,rl as Kt,xd as L,yt as La,br as Li,xs as Ln,y as Lo,ba as Lr,xl as Lt,jd as M,kt as Ma,Ar as Mi,js as Mn,k as Mo,Aa as Mr,jl as Mt,kd as N,Dt as Na,Or as Ni,ks as Nn,D as No,Oa as Nr,kl as Nt,zd as O,Lt as Oa,Rr as Oi,zs as On,L as Oo,Ra as Or,zl as Ot,Dd as P,Tt as Pa,Er as Pi,Ds as Pn,T as Po,Ea as Pr,Dl as Pt,Gu as Q,Ue as Qa,Wn as Qi,Go as Qn,Wi as Qr,Gc as Qt,yd as R,_t as Ra,vr as Ri,ys as Rn,_ as Ro,va as Rr,yl as Rt,Zd as S,Yt as Sa,Xr as Si,Zs as Sn,Y as So,Xa as Sr,Zl as St,Gd as T,Ut as Ta,Wr as Ti,Gs as Tn,U as To,Wa as Tr,Gl as Tt,ld as U,st as Ua,cr as Ui,ls as Un,s as Uo,ca as Ur,ll as Ut,pd as V,dt as Va,fr as Vi,ps as Vn,d as Vo,fa as Vr,pl as Vt,sd as W,at as Wa,or as Wi,ss as Wn,a as Wo,oa as Wr,sl as Wt,Yu as X,qe as Xa,Jn as Xi,Yo as Xn,Ji as Xr,Yc as Xt,Zu as Y,Ye as Ya,Xn as Yi,Zo as Yn,Xi as Yr,Zc as Yt,qu as Z,Ge as Za,Kn as Zi,qo as Zn,Ki as Zr,qc as Zt,cf as _,on as _a,oi as _i,sc as _n,ae as _o,oo as _r,su as _t,Mf as a,An as aa,Ai as ai,jc as an,ke as ao,jo as ar,ju as at,tf as b,$t as ba,ei as bi,tc as bn,$ as bo,eo as br,tu as bt,Ef as c,wn as ca,wi as ci,Tc as cn,Ce as co,To as cr,Tu as ct,bf as d,vn as da,vi as di,yc as dn,_e as do,yo as dr,yu as dt,Bn as ea,Bi as ei,Vc as en,ze as eo,Vo as er,Vu as et,vf as f,gn as fa,gi as fi,_c as fn,he as fo,_o as fr,_u as ft,uf as g,cn as ga,ci as gi,lc as gn,se as go,co as gr,lu as gt,ff as h,un as ha,ui as hi,dc as hn,le as ho,uo as hr,du as ht,Pf as i,Mn as ia,Mi as ii,Nc as in,je as io,No as ir,Nu as it,Nd as j,jt as ja,Mr as ji,Ns as jn,j as jo,Ma as jr,Nl as jt,Ld as k,Ft as ka,Ir as ki,Ls as kn,F as ko,Ia as kr,Ll as kt,wf as l,Sn as la,Si as li,Cc as ln,xe as lo,Co as lr,Cu as lt,mf as m,fn as ma,fi as mi,pc as mn,de as mo,po as mr,pu as mt,Rf as n,In as na,Ii as ni,Lc as nn,Fe as no,Lo as nr,Lu as nt,Af as o,On as oa,Oi as oi,kc as on,De as oo,ko as or,ku as ot,gf as p,mn as pa,mi as pi,hc as pn,pe as po,ho as pr,hu as pt,td as q,$e as qa,er as qi,ts as qn,ea as qr,tl as qt,If as r,Pn as ra,Pi as ri,Fc as rn,Ne as ro,Fo as rr,Fu as rt,Of as s,En as sa,Ei as si,Dc as sn,Te as so,Do as sr,Du as st,Bf as t,Rn as ta,Ri as ti,zc as tn,Le as to,zo as tr,zu as tt,Sf as u,bn as ua,bi as ui,xc as un,ye as uo,xo as ur,xu as ut,of as v,rn as va,ii as vi,ac as vn,re as vo,io as vr,au as vt,qd as w,Gt as wa,Kr as wi,qs as wn,G as wo,Ka as wr,ql as wt,$d as x,Zt as xa,Qr as xi,$s as xn,Z as xo,Qa as xr,$l as xt,rf as y,tn as ya,ni as yi,rc as yn,te as yo,no as yr,ru as yt,_d as z,ht as za,gr as zi,_s as zn,h as zo,ga as zr,_l as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Gu as $,Ue as $a,Wn as $i,Go as $n,Wi as $r,Gc as $t,Ld as A,Ft as Aa,Ir as Ai,Ls as An,F as Ao,Ia as Ar,Ll as At,_d as B,ht as Ba,gr as Bi,_s as Bn,h as Bo,ga as Br,_l as Bt,Zd as C,Yt as Ca,Xr as Ci,Zs as Cn,Y as Co,Xa as Cr,Zl as Ct,Ud as D,Vt as Da,Hr as Di,Us as Dn,V as Do,Ha as Dr,Ul as Dt,Gd as E,Ut as Ea,Wr as Ei,Gs as En,U as Eo,Wa as Er,Gl as Et,Dd as F,Tt as Fa,Er as Fi,Ds as Fn,T as Fo,Ea as Fr,Dl as Ft,sd as G,at as Ga,or as Gi,ss as Gn,a as Go,oa as Gr,sl as Gt,pd as H,dt as Ha,fr as Hi,ps as Hn,d as Ho,fa as Hr,pl as Ht,Td as I,Ct as Ia,wr as Ii,Ts as In,C as Io,wa as Ir,Tl as It,td as J,$e as Ja,er as Ji,ts as Jn,ea as Jr,tl as Jt,ad as K,rt as Ka,ir as Ki,as as Kn,r as Ko,ia as Kr,al as Kt,Cd as L,xt as La,Sr as Li,Cs as Ln,x as Lo,Sa as Lr,Cl as Lt,Nd as M,jt as Ma,Mr as Mi,Ns as Mn,j as Mo,Ma as Mr,Nl as Mt,jd as N,kt as Na,Ar as Ni,js as Nn,k as No,Aa as Nr,jl as Nt,Vd as O,zt as Oa,Br as Oi,Vs as On,z as Oo,Ba as Or,Vl as Ot,kd as P,Dt as Pa,Or as Pi,ks as Pn,D as Po,Oa as Pr,kl as Pt,qu as Q,Ge as Qa,Kn as Qi,qo as Qn,Ki as Qr,qc as Qt,xd as R,yt as Ra,br as Ri,xs as Rn,y as Ro,ba as Rr,xl as Rt,$d as S,Zt as Sa,Qr as Si,$s as Sn,Z as So,Qa as Sr,$l as St,qd as T,Gt as Ta,Kr as Ti,qs as Tn,G as To,Ka as Tr,ql as Tt,dd as U,lt as Ua,ur as Ui,ds as Un,l as Uo,ua as Ur,dl as Ut,hd as V,pt as Va,mr as Vi,hs as Vn,p as Vo,ma as Vr,hl as Vt,ld as W,st as Wa,cr as Wi,ls as Wn,s as Wo,ca as Wr,ll as Wt,Zu as X,Ye as Xa,Xn as Xi,Zo as Xn,Xi as Xr,Zc as Xt,$u as Y,Ze as Ya,Qn as Yi,$o as Yn,Qi as Yr,$c as Yt,Yu as Z,qe as Za,Jn as Zi,Yo as Zn,Ji as Zr,Yc as Zt,uf as _,cn as _a,ci as _i,lc as _n,se as _o,co as _r,lu as _t,Pf as a,Mn as aa,Mi as ai,Nc as an,je as ao,No as ar,Nu as at,rf as b,tn as ba,ni as bi,rc as bn,te as bo,no as br,ru as bt,Of as c,En as ca,Ei as ci,Dc as cn,Te as co,Do as cr,Du as ct,Sf as d,bn as da,bi as di,xc as dn,ye as do,xo as dr,xu as dt,Hn as ea,Hi as ei,Uc as en,Ve as eo,Uo as er,Uu as et,bf as f,vn as fa,vi as fi,yc as fn,_e as fo,yo as fr,yu as ft,ff as g,un as ga,ui as gi,dc as gn,le as go,uo as gr,du as gt,mf as h,fn as ha,fi as hi,pc as hn,de as ho,po as hr,pu as ht,If as i,Pn as ia,Pi as ii,Fc as in,Ne as io,Fo as ir,Fu as it,Fd as j,Nt as ja,Pr as ji,Fs as jn,N as jo,Pa as jr,Fl as jt,zd as k,Lt as ka,Rr as ki,zs as kn,L as ko,Ra as kr,zl as kt,Ef as l,wn as la,wi as li,Tc as ln,Ce as lo,To as lr,Tu as lt,gf as m,mn as ma,mi,hc as mn,pe as mo,ho as mr,hu as mt,Bf as n,Rn as na,Ri as ni,zc as nn,Le as no,zo as nr,zu as nt,Mf as o,An as oa,Ai as oi,jc as on,ke as oo,jo as or,ju as ot,vf as p,gn as pa,gi as pi,_c as pn,he as po,_o as pr,_u as pt,rd as q,tt as qa,nr as qi,rs as qn,t as qo,na as qr,rl as qt,Rf as r,In as ra,Ii as ri,Lc as rn,Fe as ro,Lo as rr,Lu as rt,Af as s,On as sa,Oi as si,kc as sn,De as so,ko as sr,ku as st,Hf as t,Bn as ta,Bi as ti,Vc as tn,ze as to,Vo as tr,Vu as tt,wf as u,Sn as ua,Si as ui,Cc as un,xe as uo,Co as ur,Cu as ut,cf as v,on as va,oi as vi,sc as vn,ae as vo,oo as vr,su as vt,Yd as w,qt as wa,Jr as wi,Ys as wn,q as wo,Ja as wr,Yl as wt,tf as x,$t as xa,ei as xi,tc as xn,$ as xo,eo as xr,tu as xt,of as y,rn as ya,ii as yi,ac as yn,re as yo,io as yr,au as yt,yd as z,_t as za,vr as zi,ys as zn,_ as zo,va as zr,yl as zt};
