@@ -116,7 +116,7 @@ These rewards help create a stronger sense of progression and provide motivation
 ---
 
 ### Draft Pull Request
-The complete prototype has been submitted for review as a draft pull request:
+The complete prototype has been submitted for review as a draft pull request:  
 **Draft PR:** https://github.com/sugarlabs/musicblocks/pull/7587
 
 ---
