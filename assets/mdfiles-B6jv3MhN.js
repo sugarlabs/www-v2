@@ -29248,6 +29248,156 @@ Next week shifts focus to frontend integration. I will be wiring up the new endp
 
 See you in the next update.
 `,jd=e({default:()=>Md}),Md=`---
+title: "GSoC '26 Week 04 Update by Dev"
+excerpt: "Transforming the Journal and Control Panel to GTK4 using modern list models and FlowBox layouts."
+category: "DEVELOPER NEWS"
+date: "2026-06-20"
+slug: "2026-06-20-gsoc-26-dev-week04"
+author: "@/constants/MarkdownFiles/authors/dev.md"
+tags: "gsoc26,sugarlabs,week04,dev,gtk4-port"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 04 Progress Report by Dev
+
+**Project:** [GTK4 Transition Part 2: Sugar Shell](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#gtk4-transition-part-2-sugar-shell)  
+**Mentors:** [Krish Pandya](https://github.com/MostlyKIGuess), [Ibiam Chihurumnaya](https://github.com/chimosky)  
+**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Juan Pablo Ugarte](https://github.com/xjuan)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-06-14 - 2026-06-20  
+
+---
+
+Hello everyone! 👋
+
+After wrapping up Week 3 where I finally got the Sugar Shell's Home Screen rendering on Wayland, the next logical step was tackling the two heaviest parts of the shell: the Journal (the central file and metadata manager) and the Control Panel (which handles all user preferences and system settings). 
+
+This week was a massive step up in difficulty. Porting these sections meant rewriting core database-to-UI bindings and dealing with strict Wayland compositor constraints. I had to spend a lot of time debugging PyGObject memory issues and restructuring layouts that crashed the shell instantly on startup.
+
+---
+
+## Goals for This Week
+
+- **Goal 1:** Modernize the Journal component, replacing deprecated GTK3 layouts with GTK4 architectures.
+- **Goal 2:** Migrate the floating toolbars and action menus in the Journal to work under Wayland.
+- **Goal 3:** Systematically port all Control Panel modules (Network, Language, Keyboard, Backup, etc.) to GTK4.
+
+---
+
+## This Week's Achievements
+
+1. **Porting the Journal Core and Layouts**  
+   - The Journal is the backbone of Sugar where all user activities and files are stored. I removed the deprecated \`Gtk.IconView\` grid and replaced it with \`Gtk.FlowBox\` to enable responsive sorting. I also updated the action palettes to use \`Gtk.PopoverMenu\`.
+   - **Commits:** [Port Journal core views and lists](https://github.com/sugarlabs/sugar/pull/1106/commits/8a14abe5050a4e75000dc223defdd5a0f2d8de29), [Port Journal models and action palettes](https://github.com/sugarlabs/sugar/pull/1106/commits/3f948cd3b6631653915cc35cb49096b34cce2c2f), [Migrate Journal toolbars and search entries](https://github.com/sugarlabs/sugar/pull/1106/commits/ab3272bfd1796d0e83d9fb43b5ec9fd1c816af5a)
+
+2. **Migrating the Control Panel Modules**  
+   - The Control Panel consists of independent settings modules. I migrated the settings UI for Network, Language, Keyboard, Backup, and the About sections, removing all deprecated packing constraints.
+   - **Commits:** [Port network, language and keyboard settings](https://github.com/sugarlabs/sugar/pull/1106/commits/2e6d4e98f3307202e02b5d5ba64a12a33aa618ec), [Port backup and about sections](https://github.com/sugarlabs/sugar/pull/1106/commits/3f5fda3dc308213b819547984c02095a12bc986b), [Port remaining control panel modules](https://github.com/sugarlabs/sugar/pull/1106/commits/842093db1165d6b017ee6f3b159a8667ce9b3dd6)
+
+3. **Global UI Handlers & Device Icons**  
+   - I updated the global shell shortcut keys and device tray icons (such as the Battery and Network indicator widgets) to map onto the new GTK4 event controllers.
+   - **Commits:** [Migrate device icons and trays](https://github.com/sugarlabs/sugar/pull/1106/commits/3f8de00f6d6346719d5ddbf35aa8cbbfe27349ba), [Port global keybinding handlers](https://github.com/sugarlabs/sugar/pull/1106/commits/e5c119224850d0ef12f9aee8de0daf7aae343990)
+
+---
+
+## How this looks on the UI
+
+Here is a preview of the ported views running in the live GTK4 Wayland session:
+
+*   **The Journal View:** The central file manager showing the list of student activities.
+*   **Popover Filters:** Clicking on the toolbar filter buttons opens the new native GTK4 Popovers to sort activities by type or date.
+*   **Erase Prompt Mode:** Selecting entries toggles the action bar to cleanly delete or edit files.
+*   **Folder Creation:** Adding projects and categorizing files dynamically.
+*   **Control Panel Sections:** Setting preferences for nickname, language, computer specs, background wallpaper, and network panels.
+
+Here are the screenshots showing the live GTK4 Journal and Control Panel in action:
+
+### Main Journal View
+![GTK4 Journal View](/assets/Developers/Dev/week04-journal.png)
+
+### Filter by Activity Type (Popover Menu)
+![GTK4 Filter by Type Popover](/assets/Developers/Dev/week04-filter-type.png)
+
+### Filter by Date (Popover Menu)
+![GTK4 Filter by Date Popover](/assets/Developers/Dev/week04-filter-date.png)
+
+### Erase and Edit Selection Mode
+![GTK4 Erase and Edit Selection Mode](/assets/Developers/Dev/week04-erase.png)
+
+### Projects & Folder Creation View
+![GTK4 Projects View](/assets/Developers/Dev/week04-projects.png)
+
+### Control Panel Dashboard
+![GTK4 Control Panel Main View](/assets/Developers/Dev/week04-cp-main.png)
+
+### About Me Settings
+![GTK4 About Me Settings](/assets/Developers/Dev/week04-cp-aboutme.png)
+
+### Wallpaper Background Settings
+![GTK4 Wallpaper Background Settings](/assets/Developers/Dev/week04-cp-background.png)
+
+### Language Settings
+![GTK4 Language Settings](/assets/Developers/Dev/week04-cp-language.png)
+
+### System Identity and Specs (About My Computer)
+![GTK4 About my Computer](/assets/Developers/Dev/week04-cp-aboutcomputer.png)
+
+---
+
+## Challenges & How I Overcame Them
+
+*   **Wrestling with the Model-View Paradigm (TreeModel vs. Gio.ListModel)**
+    For an undergraduate developer, the way GTK4 handles list structures is a massive hurdle. In GTK3, widgets like \`Gtk.IconView\` used \`Gtk.ListStore\` to hold rows of data. In GTK4, \`Gtk.IconView\` is completely removed, forcing a move to \`Gtk.FlowBox\`. \`Gtk.FlowBox\` doesn't support the old list stores; it requires wrapping data in a GObject List Model (\`Gio.ListModel\`). 
+    I had to rewrite how the Journal queries the metadata database and map it to a custom Python class inheriting from \`GObject.Object\` to wrap the entry properties. In PyGObject, if your reference counts or types mismatch during this wrapping, it segfaults instantly on startup without giving a traceback.
+
+*   **Wayland Window Constraints and Popovers**
+    Under X11, popup menus (like the Sugar Palettes that hover over icons) were drawn as separate top-level windows that could position themselves absolutely using screen coordinates. On Wayland, this is blocked for security. Windows have no knowledge of the global screen coordinates and cannot place themselves at arbitrary coordinates. 
+    I had to port all of these old menus to the new \`Gtk.PopoverMenu\` framework. Getting the popover widgets to anchor correctly to the individual list items without getting clipped by parent containers was a major headache.
+
+*   **PyGObject Garbage Collection of Event Controllers**
+    GTK4 removed the classic signal connections on widgets (like \`button-press-event\` or \`key-press-event\`). Instead, you must instantiate Event Controllers (like \`Gtk.GestureClick\` or \`Gtk.EventControllerKey\`) and attach them to the widget.
+    A silent bug I spent hours on was that the event handlers would work once and then randomly stop responding. I realized that if you don't store a persistent Python reference to the controller instance (e.g., binding it to \`self\`), Python’s garbage collector deletes it behind the scenes, disabling all click and keyboard events on that widget.
+
+*   **Replacing Legacy Container Packing**
+    GTK4 removes old packing methods like \`box.pack_start(widget, expand, fill, padding)\`. In GTK4, you can only use \`box.append(widget)\`. All spacing, expansion, and alignment constraints must be configured on the child widget itself using properties like \`margin_top\`, \`halign\`, and \`valign\`. Porting the Control Panel modules required manually auditing every single box layout to prevent the settings fields from shrinking and piling up in the corner of the screen.
+
+---
+
+## Key Learnings
+
+- GTK4 \`Gtk.FlowBox\` combined with \`Gtk.ScrolledWindow\` is vastly superior in memory management and rendering speed compared to GTK3's rigid \`IconView\`.
+- Event handling in GTK4 is modular. Writing custom controllers makes the code cleaner, but you must manually manage their lifecycle in Python to avoid silent garbage collection.
+
+---
+
+## Next Week's Roadmap
+
+- Dive deep into the system and background services.
+- Migrate the shell introduction wizard and modal dialogs.
+- Port webservices and update the internal testing suite to support GTK4 environments.
+- Resolve compositor launch and socket validity issues for Wayland scaling.
+
+---
+
+## Resources & References
+
+- Sugar Shell Repository - [sugar](https://github.com/sugarlabs/sugar)
+- GTK4 Toolkit Library - [sugar-toolkit-gtk4](https://github.com/sugarlabs/sugar-toolkit-gtk4)
+- Documentation - [Read the Docs](https://sugar-toolkit-gtk4.readthedocs.io/en/latest/)
+- GTK4 Migration Guide - [GNOME Docs](https://docs.gtk.org/gtk4/migrating-3to4.html)
+- PyPI Package - [sugar-toolkit-gtk4](https://pypi.org/project/sugar-toolkit-gtk4/)
+- Sugar Ext Repository - [sugar-ext](https://github.com/sugarlabs/sugar-ext)
+- Casilda Compositor - [Casilda](https://gitlab.gnome.org/jpu/casilda/-/tree/main?ref_type=heads)
+- Sugar Artwork Repository - [sugar-artwork](https://github.com/sugarlabs/sugar-artwork)
+
+---
+
+## Acknowledgments
+
+Thanks to my mentors for their patience as I untangled the deep legacy code in the Journal! Slowly but surely, the shell is starting to look natively modern.
+`,Nd=e({default:()=>Pd}),Pd=`---
 title: "DMP '26 Week 01 Update by Abhnish Kumar"
 excerpt: "TAB trap fix, palette icon accessibility, PR reviews, and mid-point milestone progress for Music Blocks WCAG 2.1 AA project"
 category: "DEVELOPER NEWS"
@@ -29337,7 +29487,7 @@ image: "assets/Images/c4gt-official-logo.png"
 
 ## Acknowledgments
 
-Thanks to Walter Bender for tagging me on multiple PRs for review — it is a good way to stay in sync with parallel accessibility and touch work happening across the repo.`,Nd=e({default:()=>Pd}),Pd=`---
+Thanks to Walter Bender for tagging me on multiple PRs for review — it is a good way to stay in sync with parallel accessibility and touch work happening across the repo.`,Fd=e({default:()=>Id}),Id=`---
 title: "DMP '26 Week 01 Update by Noaman Akhtar"
 excerpt: "Mentor alignment week: correcting fundamental approach flaws, establishing open-source sovereignty as a design constraint, and beginning the provider abstraction build."
 category: "DEVELOPER NEWS"
@@ -29472,7 +29622,7 @@ Thanks to [Mebin](https://github.com/mebinthattil) and [Vyagh](https://github.co
 ## Summary
 
 This week had no merged PRs and no shipped features. What it did have was a set of conversations that fundamentally redirected the project. The original plan was workable but built on the wrong assumptions about which model backends Sugar Labs should depend on. After Mebin's feedback and Walter's clarification, the architecture now has a clear north star: **default to self-hosted open-weight models, but make everything configurable.** The code started moving in this direction with the \`BaseProvider\` interface, and Week 02 will be about getting the first complete provider-to-endpoint flow working end to end.
-`,Fd=e({default:()=>Id}),Id=`---
+`,Ld=e({default:()=>Rd}),Rd=`---
 title: "DMP '26 Week 01 Update by NSA Raiyyan"
 excerpt: "Pronunciation audit for Tier 1 languages, automated scoring tests, and phoneme coverage verification."
 category: "DEVELOPER NEWS"
@@ -29547,7 +29697,7 @@ Wrote \`test_g2p_coverage.py\` which verifies that the G2P (grapheme-to-phoneme)
 ## Acknowledgments
 
 Thanks to Mebin and Ibiam for the continued mentorship. Looking forward to the first native-speaker review checkpoint next week.
-`,Ld=e({default:()=>Rd}),Rd=`---
+`,zd=e({default:()=>Bd}),Bd=`---
 
 title: "DMP '26 Week 2 Update by Stuti Jain"
 excerpt: "Designed and implemented a story-driven lesson framework for Music Blocks, introducing interactive quests, exploration rewards, and the first two narrative lessons."
@@ -29713,7 +29863,7 @@ While the narrative needed to be engaging enough to motivate learners, it was eq
 
 ## Acknowledgments
 Thanks to Walter Bender and Devin Ulibarri for their guidance and feedback throughout the design process. Their suggestions helped shape the transition from traditional lesson activities toward a more engaging, story-driven learning experience for young Music Blocks users. I also look forward to the upcoming classroom testing, which will provide valuable insights for refining the framework before expanding it to future lessons.
-`,zd=e({default:()=>Bd}),Bd=`---
+`,Vd=e({default:()=>Hd}),Hd=`---
 title: "GSoC '26 Week 4: The GTK4 & WebKit6 Migration"
 excerpt: "Porting the Browse Activity from GTK3/WebKit2 to GTK4/WebKitGTK 6.0, updating event controllers, and fixing an upstream toolkit bug."
 category: "DEVELOPER NEWS"
@@ -29778,7 +29928,7 @@ Testing in standalone mode (\`local_run.py\`) is still throwing some expected D-
 
 ## Acknowledgments
 Thanks to my mentors and everyone who helped test things and answer questions while I was working through the Browse port. Hopefully I'll start getting review feedback on the PR next week so I can move on to Read.
-`,Vd=e({default:()=>Hd}),Hd=`---
+`,Ud=e({default:()=>Wd}),Wd=`---
 title: "GSoC '26 Week 4 Update by Parth Dagia"
 excerpt: "Collaborating on BrickViewFixed, setting up Tailwind in the masonry module, and writing tests for the path2 outline generator."
 category: "DEVELOPER NEWS"
@@ -29851,7 +30001,7 @@ Once exams are done, I'll pick up the decorator parameters (label text, colour, 
 Thanks to Syed for the collaboration on BrickViewFixed, and to Anindya Kundu, Justin Charles, and Safwan Sayeed for their continued feedback. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,Ud=e({default:()=>Wd}),Wd=`---
+`,Gd=e({default:()=>Kd}),Kd=`---
 title: "GSoC '26 Week 4 Report by Rejah Rabeeul Haque"
 excerpt: "Feature updates, implementation of color palette, fill color and erase tool."
 category: "DEVELOPER NEWS"
@@ -29926,7 +30076,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance, and the Sugar Lab
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Gd=e({default:()=>Kd}),Kd='---\ntitle: "GSoC \'26 Week 4 Progress Report by Sonal Gaud"\nexcerpt: "Scoping a single source of truth for release config to unify Turtle Blocks and Music Blocks"\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-21"\nslug: "2026-06-21-gsoc-26-sonal-gaud-week4"\nauthor: "@/constants/MarkdownFiles/authors/sonal-gaud.md"\ntags: "gsoc26,sugarlabs,musicblocks,ci-cd,release-automation,infrastructure"\nimage: "assets/Images/GSOC.webp"\n---\n\n# Week 4 Progress Report by Sonal Gaud\n\n**Project:** Automated Release Pipeline for Music Blocks  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-15 - 2026-06-21  \n\n---\n\n## Overview\n\n[Week 3](/news/all/2026-06-14-gsoc-26-sonal-gaud-week3) shipped `ci.yml`, the unified CI pipeline, and closed with an open question for mentors: what does the full release pipeline look like end-to-end? Week 4 was spent scoping out one piece of that answer. Turtle Blocks and Music Blocks currently ship as two codebases with duplicated config and a release flag that has to be hand-edited before every release. The plan taking shape is a single `js/releaseconfig.js` file as the source of truth, plus URL-driven detection so one bundle can eventually serve either app depending on where it\'s loaded from.\n\n---\n\n## The Problem Being Scoped\n\nThe release flag `THIS_IS_MUSIC_BLOCKS` is currently declared inline in `js/activity.js` and has to be flipped by hand for every Turtle vs. Music release, with no detection logic behind it. The splash screen is a giant base64-encoded `<img>` tag hardcoded directly into `index.html`, the tab title is static, and the rotating loading-screen text array is hardcoded too. None of it is mode-aware, so every release means editing markup by hand and hoping nothing gets missed. This week\'s work was mapping out exactly what a fix would need to touch before writing it.\n\n---\n\n## What\'s Planned: `releaseconfig.js`\n\nThe plan is for a new `js/releaseconfig.js` to consolidate everything that differs between the Turtle and Music releases into one file, loaded synchronously as the very first script in `<head>` - before requireJS even starts, so every later script would see the resolved flag.\n\n**What it would own**\n\n| Export | Purpose |\n|---|---|\n| `THIS_IS_MUSIC_BLOCKS` / `THIS_IS_TURTLE_BLOCKS` | The flags the rest of the codebase already reads |\n| `TURTLE_SPLASH_SRC` | The animated turtle SVG, lifted out of `index.html` as a `data:image/svg+xml;base64` URI |\n| `MUSIC_BLOCKS_SPLASH_SRC` | Placeholder until the real Music Blocks asset is ready |\n| `getSplashScreenSrc()` | Returns the correct splash for the active mode |\n| `RELEASE_TAB_TITLE` | `"Turtle Blocks"` or `"Music Blocks"` |\n| `LOADING_TEXTS` | The mode-specific rotating loading-screen text array |\n\n**URL-driven detection**\n\nThe proposed `resolveIsMusicBlocks()` would pick the mode at page load using this precedence:\n\n| Priority | Check | Example | Result |\n|---|---|---|---|\n| 1 | `?turtle` query param | `localhost/?turtle` | Turtle |\n| 1 | `?music` query param | `localhost/?music` | Music |\n| 2 | hostname contains "turtle" | `turtle.sugarlabs.org` | Turtle |\n| 2 | hostname contains "music" | `musicblocks.sugarlabs.org` | Music |\n| 3 | fallback `DEFAULT_IS_MUSIC_BLOCKS` | `localhost`, `file://` | Turtle (current default) |\n\nQuery params would override hostnames, which is what should make it possible to QA one mode on the other\'s domain without touching DNS.\n\n**Wiring changes to make**\n\n- `js/activity.js:51-52` - the inline `const THIS_IS_MUSIC_BLOCKS = false` will need to go once `releaseconfig.js` declares the same name first.\n- `index.html` - add `<script src="js/releaseconfig.js"><\/script>` as the first script in `<head>`, synchronous, no `defer`.\n- `index.html` - set the tab title via `document.title = RELEASE_TAB_TITLE;`.\n- `index.html` - replace the hardcoded base64 `<img src=…>` with `<img id="splash-image">`, with `src` set by `getSplashScreenSrc()`.\n- `index.html` - swap the hardcoded loading-text array for `const texts = LOADING_TEXTS;`.\n\n---\n\n## Plans for Next Week\n\n- Write `js/releaseconfig.js` and wire it into `index.html` per the plan above.\n- Drop in the real Music Blocks splash asset if it\'s ready, otherwise keep the placeholder and track it as a follow-up.\n- Run the three-path smoke test and bring the DNS and service-worker open questions to mentors.\n\n---\n\n## Acknowledgements\n\nThank you to Walter Bender and Om Santosh Suneri for continued feedback as this plan was scoped out.\n\n---\n',qd=e({default:()=>Jd}),Jd=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,qd=e({default:()=>Jd}),Jd='---\ntitle: "GSoC \'26 Week 4 Progress Report by Sonal Gaud"\nexcerpt: "Scoping a single source of truth for release config to unify Turtle Blocks and Music Blocks"\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-21"\nslug: "2026-06-21-gsoc-26-sonal-gaud-week4"\nauthor: "@/constants/MarkdownFiles/authors/sonal-gaud.md"\ntags: "gsoc26,sugarlabs,musicblocks,ci-cd,release-automation,infrastructure"\nimage: "assets/Images/GSOC.webp"\n---\n\n# Week 4 Progress Report by Sonal Gaud\n\n**Project:** Automated Release Pipeline for Music Blocks  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-15 - 2026-06-21  \n\n---\n\n## Overview\n\n[Week 3](/news/all/2026-06-14-gsoc-26-sonal-gaud-week3) shipped `ci.yml`, the unified CI pipeline, and closed with an open question for mentors: what does the full release pipeline look like end-to-end? Week 4 was spent scoping out one piece of that answer. Turtle Blocks and Music Blocks currently ship as two codebases with duplicated config and a release flag that has to be hand-edited before every release. The plan taking shape is a single `js/releaseconfig.js` file as the source of truth, plus URL-driven detection so one bundle can eventually serve either app depending on where it\'s loaded from.\n\n---\n\n## The Problem Being Scoped\n\nThe release flag `THIS_IS_MUSIC_BLOCKS` is currently declared inline in `js/activity.js` and has to be flipped by hand for every Turtle vs. Music release, with no detection logic behind it. The splash screen is a giant base64-encoded `<img>` tag hardcoded directly into `index.html`, the tab title is static, and the rotating loading-screen text array is hardcoded too. None of it is mode-aware, so every release means editing markup by hand and hoping nothing gets missed. This week\'s work was mapping out exactly what a fix would need to touch before writing it.\n\n---\n\n## What\'s Planned: `releaseconfig.js`\n\nThe plan is for a new `js/releaseconfig.js` to consolidate everything that differs between the Turtle and Music releases into one file, loaded synchronously as the very first script in `<head>` - before requireJS even starts, so every later script would see the resolved flag.\n\n**What it would own**\n\n| Export | Purpose |\n|---|---|\n| `THIS_IS_MUSIC_BLOCKS` / `THIS_IS_TURTLE_BLOCKS` | The flags the rest of the codebase already reads |\n| `TURTLE_SPLASH_SRC` | The animated turtle SVG, lifted out of `index.html` as a `data:image/svg+xml;base64` URI |\n| `MUSIC_BLOCKS_SPLASH_SRC` | Placeholder until the real Music Blocks asset is ready |\n| `getSplashScreenSrc()` | Returns the correct splash for the active mode |\n| `RELEASE_TAB_TITLE` | `"Turtle Blocks"` or `"Music Blocks"` |\n| `LOADING_TEXTS` | The mode-specific rotating loading-screen text array |\n\n**URL-driven detection**\n\nThe proposed `resolveIsMusicBlocks()` would pick the mode at page load using this precedence:\n\n| Priority | Check | Example | Result |\n|---|---|---|---|\n| 1 | `?turtle` query param | `localhost/?turtle` | Turtle |\n| 1 | `?music` query param | `localhost/?music` | Music |\n| 2 | hostname contains "turtle" | `turtle.sugarlabs.org` | Turtle |\n| 2 | hostname contains "music" | `musicblocks.sugarlabs.org` | Music |\n| 3 | fallback `DEFAULT_IS_MUSIC_BLOCKS` | `localhost`, `file://` | Turtle (current default) |\n\nQuery params would override hostnames, which is what should make it possible to QA one mode on the other\'s domain without touching DNS.\n\n**Wiring changes to make**\n\n- `js/activity.js:51-52` - the inline `const THIS_IS_MUSIC_BLOCKS = false` will need to go once `releaseconfig.js` declares the same name first.\n- `index.html` - add `<script src="js/releaseconfig.js"><\/script>` as the first script in `<head>`, synchronous, no `defer`.\n- `index.html` - set the tab title via `document.title = RELEASE_TAB_TITLE;`.\n- `index.html` - replace the hardcoded base64 `<img src=…>` with `<img id="splash-image">`, with `src` set by `getSplashScreenSrc()`.\n- `index.html` - swap the hardcoded loading-text array for `const texts = LOADING_TEXTS;`.\n\n---\n\n## Plans for Next Week\n\n- Write `js/releaseconfig.js` and wire it into `index.html` per the plan above.\n- Drop in the real Music Blocks splash asset if it\'s ready, otherwise keep the placeholder and track it as a follow-up.\n- Run the three-path smoke test and bring the DNS and service-worker open questions to mentors.\n\n---\n\n## Acknowledgements\n\nThank you to Walter Bender and Om Santosh Suneri for continued feedback as this plan was scoped out.\n\n---\n',Yd=e({default:()=>Xd}),Xd=`---
 title: "GSoC '26 Week 4 Update by Syed Khubayb Ur Rahman"
 excerpt: "Building the new React component BrickViewFixed for generic presentation of Bricks with display widgets."
 category: "DEVELOPER NEWS"
@@ -30010,7 +30160,7 @@ Here are the variations visualized in Storybook, covering the four main stories:
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,Yd=e({default:()=>Xd}),Xd=`---
+`,Zd=e({default:()=>Qd}),Qd=`---
 title: "GSoC '26 Week 4 Update by Shreya Saxena"
 excerpt: "Investigated Firefox rendering bottlenecks and optimized the Music Blocks execution engine."
 category: "DEVELOPER NEWS"
@@ -30229,7 +30379,7 @@ Thank you to Devin Ulibarri for flagging the Firefox performance issue and pushi
 
 Proceed into Step 2 (Block Execution Analysis & Optimization) focusing on [blocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks.js) and [ActionBlocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks/ActionBlocks.js) profiling using the new instrumentation harness.
 
-`,Zd=e({default:()=>Qd}),Qd=`---
+`,$d=e({default:()=>ef}),ef=`---
 title: "GSoC '26 Week 04 Update by Shubham Sharma"
 excerpt: "Starting the engine rebuild, a question-quality test that passes, building the Journal redesign, and a simple start on peer reflection"
 category: "DEVELOPER NEWS"
@@ -30360,7 +30510,7 @@ Thanks to Walter for shaping the question-quality test and for calibrating the h
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,$d=e({default:()=>ef}),ef=`---
+`,tf=e({default:()=>nf}),nf=`---
 title: "DMP '26 Week 01 Update by Nirav Sharma"
 excerpt: "PR 1 merged with temperament-aware pitch/frequency conversion, and PR 2 is progressing through remaining musicutils.js functions."
 category: "DEVELOPER NEWS"
@@ -30435,7 +30585,7 @@ This week was a major milestone because [PR #7561](https://github.com/sugarlabs/
 The \`getSolfege\` question is a good reminder that this project is not just about numeric changes — it also needs user-facing design decisions.
 
 ---
-`,tf=e({default:()=>nf}),nf=`---
+`,rf=e({default:()=>af}),af=`---
 title: "GSoC '26 Week 4: Hari - Frontend Testing, Thumbnail Pipeline & an Offline Problem"
 excerpt: "This week I completed the remaining Git-facing endpoints, tested them live with a temporary frontend widget, shipped a thumbnail migration pipeline, and discovered a tricky new challenge: offline commits."
 category: "DEVELOPER NEWS"
@@ -30505,7 +30655,7 @@ I'm still in the research and planning phase for this, so I'll have a lot more t
 This week is all about offline Git support. I'll be researching how to implement a local versioning layer that records commits without a network connection and syncs them back to GitHub when connectivity returns. The goal is to make it invisible to the student. They should be able to commit, branch, and browse history regardless of whether they're online or not.
 
 See you in the next update.
-`,rf=e({default:()=>af}),af='---\ntitle: "DMP \'26 Week 02 Update by Noaman Akhtar"\nexcerpt: "Extracting the HuggingFace pipeline from RAGAgent into a model-agnostic BaseProvider without changing existing behavior."\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-28"\nslug: "2026-06-28-dmp-26-noaman-week02"\nauthor: "@/constants/MarkdownFiles/authors/noaman-akhtar.md"\ndescription: "DMP\'26 Contributor at SugarLabs working on AI Optimization"\ntags: "dmp26,sugarlabs,week02,noaman-akhtar,sugar-ai,ai-optimization"\nimage: "assets/Images/c4gt_DMP.webp"\n---\n\n<!-- markdownlint-disable -->\n\n# Week 02 Progress Report by Noaman Akhtar\n\n**Project:** [AI Optimization](https://github.com/sugarlabs/sugar-ai)  \n**Mentors:** [sum2it](https://github.com/sum2it), [mostlyk](https://github.com/MostlyKIGuess), [chimosky](https://github.com/chimosky)  \n**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa), [Mebin](https://github.com/mebinthattil)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-22 – 2026-06-28  \n\n---\n\n## Goals for This Week\n\n- Extract the HuggingFace-specific code from [`RAGAgent`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L35).\n- Define a model-agnostic provider interface for text generation and chat.\n- Fix the [`/ask-llm`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L122) endpoint so it no longer calls the model pipeline directly.\n- Keep the existing API response shapes and behavior stable throughout the refactor.\n\n---\n\n## The Coupling Problem (Recap)\n\nAt the start of the week, `RAGAgent` was responsible for too many unrelated tasks. The roughly 401-line class loaded the language model, configured 4-bit quantization, created the HuggingFace pipeline, retrieved documentation with FAISS, assembled prompts, and generated responses. Both [`torch`](https://pytorch.org/) and [`transformers`](https://huggingface.co/docs/transformers/) were imported directly into the agent, which made the entire application depend on one inference implementation.\n\nThe coupling also extended beyond the class. The `/ask-llm` endpoint reached into `agent.model()` and called the raw HuggingFace pipeline itself. Chat handling contained Gemma-specific role normalization inside the shared agent. Adding another backend at that point would have required more provider-specific conditions throughout `RAGAgent` and the API routes.\n\nPhase 1 therefore focused only on separation. Before adding Ollama or any cloud API, I needed to establish a contract that the existing HuggingFace implementation could satisfy without changing how clients use Sugar-AI.\n\n---\n\n## Building the Provider Abstraction\n\n### The BaseProvider Interface\n\nI added [`app/providers/base.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py), which defines the [`BaseProvider`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L38) abstract base class. Every model backend must implement the same four operations:\n\n```python\ngenerate(prompt, params)\nchat(messages, params)\nget_model_name()\nhealth_check()\n```\n\nThe same file introduces [`GenerationParams`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L24), a frozen dataclass that groups settings such as `max_new_tokens`, `temperature`, `top_p`, `top_k`, and `repetition_penalty`. Its [`__post_init__()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L34) method derives `do_sample` from whether the temperature is greater than zero. This keeps generation settings consistent across providers and prevents call sites from passing a growing list of unrelated keyword arguments.\n\n### Extracting HuggingFaceProvider\n\nI moved the existing inference implementation into [`HuggingFaceProvider`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L28). It now owns model and tokenizer loading, optional [`BitsAndBytesConfig`](https://huggingface.co/docs/transformers/main_classes/quantization#transformers.BitsAndBytesConfig) 4-bit quantization, pipeline construction, raw generation, and chat generation.\n\nProvider-specific compatibility logic moved with it. [`_normalize_chat_messages()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L141) handles the role ordering needed by Gemma models, while [`_extract_after_prompt()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L173) separates newly generated text from the input prompt. As a result, [`app/providers/huggingface.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py) is now the only Phase 1 file that imports `torch` and `transformers`.\n\nThe provider also implements [`get_model_name()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L130) and [`health_check()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L133). The health method is groundwork for future availability checks and safer model switching. Phase 1 does not expose a public `/health` endpoint.\n\n### Rewriting RAGAgent\n\nThe rewritten `RAGAgent` accepts a `BaseProvider` through [`__init__(self, provider: BaseProvider)`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L38). It no longer loads a causal language model or knows how a HuggingFace pipeline returns generated text.\n\nInstead, [`run()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L107), [`debug()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L90), and [`run_with_custom_prompt()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L136) assemble their prompts and delegate inference to [`provider.generate()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L42). [`run_chat_completion()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L157) delegates structured messages to [`provider.chat()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L46). The previous LangChain chain composition for these calls was replaced with direct prompt formatting, while the agent retained the parts that belong to the RAG layer: document loading, embeddings, FAISS retrieval, and prompt construction.\n\nThis creates a clear ownership boundary. `RAGAgent` decides what context and instructions the model receives, while the provider decides how those inputs reach a model backend.\n\n### Wiring It Up\n\nIn [`main.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/main.py), application startup now creates a `HuggingFaceProvider` first and injects it into `RAGAgent`. The agent depends on the provider interface rather than constructing a concrete model pipeline itself.\n\nI also updated [`app/routes/api.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py). The `/ask-llm` path now calls [`agent.provider.generate(question)`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L134) instead of accessing `agent.model()`. The prompted and chat modes translate request fields into one `GenerationParams` object, and [`/change-model`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L307) builds a replacement `HuggingFaceProvider` before passing it to [`set_model()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L55).\n\nThis is dependency inversion in a practical form: high-level retrieval and API behavior depend on a small interface, while HuggingFace-specific details sit behind that interface.\n\n---\n\n## Challenge & Key Learning\n\nThe main challenge was keeping this a structural refactor. Moving model loading and generation across files created many opportunities to change output parsing, prompt formatting, or parameter defaults accidentally. I had to compare each call path carefully and resist adding alternative providers before the first contract was stable.\n\nThe key lesson was that an abstraction is useful only when the existing implementation can pass through it cleanly. Extracting `HuggingFaceProvider` first exposed which responsibilities belonged to inference and which belonged to retrieval. That boundary is what will make later providers simpler rather than adding another layer of conditionals.\n\nFor local checks, [`DEV_MODE`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/.example.env#L9) allowed me to use the lighter [`HuggingFaceTB/SmolLM-135M-Instruct`](https://huggingface.co/HuggingFaceTB/SmolLM-135M-Instruct) model on CPU instead of requiring the production model and GPU setup.\n\n---\n\n## Verification\n\nI checked the existing request paths after the refactor: [`/ask`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L84), `/ask-llm`, both custom-prompt and chat modes of [`/ask-llm-prompted`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L153), and [`/debug`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L273) with and without documentation context. I verified that the API response structures and intended behavior remained consistent while inference passed through the provider interface.\n\nI also performed syntax and import checks after each extraction step. The `health_check()` contract and provider replacement in `set_model()` establish the groundwork for a future health endpoint and safer runtime model switching, but those follow-up features are outside this phase.\n\n---\n\n## Plan for Next Week\n\nThe next step is to implement the first alternative backend, `OllamaProvider`, and test it against a local Ollama instance running `qwen2.5:1.5b`. This will test whether the `BaseProvider` contract is genuinely model-agnostic rather than only a wrapper around HuggingFace.\n\nI also plan to add an `AI_PROVIDER` environment setting and a provider factory so startup can select a backend without changing application code. Those changes will build on this Phase 1 branch rather than expanding the interface prematurely.\n\n---\n\n## Resources & References\n\n- **Repository:** [https://github.com/sugarlabs/sugar-ai](https://github.com/sugarlabs/sugar-ai)\n- **Phase 1 branch:** [https://github.com/Noaman-Akhtar/sugar-ai/tree/refactor/provider-abstraction](https://github.com/Noaman-Akhtar/sugar-ai/tree/refactor/provider-abstraction)\n- **Python abstract base classes:** [https://docs.python.org/3/library/abc.html](https://docs.python.org/3/library/abc.html)\n- **HuggingFace pipelines:** [https://huggingface.co/docs/transformers/main_classes/pipelines](https://huggingface.co/docs/transformers/main_classes/pipelines)\n- **FastAPI documentation:** [https://fastapi.tiangolo.com/](https://fastapi.tiangolo.com/)\n\n---\n\n## Acknowledgments\n\nThanks to my mentors and the Sugar Labs community for helping keep the implementation focused on a stable provider contract before adding more backends. Their feedback helped turn the initial architecture plan into a clear first refactoring phase.\n\n---\n',of=e({default:()=>sf}),sf=`---
+`,of=e({default:()=>sf}),sf='---\ntitle: "DMP \'26 Week 02 Update by Noaman Akhtar"\nexcerpt: "Extracting the HuggingFace pipeline from RAGAgent into a model-agnostic BaseProvider without changing existing behavior."\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-28"\nslug: "2026-06-28-dmp-26-noaman-week02"\nauthor: "@/constants/MarkdownFiles/authors/noaman-akhtar.md"\ndescription: "DMP\'26 Contributor at SugarLabs working on AI Optimization"\ntags: "dmp26,sugarlabs,week02,noaman-akhtar,sugar-ai,ai-optimization"\nimage: "assets/Images/c4gt_DMP.webp"\n---\n\n<!-- markdownlint-disable -->\n\n# Week 02 Progress Report by Noaman Akhtar\n\n**Project:** [AI Optimization](https://github.com/sugarlabs/sugar-ai)  \n**Mentors:** [sum2it](https://github.com/sum2it), [mostlyk](https://github.com/MostlyKIGuess), [chimosky](https://github.com/chimosky)  \n**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa), [Mebin](https://github.com/mebinthattil)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-22 – 2026-06-28  \n\n---\n\n## Goals for This Week\n\n- Extract the HuggingFace-specific code from [`RAGAgent`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L35).\n- Define a model-agnostic provider interface for text generation and chat.\n- Fix the [`/ask-llm`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L122) endpoint so it no longer calls the model pipeline directly.\n- Keep the existing API response shapes and behavior stable throughout the refactor.\n\n---\n\n## The Coupling Problem (Recap)\n\nAt the start of the week, `RAGAgent` was responsible for too many unrelated tasks. The roughly 401-line class loaded the language model, configured 4-bit quantization, created the HuggingFace pipeline, retrieved documentation with FAISS, assembled prompts, and generated responses. Both [`torch`](https://pytorch.org/) and [`transformers`](https://huggingface.co/docs/transformers/) were imported directly into the agent, which made the entire application depend on one inference implementation.\n\nThe coupling also extended beyond the class. The `/ask-llm` endpoint reached into `agent.model()` and called the raw HuggingFace pipeline itself. Chat handling contained Gemma-specific role normalization inside the shared agent. Adding another backend at that point would have required more provider-specific conditions throughout `RAGAgent` and the API routes.\n\nPhase 1 therefore focused only on separation. Before adding Ollama or any cloud API, I needed to establish a contract that the existing HuggingFace implementation could satisfy without changing how clients use Sugar-AI.\n\n---\n\n## Building the Provider Abstraction\n\n### The BaseProvider Interface\n\nI added [`app/providers/base.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py), which defines the [`BaseProvider`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L38) abstract base class. Every model backend must implement the same four operations:\n\n```python\ngenerate(prompt, params)\nchat(messages, params)\nget_model_name()\nhealth_check()\n```\n\nThe same file introduces [`GenerationParams`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L24), a frozen dataclass that groups settings such as `max_new_tokens`, `temperature`, `top_p`, `top_k`, and `repetition_penalty`. Its [`__post_init__()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L34) method derives `do_sample` from whether the temperature is greater than zero. This keeps generation settings consistent across providers and prevents call sites from passing a growing list of unrelated keyword arguments.\n\n### Extracting HuggingFaceProvider\n\nI moved the existing inference implementation into [`HuggingFaceProvider`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L28). It now owns model and tokenizer loading, optional [`BitsAndBytesConfig`](https://huggingface.co/docs/transformers/main_classes/quantization#transformers.BitsAndBytesConfig) 4-bit quantization, pipeline construction, raw generation, and chat generation.\n\nProvider-specific compatibility logic moved with it. [`_normalize_chat_messages()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L141) handles the role ordering needed by Gemma models, while [`_extract_after_prompt()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L173) separates newly generated text from the input prompt. As a result, [`app/providers/huggingface.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py) is now the only Phase 1 file that imports `torch` and `transformers`.\n\nThe provider also implements [`get_model_name()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L130) and [`health_check()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L133). The health method is groundwork for future availability checks and safer model switching. Phase 1 does not expose a public `/health` endpoint.\n\n### Rewriting RAGAgent\n\nThe rewritten `RAGAgent` accepts a `BaseProvider` through [`__init__(self, provider: BaseProvider)`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L38). It no longer loads a causal language model or knows how a HuggingFace pipeline returns generated text.\n\nInstead, [`run()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L107), [`debug()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L90), and [`run_with_custom_prompt()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L136) assemble their prompts and delegate inference to [`provider.generate()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L42). [`run_chat_completion()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L157) delegates structured messages to [`provider.chat()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L46). The previous LangChain chain composition for these calls was replaced with direct prompt formatting, while the agent retained the parts that belong to the RAG layer: document loading, embeddings, FAISS retrieval, and prompt construction.\n\nThis creates a clear ownership boundary. `RAGAgent` decides what context and instructions the model receives, while the provider decides how those inputs reach a model backend.\n\n### Wiring It Up\n\nIn [`main.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/main.py), application startup now creates a `HuggingFaceProvider` first and injects it into `RAGAgent`. The agent depends on the provider interface rather than constructing a concrete model pipeline itself.\n\nI also updated [`app/routes/api.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py). The `/ask-llm` path now calls [`agent.provider.generate(question)`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L134) instead of accessing `agent.model()`. The prompted and chat modes translate request fields into one `GenerationParams` object, and [`/change-model`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L307) builds a replacement `HuggingFaceProvider` before passing it to [`set_model()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L55).\n\nThis is dependency inversion in a practical form: high-level retrieval and API behavior depend on a small interface, while HuggingFace-specific details sit behind that interface.\n\n---\n\n## Challenge & Key Learning\n\nThe main challenge was keeping this a structural refactor. Moving model loading and generation across files created many opportunities to change output parsing, prompt formatting, or parameter defaults accidentally. I had to compare each call path carefully and resist adding alternative providers before the first contract was stable.\n\nThe key lesson was that an abstraction is useful only when the existing implementation can pass through it cleanly. Extracting `HuggingFaceProvider` first exposed which responsibilities belonged to inference and which belonged to retrieval. That boundary is what will make later providers simpler rather than adding another layer of conditionals.\n\nFor local checks, [`DEV_MODE`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/.example.env#L9) allowed me to use the lighter [`HuggingFaceTB/SmolLM-135M-Instruct`](https://huggingface.co/HuggingFaceTB/SmolLM-135M-Instruct) model on CPU instead of requiring the production model and GPU setup.\n\n---\n\n## Verification\n\nI checked the existing request paths after the refactor: [`/ask`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L84), `/ask-llm`, both custom-prompt and chat modes of [`/ask-llm-prompted`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L153), and [`/debug`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L273) with and without documentation context. I verified that the API response structures and intended behavior remained consistent while inference passed through the provider interface.\n\nI also performed syntax and import checks after each extraction step. The `health_check()` contract and provider replacement in `set_model()` establish the groundwork for a future health endpoint and safer runtime model switching, but those follow-up features are outside this phase.\n\n---\n\n## Plan for Next Week\n\nThe next step is to implement the first alternative backend, `OllamaProvider`, and test it against a local Ollama instance running `qwen2.5:1.5b`. This will test whether the `BaseProvider` contract is genuinely model-agnostic rather than only a wrapper around HuggingFace.\n\nI also plan to add an `AI_PROVIDER` environment setting and a provider factory so startup can select a backend without changing application code. Those changes will build on this Phase 1 branch rather than expanding the interface prematurely.\n\n---\n\n## Resources & References\n\n- **Repository:** [https://github.com/sugarlabs/sugar-ai](https://github.com/sugarlabs/sugar-ai)\n- **Phase 1 branch:** [https://github.com/Noaman-Akhtar/sugar-ai/tree/refactor/provider-abstraction](https://github.com/Noaman-Akhtar/sugar-ai/tree/refactor/provider-abstraction)\n- **Python abstract base classes:** [https://docs.python.org/3/library/abc.html](https://docs.python.org/3/library/abc.html)\n- **HuggingFace pipelines:** [https://huggingface.co/docs/transformers/main_classes/pipelines](https://huggingface.co/docs/transformers/main_classes/pipelines)\n- **FastAPI documentation:** [https://fastapi.tiangolo.com/](https://fastapi.tiangolo.com/)\n\n---\n\n## Acknowledgments\n\nThanks to my mentors and the Sugar Labs community for helping keep the implementation focused on a stable provider contract before adding more backends. Their feedback helped turn the initial architecture plan into a clear first refactoring phase.\n\n---\n',cf=e({default:()=>lf}),lf=`---
 title: "DMP '26 Week 02 Update by NSA Raiyyan"
 excerpt: "Native speaker feedback: sending WAV samples to the Sugar Labs and Ankidroid communities for pronunciation review."
 category: "DEVELOPER NEWS"
@@ -30583,7 +30733,7 @@ Native speakers are listening to the WAV files right now. The feedback will tell
 ## Acknowledgments
 
 Thanks to Mebin and Ibiam for the continued mentorship. Also thanks to the Sugar Labs and Ankidroid communities for taking the time to review the pronunciation samples.
-`,cf=e({default:()=>lf}),lf=`---
+`,uf=e({default:()=>df}),df=`---
 title: "GSoC '26 Week 5 Update by Syed Khubayb Ur Rahman"
 excerpt: "Building the new React component BrickViewInput for generic presentation of Bricks with input widgets."
 category: "DEVELOPER NEWS"
@@ -30661,7 +30811,7 @@ Here are the five variations visualized in Storybook:
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,uf=e({default:()=>df}),df=`---
+`,ff=e({default:()=>pf}),pf=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -30810,7 +30960,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,ff=e({default:()=>pf}),pf=`---
+`,mf=e({default:()=>hf}),hf=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -30913,7 +31063,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,mf=e({default:()=>hf}),hf=`---
+`,gf=e({default:()=>_f}),_f=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -31386,7 +31536,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,gf=e({default:()=>_f}),_f=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,vf=e({default:()=>yf}),yf=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -31473,7 +31623,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,vf=e({default:()=>yf}),yf=`---\r
+`,bf=e({default:()=>xf}),xf=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -31566,7 +31716,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,bf=e({default:()=>xf}),xf=`---\r
+`,Sf=e({default:()=>Cf}),Cf=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -31660,7 +31810,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Sf=e({default:()=>Cf}),Cf=`---\r
+`,wf=e({default:()=>Tf}),Tf=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -31748,7 +31898,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,wf=e({default:()=>Tf}),Tf=`---\r
+`,Ef=e({default:()=>Df}),Df=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -31831,7 +31981,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Ef=e({default:()=>Df}),Df=`---\r
+`,Of=e({default:()=>kf}),kf=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -31897,7 +32047,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Of=e({default:()=>kf}),kf=`---
+`,Af=e({default:()=>jf}),jf=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -31979,7 +32129,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Af=e({default:()=>jf}),jf=`---
+---`,Mf=e({default:()=>Nf}),Nf=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -32072,7 +32222,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Mf=e({default:()=>Nf}),Nf=`---
+`,Pf=e({default:()=>Ff}),Ff=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -32161,7 +32311,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Pf=e({default:()=>Ff}),Ff=`---
+--- `,If=e({default:()=>Lf}),Lf=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32306,7 +32456,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,If=e({default:()=>Lf}),Lf=`---
+--- `,Rf=e({default:()=>zf}),zf=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32494,7 +32644,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Rf=e({default:()=>zf}),zf=`---
+--- `,Bf=e({default:()=>Vf}),Vf=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32589,7 +32739,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Bf=e({default:()=>Vf}),Vf=`---
+`,Hf=e({default:()=>Uf}),Uf=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32678,7 +32828,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Hf=e({default:()=>Uf}),Uf=`---
+`,Wf=e({default:()=>Gf}),Gf=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32765,7 +32915,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Wf=e({default:()=>Gf}),Gf=`---
+---`,Kf=e({default:()=>qf}),qf=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32848,7 +32998,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Kf=e({default:()=>qf}),qf=`---
+---`,Jf=e({default:()=>Yf}),Yf=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32931,7 +33081,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Jf=e({default:()=>Yf}),Yf=`---
+---`,Xf=e({default:()=>Zf}),Zf=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -33236,4 +33386,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Zu as $,Ye as $a,Xn as $i,Zo as $n,Xi as $r,Zc as $t,Ud as A,Vt as Aa,Hr as Ai,Us as An,V as Ao,Ha as Ar,Ul as At,Cd as B,xt as Ba,Sr as Bi,Cs as Bn,x as Bo,Sa as Br,Cl as Bt,rf as C,tn as Ca,ni as Ci,rc as Cn,te as Co,no as Cr,ru as Ct,Yd as D,qt as Da,Jr as Di,Ys as Dn,q as Do,Ja as Dr,Yl as Dt,Zd as E,Yt as Ea,Xr as Ei,Zs as En,Y as Eo,Xa as Er,Zl as Et,Nd as F,jt as Fa,Mr as Fi,Ns as Fn,j as Fo,Ma as Fr,Nl as Ft,pd as G,dt as Ga,fr as Gi,ps as Gn,d as Go,fa as Gr,pl as Gt,yd as H,_t as Ha,vr as Hi,ys as Hn,_ as Ho,va as Hr,yl as Ht,jd as I,kt as Ia,Ar as Ii,js as In,k as Io,Aa as Ir,jl as It,sd as J,at as Ja,or as Ji,ss as Jn,a as Jo,oa as Jr,sl as Jt,dd as K,lt as Ka,ur as Ki,ds as Kn,l as Ko,ua as Kr,dl as Kt,kd as L,Dt as La,Or as Li,ks as Ln,D as Lo,Oa as Lr,kl as Lt,zd as M,Lt as Ma,Rr as Mi,zs as Mn,L as Mo,Ra as Mr,zl as Mt,Ld as N,Ft as Na,Ir as Ni,Ls as Nn,F as No,Ia as Nr,Ll as Nt,qd as O,Gt as Oa,Kr as Oi,qs as On,G as Oo,Ka as Or,ql as Ot,Fd as P,Nt as Pa,Pr as Pi,Fs as Pn,N as Po,Pa as Pr,Fl as Pt,$u as Q,Ze as Qa,Qn as Qi,$o as Qn,Qi as Qr,$c as Qt,Dd as R,Tt as Ra,Er as Ri,Ds as Rn,T as Ro,Ea as Rr,Dl as Rt,of as S,rn as Sa,ii as Si,ac as Sn,re as So,io as Sr,au as St,$d as T,Zt as Ta,Qr as Ti,$s as Tn,Z as To,Qa as Tr,$l as Tt,_d as U,ht as Ua,gr as Ui,_s as Un,h as Uo,ga as Ur,_l as Ut,xd as V,yt as Va,br as Vi,xs as Vn,y as Vo,ba as Vr,xl as Vt,hd as W,pt as Wa,mr as Wi,hs as Wn,p as Wo,ma as Wr,hl as Wt,rd as X,tt as Xa,nr as Xi,rs as Xn,t as Xo,na as Xr,rl as Xt,ad as Y,rt as Ya,ir as Yi,as as Yn,r as Yo,ia as Yr,al as Yt,td as Z,$e as Za,er as Zi,ts as Zn,ea as Zr,tl as Zt,gf as _,mn as _a,mi as _i,hc as _n,pe as _o,ho as _r,hu as _t,Bf as a,Rn as aa,Ri as ai,zc as an,Le as ao,zo as ar,zu as at,uf as b,cn as ba,ci as bi,lc as bn,se as bo,co as br,lu as bt,Pf as c,Mn as ca,Mi as ci,Nc as cn,je as co,No as cr,Nu as ct,Of as d,En as da,Ei as di,Dc as dn,Te as do,Do as dr,Du as dt,Jn as ea,Ji as ei,Yc as en,qe as eo,Yo as er,Yu as et,Ef as f,wn as fa,wi as fi,Tc as fn,Ce as fo,To as fr,Tu as ft,vf as g,gn as ga,gi,_c as gn,he as go,_o as gr,_u as gt,bf as h,vn as ha,vi as hi,yc as hn,_e as ho,yo as hr,yu as ht,Hf as i,Bn as ia,Bi as ii,Vc as in,ze as io,Vo as ir,Vu as it,Vd as j,zt as ja,Br as ji,Vs as jn,z as jo,Ba as jr,Vl as jt,Gd as k,Ut as ka,Wr as ki,Gs as kn,U as ko,Wa as kr,Gl as kt,Mf as l,An as la,Ai as li,jc as ln,ke as lo,jo as lr,ju as lt,Sf as m,bn as ma,bi as mi,xc as mn,ye as mo,xo as mr,xu as mt,Kf as n,Wn as na,Wi as ni,Gc as nn,Ue as no,Go as nr,Gu as nt,Rf as o,In as oa,Ii as oi,Lc as on,Fe as oo,Lo as or,Lu as ot,wf as p,Sn as pa,Si as pi,Cc as pn,xe as po,Co as pr,Cu as pt,ld as q,st as qa,cr as qi,ls as qn,s as qo,ca as qr,ll as qt,Wf as r,Hn as ra,Hi as ri,Uc as rn,Ve as ro,Uo as rr,Uu as rt,If as s,Pn as sa,Pi as si,Fc as sn,Ne as so,Fo as sr,Fu as st,Jf as t,Kn as ta,Ki as ti,qc as tn,Ge as to,qo as tr,qu as tt,Af as u,On as ua,Oi as ui,kc as un,De as uo,ko as ur,ku as ut,mf as v,fn as va,fi as vi,pc as vn,de as vo,po as vr,pu as vt,tf as w,$t as wa,ei as wi,tc as wn,$ as wo,eo as wr,tu as wt,cf as x,on as xa,oi as xi,sc as xn,ae as xo,oo as xr,su as xt,ff as y,un as ya,ui as yi,dc as yn,le as yo,uo as yr,du as yt,Td as z,Ct as za,wr as zi,Ts as zn,C as zo,wa as zr,Tl as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{$u as $,Ze as $a,Qn as $i,$o as $n,Qi as $r,$c as $t,Gd as A,Ut as Aa,Wr as Ai,Gs as An,U as Ao,Wa as Ar,Gl as At,Td as B,Ct as Ba,wr as Bi,Ts as Bn,C as Bo,wa as Br,Tl as Bt,of as C,rn as Ca,ii as Ci,ac as Cn,re as Co,io as Cr,au as Ct,Zd as D,Yt as Da,Xr as Di,Zs as Dn,Y as Do,Xa as Dr,Zl as Dt,$d as E,Zt as Ea,Qr as Ei,$s as En,Z as Eo,Qa as Er,$l as Et,Fd as F,Nt as Fa,Pr as Fi,Fs as Fn,N as Fo,Pa as Fr,Fl as Ft,hd as G,pt as Ga,mr as Gi,hs as Gn,p as Go,ma as Gr,hl as Gt,xd as H,yt as Ha,br as Hi,xs as Hn,y as Ho,ba as Hr,xl as Ht,Nd as I,jt as Ia,Mr as Ii,Ns as In,j as Io,Ma as Ir,Nl as It,ld as J,st as Ja,cr as Ji,ls as Jn,s as Jo,ca as Jr,ll as Jt,pd as K,dt as Ka,fr as Ki,ps as Kn,d as Ko,fa as Kr,pl as Kt,jd as L,kt as La,Ar as Li,js as Ln,k as Lo,Aa as Lr,jl as Lt,Vd as M,zt as Ma,Br as Mi,Vs as Mn,z as Mo,Ba as Mr,Vl as Mt,zd as N,Lt as Na,Rr as Ni,zs as Nn,L as No,Ra as Nr,zl as Nt,Yd as O,qt as Oa,Jr as Oi,Ys as On,q as Oo,Ja as Or,Yl as Ot,Ld as P,Ft as Pa,Ir as Pi,Ls as Pn,F as Po,Ia as Pr,Ll as Pt,td as Q,$e as Qa,er as Qi,ts as Qn,ea as Qr,tl as Qt,kd as R,Dt as Ra,Or as Ri,ks as Rn,D as Ro,Oa as Rr,kl as Rt,cf as S,on as Sa,oi as Si,sc as Sn,ae as So,oo as Sr,su as St,tf as T,$t as Ta,ei as Ti,tc as Tn,$ as To,eo as Tr,tu as Tt,yd as U,_t as Ua,vr as Ui,ys as Un,_ as Uo,va as Ur,yl as Ut,Cd as V,xt as Va,Sr as Vi,Cs as Vn,x as Vo,Sa as Vr,Cl as Vt,_d as W,ht as Wa,gr as Wi,_s as Wn,h as Wo,ga as Wr,_l as Wt,ad as X,rt as Xa,ir as Xi,as as Xn,r as Xo,ia as Xr,al as Xt,sd as Y,at as Ya,or as Yi,ss as Yn,a as Yo,oa as Yr,sl as Yt,rd as Z,tt as Za,nr as Zi,rs as Zn,t as Zo,na as Zr,rl as Zt,vf as _,gn as _a,gi as _i,_c as _n,he as _o,_o as _r,_u as _t,Hf as a,Bn as aa,Bi as ai,Vc as an,ze as ao,Vo as ar,Vu as at,ff as b,un as ba,ui as bi,dc as bn,le as bo,uo as br,du as bt,If as c,Pn as ca,Pi as ci,Fc as cn,Ne as co,Fo as cr,Fu as ct,Af as d,On as da,Oi as di,kc as dn,De as do,ko as dr,ku as dt,Xn as ea,Xi as ei,Zc as en,Ye as eo,Zo as er,Zu as et,Of as f,En as fa,Ei as fi,Dc as fn,Te as fo,Do as fr,Du as ft,bf as g,vn as ga,vi as gi,yc as gn,_e as go,yo as gr,yu as gt,Sf as h,bn as ha,bi as hi,xc as hn,ye as ho,xo as hr,xu as ht,Wf as i,Hn as ia,Hi as ii,Uc as in,Ve as io,Uo as ir,Uu as it,Ud as j,Vt as ja,Hr as ji,Us as jn,V as jo,Ha as jr,Ul as jt,qd as k,Gt as ka,Kr as ki,qs as kn,G as ko,Ka as kr,ql as kt,Pf as l,Mn as la,Mi as li,Nc as ln,je as lo,No as lr,Nu as lt,wf as m,Sn as ma,Si as mi,Cc as mn,xe as mo,Co as mr,Cu as mt,Jf as n,Kn as na,Ki as ni,qc as nn,Ge as no,qo as nr,qu as nt,Bf as o,Rn as oa,Ri as oi,zc as on,Le as oo,zo as or,zu as ot,Ef as p,wn as pa,wi as pi,Tc as pn,Ce as po,To as pr,Tu as pt,dd as q,lt as qa,ur as qi,ds as qn,l as qo,ua as qr,dl as qt,Kf as r,Wn as ra,Wi as ri,Gc as rn,Ue as ro,Go as rr,Gu as rt,Rf as s,In as sa,Ii as si,Lc as sn,Fe as so,Lo as sr,Lu as st,Xf as t,Jn as ta,Ji as ti,Yc as tn,qe as to,Yo as tr,Yu as tt,Mf as u,An as ua,Ai as ui,jc as un,ke as uo,jo as ur,ju as ut,gf as v,mn as va,mi as vi,hc as vn,pe as vo,ho as vr,hu as vt,rf as w,tn as wa,ni as wi,rc as wn,te as wo,no as wr,ru as wt,uf as x,cn as xa,ci as xi,lc as xn,se as xo,co as xr,lu as xt,mf as y,fn as ya,fi as yi,pc as yn,de as yo,po as yr,pu as yt,Dd as z,Tt as za,Er as zi,Ds as zn,T as zo,Ea as zr,Dl as zt};
