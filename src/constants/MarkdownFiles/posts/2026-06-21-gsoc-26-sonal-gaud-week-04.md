@@ -11,10 +11,10 @@ image: "assets/Images/GSOC.webp"
 
 # Week 4 Progress Report by Sonal Gaud
 
-**Project:** Automated Release Pipeline for Music Blocks
-**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)
-**Organization:** [Sugar Labs](https://sugarlabs.org)
-**Reporting Period:** 2026-06-15 - 2026-06-21
+**Project:** Automated Release Pipeline for Music Blocks  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-06-15 - 2026-06-21  
 
 ---
 
