@@ -29225,6 +29225,172 @@ Wrote \`test_g2p_coverage.py\` which verifies that the G2P (grapheme-to-phoneme)
 
 Thanks to Mebin and Ibiam for the continued mentorship. Looking forward to the first native-speaker review checkpoint next week.
 `,Nd=e({default:()=>Pd}),Pd=`---
+
+title: "DMP '26 Week 2 Update by Stuti Jain"
+excerpt: "Designed and implemented a story-driven lesson framework for Music Blocks, introducing interactive quests, exploration rewards, and the first two narrative lessons."
+category: "DEVELOPER NEWS"
+date: "2026-06-21"
+slug: "2026-06-21-dmp-26-stuti-jain-week02"
+author: "@/constants/MarkdownFiles/authors/stuti-jain.md"
+tags: "dmp26,sugarlabs,musicblocks,lessonplans,week02"
+image: "assets/Images/dmp_c4gt.logo.png"
+----------------------------------------
+
+<!-- markdownlint-disable -->
+
+# Week 2 Progress Report by Stuti Jain
+
+**Project:** [Adding Lesson Plans to Music Blocks](https://github.com/sugarlabs/musicblocks/issues/6607)
+**Mentors:** [Walter Bender](https://github.com/walterbender), Devin Ulibarri
+**Organization:** [Sugar Labs](https://sugarlabs.org)
+**Reporting Period:** 2026-06-15 – 2026-06-21
+
+---
+
+## Goals for This Week
+* Finalize a direction for integrating lesson plans into Music Blocks.
+* Explore ways to make lessons more engaging for younger learners.
+* Prototype a story-driven lesson experience.
+* Implement the first narrative lessons within Music Blocks.
+* Gather mentor feedback on the proposed framework.
+
+---
+
+## This Week's Achievements
+
+### Designing a Story-Driven Learning Experience
+One of the major discussions from the previous week was how lesson plans could become more engaging for Music Blocks' primary audience—children between **7 and 11 years old**.
+
+Instead of presenting lessons as standalone activities with long instructional text, I explored a narrative-driven approach where learners progress through a connected world while learning musical and computational thinking concepts.
+
+After several discussions and iterations, the story concept selected for the prototype was:
+
+## **The Lost Melody Islands – Quest for the Hidden Treasure**
+In this world, a magical song known as the **Grand Melody** once connected a chain of islands. After a mysterious **Silence Storm** shattered the melody, its fragments became scattered across different islands.
+
+Learners join **Lyra**, a young explorer, and **Beat**, a floating musical companion, as they travel between islands restoring Melody Fragments and uncovering clues left behind by the legendary explorer **Captain Cadence**.
+
+The long-term goal is for every lesson to become a chapter in an ongoing adventure instead of feeling like an isolated exercise.
+
+---
+
+### Implementing the Story Framework
+To evaluate this idea, I integrated the story directly into Music Blocks and created a dedicated quest structure inside the Practice interface.
+
+The implementation introduces:
+* Story introduction and world-building.
+* Level progression through quests.
+* Melody Fragments and Treasure Clues.
+* Captain Cadence's journal pages.
+* Discovery badges encouraging exploration.
+
+### Story Introduction
+The learner is introduced to the story, characters, and overall objective before beginning the first lesson.
+
+![Story Introduction](/assets/Developers/Stuti-Jain/story_introduction.png)
+
+---
+
+### Level 1 — The Bridge of Echo Island
+The first lesson reimagines the existing **Hot Cross Buns** activity as part of the adventure.
+
+Lyra and Beat arrive at Echo Island, where a magical bridge disappeared after the Silence Storm. Learners rebuild the bridge by arranging musical chunks in the correct sequence, restoring the island's first Melody Fragment.
+
+Instead of simply completing an exercise, learners actively progress through the story while reinforcing the original musical concepts.
+
+![Echo Island Quest](/assets/Developers/Stuti-Jain/echo_island.png)
+
+---
+
+### Level 2 — The Sakura Grove Echo
+The second lesson adapts the existing **Sakura Sakura** activity into the same narrative framework.
+
+Learners help awaken the sleeping Sakura Grove by rebuilding its melody, restoring another Melody Fragment and uncovering the next clue from Captain Cadence's journal.
+
+This continues the story while preserving the educational objectives of the original lesson.
+
+![Sakura Grove Quest](/assets/Developers/Stuti-Jain/sakura_grove.png)
+
+---
+
+### Exploration and Discovery Badges
+A major objective of this prototype was encouraging curiosity rather than rewarding only lesson completion.
+
+To support this, I implemented a **Discovery Badge** system that rewards learners when they naturally explore Music Blocks beyond the minimum requirements of the lesson.
+
+Examples include:
+* Renaming musical chunks.
+* Exploring octave changes.
+* Trying transpose blocks.
+* Creating their own melody variations.
+
+Rather than explicitly asking learners to perform these actions, discoveries appear naturally as part of the story, encouraging experimentation and exploration.
+
+![Discovery Badge Example](/assets/Developers/Stuti-Jain/discovery_badge.png)
+
+---
+
+### Quest Progress and Rewards
+Each completed lesson now contributes to the learner's overall journey by awarding:
+* Melody Fragments.
+* Captain Cadence's Journal Pages.
+* Treasure Clues.
+* Discovery Badges.
+
+These rewards help create a stronger sense of progression and provide motivation for learners to continue exploring future lessons.
+
+---
+
+### Draft Pull Request
+The complete prototype has been submitted for review as a draft pull request.
+
+**Draft PR:** https://github.com/sugarlabs/musicblocks/pull/7587
+
+---
+
+## Mentor Feedback & Key Takeaways
+After implementing the prototype, I shared it with Walter to discuss how the story-driven framework fits into the long-term vision of lesson plans in Music Blocks.
+
+The overall response was encouraging, particularly the idea of transforming lessons into a connected adventure rather than a collection of independent activities. The implementation was reviewed, and the next step is to evaluate how children interact with this new learning experience.
+
+Walter plans to test the prototype with students over the coming days. Their feedback will help answer several important questions:
+* Does the story make lessons more engaging?
+* Do discovery badges encourage exploration?
+* Is the amount of narrative appropriate for the target age group?
+* What improvements should be made before scaling the framework to additional lesson plans?
+
+These observations will guide the next iteration of the project.
+
+---
+
+## Challenge & Key Learning
+The biggest challenge this week was balancing storytelling with educational objectives.
+
+While the narrative needed to be engaging enough to motivate learners, it was equally important that it supported the lesson rather than distracting from the underlying musical concepts.
+
+**Learning:** Young learners are naturally curious and enjoy progressing through stories. Embedding educational activities within a narrative can make lessons feel more meaningful while encouraging exploration beyond the minimum required steps.
+
+---
+
+## Next Week's Roadmap
+* Gather feedback from classroom testing.
+* Refine the story framework based on student interactions.
+* Evaluate the effectiveness of the discovery badge system.
+* Improve lesson flow and overall user experience.
+* Begin planning additional lesson levels if the prototype proves successful.
+
+---
+
+## Resources & References
+* **Project Issue:** https://github.com/sugarlabs/musicblocks/issues/6607
+* **Draft PR:** https://github.com/sugarlabs/musicblocks/pull/7587
+* **Repository:** https://github.com/sugarlabs/musicblocks
+
+---
+
+## Acknowledgments
+Thanks to Walter Bender and Devin Ulibarri for their guidance and feedback throughout the design process. Their suggestions helped shape the transition from traditional lesson activities toward a more engaging, story-driven learning experience for young Music Blocks users. I also look forward to the upcoming classroom testing, which will provide valuable insights for refining the framework before expanding it to future lessons.
+`,Fd=e({default:()=>Id}),Id=`---
 title: "GSoC '26 Week 4: The GTK4 & WebKit6 Migration"
 excerpt: "Porting the Browse Activity from GTK3/WebKit2 to GTK4/WebKitGTK 6.0, updating event controllers, and fixing an upstream toolkit bug."
 category: "DEVELOPER NEWS"
@@ -29289,7 +29455,7 @@ Testing in standalone mode (\`local_run.py\`) is still throwing some expected D-
 
 ## Acknowledgments
 Thanks to my mentors and everyone who helped test things and answer questions while I was working through the Browse port. Hopefully I'll start getting review feedback on the PR next week so I can move on to Read.
-`,Fd=e({default:()=>Id}),Id=`---
+`,Ld=e({default:()=>Rd}),Rd=`---
 title: "GSoC '26 Week 4 Report by Rejah Rabeeul Haque"
 excerpt: "Feature updates, implementation of color palette, fill color and erase tool."
 category: "DEVELOPER NEWS"
@@ -29364,7 +29530,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance, and the Sugar Lab
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Ld=e({default:()=>Rd}),Rd='---\ntitle: "GSoC \'26 Week 4 Progress Report by Sonal Gaud"\nexcerpt: "Scoping a single source of truth for release config to unify Turtle Blocks and Music Blocks"\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-21"\nslug: "2026-06-21-gsoc-26-sonal-gaud-week4"\nauthor: "@/constants/MarkdownFiles/authors/sonal-gaud.md"\ntags: "gsoc26,sugarlabs,musicblocks,ci-cd,release-automation,infrastructure"\nimage: "assets/Images/GSOC.webp"\n---\n\n# Week 4 Progress Report by Sonal Gaud\n\n**Project:** Automated Release Pipeline for Music Blocks  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-15 - 2026-06-21  \n\n---\n\n## Overview\n\n[Week 3](/news/all/2026-06-14-gsoc-26-sonal-gaud-week3) shipped `ci.yml`, the unified CI pipeline, and closed with an open question for mentors: what does the full release pipeline look like end-to-end? Week 4 was spent scoping out one piece of that answer. Turtle Blocks and Music Blocks currently ship as two codebases with duplicated config and a release flag that has to be hand-edited before every release. The plan taking shape is a single `js/releaseconfig.js` file as the source of truth, plus URL-driven detection so one bundle can eventually serve either app depending on where it\'s loaded from.\n\n---\n\n## The Problem Being Scoped\n\nThe release flag `THIS_IS_MUSIC_BLOCKS` is currently declared inline in `js/activity.js` and has to be flipped by hand for every Turtle vs. Music release, with no detection logic behind it. The splash screen is a giant base64-encoded `<img>` tag hardcoded directly into `index.html`, the tab title is static, and the rotating loading-screen text array is hardcoded too. None of it is mode-aware, so every release means editing markup by hand and hoping nothing gets missed. This week\'s work was mapping out exactly what a fix would need to touch before writing it.\n\n---\n\n## What\'s Planned: `releaseconfig.js`\n\nThe plan is for a new `js/releaseconfig.js` to consolidate everything that differs between the Turtle and Music releases into one file, loaded synchronously as the very first script in `<head>` - before requireJS even starts, so every later script would see the resolved flag.\n\n**What it would own**\n\n| Export | Purpose |\n|---|---|\n| `THIS_IS_MUSIC_BLOCKS` / `THIS_IS_TURTLE_BLOCKS` | The flags the rest of the codebase already reads |\n| `TURTLE_SPLASH_SRC` | The animated turtle SVG, lifted out of `index.html` as a `data:image/svg+xml;base64` URI |\n| `MUSIC_BLOCKS_SPLASH_SRC` | Placeholder until the real Music Blocks asset is ready |\n| `getSplashScreenSrc()` | Returns the correct splash for the active mode |\n| `RELEASE_TAB_TITLE` | `"Turtle Blocks"` or `"Music Blocks"` |\n| `LOADING_TEXTS` | The mode-specific rotating loading-screen text array |\n\n**URL-driven detection**\n\nThe proposed `resolveIsMusicBlocks()` would pick the mode at page load using this precedence:\n\n| Priority | Check | Example | Result |\n|---|---|---|---|\n| 1 | `?turtle` query param | `localhost/?turtle` | Turtle |\n| 1 | `?music` query param | `localhost/?music` | Music |\n| 2 | hostname contains "turtle" | `turtle.sugarlabs.org` | Turtle |\n| 2 | hostname contains "music" | `musicblocks.sugarlabs.org` | Music |\n| 3 | fallback `DEFAULT_IS_MUSIC_BLOCKS` | `localhost`, `file://` | Turtle (current default) |\n\nQuery params would override hostnames, which is what should make it possible to QA one mode on the other\'s domain without touching DNS.\n\n**Wiring changes to make**\n\n- `js/activity.js:51-52` - the inline `const THIS_IS_MUSIC_BLOCKS = false` will need to go once `releaseconfig.js` declares the same name first.\n- `index.html` - add `<script src="js/releaseconfig.js"><\/script>` as the first script in `<head>`, synchronous, no `defer`.\n- `index.html` - set the tab title via `document.title = RELEASE_TAB_TITLE;`.\n- `index.html` - replace the hardcoded base64 `<img src=…>` with `<img id="splash-image">`, with `src` set by `getSplashScreenSrc()`.\n- `index.html` - swap the hardcoded loading-text array for `const texts = LOADING_TEXTS;`.\n\n---\n\n## Plans for Next Week\n\n- Write `js/releaseconfig.js` and wire it into `index.html` per the plan above.\n- Drop in the real Music Blocks splash asset if it\'s ready, otherwise keep the placeholder and track it as a follow-up.\n- Run the three-path smoke test and bring the DNS and service-worker open questions to mentors.\n\n---\n\n## Acknowledgements\n\nThank you to Walter Bender and Om Santosh Suneri for continued feedback as this plan was scoped out.\n\n---\n',zd=e({default:()=>Bd}),Bd=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,zd=e({default:()=>Bd}),Bd='---\ntitle: "GSoC \'26 Week 4 Progress Report by Sonal Gaud"\nexcerpt: "Scoping a single source of truth for release config to unify Turtle Blocks and Music Blocks"\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-21"\nslug: "2026-06-21-gsoc-26-sonal-gaud-week4"\nauthor: "@/constants/MarkdownFiles/authors/sonal-gaud.md"\ntags: "gsoc26,sugarlabs,musicblocks,ci-cd,release-automation,infrastructure"\nimage: "assets/Images/GSOC.webp"\n---\n\n# Week 4 Progress Report by Sonal Gaud\n\n**Project:** Automated Release Pipeline for Music Blocks  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-15 - 2026-06-21  \n\n---\n\n## Overview\n\n[Week 3](/news/all/2026-06-14-gsoc-26-sonal-gaud-week3) shipped `ci.yml`, the unified CI pipeline, and closed with an open question for mentors: what does the full release pipeline look like end-to-end? Week 4 was spent scoping out one piece of that answer. Turtle Blocks and Music Blocks currently ship as two codebases with duplicated config and a release flag that has to be hand-edited before every release. The plan taking shape is a single `js/releaseconfig.js` file as the source of truth, plus URL-driven detection so one bundle can eventually serve either app depending on where it\'s loaded from.\n\n---\n\n## The Problem Being Scoped\n\nThe release flag `THIS_IS_MUSIC_BLOCKS` is currently declared inline in `js/activity.js` and has to be flipped by hand for every Turtle vs. Music release, with no detection logic behind it. The splash screen is a giant base64-encoded `<img>` tag hardcoded directly into `index.html`, the tab title is static, and the rotating loading-screen text array is hardcoded too. None of it is mode-aware, so every release means editing markup by hand and hoping nothing gets missed. This week\'s work was mapping out exactly what a fix would need to touch before writing it.\n\n---\n\n## What\'s Planned: `releaseconfig.js`\n\nThe plan is for a new `js/releaseconfig.js` to consolidate everything that differs between the Turtle and Music releases into one file, loaded synchronously as the very first script in `<head>` - before requireJS even starts, so every later script would see the resolved flag.\n\n**What it would own**\n\n| Export | Purpose |\n|---|---|\n| `THIS_IS_MUSIC_BLOCKS` / `THIS_IS_TURTLE_BLOCKS` | The flags the rest of the codebase already reads |\n| `TURTLE_SPLASH_SRC` | The animated turtle SVG, lifted out of `index.html` as a `data:image/svg+xml;base64` URI |\n| `MUSIC_BLOCKS_SPLASH_SRC` | Placeholder until the real Music Blocks asset is ready |\n| `getSplashScreenSrc()` | Returns the correct splash for the active mode |\n| `RELEASE_TAB_TITLE` | `"Turtle Blocks"` or `"Music Blocks"` |\n| `LOADING_TEXTS` | The mode-specific rotating loading-screen text array |\n\n**URL-driven detection**\n\nThe proposed `resolveIsMusicBlocks()` would pick the mode at page load using this precedence:\n\n| Priority | Check | Example | Result |\n|---|---|---|---|\n| 1 | `?turtle` query param | `localhost/?turtle` | Turtle |\n| 1 | `?music` query param | `localhost/?music` | Music |\n| 2 | hostname contains "turtle" | `turtle.sugarlabs.org` | Turtle |\n| 2 | hostname contains "music" | `musicblocks.sugarlabs.org` | Music |\n| 3 | fallback `DEFAULT_IS_MUSIC_BLOCKS` | `localhost`, `file://` | Turtle (current default) |\n\nQuery params would override hostnames, which is what should make it possible to QA one mode on the other\'s domain without touching DNS.\n\n**Wiring changes to make**\n\n- `js/activity.js:51-52` - the inline `const THIS_IS_MUSIC_BLOCKS = false` will need to go once `releaseconfig.js` declares the same name first.\n- `index.html` - add `<script src="js/releaseconfig.js"><\/script>` as the first script in `<head>`, synchronous, no `defer`.\n- `index.html` - set the tab title via `document.title = RELEASE_TAB_TITLE;`.\n- `index.html` - replace the hardcoded base64 `<img src=…>` with `<img id="splash-image">`, with `src` set by `getSplashScreenSrc()`.\n- `index.html` - swap the hardcoded loading-text array for `const texts = LOADING_TEXTS;`.\n\n---\n\n## Plans for Next Week\n\n- Write `js/releaseconfig.js` and wire it into `index.html` per the plan above.\n- Drop in the real Music Blocks splash asset if it\'s ready, otherwise keep the placeholder and track it as a follow-up.\n- Run the three-path smoke test and bring the DNS and service-worker open questions to mentors.\n\n---\n\n## Acknowledgements\n\nThank you to Walter Bender and Om Santosh Suneri for continued feedback as this plan was scoped out.\n\n---\n',Vd=e({default:()=>Hd}),Hd=`---
 title: "GSoC '26 Week 4 Update by Shreya Saxena"
 excerpt: "Investigated Firefox rendering bottlenecks and optimized the Music Blocks execution engine."
 category: "DEVELOPER NEWS"
@@ -29583,7 +29749,7 @@ Thank you to Devin Ulibarri for flagging the Firefox performance issue and pushi
 
 Proceed into Step 2 (Block Execution Analysis & Optimization) focusing on [blocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks.js) and [ActionBlocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks/ActionBlocks.js) profiling using the new instrumentation harness.
 
-`,Vd=e({default:()=>Hd}),Hd=`---
+`,Ud=e({default:()=>Wd}),Wd=`---
 title: "GSoC '26 Week 04 Update by Shubham Sharma"
 excerpt: "Starting the engine rebuild, a question-quality test that passes, building the Journal redesign, and a simple start on peer reflection"
 category: "DEVELOPER NEWS"
@@ -29714,7 +29880,7 @@ Thanks to Walter for shaping the question-quality test and for calibrating the h
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,Ud=e({default:()=>Wd}),Wd=`---
+`,Gd=e({default:()=>Kd}),Kd=`---
 title: "DMP '26 Week 01 Update by Nirav Sharma"
 excerpt: "PR 1 merged with temperament-aware pitch/frequency conversion, and PR 2 is progressing through remaining musicutils.js functions."
 category: "DEVELOPER NEWS"
@@ -29789,7 +29955,7 @@ This week was a major milestone because [PR #7561](https://github.com/sugarlabs/
 The \`getSolfege\` question is a good reminder that this project is not just about numeric changes — it also needs user-facing design decisions.
 
 ---
-`,Gd=e({default:()=>Kd}),Kd=`---
+`,qd=e({default:()=>Jd}),Jd=`---
 title: "GSoC '26 Week 4: Hari - Frontend Testing, Thumbnail Pipeline & an Offline Problem"
 excerpt: "This week I completed the remaining Git-facing endpoints, tested them live with a temporary frontend widget, shipped a thumbnail migration pipeline, and discovered a tricky new challenge: offline commits."
 category: "DEVELOPER NEWS"
@@ -29859,7 +30025,7 @@ I'm still in the research and planning phase for this, so I'll have a lot more t
 This week is all about offline Git support. I'll be researching how to implement a local versioning layer that records commits without a network connection and syncs them back to GitHub when connectivity returns. The goal is to make it invisible to the student. They should be able to commit, branch, and browse history regardless of whether they're online or not.
 
 See you in the next update.
-`,qd=e({default:()=>Jd}),Jd=`---
+`,Yd=e({default:()=>Xd}),Xd=`---
 title: "DMP '26 Week 02 Update by NSA Raiyyan"
 excerpt: "Native speaker feedback: sending WAV samples to the Sugar Labs and Ankidroid communities for pronunciation review."
 category: "DEVELOPER NEWS"
@@ -29937,7 +30103,7 @@ Native speakers are listening to the WAV files right now. The feedback will tell
 ## Acknowledgments
 
 Thanks to Mebin and Ibiam for the continued mentorship. Also thanks to the Sugar Labs and Ankidroid communities for taking the time to review the pronunciation samples.
-`,Yd=e({default:()=>Xd}),Xd=`---
+`,Zd=e({default:()=>Qd}),Qd=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -30086,7 +30252,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Zd=e({default:()=>Qd}),Qd=`---
+`,$d=e({default:()=>ef}),ef=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -30189,7 +30355,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,$d=e({default:()=>ef}),ef=`---
+`,tf=e({default:()=>nf}),nf=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -30662,7 +30828,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,tf=e({default:()=>nf}),nf=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,rf=e({default:()=>af}),af=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -30749,7 +30915,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,rf=e({default:()=>af}),af=`---\r
+`,of=e({default:()=>sf}),sf=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -30842,7 +31008,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,of=e({default:()=>sf}),sf=`---\r
+`,cf=e({default:()=>lf}),lf=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -30936,7 +31102,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,cf=e({default:()=>lf}),lf=`---\r
+`,uf=e({default:()=>df}),df=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -31024,7 +31190,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,uf=e({default:()=>df}),df=`---\r
+`,ff=e({default:()=>pf}),pf=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -31107,7 +31273,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,ff=e({default:()=>pf}),pf=`---\r
+`,mf=e({default:()=>hf}),hf=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -31173,7 +31339,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,mf=e({default:()=>hf}),hf=`---
+`,gf=e({default:()=>_f}),_f=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -31255,7 +31421,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,gf=e({default:()=>_f}),_f=`---
+---`,vf=e({default:()=>yf}),yf=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -31348,7 +31514,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,vf=e({default:()=>yf}),yf=`---
+`,bf=e({default:()=>xf}),xf=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -31437,7 +31603,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,bf=e({default:()=>xf}),xf=`---
+--- `,Sf=e({default:()=>Cf}),Cf=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31582,7 +31748,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Sf=e({default:()=>Cf}),Cf=`---
+--- `,wf=e({default:()=>Tf}),Tf=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31770,7 +31936,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,wf=e({default:()=>Tf}),Tf=`---
+--- `,Ef=e({default:()=>Df}),Df=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31865,7 +32031,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Ef=e({default:()=>Df}),Df=`---
+`,Of=e({default:()=>kf}),kf=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31954,7 +32120,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Of=e({default:()=>kf}),kf=`---
+`,Af=e({default:()=>jf}),jf=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32041,7 +32207,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Af=e({default:()=>jf}),jf=`---
+---`,Mf=e({default:()=>Nf}),Nf=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32124,7 +32290,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Mf=e({default:()=>Nf}),Nf=`---
+---`,Pf=e({default:()=>Ff}),Ff=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32207,7 +32373,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Pf=e({default:()=>Ff}),Ff=`---
+---`,If=e({default:()=>Lf}),Lf=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -32512,4 +32678,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Lu as $,Fe as $a,In as $i,Lo as $n,Ii as $r,Lc as $t,kd as A,Dt as Aa,Or as Ai,ks as An,D as Ao,Oa as Ar,kl as At,ld as B,st as Ba,cr as Bi,ls as Bn,s as Bo,ca as Br,ll as Bt,Ud as C,Vt as Ca,Hr as Ci,Us as Cn,V as Co,Ha as Cr,Ul as Ct,Fd as D,Nt as Da,Pr as Di,Fs as Dn,N as Do,Pa as Dr,Fl as Dt,Ld as E,Ft as Ea,Ir as Ei,Ls as En,F as Eo,Ia as Er,Ll as Et,yd as F,_t as Fa,vr as Fi,ys as Fn,_ as Fo,va as Fr,yl as Ft,$u as G,Ze as Ga,Qn as Gi,$o as Gn,Qi as Gr,$c as Gt,ad as H,rt as Ha,ir as Hi,as as Hn,r as Ho,ia as Hr,al as Ht,_d as I,ht as Ia,gr as Ii,_s as In,h as Io,ga as Ir,_l as It,qu as J,Ge as Ja,Kn as Ji,qo as Jn,Ki as Jr,qc as Jt,Zu as K,Ye as Ka,Xn as Ki,Zo as Kn,Xi as Kr,Zc as Kt,hd as L,pt as La,mr as Li,hs as Ln,p as Lo,ma as Lr,hl as Lt,Td as M,Ct as Ma,wr as Mi,Ts as Mn,C as Mo,wa as Mr,Tl as Mt,Cd as N,xt as Na,Sr as Ni,Cs as Nn,x as No,Sa as Nr,Cl as Nt,Nd as O,jt as Oa,Mr as Oi,Ns as On,j as Oo,Ma as Or,Nl as Ot,xd as P,yt as Pa,br as Pi,xs as Pn,y as Po,ba as Pr,xl as Pt,zu as Q,Le as Qa,Rn as Qi,zo as Qn,Ri as Qr,zc as Qt,pd as R,dt as Ra,fr as Ri,ps as Rn,d as Ro,fa as Rr,pl as Rt,Gd as S,Ut as Sa,Wr as Si,Gs as Sn,U as So,Wa as Sr,Gl as St,zd as T,Lt as Ta,Rr as Ti,zs as Tn,L as To,Ra as Tr,zl as Tt,rd as U,tt as Ua,nr as Ui,rs as Un,t as Uo,na as Ur,rl as Ut,sd as V,at as Va,or as Vi,ss as Vn,a as Vo,oa as Vr,sl as Vt,td as W,$e as Wa,er as Wi,ts as Wn,ea as Wr,tl as Wt,Uu as X,Ve as Xa,Hn as Xi,Uo as Xn,Hi as Xr,Uc as Xt,Gu as Y,Ue as Ya,Wn as Yi,Go as Yn,Wi as Yr,Gc as Yt,Vu as Z,ze as Za,Bn as Zi,Vo as Zn,Bi as Zr,Vc as Zt,tf as _,$t as _a,ei as _i,tc as _n,$ as _o,eo as _r,tu as _t,Ef as a,wn as aa,wi as ai,Tc as an,Ce as ao,To as ar,Tu as at,Yd as b,qt as ba,Jr as bi,Ys as bn,q as bo,Ja as br,Yl as bt,bf as c,vn as ca,vi as ci,yc as cn,_e as co,yo as cr,yu as ct,mf as d,fn as da,fi as di,pc as dn,de as do,po as dr,pu as dt,Pn as ea,Pi as ei,Fc as en,Ne as eo,Fo as er,Fu as et,ff as f,un as fa,ui as fi,dc as fn,le as fo,uo as fr,du as ft,rf as g,tn as ga,ni as gi,rc as gn,te as go,no as gr,ru as gt,of as h,rn as ha,ii as hi,ac as hn,re as ho,io as hr,au as ht,Of as i,En as ia,Ei as ii,Dc as in,Te as io,Do as ir,Du as it,Dd as j,Tt as ja,Er as ji,Ds as jn,T as jo,Ea as jr,Dl as jt,jd as k,kt as ka,Ar as ki,js as kn,k as ko,Aa as kr,jl as kt,vf as l,gn as la,gi as li,_c as ln,he as lo,_o as lr,_u as lt,cf as m,on as ma,oi as mi,sc as mn,ae as mo,oo as mr,su as mt,Mf as n,An as na,Ai as ni,jc as nn,ke as no,jo as nr,ju as nt,wf as o,Sn as oa,Si as oi,Cc as on,xe as oo,Co as or,Cu as ot,uf as p,cn as pa,ci as pi,lc as pn,se as po,co as pr,lu as pt,Yu as q,qe as qa,Jn as qi,Yo as qn,Ji as qr,Yc as qt,Af as r,On as ra,Oi as ri,kc as rn,De as ro,ko as rr,ku as rt,Sf as s,bn as sa,bi as si,xc as sn,ye as so,xo as sr,xu as st,Pf as t,Mn as ta,Mi as ti,Nc as tn,je as to,No as tr,Nu as tt,gf as u,mn as ua,mi as ui,hc as un,pe as uo,ho as ur,hu as ut,$d as v,Zt as va,Qr as vi,$s as vn,Z as vo,Qa as vr,$l as vt,Vd as w,zt as wa,Br as wi,Vs as wn,z as wo,Ba as wr,Vl as wt,qd as x,Gt as xa,Kr as xi,qs as xn,G as xo,Ka as xr,ql as xt,Zd as y,Yt as ya,Xr as yi,Zs as yn,Y as yo,Xa as yr,Zl as yt,dd as z,lt as za,ur as zi,ds as zn,l as zo,ua as zr,dl as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{zu as $,Le as $a,Rn as $i,zo as $n,Ri as $r,zc as $t,jd as A,kt as Aa,Ar as Ai,js as An,k as Ao,Aa as Ar,jl as At,dd as B,lt as Ba,ur as Bi,ds as Bn,l as Bo,ua as Br,dl as Bt,Gd as C,Ut as Ca,Wr as Ci,Gs as Cn,U as Co,Wa as Cr,Gl as Ct,Ld as D,Ft as Da,Ir as Di,Ls as Dn,F as Do,Ia as Dr,Ll as Dt,zd as E,Lt as Ea,Rr as Ei,zs as En,L as Eo,Ra as Er,zl as Et,xd as F,yt as Fa,br as Fi,xs as Fn,y as Fo,ba as Fr,xl as Ft,td as G,$e as Ga,er as Gi,ts as Gn,ea as Gr,tl as Gt,sd as H,at as Ha,or as Hi,ss as Hn,a as Ho,oa as Hr,sl as Ht,yd as I,_t as Ia,vr as Ii,ys as In,_ as Io,va as Ir,yl as It,Yu as J,qe as Ja,Jn as Ji,Yo as Jn,Ji as Jr,Yc as Jt,$u as K,Ze as Ka,Qn as Ki,$o as Kn,Qi as Kr,$c as Kt,_d as L,ht as La,gr as Li,_s as Ln,h as Lo,ga as Lr,_l as Lt,Dd as M,Tt as Ma,Er as Mi,Ds as Mn,T as Mo,Ea as Mr,Dl as Mt,Td as N,Ct as Na,wr as Ni,Ts as Nn,C as No,wa as Nr,Tl as Nt,Fd as O,Nt as Oa,Pr as Oi,Fs as On,N as Oo,Pa as Or,Fl as Ot,Cd as P,xt as Pa,Sr as Pi,Cs as Pn,x as Po,Sa as Pr,Cl as Pt,Vu as Q,ze as Qa,Bn as Qi,Vo as Qn,Bi as Qr,Vc as Qt,hd as R,pt as Ra,mr as Ri,hs as Rn,p as Ro,ma as Rr,hl as Rt,qd as S,Gt as Sa,Kr as Si,qs as Sn,G as So,Ka as Sr,ql as St,Vd as T,zt as Ta,Br as Ti,Vs as Tn,z as To,Ba as Tr,Vl as Tt,ad as U,rt as Ua,ir as Ui,as as Un,r as Uo,ia as Ur,al as Ut,ld as V,st as Va,cr as Vi,ls as Vn,s as Vo,ca as Vr,ll as Vt,rd as W,tt as Wa,nr as Wi,rs as Wn,t as Wo,na as Wr,rl as Wt,Gu as X,Ue as Xa,Wn as Xi,Go as Xn,Wi as Xr,Gc as Xt,qu as Y,Ge as Ya,Kn as Yi,qo as Yn,Ki as Yr,qc as Yt,Uu as Z,Ve as Za,Hn as Zi,Uo as Zn,Hi as Zr,Uc as Zt,rf as _,tn as _a,ni as _i,rc as _n,te as _o,no as _r,ru as _t,Of as a,En as aa,Ei as ai,Dc as an,Te as ao,Do as ar,Du as at,Zd as b,Yt as ba,Xr as bi,Zs as bn,Y as bo,Xa as br,Zl as bt,Sf as c,bn as ca,bi as ci,xc as cn,ye as co,xo as cr,xu as ct,gf as d,mn as da,mi as di,hc as dn,pe as do,ho as dr,hu as dt,In as ea,Ii as ei,Lc as en,Fe as eo,Lo as er,Lu as et,mf as f,fn as fa,fi,pc as fn,de as fo,po as fr,pu as ft,of as g,rn as ga,ii as gi,ac as gn,re as go,io as gr,au as gt,cf as h,on as ha,oi as hi,sc as hn,ae as ho,oo as hr,su as ht,Af as i,On as ia,Oi as ii,kc as in,De as io,ko as ir,ku as it,kd as j,Dt as ja,Or as ji,ks as jn,D as jo,Oa as jr,kl as jt,Nd as k,jt as ka,Mr as ki,Ns as kn,j as ko,Ma as kr,Nl as kt,bf as l,vn as la,vi as li,yc as ln,_e as lo,yo as lr,yu as lt,uf as m,cn as ma,ci as mi,lc as mn,se as mo,co as mr,lu as mt,Pf as n,Mn as na,Mi as ni,Nc as nn,je as no,No as nr,Nu as nt,Ef as o,wn as oa,wi as oi,Tc as on,Ce as oo,To as or,Tu as ot,ff as p,un as pa,ui as pi,dc as pn,le as po,uo as pr,du as pt,Zu as q,Ye as qa,Xn as qi,Zo as qn,Xi as qr,Zc as qt,Mf as r,An as ra,Ai as ri,jc as rn,ke as ro,jo as rr,ju as rt,wf as s,Sn as sa,Si as si,Cc as sn,xe as so,Co as sr,Cu as st,If as t,Pn as ta,Pi as ti,Fc as tn,Ne as to,Fo as tr,Fu as tt,vf as u,gn as ua,gi as ui,_c as un,he as uo,_o as ur,_u as ut,tf as v,$t as va,ei as vi,tc as vn,$ as vo,eo as vr,tu as vt,Ud as w,Vt as wa,Hr as wi,Us as wn,V as wo,Ha as wr,Ul as wt,Yd as x,qt as xa,Jr as xi,Ys as xn,q as xo,Ja as xr,Yl as xt,$d as y,Zt as ya,Qr as yi,$s as yn,Z as yo,Qa as yr,$l as yt,pd as z,dt as za,fr as zi,ps as zn,d as zo,fa as zr,pl as zt};
