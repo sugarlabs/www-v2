@@ -29486,6 +29486,81 @@ Thanks to Walter for shaping the question-quality test and for calibrating the h
 
 ---
 `,Ld=e({default:()=>Rd}),Rd=`---
+title: "DMP '26 Week 01 Update by Nirav Sharma"
+excerpt: "PR 1 merged with temperament-aware pitch/frequency conversion, and PR 2 is progressing through remaining musicutils.js functions."
+category: "DEVELOPER NEWS"
+date: "2026-06-23"
+slug: "2026-06-23-dmp-26-niravsharma-week01"
+author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
+description: "DMP'26 Contributor at SugarLabs (Music Blocks - Refactor Temperament)"
+tags: "dmp26,sugarlabs,week01,niravsharma,musicblocks,temperament"
+image: "assets/Images/c4gt_DMP.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 01 Progress Report by Nirav Sharma
+
+**Project:** [Music Blocks - Refactor Temperament (Issue #7171)](https://github.com/sugarlabs/musicblocks/issues/7171)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  
+**Reporting Period:** 2026-06-17 - 2026-06-23
+
+---
+
+## What I worked on this week
+
+### PR 1 merged on June 18
+
+[PR #7561](https://github.com/sugarlabs/musicblocks/pull/7561) was merged with the title **"feat: make pitch/frequency conversion temperament-aware"**. It replaced hardcoded 12-EDO assumptions in the core pitch math functions and included important review feedback from Walter.
+
+- Added \`getCurrentEDO()\` helper — returns \`TEMPERAMENT[temperament]?.pitchNumber ?? 12\`
+- Refactored \`pitchToFrequency()\` — now uses \`Math.pow(2, 1/currentEDO)\`
+- Refactored \`pitchToNumber()\` — now uses \`octave * currentEDO\`
+- Refactored \`frequencyToPitch()\` — now uses dynamic \`centsPerStep = 1200/currentEDO\`
+- Added 23 unit tests covering 12-EDO, 19-EDO, default behavior, and edge cases
+
+Walter reviewed the PR and asked about the 1200-cent octave assumption. An octave is always 1200 cents regardless of EDO — 12-EDO gives 100¢/step, 19-EDO gives ~63.2¢/step, 31-EDO gives ~38.7¢/step. The 1200 is a constant, not a 12-EDO artifact. He also asked to move the new tests into \`js/utils/__tests__/\`, which I completed.
+
+All 5561 tests pass. 12-EDO behavior is unchanged — no regression.
+
+### PR 2: Remaining musicutils.js functions
+
+I began work on the follow-up PR, which targets the remaining pitch and scale functions in \`musicutils.js\`. By the end of this week, **6 of 10** functions were fixed:
+
+| Function | Status |
+|----------|--------|
+| \`numberToPitchSharp\` |  Done |
+| \`_calculate_pitch_number\` |  Done |
+| \`getPitchInfo\` (1-arg) |  Done |
+| \`numberToPitch\` equal branch |  Done |
+| \`getNumber\` |  Done |
+| \`getNote\` |  Done |
+| \`numberToPitch\` fallback loop |  Remaining |
+| \`_getStepSize\` |  Remaining |
+| \`getSolfege\` |  Remaining |
+| \`buildScale\` |  Deferred to Goal 4 (Scale Builder) |
+
+The refactor pattern is consistent across functions: replace hardcoded \`12\` with a dynamic \`currentEDO\` lookup, and replace \`Math.floor(i / 12)\` with \`Math.floor(i / currentEDO)\`.
+
+## What’s coming next
+
+- **Finish PR 2** — remaining functions \`numberToPitch\` fallback, \`_getStepSize\`, and \`getSolfege\` by June 28
+- **Open PR 2** for review once the code is ready
+- **Start PR 3** on June 29 — fix block-level temperament issues in \`GetCurrentInterval\` lines 157 and 169
+- **Continue refining scale builder design** under Goal 4
+
+---
+
+## Reflection
+
+This week was a major milestone because [PR #7561](https://github.com/sugarlabs/musicblocks/pull/7561) is now merged into the codebase. That means the core conversion math is temperament-aware, and the work is no longer purely experimental.
+
+[PR #7658](https://github.com/sugarlabs/musicblocks/pull/7658) is more methodical and detailed, but the pattern is clear. I’m focusing on consistency so the remaining refactors stay stable and backward compatible.
+
+The \`getSolfege\` question is a good reminder that this project is not just about numeric changes — it also needs user-facing design decisions.
+
+---
+`,zd=e({default:()=>Bd}),Bd=`---
 title: "DMP '26 Week 02 Update by NSA Raiyyan"
 excerpt: "Native speaker feedback: sending WAV samples to the Sugar Labs and Ankidroid communities for pronunciation review."
 category: "DEVELOPER NEWS"
@@ -29563,7 +29638,7 @@ Native speakers are listening to the WAV files right now. The feedback will tell
 ## Acknowledgments
 
 Thanks to Mebin and Ibiam for the continued mentorship. Also thanks to the Sugar Labs and Ankidroid communities for taking the time to review the pronunciation samples.
-`,zd=e({default:()=>Bd}),Bd=`---
+`,Vd=e({default:()=>Hd}),Hd=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -29712,7 +29787,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Vd=e({default:()=>Hd}),Hd=`---
+`,Ud=e({default:()=>Wd}),Wd=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -29815,7 +29890,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Ud=e({default:()=>Wd}),Wd=`---
+`,Gd=e({default:()=>Kd}),Kd=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -30288,7 +30363,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Gd=e({default:()=>Kd}),Kd=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,qd=e({default:()=>Jd}),Jd=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -30375,7 +30450,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,qd=e({default:()=>Jd}),Jd=`---\r
+`,Yd=e({default:()=>Xd}),Xd=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -30468,7 +30543,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Yd=e({default:()=>Xd}),Xd=`---\r
+`,Zd=e({default:()=>Qd}),Qd=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -30562,7 +30637,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Zd=e({default:()=>Qd}),Qd=`---\r
+`,$d=e({default:()=>ef}),ef=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -30650,7 +30725,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,$d=e({default:()=>ef}),ef=`---\r
+`,tf=e({default:()=>nf}),nf=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -30733,7 +30808,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,tf=e({default:()=>nf}),nf=`---\r
+`,rf=e({default:()=>af}),af=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -30799,7 +30874,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,rf=e({default:()=>af}),af=`---
+`,of=e({default:()=>sf}),sf=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -30881,7 +30956,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,of=e({default:()=>sf}),sf=`---
+---`,cf=e({default:()=>lf}),lf=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -30974,7 +31049,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,cf=e({default:()=>lf}),lf=`---
+`,uf=e({default:()=>df}),df=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -31063,7 +31138,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,uf=e({default:()=>df}),df=`---
+--- `,ff=e({default:()=>pf}),pf=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31208,7 +31283,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,ff=e({default:()=>pf}),pf=`---
+--- `,mf=e({default:()=>hf}),hf=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31396,7 +31471,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,mf=e({default:()=>hf}),hf=`---
+--- `,gf=e({default:()=>_f}),_f=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31491,7 +31566,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,gf=e({default:()=>_f}),_f=`---
+`,vf=e({default:()=>yf}),yf=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31580,7 +31655,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,vf=e({default:()=>yf}),yf=`---
+`,bf=e({default:()=>xf}),xf=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31667,7 +31742,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,bf=e({default:()=>xf}),xf=`---
+---`,Sf=e({default:()=>Cf}),Cf=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31750,7 +31825,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Sf=e({default:()=>Cf}),Cf=`---
+---`,wf=e({default:()=>Tf}),Tf=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -31833,7 +31908,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,wf=e({default:()=>Tf}),Tf=`---
+---`,Ef=e({default:()=>Df}),Df=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -32138,4 +32213,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Du as $,Te as $a,En as $i,Do as $n,Ei as $r,Dc as $t,yd as A,_t as Aa,vr as Ai,ys as An,_ as Ao,va as Ar,yl as At,$u as B,Ze as Ba,Qn as Bi,$o as Bn,Qi as Br,$c as Bt,Nd as C,jt as Ca,Mr as Ci,Ns as Cn,j as Co,Ma as Cr,Nl as Ct,Td as D,Ct as Da,wr as Di,Ts as Dn,C as Do,wa as Dr,Tl as Dt,Dd as E,Tt as Ea,Er as Ei,Ds as En,T as Eo,Ea as Er,Dl as Et,ld as F,st as Fa,cr as Fi,ls as Fn,s as Fo,ca as Fr,ll as Ft,Uu as G,Ve as Ga,Hn as Gi,Uo as Gn,Hi as Gr,Uc as Gt,Yu as H,qe as Ha,Jn as Hi,Yo as Hn,Ji as Hr,Yc as Ht,sd as I,at as Ia,or as Ii,ss as In,a as Io,oa as Ir,sl as It,Lu as J,Fe as Ja,In as Ji,Lo as Jn,Ii as Jr,Lc as Jt,Vu as K,ze as Ka,Bn as Ki,Vo as Kn,Bi as Kr,Vc as Kt,ad as L,rt as La,ir as Li,as as Ln,r as Lo,ia as Lr,al as Lt,hd as M,pt as Ma,mr as Mi,hs as Mn,p as Mo,ma as Mr,hl as Mt,pd as N,dt as Na,fr as Ni,ps as Nn,d as No,fa as Nr,pl as Nt,Cd as O,xt as Oa,Sr as Oi,Cs as On,x as Oo,Sa as Or,Cl as Ot,dd as P,lt as Pa,ur as Pi,ds as Pn,l as Po,ua as Pr,dl as Pt,ku as Q,De as Qa,On as Qi,ko as Qn,Oi as Qr,kc as Qt,rd as R,tt as Ra,nr as Ri,rs as Rn,t as Ro,na as Rr,rl as Rt,Fd as S,Nt as Sa,Pr as Si,Fs as Sn,N as So,Pa as Sr,Fl as St,kd as T,Dt as Ta,Or as Ti,ks as Tn,D as To,Oa as Tr,kl as Tt,qu as U,Ge as Ua,Kn as Ui,qo as Un,Ki as Ur,qc as Ut,Zu as V,Ye as Va,Xn as Vi,Zo as Vn,Xi as Vr,Zc as Vt,Gu as W,Ue as Wa,Wn as Wi,Go as Wn,Wi as Wr,Gc as Wt,Nu as X,je as Xa,Mn as Xi,No as Xn,Mi as Xr,Nc as Xt,Fu as Y,Ne as Ya,Pn as Yi,Fo as Yn,Pi as Yr,Fc as Yt,ju as Z,ke as Za,An as Zi,jo as Zn,Ai as Zr,jc as Zt,Gd as _,Ut as _a,Wr as _i,Gs as _n,U as _o,Wa as _r,Gl as _t,gf as a,mn as aa,mi as ai,hc as an,pe as ao,ho as ar,hu as at,zd as b,Lt as ba,Rr as bi,zs as bn,L as bo,Ra as br,zl as bt,uf as c,cn as ca,ci,lc as cn,se as co,co as cr,lu as ct,rf as d,tn as da,ni as di,rc as dn,te as do,no as dr,ru as dt,wn as ea,wi as ei,Tc as en,Ce as eo,To as er,Tu as et,tf as f,$t as fa,ei as fi,tc as fn,$ as fo,eo as fr,tu as ft,qd as g,Gt as ga,Kr as gi,qs as gn,G as go,Ka as gr,ql as gt,Yd as h,qt as ha,Jr as hi,Ys as hn,q as ho,Ja as hr,Yl as ht,vf as i,gn as ia,gi as ii,_c as in,he as io,_o as ir,_u as it,_d as j,ht as ja,gr as ji,_s as jn,h as jo,ga as jr,_l as jt,xd as k,yt as ka,br as ki,xs as kn,y as ko,ba as kr,xl as kt,cf as l,on as la,oi as li,sc as ln,ae as lo,oo as lr,su as lt,Zd as m,Yt as ma,Xr as mi,Zs as mn,Y as mo,Xa as mr,Zl as mt,Sf as n,bn as na,bi as ni,xc as nn,ye as no,xo as nr,xu as nt,mf as o,fn as oa,fi as oi,pc as on,de as oo,po as or,pu as ot,$d as p,Zt as pa,Qr as pi,$s as pn,Z as po,Qa as pr,$l as pt,zu as q,Le as qa,Rn as qi,zo as qn,Ri as qr,zc as qt,bf as r,vn as ra,vi as ri,yc as rn,_e as ro,yo as rr,yu as rt,ff as s,un as sa,ui as si,dc as sn,le as so,uo as sr,du as st,wf as t,Sn as ta,Si as ti,Cc as tn,xe as to,Co as tr,Cu as tt,of as u,rn as ua,ii as ui,ac as un,re as uo,io as ur,au as ut,Ud as v,Vt as va,Hr as vi,Us as vn,V as vo,Ha as vr,Ul as vt,jd as w,kt as wa,Ar as wi,js as wn,k as wo,Aa as wr,jl as wt,Ld as x,Ft as xa,Ir as xi,Ls as xn,F as xo,Ia as xr,Ll as xt,Vd as y,zt as ya,Br as yi,Vs as yn,z as yo,Ba as yr,Vl as yt,td as z,$e as za,er as zi,ts as zn,ea as zr,tl as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{ku as $,De as $a,On as $i,ko as $n,Oi as $r,kc as $t,xd as A,yt as Aa,br as Ai,xs as An,y as Ao,ba as Ar,xl as At,td as B,$e as Ba,er as Bi,ts as Bn,ea as Br,tl as Bt,Fd as C,Nt as Ca,Pr as Ci,Fs as Cn,N as Co,Pa as Cr,Fl as Ct,Dd as D,Tt as Da,Er as Di,Ds as Dn,T as Do,Ea as Dr,Dl as Dt,kd as E,Dt as Ea,Or as Ei,ks as En,D as Eo,Oa as Er,kl as Et,dd as F,lt as Fa,ur as Fi,ds as Fn,l as Fo,ua as Fr,dl as Ft,Gu as G,Ue as Ga,Wn as Gi,Go as Gn,Wi as Gr,Gc as Gt,Zu as H,Ye as Ha,Xn as Hi,Zo as Hn,Xi as Hr,Zc as Ht,ld as I,st as Ia,cr as Ii,ls as In,s as Io,ca as Ir,ll as It,zu as J,Le as Ja,Rn as Ji,zo as Jn,Ri as Jr,zc as Jt,Uu as K,Ve as Ka,Hn as Ki,Uo as Kn,Hi as Kr,Uc as Kt,sd as L,at as La,or as Li,ss as Ln,a as Lo,oa as Lr,sl as Lt,_d as M,ht as Ma,gr as Mi,_s as Mn,h as Mo,ga as Mr,_l as Mt,hd as N,pt as Na,mr as Ni,hs as Nn,p as No,ma as Nr,hl as Nt,Td as O,Ct as Oa,wr as Oi,Ts as On,C as Oo,wa as Or,Tl as Ot,pd as P,dt as Pa,fr as Pi,ps as Pn,d as Po,fa as Pr,pl as Pt,ju as Q,ke as Qa,An as Qi,jo as Qn,Ai as Qr,jc as Qt,ad as R,rt as Ra,ir as Ri,as as Rn,r as Ro,ia as Rr,al as Rt,Ld as S,Ft as Sa,Ir as Si,Ls as Sn,F as So,Ia as Sr,Ll as St,jd as T,kt as Ta,Ar as Ti,js as Tn,k as To,Aa as Tr,jl as Tt,Yu as U,qe as Ua,Jn as Ui,Yo as Un,Ji as Ur,Yc as Ut,$u as V,Ze as Va,Qn as Vi,$o as Vn,Qi as Vr,$c as Vt,qu as W,Ge as Wa,Kn as Wi,qo as Wn,Ki as Wr,qc as Wt,Fu as X,Ne as Xa,Pn as Xi,Fo as Xn,Pi as Xr,Fc as Xt,Lu as Y,Fe as Ya,In as Yi,Lo as Yn,Ii as Yr,Lc as Yt,Nu as Z,je as Za,Mn as Zi,No as Zn,Mi as Zr,Nc as Zt,qd as _,Gt as _a,Kr as _i,qs as _n,G as _o,Ka as _r,ql as _t,vf as a,gn as aa,gi as ai,_c as an,he as ao,_o as ar,_u as at,Vd as b,zt as ba,Br as bi,Vs as bn,z as bo,Ba as br,Vl as bt,ff as c,un as ca,ui as ci,dc as cn,le as co,uo as cr,du as ct,of as d,rn as da,ii as di,ac as dn,re as do,io as dr,au as dt,En as ea,Ei as ei,Dc as en,Te as eo,Do as er,Du as et,rf as f,tn as fa,ni as fi,rc as fn,te as fo,no as fr,ru as ft,Yd as g,qt as ga,Jr as gi,Ys as gn,q as go,Ja as gr,Yl as gt,Zd as h,Yt as ha,Xr as hi,Zs as hn,Y as ho,Xa as hr,Zl as ht,bf as i,vn as ia,vi as ii,yc as in,_e as io,yo as ir,yu as it,yd as j,_t as ja,vr as ji,ys as jn,_ as jo,va as jr,yl as jt,Cd as k,xt as ka,Sr as ki,Cs as kn,x as ko,Sa as kr,Cl as kt,uf as l,cn as la,ci as li,lc as ln,se as lo,co as lr,lu as lt,$d as m,Zt as ma,Qr as mi,$s as mn,Z as mo,Qa as mr,$l as mt,wf as n,Sn as na,Si as ni,Cc as nn,xe as no,Co as nr,Cu as nt,gf as o,mn as oa,mi as oi,hc as on,pe as oo,ho as or,hu as ot,tf as p,$t as pa,ei as pi,tc as pn,$ as po,eo as pr,tu as pt,Vu as q,ze as qa,Bn as qi,Vo as qn,Bi as qr,Vc as qt,Sf as r,bn as ra,bi as ri,xc as rn,ye as ro,xo as rr,xu as rt,mf as s,fn as sa,fi as si,pc as sn,de as so,po as sr,pu as st,Ef as t,wn as ta,wi as ti,Tc as tn,Ce as to,To as tr,Tu as tt,cf as u,on as ua,oi as ui,sc as un,ae as uo,oo as ur,su as ut,Gd as v,Ut as va,Wr as vi,Gs as vn,U as vo,Wa as vr,Gl as vt,Nd as w,jt as wa,Mr as wi,Ns as wn,j as wo,Ma as wr,Nl as wt,zd as x,Lt as xa,Rr as xi,zs as xn,L as xo,Ra as xr,zl as xt,Ud as y,Vt as ya,Hr as yi,Us as yn,V as yo,Ha as yr,Ul as yt,rd as z,tt as za,nr as zi,rs as zn,t as zo,na as zr,rl as zt};
