@@ -1,9 +1,13 @@
 ---
 title: "DMP Week 4: PR 3 Merged, Midpoint in Sight"
+excerpt: "Goal 1 complete with all three PRs merged; reviewed two PRs for Walter; midpoint evaluation approaching July 14"
+category: "DEVELOPER NEWS"
 date: "2026-07-03"
-author: "Nirav Sharma"
-project: "Music Blocks – Refactor Temperament"
-issue: "https://github.com/sugarlabs/musicblocks/issues/7171"
+slug: "2026-07-03-dmp-26-niravsharma-week04"
+author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
+description: "DMP'26 Contributor at SugarLabs (Music Blocks - Refactor Temperament)"
+tags: "dmp26,sugarlabs,week04,niravsharma,musicblocks,temperament"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 ## Week 4 — June 30 – July 3, 2026
