@@ -46,6 +46,7 @@ To do all of this, the implementation combines four core algorithms: Iterative L
 - Building the Graph and Removing Dangling Lines
 
 Every time a line is drawn or erased, the graph is rebuilt from the start. It runs Iterative Leaf Removal, where any dot with only one connection is repeatedly removed until no dead ends remain. Removing dangling lines first ensures that face detection only runs on cycles that can actually form figures.
+    Example: If you draw a closed square connecting Dots 0, 1, 2, and 3, but leave an extra line Dot 4, Iterative Leaf Removal detects that Dot 4 only has one connection and removes it before checking for closed shapes.
 
 - Planar Face Detection:
 
@@ -57,6 +58,7 @@ A positive signed area confirms the traversal went counter clockwise around an i
 - Nesting Detection:
 
 To correctly handle a figure drawn inside another filled figure, the algorithm uses the Ray-Casting Algorithm. It casts a horizontal ray from the inner shape's vertices to check if they sit inside the outer shape's boundary, confirming the nesting relationship.
+    Example: If you draw a small triangle inside a large square, the algorithm shoots an invisible horizontal test line outward from the triangle. Since that line crosses the outer border of the square, the game confirms the triangle is nested inside the square.
 
 - Expanding Circle Fill Animation:
 
