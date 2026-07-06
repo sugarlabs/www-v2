@@ -13,9 +13,9 @@ image: "assets/Images/dmp_c4gt.logo.png"
 
 # Week 3 Progress Report by Stuti Jain
 
-**Project:** [Adding Lesson Plans to Music Blocks](https://github.com/sugarlabs/musicblocks/issues/6607)
-**Mentors:** [Walter Bender](https://github.com/walterbender), Devin Ulibarri
-**Organization:** [Sugar Labs](https://sugarlabs.org)
+**Project:** [Adding Lesson Plans to Music Blocks](https://github.com/sugarlabs/musicblocks/issues/6607)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), Devin Ulibarri  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
 **Reporting Period:** 2026-06-22 – 2026-06-28
 
 ---
@@ -77,8 +77,8 @@ Rather than adding quizzes or assessments, the goal is to encourage learners to 
 
 Instead of settling on a single solution immediately, I explored multiple reflection mechanisms that could integrate naturally into the narrative, including journal-based reflections, in-story conversations, explorer logs, and lesson summaries.
 
-A collection of these design ideas is documented here:
-**Reflection Design Notes**
+A collection of these ideas is documented in **Reflection Design Notes**, which can be found here:
+
 https://iitracin-my.sharepoint.com/:w:/g/personal/stuti_j_cy_iitr_ac_in/IQB_OVxMgEUPTaSPSzMDB56rAUPne-RkFUIPMCgiCNLUZOE?e=f7UZU4
 
 These ideas will continue evolving over the coming weeks before deciding which approach best supports young learners.
