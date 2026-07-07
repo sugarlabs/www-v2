@@ -1,6 +1,6 @@
 ---
 title: "DMP '26 Week 03 Update by Vanshika Pahal"
-excerpt: "Week 03: Splitting the monolith further. Extracting grid rendering, plugin lifecycle & dialog UI, toolbar execution controls, and visual toolbar classes into dedicated, testable modules — the controller/UI split takes shape."
+excerpt: "Week 03: Splitting the monolith further. Extracting grid rendering, plugin lifecycle & dialog UI, toolbar execution controls, visual toolbar classes, and the full alert subsystem into dedicated, testable modules — the controller/UI split takes shape."
 category: "DEVELOPER NEWS"
 date: "2026-06-24"
 slug: "2026-06-24-dmp-26-vanshika-week03"
@@ -24,7 +24,7 @@ image: "assets/Images/dmp_c4gt.logo.png"
 
 Week 2 established the foundation: seven modules extracted from `activity.js`, each responsible for a single self-contained subsystem. Week 3 went deeper, targeting the **architectural boundary between state/logic and rendering/UI**. The pattern that emerged is a deliberate controller/UI split — every subsystem now has a *controller* (pure logic, state transitions, and execution management) and a separate *UI* layer (DOM manipulation, EaselJS drawing, and visual state management).
 
-This week I merged **5 pull requests**, changing **over 5,200 lines of code**. The largest single PR restructured the entire toolbar visual layer, migrating ~2,773 lines of rendering code out of `toolbar.js` into a dedicated `widgets/toolbar-ui.js` while preserving backward compatibility through a thin shim. Every PR passed all Jest tests and ESLint checks before merging.
+This week I merged **6 pull requests**, changing **over 6,800 lines of code**. The largest single PR restructured the entire toolbar visual layer, migrating ~2,773 lines of rendering code out of `toolbar.js` into a dedicated `widgets/toolbar-ui.js` while preserving backward compatibility through a thin shim. The week closed with a full alert subsystem split — separating alert state management and visual rendering into two focused modules. Every PR passed all Jest tests and ESLint checks before merging.
 
 ---
 
@@ -37,8 +37,9 @@ This week I merged **5 pull requests**, changing **over 5,200 lines of code**. T
 | **[PR #7584](https://github.com/sugarlabs/musicblocks/pull/7584)** | Plugin Dialog UI | `js/widgets/plugin-dialog.js` | Extracted plugin dialog & file-chooser UI interactions. | **Merged** |
 | **[PR #7622](https://github.com/sugarlabs/musicblocks/pull/7622)** | Toolbar Controller | `js/activity/toolbar-controller.js` | Extracted execution state & Logo runtime controls. | **Merged** |
 | **[PR #7628](https://github.com/sugarlabs/musicblocks/pull/7628)** | Toolbar UI | `js/widgets/toolbar-ui.js` | Migrated all visual toolbar classes & DOM logic. | **Merged** |
+| **[PR #7639](https://github.com/sugarlabs/musicblocks/pull/7639)** | Alert Controller & Renderer | `js/activity/alert-controller.js`, `js/activity/alert-renderer.js` | Extracted alert state management and all visual rendering into two dedicated modules. | **Merged** |
 
-*Total changes: **+5,235 additions** and **-3,512 deletions** across **19 modified files**.*
+*Total changes: **+6,837 additions** and **-3,836 deletions** across **25 modified files**.*
 
 ---
 
@@ -115,6 +116,33 @@ This was the largest structural change of the week. The visual toolbar had histo
 * **Backward Compatibility Shim:** `js/toolbar.js` was converted into a thin compatibility shim that explicitly depends on `widgets/toolbar-ui` and re-exports the implementation. This preserves the existing `"activity/toolbar"` RequireJS module path for all downstream consumers without duplicating code or creating load-order issues.
 * **Activity Integration:** All direct stop-button DOM manipulation in `activity.js` was replaced with calls to the three new toolbar UI helpers. Execution control remains delegated to `ToolbarController`.
 * **Tests:** Updated `js/__tests__/toolbar.test.js` to target the new implementation module directly. Added `js/widgets/__tests__/toolbar-ui.test.js` covering the three new helpers including timer-based behavior using Jest fake timers.
+
+### 6. Alert Controller & Renderer (PR #7639)
+
+The alert and message system in Music Blocks handles two distinct concerns — managing alert lifecycle, timeouts, and queuing on one hand, and rendering text/error messages onto the EaselJS canvas and DOM on the other. Both had been mixed together inline inside `activity.js`. This PR cleanly split that responsibility across two dedicated modules.
+
+* **AlertController (`js/activity/alert-controller.js`):** Owns all alert state and lifecycle logic:
+  * `msgTimeoutID`, `errorMsgTimeoutID`, and `messageQueue` state
+  * `showText()` and `showError()` — calculate and schedule alert timeouts
+  * `clearTextTimeout()` and `clearErrorTimeout()` — cancel active timers
+  * `activity.js` now delegates `textMsg()`, `errorMsg()`, and `hideMsgs()` lifecycle management entirely to the controller.
+
+* **AlertRenderer (`js/activity/alert-renderer.js`):** Owns all visual rendering:
+
+  | Previous (inline in `activity.js`) | New (`AlertRenderer`) |
+  | :--- | :--- |
+  | `_createMsgContainer()` | `AlertRenderer.createMsgContainer()` |
+  | `_createErrorContainers()` | `AlertRenderer.createErrorContainers()` |
+  | `_makeErrorArtwork()` | `AlertRenderer.makeErrorArtwork()` |
+  | `_hideAlertUI()` | `AlertRenderer.hideAlertUI()` |
+  | `_hideArrows()` | `AlertRenderer.hideArrows()` |
+  | Text alert display logic | `AlertRenderer.showTextMsg()` / `hideTextMsg()` |
+  | Error alert display logic | `AlertRenderer.showErrorMsg()` / `hideErrorMsg()` |
+
+* **Activity Integration:** `activity.js` initializes both modules via `setupAlertController(this)` and `setupAlertRenderer(this)`. The existing `AlertController` timeout behavior is fully preserved; `textMsg()` and `errorMsg()` now simply coordinate between the controller (timing) and renderer (display).
+* **Loader Updates:** Added RequireJS path and shim configuration for both `activity/alert-controller` and `activity/alert-renderer` in `loader.js`.
+* **Tests Added:** Created `js/activity/__tests__/alert-renderer.test.js` covering renderer initialization, text and error alert rendering, DOM updates, alert dismissal behavior, error artwork visibility, and arrow cleanup behavior.
+* **This is a pure refactor:** No functional behavior, alert timing, or user-facing display changes were introduced.
 
 ---
 
