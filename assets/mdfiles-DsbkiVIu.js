@@ -31303,6 +31303,116 @@ Thanks to Devin Ulibarri for catching and flagging the synth initialization regr
 
 
 `,Sf=e({default:()=>Cf}),Cf=`---
+title: "GSoC '26 Week 6 Report by Rejah Rabeeul Haque"
+excerpt: "Refined the automated unit tests, enhanced the fill algorithm and Number Mode."
+category: "DEVELOPER NEWS"
+date: "2026-07-05"
+slug: "2026-07-05-gsoc-26-rejah-rabeeul-haque-week06"
+author: "@/constants/MarkdownFiles/authors/rejah-rabeeul-haque.md"
+description: "GSoC'26 Contributor at SugarLabs working on ConnectTheDots activity"
+tags: "gsoc26,sugarlabs,sugarizer,connectthedots,week06,rejah-rabeeul-haque"
+image: "assets/Images/sugarizer.webp"
+---
+
+<!-- markdownlint-disable -->
+
+## This Week's Progress
+
+Hey! This week, I refined the automated unit tests and enhanced the fill algorithm and Number Mode.
+Here is a detailed breakdown:
+
+---
+
+### Enhancing Unit Tests for Behavioral Rules
+
+The tests live in \`js/tests/tests.js\` and they are designed to run in two environments — inside the browser alongside the activity, and directly from the command line using Node.js.
+
+- To simulate user interaction, the test suite uses functions like addLink() that set the active tool to draw and the active paint color through setFillColor(), and then call the exact same event handler functions used by the activity: mousedown at the starting dot, mousemove to the destination dot, and mouseup. The draw-mode module's internal logic picks up the coordinates and registers the colored stroke. Similarly, erasing is simulated with eraseLink(), which switches the active tool to erase and replays the same mouse event sequence along the link's path so the segment intersection logic removes the matching stroke.
+
+- What Each Test Checks:
+
+    - Rule 1: Draw four lines forming a square. Before the last link, check if there are zero figures. After the last link closes the loop, check if there is exactly one figure with the correct fill color.
+    - Rule 2: Draw a large outer square and then a small inner triangle. Check if both figures exist and each has its own correct fill color.
+    - Rule 3: Draw the inner triangle first, then draw the outer square. Check if drawing the outer shape didn't change the inner figure's fill color.
+    - Rule 4: Draw a square, then erase one edge. Check if there are now zero active figures.
+    - Rule 5: Draw a square and an inner triangle, then erase one edge of the outer square. Check if only the inner triangle figure remains active, with its original fill color untouched.
+
+- The tests also rely on serialization and deserialization, the same mechanism used to save to the Sugarizer Journal and sync multiplayer sessions. Serialize converts the in-memory graph into a JSON object by storing strokes as dot index lists and figures by unique dot keys and fill colors. Deserialization does the reverse by resolving those index arrays back to live references from the shared dots array. In the test suite, serialize() takes an initial snapshot before running tests, and deserialize() restores it at the end. However, this snapshot and restore mechanism currently needs some additional work to fully preserve live canvas UI states without visual glitches.
+
+---
+
+### Enhancing the Fill Algorithm in Draw Mode
+
+Implementing this algorithm took the most time. When the user closes a figure by connecting back to a dot they've already visited, the activity needs to detect that a closed loop (figure) was formed, identify exactly which dots form its boundary, animate the fill expanding outward from the closing point, and handle nested shapes correctly.
+
+To do all of this, the implementation combines four core algorithms: Iterative Leaf Removal to clean the graph, Planar Face Detection to find closed loops, the Shoelace Formula (Signed Area) to validate them, and the Ray-Casting Algorithm to detect nested shapes.
+
+- Building the Graph and Removing Dangling Lines
+
+Every time a line is drawn or erased, the graph is rebuilt from the start. It runs Iterative Leaf Removal, where any dot with only one connection is repeatedly removed until no dead ends remain. Removing dangling lines first ensures that face detection only runs on cycles that can actually form figures.
+    Example: If you draw a closed square connecting Dots 0, 1, 2, and 3, but leave an extra line Dot 4, Iterative Leaf Removal detects that Dot 4 only has one connection and removes it before checking for closed shapes.
+
+- Planar Face Detection:
+
+To find closed loops, the code uses Planar Face Detection. To decide which way to turn at each dot, it uses a counter clockwise sort: first, each dot's connected neighbors are sorted by angle. Next, it goes through the graph edges by taking the most clockwise turn available at every vertex.
+
+When this traversal returns to the starting dot, it has found a polygon face. To check whether this face is a real shape to fill, the algorithm applies the Shoelace Formula:
+A positive signed area confirms the traversal went counter clockwise around an inner bounded face (a shape to fill). A negative signed area means the traversal went clockwise around the outside of the entire drawing (the unbounded external face), which is discarded.
+
+- Nesting Detection:
+
+To correctly handle a figure drawn inside another filled figure, the algorithm uses the Ray-Casting Algorithm. It casts a horizontal ray from the inner shape's vertices to check if they sit inside the outer shape's boundary, confirming the nesting relationship.
+    Example: If you draw a small triangle inside a large square, the algorithm shoots an invisible horizontal test line outward from the triangle. Since that line crosses the outer border of the square, the game confirms the triangle is nested inside the square.
+
+- Expanding Circle Fill Animation:
+
+When a new closed shape is detected, a circle expands radially from the point where the user closed the loop. The radius grows every animation frame. The HTML Canvas ctx.clip() method clips drawing to the polygon boundary, and ctx.arc() draws the growing circle inside it. Once the circle completely covers the shape, the code switches to a simple solid fill behind the scenes to save memory. For nested shapes, the inner shape paints the outer shape's color as its background before drawing its own color, preventing any blank white gaps during animation.
+
+- Limitations of the Fill Algorithm:
+
+    - No crossing edges allowed. Because Planar Face Detection requires a planar graph (where edges do not cross in open space), the activity blocks drawing a diagonal that would cross an existing diagonal in the same grid cell.
+    - Full rebuild on every change. The entire graph is rebuilt from scratch every time a line is added or removed.
+    - Color inheritance. When a new line splits an existing shape into two, the algorithm matches new faces to old ones by counting shared dots. If the overlap score is close between two candidates, the wrong shape may inherit the old fill color.
+
+---
+
+### Improved Number Mode Behaviour
+
+- The dot wave effect makes dots near the pointer grow larger and then shrink back as the user moves. It checks how close each dot is to the pointer and smoothly changes its size. Previously, switching between modes could leave some dots stuck at the initial size.
+- Added a preview line that follows the pointer from the last connected dot. When the next correct dot is selected, the line becomes permanent. This makes drawing easier to follow and more responsive.
+
+---
+
+## Challenges Faced
+
+- Test State: Ensuring the tests were properly done and reset between tests so one test didn't accidentally break the next one.
+- Keeping Fill Colors Stable: Since the graph rebuilds on every edit, keeping the same color on existing shapes was challenging. I used unique keys for shapes and built a fallback matching system for when shapes are split in half.
+- The Diagonal Crossing Constraint: Planar graphs don't allow edges to cross in open space. Supporting crossings breaks serialization and network sync, so we had to block it.
+
+---
+
+## What's Next
+
+- Fixing issues in current behavior.
+- Continuing the implementation of Number Mode.
+
+---
+
+## Acknowledgments
+
+Thanks to my mentor Lionel Laské for the continuous guidance and patience, and the Sugar Labs community for the support.
+
+---
+
+## Links
+
+- **Sugarizer Repository**: [https://github.com/llaske/sugarizer](https://github.com/llaske/sugarizer)
+- **Connect The Dots Pull Request**: [https://github.com/llaske/sugarizer/pull/2188](https://github.com/llaske/sugarizer/pull/2188)
+- **GitHub Profile**: [https://github.com/Rejah-Rabeeul](https://github.com/Rejah-Rabeeul)
+
+---
+
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,wf=e({default:()=>Tf}),Tf=`---
 title: "GSoC '26 Week 6 Update by Shreya Saxena"
 excerpt: "Investigated playback synchronization drift and improved scheduling accuracy using Tone.Transport."
 category: "DEVELOPER NEWS"
@@ -31475,7 +31585,7 @@ With scheduling fixed, my next focus is the remaining runtime cost during playba
 ## Acknowledgments
 
 A big thanks to my mentor, Walter Bender, for his guidance, thoughtful reviews, and valuable feedback throughout this work. I'd also like to thank my co-mentor, Om Santosh Suneri, and the entire Sugar Labs community for their continuous support.
- `,wf=e({default:()=>Tf}),Tf=`---
+ `,Ef=e({default:()=>Df}),Df=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -31624,7 +31734,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Ef=e({default:()=>Df}),Df=`---
+`,Of=e({default:()=>kf}),kf=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -31727,7 +31837,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Of=e({default:()=>kf}),kf=`---
+`,Af=e({default:()=>jf}),jf=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -32200,7 +32310,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Af=e({default:()=>jf}),jf=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Mf=e({default:()=>Nf}),Nf=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -32287,7 +32397,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Mf=e({default:()=>Nf}),Nf=`---\r
+`,Pf=e({default:()=>Ff}),Ff=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -32380,7 +32490,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Pf=e({default:()=>Ff}),Ff=`---\r
+`,If=e({default:()=>Lf}),Lf=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -32474,7 +32584,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,If=e({default:()=>Lf}),Lf=`---\r
+`,Rf=e({default:()=>zf}),zf=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -32562,7 +32672,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Rf=e({default:()=>zf}),zf=`---\r
+`,Bf=e({default:()=>Vf}),Vf=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -32645,7 +32755,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Bf=e({default:()=>Vf}),Vf=`---\r
+`,Hf=e({default:()=>Uf}),Uf=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -32711,7 +32821,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Hf=e({default:()=>Uf}),Uf=`---
+`,Wf=e({default:()=>Gf}),Gf=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -32793,7 +32903,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Wf=e({default:()=>Gf}),Gf=`---
+---`,Kf=e({default:()=>qf}),qf=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -32886,7 +32996,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Kf=e({default:()=>qf}),qf=`---
+`,Jf=e({default:()=>Yf}),Yf=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -32975,7 +33085,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Jf=e({default:()=>Yf}),Yf=`---
+--- `,Xf=e({default:()=>Zf}),Zf=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33120,7 +33230,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Xf=e({default:()=>Zf}),Zf=`---
+--- `,Qf=e({default:()=>$f}),$f=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33308,7 +33418,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Qf=e({default:()=>$f}),$f=`---
+--- `,ep=e({default:()=>tp}),tp=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33403,7 +33513,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,ep=e({default:()=>tp}),tp=`---
+`,np=e({default:()=>rp}),rp=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33492,7 +33602,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,np=e({default:()=>rp}),rp=`---
+`,ip=e({default:()=>ap}),ap=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33579,7 +33689,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,ip=e({default:()=>ap}),ap=`---
+---`,op=e({default:()=>sp}),sp=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33662,7 +33772,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,op=e({default:()=>sp}),sp=`---
+---`,cp=e({default:()=>lp}),lp=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33745,7 +33855,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,cp=e({default:()=>lp}),lp=`---
+---`,up=e({default:()=>dp}),dp=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -34050,4 +34160,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{dd as $,lt as $a,ur as $i,ds as $n,l as $o,ua as $r,dl as $t,rf as A,tn as Aa,ni as Ai,rc as An,te as Ao,no as Ar,ru as At,Ld as B,Ft as Ba,Ir as Bi,Ls as Bn,F as Bo,Ia as Br,Ll as Bt,vf as C,gn as Ca,gi as Ci,_c as Cn,he as Co,_o as Cr,_u as Ct,uf as D,cn as Da,ci as Di,lc as Dn,se as Do,co as Dr,lu as Dt,ff as E,un as Ea,ui as Ei,dc as En,le as Eo,uo as Er,du as Et,qd as F,Gt as Fa,Kr as Fi,qs as Fn,G as Fo,Ka as Fr,ql as Ft,Dd as G,Tt as Ga,Er as Gi,Ds as Gn,T as Go,Ea as Gr,Dl as Gt,Nd as H,jt as Ha,Mr as Hi,Ns as Hn,j as Ho,Ma as Hr,Nl as Ht,Gd as I,Ut as Ia,Wr as Ii,Gs as In,U as Io,Wa as Ir,Gl as It,xd as J,yt as Ja,br as Ji,xs as Jn,y as Jo,ba as Jr,xl as Jt,Td as K,Ct as Ka,wr as Ki,Ts as Kn,C as Ko,wa as Kr,Tl as Kt,Ud as L,Vt as La,Hr as Li,Us as Ln,V as Lo,Ha as Lr,Ul as Lt,$d as M,Zt as Ma,Qr as Mi,$s as Mn,Z as Mo,Qa as Mr,$l as Mt,Zd as N,Yt as Na,Xr as Ni,Zs as Nn,Y as No,Xa as Nr,Zl as Nt,cf as O,on as Oa,oi as Oi,sc as On,ae as Oo,oo as Or,su as Ot,Yd as P,qt as Pa,Jr as Pi,Ys as Pn,q as Po,Ja as Pr,Yl as Pt,pd as Q,dt as Qa,fr as Qi,ps as Qn,d as Qo,fa as Qr,pl as Qt,Vd as R,zt as Ra,Br as Ri,Vs as Rn,z as Ro,Ba as Rr,Vl as Rt,bf as S,vn as Sa,vi as Si,yc as Sn,_e as So,yo as Sr,yu as St,mf as T,fn as Ta,fi as Ti,pc as Tn,de as To,po as Tr,pu as Tt,jd as U,kt as Ua,Ar as Ui,js as Un,k as Uo,Aa as Ur,jl as Ut,Fd as V,Nt as Va,Pr as Vi,Fs as Vn,N as Vo,Pa as Vr,Fl as Vt,kd as W,Dt as Wa,Or as Wi,ks as Wn,D as Wo,Oa as Wr,kl as Wt,_d as X,ht as Xa,gr as Xi,_s as Xn,h as Xo,ga as Xr,_l as Xt,yd as Y,_t as Ya,vr as Yi,ys as Yn,_ as Yo,va as Yr,yl as Yt,hd as Z,pt as Za,mr as Zi,hs as Zn,p as Zo,ma as Zr,hl as Zt,Af as _,On as _a,Oi as _i,kc as _n,De as _o,ko as _r,ku as _t,ep as a,Qn as aa,Qi as ai,$c as an,Ze as ao,$o as ar,$u as at,wf as b,Sn as ba,Si as bi,Cc as bn,xe as bo,Co as br,Cu as bt,Jf as c,Kn as ca,Ki as ci,qc as cn,Ge as co,qo as cr,qu as ct,Hf as d,Bn as da,Bi as di,Vc as dn,ze as do,Vo as dr,Vu as dt,cr as ea,ca as ei,ll as en,st as eo,ls as er,s as es,ld as et,Bf as f,Rn as fa,Ri as fi,zc as fn,Le as fo,zo as fr,zu as ft,Mf as g,An as ga,Ai as gi,jc as gn,ke as go,jo as gr,ju as gt,Pf as h,Mn as ha,Mi as hi,Nc as hn,je as ho,No as hr,Nu as ht,np as i,er as ia,ea as ii,tl as in,$e as io,ts as ir,td as it,tf as j,$t as ja,ei as ji,tc as jn,$ as jo,eo as jr,tu as jt,of as k,rn as ka,ii as ki,ac as kn,re as ko,io as kr,au as kt,Kf as l,Wn as la,Wi as li,Gc as ln,Ue as lo,Go as lr,Gu as lt,If as m,Pn as ma,Pi as mi,Fc as mn,Ne as mo,Fo as mr,Fu as mt,op as n,ir as na,ia as ni,al as nn,rt as no,as as nr,r as ns,ad as nt,Qf as o,Xn as oa,Xi as oi,Zc as on,Ye as oo,Zo as or,Zu as ot,Rf as p,In as pa,Ii as pi,Lc as pn,Fe as po,Lo as pr,Lu as pt,Cd as q,xt as qa,Sr as qi,Cs as qn,x as qo,Sa as qr,Cl as qt,ip as r,nr as ra,na as ri,rl as rn,tt as ro,rs as rr,t as rs,rd as rt,Xf as s,Jn as sa,Ji as si,Yc as sn,qe as so,Yo as sr,Yu as st,cp as t,or as ta,oa as ti,sl as tn,at as to,ss as tr,a as ts,sd as tt,Wf as u,Hn as ua,Hi as ui,Uc as un,Ve as uo,Uo as ur,Uu as ut,Of as v,En as va,Ei as vi,Dc as vn,Te as vo,Do as vr,Du as vt,gf as w,mn as wa,mi as wi,hc as wn,pe as wo,ho as wr,hu as wt,Sf as x,bn as xa,bi as xi,xc as xn,ye as xo,xo as xr,xu as xt,Ef as y,wn as ya,wi as yi,Tc as yn,Ce as yo,To as yr,Tu as yt,zd as z,Lt as za,Rr as zi,zs as zn,L as zo,Ra as zr,zl as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{pd as $,dt as $a,fr as $i,ps as $n,d as $o,fa as $r,pl as $t,of as A,rn as Aa,ii as Ai,ac as An,re as Ao,io as Ar,au as At,zd as B,Lt as Ba,Rr as Bi,zs as Bn,L as Bo,Ra as Br,zl as Bt,bf as C,vn as Ca,vi as Ci,yc as Cn,_e as Co,yo as Cr,yu as Ct,ff as D,un as Da,ui as Di,dc as Dn,le as Do,uo as Dr,du as Dt,mf as E,fn as Ea,fi as Ei,pc as En,de as Eo,po as Er,pu as Et,Yd as F,qt as Fa,Jr as Fi,Ys as Fn,q as Fo,Ja as Fr,Yl as Ft,kd as G,Dt as Ga,Or as Gi,ks as Gn,D as Go,Oa as Gr,kl as Gt,Fd as H,Nt as Ha,Pr as Hi,Fs as Hn,N as Ho,Pa as Hr,Fl as Ht,qd as I,Gt as Ia,Kr as Ii,qs as In,G as Io,Ka as Ir,ql as It,Cd as J,xt as Ja,Sr as Ji,Cs as Jn,x as Jo,Sa as Jr,Cl as Jt,Dd as K,Tt as Ka,Er as Ki,Ds as Kn,T as Ko,Ea as Kr,Dl as Kt,Gd as L,Ut as La,Wr as Li,Gs as Ln,U as Lo,Wa as Lr,Gl as Lt,tf as M,$t as Ma,ei as Mi,tc as Mn,$ as Mo,eo as Mr,tu as Mt,$d as N,Zt as Na,Qr as Ni,$s as Nn,Z as No,Qa as Nr,$l as Nt,uf as O,cn as Oa,ci as Oi,lc as On,se as Oo,co as Or,lu as Ot,Zd as P,Yt as Pa,Xr as Pi,Zs as Pn,Y as Po,Xa as Pr,Zl as Pt,hd as Q,pt as Qa,mr as Qi,hs as Qn,p as Qo,ma as Qr,hl as Qt,Ud as R,Vt as Ra,Hr as Ri,Us as Rn,V as Ro,Ha as Rr,Ul as Rt,Sf as S,bn as Sa,bi as Si,xc as Sn,ye as So,xo as Sr,xu as St,gf as T,mn as Ta,mi as Ti,hc as Tn,pe as To,ho as Tr,hu as Tt,Nd as U,jt as Ua,Mr as Ui,Ns as Un,j as Uo,Ma as Ur,Nl as Ut,Ld as V,Ft as Va,Ir as Vi,Ls as Vn,F as Vo,Ia as Vr,Ll as Vt,jd as W,kt as Wa,Ar as Wi,js as Wn,k as Wo,Aa as Wr,jl as Wt,yd as X,_t as Xa,vr as Xi,ys as Xn,_ as Xo,va as Xr,yl as Xt,xd as Y,yt as Ya,br as Yi,xs as Yn,y as Yo,ba as Yr,xl as Yt,_d as Z,ht as Za,gr as Zi,_s as Zn,h as Zo,ga as Zr,_l as Zt,Mf as _,An as _a,Ai as _i,jc as _n,ke as _o,jo as _r,ju as _t,np as a,er as aa,ea as ai,tl as an,$e as ao,ts as ar,td as at,Ef as b,wn as ba,wi as bi,Tc as bn,Ce as bo,To as br,Tu as bt,Xf as c,Jn as ca,Ji as ci,Yc as cn,qe as co,Yo as cr,Yu as ct,Wf as d,Hn as da,Hi as di,Uc as dn,Ve as do,Uo as dr,Uu as dt,ur as ea,ua as ei,dl as en,lt as eo,ds as er,l as es,dd as et,Hf as f,Bn as fa,Bi as fi,Vc as fn,ze as fo,Vo as fr,Vu as ft,Pf as g,Mn as ga,Mi as gi,Nc as gn,je as go,No as gr,Nu as gt,If as h,Pn as ha,Pi as hi,Fc as hn,Ne as ho,Fo as hr,Fu as ht,ip as i,nr as ia,na as ii,rl as in,tt as io,rs as ir,t as is,rd as it,rf as j,tn as ja,ni as ji,rc as jn,te as jo,no as jr,ru as jt,cf as k,on as ka,oi as ki,sc as kn,ae as ko,oo as kr,su as kt,Jf as l,Kn as la,Ki as li,qc as ln,Ge as lo,qo as lr,qu as lt,Rf as m,In as ma,Ii as mi,Lc as mn,Fe as mo,Lo as mr,Lu as mt,cp as n,or as na,oa as ni,sl as nn,at as no,ss as nr,a as ns,sd as nt,ep as o,Qn as oa,Qi as oi,$c as on,Ze as oo,$o as or,$u as ot,Bf as p,Rn as pa,Ri as pi,zc as pn,Le as po,zo as pr,zu as pt,Td as q,Ct as qa,wr as qi,Ts as qn,C as qo,wa as qr,Tl as qt,op as r,ir as ra,ia as ri,al as rn,rt as ro,as as rr,r as rs,ad as rt,Qf as s,Xn as sa,Xi as si,Zc as sn,Ye as so,Zo as sr,Zu as st,up as t,cr as ta,ca as ti,ll as tn,st as to,ls as tr,s as ts,ld as tt,Kf as u,Wn as ua,Wi as ui,Gc as un,Ue as uo,Go as ur,Gu as ut,Af as v,On as va,Oi as vi,kc as vn,De as vo,ko as vr,ku as vt,vf as w,gn as wa,gi as wi,_c as wn,he as wo,_o as wr,_u as wt,wf as x,Sn as xa,Si as xi,Cc as xn,xe as xo,Co as xr,Cu as xt,Of as y,En as ya,Ei as yi,Dc as yn,Te as yo,Do as yr,Du as yt,Vd as z,zt as za,Br as zi,Vs as zn,z as zo,Ba as zr,Vl as zt};
