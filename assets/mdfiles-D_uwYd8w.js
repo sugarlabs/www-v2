@@ -30756,7 +30756,122 @@ Thanks to my mentors for all their patience and encouragement this week! Some of
 
 ---
 
-`,uf=e({default:()=>df}),df='---\ntitle: "DMP \'26 Week 02 Update by Noaman Akhtar"\nexcerpt: "Extracting the HuggingFace pipeline from RAGAgent into a model-agnostic BaseProvider without changing existing behavior."\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-28"\nslug: "2026-06-28-dmp-26-noaman-week02"\nauthor: "@/constants/MarkdownFiles/authors/noaman-akhtar.md"\ndescription: "DMP\'26 Contributor at SugarLabs working on AI Optimization"\ntags: "dmp26,sugarlabs,week02,noaman-akhtar,sugar-ai,ai-optimization"\nimage: "assets/Images/c4gt_DMP.webp"\n---\n\n<!-- markdownlint-disable -->\n\n# Week 02 Progress Report by Noaman Akhtar\n\n**Project:** [AI Optimization](https://github.com/sugarlabs/sugar-ai)  \n**Mentors:** [sum2it](https://github.com/sum2it), [mostlyk](https://github.com/MostlyKIGuess), [chimosky](https://github.com/chimosky)  \n**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa), [Mebin](https://github.com/mebinthattil)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-22 – 2026-06-28  \n\n---\n\n## Goals for This Week\n\n- Extract the HuggingFace-specific code from [`RAGAgent`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L35).\n- Define a model-agnostic provider interface for text generation and chat.\n- Fix the [`/ask-llm`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L122) endpoint so it no longer calls the model pipeline directly.\n- Keep the existing API response shapes and behavior stable throughout the refactor.\n\n---\n\n## The Coupling Problem (Recap)\n\nAt the start of the week, `RAGAgent` was responsible for too many unrelated tasks. The roughly 401-line class loaded the language model, configured 4-bit quantization, created the HuggingFace pipeline, retrieved documentation with FAISS, assembled prompts, and generated responses. Both [`torch`](https://pytorch.org/) and [`transformers`](https://huggingface.co/docs/transformers/) were imported directly into the agent, which made the entire application depend on one inference implementation.\n\nThe coupling also extended beyond the class. The `/ask-llm` endpoint reached into `agent.model()` and called the raw HuggingFace pipeline itself. Chat handling contained Gemma-specific role normalization inside the shared agent. Adding another backend at that point would have required more provider-specific conditions throughout `RAGAgent` and the API routes.\n\nPhase 1 therefore focused only on separation. Before adding Ollama or any cloud API, I needed to establish a contract that the existing HuggingFace implementation could satisfy without changing how clients use Sugar-AI.\n\n---\n\n## Building the Provider Abstraction\n\n### The BaseProvider Interface\n\nI added [`app/providers/base.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py), which defines the [`BaseProvider`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L38) abstract base class. Every model backend must implement the same four operations:\n\n```python\ngenerate(prompt, params)\nchat(messages, params)\nget_model_name()\nhealth_check()\n```\n\nThe same file introduces [`GenerationParams`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L24), a frozen dataclass that groups settings such as `max_new_tokens`, `temperature`, `top_p`, `top_k`, and `repetition_penalty`. Its [`__post_init__()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L34) method derives `do_sample` from whether the temperature is greater than zero. This keeps generation settings consistent across providers and prevents call sites from passing a growing list of unrelated keyword arguments.\n\n### Extracting HuggingFaceProvider\n\nI moved the existing inference implementation into [`HuggingFaceProvider`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L28). It now owns model and tokenizer loading, optional [`BitsAndBytesConfig`](https://huggingface.co/docs/transformers/main_classes/quantization#transformers.BitsAndBytesConfig) 4-bit quantization, pipeline construction, raw generation, and chat generation.\n\nProvider-specific compatibility logic moved with it. [`_normalize_chat_messages()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L141) handles the role ordering needed by Gemma models, while [`_extract_after_prompt()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L173) separates newly generated text from the input prompt. As a result, [`app/providers/huggingface.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py) is now the only Phase 1 file that imports `torch` and `transformers`.\n\nThe provider also implements [`get_model_name()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L130) and [`health_check()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L133). The health method is groundwork for future availability checks and safer model switching. Phase 1 does not expose a public `/health` endpoint.\n\n### Rewriting RAGAgent\n\nThe rewritten `RAGAgent` accepts a `BaseProvider` through [`__init__(self, provider: BaseProvider)`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L38). It no longer loads a causal language model or knows how a HuggingFace pipeline returns generated text.\n\nInstead, [`run()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L107), [`debug()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L90), and [`run_with_custom_prompt()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L136) assemble their prompts and delegate inference to [`provider.generate()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L42). [`run_chat_completion()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L157) delegates structured messages to [`provider.chat()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L46). The previous LangChain chain composition for these calls was replaced with direct prompt formatting, while the agent retained the parts that belong to the RAG layer: document loading, embeddings, FAISS retrieval, and prompt construction.\n\nThis creates a clear ownership boundary. `RAGAgent` decides what context and instructions the model receives, while the provider decides how those inputs reach a model backend.\n\n### Wiring It Up\n\nIn [`main.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/main.py), application startup now creates a `HuggingFaceProvider` first and injects it into `RAGAgent`. The agent depends on the provider interface rather than constructing a concrete model pipeline itself.\n\nI also updated [`app/routes/api.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py). The `/ask-llm` path now calls [`agent.provider.generate(question)`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L134) instead of accessing `agent.model()`. The prompted and chat modes translate request fields into one `GenerationParams` object, and [`/change-model`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L307) builds a replacement `HuggingFaceProvider` before passing it to [`set_model()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L55).\n\nThis is dependency inversion in a practical form: high-level retrieval and API behavior depend on a small interface, while HuggingFace-specific details sit behind that interface.\n\n---\n\n## Challenge & Key Learning\n\nThe main challenge was keeping this a structural refactor. Moving model loading and generation across files created many opportunities to change output parsing, prompt formatting, or parameter defaults accidentally. I had to compare each call path carefully and resist adding alternative providers before the first contract was stable.\n\nThe key lesson was that an abstraction is useful only when the existing implementation can pass through it cleanly. Extracting `HuggingFaceProvider` first exposed which responsibilities belonged to inference and which belonged to retrieval. That boundary is what will make later providers simpler rather than adding another layer of conditionals.\n\nFor local checks, [`DEV_MODE`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/.example.env#L9) allowed me to use the lighter [`HuggingFaceTB/SmolLM-135M-Instruct`](https://huggingface.co/HuggingFaceTB/SmolLM-135M-Instruct) model on CPU instead of requiring the production model and GPU setup.\n\n---\n\n## Verification\n\nI checked the existing request paths after the refactor: [`/ask`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L84), `/ask-llm`, both custom-prompt and chat modes of [`/ask-llm-prompted`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L153), and [`/debug`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L273) with and without documentation context. I verified that the API response structures and intended behavior remained consistent while inference passed through the provider interface.\n\nI also performed syntax and import checks after each extraction step. The `health_check()` contract and provider replacement in `set_model()` establish the groundwork for a future health endpoint and safer runtime model switching, but those follow-up features are outside this phase.\n\n---\n\n## Plan for Next Week\n\nThe next step is to implement the first alternative backend, `OllamaProvider`, and test it against a local Ollama instance running `qwen2.5:1.5b`. This will test whether the `BaseProvider` contract is genuinely model-agnostic rather than only a wrapper around HuggingFace.\n\nI also plan to add an `AI_PROVIDER` environment setting and a provider factory so startup can select a backend without changing application code. Those changes will build on this Phase 1 branch rather than expanding the interface prematurely.\n\n---\n\n## Resources & References\n\n- **Repository:** [https://github.com/sugarlabs/sugar-ai](https://github.com/sugarlabs/sugar-ai)\n- **Phase 1 branch:** [https://github.com/Noaman-Akhtar/sugar-ai/tree/refactor/provider-abstraction](https://github.com/Noaman-Akhtar/sugar-ai/tree/refactor/provider-abstraction)\n- **Python abstract base classes:** [https://docs.python.org/3/library/abc.html](https://docs.python.org/3/library/abc.html)\n- **HuggingFace pipelines:** [https://huggingface.co/docs/transformers/main_classes/pipelines](https://huggingface.co/docs/transformers/main_classes/pipelines)\n- **FastAPI documentation:** [https://fastapi.tiangolo.com/](https://fastapi.tiangolo.com/)\n\n---\n\n## Acknowledgments\n\nThanks to my mentors and the Sugar Labs community for helping keep the implementation focused on a stable provider contract before adding more backends. Their feedback helped turn the initial architecture plan into a clear first refactoring phase.\n\n---\n',ff=e({default:()=>pf}),pf=`---
+`,uf=e({default:()=>df}),df=`---
+title: "DMP '26 Week 02 Update by Abhnish Kumar"
+excerpt: "ARIA live regions for screen reader announcements and E2E test reliability fix for Music Blocks"
+category: "DEVELOPER NEWS"
+date: "2026-06-28"
+slug: "2026-06-28-dmp-26-abhnish-week02"
+author: "@/constants/MarkdownFiles/authors/abhnish-kumar.md"
+tags: "dmp26,sugarlabs,week02,abhnish-kumar,accessibility"
+image: "assets/Images/c4gt-official-logo.png"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 02 Progress Report by Abhnish Kumar
+
+**Project:** [Music Blocks - WCAG 2.1 AA Accessibility & Touch Support](https://github.com/sugarlabs/musicblocks/issues/6608)  
+**Mentors:** [Walter Bender](https://github.com/walterbender)  
+**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa)  
+**Reporting Period:** 2026-06-21 - 2026-06-28  
+
+---
+
+## Goals for This Week
+
+- **Goal 1:** Add ARIA live region announcements for status and error messages
+- **Goal 2:** Add ARIA live region announcements for program run/stop events
+- **Goal 3:** Fix flaky Cypress E2E test blocking CI on accessibility PRs
+
+---
+
+## This Week's Achievements
+
+1. **Added aria-live region for textMsg and errorMsg announcements**
+   - PR: [#7674](https://github.com/sugarlabs/musicblocks/pull/7674)
+   - Introduced a shared \`__ensureA11yLiveRegion()\` helper that lazily
+     creates a single \`role="status"\` / \`aria-live="polite"\` region on
+     first use.
+   - Hooked into \`textMsg()\` (keyboard shortcut confirmations, scroll
+     notifications, status updates) and \`errorMsg()\` (block errors,
+     program warnings) so all these messages are now announced to screen
+     reader users.
+   - Follows the same pattern used in PR #5592 for pie menu announcements,
+     keeping implementation consistent across the codebase.
+
+2. **Announced program run/stop state via aria-live region**
+   - PR: [#7675](https://github.com/sugarlabs/musicblocks/pull/7675)
+   - Hooked into \`onRunTurtle\` and \`onStopTurtle\` callbacks to announce
+     "Program running." and "Program stopped." respectively.
+   - Both announcements pipe through the live region from PR #7674 — no
+     additional DOM changes needed.
+
+3. **Fixed flaky Cypress E2E test**
+   - PR: [#7676](https://github.com/sugarlabs/musicblocks/pull/7676)
+   - The stop button has \`display: none\` by default and only appears after
+     play starts. The test was clicking it immediately without waiting,
+     causing intermittent CI failures.
+   - Added \`.should("be.visible")\` before \`.click()\` — one line fix,
+     no app logic touched.
+
+4. **Reviewed PR #5592 — Accessibility features for pie menus and toolbar speech synthesis**
+   - Reviewed the approach for TTS feedback and aria-live announcements on
+     pie menu selections.
+   - Flagged: resize listener always active even when no pie menu is open,
+     global \`window.__\` flag fragility, and TTS not working in Devin's
+     environment. PR is blocked on rebase and Devin's TTS verification.
+
+---
+
+## Challenges & How I Overcame Them
+
+- **Challenge:** \`textMsg\` and \`errorMsg\` are called from dozens of places
+  across the codebase — adding a live region without touching all call sites.
+  **Solution:** Added the announcement directly inside the two function
+  definitions, so all existing call sites benefit automatically with zero
+  changes elsewhere.
+
+- **Challenge:** Cypress E2E failure appearing on ARIA PRs confused the
+  review — needed to confirm it was pre-existing and not caused by our changes.
+  **Solution:** Read the full CI log, traced the failure to a timing issue
+  in the test (not app logic), and fixed it in a separate focused PR.
+
+---
+
+## Key Learnings
+
+- \`aria-live="polite"\` with \`aria-atomic="true"\` is the right combination
+  for status announcements — polite waits for the user to finish their
+  current interaction before announcing, atomic ensures the full message
+  is read rather than just the changed portion.
+- Lazy initialization of shared DOM elements (create once, reuse) is cleaner
+  than injecting them at page load — avoids race conditions during startup.
+
+---
+
+## Next Week's Roadmap
+
+- PR 3 — widget open/close announcements
+- PR 4 — block selected/connected announcements
+- Comprehensive \`aria-label\`/\`role\` audit of \`index.html\` toolbar and modals
+- Re-run axe DevTools scan to verify violation count has dropped
+
+---
+
+## Resources & References
+
+- **Tracking Issue:** [#6608](https://github.com/sugarlabs/musicblocks/issues/6608)
+- **Audit Report:** [WCAG-AUDIT-REPORT.md](https://github.com/sugarlabs/musicblocks/pull/7510/files)
+- **Repository:** [sugarlabs/musicblocks](https://github.com/sugarlabs/musicblocks)
+
+---
+
+## Acknowledgments
+
+Thanks to Walter Bender for the quick reviews and for tagging me on PR #5592
+to keep me in sync with parallel accessibility work in the repo.
+`,ff=e({default:()=>pf}),pf='---\ntitle: "DMP \'26 Week 02 Update by Noaman Akhtar"\nexcerpt: "Extracting the HuggingFace pipeline from RAGAgent into a model-agnostic BaseProvider without changing existing behavior."\ncategory: "DEVELOPER NEWS"\ndate: "2026-06-28"\nslug: "2026-06-28-dmp-26-noaman-week02"\nauthor: "@/constants/MarkdownFiles/authors/noaman-akhtar.md"\ndescription: "DMP\'26 Contributor at SugarLabs working on AI Optimization"\ntags: "dmp26,sugarlabs,week02,noaman-akhtar,sugar-ai,ai-optimization"\nimage: "assets/Images/c4gt_DMP.webp"\n---\n\n<!-- markdownlint-disable -->\n\n# Week 02 Progress Report by Noaman Akhtar\n\n**Project:** [AI Optimization](https://github.com/sugarlabs/sugar-ai)  \n**Mentors:** [sum2it](https://github.com/sum2it), [mostlyk](https://github.com/MostlyKIGuess), [chimosky](https://github.com/chimosky)  \n**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa), [Mebin](https://github.com/mebinthattil)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-06-22 – 2026-06-28  \n\n---\n\n## Goals for This Week\n\n- Extract the HuggingFace-specific code from [`RAGAgent`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L35).\n- Define a model-agnostic provider interface for text generation and chat.\n- Fix the [`/ask-llm`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L122) endpoint so it no longer calls the model pipeline directly.\n- Keep the existing API response shapes and behavior stable throughout the refactor.\n\n---\n\n## The Coupling Problem (Recap)\n\nAt the start of the week, `RAGAgent` was responsible for too many unrelated tasks. The roughly 401-line class loaded the language model, configured 4-bit quantization, created the HuggingFace pipeline, retrieved documentation with FAISS, assembled prompts, and generated responses. Both [`torch`](https://pytorch.org/) and [`transformers`](https://huggingface.co/docs/transformers/) were imported directly into the agent, which made the entire application depend on one inference implementation.\n\nThe coupling also extended beyond the class. The `/ask-llm` endpoint reached into `agent.model()` and called the raw HuggingFace pipeline itself. Chat handling contained Gemma-specific role normalization inside the shared agent. Adding another backend at that point would have required more provider-specific conditions throughout `RAGAgent` and the API routes.\n\nPhase 1 therefore focused only on separation. Before adding Ollama or any cloud API, I needed to establish a contract that the existing HuggingFace implementation could satisfy without changing how clients use Sugar-AI.\n\n---\n\n## Building the Provider Abstraction\n\n### The BaseProvider Interface\n\nI added [`app/providers/base.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py), which defines the [`BaseProvider`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L38) abstract base class. Every model backend must implement the same four operations:\n\n```python\ngenerate(prompt, params)\nchat(messages, params)\nget_model_name()\nhealth_check()\n```\n\nThe same file introduces [`GenerationParams`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L24), a frozen dataclass that groups settings such as `max_new_tokens`, `temperature`, `top_p`, `top_k`, and `repetition_penalty`. Its [`__post_init__()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L34) method derives `do_sample` from whether the temperature is greater than zero. This keeps generation settings consistent across providers and prevents call sites from passing a growing list of unrelated keyword arguments.\n\n### Extracting HuggingFaceProvider\n\nI moved the existing inference implementation into [`HuggingFaceProvider`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L28). It now owns model and tokenizer loading, optional [`BitsAndBytesConfig`](https://huggingface.co/docs/transformers/main_classes/quantization#transformers.BitsAndBytesConfig) 4-bit quantization, pipeline construction, raw generation, and chat generation.\n\nProvider-specific compatibility logic moved with it. [`_normalize_chat_messages()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L141) handles the role ordering needed by Gemma models, while [`_extract_after_prompt()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L173) separates newly generated text from the input prompt. As a result, [`app/providers/huggingface.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py) is now the only Phase 1 file that imports `torch` and `transformers`.\n\nThe provider also implements [`get_model_name()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L130) and [`health_check()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/huggingface.py#L133). The health method is groundwork for future availability checks and safer model switching. Phase 1 does not expose a public `/health` endpoint.\n\n### Rewriting RAGAgent\n\nThe rewritten `RAGAgent` accepts a `BaseProvider` through [`__init__(self, provider: BaseProvider)`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L38). It no longer loads a causal language model or knows how a HuggingFace pipeline returns generated text.\n\nInstead, [`run()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L107), [`debug()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L90), and [`run_with_custom_prompt()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L136) assemble their prompts and delegate inference to [`provider.generate()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L42). [`run_chat_completion()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L157) delegates structured messages to [`provider.chat()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/providers/base.py#L46). The previous LangChain chain composition for these calls was replaced with direct prompt formatting, while the agent retained the parts that belong to the RAG layer: document loading, embeddings, FAISS retrieval, and prompt construction.\n\nThis creates a clear ownership boundary. `RAGAgent` decides what context and instructions the model receives, while the provider decides how those inputs reach a model backend.\n\n### Wiring It Up\n\nIn [`main.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/main.py), application startup now creates a `HuggingFaceProvider` first and injects it into `RAGAgent`. The agent depends on the provider interface rather than constructing a concrete model pipeline itself.\n\nI also updated [`app/routes/api.py`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py). The `/ask-llm` path now calls [`agent.provider.generate(question)`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L134) instead of accessing `agent.model()`. The prompted and chat modes translate request fields into one `GenerationParams` object, and [`/change-model`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L307) builds a replacement `HuggingFaceProvider` before passing it to [`set_model()`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/ai.py#L55).\n\nThis is dependency inversion in a practical form: high-level retrieval and API behavior depend on a small interface, while HuggingFace-specific details sit behind that interface.\n\n---\n\n## Challenge & Key Learning\n\nThe main challenge was keeping this a structural refactor. Moving model loading and generation across files created many opportunities to change output parsing, prompt formatting, or parameter defaults accidentally. I had to compare each call path carefully and resist adding alternative providers before the first contract was stable.\n\nThe key lesson was that an abstraction is useful only when the existing implementation can pass through it cleanly. Extracting `HuggingFaceProvider` first exposed which responsibilities belonged to inference and which belonged to retrieval. That boundary is what will make later providers simpler rather than adding another layer of conditionals.\n\nFor local checks, [`DEV_MODE`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/.example.env#L9) allowed me to use the lighter [`HuggingFaceTB/SmolLM-135M-Instruct`](https://huggingface.co/HuggingFaceTB/SmolLM-135M-Instruct) model on CPU instead of requiring the production model and GPU setup.\n\n---\n\n## Verification\n\nI checked the existing request paths after the refactor: [`/ask`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L84), `/ask-llm`, both custom-prompt and chat modes of [`/ask-llm-prompted`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L153), and [`/debug`](https://github.com/Noaman-Akhtar/sugar-ai/blob/refactor/provider-abstraction/app/routes/api.py#L273) with and without documentation context. I verified that the API response structures and intended behavior remained consistent while inference passed through the provider interface.\n\nI also performed syntax and import checks after each extraction step. The `health_check()` contract and provider replacement in `set_model()` establish the groundwork for a future health endpoint and safer runtime model switching, but those follow-up features are outside this phase.\n\n---\n\n## Plan for Next Week\n\nThe next step is to implement the first alternative backend, `OllamaProvider`, and test it against a local Ollama instance running `qwen2.5:1.5b`. This will test whether the `BaseProvider` contract is genuinely model-agnostic rather than only a wrapper around HuggingFace.\n\nI also plan to add an `AI_PROVIDER` environment setting and a provider factory so startup can select a backend without changing application code. Those changes will build on this Phase 1 branch rather than expanding the interface prematurely.\n\n---\n\n## Resources & References\n\n- **Repository:** [https://github.com/sugarlabs/sugar-ai](https://github.com/sugarlabs/sugar-ai)\n- **Phase 1 branch:** [https://github.com/Noaman-Akhtar/sugar-ai/tree/refactor/provider-abstraction](https://github.com/Noaman-Akhtar/sugar-ai/tree/refactor/provider-abstraction)\n- **Python abstract base classes:** [https://docs.python.org/3/library/abc.html](https://docs.python.org/3/library/abc.html)\n- **HuggingFace pipelines:** [https://huggingface.co/docs/transformers/main_classes/pipelines](https://huggingface.co/docs/transformers/main_classes/pipelines)\n- **FastAPI documentation:** [https://fastapi.tiangolo.com/](https://fastapi.tiangolo.com/)\n\n---\n\n## Acknowledgments\n\nThanks to my mentors and the Sugar Labs community for helping keep the implementation focused on a stable provider contract before adding more backends. Their feedback helped turn the initial architecture plan into a clear first refactoring phase.\n\n---\n',mf=e({default:()=>hf}),hf=`---
 title: "DMP '26 Week 02 Update by NSA Raiyyan"
 excerpt: "Native speaker feedback: sending WAV samples to the Sugar Labs and Ankidroid communities for pronunciation review."
 category: "DEVELOPER NEWS"
@@ -30834,7 +30949,7 @@ Native speakers are listening to the WAV files right now. The feedback will tell
 ## Acknowledgments
 
 Thanks to Mebin and Ibiam for the continued mentorship. Also thanks to the Sugar Labs and Ankidroid communities for taking the time to review the pronunciation samples.
-`,mf=e({default:()=>hf}),hf=`---
+`,gf=e({default:()=>_f}),_f=`---
 title: "GSoC '26 Week 5 Update by Syed Khubayb Ur Rahman"
 excerpt: "Building the new React component BrickViewInput for generic presentation of Bricks with input widgets."
 category: "DEVELOPER NEWS"
@@ -30912,7 +31027,7 @@ Here are the five variations visualized in Storybook:
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,gf=e({default:()=>_f}),_f=`---
+`,vf=e({default:()=>yf}),yf=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -31061,7 +31176,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,vf=e({default:()=>yf}),yf=`---
+`,bf=e({default:()=>xf}),xf=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -31164,7 +31279,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,bf=e({default:()=>xf}),xf=`---
+`,Sf=e({default:()=>Cf}),Cf=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -31637,7 +31752,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Sf=e({default:()=>Cf}),Cf=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,wf=e({default:()=>Tf}),Tf=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -31724,7 +31839,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,wf=e({default:()=>Tf}),Tf=`---\r
+`,Ef=e({default:()=>Df}),Df=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -31817,7 +31932,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Ef=e({default:()=>Df}),Df=`---\r
+`,Of=e({default:()=>kf}),kf=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -31911,7 +32026,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Of=e({default:()=>kf}),kf=`---\r
+`,Af=e({default:()=>jf}),jf=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -31999,7 +32114,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Af=e({default:()=>jf}),jf=`---\r
+`,Mf=e({default:()=>Nf}),Nf=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -32082,7 +32197,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Mf=e({default:()=>Nf}),Nf=`---\r
+`,Pf=e({default:()=>Ff}),Ff=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -32148,7 +32263,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Pf=e({default:()=>Ff}),Ff=`---
+`,If=e({default:()=>Lf}),Lf=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -32230,7 +32345,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,If=e({default:()=>Lf}),Lf=`---
+---`,Rf=e({default:()=>zf}),zf=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -32323,7 +32438,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Rf=e({default:()=>zf}),zf=`---
+`,Bf=e({default:()=>Vf}),Vf=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -32412,7 +32527,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Bf=e({default:()=>Vf}),Vf=`---
+--- `,Hf=e({default:()=>Uf}),Uf=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32557,7 +32672,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Hf=e({default:()=>Uf}),Uf=`---
+--- `,Wf=e({default:()=>Gf}),Gf=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32745,7 +32860,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Wf=e({default:()=>Gf}),Gf=`---
+--- `,Kf=e({default:()=>qf}),qf=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32840,7 +32955,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Kf=e({default:()=>qf}),qf=`---
+`,Jf=e({default:()=>Yf}),Yf=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32929,7 +33044,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Jf=e({default:()=>Yf}),Yf=`---
+`,Xf=e({default:()=>Zf}),Zf=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33016,7 +33131,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Xf=e({default:()=>Zf}),Zf=`---
+---`,Qf=e({default:()=>$f}),$f=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33099,7 +33214,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Qf=e({default:()=>$f}),$f=`---
+---`,ep=e({default:()=>tp}),tp=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33182,7 +33297,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,ep=e({default:()=>tp}),tp=`---
+---`,np=e({default:()=>rp}),rp=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -33487,4 +33602,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{rd as $,tt as $a,nr as $i,rs as $n,t as $o,na as $r,rl as $t,Yd as A,qt as Aa,Jr as Ai,Ys as An,q as Ao,Ja as Ar,Yl as At,kd as B,Dt as Ba,Or as Bi,ks as Bn,D as Bo,Oa as Br,kl as Bt,uf as C,cn as Ca,ci as Ci,lc as Cn,se as Co,co as Cr,lu as Ct,tf as D,$t as Da,ei as Di,tc as Dn,$ as Do,eo as Dr,tu as Dt,rf as E,tn as Ea,ni as Ei,rc as En,te as Eo,no as Er,ru as Et,zd as F,Lt as Fa,Rr as Fi,zs as Fn,L as Fo,Ra as Fr,zl as Ft,yd as G,_t as Ga,vr as Gi,ys as Gn,_ as Go,va as Gr,yl as Gt,Td as H,Ct as Ha,wr as Hi,Ts as Hn,C as Ho,wa as Hr,Tl as Ht,Ld as I,Ft as Ia,Ir as Ii,Ls as In,F as Io,Ia as Ir,Ll as It,pd as J,dt as Ja,fr as Ji,ps as Jn,d as Jo,fa as Jr,pl as Jt,_d as K,ht as Ka,gr as Ki,_s as Kn,h as Ko,ga as Kr,_l as Kt,Fd as L,Nt as La,Pr as Li,Fs as Ln,N as Lo,Pa as Lr,Fl as Lt,Gd as M,Ut as Ma,Wr as Mi,Gs as Mn,U as Mo,Wa as Mr,Gl as Mt,Ud as N,Vt as Na,Hr as Ni,Us as Nn,V as No,Ha as Nr,Ul as Nt,$d as O,Zt as Oa,Qr as Oi,$s as On,Z as Oo,Qa as Or,$l as Ot,Vd as P,zt as Pa,Br as Pi,Vs as Pn,z as Po,Ba as Pr,Vl as Pt,ad as Q,rt as Qa,ir as Qi,as as Qn,r as Qo,ia as Qr,al as Qt,Nd as R,jt as Ra,Mr as Ri,Ns as Rn,j as Ro,Ma as Rr,Nl as Rt,ff as S,un as Sa,ui as Si,dc as Sn,le as So,uo as Sr,du as St,of as T,rn as Ta,ii as Ti,ac as Tn,re as To,io as Tr,au as Tt,Cd as U,xt as Ua,Sr as Ui,Cs as Un,x as Uo,Sa as Ur,Cl as Ut,Dd as V,Tt as Va,Er as Vi,Ds as Vn,T as Vo,Ea as Vr,Dl as Vt,xd as W,yt as Wa,br as Wi,xs as Wn,y as Wo,ba as Wr,xl as Wt,ld as X,st as Xa,cr as Xi,ls as Xn,s as Xo,ca as Xr,ll as Xt,dd as Y,lt as Ya,ur as Yi,ds as Yn,l as Yo,ua as Yr,dl as Yt,sd as Z,at as Za,or as Zi,ss as Zn,a as Zo,oa as Zr,sl as Zt,Sf as _,bn as _a,bi as _i,xc as _n,ye as _o,xo as _r,xu as _t,Kf as a,Wn as aa,Wi as ai,Gc as an,Ue as ao,Go as ar,Gu as at,gf as b,mn as ba,mi as bi,hc as bn,pe as bo,ho as br,hu as bt,Bf as c,Rn as ca,Ri as ci,zc as cn,Le as co,zo as cr,zu as ct,Pf as d,Mn as da,Mi as di,Nc as dn,je as do,No as dr,Nu as dt,er as ea,ea as ei,tl as en,$e as eo,ts as er,td as et,Mf as f,An as fa,Ai as fi,jc as fn,ke as fo,jo as fr,ju as ft,wf as g,Sn as ga,Si as gi,Cc as gn,xe as go,Co as gr,Cu as gt,Ef as h,wn as ha,wi as hi,Tc as hn,Ce as ho,To as hr,Tu as ht,Jf as i,Kn as ia,Ki as ii,qc as in,Ge as io,qo as ir,qu as it,qd as j,Gt as ja,Kr as ji,qs as jn,G as jo,Ka as jr,ql as jt,Zd as k,Yt as ka,Xr as ki,Zs as kn,Y as ko,Xa as kr,Zl as kt,Rf as l,In as la,Ii as li,Lc as ln,Fe as lo,Lo as lr,Lu as lt,Of as m,En as ma,Ei as mi,Dc as mn,Te as mo,Do as mr,Du as mt,Qf as n,Xn as na,Xi as ni,Zc as nn,Ye as no,Zo as nr,Zu as nt,Wf as o,Hn as oa,Hi as oi,Uc as on,Ve as oo,Uo as or,Uu as ot,Af as p,On as pa,Oi as pi,kc as pn,De as po,ko as pr,ku as pt,hd as q,pt as qa,mr as qi,hs as qn,p as qo,ma as qr,hl as qt,Xf as r,Jn as ra,Ji as ri,Yc as rn,qe as ro,Yo as rr,Yu as rt,Hf as s,Bn as sa,Bi as si,Vc as sn,ze as so,Vo as sr,Vu as st,ep as t,Qn as ta,Qi as ti,$c as tn,Ze as to,$o as tr,$u as tt,If as u,Pn as ua,Pi as ui,Fc as un,Ne as uo,Fo as ur,Fu as ut,bf as v,vn as va,vi,yc as vn,_e as vo,yo as vr,yu as vt,cf as w,on as wa,oi as wi,sc as wn,ae as wo,oo as wr,su as wt,mf as x,fn as xa,fi as xi,pc as xn,de as xo,po as xr,pu as xt,vf as y,gn as ya,gi as yi,_c as yn,he as yo,_o as yr,_u as yt,jd as z,kt as za,Ar as zi,js as zn,k as zo,Aa as zr,jl as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{ad as $,rt as $a,ir as $i,as as $n,r as $o,ia as $r,al as $t,Zd as A,Yt as Aa,Xr as Ai,Zs as An,Y as Ao,Xa as Ar,Zl as At,jd as B,kt as Ba,Ar as Bi,js as Bn,k as Bo,Aa as Br,jl as Bt,ff as C,un as Ca,ui as Ci,dc as Cn,le as Co,uo as Cr,du as Ct,rf as D,tn as Da,ni as Di,rc as Dn,te as Do,no as Dr,ru as Dt,of as E,rn as Ea,ii as Ei,ac as En,re as Eo,io as Er,au as Et,Vd as F,zt as Fa,Br as Fi,Vs as Fn,z as Fo,Ba as Fr,Vl as Ft,xd as G,yt as Ga,br as Gi,xs as Gn,y as Go,ba as Gr,xl as Gt,Dd as H,Tt as Ha,Er as Hi,Ds as Hn,T as Ho,Ea as Hr,Dl as Ht,zd as I,Lt as Ia,Rr as Ii,zs as In,L as Io,Ra as Ir,zl as It,hd as J,pt as Ja,mr as Ji,hs as Jn,p as Jo,ma as Jr,hl as Jt,yd as K,_t as Ka,vr as Ki,ys as Kn,_ as Ko,va as Kr,yl as Kt,Ld as L,Ft as La,Ir as Li,Ls as Ln,F as Lo,Ia as Lr,Ll as Lt,qd as M,Gt as Ma,Kr as Mi,qs as Mn,G as Mo,Ka as Mr,ql as Mt,Gd as N,Ut as Na,Wr as Ni,Gs as Nn,U as No,Wa as Nr,Gl as Nt,tf as O,$t as Oa,ei as Oi,tc as On,$ as Oo,eo as Or,tu as Ot,Ud as P,Vt as Pa,Hr as Pi,Us as Pn,V as Po,Ha as Pr,Ul as Pt,sd as Q,at as Qa,or as Qi,ss as Qn,a as Qo,oa as Qr,sl as Qt,Fd as R,Nt as Ra,Pr as Ri,Fs as Rn,N as Ro,Pa as Rr,Fl as Rt,mf as S,fn as Sa,fi as Si,pc as Sn,de as So,po as Sr,pu as St,cf as T,on as Ta,oi as Ti,sc as Tn,ae as To,oo as Tr,su as Tt,Td as U,Ct as Ua,wr as Ui,Ts as Un,C as Uo,wa as Ur,Tl as Ut,kd as V,Dt as Va,Or as Vi,ks as Vn,D as Vo,Oa as Vr,kl as Vt,Cd as W,xt as Wa,Sr as Wi,Cs as Wn,x as Wo,Sa as Wr,Cl as Wt,dd as X,lt as Xa,ur as Xi,ds as Xn,l as Xo,ua as Xr,dl as Xt,pd as Y,dt as Ya,fr as Yi,ps as Yn,d as Yo,fa as Yr,pl as Yt,ld as Z,st as Za,cr as Zi,ls as Zn,s as Zo,ca as Zr,ll as Zt,wf as _,Sn as _a,Si as _i,Cc as _n,xe as _o,Co as _r,Cu as _t,Jf as a,Kn as aa,Ki as ai,qc as an,Ge as ao,qo as ar,qu as at,vf as b,gn as ba,gi as bi,_c as bn,he as bo,_o as br,_u as bt,Hf as c,Bn as ca,Bi as ci,Vc as cn,ze as co,Vo as cr,Vu as ct,If as d,Pn as da,Pi as di,Fc as dn,Ne as do,Fo as dr,Fu as dt,nr as ea,na as ei,rl as en,tt as eo,rs as er,t as es,rd as et,Pf as f,Mn as fa,Mi as fi,Nc as fn,je as fo,No as fr,Nu as ft,Ef as g,wn as ga,wi as gi,Tc as gn,Ce as go,To as gr,Tu as gt,Of as h,En as ha,Ei as hi,Dc as hn,Te as ho,Do as hr,Du as ht,Xf as i,Jn as ia,Ji as ii,Yc as in,qe as io,Yo as ir,Yu as it,Yd as j,qt as ja,Jr as ji,Ys as jn,q as jo,Ja as jr,Yl as jt,$d as k,Zt as ka,Qr as ki,$s as kn,Z as ko,Qa as kr,$l as kt,Bf as l,Rn as la,Ri as li,zc as ln,Le as lo,zo as lr,zu as lt,Af as m,On as ma,Oi as mi,kc as mn,De as mo,ko as mr,ku as mt,ep as n,Qn as na,Qi as ni,$c as nn,Ze as no,$o as nr,$u as nt,Kf as o,Wn as oa,Wi as oi,Gc as on,Ue as oo,Go as or,Gu as ot,Mf as p,An as pa,Ai as pi,jc as pn,ke as po,jo as pr,ju as pt,_d as q,ht as qa,gr as qi,_s as qn,h as qo,ga as qr,_l as qt,Qf as r,Xn as ra,Xi as ri,Zc as rn,Ye as ro,Zo as rr,Zu as rt,Wf as s,Hn as sa,Hi as si,Uc as sn,Ve as so,Uo as sr,Uu as st,np as t,er as ta,ea as ti,tl as tn,$e as to,ts as tr,td as tt,Rf as u,In as ua,Ii as ui,Lc as un,Fe as uo,Lo as ur,Lu as ut,Sf as v,bn as va,bi as vi,xc as vn,ye as vo,xo as vr,xu as vt,uf as w,cn as wa,ci as wi,lc as wn,se as wo,co as wr,lu as wt,gf as x,mn as xa,mi as xi,hc as xn,pe as xo,ho as xr,hu as xt,bf as y,vn as ya,vi as yi,yc as yn,_e as yo,yo as yr,yu as yt,Nd as z,jt as za,Mr as zi,Ns as zn,j as zo,Ma as zr,Nl as zt};
