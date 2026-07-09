@@ -13,10 +13,10 @@ image: "assets/Images/c4gt-official-logo.png"
 
 # Week 02 Progress Report by Abhnish Kumar
 
-**Project:** [Music Blocks - WCAG 2.1 AA Accessibility & Touch Support](https://github.com/sugarlabs/musicblocks/issues/6608)
-**Mentors:** [Walter Bender](https://github.com/walterbender)
-**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa)
-**Reporting Period:** 2026-06-21 - 2026-06-28
+**Project:** [Music Blocks - WCAG 2.1 AA Accessibility & Touch Support](https://github.com/sugarlabs/musicblocks/issues/6608)  
+**Mentors:** [Walter Bender](https://github.com/walterbender)  
+**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa)  
+**Reporting Period:** 2026-06-21 - 2026-06-28  
 
 ---
 
