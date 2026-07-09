@@ -31229,6 +31229,179 @@ Thanks to Devin Ulibarri for catching and flagging the synth initialization regr
 
 
 `,bf=e({default:()=>xf}),xf=`---
+title: "GSoC '26 Week 6 Update by Shreya Saxena"
+excerpt: "Investigated playback synchronization drift and improved scheduling accuracy using Tone.Transport."
+category: "DEVELOPER NEWS"
+date: "2026-07-06"
+slug:slug: "2026-07-06-gsoc-26-shreya-saxena-week06"
+author: "@/constants/MarkdownFiles/authors/shreya-saxena.md"
+tags: "gsoc26,sugarlabs,musicblocks,performance,week06,shreya-saxena"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 6 Progress Report by Shreya Saxena
+
+**Project:** [Music Blocks Performance](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#music-blocks-performance)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-06-29 – 2026-07-05
+
+---
+
+## Goals for This Week
+ 
+This week I wanted to answer three questions:
+ 
+* Why does playback gradually drift in long, multi-voice projects?
+* Can I prove the root cause instead of relying on assumptions?
+* Can I fix it without changing the existing interpreter or playback behavior?
+
+---
+ 
+## Understanding the Problem
+ 
+Before writing any code, I wanted to understand what was actually going wrong.
+ 
+Imagine Music Blocks playing a simple melody where each note should fire 500ms after the last one:
+ 
+\`\`\`text
+0 ms        500 ms       1000 ms      1500 ms
+A ---------- B ---------- C ---------- D
+\`\`\`
+ 
+Music Blocks scheduled this with \`setTimeout()\`. The catch: \`setTimeout(500)\` doesn't mean "run exactly after 500ms." It means "run *after at least* 500ms, whenever the browser's event loop is free." If the browser is busy rendering, running other JS, or garbage collecting, the callback fires a little late:
+ 
+\`\`\`text
+0 ms        512 ms       1025 ms      1538 ms
+A ---------- B ---------- C ---------- D
+\`\`\`
+
+> **Note:** The timeline below is a simplified example to illustrate how small scheduling delays can accumulate over successive notes. The actual delay varies depending on browser load and playback conditions.
+ 
+A 10-15ms delay sounds trivial, but every callback schedules the *next* one so the second note starts from an already-late callback, the third from another late one, and so on. Over hundreds of notes and multiple voices, that compounds into noticeable drift. That was the problem I set out to investigate this week.
+ 
+---
+ 
+## Investigating the Root Cause
+
+Rather than assuming \`setTimeout\` was the problem, I instrumented the playback pipeline and investigated each possible cause. I first ruled out the Logo interpreter, as earlier profiling showed \`runFromBlockNow()\` accounted for **less than 1%** of total playback time. Next, I verified that \`ManagedTimer\` was simply a lightweight wrapper around \`setTimeout\` with negligible overhead. I then examined the lag-correction logic in \`doWait()\`. The calculation itself was correct, but because it ran before callback latency occurred, it couldn't compensate for delays introduced afterwards.
+
+Graphics rendering was another suspect, but although it added a small amount of overhead, the same synchronization drift appeared even in projects with almost no graphics.
+
+That left the scheduler itself. I instrumented the scheduling path and measured the gap between when callbacks were expected to run and when they actually started. Every callback arrived late, averaging **10–12 ms** across the benchmark projects. Since each callback scheduled the next note, those delays accumulated over time, eventually growing to several seconds in longer, multi-voice projects.
+
+That was the turning point. The issue wasn't the interpreter, graphics, or Tone.js , it was relying on the browser's timer queue for audio-critical scheduling.
+
+<p align="center">
+  <img
+    src="assets/Developers/shreya-saxena/perf-graph.jpeg"
+    alt="Performance graph of Frere-Jacques"
+    width="800"
+  />
+</p>
+
+---
+
+## From Investigation to Solution
+
+Once the investigation pointed to the scheduler, the solution became much clearer.
+
+The existing implementation relied on \`setTimeout()\`, which depends on the browser's event loop. Whenever the browser is busy rendering, executing JavaScript, or performing garbage collection, callbacks are delayed—and because each callback schedules the next one, those delays gradually accumulate throughout playback.
+
+For a music application, that's not ideal.
+
+Instead of relying on browser timer accuracy, I replaced the non-zero-delay scheduling inside \`runFromBlock()\` with \`Tone.Transport.schedule()\`. Unlike \`setTimeout()\`, \`Tone.Transport\` is designed specifically for musical timing and schedules playback using Tone.js' transport timeline rather than depending on the browser's timer queue.
+
+The important part is that this change only affects how delayed playback events are scheduled. The interpreter, playback logic, and graphics pipeline remain unchanged. I also added per-turtle transport state, ensured pending transport events are cancelled during stop/restart, and preserved the original \`setTimeout()\` path for zero-delay execution, step mode, async-yield execution, and environments where the transport scheduler isn't available.
+
+<p align="center">
+  <img
+    src="assets/Developers/shreya-saxena/Scheduler-Diagram.png"
+    alt="Before and after scheduler architecture"
+    width="700"
+  />
+</p>
+
+---
+
+## Architecture Improvements
+
+During review, Walter suggested keeping all transport-specific logic inside [synthutils.js](https://github.com/sugarlabs/musicblocks/blob/master/js/utils/synthutils.js) instead of referencing \`Tone.Transport\` throughout the codebase.
+
+Following that suggestion, I introduced a transport wrapper that encapsulates all transport-related operations. [logo.js](https://github.com/sugarlabs/musicblocks/blob/master/js/logo.js) now interacts with \`this.synth.transport\` instead of calling \`Tone.Transport\` directly.
+
+Although this doesn't change functionality, it makes the design cleaner by isolating the Tone.js dependency to a single location. If the transport implementation ever changes in the future, only the wrapper will need to change while the rest of the playback code can remain untouched.
+
+---
+
+## Measuring the Impact
+ 
+To verify the fix, I instrumented the existing [Cypress](https://www.cypress.io/) performance benchmark rather than relying on manual spot-checks. The benchmark loads a project, triggers playback, and the instrumentation captures scheduling metrics (callback latency, drift) directly during the automated run, so results are reproducible instead of eyeballed. One snag: after switching schedulers, my original latency metric no longer measured the same thing across both implementations, so I fixed the instrumentation itself before trusting any numbers.
+ 
+Using [Frère Jacques](https://github.com/sugarlabs/musicblocks/blob/master/examples/Frere-Jacques.html) (268 notes, 4 voices):
+ 
+| Metric                      | Before    | After    |
+| --------------------------- | --------- | -------- |
+| Mean callback latency       | ~44.95 ms  | ~11.73 ms |
+| P99 callback latency        | ~704.9 ms  | ~66.17 ms |
+| Worst callback latency      | ~1861.5 ms | ~327.3 ms |
+| Cumulative scheduling drift | ~29.8 s    | ~7.8 s    |
+ 
+---
+ 
+## Challenges
+ 
+The real challenge wasn't the fix , it was proving that it was necessary. Several components looked like plausible bottlenecks (interpreter, graphics, lag correction), so I had to collect evidence and eliminate each one rather than optimizing on a hunch. Benchmarking also needed a second pass, since the scheduler swap silently changed what the latency metric actually measured.
+ 
+---
+ 
+## What I Learned
+ 
+The first suspected bottleneck is rarely the real one , instrumentation beats assumption every time. Browser timers and audio scheduling have very different guarantees, and audio work benefits far more from scheduling against an audio clock than an event loop. I also came away with a stronger appreciation for isolating third-party libraries behind small wrappers - cheap insurance for future changes.
+ 
+---
+
+## Where This Leaves the Phase 2 Roadmap
+
+This week's work completes the **Execution Scheduling & Synchronization** milestone under **Step 3** of the Phase 2 roadmap. With playback scheduling now improved, my next focus will be investigating canvas rendering performance—particularly the slowdown observed when large block stacks remain visible during playback in projects like [CrabCanon Plot](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html). After that, I'll move on to the remaining Phase 2 milestones.
+
+- **Step 1: Logo Execution Engine Optimization** – Complete ([PR #7582](https://github.com/sugarlabs/musicblocks/pull/7582), [PR #7643](https://github.com/sugarlabs/musicblocks/pull/7643)).
+- **Step 2: Block Execution Analysis & Optimization** – Complete ([PR #7668](https://github.com/sugarlabs/musicblocks/pull/7668)).
+- **Step 3: Turtle & Music Execution Optimization** – Complete  ([PR #7703](https://github.com/sugarlabs/musicblocks/pull/7703)).
+- **Step 4: Memory Leak Detection & Prevention** – Planned.
+- **Step 5: Garbage Collection & Runtime Stability** – Planned.
+
+---
+ 
+## Next Week
+ 
+With scheduling fixed, my next focus is the remaining runtime cost during playback particularly rendering, which earlier investigation showed gets expensive in larger projects like [Crabcanon-Plot](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html). I'll profile the rendering pipeline and look for ways to cut unnecessary canvas updates without changing the user experience and then I will move towards step 4.
+ 
+---
+
+## Resources & References
+
+- **Investigation Report:** [Playback Scheduling Synchronization Investigation Report](https://docs.google.com/document/d/1nFWIswAdXjaU1mFpLa_wxaTn1CGgscrR_55qjK9sOU4/edit?usp=sharing)
+- **PR This Week:**
+  - [PR #7481](https://github.com/sugarlabs/musicblocks/pull/7703)
+- **Architecture References:**
+  - [logo.js](https://github.com/sugarlabs/musicblocks/blob/master/js/logo.js)
+  - [synthutils.js](https://github.com/sugarlabs/musicblocks/blob/master/js/utils/synthutils.js)
+  - [turtle.js](https://github.com/sugarlabs/musicblocks/blob/master/js/turtle.js)
+  - [tonemock.js](https://github.com/sugarlabs/musicblocks/blob/master/js/utils/__tests__/tonemock.js)
+
+- **Repository:** [Music Blocks](https://github.com/sugarlabs/musicblocks)
+- **Automation Framework:** [Cypress](https://www.cypress.io/) / [Electron](https://www.electronjs.org/docs/latest/tutorial/testing-on-headless-ci) (headless)
+- **Benchmark Workload:** [Frere-Jacques](https://github.com/sugarlabs/musicblocks/blob/master/examples/Frere-Jacques.html)
+
+---
+
+## Acknowledgments
+
+A big thanks to my mentor, Walter Bender, for his guidance, thoughtful reviews, and valuable feedback throughout this work. I'd also like to thank my co-mentor, Om Santosh Suneri, and the entire Sugar Labs community for their continuous support.
+ `,Sf=e({default:()=>Cf}),Cf=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -31377,7 +31550,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Sf=e({default:()=>Cf}),Cf=`---
+`,wf=e({default:()=>Tf}),Tf=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -31480,7 +31653,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,wf=e({default:()=>Tf}),Tf=`---
+`,Ef=e({default:()=>Df}),Df=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -31953,7 +32126,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Ef=e({default:()=>Df}),Df=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Of=e({default:()=>kf}),kf=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -32040,7 +32213,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Of=e({default:()=>kf}),kf=`---\r
+`,Af=e({default:()=>jf}),jf=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -32133,7 +32306,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Af=e({default:()=>jf}),jf=`---\r
+`,Mf=e({default:()=>Nf}),Nf=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -32227,7 +32400,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Mf=e({default:()=>Nf}),Nf=`---\r
+`,Pf=e({default:()=>Ff}),Ff=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -32315,7 +32488,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Pf=e({default:()=>Ff}),Ff=`---\r
+`,If=e({default:()=>Lf}),Lf=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -32398,7 +32571,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,If=e({default:()=>Lf}),Lf=`---\r
+`,Rf=e({default:()=>zf}),zf=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -32464,7 +32637,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Rf=e({default:()=>zf}),zf=`---
+`,Bf=e({default:()=>Vf}),Vf=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -32546,7 +32719,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Bf=e({default:()=>Vf}),Vf=`---
+---`,Hf=e({default:()=>Uf}),Uf=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -32639,7 +32812,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Hf=e({default:()=>Uf}),Uf=`---
+`,Wf=e({default:()=>Gf}),Gf=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -32728,7 +32901,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Wf=e({default:()=>Gf}),Gf=`---
+--- `,Kf=e({default:()=>qf}),qf=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -32873,7 +33046,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Kf=e({default:()=>qf}),qf=`---
+--- `,Jf=e({default:()=>Yf}),Yf=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33061,7 +33234,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Jf=e({default:()=>Yf}),Yf=`---
+--- `,Xf=e({default:()=>Zf}),Zf=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33156,7 +33329,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Xf=e({default:()=>Zf}),Zf=`---
+`,Qf=e({default:()=>$f}),$f=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33245,7 +33418,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Qf=e({default:()=>$f}),$f=`---
+`,ep=e({default:()=>tp}),tp=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33332,7 +33505,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,ep=e({default:()=>tp}),tp=`---
+---`,np=e({default:()=>rp}),rp=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33415,7 +33588,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,np=e({default:()=>rp}),rp=`---
+---`,ip=e({default:()=>ap}),ap=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33498,7 +33671,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,ip=e({default:()=>ap}),ap=`---
+---`,op=e({default:()=>sp}),sp=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -33803,4 +33976,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{sd as $,at as $a,or as $i,ss as $n,a as $o,oa as $r,sl as $t,$d as A,Zt as Aa,Qr as Ai,$s as An,Z as Ao,Qa as Ar,$l as At,Nd as B,jt as Ba,Mr as Bi,Ns as Bn,j as Bo,Ma as Br,Nl as Bt,mf as C,fn as Ca,fi as Ci,pc as Cn,de as Co,po as Cr,pu as Ct,of as D,rn as Da,ii as Di,ac as Dn,re as Do,io as Dr,au as Dt,cf as E,on as Ea,oi as Ei,sc as En,ae as Eo,oo as Er,su as Et,Ud as F,Vt as Fa,Hr as Fi,Us as Fn,V as Fo,Ha as Fr,Ul as Ft,Cd as G,xt as Ga,Sr as Gi,Cs as Gn,x as Go,Sa as Gr,Cl as Gt,kd as H,Dt as Ha,Or as Hi,ks as Hn,D as Ho,Oa as Hr,kl as Ht,Vd as I,zt as Ia,Br as Ii,Vs as In,z as Io,Ba as Ir,Vl as It,_d as J,ht as Ja,gr as Ji,_s as Jn,h as Jo,ga as Jr,_l as Jt,xd as K,yt as Ka,br as Ki,xs as Kn,y as Ko,ba as Kr,xl as Kt,zd as L,Lt as La,Rr as Li,zs as Ln,L as Lo,Ra as Lr,zl as Lt,Yd as M,qt as Ma,Jr as Mi,Ys as Mn,q as Mo,Ja as Mr,Yl as Mt,qd as N,Gt as Na,Kr as Ni,qs as Nn,G as No,Ka as Nr,ql as Nt,rf as O,tn as Oa,ni as Oi,rc as On,te as Oo,no as Or,ru as Ot,Gd as P,Ut as Pa,Wr as Pi,Gs as Pn,U as Po,Wa as Pr,Gl as Pt,ld as Q,st as Qa,cr as Qi,ls as Qn,s as Qo,ca as Qr,ll as Qt,Ld as R,Ft as Ra,Ir as Ri,Ls as Rn,F as Ro,Ia as Rr,Ll as Rt,gf as S,mn as Sa,mi as Si,hc as Sn,pe as So,ho as Sr,hu as St,uf as T,cn as Ta,ci as Ti,lc as Tn,se as To,co as Tr,lu as Tt,Dd as U,Tt as Ua,Er as Ui,Ds as Un,T as Uo,Ea as Ur,Dl as Ut,jd as V,kt as Va,Ar as Vi,js as Vn,k as Vo,Aa as Vr,jl as Vt,Td as W,Ct as Wa,wr as Wi,Ts as Wn,C as Wo,wa as Wr,Tl as Wt,pd as X,dt as Xa,fr as Xi,ps as Xn,d as Xo,fa as Xr,pl as Xt,hd as Y,pt as Ya,mr as Yi,hs as Yn,p as Yo,ma as Yr,hl as Yt,dd as Z,lt as Za,ur as Zi,ds as Zn,l as Zo,ua as Zr,dl as Zt,Ef as _,wn as _a,wi as _i,Tc as _n,Ce as _o,To as _r,Tu as _t,Xf as a,Jn as aa,Ji as ai,Yc as an,qe as ao,Yo as ar,Yu as at,bf as b,vn as ba,vi as bi,yc as bn,_e as bo,yo as br,yu as bt,Wf as c,Hn as ca,Hi as ci,Uc as cn,Ve as co,Uo as cr,Uu as ct,Rf as d,In as da,Ii as di,Lc as dn,Fe as do,Lo as dr,Lu as dt,ir as ea,ia as ei,al as en,rt as eo,as as er,r as es,ad as et,If as f,Pn as fa,Pi as fi,Fc as fn,Ne as fo,Fo as fr,Fu as ft,Of as g,En as ga,Ei as gi,Dc as gn,Te as go,Do as gr,Du as gt,Af as h,On as ha,Oi as hi,kc as hn,De as ho,ko as hr,ku as ht,Qf as i,Xn as ia,Xi as ii,Zc as in,Ye as io,Zo as ir,Zu as it,Zd as j,Yt as ja,Xr as ji,Zs as jn,Y as jo,Xa as jr,Zl as jt,tf as k,$t as ka,ei as ki,tc as kn,$ as ko,eo as kr,tu as kt,Hf as l,Bn as la,Bi as li,Vc as ln,ze as lo,Vo as lr,Vu as lt,Mf as m,An as ma,Ai as mi,jc as mn,ke as mo,jo as mr,ju as mt,np as n,er as na,ea as ni,tl as nn,$e as no,ts as nr,td as nt,Jf as o,Kn as oa,Ki as oi,qc as on,Ge as oo,qo as or,qu as ot,Pf as p,Mn as pa,Mi as pi,Nc as pn,je as po,No as pr,Nu as pt,yd as q,_t as qa,vr as qi,ys as qn,_ as qo,va as qr,yl as qt,ep as r,Qn as ra,Qi as ri,$c as rn,Ze as ro,$o as rr,$u as rt,Kf as s,Wn as sa,Wi as si,Gc as sn,Ue as so,Go as sr,Gu as st,ip as t,nr as ta,na as ti,rl as tn,tt as to,rs as tr,t as ts,rd as tt,Bf as u,Rn as ua,Ri as ui,zc as un,Le as uo,zo as ur,zu as ut,wf as v,Sn as va,Si as vi,Cc as vn,xe as vo,Co as vr,Cu as vt,ff as w,un as wa,ui as wi,dc as wn,le as wo,uo as wr,du as wt,vf as x,gn as xa,gi as xi,_c as xn,he as xo,_o as xr,_u as xt,Sf as y,bn as ya,bi as yi,xc as yn,ye as yo,xo as yr,xu as yt,Fd as z,Nt as za,Pr as zi,Fs as zn,N as zo,Pa as zr,Fl as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{ld as $,st as $a,cr as $i,ls as $n,s as $o,ca as $r,ll as $t,tf as A,$t as Aa,ei as Ai,tc as An,$ as Ao,eo as Ar,tu as At,Fd as B,Nt as Ba,Pr as Bi,Fs as Bn,N as Bo,Pa as Br,Fl as Bt,gf as C,mn as Ca,mi as Ci,hc as Cn,pe as Co,ho as Cr,hu as Ct,cf as D,on as Da,oi as Di,sc as Dn,ae as Do,oo as Dr,su as Dt,uf as E,cn as Ea,ci as Ei,lc as En,se as Eo,co as Er,lu as Et,Gd as F,Ut as Fa,Wr as Fi,Gs as Fn,U as Fo,Wa as Fr,Gl as Ft,Td as G,Ct as Ga,wr as Gi,Ts as Gn,C as Go,wa as Gr,Tl as Gt,jd as H,kt as Ha,Ar as Hi,js as Hn,k as Ho,Aa as Hr,jl as Ht,Ud as I,Vt as Ia,Hr as Ii,Us as In,V as Io,Ha as Ir,Ul as It,yd as J,_t as Ja,vr as Ji,ys as Jn,_ as Jo,va as Jr,yl as Jt,Cd as K,xt as Ka,Sr as Ki,Cs as Kn,x as Ko,Sa as Kr,Cl as Kt,Vd as L,zt as La,Br as Li,Vs as Ln,z as Lo,Ba as Lr,Vl as Lt,Zd as M,Yt as Ma,Xr as Mi,Zs as Mn,Y as Mo,Xa as Mr,Zl as Mt,Yd as N,qt as Na,Jr as Ni,Ys as Nn,q as No,Ja as Nr,Yl as Nt,of as O,rn as Oa,ii as Oi,ac as On,re as Oo,io as Or,au as Ot,qd as P,Gt as Pa,Kr as Pi,qs as Pn,G as Po,Ka as Pr,ql as Pt,dd as Q,lt as Qa,ur as Qi,ds as Qn,l as Qo,ua as Qr,dl as Qt,zd as R,Lt as Ra,Rr as Ri,zs as Rn,L as Ro,Ra as Rr,zl as Rt,vf as S,gn as Sa,gi as Si,_c as Sn,he as So,_o as Sr,_u as St,ff as T,un as Ta,ui as Ti,dc as Tn,le as To,uo as Tr,du as Tt,kd as U,Dt as Ua,Or as Ui,ks as Un,D as Uo,Oa as Ur,kl as Ut,Nd as V,jt as Va,Mr as Vi,Ns as Vn,j as Vo,Ma as Vr,Nl as Vt,Dd as W,Tt as Wa,Er as Wi,Ds as Wn,T as Wo,Ea as Wr,Dl as Wt,hd as X,pt as Xa,mr as Xi,hs as Xn,p as Xo,ma as Xr,hl as Xt,_d as Y,ht as Ya,gr as Yi,_s as Yn,h as Yo,ga as Yr,_l as Yt,pd as Z,dt as Za,fr as Zi,ps as Zn,d as Zo,fa as Zr,pl as Zt,Of as _,En as _a,Ei as _i,Dc as _n,Te as _o,Do as _r,Du as _t,Qf as a,Xn as aa,Xi as ai,Zc as an,Ye as ao,Zo as ar,Zu as at,Sf as b,bn as ba,bi,xc as bn,ye as bo,xo as br,xu as bt,Kf as c,Wn as ca,Wi as ci,Gc as cn,Ue as co,Go as cr,Gu as ct,Bf as d,Rn as da,Ri as di,zc as dn,Le as do,zo as dr,zu as dt,or as ea,oa as ei,sl as en,at as eo,ss as er,a as es,sd as et,Rf as f,In as fa,Ii as fi,Lc as fn,Fe as fo,Lo as fr,Lu as ft,Af as g,On as ga,Oi as gi,kc as gn,De as go,ko as gr,ku as gt,Mf as h,An as ha,Ai as hi,jc as hn,ke as ho,jo as hr,ju as ht,ep as i,Qn as ia,Qi as ii,$c as in,Ze as io,$o as ir,$u as it,$d as j,Zt as ja,Qr as ji,$s as jn,Z as jo,Qa as jr,$l as jt,rf as k,tn as ka,ni as ki,rc as kn,te as ko,no as kr,ru as kt,Wf as l,Hn as la,Hi as li,Uc as ln,Ve as lo,Uo as lr,Uu as lt,Pf as m,Mn as ma,Mi as mi,Nc as mn,je as mo,No as mr,Nu as mt,ip as n,nr as na,na as ni,rl as nn,tt as no,rs as nr,t as ns,rd as nt,Xf as o,Jn as oa,Ji as oi,Yc as on,qe as oo,Yo as or,Yu as ot,If as p,Pn as pa,Pi as pi,Fc as pn,Ne as po,Fo as pr,Fu as pt,xd as q,yt as qa,br as qi,xs as qn,y as qo,ba as qr,xl as qt,np as r,er as ra,ea as ri,tl as rn,$e as ro,ts as rr,td as rt,Jf as s,Kn as sa,Ki as si,qc as sn,Ge as so,qo as sr,qu as st,op as t,ir as ta,ia as ti,al as tn,rt as to,as as tr,r as ts,ad as tt,Hf as u,Bn as ua,Bi as ui,Vc as un,ze as uo,Vo as ur,Vu as ut,Ef as v,wn as va,wi as vi,Tc as vn,Ce as vo,To as vr,Tu as vt,mf as w,fn as wa,fi as wi,pc as wn,de as wo,po as wr,pu as wt,bf as x,vn as xa,vi as xi,yc as xn,_e as xo,yo as xr,yu as xt,wf as y,Sn as ya,Si as yi,Cc as yn,xe as yo,Co as yr,Cu as yt,Ld as z,Ft as za,Ir as zi,Ls as zn,F as zo,Ia as zr,Ll as zt};
