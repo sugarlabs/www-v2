@@ -31573,6 +31573,143 @@ Thanks to Devin Ulibarri for catching and flagging the synth initialization regr
 
 
 `,Ef=e({default:()=>Df}),Df=`---
+title: "GSoC '26 Week 05 Update by Ashutosh Singh"
+excerpt: "Turning a working pipeline into a configurable one: an LLM provider panel, an optional validation toggle, a Flatpak build, and a stability pass before Phase 2 user testing."
+category: "DEVELOPER NEWS"
+date: "2026-07-01"
+slug: "2026-07-01-gsoc-26-ashutoshx7-week05"
+author: "@/constants/MarkdownFiles/authors/ashutosh-singh.md"
+description: "GSoC'26 Contributor at SugarLabs working on Sugar Activity on Demand"
+tags: "gsoc26,sugarlabs,week05,ashutoshx7,flatpak,validation,provider-config,ai,llm"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 05 Progress Report by Ashutosh Singh
+
+**Project:** [Sugar Activity on Demand](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#sugar-activity-on-demand)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya](https://github.com/chimosky)  
+**Reporting Period:** June 23, 2026 to June 29, 2026  
+
+---
+
+## Goals for This Week
+
+- Sort out the open architecture questions now that generation actually works end-to-end
+- Deal with the fact that validation is slow without throwing away the safety it gives us
+- Surface the model-agnostic LLM interface as a real provider configuration control
+- Ship AOD as a Flatpak so mentors and testers can install it without a hand-built Sugar dev setup
+- Harden overall stability ahead of Phase 2 user testing
+
+---
+
+## This Week's Achievements
+
+Last week ended really well. The pipeline took a plain English sentence and handed back an installable \`.xo\` bundle that ran in Sugar. So this time my sync with Walter wasn't the usual "does it work" conversation. It was "okay, how should this actually be configured?" Which is a better question to be stuck on, honestly. It's also what ate up most of the week.
+
+So that's what the week became. I made the slow validation optional but kept its teeth. The model-agnostic interface got a real provider panel. I packaged the whole thing as a Flatpak. And then a big chunk of the week just went to keeping it upright.
+
+![The updated Prompt Screen with the new Planner, Policy, and Validation controls, the LLM provider panel, and the license picker](assets/Images/gsoc26-ashutoshx7/aod-validation-toggle.png)
+
+Almost all of this week lands in one screen: the Prompt Screen. The new **Planner / Policy / Validation** row, the **LLM provider** panel, the license picker, all of it showed up this week. The arrow is pointing at the **Validation** toggle, flipped **Off** for a faster preview. That toggle turned out to be the design decision I chewed on the most.
+
+### 1. The Architecture Conversation and the LLM Provider Panel
+
+Once generation works, a pile of questions I'd been dodging come due. Which model are we calling? Where does the API key come from? How strict should validation be out of the box? I told Walter in the sync that these felt like actual architecture decisions rather than cleanup, and we spent most of the call chewing through them.
+
+Back in Week 3 I built the LLM interface to be model-agnostic, tucked behind a single config value, so swapping models was a one-line change. Fine when I'm the only one running it. But if a teacher is supposed to use this, telling them to go edit a config value is basically telling them no. So I pulled it out into a proper **LLM provider panel** on the Prompt Screen.
+
+The panel has:
+
+- **Automatic** - uses the last saved provider for RAG generation, and falls back to the built-in default the first time around, so most people never have to think about any of this
+- An **API key** field, masked, with **Paste**, **Save & test**, and **Remove key** actions, so a teacher can point AOD at their own key
+- An optional **Model** field, for when you want a specific model instead of the default
+- An optional **Endpoint** field, for pointing at a local or self-hosted inference server
+
+There's a **Policy** control wired into this too, where \`Standard\` means "RAG + model validated." Under the hood it's still the Week 3 model-agnostic plumbing doing the work. This is just a front end for it. A teacher who wants to bring their own key, or run against a local endpoint for an offline deployment, can now do that without opening a single Python file.
+
+### 2. The Validation Toggle - Making Slow Validation Optional
+
+The AST validation and self-healing regeneration loop from Week 4 is really good at catching bad code. It's also slow. Every preview sat there waiting on a full AST pass plus, worst case, up to \`MAX_RETRIES\` regenerations before the learner saw anything at all. The tool is supposed to feel quick and playful, and that wait was killing it.
+
+My first instinct, and I'll be honest about it, was to just yank out a couple of the heavier checks and move on. I took that to Walter expecting a quick nod. He pushed back. His point was that I shouldn't hardcode the safety off. If the checks are too slow to run every single time, that's a reason to make them optional, not a reason to delete them. Put the tradeoff in front of the user and let them choose.
+
+So I built a **Validation toggle**:
+
+- **On** - validate the generated code and retry on errors (the full Week 4 behavior)
+- **Off** - skip validation for a faster preview
+
+Here's the part I actually care about, though. Flipping validation Off does **not** mean unsafe code lands on a kid's laptop. I had to split validation into two stages: *preview-time* validation, the skippable part, and *bundle-time* validation, which always runs before anything turns into an installable activity. So "Off" only speeds up the preview. The moment you build the \`.xo\`, all the checks run again anyway, the AST pass, the import whitelist, the structure validation. The status line says this out loud so nobody has to guess: "Generated code will still be checked before it becomes an activity."
+
+The toggle itself was ten minutes. The split, guaranteeing Off could only ever make the preview faster and never leak unsafe code into a build, was the part that actually took days.
+
+### 3. Shipping a Flatpak
+
+Later in that same sync, Walter asked whether AOD could ship as a Flatpak. Until now, running it meant having a properly set up Sugar development environment, which is the kind of setup step that quietly kills adoption before anyone tries the thing. A Flatpak skips it.
+
+I wrote a Flatpak manifest under an \`org.sugarlabs.*\` app id, declared the runtime, and pulled in what AOD needs: GTK3, the Sugar toolkit, and the Python bits the generator leans on. The idea was that AOD builds and installs like any normal Flatpak on any Linux desktop, not just inside a Sugar dev checkout. For now I build it locally with flatpak-builder and hand testers one \`.flatpak\` bundle they install with \`flatpak install ./aod.flatpak\`.
+
+The finicky part was getting the Sugar toolkit to resolve cleanly inside the sandbox. Flatpak walls the app off from the host by default, so I kept working through the runtime and permissions until \`sugar3\` and its GTK dependencies actually loaded from inside the sandbox instead of assuming a system-wide Sugar install was sitting there. Grungy work, but the payoff is real, mentors and testers install AOD in one command now instead of grinding through the setup page.
+
+### 4. Overall Stability Hardening
+
+Phase 2 user testing is right around the corner, and I really didn't want the first thing a real user hit to be a crash. So the last chunk of the week was a deliberate stability pass, mostly driven by throwing a ton of prompts through the pipeline and fixing whatever fell over.
+
+Some of what I tightened up:
+
+- **Worker-thread safety.** Generation runs off the main thread, and GTK3 isn't thread-safe, so I made sure every UI update coming off that path still goes through \`GLib.idle_add()\`, no exceptions.
+- **Graceful provider failures.** Network errors, a missing key, an expired key. Instead of exploding, these now show up as a clear message in the AI Co-designer chat, something the user can actually do something about.
+- **Malformed responses.** LLMs don't always hand back what you expect, so I guarded the code path that parses the model's response. A partial or malformed reply now degrades cleanly instead of dragging the whole screen down with it.
+- **Persistent state.** The Validation toggle and provider settings persist now, so you're not reconfiguring them every session.
+
+None of it is glamorous. It's also the difference between a demo and something someone else can actually run without me in the room.
+
+---
+
+## Challenges & How I Overcame Them
+
+**Separating preview-time from bundle-time validation cleanly.** The easy version was one validation function that you either call or you don't. But that's exactly the shape that lets an "Off" toggle turn into a safety hole. I had to restructure things so bundle creation always calls the full validation path regardless of the preview setting, which meant untangling where in the flow validation was actually getting invoked in the first place.
+
+**Getting GTK3 and the Sugar toolkit to resolve inside the Flatpak sandbox.** Flatpak's isolation is the whole point of it, but it also meant \`sugar3\` wasn't just sitting on the path the way it is in my dev environment. Working through the runtime declaration and the permissions the app actually needs took more back-and-forth than I'd guessed.
+
+**Normalizing provider errors.** Different providers fail in wildly different shapes. Some throw structured errors, some return an HTTP status, some hand back a body with an error field buried somewhere inside. I wrote a small normalization step that flattens all of that into one clear, user-facing message, so the AI Co-designer chat never coughs up a raw stack trace.
+
+---
+
+## Key Learnings
+
+The biggest thing I took from this week came straight out of Walter's pushback on validation. My instinct, when something's too slow, was to remove capability. His point: cutting the safety doesn't make it faster in any way that counts, it just makes it worse and calls it fast. The right move is to make the cost/quality tradeoff explicit and hand the control to the user. Make it an option, don't hardcode it off. On for safety, Off for speed, and the toggle just can't be the thing that lets faster mean unsafe.
+
+Turns out packaging is part of the product, and I'd been acting like it wasn't. I'd been treating the Flatpak as a chore, something to get to after the "real" work. But a tool nobody can install just doesn't get used. Once it was a one-command install, it wasn't just my thing running on my laptop anymore. Someone else could grab it and try it.
+
+With real users about to show up, the boring reliability work is the work that matters. A week on graceful failures and persisted state isn't as satisfying as building something new. It's also what stands between a calm Phase 2 and a pile of bug reports.
+
+---
+
+## Next Week's Roadmap
+
+- Kick off **Phase 2: Small Group User Testing** using the new Flatpak build, so testers can install AOD in one command
+- Collect feedback specifically on the Validation toggle and the provider config UX, since those are the newest and least-tested surfaces
+- Polish the Reflective Studio around the new options so the validation and provider states are clear in context
+- Keep the midterm evaluation in view and make sure the testable build is solid going into it
+
+---
+
+## Acknowledgments
+
+Thanks to Walter Bender for the feedback that reshaped this week, pushing me to make validation a user choice instead of something I quietly removed to save time. I'd have shipped the shortcut if he hadn't pushed. Thanks also to Walter for the Flatpak suggestion, which made AOD something testers can actually run, and to Ibiam Chihurumnaya for the ongoing review.
+
+---
+
+## Connect with Me
+
+- GitHub: [@Ashutoshx7](https://github.com/Ashutoshx7)
+- Email: [ashutoshx002@gmail.com](mailto:ashutoshx002@gmail.com)
+- Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
+
+---
+`,Of=e({default:()=>kf}),kf=`---
 title: "DMP '26 Week 4 Update by Stuti Jain"
 excerpt: "Refined the story-driven lesson experience by simplifying lesson content, introducing richer visual storytelling, and planning new reflection and guidance features based on mentor feedback."
 category: "DEVELOPER NEWS"
@@ -31733,7 +31870,7 @@ Replacing instructions with visual storytelling required thinking carefully abou
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their detailed reviews and thoughtful suggestions throughout the week. Their feedback continues to shape both the educational direction and user experience of the lesson framework, helping transform it into a more engaging and accessible learning experience for young Music Blocks users.`,Of=e({default:()=>kf}),kf=`---
+Thanks to Walter Bender and Devin Ulibarri for their detailed reviews and thoughtful suggestions throughout the week. Their feedback continues to shape both the educational direction and user experience of the lesson framework, helping transform it into a more engaging and accessible learning experience for young Music Blocks users.`,Af=e({default:()=>jf}),jf=`---
 title: "GSoC '26 Week 6 Report by Rejah Rabeeul Haque"
 excerpt: "Refined the automated unit tests, enhanced the fill algorithm and Number Mode."
 category: "DEVELOPER NEWS"
@@ -31843,7 +31980,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance and patience, and 
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Af=e({default:()=>jf}),jf=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Mf=e({default:()=>Nf}),Nf=`---
 title: "GSoC '26 Week 6 Update by Shreya Saxena"
 excerpt: "Investigated playback synchronization drift and improved scheduling accuracy using Tone.Transport."
 category: "DEVELOPER NEWS"
@@ -32016,7 +32153,7 @@ With scheduling fixed, my next focus is the remaining runtime cost during playba
 ## Acknowledgments
 
 A big thanks to my mentor, Walter Bender, for his guidance, thoughtful reviews, and valuable feedback throughout this work. I'd also like to thank my co-mentor, Om Santosh Suneri, and the entire Sugar Labs community for their continuous support.
- `,Mf=e({default:()=>Nf}),Nf=`---
+ `,Pf=e({default:()=>Ff}),Ff=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -32165,7 +32302,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Pf=e({default:()=>Ff}),Ff=`---
+`,If=e({default:()=>Lf}),Lf=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -32268,7 +32405,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,If=e({default:()=>Lf}),Lf=`---
+`,Rf=e({default:()=>zf}),zf=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -32741,7 +32878,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Rf=e({default:()=>zf}),zf=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Bf=e({default:()=>Vf}),Vf=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -32828,7 +32965,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Bf=e({default:()=>Vf}),Vf=`---\r
+`,Hf=e({default:()=>Uf}),Uf=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -32921,7 +33058,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Hf=e({default:()=>Uf}),Uf=`---\r
+`,Wf=e({default:()=>Gf}),Gf=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -33015,7 +33152,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Wf=e({default:()=>Gf}),Gf=`---\r
+`,Kf=e({default:()=>qf}),qf=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -33103,7 +33240,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Kf=e({default:()=>qf}),qf=`---\r
+`,Jf=e({default:()=>Yf}),Yf=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -33186,7 +33323,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Jf=e({default:()=>Yf}),Yf=`---\r
+`,Xf=e({default:()=>Zf}),Zf=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -33252,7 +33389,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Xf=e({default:()=>Zf}),Zf=`---
+`,Qf=e({default:()=>$f}),$f=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -33334,7 +33471,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Qf=e({default:()=>$f}),$f=`---
+---`,ep=e({default:()=>tp}),tp=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -33427,7 +33564,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,ep=e({default:()=>tp}),tp=`---
+`,np=e({default:()=>rp}),rp=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -33516,7 +33653,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,np=e({default:()=>rp}),rp=`---
+--- `,ip=e({default:()=>ap}),ap=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33661,7 +33798,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,ip=e({default:()=>ap}),ap=`---
+--- `,op=e({default:()=>sp}),sp=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33849,7 +33986,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,op=e({default:()=>sp}),sp=`---
+--- `,cp=e({default:()=>lp}),lp=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -33944,7 +34081,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,cp=e({default:()=>lp}),lp=`---
+`,up=e({default:()=>dp}),dp=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -34033,7 +34170,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,up=e({default:()=>dp}),dp=`---
+`,fp=e({default:()=>pp}),pp=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -34120,7 +34257,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,fp=e({default:()=>pp}),pp=`---
+---`,mp=e({default:()=>hp}),hp=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -34203,7 +34340,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,mp=e({default:()=>hp}),hp=`---
+---`,gp=e({default:()=>_p}),_p=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -34286,7 +34423,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,gp=e({default:()=>_p}),_p=`---
+---`,vp=e({default:()=>yp}),yp=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -34591,4 +34728,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{yd as $,_t as $a,vr as $i,ys as $n,_ as $o,va as $r,yl as $t,ff as A,un as Aa,ui as Ai,dc as An,le as Ao,uo as Ar,du as At,Gd as B,Ut as Ba,Wr as Bi,Gs as Bn,U as Bo,Wa as Br,Gl as Bt,Ef as C,wn as Ca,wi as Ci,Tc as Cn,Ce as Co,To as Cr,Tu as Ct,vf as D,gn as Da,gi as Di,_c as Dn,he as Do,_o as Dr,_u as Dt,bf as E,vn as Ea,vi as Ei,yc as En,_e as Eo,yo as Er,yu as Et,tf as F,$t as Fa,ei as Fi,tc as Fn,$ as Fo,eo as Fr,tu as Ft,Fd as G,Nt as Ga,Pr as Gi,Fs as Gn,N as Go,Pa as Gr,Fl as Gt,Vd as H,zt as Ha,Br as Hi,Vs as Hn,z as Ho,Ba as Hr,Vl as Ht,$d as I,Zt as Ia,Qr as Ii,$s as In,Z as Io,Qa as Ir,$l as It,kd as J,Dt as Ja,Or as Ji,ks as Jn,D as Jo,Oa as Jr,kl as Jt,Nd as K,jt as Ka,Mr as Ki,Ns as Kn,j as Ko,Ma as Kr,Nl as Kt,Zd as L,Yt as La,Xr as Li,Zs as Ln,Y as Lo,Xa as Lr,Zl as Lt,cf as M,on as Ma,oi as Mi,sc as Mn,ae as Mo,oo as Mr,su as Mt,of as N,rn as Na,ii as Ni,ac as Nn,re as No,io as Nr,au as Nt,gf as O,mn as Oa,mi as Oi,hc as On,pe as Oo,ho as Or,hu as Ot,rf as P,tn as Pa,ni as Pi,rc as Pn,te as Po,no as Pr,ru as Pt,xd as Q,yt as Qa,br as Qi,xs as Qn,y as Qo,ba as Qr,xl as Qt,Yd as R,qt as Ra,Jr as Ri,Ys as Rn,q as Ro,Ja as Rr,Yl as Rt,Of as S,En as Sa,Ei as Si,Dc as Sn,Te as So,Do as Sr,Du as St,Sf as T,bn as Ta,bi as Ti,xc as Tn,ye as To,xo as Tr,xu as Tt,zd as U,Lt as Ua,Rr as Ui,zs as Un,L as Uo,Ra as Ur,zl as Ut,Ud as V,Vt as Va,Hr as Vi,Us as Vn,V as Vo,Ha as Vr,Ul as Vt,Ld as W,Ft as Wa,Ir as Wi,Ls as Wn,F as Wo,Ia as Wr,Ll as Wt,Td as X,Ct as Xa,wr as Xi,Ts as Xn,C as Xo,wa as Xr,Tl as Xt,Dd as Y,Tt as Ya,Er as Yi,Ds as Yn,T as Yo,Ea as Yr,Dl as Yt,Cd as Z,xt as Za,Sr as Zi,Cs as Zn,x as Zo,Sa as Zr,Cl as Zt,Rf as _,In as _a,Ii as _i,Lc as _n,Fe as _o,Lo as _r,Lu as _t,cp as a,or as aa,oa as ai,sl as an,at as ao,ss as ar,a as as,sd as at,Mf as b,An as ba,Ai as bi,jc as bn,ke as bo,jo as br,ju as bt,np as c,er as ca,ea as ci,tl as cn,$e as co,ts as cr,td as ct,Xf as d,Jn as da,Ji as di,Yc as dn,qe as do,Yo as dr,Yu as dt,gr as ea,ga as ei,_l as en,ht as eo,_s as er,h as es,_d as et,Jf as f,Kn as fa,Ki as fi,qc as fn,Ge as fo,qo as fr,qu as ft,Bf as g,Rn as ga,Ri as gi,zc as gn,Le as go,zo as gr,zu as gt,Hf as h,Bn as ha,Bi as hi,Vc as hn,ze as ho,Vo as hr,Vu as ht,up as i,cr as ia,ca as ii,ll as in,st as io,ls as ir,s as is,ld as it,uf as j,cn as ja,ci as ji,lc as jn,se as jo,co as jr,lu as jt,mf as k,fn as ka,fi as ki,pc as kn,de as ko,po as kr,pu as kt,ep as l,Qn as la,Qi as li,$c as ln,Ze as lo,$o as lr,$u as lt,Wf as m,Hn as ma,Hi as mi,Uc as mn,Ve as mo,Uo as mr,Uu as mt,mp as n,fr as na,fa as ni,pl as nn,dt as no,ps as nr,d as ns,pd as nt,op as o,ir as oa,ia as oi,al as on,rt as oo,as as or,r as os,ad as ot,Kf as p,Wn as pa,Wi as pi,Gc as pn,Ue as po,Go as pr,Gu as pt,jd as q,kt as qa,Ar as qi,js as qn,k as qo,Aa as qr,jl as qt,fp as r,ur as ra,ua as ri,dl as rn,lt as ro,ds as rr,l as rs,dd as rt,ip as s,nr as sa,na as si,rl as sn,tt as so,rs as sr,t as ss,rd as st,gp as t,mr as ta,ma as ti,hl as tn,pt as to,hs as tr,p as ts,hd as tt,Qf as u,Xn as ua,Xi as ui,Zc as un,Ye as uo,Zo as ur,Zu as ut,If as v,Pn as va,Pi as vi,Fc as vn,Ne as vo,Fo as vr,Fu as vt,wf as w,Sn as wa,Si as wi,Cc as wn,xe as wo,Co as wr,Cu as wt,Af as x,On as xa,Oi as xi,kc as xn,De as xo,ko as xr,ku as xt,Pf as y,Mn as ya,Mi as yi,Nc as yn,je as yo,No as yr,Nu as yt,qd as z,Gt as za,Kr as zi,qs as zn,G as zo,Ka as zr,ql as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{xd as $,yt as $a,br as $i,xs as $n,y as $o,ba as $r,xl as $t,mf as A,fn as Aa,fi as Ai,pc as An,de as Ao,po as Ar,pu as At,qd as B,Gt as Ba,Kr as Bi,qs as Bn,G as Bo,Ka as Br,ql as Bt,Of as C,En as Ca,Ei as Ci,Dc as Cn,Te as Co,Do as Cr,Du as Ct,bf as D,vn as Da,vi as Di,yc as Dn,_e as Do,yo as Dr,yu as Dt,Sf as E,bn as Ea,bi as Ei,xc as En,ye as Eo,xo as Er,xu as Et,rf as F,tn as Fa,ni as Fi,rc as Fn,te as Fo,no as Fr,ru as Ft,Ld as G,Ft as Ga,Ir as Gi,Ls as Gn,F as Go,Ia as Gr,Ll as Gt,Ud as H,Vt as Ha,Hr as Hi,Us as Hn,V as Ho,Ha as Hr,Ul as Ht,tf as I,$t as Ia,ei as Ii,tc as In,$ as Io,eo as Ir,tu as It,jd as J,kt as Ja,Ar as Ji,js as Jn,k as Jo,Aa as Jr,jl as Jt,Fd as K,Nt as Ka,Pr as Ki,Fs as Kn,N as Ko,Pa as Kr,Fl as Kt,$d as L,Zt as La,Qr as Li,$s as Ln,Z as Lo,Qa as Lr,$l as Lt,uf as M,cn as Ma,ci as Mi,lc as Mn,se as Mo,co as Mr,lu as Mt,cf as N,on as Na,oi as Ni,sc as Nn,ae as No,oo as Nr,su as Nt,vf as O,gn as Oa,gi as Oi,_c as On,he as Oo,_o as Or,_u as Ot,of as P,rn as Pa,ii as Pi,ac as Pn,re as Po,io as Pr,au as Pt,Cd as Q,xt as Qa,Sr as Qi,Cs as Qn,x as Qo,Sa as Qr,Cl as Qt,Zd as R,Yt as Ra,Xr as Ri,Zs as Rn,Y as Ro,Xa as Rr,Zl as Rt,Af as S,On as Sa,Oi as Si,kc as Sn,De as So,ko as Sr,ku as St,wf as T,Sn as Ta,Si as Ti,Cc as Tn,xe as To,Co as Tr,Cu as Tt,Vd as U,zt as Ua,Br as Ui,Vs as Un,z as Uo,Ba as Ur,Vl as Ut,Gd as V,Ut as Va,Wr as Vi,Gs as Vn,U as Vo,Wa as Vr,Gl as Vt,zd as W,Lt as Wa,Rr as Wi,zs as Wn,L as Wo,Ra as Wr,zl as Wt,Dd as X,Tt as Xa,Er as Xi,Ds as Xn,T as Xo,Ea as Xr,Dl as Xt,kd as Y,Dt as Ya,Or as Yi,ks as Yn,D as Yo,Oa as Yr,kl as Yt,Td as Z,Ct as Za,wr as Zi,Ts as Zn,C as Zo,wa as Zr,Tl as Zt,Bf as _,Rn as _a,Ri as _i,zc as _n,Le as _o,zo as _r,zu as _t,up as a,cr as aa,ca as ai,ll as an,st as ao,ls as ar,s as as,ld as at,Pf as b,Mn as ba,Mi as bi,Nc as bn,je as bo,No as br,Nu as bt,ip as c,nr as ca,na as ci,rl as cn,tt as co,rs as cr,t as cs,rd as ct,Qf as d,Xn as da,Xi as di,Zc as dn,Ye as do,Zo as dr,Zu as dt,vr as ea,va as ei,yl as en,_t as eo,ys as er,_ as es,yd as et,Xf as f,Jn as fa,Ji as fi,Yc as fn,qe as fo,Yo as fr,Yu as ft,Hf as g,Bn as ga,Bi as gi,Vc as gn,ze as go,Vo as gr,Vu as gt,Wf as h,Hn as ha,Hi as hi,Uc as hn,Ve as ho,Uo as hr,Uu as ht,fp as i,ur as ia,ua as ii,dl as in,lt as io,ds as ir,l as is,dd as it,ff as j,un as ja,ui as ji,dc as jn,le as jo,uo as jr,du as jt,gf as k,mn as ka,mi as ki,hc as kn,pe as ko,ho as kr,hu as kt,np as l,er as la,ea as li,tl as ln,$e as lo,ts as lr,td as lt,Kf as m,Wn as ma,Wi as mi,Gc as mn,Ue as mo,Go as mr,Gu as mt,gp as n,mr as na,ma as ni,hl as nn,pt as no,hs as nr,p as ns,hd as nt,cp as o,or as oa,oa as oi,sl as on,at as oo,ss as or,a as os,sd as ot,Jf as p,Kn as pa,Ki as pi,qc as pn,Ge as po,qo as pr,qu as pt,Nd as q,jt as qa,Mr as qi,Ns as qn,j as qo,Ma as qr,Nl as qt,mp as r,fr as ra,fa as ri,pl as rn,dt as ro,ps as rr,d as rs,pd as rt,op as s,ir as sa,ia as si,al as sn,rt as so,as as sr,r as ss,ad as st,vp as t,gr as ta,ga as ti,_l as tn,ht as to,_s as tr,h as ts,_d as tt,ep as u,Qn as ua,Qi as ui,$c as un,Ze as uo,$o as ur,$u as ut,Rf as v,In as va,Ii as vi,Lc as vn,Fe as vo,Lo as vr,Lu as vt,Ef as w,wn as wa,wi,Tc as wn,Ce as wo,To as wr,Tu as wt,Mf as x,An as xa,Ai as xi,jc as xn,ke as xo,jo as xr,ju as xt,If as y,Pn as ya,Pi as yi,Fc as yn,Ne as yo,Fo as yr,Fu as yt,Yd as z,qt as za,Jr as zi,Ys as zn,q as zo,Ja as zr,Yl as zt};
