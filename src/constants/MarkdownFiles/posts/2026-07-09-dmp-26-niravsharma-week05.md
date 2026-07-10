@@ -20,17 +20,17 @@ image: "images/DMP-2026-NiravSharma-Week05.png"
 
 ## What I did this week
 
-### PR 4 — Custom Pitch Blocks (Goal 2)
+Goal 2 is all about custom pitch blocks – the ones where you type in a note name and cents offset directly.
 
-Goal 2 targets the custom pitch blocks — the blocks that let users specify pitches manually using note names and cents offsets.
+What was broken:
 
-Three changes and one discoverability fix:
+You could type "C(+42¢)" into the block, but the cents never made it to the synth. flow() hardcoded 0, so you heard plain C every time. Also, both blocks were hidden by default – you only saw them if you'd already created a custom temperament, which made them impossible to discover.
 
-**Change 1 — Cents forwarding.** `CustomNoteBlock` and `CustomPitchBlock` accept strings like `"C(+42¢)"` but `flow()` was hardcoding `0` for the cents parameter. The user entered `C(+42¢)`, Music Blocks played plain C.
+What I fixed:
 
-**Fix:** Added a `_parseCents()` static helper that parses the `(+N¢)` / `(-N¢)` suffix and returns `[note, cents]`. Both `flow()` methods now use it instead of hardcoding `0`.
+Added _parseCents() – a small helper that pulls the (+N¢) or (-N¢) out of the string and returns [note, cents]. Both flow() methods now use it instead of ignoring the cents.
 
-```js
+js
 static _parseCents(value) {
     if (typeof value !== "string") return [value, 0];
     const match = value.match(/^([A-Ga-g][#b♯♭]?)(\(([+-]\d+)¢\))?$/);
@@ -39,70 +39,51 @@ static _parseCents(value) {
     }
     return [value, 0];
 }
-```
+Set hidden: false – blocks now show up in the Pitch palette by default, no custom temperament required.
 
-**Change 2 — Blocks hidden by default.** Both blocks had `this.hidden = true`, so they only appeared in the Pitch palette after a user created a custom temperament. New users had no way to find them. Fixed: `hidden = false` — now always visible with 12-EDO default.
+Fixed the pie menu – if you have C(+50¢) and pick D, you get D(+50¢), not just D. Cents stick.
 
-**Change 3 — Pie menu preserves cents.** When changing a note via the pie menu, any existing cents suffix was lost. `C(+50¢)` → pick D → `D` (cents dropped). Fixed: the pie menu now preserves the `(+N¢)` suffix. `C(+50¢)` → pick D → `D(+50¢)`.
+Added CENTSSYMBOL = "\u00A2" to musicutils.js per Walter's feedback – tests now use constants instead of raw unicode.
 
-**Change 4 — CENTSSYMBOL constant (Walter feedback).** Added `CENTSSYMBOL = "\u00A2"` to `musicutils.js` and exported it. Tests now use `SHARP`/`FLAT`/`CENTSSYMBOL` constants instead of unicode literals, making the code easier to read.
+The _parseCents() regex handles "C(+42¢)", "D(-15¢)", and plain "E" – all the common cases.
 
 PR 4 is open: [#7770](https://github.com/sugarlabs/musicblocks/pull/7770)
 
-**Tests:** 74/74 in `PitchBlocks.test.js`, full suite passes (6199/6199).
-
 ---
 
-### D♯ Bug in Nth Modal Pitch — Investigation Complete
+D♯ Bug in Nth Modal Pitch – what I found
+Devin spotted that D♯ wasn't working with the Nth Modal Pitch block. I traced it through and found four separate issues:
 
-Devin flagged that D♯ was not working correctly with the Nth Modal Pitch block. I traced the full code path and found 4 issues:
+1. NOTESSHARP doesn't know about E♯ or B♯. buildScale("D♯ dorian") gives [D♯, E♯, F♯, G♯, A♯, B♯, C♯, D♯] – E♯ and B♯ come from CONVERT_DOWN to avoid duplicate letter names. But NOTESSHARP.indexOf("E♯") returns -1 because E♯ isn't in the list, and everything breaks.
 
-**Issue 1 — `NOTESSHARP` lookup fails.** `buildScale("D♯ dorian")` produces `[D♯, E♯, F♯, G♯, A♯, B♯, C♯, D♯]` — `E♯` and `B♯` are created by `CONVERT_DOWN` to avoid duplicate letter names. But `NOTESSHARP.indexOf("E♯")` returns `-1` because `E♯` is not in `NOTESSHARP`.
+2. getNote() rewrites D♯ → E♭ in flat keys. So even if the first issue were fixed, the semitone lookup would still get the wrong note.
 
-**Issue 2 — `getNote()` rewrites D♯→E♭.** In flat keys, `getNote()` normalizes sharps to flats, so D♯ becomes E♭ before the semitone lookup.
+3. _offset gets thrown away. The offset calculated in playNthModalPitch doesn't carry forward to the next note.
 
-**Issue 3 — `_offset` discarded.** The offset calculated in `playNthModalPitch` is not carried forward to the next note.
+4. No tests for sharp keys, flat keys, or double sharps. So this bug was hiding in plain sight.
 
-**Issue 4 — No D♯ test coverage.** Zero tests for sharp keys, flat keys, or double sharps.
+The fix for issues 1‑2: normalize through EQUIVALENTNATURALS before lookup – E♯ → F, B♯ → C. That map already existed in musicutils.js and is used in 6 other places for exactly this purpose. I applied it in both playNthModalPitch (PitchActions.js) and ScaleDegreeBlock (PitchBlocks.js).
 
-**Fix (Issues 1-2):** Normalize through the existing `EQUIVALENTNATURALS` map before lookup — `E♯ → F`, `B♯ → C`. This map already existed in `musicutils.js` and was used in 6 other places for exactly this purpose. Applied in both `playNthModalPitch` (PitchActions.js) and `ScaleDegreeBlock` (PitchBlocks.js).
-
-The D♯ fix is implemented in the working tree but not yet committed — it belongs in PR 5 (Goal 3).
-
+The fix is in my working tree but not committed yet – it's going into PR 5 (Goal 3).
 ---
 
 ### Goal 3 Investigation — 24 Fixes Mapped
 
-I completed a comprehensive analysis of all 12-EDO hardcoded values across the codebase. Found **24 fixes** across **6 categories**:
+I did a full sweep of the codebase for 12-EDO hardcoded values. Found 24 fixes across 6 categories:
 
-**Category A: Synthesis Infrastructure (9 fixes)**
-- `getCachedPitchToFrequency()` ignores active temperament — defaults to 12-EDO
-- Cache key has no temperament dimension — stale values served for all temperaments
-- `inTemperament` not reset between runs
-- `_getFrequency()` hardcodes `Math.pow(2, power)` instead of using `getOctaveRatio()`
+A. Synthesis Infrastructure (9 fixes) – the big one. getCachedPitchToFrequency() ignores temperament entirely, the cache key has no temperament dimension (so you get stale values), inTemperament never resets between runs, and _getFrequency() hardcodes Math.pow(2, power) instead of using getOctaveRatio().
 
-**Category B: Pitch Name Mapping (8 fixes)**
-- `numberToPitch()`, `numberToPitchSharp()`, `frequencyToPitch()` all use `(step / EDO) * 12` — forces 12 pitch classes
-- `_getStepSize()`, `getNumNote()`, `getSolfege()` map through 12-element arrays
-- `getNumber()`, `GetIntervalNumber()` use 12-EDO semitone positions
+B. Pitch Name Mapping (8 fixes) – numberToPitch(), numberToPitchSharp(), frequencyToPitch() all force 12 pitch classes with (step / EDO) * 12. _getStepSize(), getNumNote(), getSolfege() map through 12-element arrays. getNumber() and GetIntervalNumber() use 12-EDO semitone positions.
 
-**Category C: Custom Pitch Block Failures (4 fixes)**
-- `getCustomFrequency()` note name matching fails on accidental format mismatch
-- `playPitchNumber()` no range validation
-- `numberToPitch()` auto-fills with 12-EDO approximations
-- YToPitch hardcodes `lc + 12 * o`
+C. Custom Pitch Block Failures (4 fixes) – getCustomFrequency() chokes on accidental format mismatches, playPitchNumber() has no range validation, numberToPitch() auto-fills with 12-EDO approximations, YToPitch hardcodes lc + 12 * o.
 
-**Category D: D♯ nthModalPitch (3 fixes)**
-- Already investigated and mapped
+D. D♯ nthModalPitch (3 fixes) – already mapped out from the investigation I did earlier.
 
-**Category E: Widget Hardcoding (6 widgets)**
-- Mode Widget, Music Keyboard, Temperament Widget, Pitch Slider, Sampler, Tuner
+E. Widget Hardcoding (6 widgets) – Mode Widget, Music Keyboard, Temperament Widget, Pitch Slider, Sampler, Tuner. All have 12-EDO assumptions baked in.
 
-**Estimated LOC:** ~670 lines (~490 source + ~180 tests)
+Estimated lines: ~670 total (~490 source + ~180 tests).
 
-Walter confirmed **Option B** for `getCachedPitchToFrequency` — thread temperament as a parameter through `processPitch → addPitch → getCachedPitchToFrequency`. Explicit dependency, testable, no global state coupling.
-
-All MD files updated: `PR_TRACKING.md`, `GoalPlan.md`, `TimeLine.md`.
+Walter signed off on Option B for getCachedPitchToFrequency – thread temperament as a parameter through processPitch → addPitch → getCachedPitchToFrequency. Explicit, testable, no global state coupling.
 
 ---
 
