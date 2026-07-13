@@ -31,6 +31,8 @@ Here is a detailed breakdown:
 
 - Number Mode Uses Buddy Colors: Integrated Sugarizer's Buddy colors into Number Mode. The library now uses the user's Buddy Stroke and Buddy Fill colors, and figure previews automatically apply these colors to provide a personalized experience.
 
+![ConnectTheDots Number Mode UI with Buddy Colors](/assets/Developers/Rejah/connectthedots-week7-ui.webp)
+
 ---
 
 ## Implemented the Settings Feature
@@ -45,6 +47,8 @@ Here is a detailed breakdown:
   - Create a Figure: The user clicks the coordinate dots on the 13 × 15 grid to create a custom figure. As each dot is selected, the activity draws lines between consecutive points and numbers them in order (1, 2, 3, ...).
   - Undo Last Point: If a mistake is made, clicking the Minus button removes the most recently added point and its connecting line, allowing the user to continue without starting over.
   - Save the Figure: Clicking the Back button checks that the figure is valid (at least 2 points for an open figure or 3 points for a closed figure). If the figure is valid, it is saved to the selected library
+
+![ConnectTheDots Figure Creation Mode](/assets/Developers/Rejah/connectthedots-week7-add-figure.webp)
 
 3. Algorithms Used
 
