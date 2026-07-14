@@ -51,3 +51,7 @@ SugarWeb is a client-side web application written in TypeScript. It utilizes Rea
 ## Development
 
 To get started with development, refer to the [Developer Guide](docs/dev_guide.md).
+
+
+Development note: 
+Recently, the tutorial stage progress handling in `tutorial_stages.py` was improved to persist the current stage across activity restarts. This fix helps learners resume where they left off and makes the Terminal activity more reliable.
