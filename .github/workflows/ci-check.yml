@@ -1,0 +1,73 @@
+name: CI Check
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  check-pr-status:
+    name: Build & Lint Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Build Test (CI Check)
+        id: ci-check
+        run: |
+          if npm run build; then
+            echo "CI_PASSED=true" >> $GITHUB_ENV
+          else
+            echo "CI_PASSED=false" >> $GITHUB_ENV
+          fi
+
+      - name: Run Linting Checks
+        id: lint-check
+        run: |
+          LINT_ERRORS=""
+          LINT_PASSED=true
+          
+          if ! npm run lint:ts; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}• TypeScript linting failed\n"
+          fi
+          
+          if ! npm run lint:md; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}• Markdown linting failed\n"
+          fi
+          
+          if ! npm run format:check; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}• Code formatting issues detected\n"
+          fi
+          
+          echo "LINT_PASSED=$LINT_PASSED" >> $GITHUB_ENV
+          echo "LINT_ERRORS<<EOF" >> $GITHUB_ENV
+          echo -e "$LINT_ERRORS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Save Results
+        run: |
+          mkdir -p /tmp/check-results
+          echo "${{ env.CI_PASSED }}" > /tmp/check-results/ci_passed
+          echo "${{ env.LINT_PASSED }}" > /tmp/check-results/lint_passed
+          printf '%b' "${{ env.LINT_ERRORS }}" > /tmp/check-results/lint_errors
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: check-results
+          path: /tmp/check-results/
+          retention-days: 1
