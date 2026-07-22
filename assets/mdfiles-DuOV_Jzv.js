@@ -33507,6 +33507,119 @@ Thanks to Walter Bender for reviewing the Explorer Journal implementation and pr
 The discussions around reusable help cards helped define a clearer approach for supporting children during optional discovery activities without removing the opportunity for independent exploration.
 
 I also appreciate Devin Ulibarri and the Sugar Labs community for their continued guidance and support throughout the development of the lesson framework.`,cp=e({default:()=>lp}),lp=`---
+title: "GSoC '26 Week 7 Report by Rejah Rabeeul Haque"
+excerpt: "Fixed current issues in ConnectTheDots including Number Mode UI enhancements, confetti animation, and implemented the Settings feature."
+category: "DEVELOPER NEWS"
+date: "2026-07-12"
+slug: "2026-07-12-gsoc-26-rejah-rabeeul-haque-week07"
+author: "@/constants/MarkdownFiles/authors/rejah-rabeeul-haque.md"
+description: "GSoC'26 Contributor at SugarLabs working on ConnectTheDots activity"
+tags: "gsoc26,sugarlabs,sugarizer,connectthedots,week07,rejah-rabeeul-haque"
+image: "assets/Images/sugarizer.webp"
+---
+
+<!-- markdownlint-disable -->
+
+## This Week's Progress
+
+Hey! This week, I focused on resolving several UI and interaction issues in the ConnectTheDots activity and implemented the Settings Feature for Number Mode. This new feature enables users to create, update, and manage custom puzzle figures directly on the coordinate grid.
+Here is a detailed breakdown:
+
+---
+
+## Fixed Current Issues
+
+- Improved Number Mode Icon: Refined the Number Mode icon on the main toolbar. The icon now reflects the active mode and transitions smoothly when switching between Draw Mode and Number Mode.
+
+- Increased the Size of Numbered Dots: Increased both the circular dot radius and the sequence number typography on the active drawing layer. Making the sequence numbers larger and bolder ensures that young students can effortlessly read the numbers and track their progress across the grid without visual strain.
+
+- Added Ending Confetti and Fill Animation: To make puzzle completion rewarding and joyful, I implemented a smooth radial fill animation combined with a confetti effect. When a student connects the final dot to close a figure, an expanding circular clipping mask animates outward from the closing point, revealing the shape's background color. Once the fill animation completes, confetti bursts from the bottom center of the screen.
+
+- Added a Back Button: Added a back button to the Add Figure and Complete Figure canvases, allowing users to easily return to the library and select another figure without switching modes or resetting the activity.
+
+- Number Mode Uses Buddy Colors: Integrated Sugarizer's Buddy colors into Number Mode. The library now uses the user's Buddy Stroke and Buddy Fill colors, and figure previews automatically apply these colors to provide a personalized experience.
+
+![ConnectTheDots Number Mode UI with Buddy Colors](/assets/Developers/Rejah/connectthedots-week7-ui.webp)
+
+---
+
+## Implemented the Settings Feature
+
+1. Managing Figures
+  - Figure Actions: Each figure includes Edit and Delete buttons. The Delete button removes the figure from the selected category and immediately updates the library.
+  - Figure Selection: In Play Mode, clicking a figure opens it on the canvas. In Settings Mode, figure selection is disabled so users can manage figures without accidentally starting a game.
+
+2. Custom Figure Creation
+  - When the user clicks the "+ Add Figure" button at the bottom of the Settings gallery, the activity enters Figure Creation Mode:
+  - Dedicated Toolbar: The standard toolbar is hidden and replaced with a toolbar containing a Minus button.
+  - Create a Figure: The user clicks the coordinate dots on the 13 × 15 grid to create a custom figure. As each dot is selected, the activity draws lines between consecutive points and numbers them in order (1, 2, 3, ...).
+  - Undo Last Point: If a mistake is made, clicking the Minus button removes the most recently added point and its connecting line, allowing the user to continue without starting over.
+  - Save the Figure: Clicking the Back button checks that the figure is valid (at least 2 points for an open figure or 3 points for a closed figure). If the figure is valid, it is saved to the selected library
+
+![ConnectTheDots Figure Creation Mode](/assets/Developers/Rejah/connectthedots-week7-add-figure.webp)
+
+3. Algorithms Used
+
+- Euclidean Distance Algorithm
+    - Instead of requiring users to click exactly on the center of a dot, the activity checks whether the click is close enough to a dot. If the click is within 22.5 pixels of a dot, it is automatically selected. This makes it easier to interact with the small grid dots, especially for touch screen users. The 22.5 px threshold was chosen because adjacent grid dots are spaced 55 pixels apart, making it large enough for easy selection while preventing accidental selection of neighboring dots.
+    - Example: Suppose a dot is located at (200, 150), but the user clicks at (216, 162) instead. The distance between the click and the dot is 20 pixels, which is within the allowed 22.5 px threshold. The activity automatically snaps the selection to the dot at (200, 150).
+
+- Collinearity via Triangle Equality
+    - The activity uses the Triangle Inequality Theorem to check whether a grid dot lies on the straight line between two selected dots. For each grid dot, it calculates the distance from the start point to the dot and from the dot to the end point. If the sum of these two distances is almost equal to the total distance between the start and end points, the dot is considered to be on the line and is automatically included. This ensures that all grid dots along the line are detected and colored correctly.
+    - Example: Suppose a user draws a horizontal line from the dot at (100, 250) to the dot at (500, 250). Several grid dots lie between these two points. For the intermediate dot at (250, 250), the distance from the start point is 150 px, and the distance to the end point is 250 px. Since 150 + 250 = 400 px, which matches the total distance between the start and end points, the activity recognizes that this dot lies on the line and automatically includes it. This prevents gaps and ensures the entire line is drawn smoothly.
+
+- Polygon Closure Detection
+    - While creating a custom figure, the activity checks whether the user has completed a closed shape. A shape is considered closed only if it has at least three points and the user clicks the starting point again. When this happens, the activity automatically connects the last point to the first point, marks the shape as closed, and fills it with the selected color.
+    - Example: Suppose a student clicks three dots to form a triangle: (4, 3), (10, 3), and (7, 9). At this stage, the figure is still an open shape. When the student clicks the starting point (4, 3) again, the activity recognizes that the first and last points are the same. It automatically draws the final line from (7, 9) back to (4, 3), closes the triangle, and fills it with the selected color.
+
+- Ray Casting (Even Odd Rule) Point in Polygon Algorithm
+    - To determine whether a grid dot is inside a closed figure, the activity draws an imaginary horizontal line from the dot toward the right. It counts how many times this line crosses the edges of the figure. If the line crosses the edges an odd number of times, the dot is inside the figure. If it crosses an even number of times, the dot is outside. This is known as the Ray Casting algorithm.
+    - Example: Suppose a user creates a large square from (100, 100) to (500, 500). A grid dot at (250, 250) is inside the square. The imaginary horizontal line from this dot crosses the square's boundary once, so the activity recognizes that the dot is inside the figure and darkens its color to improve visibility against the filled background. On the other hand, a dot at (50, 250) is outside the square. Its horizontal line crosses the square's edges twice, so the activity recognizes that it is outside and leaves its appearance unchanged.
+
+- Backtracking (LIFO Stack) Algorithm
+    - When a user clicks the Minus button while creating a custom figure, the activity removes the most recently added point and its connecting line. It always removes the last item that was added, allowing users to correct mistakes without affecting the rest of the drawing. This also keeps the point numbering (1, 2, 3, ...) in the correct order.
+    - Example: Suppose a user is drawing a star and has already placed points 1, 2, 3, and 4. While trying to place point 5 at (300, 350), they accidentally click (350, 400) instead. Clicking the Minus button removes the incorrect point and its connecting line, returning the drawing to point 4, allowing users continue drawing without starting over..
+
+- Figure Validation Algorithm
+    - Before a custom figure is saved to the library or when the user clicks the Back button, the activity checks whether the figure is complete. An open figure must contain at least two points, while a closed figure must contain at least three points and be properly closed. If these conditions are not met, the figure is considered incomplete and is not saved.
+    - Example: Suppose a user places only one point before clicking the Back button. Since a single point cannot form a valid line or shape, the activity recognizes that the figure is incomplete and prevents it from being saved to the library.
+
+- Duplicate Point Prevention
+    - While a user is creating a figure, the activity checks whether the newly clicked dot is the same as the previously selected dot. If it is, the click is ignored. This prevents duplicate points from being added and avoids overlapping point numbers.
+    - Example: Suppose a user clicks a dot to create Point 3. If they accidentally click the same dot again, the activity ignores the second click because it matches the previous point.
+
+---
+
+## Challenges Faced
+
+- Accurately detecting when a user had completed a figure by returning to the starting point was challenging without accidentally closing unfinished shapes.
+- Implementing the Minus (Undo) feature required keeping the drawing data synchronized so only the last point and its connecting line were removed without affecting the rest of the figure.
+
+---
+
+## What's Next
+
+- Fix remaining issues in the current Number Mode implementation.
+- Continue implementing Number Mode features, including the figure editing interface and custom categories.
+- Start implementing Shared Mode.
+
+---
+
+## Acknowledgments
+
+Thanks to my mentor Lionel Laské for the continuous guidance and patience, and the Sugar Labs community for the support.
+
+---
+
+## Links
+
+- **Sugarizer Repository**: [https://github.com/llaske/sugarizer](https://github.com/llaske/sugarizer)
+- **Connect The Dots Pull Request**: [https://github.com/llaske/sugarizer/pull/2188](https://github.com/llaske/sugarizer/pull/2188)
+- **GitHub Profile**: [https://github.com/Rejah-Rabeeul](https://github.com/Rejah-Rabeeul)
+
+---
+
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,up=e({default:()=>dp}),dp=`---
 title: "GSoC '26 Week 7 Update by Syed Khubayb Ur Rahman"
 excerpt: "Implementing Brick Tower bookkeeping in the Workspace and drag-and-drop micro-animations in the Palette."
 category: "DEVELOPER NEWS"
@@ -33578,7 +33691,7 @@ Conversely, once the drag operation ends—whether the Brick is successfully dro
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,up=e({default:()=>dp}),dp=`---
+`,fp=e({default:()=>pp}),pp=`---
 title: "DMP '26 Week 05 Update by NSA Raiyyan"
 excerpt: "Added word-level highlighting synced to speech, waveform-driven mouth animation, and streaming playback for Kokoro."
 category: "DEVELOPER NEWS"
@@ -33662,7 +33775,7 @@ The second one had been quietly affecting a good chunk of the multilingual work,
 ## Acknowledgments
 
 Thanks as always to Mebin and Ibiam. This week was less about adding capability and more about making Speak feel right. The synthesis was already working fine, but watching the face move out of sync with the voice made it obvious how much the presentation matters when the thing you are building is meant for kids. Driving both the mouth and the highlighting off real audio timing made a bigger difference than I expected it to.
-`,fp=e({default:()=>pp}),pp=`---
+`,mp=e({default:()=>hp}),hp=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -33811,7 +33924,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,mp=e({default:()=>hp}),hp=`---
+`,gp=e({default:()=>_p}),_p=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -33914,7 +34027,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,gp=e({default:()=>_p}),_p=`---
+`,vp=e({default:()=>yp}),yp=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -34387,7 +34500,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,vp=e({default:()=>yp}),yp=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,bp=e({default:()=>xp}),xp=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -34474,7 +34587,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,bp=e({default:()=>xp}),xp=`---\r
+`,Sp=e({default:()=>Cp}),Cp=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -34567,7 +34680,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Sp=e({default:()=>Cp}),Cp=`---\r
+`,wp=e({default:()=>Tp}),Tp=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -34661,7 +34774,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,wp=e({default:()=>Tp}),Tp=`---\r
+`,Ep=e({default:()=>Dp}),Dp=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -34749,7 +34862,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Ep=e({default:()=>Dp}),Dp=`---\r
+`,Op=e({default:()=>kp}),kp=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -34832,7 +34945,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Op=e({default:()=>kp}),kp=`---\r
+`,Ap=e({default:()=>jp}),jp=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -34898,7 +35011,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Ap=e({default:()=>jp}),jp=`---
+`,Mp=e({default:()=>Np}),Np=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -34980,7 +35093,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Mp=e({default:()=>Np}),Np=`---
+---`,Pp=e({default:()=>Fp}),Fp=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -35073,7 +35186,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Pp=e({default:()=>Fp}),Fp=`---
+`,Ip=e({default:()=>Lp}),Lp=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -35162,7 +35275,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Ip=e({default:()=>Lp}),Lp=`---
+--- `,Rp=e({default:()=>zp}),zp=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35307,7 +35420,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Rp=e({default:()=>zp}),zp=`---
+--- `,Bp=e({default:()=>Vp}),Vp=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35495,7 +35608,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Bp=e({default:()=>Vp}),Vp=`---
+--- `,Hp=e({default:()=>Up}),Up=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35590,7 +35703,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Hp=e({default:()=>Up}),Up=`---
+`,Wp=e({default:()=>Gp}),Gp=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35679,7 +35792,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Wp=e({default:()=>Gp}),Gp=`---
+`,Kp=e({default:()=>qp}),qp=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35766,7 +35879,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Kp=e({default:()=>qp}),qp=`---
+---`,Jp=e({default:()=>Yp}),Yp=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35849,7 +35962,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Jp=e({default:()=>Yp}),Yp=`---
+---`,Xp=e({default:()=>Zp}),Zp=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35932,7 +36045,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Xp=e({default:()=>Zp}),Zp=`---
+---`,Qp=e({default:()=>$p}),$p=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -36237,4 +36350,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{$d as $,Zt as $a,Qr as $i,$s as $n,Z as $o,Qa as $r,$l as $t,Kf as A,Wn as Aa,Wi as Ai,Gc as An,Ue as Ao,Go as Ar,Gu as At,Ef as B,wn as Ba,wi as Bi,Tc as Bn,Ce as Bo,To as Br,Tu as Bt,op as C,ir as Ca,ia as Ci,al as Cn,rt as Co,as as Cr,r as Cs,ad as Ct,Qf as D,Xn as Da,Xi as Di,Zc as Dn,Ye as Do,Zo as Dr,Zu as Dt,ep as E,Qn as Ea,Qi as Ei,$c as En,Ze as Eo,$o as Er,$u as Et,If as F,Pn as Fa,Pi as Fi,Fc as Fn,Ne as Fo,Fo as Fr,Fu as Ft,gf as G,mn as Ga,mi as Gi,hc as Gn,pe as Go,ho as Gr,hu as Gt,Sf as H,bn as Ha,bi as Hi,xc as Hn,ye as Ho,xo as Hr,xu as Ht,Pf as I,Mn as Ia,Mi as Ii,Nc as In,je as Io,No as Ir,Nu as It,uf as J,cn as Ja,ci as Ji,lc as Jn,se as Jo,co as Jr,lu as Jt,mf as K,fn as Ka,fi as Ki,pc as Kn,de as Ko,po as Kr,pu as Kt,Mf as L,An as La,Ai as Li,jc as Ln,ke as Lo,jo as Lr,ju as Lt,Hf as M,Bn as Ma,Bi as Mi,Vc as Mn,ze as Mo,Vo as Mr,Vu as Mt,Bf as N,Rn as Na,Ri as Ni,zc as Nn,Le as No,zo as Nr,zu as Nt,Xf as O,Jn as Oa,Ji as Oi,Yc as On,qe as Oo,Yo as Or,Yu as Ot,Rf as P,In as Pa,Ii as Pi,Lc as Pn,Fe as Po,Lo as Pr,Lu as Pt,tf as Q,$t as Qa,ei as Qi,tc as Qn,$ as Qo,eo as Qr,tu as Qt,Af as R,On as Ra,Oi as Ri,kc as Rn,De as Ro,ko as Rr,ku as Rt,cp as S,or as Sa,oa as Si,sl as Sn,at as So,ss as Sr,a as Ss,sd as St,np as T,er as Ta,ea as Ti,tl as Tn,$e as To,ts as Tr,td as Tt,bf as U,vn as Ua,vi as Ui,yc as Un,_e as Uo,yo as Ur,yu as Ut,wf as V,Sn as Va,Si as Vi,Cc as Vn,xe as Vo,Co as Vr,Cu as Vt,vf as W,gn as Wa,gi as Wi,_c as Wn,he as Wo,_o as Wr,_u as Wt,of as X,rn as Xa,ii as Xi,ac as Xn,re as Xo,io as Xr,au as Xt,cf as Y,on as Ya,oi as Yi,sc as Yn,ae as Yo,oo as Yr,su as Yt,rf as Z,tn as Za,ni as Zi,rc as Zn,te as Zo,no as Zr,ru as Zt,vp as _,gr as _a,ga as _i,_l as _n,ht as _o,_s as _r,h as _s,_d as _t,Hp as a,Br as aa,Ba as ai,Vl as an,zt as ao,Vs as ar,z as as,Vd as at,fp as b,ur as ba,ua as bi,dl as bn,lt as bo,ds as br,l as bs,dd as bt,Ip as c,Pr as ca,Pa as ci,Fl as cn,Nt as co,Fs as cr,N as cs,Fd as ct,Ap as d,Or as da,Oa as di,kl as dn,Dt as do,ks as dr,D as ds,kd as dt,Xr as ea,Xa as ei,Zl as en,Yt as eo,Zs as er,Y as es,Zd as et,Op as f,Er as fa,Ea as fi,Dl as fn,Tt as fo,Ds as fr,T as fs,Dd as ft,bp as g,vr as ga,va as gi,yl as gn,_t as go,ys as gr,_ as gs,yd as gt,Sp as h,br as ha,ba as hi,xl as hn,yt as ho,xs as hr,y as hs,xd as ht,Wp as i,Hr as ia,Ha as ii,Ul as in,Vt as io,Us as ir,V as is,Ud as it,Wf as j,Hn as ja,Hi as ji,Uc as jn,Ve as jo,Uo as jr,Uu as jt,Jf as k,Kn as ka,Ki as ki,qc as kn,Ge as ko,qo as kr,qu as kt,Pp as l,Mr as la,Ma as li,Nl as ln,jt as lo,Ns as lr,j as ls,Nd as lt,wp as m,Sr as ma,Sa as mi,Cl as mn,xt as mo,Cs as mr,x as ms,Cd as mt,Jp as n,Kr as na,Ka as ni,ql as nn,Gt as no,qs as nr,G as ns,qd as nt,Bp as o,Rr as oa,Ra as oi,zl as on,Lt as oo,zs as or,L as os,zd as ot,Ep as p,wr as pa,wa as pi,Tl as pn,Ct as po,Ts as pr,C as ps,Td as pt,ff as q,un as qa,ui as qi,dc as qn,le as qo,uo as qr,du as qt,Kp as r,Wr as ra,Wa as ri,Gl as rn,Ut as ro,Gs as rr,U as rs,Gd as rt,Rp as s,Ir as sa,Ia as si,Ll as sn,Ft as so,Ls as sr,F as ss,Ld as st,Xp as t,Jr as ta,Ja as ti,Yl as tn,qt as to,Ys as tr,q as ts,Yd as tt,Mp as u,Ar as ua,Aa as ui,jl as un,kt as uo,js as ur,k as us,jd as ut,gp as v,mr as va,ma as vi,hl as vn,pt as vo,hs as vr,p as vs,hd as vt,ip as w,nr as wa,na as wi,rl as wn,tt as wo,rs as wr,t as ws,rd as wt,up as x,cr as xa,ca as xi,ll as xn,st as xo,ls as xr,s as xs,ld as xt,mp as y,fr as ya,fa as yi,pl as yn,dt as yo,ps as yr,d as ys,pd as yt,Of as z,En as za,Ei as zi,Dc as zn,Te as zo,Do as zr,Du as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{tf as $,$t as $a,ei as $i,tc as $n,$ as $o,eo as $r,tu as $t,Jf as A,Kn as Aa,Ki as Ai,qc as An,Ge as Ao,qo as Ar,qu as At,Of as B,En as Ba,Ei as Bi,Dc as Bn,Te as Bo,Do as Br,Du as Bt,cp as C,or as Ca,oa as Ci,sl as Cn,at as Co,ss as Cr,a as Cs,sd as Ct,ep as D,Qn as Da,Qi as Di,$c as Dn,Ze as Do,$o as Dr,$u as Dt,np as E,er as Ea,ea as Ei,tl as En,$e as Eo,ts as Er,td as Et,Rf as F,In as Fa,Ii as Fi,Lc as Fn,Fe as Fo,Lo as Fr,Lu as Ft,vf as G,gn as Ga,gi as Gi,_c as Gn,he as Go,_o as Gr,_u as Gt,wf as H,Sn as Ha,Si as Hi,Cc as Hn,xe as Ho,Co as Hr,Cu as Ht,If as I,Pn as Ia,Pi as Ii,Fc as In,Ne as Io,Fo as Ir,Fu as It,ff as J,un as Ja,ui as Ji,dc as Jn,le as Jo,uo as Jr,du as Jt,gf as K,mn as Ka,mi as Ki,hc as Kn,pe as Ko,ho as Kr,hu as Kt,Pf as L,Mn as La,Mi as Li,Nc as Ln,je as Lo,No as Lr,Nu as Lt,Wf as M,Hn as Ma,Hi as Mi,Uc as Mn,Ve as Mo,Uo as Mr,Uu as Mt,Hf as N,Bn as Na,Bi as Ni,Vc as Nn,ze as No,Vo as Nr,Vu as Nt,Qf as O,Xn as Oa,Xi as Oi,Zc as On,Ye as Oo,Zo as Or,Zu as Ot,Bf as P,Rn as Pa,Ri as Pi,zc as Pn,Le as Po,zo as Pr,zu as Pt,rf as Q,tn as Qa,ni as Qi,rc as Qn,te as Qo,no as Qr,ru as Qt,Mf as R,An as Ra,Ai as Ri,jc as Rn,ke as Ro,jo as Rr,ju as Rt,up as S,cr as Sa,ca as Si,ll as Sn,st as So,ls as Sr,s as Ss,ld as St,ip as T,nr as Ta,na as Ti,rl as Tn,tt as To,rs as Tr,t as Ts,rd as Tt,Sf as U,bn as Ua,bi as Ui,xc as Un,ye as Uo,xo as Ur,xu as Ut,Ef as V,wn as Va,wi as Vi,Tc as Vn,Ce as Vo,To as Vr,Tu as Vt,bf as W,vn as Wa,vi as Wi,yc as Wn,_e as Wo,yo as Wr,yu as Wt,cf as X,on as Xa,oi as Xi,sc as Xn,ae as Xo,oo as Xr,su as Xt,uf as Y,cn as Ya,ci as Yi,lc as Yn,se as Yo,co as Yr,lu as Yt,of as Z,rn as Za,ii as Zi,ac as Zn,re as Zo,io as Zr,au as Zt,bp as _,vr as _a,va as _i,yl as _n,_t as _o,ys as _r,_ as _s,yd as _t,Wp as a,Hr as aa,Ha as ai,Ul as an,Vt as ao,Us as ar,V as as,Ud as at,mp as b,fr as ba,fa as bi,pl as bn,dt as bo,ps as br,d as bs,pd as bt,Rp as c,Ir as ca,Ia as ci,Ll as cn,Ft as co,Ls as cr,F as cs,Ld as ct,Mp as d,Ar as da,Aa as di,jl as dn,kt as do,js as dr,k as ds,jd as dt,Qr as ea,Qa as ei,$l as en,Zt as eo,$s as er,Z as es,$d as et,Ap as f,Or as fa,Oa as fi,kl as fn,Dt as fo,ks as fr,D as fs,kd as ft,Sp as g,br as ga,ba as gi,xl as gn,yt as go,xs as gr,y as gs,xd as gt,wp as h,Sr as ha,Sa as hi,Cl as hn,xt as ho,Cs as hr,x as hs,Cd as ht,Kp as i,Wr as ia,Wa as ii,Gl as in,Ut as io,Gs as ir,U as is,Gd as it,Kf as j,Wn as ja,Wi as ji,Gc as jn,Ue as jo,Go as jr,Gu as jt,Xf as k,Jn as ka,Ji as ki,Yc as kn,qe as ko,Yo as kr,Yu as kt,Ip as l,Pr as la,Pa as li,Fl as ln,Nt as lo,Fs as lr,N as ls,Fd as lt,Ep as m,wr as ma,wa as mi,Tl as mn,Ct as mo,Ts as mr,C as ms,Td as mt,Xp as n,Jr as na,Ja as ni,Yl as nn,qt as no,Ys as nr,q as ns,Yd as nt,Hp as o,Br as oa,Ba as oi,Vl as on,zt as oo,Vs as or,z as os,Vd as ot,Op as p,Er as pa,Ea as pi,Dl as pn,Tt as po,Ds as pr,T as ps,Dd as pt,mf as q,fn as qa,fi as qi,pc as qn,de as qo,po as qr,pu as qt,Jp as r,Kr as ra,Ka as ri,ql as rn,Gt as ro,qs as rr,G as rs,qd as rt,Bp as s,Rr as sa,Ra as si,zl as sn,Lt as so,zs as sr,L as ss,zd as st,Qp as t,Xr as ta,Xa as ti,Zl as tn,Yt as to,Zs as tr,Y as ts,Zd as tt,Pp as u,Mr as ua,Ma as ui,Nl as un,jt as uo,Ns as ur,j as us,Nd as ut,vp as v,gr as va,ga as vi,_l as vn,ht as vo,_s as vr,h as vs,_d as vt,op as w,ir as wa,ia as wi,al as wn,rt as wo,as as wr,r as ws,ad as wt,fp as x,ur as xa,ua as xi,dl as xn,lt as xo,ds as xr,l as xs,dd as xt,gp as y,mr as ya,ma as yi,hl as yn,pt as yo,hs as yr,p as ys,hd as yt,Af as z,On as za,Oi as zi,kc as zn,De as zo,ko as zr,ku as zt};
