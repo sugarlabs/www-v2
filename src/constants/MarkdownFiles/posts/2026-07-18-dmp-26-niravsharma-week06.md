@@ -1,6 +1,6 @@
 ---
-title: "DMP Week 6: Audio Engine EDO-Aware, Widget Fixes, 6799 Tests Passing"
-excerpt: "PR 5.2 fixes audio engine EDO fallback with getCachedPitchToFrequency refactor, generateNoteNames, and widget EDO-awareness; PR 6 adds PitchActions D♯ fix, getNumber proportional mapping, and temperament.js EDO-aware playback"
+title: "DMP Week 6: fix: support non-12 EDO temperaments in audio engine and widgets"
+excerpt: "PR 5.2 fix: support non-12 EDO temperaments in audio engine and widgets; PR 6 fix: remaining Goal 1+2+3 bugs and temperament reset on run"
 category: "DEVELOPER NEWS"
 date: "2026-07-18"
 slug: "2026-07-18-dmp-26-niravsharma-week06"
