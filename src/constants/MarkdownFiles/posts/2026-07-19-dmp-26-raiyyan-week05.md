@@ -16,7 +16,8 @@ image: "assets/Images/c4gt_DMP.webp"
 **Mentors:** [Mebin Thattil](https://github.com/mebinthattil), [Ibiam Chihurumnaya](https://github.com/chimosky)  
 **Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  
 **Organization:** [Sugar Labs](https://sugarlabs.org)  
-**Reporting Period:** 2026-07-13 to 2026-07-19  
+**Reporting Period:** 2026-07-13 to 2026-07-19 
+
 ---
 
 ## Goals for This Week
