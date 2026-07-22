@@ -33776,6 +33776,86 @@ The second one had been quietly affecting a good chunk of the multilingual work,
 
 Thanks as always to Mebin and Ibiam. This week was less about adding capability and more about making Speak feel right. The synthesis was already working fine, but watching the face move out of sync with the voice made it obvious how much the presentation matters when the thing you are building is meant for kids. Driving both the mouth and the highlighting off real audio timing made a bigger difference than I expected it to.
 `,mp=e({default:()=>hp}),hp=`---
+title: "GSoC '26 Week 8 Report by Rejah Rabeeul Haque"
+excerpt: "Implemented responsive design, back button optimization, new category addition, and Edit Features in the Number Mode of ConnectTheDots activity."
+category: "DEVELOPER NEWS"
+date: "2026-07-19"
+slug: "2026-07-19-gsoc-26-rejah-rabeeul-haque-week08"
+author: "@/constants/MarkdownFiles/authors/rejah-rabeeul-haque.md"
+description: "GSoC'26 Contributor at SugarLabs working on ConnectTheDots activity"
+tags: "gsoc26,sugarlabs,sugarizer,connectthedots,week08,rejah-rabeeul-haque"
+image: "assets/Images/sugarizer.webp"
+---
+
+<!-- markdownlint-disable -->
+
+## This Week's Progress
+
+Hey! This week, I worked on enhancing the Number Mode in the ConnectTheDots activity. The main focus was on improving the user interface and adding new capabilities for managing figures and categories to provide a more flexible experience.
+
+Here is a detailed breakdown of the work done:
+
+---
+
+## Number Mode Enhancements
+
+- Responsive Figures Screen
+  - The Number Mode is now fully responsive. It automatically adjusts the grid layout and scales correctly across different device sizes and orientations. This ensures that whether a student is playing on a large desktop monitor, a tablet, or a smaller screen, the gallery remains well-proportioned.
+  - To achieve this, we used CSS Grid and Flexbox along with responsive CSS units. CSS Grid automatically determines how many figure cards fit in each row based on the available screen width, while Flexbox is used for aligning elements within the layout. When the viewport size changes, the browser automatically reflows and redistributes the items to maintain a consistent and responsive interface.
+
+- Optimized Back Buttons
+  - Changed the location of the back buttons, moving it directly from the toolbar down onto the canvas. This change places the back button much closer to where the user is interacting with the figures. I also updated icon to be visible in the canvas.
+  - Moving the back button required restructuring the DOM so that it is rendered inside the canvas container instead of the top toolbar. The button is positioned relative to the canvas using CSS positioning, allowing it to remain easily accessible while users interact with the drawing area. Its placement and styling were adjusted to ensure it remains clearly visible without interfering with the canvas content.
+
+- Edit Features in Number Mode
+  - Implemented editing capabilities in Number Mode, allowing users to modify both existing figures from the library and figures currently being created on the Number Board canvas. Users can reopen previously saved figures to add new points or continue editing, while the undo feature lets them correct mistakes during creation without restarting the entire figure.
+  - When a user chooses to edit a saved figure, the application transitions from the gallery view to the editing interface. To prevent unintended modifications, a copy of the selected figure's coordinate data is loaded into the active drawing board instead of directly referencing the saved figure. This ensures that the original figure remains unchanged until the user explicitly saves their edits. During editing, the undo functionality uses a LIFO (Last-In, First-Out) stack approach. If the figure is still open, each undo operation removes the most recently added point and updates the drawing accordingly. If the figure has already been closed by connecting the last point back to the first, the first undo operation removes only the closing connection, changes the figure back to the editing state, clears the fill, and allows subsequent undo operations to remove points normally.
+  - Example: Suppose a user opens a saved Square figure for editing and accidentally adds an incorrect point. Clicking the minus button removes the most recently added point while leaving the original saved Square unchanged, since the user is editing a copied version. If the figure had already been closed, the first undo operation would simply remove the closing connection and reopen the figure for editing. Only when the user clicks Save are the updated coordinates written back to the library, replacing the previous version.
+
+![Editing a figure](/assets/Developers/Rejah/connectthedots-week8-edit-figure.webp)
+
+- Adding New Category
+  - Added a dedicated feature to create new custom categories. Instead of saving every custom shape into a single generic category, users can now create their own categories (e.g., "My Animals"). This allows users to better organize their custom figures within the library by grouping them into personalized, easily accessible collections.
+  - Creating a new category uses a validation process. First, real time client side validation checks the entered category name as the user types. If the entered name exactly matches an existing category, the Confirm button is immediately disabled to prevent duplicate submissions. Second, if the validation passes but the generated normalized key already exists, a fail safe mechanism automatically resolves the collision by appending an incrementing suffix (e.g., -1) before storing the category.
+  - Example: If a user tries to create a category named "Animals" but it already exists, the frontend validation immediately disables the Confirm button. However, if they create "My Shapes-" while "My Shapes?" already exists, both names normalize to the same internal key (my-shapes-). The fail-safe mechanism stores the second category using a unique key such as my-shapes--1 while continuing to display the user defined category name in the interface.
+
+![Adding New Category](/assets/Developers/Rejah/connectthedots-week8-add-category.webp)
+
+---
+
+## Challenges Faced
+
+- Managing the Edit State Without Breaking the Drawing Flow: Integrating the edit feature into the existing Number Board canvas was challenging because the canvas had to correctly handle drawing, undo operations, and transitions between open and closed figures without causing inconsistent behavior.
+
+- Keeping Data Consistent Across Different Views: Ensuring that edits and newly created categories were correctly reflected across the figure library and the active editing screen without displaying outdated data required careful state management.
+
+- Preventing Accidental Data Modification During Editing: Implementing the edit feature safely was challenging because the application had to work with a copy of the selected figure instead of the original. This prevented accidental changes to the saved figure until the user explicitly clicked Save.
+
+---
+
+## What's Next
+
+- Fix the remaining issues in the current Number Mode implementation.
+- Expand the figure library with more categories and figures.
+- Begin implementing Shared Mode for collaborative gameplay.
+
+---
+
+## Acknowledgments
+
+Thanks to my mentor Lionel Laské for the continuous guidance and patience, and the Sugar Labs community for the support.
+
+---
+
+## Links
+
+- **Sugarizer Repository**: [https://github.com/llaske/sugarizer](https://github.com/llaske/sugarizer)
+- **Connect The Dots Pull Request**: [https://github.com/llaske/sugarizer/pull/2188](https://github.com/llaske/sugarizer/pull/2188)
+- **GitHub Profile**: [https://github.com/Rejah-Rabeeul](https://github.com/Rejah-Rabeeul)
+
+---
+
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,gp=e({default:()=>_p}),_p=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -33924,7 +34004,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,gp=e({default:()=>_p}),_p=`---
+`,vp=e({default:()=>yp}),yp=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -34027,7 +34107,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,vp=e({default:()=>yp}),yp=`---
+`,bp=e({default:()=>xp}),xp=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -34500,7 +34580,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,bp=e({default:()=>xp}),xp=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Sp=e({default:()=>Cp}),Cp=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -34587,7 +34667,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Sp=e({default:()=>Cp}),Cp=`---\r
+`,wp=e({default:()=>Tp}),Tp=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -34680,7 +34760,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,wp=e({default:()=>Tp}),Tp=`---\r
+`,Ep=e({default:()=>Dp}),Dp=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -34774,7 +34854,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Ep=e({default:()=>Dp}),Dp=`---\r
+`,Op=e({default:()=>kp}),kp=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -34862,7 +34942,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Op=e({default:()=>kp}),kp=`---\r
+`,Ap=e({default:()=>jp}),jp=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -34945,7 +35025,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Ap=e({default:()=>jp}),jp=`---\r
+`,Mp=e({default:()=>Np}),Np=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -35011,7 +35091,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Mp=e({default:()=>Np}),Np=`---
+`,Pp=e({default:()=>Fp}),Fp=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -35093,7 +35173,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Pp=e({default:()=>Fp}),Fp=`---
+---`,Ip=e({default:()=>Lp}),Lp=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -35186,7 +35266,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Ip=e({default:()=>Lp}),Lp=`---
+`,Rp=e({default:()=>zp}),zp=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -35275,7 +35355,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Rp=e({default:()=>zp}),zp=`---
+--- `,Bp=e({default:()=>Vp}),Vp=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35420,7 +35500,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Bp=e({default:()=>Vp}),Vp=`---
+--- `,Hp=e({default:()=>Up}),Up=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35608,7 +35688,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Hp=e({default:()=>Up}),Up=`---
+--- `,Wp=e({default:()=>Gp}),Gp=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35703,7 +35783,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Wp=e({default:()=>Gp}),Gp=`---
+`,Kp=e({default:()=>qp}),qp=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35792,7 +35872,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Kp=e({default:()=>qp}),qp=`---
+`,Jp=e({default:()=>Yp}),Yp=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35879,7 +35959,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Jp=e({default:()=>Yp}),Yp=`---
+---`,Xp=e({default:()=>Zp}),Zp=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35962,7 +36042,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Xp=e({default:()=>Zp}),Zp=`---
+---`,Qp=e({default:()=>$p}),$p=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -36045,7 +36125,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Qp=e({default:()=>$p}),$p=`---
+---`,em=e({default:()=>tm}),tm=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -36350,4 +36430,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{tf as $,$t as $a,ei as $i,tc as $n,$ as $o,eo as $r,tu as $t,Jf as A,Kn as Aa,Ki as Ai,qc as An,Ge as Ao,qo as Ar,qu as At,Of as B,En as Ba,Ei as Bi,Dc as Bn,Te as Bo,Do as Br,Du as Bt,cp as C,or as Ca,oa as Ci,sl as Cn,at as Co,ss as Cr,a as Cs,sd as Ct,ep as D,Qn as Da,Qi as Di,$c as Dn,Ze as Do,$o as Dr,$u as Dt,np as E,er as Ea,ea as Ei,tl as En,$e as Eo,ts as Er,td as Et,Rf as F,In as Fa,Ii as Fi,Lc as Fn,Fe as Fo,Lo as Fr,Lu as Ft,vf as G,gn as Ga,gi as Gi,_c as Gn,he as Go,_o as Gr,_u as Gt,wf as H,Sn as Ha,Si as Hi,Cc as Hn,xe as Ho,Co as Hr,Cu as Ht,If as I,Pn as Ia,Pi as Ii,Fc as In,Ne as Io,Fo as Ir,Fu as It,ff as J,un as Ja,ui as Ji,dc as Jn,le as Jo,uo as Jr,du as Jt,gf as K,mn as Ka,mi as Ki,hc as Kn,pe as Ko,ho as Kr,hu as Kt,Pf as L,Mn as La,Mi as Li,Nc as Ln,je as Lo,No as Lr,Nu as Lt,Wf as M,Hn as Ma,Hi as Mi,Uc as Mn,Ve as Mo,Uo as Mr,Uu as Mt,Hf as N,Bn as Na,Bi as Ni,Vc as Nn,ze as No,Vo as Nr,Vu as Nt,Qf as O,Xn as Oa,Xi as Oi,Zc as On,Ye as Oo,Zo as Or,Zu as Ot,Bf as P,Rn as Pa,Ri as Pi,zc as Pn,Le as Po,zo as Pr,zu as Pt,rf as Q,tn as Qa,ni as Qi,rc as Qn,te as Qo,no as Qr,ru as Qt,Mf as R,An as Ra,Ai as Ri,jc as Rn,ke as Ro,jo as Rr,ju as Rt,up as S,cr as Sa,ca as Si,ll as Sn,st as So,ls as Sr,s as Ss,ld as St,ip as T,nr as Ta,na as Ti,rl as Tn,tt as To,rs as Tr,t as Ts,rd as Tt,Sf as U,bn as Ua,bi as Ui,xc as Un,ye as Uo,xo as Ur,xu as Ut,Ef as V,wn as Va,wi as Vi,Tc as Vn,Ce as Vo,To as Vr,Tu as Vt,bf as W,vn as Wa,vi as Wi,yc as Wn,_e as Wo,yo as Wr,yu as Wt,cf as X,on as Xa,oi as Xi,sc as Xn,ae as Xo,oo as Xr,su as Xt,uf as Y,cn as Ya,ci as Yi,lc as Yn,se as Yo,co as Yr,lu as Yt,of as Z,rn as Za,ii as Zi,ac as Zn,re as Zo,io as Zr,au as Zt,bp as _,vr as _a,va as _i,yl as _n,_t as _o,ys as _r,_ as _s,yd as _t,Wp as a,Hr as aa,Ha as ai,Ul as an,Vt as ao,Us as ar,V as as,Ud as at,mp as b,fr as ba,fa as bi,pl as bn,dt as bo,ps as br,d as bs,pd as bt,Rp as c,Ir as ca,Ia as ci,Ll as cn,Ft as co,Ls as cr,F as cs,Ld as ct,Mp as d,Ar as da,Aa as di,jl as dn,kt as do,js as dr,k as ds,jd as dt,Qr as ea,Qa as ei,$l as en,Zt as eo,$s as er,Z as es,$d as et,Ap as f,Or as fa,Oa as fi,kl as fn,Dt as fo,ks as fr,D as fs,kd as ft,Sp as g,br as ga,ba as gi,xl as gn,yt as go,xs as gr,y as gs,xd as gt,wp as h,Sr as ha,Sa as hi,Cl as hn,xt as ho,Cs as hr,x as hs,Cd as ht,Kp as i,Wr as ia,Wa as ii,Gl as in,Ut as io,Gs as ir,U as is,Gd as it,Kf as j,Wn as ja,Wi as ji,Gc as jn,Ue as jo,Go as jr,Gu as jt,Xf as k,Jn as ka,Ji as ki,Yc as kn,qe as ko,Yo as kr,Yu as kt,Ip as l,Pr as la,Pa as li,Fl as ln,Nt as lo,Fs as lr,N as ls,Fd as lt,Ep as m,wr as ma,wa as mi,Tl as mn,Ct as mo,Ts as mr,C as ms,Td as mt,Xp as n,Jr as na,Ja as ni,Yl as nn,qt as no,Ys as nr,q as ns,Yd as nt,Hp as o,Br as oa,Ba as oi,Vl as on,zt as oo,Vs as or,z as os,Vd as ot,Op as p,Er as pa,Ea as pi,Dl as pn,Tt as po,Ds as pr,T as ps,Dd as pt,mf as q,fn as qa,fi as qi,pc as qn,de as qo,po as qr,pu as qt,Jp as r,Kr as ra,Ka as ri,ql as rn,Gt as ro,qs as rr,G as rs,qd as rt,Bp as s,Rr as sa,Ra as si,zl as sn,Lt as so,zs as sr,L as ss,zd as st,Qp as t,Xr as ta,Xa as ti,Zl as tn,Yt as to,Zs as tr,Y as ts,Zd as tt,Pp as u,Mr as ua,Ma as ui,Nl as un,jt as uo,Ns as ur,j as us,Nd as ut,vp as v,gr as va,ga as vi,_l as vn,ht as vo,_s as vr,h as vs,_d as vt,op as w,ir as wa,ia as wi,al as wn,rt as wo,as as wr,r as ws,ad as wt,fp as x,ur as xa,ua as xi,dl as xn,lt as xo,ds as xr,l as xs,dd as xt,gp as y,mr as ya,ma as yi,hl as yn,pt as yo,hs as yr,p as ys,hd as yt,Af as z,On as za,Oi as zi,kc as zn,De as zo,ko as zr,ku as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{rf as $,tn as $a,ni as $i,rc as $n,te as $o,no as $r,ru as $t,Xf as A,Jn as Aa,Ji as Ai,Yc as An,qe as Ao,Yo as Ar,Yu as At,Af as B,On as Ba,Oi as Bi,kc as Bn,De as Bo,ko as Br,ku as Bt,up as C,cr as Ca,ca as Ci,ll as Cn,st as Co,ls as Cr,s as Cs,ld as Ct,np as D,er as Da,ea as Di,tl as Dn,$e as Do,ts as Dr,td as Dt,ip as E,nr as Ea,na as Ei,rl as En,tt as Eo,rs as Er,t as Es,rd as Et,Bf as F,Rn as Fa,Ri as Fi,zc as Fn,Le as Fo,zo as Fr,zu as Ft,bf as G,vn as Ga,vi as Gi,yc as Gn,_e as Go,yo as Gr,yu as Gt,Ef as H,wn as Ha,wi as Hi,Tc as Hn,Ce as Ho,To as Hr,Tu as Ht,Rf as I,In as Ia,Ii,Lc as In,Fe as Io,Lo as Ir,Lu as It,mf as J,fn as Ja,fi as Ji,pc as Jn,de as Jo,po as Jr,pu as Jt,vf as K,gn as Ka,gi as Ki,_c as Kn,he as Ko,_o as Kr,_u as Kt,If as L,Pn as La,Pi as Li,Fc as Ln,Ne as Lo,Fo as Lr,Fu as Lt,Kf as M,Wn as Ma,Wi as Mi,Gc as Mn,Ue as Mo,Go as Mr,Gu as Mt,Wf as N,Hn as Na,Hi as Ni,Uc as Nn,Ve as No,Uo as Nr,Uu as Nt,ep as O,Qn as Oa,Qi as Oi,$c as On,Ze as Oo,$o as Or,$u as Ot,Hf as P,Bn as Pa,Bi as Pi,Vc as Pn,ze as Po,Vo as Pr,Vu as Pt,of as Q,rn as Qa,ii as Qi,ac as Qn,re as Qo,io as Qr,au as Qt,Pf as R,Mn as Ra,Mi as Ri,Nc as Rn,je as Ro,No as Rr,Nu as Rt,fp as S,ur as Sa,ua as Si,dl as Sn,lt as So,ds as Sr,l as Ss,dd as St,op as T,ir as Ta,ia as Ti,al as Tn,rt as To,as as Tr,r as Ts,ad as Tt,wf as U,Sn as Ua,Si as Ui,Cc as Un,xe as Uo,Co as Ur,Cu as Ut,Of as V,En as Va,Ei as Vi,Dc as Vn,Te as Vo,Do as Vr,Du as Vt,Sf as W,bn as Wa,bi as Wi,xc as Wn,ye as Wo,xo as Wr,xu as Wt,uf as X,cn as Xa,ci as Xi,lc as Xn,se as Xo,co as Xr,lu as Xt,ff as Y,un as Ya,ui as Yi,dc as Yn,le as Yo,uo as Yr,du as Yt,cf as Z,on as Za,oi as Zi,sc as Zn,ae as Zo,oo as Zr,su as Zt,Sp as _,br as _a,ba as _i,xl as _n,yt as _o,xs as _r,y as _s,xd as _t,Kp as a,Wr as aa,Wa as ai,Gl as an,Ut as ao,Gs as ar,U as as,Gd as at,gp as b,mr as ba,ma as bi,hl as bn,pt as bo,hs as br,p as bs,hd as bt,Bp as c,Rr as ca,Ra as ci,zl as cn,Lt as co,zs as cr,L as cs,zd as ct,Pp as d,Mr as da,Ma as di,Nl as dn,jt as do,Ns as dr,j as ds,Nd as dt,ei as ea,eo as ei,tu as en,$t as eo,tc as er,$ as es,tf as et,Mp as f,Ar as fa,Aa as fi,jl as fn,kt as fo,js as fr,k as fs,jd as ft,wp as g,Sr as ga,Sa as gi,Cl as gn,xt as go,Cs as gr,x as gs,Cd as gt,Ep as h,wr as ha,wa as hi,Tl as hn,Ct as ho,Ts as hr,C as hs,Td as ht,Jp as i,Kr as ia,Ka as ii,ql as in,Gt as io,qs as ir,G as is,qd as it,Jf as j,Kn as ja,Ki as ji,qc as jn,Ge as jo,qo as jr,qu as jt,Qf as k,Xn as ka,Xi as ki,Zc as kn,Ye as ko,Zo as kr,Zu as kt,Rp as l,Ir as la,Ia as li,Ll as ln,Ft as lo,Ls as lr,F as ls,Ld as lt,Op as m,Er as ma,Ea as mi,Dl as mn,Tt as mo,Ds as mr,T as ms,Dd as mt,Qp as n,Xr as na,Xa as ni,Zl as nn,Yt as no,Zs as nr,Y as ns,Zd as nt,Wp as o,Hr as oa,Ha as oi,Ul as on,Vt as oo,Us as or,V as os,Ud as ot,Ap as p,Or as pa,Oa as pi,kl as pn,Dt as po,ks as pr,D as ps,kd as pt,gf as q,mn as qa,mi as qi,hc as qn,pe as qo,ho as qr,hu as qt,Xp as r,Jr as ra,Ja as ri,Yl as rn,qt as ro,Ys as rr,q as rs,Yd as rt,Hp as s,Br as sa,Ba as si,Vl as sn,zt as so,Vs as sr,z as ss,Vd as st,em as t,Qr as ta,Qa as ti,$l as tn,Zt as to,$s as tr,Z as ts,$d as tt,Ip as u,Pr as ua,Pa as ui,Fl as un,Nt as uo,Fs as ur,N as us,Fd as ut,bp as v,vr as va,va as vi,yl as vn,_t as vo,ys as vr,_ as vs,yd as vt,cp as w,or as wa,oa as wi,sl as wn,at as wo,ss as wr,a as ws,sd as wt,mp as x,fr as xa,fa as xi,pl as xn,dt as xo,ps as xr,d as xs,pd as xt,vp as y,gr as ya,ga as yi,_l as yn,ht as yo,_s as yr,h as ys,_d as yt,Mf as z,An as za,Ai as zi,jc as zn,ke as zo,jo as zr,ju as zt};
