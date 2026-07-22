@@ -18,13 +18,4 @@ export const products: ProductType[] = [
     },
     link: 'https://www.bonfire.com/store/sugar-labs-merch/', // Purchase link
   },
-  {
-    name: 'SugarLabs USB',
-    description:
-      'Easily install Fedora Sugar On A Stick (SOAS) to your device directly from this USB flash drive. The Fedora SOAS on this USB drive is for Intel and AMD x86_64 systems.',
-    colors: {
-      white: 'assets/Products/sugarlabsUsb.webp',
-    },
-    link: 'https://www.usbmemorydirect.com/store/novelty/sugarlabs/', // Purchase link
-  },
 ];
