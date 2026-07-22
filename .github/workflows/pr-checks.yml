@@ -3,6 +3,9 @@ name: PR Checks
 on:
   pull_request:
     types: [opened, synchronize]
+    branches: [main]
+  push:
+    branches: [main]
 
 permissions:
   contents: read
