@@ -33579,6 +33579,90 @@ Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued fe
 
 ---
 `,up=e({default:()=>dp}),dp=`---
+title: "DMP '26 Week 05 Update by NSA Raiyyan"
+excerpt: "Added word-level highlighting synced to speech, waveform-driven mouth animation, and streaming playback for Kokoro."
+category: "DEVELOPER NEWS"
+date: "2026-07-19"
+slug: "2026-07-19-dmp-26-raiyyan-week05"
+author: "@/constants/MarkdownFiles/authors/nsa-raiyyan.md"
+description: "DMP'26 Contributor at SugarLabs working on Speak-AI Multilingual Support"
+tags: "dmp26,sugarlabs,week05,nsa-raiyyan,speak-ai,streaming,lipsync,highlighting"
+image: "assets/Images/c4gt_DMP.webp"
+---
+<!-- markdownlint-disable -->
+# Week 05 Progress Report by NSA Raiyyan
+
+**Project:** [Speak-AI Multilingual Support](https://github.com/sugarlabs/speak-ai)  
+**Mentors:** [Mebin Thattil](https://github.com/mebinthattil), [Ibiam Chihurumnaya](https://github.com/chimosky)  
+**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-07-13 to 2026-07-19 
+
+---
+
+## Goals for This Week
+
+- Make the face react to what is actually being spoken instead of animating blindly.
+- Highlight the current word in the text entry as it is spoken.
+- Move Kokoro playback from "synthesize everything, then play" to streaming.
+- Fix the \`misaki\` G2P compatibility breakages that were blocking non-English languages.
+
+## What Got Done
+
+### Word-Level Highlighting
+
+This was the main feature this week. As Speak talks, the word being spoken is now selected in the text entry, so a child can follow along while listening.
+
+The tricky part is that none of the backends give you per-word timing. Kokoro and MMS both hand back a waveform and nothing else. True phoneme alignment would have meant pulling in a forced aligner, which is a lot of weight for what this needs to do.
+
+So I estimate it instead. Within each synthesized chunk, every word gets a slice of that chunk's real measured duration, proportional to its character length. It is an approximation, but it barely drifts in practice because it re-anchors on every chunk rather than extrapolating across the whole utterance. The nice part is that it behaves the same no matter which backend produced the audio.
+
+Highlights go out as a new \`word\` signal carrying \`(start, end)\` character offsets. These are global offsets into the full text, not chunk-local ones. \`_schedule_word_highlights()\` takes a \`base_offset\`, and the streaming path keeps a cursor into the original text so each chunk knows where it sits in the whole string. \`(-1, -1)\` is the clear sentinel, which resets the entry to the whole-utterance selection that Speak already used as its resting state.
+
+On the activity side this is wired up in \`activity.py\` through a \`__word_highlight_cb\` connected to the speech singleton.
+
+### Mouth Animation from the Actual Waveform
+
+The mouth used to move on a generic timer. Now \`_schedule_mouth_from_waveform()\` pulls peak amplitude out of each audio chunk as it gets pushed and schedules the face to match. Loud syllables open the mouth wider, silence settles it back to idle.
+
+It lines up with the audio far better than the timer did, and it costs almost nothing since the chunks are already sitting right there.
+
+\`_emit_idle()\` and \`_schedule_idle_at()\` handle returning the face to rest at end of stream. Before this, playback ending on a loud frame could leave the mouth frozen half open, which looked a bit unsettling.
+
+### Streaming Playback
+
+Kokoro audio now streams to GStreamer through \`_stream_kokoro_audio()\` and \`_push_waveform_to_appsrc()\` instead of waiting for the full waveform before playback starts. Audio begins as soon as the first chunk is ready, which cuts the wait noticeably on longer sentences.
+
+Pacing took some fiddling. Pushing everything into \`appsrc\` as fast as possible defeats the purpose, because both the highlighting and the mouth scheduling key off wall-clock time, so they would run ahead of what you are actually hearing. The push loop now keeps a small lead buffer ahead of playback and sleeps the difference. Enough headroom to avoid underruns, not so much that the visuals desync.
+
+### misaki G2P Compatibility
+
+Two real breakages fixed in \`kokoro/pipeline.py\`:
+
+- \`ZHG2P\` was being constructed with \`version=\` and \`en_callable=\` arguments, but some \`misaki\` versions ship a constructor that takes no arguments at all. That threw a \`TypeError\` on import for \`lang_code='z'\`. It now falls back to the bare constructor.
+- \`self.g2p(chunk)\` assumed a \`(phonemes, extra)\` tuple came back. That holds for the en/ja/zh G2Ps, but \`EspeakG2P\` returns a bare phoneme string, so every espeak-backed language was unpacking wrong. It now handles both shapes.
+
+The second one had been quietly affecting a good chunk of the multilingual work, so it was satisfying to finally track down.
+
+## What's Next
+
+- ONNX export for Kokoro and MMS-TTS. Carried over from last week, still the priority for inference speed and model size.
+- A ModelManager for centralized model loading, caching, and switching between engines.
+- Tests for the highlighting and streaming paths. The timing logic especially needs coverage.
+- Go through the native speaker feedback from the Google Form and refine corpora where pronunciation gets flagged.
+
+## Resources & References
+
+- **Speak-AI Repository:** [sugarlabs/speak-ai](https://github.com/sugarlabs/speak-ai)
+- **Kokoro TTS:** [hexgrad/kokoro](https://github.com/hexgrad/kokoro)
+- **misaki G2P:** [hexgrad/misaki](https://github.com/hexgrad/misaki)
+- **Meta MMS-TTS:** [facebookresearch/fairseq (examples/mms)](https://github.com/facebookresearch/fairseq/tree/main/examples/mms)
+- **Kokoro-82M Model:** [hexgrad/Kokoro-82M on Hugging Face](https://huggingface.co/hexgrad/Kokoro-82M)
+
+## Acknowledgments
+
+Thanks as always to Mebin and Ibiam. This week was less about adding capability and more about making Speak feel right. The synthesis was already working fine, but watching the face move out of sync with the voice made it obvious how much the presentation matters when the thing you are building is meant for kids. Driving both the mouth and the highlighting off real audio timing made a bigger difference than I expected it to.
+`,fp=e({default:()=>pp}),pp=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -33727,7 +33811,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,fp=e({default:()=>pp}),pp=`---
+`,mp=e({default:()=>hp}),hp=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -33830,7 +33914,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,mp=e({default:()=>hp}),hp=`---
+`,gp=e({default:()=>_p}),_p=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -34303,7 +34387,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,gp=e({default:()=>_p}),_p=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,vp=e({default:()=>yp}),yp=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -34390,7 +34474,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,vp=e({default:()=>yp}),yp=`---\r
+`,bp=e({default:()=>xp}),xp=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -34483,7 +34567,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,bp=e({default:()=>xp}),xp=`---\r
+`,Sp=e({default:()=>Cp}),Cp=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -34577,7 +34661,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Sp=e({default:()=>Cp}),Cp=`---\r
+`,wp=e({default:()=>Tp}),Tp=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -34665,7 +34749,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,wp=e({default:()=>Tp}),Tp=`---\r
+`,Ep=e({default:()=>Dp}),Dp=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -34748,7 +34832,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Ep=e({default:()=>Dp}),Dp=`---\r
+`,Op=e({default:()=>kp}),kp=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -34814,7 +34898,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Op=e({default:()=>kp}),kp=`---
+`,Ap=e({default:()=>jp}),jp=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -34896,7 +34980,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Ap=e({default:()=>jp}),jp=`---
+---`,Mp=e({default:()=>Np}),Np=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -34989,7 +35073,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Mp=e({default:()=>Np}),Np=`---
+`,Pp=e({default:()=>Fp}),Fp=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -35078,7 +35162,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Pp=e({default:()=>Fp}),Fp=`---
+--- `,Ip=e({default:()=>Lp}),Lp=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35223,7 +35307,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Ip=e({default:()=>Lp}),Lp=`---
+--- `,Rp=e({default:()=>zp}),zp=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35411,7 +35495,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Rp=e({default:()=>zp}),zp=`---
+--- `,Bp=e({default:()=>Vp}),Vp=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35506,7 +35590,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Bp=e({default:()=>Vp}),Vp=`---
+`,Hp=e({default:()=>Up}),Up=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35595,7 +35679,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Hp=e({default:()=>Up}),Up=`---
+`,Wp=e({default:()=>Gp}),Gp=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35682,7 +35766,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Wp=e({default:()=>Gp}),Gp=`---
+---`,Kp=e({default:()=>qp}),qp=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35765,7 +35849,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Kp=e({default:()=>qp}),qp=`---
+---`,Jp=e({default:()=>Yp}),Yp=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35848,7 +35932,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Jp=e({default:()=>Yp}),Yp=`---
+---`,Xp=e({default:()=>Zp}),Zp=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -36153,4 +36237,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Zd as $,Yt as $a,Xr as $i,Zs as $n,Y as $o,Xa as $r,Zl as $t,Wf as A,Hn as Aa,Hi as Ai,Uc as An,Ve as Ao,Uo as Ar,Uu as At,wf as B,Sn as Ba,Si as Bi,Cc as Bn,xe as Bo,Co as Br,Cu as Bt,ip as C,nr as Ca,na as Ci,rl as Cn,tt as Co,rs as Cr,t as Cs,rd as Ct,Xf as D,Jn as Da,Ji as Di,Yc as Dn,qe as Do,Yo as Dr,Yu as Dt,Qf as E,Xn as Ea,Xi as Ei,Zc as En,Ye as Eo,Zo as Er,Zu as Et,Pf as F,Mn as Fa,Mi as Fi,Nc as Fn,je as Fo,No as Fr,Nu as Ft,mf as G,fn as Ga,fi as Gi,pc as Gn,de as Go,po as Gr,pu as Gt,bf as H,vn as Ha,vi as Hi,yc as Hn,_e as Ho,yo as Hr,yu as Ht,Mf as I,An as Ia,Ai as Ii,jc as In,ke as Io,jo as Ir,ju as It,cf as J,on as Ja,oi as Ji,sc as Jn,ae as Jo,oo as Jr,su as Jt,ff as K,un as Ka,ui as Ki,dc as Kn,le as Ko,uo as Kr,du as Kt,Af as L,On as La,Oi as Li,kc as Ln,De as Lo,ko as Lr,ku as Lt,Bf as M,Rn as Ma,Ri as Mi,zc as Mn,Le as Mo,zo as Mr,zu as Mt,Rf as N,In as Na,Ii as Ni,Lc as Nn,Fe as No,Lo as Nr,Lu as Nt,Jf as O,Kn as Oa,Ki as Oi,qc as On,Ge as Oo,qo as Or,qu as Ot,If as P,Pn as Pa,Pi,Fc as Pn,Ne as Po,Fo as Pr,Fu as Pt,$d as Q,Zt as Qa,Qr as Qi,$s as Qn,Z as Qo,Qa as Qr,$l as Qt,Of as R,En as Ra,Ei as Ri,Dc as Rn,Te as Ro,Do as Rr,Du as Rt,op as S,ir as Sa,ia as Si,al as Sn,rt as So,as as Sr,r as Ss,ad as St,ep as T,Qn as Ta,Qi as Ti,$c as Tn,Ze as To,$o as Tr,$u as Tt,vf as U,gn as Ua,gi as Ui,_c as Un,he as Uo,_o as Ur,_u as Ut,Sf as V,bn as Va,bi as Vi,xc as Vn,ye as Vo,xo as Vr,xu as Vt,gf as W,mn as Wa,mi as Wi,hc as Wn,pe as Wo,ho as Wr,hu as Wt,rf as X,tn as Xa,ni as Xi,rc as Xn,te as Xo,no as Xr,ru as Xt,of as Y,rn as Ya,ii as Yi,ac as Yn,re as Yo,io as Yr,au as Yt,tf as Z,$t as Za,ei as Zi,tc as Zn,$ as Zo,eo as Zr,tu as Zt,gp as _,mr as _a,ma as _i,hl as _n,pt as _o,hs as _r,p as _s,hd as _t,Bp as a,Rr as aa,Ra as ai,zl as an,Lt as ao,zs as ar,L as as,zd as at,up as b,cr as ba,ca as bi,ll as bn,st as bo,ls as br,s as bs,ld as bt,Pp as c,Mr as ca,Ma as ci,Nl as cn,jt as co,Ns as cr,j as cs,Nd as ct,Op as d,Er as da,Ea as di,Dl as dn,Tt as do,Ds as dr,T as ds,Dd as dt,Jr as ea,Ja as ei,Yl as en,qt as eo,Ys as er,q as es,Yd as et,Ep as f,wr as fa,wa as fi,Tl as fn,Ct as fo,Ts as fr,C as fs,Td as ft,vp as g,gr as ga,ga as gi,_l as gn,ht as go,_s as gr,h as gs,_d as gt,bp as h,vr as ha,va as hi,yl as hn,_t as ho,ys as hr,_ as hs,yd as ht,Hp as i,Br as ia,Ba as ii,Vl as in,zt as io,Vs as ir,z as is,Vd as it,Hf as j,Bn as ja,Bi as ji,Vc as jn,ze as jo,Vo as jr,Vu as jt,Kf as k,Wn as ka,Wi as ki,Gc as kn,Ue as ko,Go as kr,Gu as kt,Mp as l,Ar as la,Aa as li,jl as ln,kt as lo,js as lr,k as ls,jd as lt,Sp as m,br as ma,ba as mi,xl as mn,yt as mo,xs as mr,y as ms,xd as mt,Kp as n,Wr as na,Wa as ni,Gl as nn,Ut as no,Gs as nr,U as ns,Gd as nt,Rp as o,Ir as oa,Ia as oi,Ll as on,Ft as oo,Ls as or,F as os,Ld as ot,wp as p,Sr as pa,Sa as pi,Cl as pn,xt as po,Cs as pr,x as ps,Cd as pt,uf as q,cn as qa,ci as qi,lc as qn,se as qo,co as qr,lu as qt,Wp as r,Hr as ra,Ha as ri,Ul as rn,Vt as ro,Us as rr,V as rs,Ud as rt,Ip as s,Pr as sa,Pa as si,Fl as sn,Nt as so,Fs as sr,N as ss,Fd as st,Jp as t,Kr as ta,Ka as ti,ql as tn,Gt as to,qs as tr,G as ts,qd as tt,Ap as u,Or as ua,Oa as ui,kl as un,Dt as uo,ks as ur,D as us,kd as ut,mp as v,fr as va,fa as vi,pl as vn,dt as vo,ps as vr,d as vs,pd as vt,np as w,er as wa,ea as wi,tl as wn,$e as wo,ts as wr,td as wt,cp as x,or as xa,oa as xi,sl as xn,at as xo,ss as xr,a as xs,sd as xt,fp as y,ur as ya,ua as yi,dl as yn,lt as yo,ds as yr,l as ys,dd as yt,Ef as z,wn as za,wi as zi,Tc as zn,Ce as zo,To as zr,Tu as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{$d as $,Zt as $a,Qr as $i,$s as $n,Z as $o,Qa as $r,$l as $t,Kf as A,Wn as Aa,Wi as Ai,Gc as An,Ue as Ao,Go as Ar,Gu as At,Ef as B,wn as Ba,wi as Bi,Tc as Bn,Ce as Bo,To as Br,Tu as Bt,op as C,ir as Ca,ia as Ci,al as Cn,rt as Co,as as Cr,r as Cs,ad as Ct,Qf as D,Xn as Da,Xi as Di,Zc as Dn,Ye as Do,Zo as Dr,Zu as Dt,ep as E,Qn as Ea,Qi as Ei,$c as En,Ze as Eo,$o as Er,$u as Et,If as F,Pn as Fa,Pi as Fi,Fc as Fn,Ne as Fo,Fo as Fr,Fu as Ft,gf as G,mn as Ga,mi as Gi,hc as Gn,pe as Go,ho as Gr,hu as Gt,Sf as H,bn as Ha,bi as Hi,xc as Hn,ye as Ho,xo as Hr,xu as Ht,Pf as I,Mn as Ia,Mi as Ii,Nc as In,je as Io,No as Ir,Nu as It,uf as J,cn as Ja,ci as Ji,lc as Jn,se as Jo,co as Jr,lu as Jt,mf as K,fn as Ka,fi as Ki,pc as Kn,de as Ko,po as Kr,pu as Kt,Mf as L,An as La,Ai as Li,jc as Ln,ke as Lo,jo as Lr,ju as Lt,Hf as M,Bn as Ma,Bi as Mi,Vc as Mn,ze as Mo,Vo as Mr,Vu as Mt,Bf as N,Rn as Na,Ri as Ni,zc as Nn,Le as No,zo as Nr,zu as Nt,Xf as O,Jn as Oa,Ji as Oi,Yc as On,qe as Oo,Yo as Or,Yu as Ot,Rf as P,In as Pa,Ii as Pi,Lc as Pn,Fe as Po,Lo as Pr,Lu as Pt,tf as Q,$t as Qa,ei as Qi,tc as Qn,$ as Qo,eo as Qr,tu as Qt,Af as R,On as Ra,Oi as Ri,kc as Rn,De as Ro,ko as Rr,ku as Rt,cp as S,or as Sa,oa as Si,sl as Sn,at as So,ss as Sr,a as Ss,sd as St,np as T,er as Ta,ea as Ti,tl as Tn,$e as To,ts as Tr,td as Tt,bf as U,vn as Ua,vi as Ui,yc as Un,_e as Uo,yo as Ur,yu as Ut,wf as V,Sn as Va,Si as Vi,Cc as Vn,xe as Vo,Co as Vr,Cu as Vt,vf as W,gn as Wa,gi as Wi,_c as Wn,he as Wo,_o as Wr,_u as Wt,of as X,rn as Xa,ii as Xi,ac as Xn,re as Xo,io as Xr,au as Xt,cf as Y,on as Ya,oi as Yi,sc as Yn,ae as Yo,oo as Yr,su as Yt,rf as Z,tn as Za,ni as Zi,rc as Zn,te as Zo,no as Zr,ru as Zt,vp as _,gr as _a,ga as _i,_l as _n,ht as _o,_s as _r,h as _s,_d as _t,Hp as a,Br as aa,Ba as ai,Vl as an,zt as ao,Vs as ar,z as as,Vd as at,fp as b,ur as ba,ua as bi,dl as bn,lt as bo,ds as br,l as bs,dd as bt,Ip as c,Pr as ca,Pa as ci,Fl as cn,Nt as co,Fs as cr,N as cs,Fd as ct,Ap as d,Or as da,Oa as di,kl as dn,Dt as do,ks as dr,D as ds,kd as dt,Xr as ea,Xa as ei,Zl as en,Yt as eo,Zs as er,Y as es,Zd as et,Op as f,Er as fa,Ea as fi,Dl as fn,Tt as fo,Ds as fr,T as fs,Dd as ft,bp as g,vr as ga,va as gi,yl as gn,_t as go,ys as gr,_ as gs,yd as gt,Sp as h,br as ha,ba as hi,xl as hn,yt as ho,xs as hr,y as hs,xd as ht,Wp as i,Hr as ia,Ha as ii,Ul as in,Vt as io,Us as ir,V as is,Ud as it,Wf as j,Hn as ja,Hi as ji,Uc as jn,Ve as jo,Uo as jr,Uu as jt,Jf as k,Kn as ka,Ki as ki,qc as kn,Ge as ko,qo as kr,qu as kt,Pp as l,Mr as la,Ma as li,Nl as ln,jt as lo,Ns as lr,j as ls,Nd as lt,wp as m,Sr as ma,Sa as mi,Cl as mn,xt as mo,Cs as mr,x as ms,Cd as mt,Jp as n,Kr as na,Ka as ni,ql as nn,Gt as no,qs as nr,G as ns,qd as nt,Bp as o,Rr as oa,Ra as oi,zl as on,Lt as oo,zs as or,L as os,zd as ot,Ep as p,wr as pa,wa as pi,Tl as pn,Ct as po,Ts as pr,C as ps,Td as pt,ff as q,un as qa,ui as qi,dc as qn,le as qo,uo as qr,du as qt,Kp as r,Wr as ra,Wa as ri,Gl as rn,Ut as ro,Gs as rr,U as rs,Gd as rt,Rp as s,Ir as sa,Ia as si,Ll as sn,Ft as so,Ls as sr,F as ss,Ld as st,Xp as t,Jr as ta,Ja as ti,Yl as tn,qt as to,Ys as tr,q as ts,Yd as tt,Mp as u,Ar as ua,Aa as ui,jl as un,kt as uo,js as ur,k as us,jd as ut,gp as v,mr as va,ma as vi,hl as vn,pt as vo,hs as vr,p as vs,hd as vt,ip as w,nr as wa,na as wi,rl as wn,tt as wo,rs as wr,t as ws,rd as wt,up as x,cr as xa,ca as xi,ll as xn,st as xo,ls as xr,s as xs,ld as xt,mp as y,fr as ya,fa as yi,pl as yn,dt as yo,ps as yr,d as ys,pd as yt,Of as z,En as za,Ei as zi,Dc as zn,Te as zo,Do as zr,Du as zt};
