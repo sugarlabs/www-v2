@@ -35175,7 +35175,7 @@ image: "assets/Images/GSOC.webp"
 
 3. **[Task or Feature]**  
    - Add screenshots or diagrams here if useful:
-   ![screenshot-description](https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=2070)
+   ![alt-text-description-for-visual-accessibility](https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=2070 "Image caption.")
 
 ---
 
