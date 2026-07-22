@@ -1,0 +1,85 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check-pr-status:
+    name: Build & Lint Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Build Test
+        id: ci-check
+        run: |
+          if npm run build; then
+            echo "CI_PASSED=true" >> $GITHUB_ENV
+          else
+            echo "CI_PASSED=false" >> $GITHUB_ENV
+          fi
+
+      - name: Run Linting Checks
+        id: lint-check
+        run: |
+          LINT_ERRORS=""
+          LINT_PASSED=true
+
+          if ! npm run lint:ts; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}• TypeScript linting failed\n"
+          fi
+
+          if ! npm run lint:md; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}• Markdown linting failed\n"
+          fi
+
+          if ! npm run format:check; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}• Code formatting issues detected\n"
+          fi
+
+          echo "LINT_PASSED=$LINT_PASSED" >> $GITHUB_ENV
+          echo "LINT_ERRORS<<EOF" >> $GITHUB_ENV
+          echo -e "$LINT_ERRORS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Save Results
+        if: always()
+        run: |
+          CI_PASSED=${CI_PASSED:-false}
+          LINT_PASSED=${LINT_PASSED:-false}
+          LINT_ERRORS=${LINT_ERRORS:-""}
+
+          jq -n \
+            --arg pr_number "${{ github.event.pull_request.number }}" \
+            --arg ci_passed "$CI_PASSED" \
+            --arg lint_passed "$LINT_PASSED" \
+            --arg lint_errors "$LINT_ERRORS" \
+            '{pr_number: $pr_number, ci_passed: $ci_passed, lint_passed: $lint_passed, lint_errors: $lint_errors}' \
+            > check-results.json
+
+      - name: Upload Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-check-results-${{ github.run_id }}
+          path: check-results.json
+          retention-days: 1

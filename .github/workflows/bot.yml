@@ -1,89 +1,58 @@
 name: Status Bot
 
 on:
-  pull_request_target:
-    types:
-      - opened
-      - synchronize
+  workflow_run:
+    workflows: ["PR Checks"]
+    types: [completed]
+
+permissions:
+  pull-requests: write
+  actions: read
 
 jobs:
-  check-pr-status:
-    name: Workflow Status Check
+  comment:
+    name: Post PR Comment
     runs-on: ubuntu-latest
-    permissions: 
-      pull-requests: write
-      contents: read
-      issues: write
-      actions: read
-
+    if: github.event.workflow_run.event == 'pull_request'
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Download Results
+        id: download
+        uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          name: pr-check-results-${{ github.event.workflow_run.id }}
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Run Build Test (CI Check)
-        id: ci-check
+      - name: Read Results
+        id: results
+        if: steps.download.outcome == 'success'
         run: |
-          if npm run build; then
-            echo "CI_PASSED=true" >> $GITHUB_ENV
-            echo "CI_ERROR=" >> $GITHUB_ENV
-          else
-            echo "CI_PASSED=false" >> $GITHUB_ENV
-            echo "CI_ERROR=Build failed" >> $GITHUB_ENV
-          fi
+          CI_PASSED=$(jq -r '.ci_passed' check-results.json)
+          LINT_PASSED=$(jq -r '.lint_passed' check-results.json)
+          LINT_ERRORS=$(jq -r '.lint_errors' check-results.json)
+          PR_NUMBER=$(jq -r '.pr_number' check-results.json)
 
-      - name: Run Linting Checks
-        id: lint-check
-        run: |
-          LINT_ERRORS=""
-          LINT_PASSED=true
-          
-          # Run TypeScript linting
-          if ! npm run lint:ts; then
-            LINT_PASSED=false
-            LINT_ERRORS="${LINT_ERRORS}• TypeScript linting failed\n"
-          fi
-          
-          # Run Markdown linting
-          if ! npm run lint:md; then
-            LINT_PASSED=false
-            LINT_ERRORS="${LINT_ERRORS}• Markdown linting failed\n"
-          fi
-          
-          # Check code formatting with Prettier
-          if ! npm run format:check; then
-            LINT_PASSED=false
-            LINT_ERRORS="${LINT_ERRORS}• Code formatting issues detected\n"
-          fi
-          
-          echo "LINT_PASSED=$LINT_PASSED" >> $GITHUB_ENV
-          echo "LINT_ERRORS<<EOF" >> $GITHUB_ENV
-          echo -e "$LINT_ERRORS" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          {
+            echo "CI_PASSED=$CI_PASSED"
+            echo "LINT_PASSED=$LINT_PASSED"
+            echo "PR_NUMBER=$PR_NUMBER"
+            echo "LINT_ERRORS<<EOF"
+            echo "$LINT_ERRORS"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - name: Generate PR Comment
+        if: steps.download.outcome == 'success'
         id: generate-comment
+        env:
+          CI_PASSED: ${{ steps.results.outputs.CI_PASSED }}
+          LINT_PASSED: ${{ steps.results.outputs.LINT_PASSED }}
+          LINT_ERRORS: ${{ steps.results.outputs.LINT_ERRORS }}
         run: |
-          # Extract PR number
-          PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          
-          # Generate a temporary file for the comment
           COMMENT_FILE=$(mktemp)
-          
-          # Save variables to GITHUB_OUTPUT
-          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
           echo "COMMENT_FILE=$COMMENT_FILE" >> $GITHUB_OUTPUT
-          
-          # Generate content for the comment file
+
           {
             if [ "$CI_PASSED" = "true" ] && [ "$LINT_PASSED" = "true" ]; then
               echo "## 🎉 All Checks Passed!"
@@ -109,7 +78,7 @@ jobs:
               echo ""
               echo "Please fix the following issues before merging:"
               echo ""
-              
+
               if [ "$CI_PASSED" = "false" ]; then
                 echo "### 🔨 Continuous Integration Failed"
                 echo ""
@@ -124,7 +93,7 @@ jobs:
                 echo "---"
                 echo ""
               fi
-              
+
               if [ "$LINT_PASSED" = "false" ]; then
                 echo "### 📝 Code Linting Failed"
                 echo ""
@@ -149,7 +118,7 @@ jobs:
                 echo "---"
                 echo ""
               fi
-              
+
               echo "### 🛠️ Next Steps"
               echo ""
               echo "1. **Fix the issues** mentioned above"
@@ -162,8 +131,9 @@ jobs:
           } > "$COMMENT_FILE"
 
       - name: Comment on PR
+        if: steps.download.outcome == 'success'
         uses: thollander/actions-comment-pull-request@v3
         with:
           file-path: ${{ steps.generate-comment.outputs.COMMENT_FILE }}
-          pr-number: ${{ steps.generate-comment.outputs.PR_NUMBER }}
+          pr-number: ${{ steps.results.outputs.PR_NUMBER }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
