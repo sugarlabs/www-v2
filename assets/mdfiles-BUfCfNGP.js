@@ -33180,7 +33180,7 @@ and keeps all announcements consistent through one shared region.
 Thanks to Walter Bender for the quick review and feedback on the drag
 announcement PR — the suggestion to remove the visual display and
 include the block name made the implementation much cleaner.
-`,np=e({default:()=>rp}),rp=`---
+`,np=e({default:()=>rp}),rp='---\ntitle: "DMP \'26 Week 04 Update by Vanshika Pahal"\nexcerpt: "Week 04: Extracting the search subsystem into a controller and a dedicated UI widget, decoupling palette loading, completing logo.js dependency injection, and shipping a synchronous PubSub module to replace DOM-based internal events."\ncategory: "DEVELOPER NEWS"\ndate: "2026-07-07"\nslug: "2026-07-07-dmp-26-vanshika-week04"\nauthor: "@/constants/MarkdownFiles/authors/vanshika2720.md"\ntags: "dmp26,sugarlabs,musicblocks,refactoring,week04,modularization"\nimage: "/assets/Images/dmp_c4gt_logo.png"\n---\n<!-- markdownlint-disable -->\n# Week 04 Progress Report by Vanshika Pahal\n\n**Project:** [Music Blocks v3 — Test Coverage, Refactoring & Dependency Updates](https://github.com/sugarlabs/musicblocks)  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  \n**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Week:** Completing the Roadmap — Search, Palette, Logo DI & PubSub Migration  \n**Reporting Period:** 2026-06-25 – 2026-07-01\n\n---\n\n## Overview\n\nWeek 03 closed with a four-item roadmap: decouple palette loading, split the search subsystem, finish `logo.js` dependency injection, and introduce a PubSub module to reduce DOM-based event dispatching. Week 04 cleared all four — and then went a step further by using the new PubSub infrastructure for a real migration and following the search extraction all the way through to a dedicated UI widget.\n\nThis week I worked on **7 pull requests**, changing **over 7,400 lines of code**. The work followed the same two-step extraction pattern established in previous weeks: pull logic out into a controller first, verify behavior is unchanged, then split UI concerns into their own module once the seam is proven. `SearchController` went through exactly this cycle — extracted from `activity.js` in one PR, then further split into `SearchController` (state/logic) and `SearchUI` (DOM/rendering) in a follow-up. Every PR passed all Jest tests and ESLint checks before merging.\n\n---\n\n## Week 04 at a Glance\n\n| Pull Request | Subsystem Extracted | Target File(s) | Impact & Code Changes | Status |\n| :--- | :--- | :--- | :--- | :---: |\n| **[PR #7667](https://github.com/sugarlabs/musicblocks/pull/7667)** | Search Controller | `js/activity/search-controller.js` | Extracted search state, suggestion filtering & helpful-search widget logic. | **Merged** |\n| **[PR #7669](https://github.com/sugarlabs/musicblocks/pull/7669)** | Palette Loader | `js/palette/palette-loader.js` | Extracted palette color initialization & regeneration logic. | **Merged** |\n| **[PR #7670](https://github.com/sugarlabs/musicblocks/pull/7670)** | Logo Dependency Injection | `js/logo.js` | Extended `LogoDependencies` to remove remaining direct `activity` reads. | **Merged** |\n| **[PR #7673](https://github.com/sugarlabs/musicblocks/pull/7673)** | PubSub Infrastructure | `js/pubsub.js` | Introduced a lightweight synchronous publish/subscribe module. | **Merged** |\n| **[PR #7679](https://github.com/sugarlabs/musicblocks/pull/7679)** | PubSub Migration | `js/blocks.js`, `js/activity.js` | Migrated `finishedLoading` from `document.dispatchEvent` to PubSub. | **Merged** |\n| **[PR #7698](https://github.com/sugarlabs/musicblocks/pull/7698)** | Legacy Cleanup | `js/utils/utils.js`, `js/activity.js` | Removed obsolete Internet Explorer detection & dead mousewheel code. | **Merged** |\n| **[PR #7700](https://github.com/sugarlabs/musicblocks/pull/7700)** | Search UI | `js/search-ui.js` | Split DOM/rendering responsibilities out of `SearchController` into `SearchUI`. | **Merged** |\n\n*Total changes: **+5,645 additions** and **-1,808 deletions** across all seven pull requests.*\n\n---\n\n## Detailed Breakdown of Extracted Subsystems\n\n### 1. Search Controller (PR #7667)\n\nThe search functionality — autocomplete suggestions, the helpful-search widget, and deprecated block-name handling — was still living inline inside `activity.js`, interleaved with DOM lookups and toolbar coordination.\n\n* **Changes:** Created `js/activity/search-controller.js` housing `SearchController`. State moved into the controller: `searchSuggestions`, `_searchCache`, `_searchCloseListener`, `isHelpfulSearchWidgetOn`, `searchBlockPosition`, `deprecatedBlockNames`, and `helpfulSearchDiv`.\n* **Methods Moved:** `prepSearchWidget`, `filterSuggestions`, `hideSearchWidget`, `showSearchWidget`, `doSearch`, `setHelpfulSearchDiv`, `_displayHelpfulSearchDiv`, `_hideHelpfulSearchWidget`, `showHelpfulSearchWidget`, `doHelpfulSearch`.\n* **Activity Integration:** `activity.js` initializes `SearchController` and delegates to it through thin wrapper methods. `doContextMenus` was updated to read `this.searchController.isHelpfulSearchWidgetOn` instead of a local flag.\n* **This is a pure refactor:** No functional or UI changes — verified that both the search widget and the helpful-search widget behave identically before and after.\n\n### 2. Palette Loader (PR #7669)\n\nThis PR delivered the first Week 03 roadmap item: decoupling palette color initialization and regeneration from `activity.js`.\n\n* **Changes:** Created `js/palette/palette-loader.js` housing `PaletteLoader`, which owns:\n  * `initializePaletteColors()`\n  * `regeneratePalettes()`\n* **Activity Integration:** `activity.js` now initializes `PaletteLoader` and delegates the original implementations to it; existing callers continue to work unchanged through the delegation layer.\n* **Loader Updates:** Registered the new module in `js/loader.js`.\n* **Follow-up Fix:** Added a null-check on the palette DOM element before setting its style, guarding against a case where the element isn\'t yet attached when regeneration runs.\n* **Tests Added:** 23 unit tests covering `setupPaletteLoader`, color initialization, palette regeneration, visibility restoration, and error handling.\n\n### 3. Logo Dependency Injection (PR #7670)\n\nFollowing the precedent set by the Singer action extraction, this PR finished migrating `logo.js` off direct `globalActivity` reads and onto explicit dependency injection.\n\n* **Changes:** Extended `LogoDependencies` with additional runtime dependencies — `refreshCanvas`, `textMsg`, `markStageDirty`, `save`, and `statsWindow` — each exposed through `LogoDependencies.fromActivity()` with defensive delegation for missing methods.\n* **Bug Fix Along the Way:** The legacy dependency configuration had `config` and `callbacks` getters/setters that referenced the wrong `this` context; fixed by capturing the Activity instance through a closure instead.\n* **Compatibility:** The existing Activity compatibility facade was preserved for components that still expect it — no API changes, no behavioral changes.\n* **Tests Added:** 74 new tests covering default dependency behavior, explicit injection, `fromActivity()` delegation, graceful handling of missing Activity methods, and the legacy getter/setter fix. Full suite passed at 5,796/5,796.\n* **Payoff:** This collapses what used to be a 200+ line mock preamble in `logo.test.js` down to direct, explicit dependency construction.\n\n### 4. PubSub Infrastructure (PR #7673)\n\nThe last Week 03 roadmap item — replacing scattered `document.dispatchEvent` calls with something lighter — started as pure infrastructure, with no existing callers migrated yet.\n\n* **Changes:** Created `js/pubsub.js`, a synchronous publish/subscribe implementation exposing `emit()`, `on()`, `off()`, `once()`, and `clear()`.\n* **Design Constraints:** Synchronous dispatch, deterministic listener ordering, no `document` or `CustomEvent` dependency, and a minimal surface that\'s trivial to mock in Jest.\n* **Scope:** Intentionally infrastructure-only — no existing DOM event callers were touched in this PR, so runtime behavior was fully unchanged.\n* **Review Feedback:** Walter asked for a concrete example of how a listener migration would look; the follow-up showed replacing `document.addEventListener("stop-turtle", onStop)` / `document.dispatchEvent(new CustomEvent(...))` with `pubsub.on("stop-turtle", onStop)` / `pubsub.emit("stop-turtle", data)` — same synchronous semantics, no DOM dependency.\n* **Tests Added:** Comprehensive coverage for registration, synchronous emit, payload forwarding, multiple listeners, deterministic ordering, `off()`, `once()`, emitting with no listeners, nested synchronous emits, and listener exception propagation.\n\n### 5. PubSub Migration — `finishedLoading` (PR #7679)\n\nWith the infrastructure in place, this PR delivered the first real migration: the internal `finishedLoading` event, emitted once after blocks finish loading and consumed by multiple modules with no actual DOM dependency.\n\n* **Changes:** Replaced the `document.dispatchEvent` / `CustomEvent` / `document.addEventListener` chain for `finishedLoading` with `pubsub.emit()` / `pubsub.on()`. Updated the producer in `js/blocks.js` and consumers in `js/activity.js`, `js/blocks/EnsembleBlocks.js`, and `js/planetInterface.js`.\n* **Cleanup:** Removed the legacy `document.attachEvent` fallback that existed solely for Internet Explorer.\n* **Scope Discipline:** Browser-facing events — pointer, drag, keyboard, `DOMContentLoaded`, `visibilitychange` — were explicitly left untouched. Only the one internal event was migrated.\n* **Tests:** Updated Jest coverage to verify the event still fires exactly once, listener ordering is preserved, and all existing consumers continue to execute.\n* **Reference Pattern:** This PR now serves as the template for migrating the remaining internal `document.dispatchEvent` call sites incrementally.\n\n### 6. Legacy DOM Cleanup (PR #7698)\n\nA small cleanup surfaced directly by the DOM event audit that preceded the PubSub migration.\n\n* **Removed:** The Internet Explorer detection block (`DetectVersionOfIE`) from `js/utils/utils.js` — IE reached end-of-life in 2022 and the warning code had no remaining runtime dependents.\n* **Removed:** A dead, fully commented-out `mousewheel`/`DOMMouseScroll` listener block in `js/activity.js` — wheel handling is already covered by the active listener elsewhere in the same method.\n* **Verification:** Confirmed wheel behavior and application startup are unaffected on Chrome, Firefox, Safari, and Chromium Edge.\n\n### 7. Search UI (PR #7700)\n\nThe final PR of the week continued the search extraction from earlier in the week (#7667) through to its natural conclusion — separating logic from rendering, the same controller/UI split pattern used for grids, plugins, toolbar, and alerts in Week 03.\n\n* **Changes:** Created `js/search-ui.js` housing `SearchUI`, which now owns DOM interactions, widget visibility, positioning, focus management, and autocomplete initialization for search.\n* **Responsibility Split:**\n\n  | Before (`SearchController`) | After |\n  | :--- | :--- |\n  | Search logic + state | `SearchController` — search state, suggestion generation, autocomplete callbacks, block placement |\n  | DOM manipulation + rendering | `SearchUI` — widget rendering, visibility, positioning, focus, autocomplete UI |\n\n* **This is a pure refactor:** No functional or UI changes intended — the split mirrors the controller/UI pattern already validated across grid, plugin, toolbar, and alert subsystems.\n\n---\n\n## Architectural Impact\n\nWeek 04 closes out the controller/UI split initiative for the two subsystems that were still pending (search, palette) and finishes the two structural threads from Week 03\'s roadmap that weren\'t about controller/UI splitting at all — dependency injection for `logo.js` and event-dispatch modernization via PubSub:\n\n| Initiative | Status After Week 04 |\n| :--- | :--- |\n| **Controller/UI Split** | Grid, Plugin, Toolbar, Alert (Week 03) + Search (Week 04) — all follow the same pattern now. |\n| **Palette Decoupling** | `PaletteLoader` isolates color initialization/regeneration from UI click events. |\n| **`logo.js` Dependency Injection** | Complete — no more direct `globalActivity` reads for the migrated dependencies. |\n| **Event Dispatching** | PubSub infrastructure shipped and validated with a real migration (`finishedLoading`). |\n\nWith search now split the same way as the other four subsystems, `activity.js` has a single, repeatable shape for every remaining extraction: state and logic in a controller, DOM and rendering in a UI module, orchestration only in `activity.js`.\n\n---\n\n## Key Learnings\n\n1. **Ship Infrastructure Separately From Migration:** Introducing PubSub as a standalone, zero-caller PR (#7673) made it trivial to review in isolation, and gave the team a concrete example to discuss before any real migration (#7679) landed.\n2. **Audits Surface Cleanup Work For Free:** The DOM event audit that justified PubSub also surfaced two unrelated pieces of dead code (IE detection, commented-out mousewheel handling) that were worth removing on their own merits.\n3. **The Controller/UI Split Generalizes:** Applying the same pattern to search that was used for grid, plugin, toolbar, and alert in Week 03 confirms it\'s a repeatable template rather than something bespoke to any one subsystem.\n\n---\n\n## Roadmap for Week 05\n\n* **Embedded Graphics Scheduler:** `logo.js` still carries `dispatchTurtleSignals()`, a ~700-line method that schedules and replays embedded turtle-graphics commands during note playback. Extract it into a dedicated `EmbeddedGraphicsScheduler` module so interpreter execution and animation scheduling become independently testable, with `Logo` reduced to a thin delegation wrapper around the existing public API.\n* **Logo Constructor Simplification:** Close out the dependency-injection work from Week 04 by removing the constructor\'s duplicated manual dependency wiring in favor of `LogoDependencies.fromActivity()` — this also fixes a latent getter-binding bug where `config`/`callbacks` getters resolved `this` against the wrong object.\n* **Interpreter Readability Pass:** `logo.js` remains one of the most complex files in the project. Add JSDoc to core methods (`parseArg()`, `updateNotation()`, `notationMIDI()`, `runLogoCommands()`, `runFromBlockNow()`, `safePluginExecute()`), rename opaque temporary variables, and simplify nested conditionals — no behavioral changes.\n* **Logo Test Coverage:** Backfill unit tests for previously untested `logo.js` paths — plugin execution success/error handling, `parseArg()` edge cases, all `dispatchTurtleSignals()` dispatch-factor thresholds, and timer-manager guard behavior — ahead of the scheduler extraction, so the split has a coverage safety net underneath it.\n* **Grid UI Regression Watch:** Fix the initialization-order bug from the earlier `GridController` extraction (#7566) where `Turtles` was constructed before `setupGridController()`, leaving `activity.turtles.doGrid` undefined and breaking the Grid menu. Add regression tests, and follow up on a secondary issue flagged in review — the grid doesn\'t render immediately after the fix and needs an explicit canvas refresh triggered on grid-state change.\n* **Project Manager Extraction:** The largest item on the roadmap — extract project loading, saving, import, session restore, and startup/URL-parameter handling out of `activity.js` into a new `ProjectManager` module (`setupProjectManager(activity)`), with `activity.js` reduced to thin delegate wrappers. This is a pure extraction with no intended behavior change, but it touches the app\'s highest-risk flows, so the automated suite alone won\'t be enough to sign off on it.\n\n## Acknowledgements\n\nA special thank you to my mentor **Walter Bender** for reviewing and merging all seven pull requests this week, and for the direct feedback on the PubSub migration example that helped clarify the pattern for future work. I would also like to thank the rest of the Sugar Labs community for their continued support during reviews.\n',ip=e({default:()=>ap}),ap=`---
 title: "GSoC '26 Week 6: Hari - The New My Project Dropdown, Planet Sync & Bulletproof Persistence"
 excerpt: "This week I introduced a new My Project dropdown, synced Git state across contexts via a postMessage bridge, and fixed some tricky local storage bugs for bulletproof project persistence."
 category: "DEVELOPER NEWS"
@@ -33241,7 +33241,7 @@ Finally, I upgraded the publishing pipeline so that the backend receives an accu
 Next week, my main focus will be on improving the UI and testing everything with mentors and students. I'll also be documenting exactly how all the buttons and features work. The goal is to see if there is any redundancy or to remove any confusion that might happen for users. 
 
 See you next time!
-`,ip=e({default:()=>ap}),ap=`---
+`,op=e({default:()=>sp}),sp=`---
 title: "DMP '26 Week 04 Update by Noaman Akhtar"
 excerpt: "Adding OpenAI-compatible and Gemini providers so any hosted model can plug into Sugar-AI through the same factory, without touching RAGAgent."
 category: "DEVELOPER NEWS"
@@ -33346,7 +33346,7 @@ With four backends in place, the next step is the piece that ties them together:
 ## Acknowledgments
 
 Thanks to my mentors and the Sugar Labs community. The balance these providers try to strike, keeping open models the default while still letting anyone bring their own, came directly from their guidance on what Sugar's users actually need.
-`,op=e({default:()=>sp}),sp=`---
+`,cp=e({default:()=>lp}),lp=`---
 title: "DMP '26 Week 04 Update by NSA Raiyyan"
 excerpt: "Rewrote the core TTS modules, added 83 tests, generated Tier 3 WAVs, and cleaned up the commit history."
 category: "DEVELOPER NEWS"
@@ -33434,7 +33434,7 @@ Added \`ALL_TIER_3\` in \`common.py\` and \`test_tier3.py\` to generate and vali
 ## Acknowledgments
 
 Thanks to Mebin and Ibiam for the continued mentorship. The codebase was starting to show its age in a few places, so getting to do this cleanup was satisfying. 83 tests passing, 0 flake8 errors, and the commit history finally looks intentional.
-`,cp=e({default:()=>lp}),lp=`---
+`,up=e({default:()=>dp}),dp=`---
 title: "DMP '26 Week 5 Update by Stuti Jain"
 excerpt: "Introduced Choon as the story companion and implemented an Explorer Journal for recording, revisiting, and expanding learners' reflections, while planning support for independent notes and contextual discovery guidance."
 category: "DEVELOPER NEWS"
@@ -33708,7 +33708,7 @@ Thanks to Walter Bender for reviewing the Explorer Journal implementation and pr
 
 The discussions around reusable help cards helped define a clearer approach for supporting children during optional discovery activities without removing the opportunity for independent exploration.
 
-I also appreciate Devin Ulibarri and the Sugar Labs community for their continued guidance and support throughout the development of the lesson framework.`,up=e({default:()=>dp}),dp=`---
+I also appreciate Devin Ulibarri and the Sugar Labs community for their continued guidance and support throughout the development of the lesson framework.`,fp=e({default:()=>pp}),pp=`---
 title: "GSoC '26 Week 7 Report by Rejah Rabeeul Haque"
 excerpt: "Fixed current issues in ConnectTheDots including Number Mode UI enhancements, confetti animation, and implemented the Settings feature."
 category: "DEVELOPER NEWS"
@@ -33821,7 +33821,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance and patience, and 
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,fp=e({default:()=>pp}),pp=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,mp=e({default:()=>hp}),hp=`---
 title: "GSoC '26 Week 7 Update by Syed Khubayb Ur Rahman"
 excerpt: "Implementing Brick Tower bookkeeping in the Workspace and drag-and-drop micro-animations in the Palette."
 category: "DEVELOPER NEWS"
@@ -33893,7 +33893,7 @@ Conversely, once the drag operation ends—whether the Brick is successfully dro
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,mp=e({default:()=>hp}),hp=`---
+`,gp=e({default:()=>_p}),_p=`---
 title: "GSoC '26 Week 07 Update by Shubham Sharma"
 excerpt: "Starting the reflection engine as its own package with a first working path end to end, getting the first labels back on the rewritten question-quality test, working out what the constructionist reading means for the design, and taking the entry view exploration further"
 category: "DEVELOPER NEWS"
@@ -34037,7 +34037,7 @@ Thanks to Walter, who answered a lot of my questions this week and put time into
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,gp=e({default:()=>_p}),_p=`---
+`,vp=e({default:()=>yp}),yp=`---
 title: "GSoC '26 Week 7 Update by Harihara Vardhan"
 excerpt: "This week I finalized the Time Travel timeline UI after exploring three design directions, renamed Planet to Git Planet for clarity, and ran a round of frontend testing to catch data leaks and performance issues."
 category: "DEVELOPER NEWS"
@@ -34124,7 +34124,7 @@ Nothing critical came up. A few small things were tightened along the way.
 Next week I will start implementing the game-style timeline UI and keep testing more features end to end.
 
 See you next week!
-`,vp=e({default:()=>yp}),yp=`---
+`,bp=e({default:()=>xp}),xp=`---
 title: "DMP '26 Week 05 Update by NSA Raiyyan"
 excerpt: "Added word-level highlighting synced to speech, waveform-driven mouth animation, and streaming playback for Kokoro."
 category: "DEVELOPER NEWS"
@@ -34208,7 +34208,7 @@ The second one had been quietly affecting a good chunk of the multilingual work,
 ## Acknowledgments
 
 Thanks as always to Mebin and Ibiam. This week was less about adding capability and more about making Speak feel right. The synthesis was already working fine, but watching the face move out of sync with the voice made it obvious how much the presentation matters when the thing you are building is meant for kids. Driving both the mouth and the highlighting off real audio timing made a bigger difference than I expected it to.
-`,bp=e({default:()=>xp}),xp=`---
+`,Sp=e({default:()=>Cp}),Cp=`---
 title: "GSoC '26 Week 8 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented responsive design, back button optimization, new category addition, and Edit Features in the Number Mode of ConnectTheDots activity."
 category: "DEVELOPER NEWS"
@@ -34288,7 +34288,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance and patience, and 
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Sp=e({default:()=>Cp}),Cp=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,wp=e({default:()=>Tp}),Tp=`---
 title: "GSoC '26 Week 8 Update by Harihara Vardhan"
 excerpt: "This week the game-style Time Travel timeline is fully implemented and ready for review, I fixed the project renaming key bug, and added a proper 'Start of Project' anchor to the timeline."
 category: "DEVELOPER NEWS"
@@ -34339,7 +34339,7 @@ The first is **offline git**. The goal is to make the git features work even whe
 The second is a **git lesson plan**. I want to create something that actually teaches students how version control works using the features we have built. Not just "here is a button, press it," but an actual guided experience that helps students understand why saving your work matters, what a commit really is, and how going back in time can save a project.
 
 It has been a great journey watching all of these pieces fall into place. Eight weeks in, and the core git experience is looking really solid. See you next week!
-`,wp=e({default:()=>Tp}),Tp=`---
+`,Ep=e({default:()=>Dp}),Dp=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -34488,7 +34488,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Ep=e({default:()=>Dp}),Dp=`---
+`,Op=e({default:()=>kp}),kp=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -34591,7 +34591,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Op=e({default:()=>kp}),kp=`---
+`,Ap=e({default:()=>jp}),jp=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -35064,7 +35064,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Ap=e({default:()=>jp}),jp=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Mp=e({default:()=>Np}),Np=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -35151,7 +35151,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Mp=e({default:()=>Np}),Np=`---\r
+`,Pp=e({default:()=>Fp}),Fp=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -35244,7 +35244,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Pp=e({default:()=>Fp}),Fp=`---\r
+`,Ip=e({default:()=>Lp}),Lp=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -35338,7 +35338,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Ip=e({default:()=>Lp}),Lp=`---\r
+`,Rp=e({default:()=>zp}),zp=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -35426,7 +35426,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Rp=e({default:()=>zp}),zp=`---\r
+`,Bp=e({default:()=>Vp}),Vp=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -35509,7 +35509,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Bp=e({default:()=>Vp}),Vp=`---\r
+`,Hp=e({default:()=>Up}),Up=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -35575,7 +35575,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Hp=e({default:()=>Up}),Up=`---
+`,Wp=e({default:()=>Gp}),Gp=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -35657,7 +35657,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Wp=e({default:()=>Gp}),Gp=`---
+---`,Kp=e({default:()=>qp}),qp=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -35750,7 +35750,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Kp=e({default:()=>qp}),qp=`---
+`,Jp=e({default:()=>Yp}),Yp=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -35839,7 +35839,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Jp=e({default:()=>Yp}),Yp=`---
+--- `,Xp=e({default:()=>Zp}),Zp=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35984,7 +35984,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Xp=e({default:()=>Zp}),Zp=`---
+--- `,Qp=e({default:()=>$p}),$p=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -36172,7 +36172,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Qp=e({default:()=>$p}),$p=`---
+--- `,em=e({default:()=>tm}),tm=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -36267,7 +36267,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,em=e({default:()=>tm}),tm=`---
+`,nm=e({default:()=>rm}),rm=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -36356,7 +36356,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,nm=e({default:()=>rm}),rm=`---
+`,im=e({default:()=>am}),am=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -36443,7 +36443,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,im=e({default:()=>am}),am=`---
+---`,om=e({default:()=>sm}),sm=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -36526,7 +36526,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,om=e({default:()=>sm}),sm=`---
+---`,cm=e({default:()=>lm}),lm=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -36609,7 +36609,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,cm=e({default:()=>lm}),lm=`---
+---`,um=e({default:()=>dm}),dm=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -36914,4 +36914,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{ff as $,un as $a,ui as $i,dc as $n,le as $o,uo as $r,du as $t,ip as A,nr as Aa,na as Ai,rl as An,tt as Ao,rs as Ar,t as As,rd as At,Rf as B,In as Ba,Ii as Bi,Lc as Bn,Fe as Bo,Lo as Br,Lu as Bt,vp as C,gr as Ca,ga as Ci,_l as Cn,ht as Co,_s as Cr,h as Cs,_d as Ct,up as D,cr as Da,ca as Di,ll as Dn,st as Do,ls as Dr,s as Ds,ld as Dt,fp as E,ur as Ea,ua as Ei,dl as En,lt as Eo,ds as Er,l as Es,dd as Et,Jf as F,Kn as Fa,Ki as Fi,qc as Fn,Ge as Fo,qo as Fr,qu as Ft,Of as G,En as Ga,Ei as Gi,Dc as Gn,Te as Go,Do as Gr,Du as Gt,Pf as H,Mn as Ha,Mi as Hi,Nc as Hn,je as Ho,No as Hr,Nu as Ht,Kf as I,Wn as Ia,Wi as Ii,Gc as In,Ue as Io,Go as Ir,Gu as It,Sf as J,bn as Ja,bi as Ji,xc as Jn,ye as Jo,xo as Jr,xu as Jt,Ef as K,wn as Ka,wi as Ki,Tc as Kn,Ce as Ko,To as Kr,Tu as Kt,Wf as L,Hn as La,Hi as Li,Uc as Ln,Ve as Lo,Uo as Lr,Uu as Lt,ep as M,Qn as Ma,Qi as Mi,$c as Mn,Ze as Mo,$o as Mr,$u as Mt,Qf as N,Xn as Na,Xi as Ni,Zc as Nn,Ye as No,Zo as Nr,Zu as Nt,cp as O,or as Oa,oa as Oi,sl as On,at as Oo,ss as Or,a as Os,sd as Ot,Xf as P,Jn as Pa,Ji as Pi,Yc as Pn,qe as Po,Yo as Pr,Yu as Pt,mf as Q,fn as Qa,fi as Qi,pc as Qn,de as Qo,po as Qr,pu as Qt,Hf as R,Bn as Ra,Bi as Ri,Vc as Rn,ze as Ro,Vo as Rr,Vu as Rt,bp as S,vr as Sa,va as Si,yl as Sn,_t as So,ys as Sr,_ as Ss,yd as St,mp as T,fr as Ta,fa as Ti,pl as Tn,dt as To,ps as Tr,d as Ts,pd as Tt,Mf as U,An as Ua,Ai as Ui,jc as Un,ke as Uo,jo as Ur,ju as Ut,If as V,Pn as Va,Pi as Vi,Fc as Vn,Ne as Vo,Fo as Vr,Fu as Vt,Af as W,On as Wa,Oi as Wi,kc as Wn,De as Wo,ko as Wr,ku as Wt,vf as X,gn as Xa,gi as Xi,_c as Xn,he as Xo,_o as Xr,_u as Xt,bf as Y,vn as Ya,vi as Yi,yc as Yn,_e as Yo,yo as Yr,yu as Yt,gf as Z,mn as Za,mi as Zi,hc as Zn,pe as Zo,ho as Zr,hu as Zt,Ap as _,Or as _a,Oa as _i,kl as _n,Dt as _o,ks as _r,D as _s,kd as _t,em as a,Qr as aa,Qa as ai,$l as an,Zt as ao,$s as ar,Z as as,$d as at,wp as b,Sr as ba,Sa as bi,Cl as bn,xt as bo,Cs as br,x as bs,Cd as bt,Jp as c,Kr as ca,Ka as ci,ql as cn,Gt as co,qs as cr,G as cs,qd as ct,Hp as d,Br as da,Ba as di,Vl as dn,zt as do,Vs as dr,z as ds,Vd as dt,ci as ea,co as ei,lu as en,cn as eo,lc as er,se as es,uf as et,Bp as f,Rr as fa,Ra as fi,zl as fn,Lt as fo,zs as fr,L as fs,zd as ft,Mp as g,Ar as ga,Aa as gi,jl as gn,kt as go,js as gr,k as gs,jd as gt,Pp as h,Mr as ha,Ma as hi,Nl as hn,jt as ho,Ns as hr,j as hs,Nd as ht,nm as i,ei as ia,eo as ii,tu as in,$t as io,tc as ir,$ as is,tf as it,np as j,er as ja,ea as ji,tl as jn,$e as jo,ts as jr,td as jt,op as k,ir as ka,ia as ki,al as kn,rt as ko,as as kr,r as ks,ad as kt,Kp as l,Wr as la,Wa as li,Gl as ln,Ut as lo,Gs as lr,U as ls,Gd as lt,Ip as m,Pr as ma,Pa as mi,Fl as mn,Nt as mo,Fs as mr,N as ms,Fd as mt,om as n,ii as na,io as ni,au as nn,rn as no,ac as nr,re as ns,of as nt,Qp as o,Xr as oa,Xa as oi,Zl as on,Yt as oo,Zs as or,Y as os,Zd as ot,Rp as p,Ir as pa,Ia as pi,Ll as pn,Ft as po,Ls as pr,F as ps,Ld as pt,wf as q,Sn as qa,Si as qi,Cc as qn,xe as qo,Co as qr,Cu as qt,im as r,ni as ra,no as ri,ru as rn,tn as ro,rc as rr,te as rs,rf as rt,Xp as s,Jr as sa,Ja as si,Yl as sn,qt as so,Ys as sr,q as ss,Yd as st,cm as t,oi as ta,oo as ti,su as tn,on as to,sc as tr,ae as ts,cf as tt,Wp as u,Hr as ua,Ha as ui,Ul as un,Vt as uo,Us as ur,V as us,Ud as ut,Op as v,Er as va,Ea as vi,Dl as vn,Tt as vo,Ds as vr,T as vs,Dd as vt,gp as w,mr as wa,ma as wi,hl as wn,pt as wo,hs as wr,p as ws,hd as wt,Sp as x,br as xa,ba as xi,xl as xn,yt as xo,xs as xr,y as xs,xd as xt,Ep as y,wr as ya,wa as yi,Tl as yn,Ct as yo,Ts as yr,C as ys,Td as yt,Bf as z,Rn as za,Ri as zi,zc as zn,Le as zo,zo as zr,zu as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{mf as $,fn as $a,fi as $i,pc as $n,de as $o,po as $r,pu as $t,op as A,ir as Aa,ia as Ai,al as An,rt as Ao,as as Ar,r as As,ad as At,Bf as B,Rn as Ba,Ri as Bi,zc as Bn,Le as Bo,zo as Br,zu as Bt,bp as C,vr as Ca,va as Ci,yl as Cn,_t as Co,ys as Cr,_ as Cs,yd as Ct,fp as D,ur as Da,ua as Di,dl as Dn,lt as Do,ds as Dr,l as Ds,dd as Dt,mp as E,fr as Ea,fa as Ei,pl as En,dt as Eo,ps as Er,d as Es,pd as Et,Xf as F,Jn as Fa,Ji as Fi,Yc as Fn,qe as Fo,Yo as Fr,Yu as Ft,Af as G,On as Ga,Oi as Gi,kc as Gn,De as Go,ko as Gr,ku as Gt,If as H,Pn as Ha,Pi as Hi,Fc as Hn,Ne as Ho,Fo as Hr,Fu as Ht,Jf as I,Kn as Ia,Ki as Ii,qc as In,Ge as Io,qo as Ir,qu as It,wf as J,Sn as Ja,Si as Ji,Cc as Jn,xe as Jo,Co as Jr,Cu as Jt,Of as K,En as Ka,Ei as Ki,Dc as Kn,Te as Ko,Do as Kr,Du as Kt,Kf as L,Wn as La,Wi as Li,Gc as Ln,Ue as Lo,Go as Lr,Gu as Lt,np as M,er as Ma,ea as Mi,tl as Mn,$e as Mo,ts as Mr,td as Mt,ep as N,Qn as Na,Qi as Ni,$c as Nn,Ze as No,$o as Nr,$u as Nt,up as O,cr as Oa,ca as Oi,ll as On,st as Oo,ls as Or,s as Os,ld as Ot,Qf as P,Xn as Pa,Xi as Pi,Zc as Pn,Ye as Po,Zo as Pr,Zu as Pt,gf as Q,mn as Qa,mi as Qi,hc as Qn,pe as Qo,ho as Qr,hu as Qt,Wf as R,Hn as Ra,Hi as Ri,Uc as Rn,Ve as Ro,Uo as Rr,Uu as Rt,Sp as S,br as Sa,ba as Si,xl as Sn,yt as So,xs as Sr,y as Ss,xd as St,gp as T,mr as Ta,ma as Ti,hl as Tn,pt as To,hs as Tr,p as Ts,hd as Tt,Pf as U,Mn as Ua,Mi as Ui,Nc as Un,je as Uo,No as Ur,Nu as Ut,Rf as V,In as Va,Ii as Vi,Lc as Vn,Fe as Vo,Lo as Vr,Lu as Vt,Mf as W,An as Wa,Ai as Wi,jc as Wn,ke as Wo,jo as Wr,ju as Wt,bf as X,vn as Xa,vi as Xi,yc as Xn,_e as Xo,yo as Xr,yu as Xt,Sf as Y,bn as Ya,bi as Yi,xc as Yn,ye as Yo,xo as Yr,xu as Yt,vf as Z,gn as Za,gi as Zi,_c as Zn,he as Zo,_o as Zr,_u as Zt,Mp as _,Ar as _a,Aa as _i,jl as _n,kt as _o,js as _r,k as _s,jd as _t,nm as a,ei as aa,eo as ai,tu as an,$t as ao,tc as ar,$ as as,tf as at,Ep as b,wr as ba,wa as bi,Tl as bn,Ct as bo,Ts as br,C as bs,Td as bt,Xp as c,Jr as ca,Ja as ci,Yl as cn,qt as co,Ys as cr,q as cs,Yd as ct,Wp as d,Hr as da,Ha as di,Ul as dn,Vt as do,Us as dr,V as ds,Ud as dt,ui as ea,uo as ei,du as en,un as eo,dc as er,le as es,ff as et,Hp as f,Br as fa,Ba as fi,Vl as fn,zt as fo,Vs as fr,z as fs,Vd as ft,Pp as g,Mr as ga,Ma as gi,Nl as gn,jt as go,Ns as gr,j as gs,Nd as gt,Ip as h,Pr as ha,Pa as hi,Fl as hn,Nt as ho,Fs as hr,N as hs,Fd as ht,im as i,ni as ia,no as ii,ru as in,tn as io,rc as ir,te as is,rf as it,ip as j,nr as ja,na as ji,rl as jn,tt as jo,rs as jr,t as js,rd as jt,cp as k,or as ka,oa as ki,sl as kn,at as ko,ss as kr,a as ks,sd as kt,Jp as l,Kr as la,Ka as li,ql as ln,Gt as lo,qs as lr,G as ls,qd as lt,Rp as m,Ir as ma,Ia as mi,Ll as mn,Ft as mo,Ls as mr,F as ms,Ld as mt,cm as n,oi as na,oo as ni,su as nn,on as no,sc as nr,ae as ns,cf as nt,em as o,Qr as oa,Qa as oi,$l as on,Zt as oo,$s as or,Z as os,$d as ot,Bp as p,Rr as pa,Ra as pi,zl as pn,Lt as po,zs as pr,L as ps,zd as pt,Ef as q,wn as qa,wi as qi,Tc as qn,Ce as qo,To as qr,Tu as qt,om as r,ii as ra,io as ri,au as rn,rn as ro,ac as rr,re as rs,of as rt,Qp as s,Xr as sa,Xa as si,Zl as sn,Yt as so,Zs as sr,Y as ss,Zd as st,um as t,ci as ta,co as ti,lu as tn,cn as to,lc as tr,se as ts,uf as tt,Kp as u,Wr as ua,Wa as ui,Gl as un,Ut as uo,Gs as ur,U as us,Gd as ut,Ap as v,Or as va,Oa as vi,kl as vn,Dt as vo,ks as vr,D as vs,kd as vt,vp as w,gr as wa,ga as wi,_l as wn,ht as wo,_s as wr,h as ws,_d as wt,wp as x,Sr as xa,Sa as xi,Cl as xn,xt as xo,Cs as xr,x as xs,Cd as xt,Op as y,Er as ya,Ea as yi,Dl as yn,Tt as yo,Ds as yr,T as ys,Dd as yt,Hf as z,Bn as za,Bi as zi,Vc as zn,ze as zo,Vo as zr,Vu as zt};
