@@ -1,5 +1,5 @@
 ---
-title: "DMP Week 5: Goal 2 Complete, Goal 3 Fully Mapped, Midpoint Tomorrow"
+title: "DMP Week 5: Goal 2, Goal 3 Fully Mapped,"
 excerpt: "PR 4 opened with cents forwarding, pie menu fix, and CENTSSYMBOL constant; D♯ investigation complete; Goal 3 expanded to 24 fixes across 6 categories"
 category: "DEVELOPER NEWS"
 date: "2026-07-09"
@@ -12,7 +12,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 <!-- markdownlint-disable -->
 
-# DMP Week 5: Goal 2 Complete, Goal 3 Fully Mapped, Midpoint Tomorrow
+# DMP Week 5: Goal 2 , Goal 3 Fully Mapped,
 
 **Coding period:** June 10 – September 10, 2026
 **Project:** [Refactor Temperament — Issue #7171](https://github.com/sugarlabs/musicblocks/issues/7171)
@@ -110,16 +110,5 @@ Reviewed **PR #7734** (KeerthiKumarR — Temperament widget play loop fixes):
 
 - **PR 4** — address CI failure (pre-existing flaky tests, not our changes), get merged
 - **PR 5** — start Jul 15, 24 fixes across synthesis infrastructure, pitch name mapping, custom pitch blocks, D♯, and widgets
-- **Midpoint evaluation** — tomorrow (Jul 14), presenting Goals 1+2
 
 ---
-
-## Numbers
-
-- Tests passing: **6199 / 6199**
-- PRs merged: **4** (PR 1, 2, 3, 4)
-- PRs open: **0**
-- Goals complete: **1** (Goal 1)
-- Goals in progress: **1** (Goal 2 — PR 4 open)
-- Fixes mapped for PR 5: **24**
-- Estimated LOC for PR 5: **~670**
