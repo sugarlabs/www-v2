@@ -24,7 +24,7 @@ image: "assets/Images/GSOC.webp"
 
 ### 1. Viewport Culling for Off-Screen Blocks
 
-Walter reported a noticeable playback slowdown in [Crabcanon Plot](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html) whenever the block workspace was visible. Profiling showed that every `stage.update()` traversed the entire EaselJS display list, causing off-screen block containers to still pass through the rendering pipeline despite not being visible. Profiling showed that every `stage.update()` traversed the entire EaselJS display list, causing off-screen block containers to still pass through the rendering pipeline despite not being visible.
+Walter reported a noticeable playback slowdown in Crabcanon Plot whenever the block workspace was visible. Profiling showed that every `stage.update()` traversed the entire EaselJS display list, causing off-screen block containers to still pass through the rendering pipeline despite not being visible. Profiling showed that every `stage.update()` traversed the entire EaselJS display list, causing off-screen block containers to still pass through the rendering pipeline despite not being visible.
 
 Implemented viewport culling in [PR #7738](https://github.com/sugarlabs/musicblocks/pull/7738) (merged):
 
@@ -45,7 +45,7 @@ Viewport culling significantly reduced rendering overhead, although the visible-
  
 ### 2. Bug Fix: Error Message Not Displaying
  
-While testing playback across projects , Walter flagged that [Rainbow Connection](https://github.com/sugarlabs/musicblocks/blob/master/examples/RainbowConnection.html) threw an error at one point, but the message never showed up , only the red arrow error indicator appeared, even after adding a console log to `msgError` to try to trace it.
+While testing playback across projects , Walter flagged that Rainbow Connection threw an error at one point, but the message never showed up , only the red arrow error indicator appeared, even after adding a console log to `msgError` to try to trace it.
  
 **Root Cause:**
 
@@ -84,7 +84,7 @@ Implemented in [PR #7776](https://github.com/sugarlabs/musicblocks/pull/7776) (m
  
 ### 4. Memory Leak & Long-Session Stability (In Progress)
  
-Started the Step 4/5 investigation into memory leaks and long-session stability, prompted by the repeated-run degradation seen on [Crabcanon-Plot](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html). This round of testing was scoped to the [Crabcanon-Plot](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html) project specifically:
+Started the Step 4/5 investigation into memory leaks and long-session stability, prompted by the repeated-run degradation seen on Crabcanon-Plot. This round of testing was scoped to the Crabcanon-Plot project specifically:
  
 - Chrome's heap usage fluctuated across repeated runs rather than climbing steadily , not the signature of a classic leak.
 - Firefox showed a steadily increasing DOM node count across repeated runs of the same project, which is more suspicious and needs further tracing.
@@ -96,7 +96,7 @@ This isn't resolved yet , Firefox's DOM node growth in particular still needs ro
  
 ## Challenge & Key Learning
 
-- **Challenge:** Debugging the performance degradation in [Crabcanon-Plot](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html) when blocks are visible continues to be challenging. Walter referred to as the "canary in the coal mine" because it is the first project to reveal rendering performance issues. Although viewport culling addressed one contributor, the regression is not yet fully resolved.
+- **Challenge:** Debugging the performance degradation in Crabcanon-Plot when blocks are visible continues to be challenging. Walter referred to as the "canary in the coal mine" because it is the first project to reveal rendering performance issues. Although viewport culling addressed one contributor, the regression is not yet fully resolved.
 
   **Key Learning:** Breaking the problem into smaller, measurable pieces with targeted instrumentation made it easier to isolate individual sources of overhead and validate improvements incrementally.
 
