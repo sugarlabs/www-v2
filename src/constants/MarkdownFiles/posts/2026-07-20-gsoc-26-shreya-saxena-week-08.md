@@ -44,7 +44,7 @@ Implemented in [PR #7848](https://github.com/sugarlabs/musicblocks/pull/7848) (m
 - Restored Stop-only callbacks to their intended behavior and prevented duplicate instrument disposal when multiple turtles finished at different times.
 - Added regression tests covering drawing preservation after natural completion, cleanup races, recorder safety, and repeated execution.
 
-**Before/after check on [Musical Tree](https://github.com/sugarlabs/musicblocks/blob/master/examples/musical-tree.html):** This project previously showed graph distortion / canvas accumulation after roughly 6–7 consecutive runs. During post-fix testing, I did not observe the issue even after 20+ consecutive runs.
+**Before/after check on Musical Tree** :  This project previously showed graph distortion / canvas accumulation after roughly 6–7 consecutive runs. During post-fix testing, I did not observe the issue even after 20+ consecutive runs.
 
 ---
 
@@ -54,7 +54,7 @@ I experimented with [PR #7815](https://github.com/sugarlabs/musicblocks/pull/781
 
 Testing showed a small improvement, but audio desynchronization still remained. The highlight-throttling changes were therefore deferred, as they altered visible highlighting without fully resolving the issue. The viewport-culling optimization (skipping updateCache() for off-screen blocks) was implemented as part of this work.
 
-This aligns with the earlier Firefox stage.update() bottleneck investigation from [Crabcanon-plot](https://github.com/sugarlabs/musicblocks/blob/master/examples/crabcanon-plot.html)
+This aligns with the earlier Firefox stage.update() bottleneck investigation from Crabcanon-plot
 
 A consolidated document covering all identified block-highlighting issues, experiments, observations, and prototype investigations has been added to the References section for future reference.
 
@@ -70,7 +70,7 @@ A consolidated document covering all identified block-highlighting issues, exper
   />
 </p>
 
-As a follow-up to last week's investigation, I profiled [Musical Tree](https://github.com/sugarlabs/musicblocks/blob/master/examples/musical-tree.html) and [Hilbert Recursive](https://github.com/sugarlabs/musicblocks/blob/master/examples/hilbert-recursive.html) using repeated heap snapshots.
+As a follow-up to last week's investigation, I profiled Musical Tree and Hilbert Recursive using repeated heap snapshots.
 
 | Project | Initial Heap | After First Run | Peak Heap | Result |
 |---------|-------------:|----------------:|----------:|--------|
@@ -83,7 +83,7 @@ As a follow-up to last week's investigation, I profiled [Musical Tree](https://g
 - Repeated heap snapshots provided **no explicit evidence of a significant retained-heap memory leak** in either project.
 - While this doesn't completely rule out memory-related issues in other workloads, it suggests retained-heap growth is not currently the primary performance bottleneck. The investigation and profiling results have been documented for future reference.
 
-> **Note:** The complete heap snapshot results and repeated-run profiling data for both [Musical Tree](https://github.com/sugarlabs/musicblocks/blob/master/examples/musical-tree.html) and [Hilbert Recursive](https://github.com/sugarlabs/musicblocks/blob/master/examples/hilbert-recursive.html) are linked in the References section.
+> **Note:** The complete heap snapshot results and repeated-run profiling data for both Musical Tree and Hilbert Recursive are linked in the References section.
 
 
 <p align="center">
@@ -112,7 +112,7 @@ Performance engineering is as much about validation as optimization. Systematica
 - **Step 2: Block Execution Analysis & Optimization** – Complete ([PR #7668](https://github.com/sugarlabs/musicblocks/pull/7668)).
 - **Step 3: Turtle & Music Execution Optimization (Execution Scheduling & Synchronization)** – Complete ([PR #7776](https://github.com/sugarlabs/musicblocks/pull/7776), [PR #7703](https://github.com/sugarlabs/musicblocks/pull/7703)).
 - **Step 4: Canvas Rendering Optimization** – Substantially complete. Rendering investigations identified block highlighting and canvas update overheads, leading to optimizations for off-screen block rendering ([PR #7815](https://github.com/sugarlabs/musicblocks/pull/7815)). Additional rendering improvements may be explored in future iterations.
-- **Step 5: Memory Management, Garbage Collection & Runtime Stability** – In progress. Runtime cleanup on natural completion ([PR #7832](https://github.com/sugarlabs/musicblocks/pull/7832)) and separation of runtime cleanup from visual reset ([PR #7848](https://github.com/sugarlabs/musicblocks/pull/7848)) improved execution stability. Heap profiling of [Musical-Tree](https://github.com/sugarlabs/musicblocks/blob/master/examples/musical-tree.html) and [Hilbert Recursive](https://github.com/sugarlabs/musicblocks/blob/master/examples/hilbert-recursive.html) found no explicit evidence of retained-heap memory leaks, while runtime profiling indicated normal garbage collection behavior. A final round of end-to-end runtime profiling will be performed before moving on to load-time optimizations.
+- **Step 5: Memory Management, Garbage Collection & Runtime Stability** – In progress. Runtime cleanup on natural completion ([PR #7832](https://github.com/sugarlabs/musicblocks/pull/7832)) and separation of runtime cleanup from visual reset ([PR #7848](https://github.com/sugarlabs/musicblocks/pull/7848)) improved execution stability. Heap profiling of Musical-Tree and Hilbert Recursive found no explicit evidence of retained-heap memory leaks, while runtime profiling indicated normal garbage collection behavior. A final round of end-to-end runtime profiling will be performed before moving on to load-time optimizations.
 
 ---
 
