@@ -77,6 +77,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pr-check-results
+          name: pr-check-results-${{ github.run_id }}
           path: check-results.json
           retention-days: 1
