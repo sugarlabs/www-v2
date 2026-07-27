@@ -66,3 +66,5 @@ Separately, Devin flagged a couple of useful points that I want to dig into:
 ## Acknowledgments
 
 Thanks to Walter Bender and Om Suneri for being so understanding about a slower week on my end, and for continuing to support and guide me despite it. I really appreciate the flexibility and mentorship, and I'm looking forward to picking up the pace again next week.
+
+---
