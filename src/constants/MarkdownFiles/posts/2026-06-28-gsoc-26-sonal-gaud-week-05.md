@@ -26,7 +26,7 @@ Following the scoping work in [Week 4](/news/all/2026-06-21-gsoc-26-sonal-gaud-w
 
 ## Draft PR: Wiring `releaseconfig.js` into `index.html` and `activity.js`
 
-Draft PR: [sugarlabs/turtleblocksjs#517](https://github.com/sugarlabs/turtleblocksjs/pull/517)<br><br>
+Following Walter's feedback, the work is now being tracked in the Music Blocks repository rather than the earlier Turtle Blocks draft. The relevant PR is [sugarlabs/musicblocks#7908](https://github.com/sugarlabs/musicblocks/pull/7908).<br><br>
 
 The key changes in the draft PR were:
 
