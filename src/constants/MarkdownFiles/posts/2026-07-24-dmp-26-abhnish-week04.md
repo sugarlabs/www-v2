@@ -65,7 +65,7 @@ Below is the axe DevTools scan result after all mid-point fixes were applied.
 Violations dropped from **16 (14 critical, 2 serious)** at the start of the
 project to **4 (1 critical, 3 serious)** — a 75% reduction.
 
-![axe DevTools scan showing 4 total issues after mid-point fixes](https://github.com/user-attachments/assets/d8e2e688-1959-472a-8810-c2ffa43cf61c)
+![axe DevTools scan showing 4 total issues after mid-point fixes](https://kommodo.ai/i/ZEOiDVjrX0obiZcFwfru)
 
 The 4 remaining violations are targeted for the end-point milestone.
 
