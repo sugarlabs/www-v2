@@ -65,7 +65,7 @@ Below is the axe DevTools scan result after all mid-point fixes were applied.
 Violations dropped from **16 (14 critical, 2 serious)** at the start of the
 project to **4 (1 critical, 3 serious)** — a 75% reduction.
 
-![axe DevTools scan showing 4 total issues after mid-point fixes](https://private-user-images.githubusercontent.com/144924616/626658353-ee313713-e098-4713-a228-0a9406964255.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODQ5Nzc3NzUsIm5iZiI6MTc4NDk3NzQ3NSwicGF0aCI6Ii8xNDQ5MjQ2MTYvNjI2NjU4MzUzLWVlMzEzNzEzLWUwOTgtNDcxMy1hMjI4LTBhOTQwNjk2NDI1NS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwNzI1JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDcyNVQxMTA0MzVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yNWI2MDZiOTk0OWNjMTk4ZmRmMjkwNGJjMWJiZTk2MmYzM2EzYzZmZjliMjA1OTMxZmY4MjM2OGY4ZDRlYTdlJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.FW2uJ3JIYozAMb_sOJuA6pY2sHgHrOgk8dJadeQNCkA)
+![axe DevTools scan showing 4 total issues after mid-point fixes](https://github.com/user-attachments/assets/d8e2e688-1959-472a-8810-c2ffa43cf61c)
 
 The 4 remaining violations are targeted for the end-point milestone.
 
