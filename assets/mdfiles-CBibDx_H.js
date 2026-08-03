@@ -33463,7 +33463,131 @@ Finally, I upgraded the publishing pipeline so that the backend receives an accu
 Next week, my main focus will be on improving the UI and testing everything with mentors and students. I'll also be documenting exactly how all the buttons and features work. The goal is to see if there is any redundancy or to remove any confusion that might happen for users. 
 
 See you next time!
-`,fp=e({default:()=>pp}),pp='---\ntitle: "DMP Week 5: Goal 2, Goal 3 Fully Mapped,"\nexcerpt: "PR 4 opened with cents forwarding, pie menu fix, and CENTSSYMBOL constant; D♯ investigation complete; Goal 3 expanded to 24 fixes across 6 categories"\ncategory: "DEVELOPER NEWS"\ndate: "2026-07-09"\nslug: "2026-07-09-dmp-26-niravsharma-week05"\nauthor: "@/constants/MarkdownFiles/authors/nirav-sharma.md"\ndescription: "Week 5 of my C4GT DMP journey — PR 4 opened fixing custom pitch block cents forwarding and discoverability, pie menu cents preservation, D♯ bug investigation complete, and Goal 3 expanded to 24 fixes across 6 categories."\ntags: "dmp26,sugarlabs,week05,niravsharma,musicblocks,temperament"\nimage: "assets/Images/c4gt_DMP.webp"\n---\n\n<!-- markdownlint-disable -->\n\n# DMP Week 5: Goal 2 , Goal 3 Fully Mapped,\n\n**Coding period:** June 10 – September 10, 2026  \n**Project:** [Refactor Temperament — Issue #7171](https://github.com/sugarlabs/musicblocks/issues/7171)  \n**Mentors:** Walter Bender, Devin Ulibarri  \n\n---\n\n## What I did this week\n\nGoal 2 is all about custom pitch blocks – the ones where you type in a note name and cents offset directly.\n\n**What was broken:**\n\nYou could type `"C(+42¢)"` into the block, but the cents never made it to the synth. `flow()` hardcoded `0`, so you heard plain C every time. Also, both blocks were hidden by default – you only saw them if you\'d already created a custom temperament, which made them impossible to discover.\n\n**What I fixed:**\n\nAdded `_parseCents()` – a small helper that pulls the `(+N¢)` or `(-N¢)` out of the string and returns `[note, cents]`. Both `flow()` methods now use it instead of ignoring the cents. The regex is built from the `CENTSSYMBOL` constant and handles double sharps (𝄪) and double flats (𝄫):\n\n```js\nstatic _parseCents(value) {\n    if (typeof value !== "string") return [value, 0];\n    const match = value.match(\n        new RegExp(`^([A-Ga-g](?:[#b♯♭]|𝄪|𝄫)?)(\\\\(([+-]\\\\d+)${CENTSSYMBOL}\\\\))?$`)\n    );\n    if (match) {\n        return [match[1], match[3] !== undefined ? parseInt(match[3], 10) : 0];\n    }\n    return [value, 0];\n}\n```\n\n`flow()` also now passes `turtle` and `blk` to `processPitch()` — 6 args instead of 4.\n\nThe blocks remain `hidden: true` for now. Walter asked to keep them hidden until the UX concerns (no in-menu cents editing, strange behavior without a custom temperament) are addressed in follow-up work.\n\nFixed the pie menu – if you have `C(+50¢)` and pick D, you get `D(+50¢)`, not just D. Cents stick.\n\nAdded `CENTSSYMBOL = "\\u00A2"` to `musicutils.js` per Walter\'s feedback – tests now use constants instead of raw unicode.\n\nThe `_parseCents()` regex handles `"C(+42¢)"`, `"D(-15¢)"`, `"F𝄪(+42¢)"`, and plain `"E"` – all the common cases plus double accidentals.\n\nPR 4 was merged on Jul 11: [#7770](https://github.com/sugarlabs/musicblocks/pull/7770)\n\n---\n\n## D♯ Bug in Nth Modal Pitch — Investigation Complete\n\nDevin spotted that D♯ wasn\'t working with the Nth Modal Pitch block. I traced it through and found four separate issues:\n\n1. **`NOTESSHARP` lookup fails.** `buildScale("D♯ dorian")` gives `[D♯, E♯, F♯, G♯, A♯, B♯, C♯, D♯]` – `E♯` and `B♯` come from `CONVERT_DOWN` to avoid duplicate letter names. But `NOTESSHARP.indexOf("E♯")` returns `-1` because `E♯` isn\'t in the list, and everything breaks.\n\n2. **`getNote()` rewrites D♯ → E♭ in flat keys.** So even if the first issue were fixed, the semitone lookup would still get the wrong note.\n\n3. **`_offset` gets thrown away.** The offset calculated in `playNthModalPitch` doesn\'t carry forward to the next note.\n\n4. **No tests for sharp keys, flat keys, or double sharps.** So this bug was hiding in plain sight.\n\n**The fix for issues 1–2:** normalize through `EQUIVALENTNATURALS` before lookup – `E♯ → F`, `B♯ → C`. That map already existed in `musicutils.js` and is used in 6 other places for exactly this purpose. I applied it in both `playNthModalPitch` (PitchActions.js) and `ScaleDegreeBlock` (PitchBlocks.js).\n\nThe fix is in my working tree but not committed yet – it\'s going into PR 5 (Goal 3).\n\n---\n\n## Goal 3 Investigation — 24 Fixes Mapped\n\nI did a full sweep of the codebase for 12-EDO hardcoded values. Found **24 fixes** across **6 categories**:\n\n**A. Synthesis Infrastructure (9 fixes)** – the big one. `getCachedPitchToFrequency()` ignores temperament entirely, the cache key has no temperament dimension (so you get stale values), `inTemperament` never resets between runs, and `_getFrequency()` hardcodes `Math.pow(2, power)` instead of using `getOctaveRatio()`.\n\n**B. Pitch Name Mapping (8 fixes)** – `numberToPitch()`, `numberToPitchSharp()`, `frequencyToPitch()` all force 12 pitch classes with `(step / EDO) * 12`. `_getStepSize()`, `getNumNote()`, `getSolfege()` map through 12-element arrays. `getNumber()` and `GetIntervalNumber()` use 12-EDO semitone positions.\n\n**C. Custom Pitch Block Failures (4 fixes)** – `getCustomFrequency()` chokes on accidental format mismatches, `playPitchNumber()` has no range validation, `numberToPitch()` auto-fills with 12-EDO approximations, `YToPitch` hardcodes `lc + 12 * o`.\n\n**D. D♯ nthModalPitch (3 fixes)** – already mapped out from the investigation I did earlier.\n\n**E. Widget Hardcoding (6 widgets)** – Mode Widget, Music Keyboard, Temperament Widget, Pitch Slider, Sampler, Tuner. All have 12-EDO assumptions baked in.\n\n**Estimated lines:** ~670 total (~490 source + ~180 tests).\n\nWalter signed off on Option B for `getCachedPitchToFrequency` – thread temperament as a parameter through `processPitch → addPitch → getCachedPitchToFrequency`. Explicit, testable, no global state coupling.\n\n---\n\n## PR Reviews\n\nReviewed **PR #7734** (KeerthiKumarR — Temperament widget play loop fixes):\n- Caught `this.inbetween = false` assigning to `window` instead of the widget instance\n- Flagged stray `console.log`\n- Both issues fixed by the author\n\n---\n\n## What\'s next\n\n- **PR 4** — address CI failure (pre-existing flaky tests, not our changes), get merged\n- **PR 5** — start Jul 15, 24 fixes across synthesis infrastructure, pitch name mapping, custom pitch blocks, D♯, and widgets\n\n---\n',mp=e({default:()=>hp}),hp=`---
+`,fp=e({default:()=>pp}),pp=`---
+title: "GSoC '26 Week 06 Update by Ashutosh Singh"
+excerpt: "Phase 2 user testing starts and people type short prompts, so I build the Enhance flow and local RAG to fix it at the source. Plus the big structural move: lifting AOD out of Sugar OS into its own standalone project."
+category: "DEVELOPER NEWS"
+date: "2026-07-08"
+slug: "2026-07-08-gsoc-26-ashutoshx7-week06"
+author: "@/constants/MarkdownFiles/authors/ashutosh-singh.md"
+description: "GSoC'26 Contributor at SugarLabs working on Sugar Activity on Demand"
+tags: "gsoc26,sugarlabs,week06,ashutoshx7,rag,prompt-enhancement,standalone,user-testing,ai,llm"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 06 Progress Report by Ashutosh Singh
+
+**Project:** [Sugar Activity on Demand](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#sugar-activity-on-demand)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya](https://github.com/chimosky)  
+**Reporting Period:** June 30, 2026 to July 6, 2026  
+
+---
+
+## Goals for This Week
+
+- Actually kick off Phase 2 small group user testing on the new Flatpak build
+- Watch real people use the Prompt Screen and see what breaks
+- Fix the "short prompt produces a weak activity" problem at the source instead of blaming the model
+- Ground generation in real Sugar activities rather than hoping the model just knows Sugar
+- Lift AOD out of the Sugar OS shell and into its own standalone project
+
+---
+
+## This Week's Achievements
+
+Last week I shipped the Flatpak so testers could install AOD in one command. This week I finally got to use it for what it was for, which was putting the tool in front of people who are not me. Phase 2 started. And the very first lesson landed within about ten minutes of the first session.
+
+People type short prompts.
+
+I had been testing with things like "a fraction matching game with three difficulty levels and instant feedback when the answer is wrong." A real person types "math game" and hits send. That is the whole prompt. And then they look at the mediocre thing that comes back and, fairly, decide the tool is not very good. The problem was never the model. The problem was that the model was being handed almost nothing to work with and left to guess at the other 90 percent.
+
+So a big part of this week became about the input, not the output. But there was a second, more structural piece too. Alongside the testing work, I lifted AOD out of the Sugar OS codebase and into its own standalone project, which is the thing that turns it from "my branch of Sugar" into software anyone can pick up.
+
+![The Prompt Screen where the learner describes an idea, picks a template category and license, and can enhance a short prompt before generating](assets/Images/gsoc26-ashutoshx7/aod-prompt-screen.png)
+
+### 1. Phase 2 Started, and It Was Humbling
+
+I ran the first sessions with a small group from the Sugar community, a couple of fellow contributors and a teacher who was kind enough to sit with me. I did the thing Walter kept telling me to do, which was shut up and watch instead of narrating. That was hard and also the most useful hour of the week.
+
+What I saw, over and over: rough, short prompts. Not because anyone was lazy, but because that is simply how people describe an idea before they have thought it all the way through. "typing practice." "a game about the planets." "quiz." My generator was treating those three words as a complete spec, and it showed.
+
+### 2. The Enhance Flow
+
+So I built prompt enhancement into the pipeline. There is a new module, \`enhance.py\`, whose only job is to take a short or rough learner idea and expand it into a clearer activity brief before any generation happens. It fills in the parts a person leaves implicit: what the learner actually does, what a win or a correct answer looks like, roughly what should be on screen.
+
+On the Prompt Screen this shows up as:
+
+- A **✨ Enhance** button, so you can grow your idea into a brief on demand and see what the model thinks you meant
+- An **auto-enhance** toggle, which automatically runs enhancement on prompts that are clearly too short to generate anything decent from
+- The enhanced brief shown back to you in the chat before generation runs
+
+That last part matters more than it looks. The enhanced brief is not hidden. You see exactly what got added, and if it guessed wrong you can edit it or turn enhancement off. I did not want a tool that silently rewrites what you asked for and then builds something you never described. The whole point is that you stay in charge of the idea.
+
+### 3. Grounding Generation in Real Sugar Activities
+
+The other half of the input work was making the model write more like Sugar and less like a generic Python tutorial. The system prompt from Week 3 got us far, but a prompt can only describe conventions. It cannot show a hundred real examples.
+
+So I added a local retrieval layer, \`rag.py\`. Before generating, it pulls patterns out of real Sugar activities that are already installed on the machine and feeds the relevant ones into the planner. If you ask for a drawing activity, it can lean on how existing activities actually set up a canvas and save to the Journal, instead of inventing something that looks plausible but is not how Sugar does it. It runs locally, over activities already on your system, and nothing is uploaded anywhere or used for training.
+
+### 4. Porting AOD Out of Sugar OS Into Its Own Project
+
+Here is the structural move I am most glad about. Until now, AOD lived inside my fork of the Sugar OS shell, tangled into the \`jarabe\` codebase. That was the right place to build it, because it let the experience run embedded in the Sugar home view. But it also meant that trying AOD required a full Sugar OS development environment, and it meant the code was married to the whole desktop.
+
+So I pulled the entire thing out into its own standalone project: a normal \`src\`-layout Python package, \`sugaraod\`, organized by domain instead of one flat pile of files. \`core/\` for the spec and licenses, \`llm/\` for the providers and this week's enhance step, \`generation/\` for the pipeline and RAG, \`service/\`, and \`ui/\`. The studio now depends on the Sugar **toolkit** as a library, the same way any GTK app depends on GTK, and not on the Sugar OS shell at all. I added a test that enforces exactly that: it fails if any \`jarabe\` shell module is ever imported, so the separation cannot quietly rot later.
+
+![AOD running as its own standalone studio, with the Sugar-style home carried over from the shell](assets/Images/gsoc26-ashutoshx7/aod-modify-create.png)
+
+The Sugar feel came along for the ride. The home screen is still the Sugar-style ring of activities around your XO icon, ported out of the shell's favorites layout, so it looks and moves like Sugar even though the shell is gone. The payoff is simple: AOD now runs on any Linux desktop on its own, and the code is finally a project rather than a patch.
+
+---
+
+## Challenges & How I Overcame Them
+
+**Deciding when to auto-enhance.** If someone already wrote a careful, detailed prompt, rewriting it is insulting and usually makes it worse. So auto-enhance only fires when a prompt is clearly too thin to build from, and the explicit ✨ button is always there for the in-between cases. Short and vague gets help. Detailed and deliberate gets left alone.
+
+**RAG over a tiny corpus.** On a fresh machine there might only be a few installed activities to retrieve from, so noisy retrieval was a real risk. I tuned it to prefer a small number of clearly relevant snippets over stuffing the prompt full, and to fall back gracefully to the plain system prompt when nothing good matches.
+
+**Cutting the cord to the Sugar OS shell.** The hard part of the extraction was the home view, which lived deep inside the shell and reached into things only the full desktop has. Porting just the ring layout and the studio styling, and then locking the separation in place with the no-\`jarabe\` test, was what let me pull AOD out without losing the Sugar look.
+
+---
+
+## Key Learnings
+
+The input matters as much as the model. Back in Week 3 I wrote that the system prompt is everything. This week extended that. It is not just the instructions to the model, it is the entire brief the model is working from, and most of that brief comes from a person who is understandably going to under-specify. My job is to close that gap before generation, not to be surprised by it afterward.
+
+Watching real users was the other lesson, and it was humbling in the good way. Every assumption I had about how people phrase a prompt was slightly off. One hour of watching people actually type told me more than weeks of guessing.
+
+And making AOD standalone changed how the whole thing feels. For weeks the honest answer to "can I try it" was "first set up a Sugar OS dev environment." Pulling it into its own project quietly turned that into "install this app." That is the difference between a demo and something someone else can keep.
+
+There is a Sugar idea sitting under the enhance work, too. Sugar has always aimed for a low floor, letting a learner start from wherever they happen to be. Helping a three word idea grow into a real activity brief is that same principle pointed at the prompt box. Nobody should have to already know how to write a spec before they get to make something.
+
+---
+
+## Next Week's Roadmap
+
+- Build a proper debugging layer for generated activities, so a bad activity gets caught and fixed before a learner ever sees it
+- Draw out the architecture of that layer so the pipeline is easy to reason about
+- Chase down the activities that pass every static check and still crash the moment they open
+- Keep feeding Phase 2 observations back into the enhance and RAG behavior
+
+---
+
+## Acknowledgments
+
+Thanks to Walter Bender for the advice to watch testers instead of talking over them, which is the only reason I caught the short-prompt problem this early. Thanks to the Phase 2 testers, especially the teacher who sat through the rough edges with me, and to Ibiam Chihurumnaya for the ongoing review.
+
+---
+
+## Connect with Me
+
+- GitHub: [@Ashutoshx7](https://github.com/Ashutoshx7)
+- Email: [ashutoshx002@gmail.com](mailto:ashutoshx002@gmail.com)
+- Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
+
+---
+`,mp=e({default:()=>hp}),hp='---\ntitle: "DMP Week 5: Goal 2, Goal 3 Fully Mapped,"\nexcerpt: "PR 4 opened with cents forwarding, pie menu fix, and CENTSSYMBOL constant; D♯ investigation complete; Goal 3 expanded to 24 fixes across 6 categories"\ncategory: "DEVELOPER NEWS"\ndate: "2026-07-09"\nslug: "2026-07-09-dmp-26-niravsharma-week05"\nauthor: "@/constants/MarkdownFiles/authors/nirav-sharma.md"\ndescription: "Week 5 of my C4GT DMP journey — PR 4 opened fixing custom pitch block cents forwarding and discoverability, pie menu cents preservation, D♯ bug investigation complete, and Goal 3 expanded to 24 fixes across 6 categories."\ntags: "dmp26,sugarlabs,week05,niravsharma,musicblocks,temperament"\nimage: "assets/Images/c4gt_DMP.webp"\n---\n\n<!-- markdownlint-disable -->\n\n# DMP Week 5: Goal 2 , Goal 3 Fully Mapped,\n\n**Coding period:** June 10 – September 10, 2026  \n**Project:** [Refactor Temperament — Issue #7171](https://github.com/sugarlabs/musicblocks/issues/7171)  \n**Mentors:** Walter Bender, Devin Ulibarri  \n\n---\n\n## What I did this week\n\nGoal 2 is all about custom pitch blocks – the ones where you type in a note name and cents offset directly.\n\n**What was broken:**\n\nYou could type `"C(+42¢)"` into the block, but the cents never made it to the synth. `flow()` hardcoded `0`, so you heard plain C every time. Also, both blocks were hidden by default – you only saw them if you\'d already created a custom temperament, which made them impossible to discover.\n\n**What I fixed:**\n\nAdded `_parseCents()` – a small helper that pulls the `(+N¢)` or `(-N¢)` out of the string and returns `[note, cents]`. Both `flow()` methods now use it instead of ignoring the cents. The regex is built from the `CENTSSYMBOL` constant and handles double sharps (𝄪) and double flats (𝄫):\n\n```js\nstatic _parseCents(value) {\n    if (typeof value !== "string") return [value, 0];\n    const match = value.match(\n        new RegExp(`^([A-Ga-g](?:[#b♯♭]|𝄪|𝄫)?)(\\\\(([+-]\\\\d+)${CENTSSYMBOL}\\\\))?$`)\n    );\n    if (match) {\n        return [match[1], match[3] !== undefined ? parseInt(match[3], 10) : 0];\n    }\n    return [value, 0];\n}\n```\n\n`flow()` also now passes `turtle` and `blk` to `processPitch()` — 6 args instead of 4.\n\nThe blocks remain `hidden: true` for now. Walter asked to keep them hidden until the UX concerns (no in-menu cents editing, strange behavior without a custom temperament) are addressed in follow-up work.\n\nFixed the pie menu – if you have `C(+50¢)` and pick D, you get `D(+50¢)`, not just D. Cents stick.\n\nAdded `CENTSSYMBOL = "\\u00A2"` to `musicutils.js` per Walter\'s feedback – tests now use constants instead of raw unicode.\n\nThe `_parseCents()` regex handles `"C(+42¢)"`, `"D(-15¢)"`, `"F𝄪(+42¢)"`, and plain `"E"` – all the common cases plus double accidentals.\n\nPR 4 was merged on Jul 11: [#7770](https://github.com/sugarlabs/musicblocks/pull/7770)\n\n---\n\n## D♯ Bug in Nth Modal Pitch — Investigation Complete\n\nDevin spotted that D♯ wasn\'t working with the Nth Modal Pitch block. I traced it through and found four separate issues:\n\n1. **`NOTESSHARP` lookup fails.** `buildScale("D♯ dorian")` gives `[D♯, E♯, F♯, G♯, A♯, B♯, C♯, D♯]` – `E♯` and `B♯` come from `CONVERT_DOWN` to avoid duplicate letter names. But `NOTESSHARP.indexOf("E♯")` returns `-1` because `E♯` isn\'t in the list, and everything breaks.\n\n2. **`getNote()` rewrites D♯ → E♭ in flat keys.** So even if the first issue were fixed, the semitone lookup would still get the wrong note.\n\n3. **`_offset` gets thrown away.** The offset calculated in `playNthModalPitch` doesn\'t carry forward to the next note.\n\n4. **No tests for sharp keys, flat keys, or double sharps.** So this bug was hiding in plain sight.\n\n**The fix for issues 1–2:** normalize through `EQUIVALENTNATURALS` before lookup – `E♯ → F`, `B♯ → C`. That map already existed in `musicutils.js` and is used in 6 other places for exactly this purpose. I applied it in both `playNthModalPitch` (PitchActions.js) and `ScaleDegreeBlock` (PitchBlocks.js).\n\nThe fix is in my working tree but not committed yet – it\'s going into PR 5 (Goal 3).\n\n---\n\n## Goal 3 Investigation — 24 Fixes Mapped\n\nI did a full sweep of the codebase for 12-EDO hardcoded values. Found **24 fixes** across **6 categories**:\n\n**A. Synthesis Infrastructure (9 fixes)** – the big one. `getCachedPitchToFrequency()` ignores temperament entirely, the cache key has no temperament dimension (so you get stale values), `inTemperament` never resets between runs, and `_getFrequency()` hardcodes `Math.pow(2, power)` instead of using `getOctaveRatio()`.\n\n**B. Pitch Name Mapping (8 fixes)** – `numberToPitch()`, `numberToPitchSharp()`, `frequencyToPitch()` all force 12 pitch classes with `(step / EDO) * 12`. `_getStepSize()`, `getNumNote()`, `getSolfege()` map through 12-element arrays. `getNumber()` and `GetIntervalNumber()` use 12-EDO semitone positions.\n\n**C. Custom Pitch Block Failures (4 fixes)** – `getCustomFrequency()` chokes on accidental format mismatches, `playPitchNumber()` has no range validation, `numberToPitch()` auto-fills with 12-EDO approximations, `YToPitch` hardcodes `lc + 12 * o`.\n\n**D. D♯ nthModalPitch (3 fixes)** – already mapped out from the investigation I did earlier.\n\n**E. Widget Hardcoding (6 widgets)** – Mode Widget, Music Keyboard, Temperament Widget, Pitch Slider, Sampler, Tuner. All have 12-EDO assumptions baked in.\n\n**Estimated lines:** ~670 total (~490 source + ~180 tests).\n\nWalter signed off on Option B for `getCachedPitchToFrequency` – thread temperament as a parameter through `processPitch → addPitch → getCachedPitchToFrequency`. Explicit, testable, no global state coupling.\n\n---\n\n## PR Reviews\n\nReviewed **PR #7734** (KeerthiKumarR — Temperament widget play loop fixes):\n- Caught `this.inbetween = false` assigning to `window` instead of the widget instance\n- Flagged stray `console.log`\n- Both issues fixed by the author\n\n---\n\n## What\'s next\n\n- **PR 4** — address CI failure (pre-existing flaky tests, not our changes), get merged\n- **PR 5** — start Jul 15, 24 fixes across synthesis infrastructure, pitch name mapping, custom pitch blocks, D♯, and widgets\n\n---\n',gp=e({default:()=>_p}),_p=`---
 title: "DMP '26 Week 04 Update by Noaman Akhtar"
 excerpt: "Adding OpenAI-compatible and Gemini providers so any hosted model can plug into Sugar-AI through the same factory, without touching RAGAgent."
 category: "DEVELOPER NEWS"
@@ -33568,7 +33692,7 @@ With four backends in place, the next step is the piece that ties them together:
 ## Acknowledgments
 
 Thanks to my mentors and the Sugar Labs community. The balance these providers try to strike, keeping open models the default while still letting anyone bring their own, came directly from their guidance on what Sugar's users actually need.
-`,gp=e({default:()=>_p}),_p=`---
+`,vp=e({default:()=>yp}),yp=`---
 title: "DMP '26 Week 04 Update by NSA Raiyyan"
 excerpt: "Rewrote the core TTS modules, added 83 tests, generated Tier 3 WAVs, and cleaned up the commit history."
 category: "DEVELOPER NEWS"
@@ -33656,7 +33780,7 @@ Added \`ALL_TIER_3\` in \`common.py\` and \`test_tier3.py\` to generate and vali
 ## Acknowledgments
 
 Thanks to Mebin and Ibiam for the continued mentorship. The codebase was starting to show its age in a few places, so getting to do this cleanup was satisfying. 83 tests passing, 0 flake8 errors, and the commit history finally looks intentional.
-`,vp=e({default:()=>yp}),yp=`---
+`,bp=e({default:()=>xp}),xp=`---
 title: "DMP '26 Week 5 Update by Stuti Jain"
 excerpt: "Introduced Choon as the story companion and implemented an Explorer Journal for recording, revisiting, and expanding learners' reflections, while planning support for independent notes and contextual discovery guidance."
 category: "DEVELOPER NEWS"
@@ -33930,7 +34054,7 @@ Thanks to Walter Bender for reviewing the Explorer Journal implementation and pr
 
 The discussions around reusable help cards helped define a clearer approach for supporting children during optional discovery activities without removing the opportunity for independent exploration.
 
-I also appreciate Devin Ulibarri and the Sugar Labs community for their continued guidance and support throughout the development of the lesson framework.`,bp=e({default:()=>xp}),xp=`---
+I also appreciate Devin Ulibarri and the Sugar Labs community for their continued guidance and support throughout the development of the lesson framework.`,Sp=e({default:()=>Cp}),Cp=`---
 title: "GSoC '26 Week 7 Update by Parth Dagia"
 excerpt: "Shipped drag-from-Palette into the Workspace, then spent most of the week planning out the next six weeks with Syed - breaking the whole connection story into epics, stories, and tasks."
 category: "DEVELOPER NEWS"
@@ -33999,7 +34123,7 @@ Next week we confirm the plan with our mentors and then start on the snapping tr
 Thanks to Syed for planning the road ahead with me, and to Anindya Kundu, Justin Charles, and Safwan Sayeed for their continued guidance. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,Sp=e({default:()=>Cp}),Cp=`---
+`,wp=e({default:()=>Tp}),Tp=`---
 title: "GSoC '26 Week 7 Report by Rejah Rabeeul Haque"
 excerpt: "Fixed current issues in ConnectTheDots including Number Mode UI enhancements, confetti animation, and implemented the Settings feature."
 category: "DEVELOPER NEWS"
@@ -34112,7 +34236,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance and patience, and 
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,wp=e({default:()=>Tp}),Tp=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Ep=e({default:()=>Dp}),Dp=`---
 title: "GSoC '26 Week 7 Update by Syed Khubayb Ur Rahman"
 excerpt: "Implementing Brick Tower bookkeeping in the Workspace and drag-and-drop micro-animations in the Palette."
 category: "DEVELOPER NEWS"
@@ -34184,7 +34308,7 @@ Conversely, once the drag operation ends—whether the Brick is successfully dro
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,Ep=e({default:()=>Dp}),Dp=`---
+`,Op=e({default:()=>kp}),kp=`---
 title: "GSoC '26 Week 07 Update by Shubham Sharma"
 excerpt: "Starting the reflection engine as its own package with a first working path end to end, getting the first labels back on the rewritten question-quality test, working out what the constructionist reading means for the design, and taking the entry view exploration further"
 category: "DEVELOPER NEWS"
@@ -34328,7 +34452,7 @@ Thanks to Walter, who answered a lot of my questions this week and put time into
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,Op=e({default:()=>kp}),kp='---\ntitle: "DMP \'26 Week 05 Update by Vanshika Pahal"\nexcerpt: "Week 05: Extracting the embedded graphics scheduler from Logo, simplifying the Logo constructor via LogoDependencies.fromActivity, an interpreter readability/JSDoc pass, a Grid UI regression fix, backfilling logo.js test coverage, and extracting ProjectManager from activity.js."\ncategory: "DEVELOPER NEWS"\ndate: "2026-07-14"\nslug: "2026-07-14-dmp-26-vanshika-week05"\nauthor: "@/constants/MarkdownFiles/authors/vanshika2720.md"\ntags: "dmp26,sugarlabs,musicblocks,refactoring,week05,modularization"\nimage: "assets/Images/dmp_c4gt_logo.png"\n---\n<!-- markdownlint-disable -->\n# Week 05 Progress Report by Vanshika Pahal\n\n**Project:** [Music Blocks v3 — Test Coverage, Refactoring & Dependency Updates](https://github.com/sugarlabs/musicblocks)  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  \n**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Week:** Clearing the `logo.js` Roadmap & Starting the ProjectManager Extraction  \n**Reporting Period:** 2026-07-02 – 2026-07-08\n\n---\n\n## Overview\n\nWeek 04 closed with a five-item roadmap almost entirely centered on `logo.js`: extract the embedded graphics scheduler, finish the constructor simplification, do a readability/JSDoc pass, fix a Grid UI regression, and backfill test coverage ahead of the scheduler split. Week 05 cleared every one of those items — and then went on to deliver the largest single extraction of the project so far, pulling project loading, saving, import, and session-restore logic out of `activity.js` into a new `ProjectManager` module.\n\nThis week I worked on **6 pull requests**, changing roughly **6,300 additions and 3,400 deletions**. The `logo.js` work followed a deliberate sequencing: land test coverage *before* the big extraction so the scheduler split had a safety net underneath it, then do the extraction, then simplify what was left. Every PR passed the full Jest suite, ESLint, and Prettier before merging.\n\n---\n\n## Week 05 at a Glance\n\n| Pull Request | Subsystem Extracted | Target File(s) | Impact & Code Changes | Status |\n| :--- | :--- | :--- | :--- | :---: |\n| **[PR #7705](https://github.com/sugarlabs/musicblocks/pull/7705)** | Embedded Graphics Scheduler | `js/embedded-graphics-scheduler.js`, `js/logo.js` | Extracted the ~700-line `dispatchTurtleSignals()` into a dedicated, independently testable scheduler module. | **Merged** |\n| **[PR #7709](https://github.com/sugarlabs/musicblocks/pull/7709)** | Logo Constructor Simplification | `js/logo.js` | Replaced duplicated manual dependency wiring with `LogoDependencies.fromActivity()`; fixed a latent `this`-binding bug along the way. | **Merged** |\n| **[PR #7712](https://github.com/sugarlabs/musicblocks/pull/7712)** | Interpreter Readability & JSDoc | `js/logo.js` | Added JSDoc to core interpreter methods, renamed opaque temp variables, simplified nested conditionals. | **Merged** |\n| **[PR #7718](https://github.com/sugarlabs/musicblocks/pull/7718)** | Grid UI Regression Fix | `js/activity.js`, `js/activity/grid-controller.js` | Fixed initialization-order bug from the `GridController` extraction that broke the Grid menu; added a canvas-refresh follow-up fix. | **Merged** |\n| **[PR #7746](https://github.com/sugarlabs/musicblocks/pull/7746)** | Logo Test Coverage | `js/tests/logo.test.js` | Backfilled coverage for `safePluginExecute()`, `parseArg()`, dispatch-factor thresholds, timer-manager guards, and more. | **Merged** |\n| **[PR #7754](https://github.com/sugarlabs/musicblocks/pull/7754)** | Project Manager Extraction | `js/project-manager.js`, `js/activity.js` | Extracted project load/save/import/session-restore/startup logic into a dedicated `ProjectManager` module. | **Merged** |\n\n*Total changes: **+6,259 additions** and **-3,389 deletions** across all six pull requests.*\n\n---\n\n## Detailed Breakdown of Extracted Subsystems\n\n### 1. Embedded Graphics Scheduler (PR #7705)\n\n`dispatchTurtleSignals()` had been the largest method in `logo.js` — roughly 700 lines responsible for scheduling and replaying embedded turtle-graphics commands during note playback, entangled with deeply nested helper closures like `__pen`, `__forward`, `__arc`, `__bezier`, and a dozen others.\n\n* **Changes:** Created `js/embedded-graphics-scheduler.js` housing `EmbeddedGraphicsScheduler`, which now owns embedded graphics scheduling, dispatch timing calculations, animation sequencing, timer callback scheduling, graphics replay during note execution, and embedded-graphics completion handling.\n* **Logo Integration:** `logo.js` now holds an `EmbeddedGraphicsScheduler` instance and delegates through a lightweight wrapper: `dispatchTurtleSignals()` simply calls `this._graphicsScheduler.schedule(...)`, so no external callers required modification.\n* **Tests Added:** `js/__tests__/embedded-graphics-scheduler.test.js`, covering graphics scheduling, dispatch ordering, timer scheduling, animation sequencing, embedded-graphics completion, helper method behavior, and async execution. Scheduler-related tests were migrated out of `logo.test.js` into the new dedicated suite.\n* **This is a pure refactor:** No intended functional changes — the module boundary was drawn around a distinct subsystem that was already conceptually separate from interpreter execution.\n\n### 2. Logo Constructor Simplification (PR #7709)\n\nThis closed out the dependency-injection work from Week 04. The `Logo` constructor still carried two separate code paths that manually mapped `Activity` methods into `this.deps`, duplicating logic that `LogoDependencies` already implemented.\n\n* **Changes:** Removed ~79 lines of duplicated dependency wiring and replaced it with `LogoDependencies.fromActivity()`, while preserving `this.activity = activityOrDeps` for backward-compatible reference equality.\n* **Improved Activity Detection:** Simplified constructor detection from multiple property checks down to a single distinguishing condition, `typeof activityOrDeps.errorHandler === "function"`, which more accurately differentiates an `Activity` instance from an explicit dependency object.\n* **Bug Fix:** The previous manual dependency builder had a latent bug where the `config` and `callbacks` getters referenced `this.activity` from inside plain object literals — inside that context `this` resolved to the object itself, not the `Logo` instance. Routing through `LogoDependencies.fromActivity()` eliminated the duplicated implementation and the bug with it.\n* **Tests:** Updated the minimal `mockActivity` in `logo.test.js` with the required `stage` mock for `LogoDependencies` validation. All 5,655 tests, ESLint, and Prettier passed on a branch rebased against the latest master.\n\n### 3. Interpreter Readability Pass (PR #7712)\n\n`logo.js` remains one of the most complex files in the project, so this PR focused purely on making it easier to read without touching behavior.\n\n* **JSDoc Added:** Comprehensive documentation for `parseArg()` (the 5-step argument resolution flow), `updateNotation()` (the measure-boundary splitting algorithm), `notationMIDI()` (per-turtle MIDI buffering), `runLogoCommands()` (initialization vs. dispatch phases), `runFromBlock()` (step mode vs. delayed scheduling), `runFromBlockNow()` (argument evaluation, block execution, queue continuation), and `safePluginExecute()` (function vs. string plugin handling, with context on the security fix from [#5449](https://github.com/sugarlabs/musicblocks/issues/5449)).\n* **Readability Cleanups:** Renamed opaque temporary variables in `updateNotation()` — `d` → `overflowTime`, `d2` → `partialTime`, `b` → `measureDuration` — and added inline comments explaining the backward-traversal logic in `runFromBlockNow()` (clamp-scope detection, traversal boundaries, fallback to normal execution).\n* **Local Simplifications:** Removed obsolete commented-out debugging statements and simplified several conditional branches by removing redundant nesting, eliminating empty `else` blocks, inverting guard conditions, and simplifying equivalent boolean checks.\n* **No functional changes:** All 168 test suites / 5,655 tests passed unchanged.\n\n### 4. Grid UI Regression Fix (PR #7718)\n\nA regression surfaced from the earlier `GridController` extraction ([#7566](https://github.com/sugarlabs/musicblocks/pull/7566)): the on-screen Grid menu stopped working, while the Print block continued to function normally.\n\n* **Root Cause:** `Turtles` was being constructed *before* `setupGridController()` ran. Since `TurtlesModel` captures `activity._doCartesianPolar` at construction time, `activity.turtles.doGrid` ended up `undefined` because the grid controller hadn\'t set that property yet.\n* **Fix:** Reordered initialization in `js/activity.js` so `setupGridController(this)` runs before `this.turtles = new Turtles(this)`, restoring the expected `activity.turtles.doGrid` wiring. Corrected the JSDoc in `js/activity/grid-controller.js` to document the required initialization order.\n* **Follow-Up:** Walter caught a secondary issue in review — the grid element didn\'t appear immediately after the fix, requiring a canvas refresh to display. A follow-up commit triggers a canvas refresh after the grid state changes, with a regression test covering the case.\n* **Tests Added:** `js/tests/turtles.test.js` covering `TurtlesModel` initialization and `doGrid` wiring, plus an `istanbul ignore` annotation on a browser-only line in the `Turtles` constructor that isn\'t reachable under Jest. All 168 suites / 5,658 tests passed.\n\n### 5. Logo Test Coverage (PR #7746)\n\nAhead of the scheduler extraction, this PR backfilled coverage for previously untested `logo.js` paths — pure test additions, no production code touched.\n\n* **Coverage Added:** `safePluginExecute()` (success, error recovery, unary/binary/constant math patterns, parameter plugin pattern, arbitrary-code-execution rejection); expanded `parseArg()` coverage (`dectofrac` with null/non-number children, hue block outside the status matrix, `returnValue` with empty/populated stacks, `evalArgDict` dispatch, unknown-block fallback); all `dispatchTurtleSignals()` dispatch-factor threshold branches (`>100`, `>50`, `>25`, `>12.5`, `≤12.5`) plus zero-step-time clamping; timer-manager getter behavior, `clearAll()`, `getStats()`, and `setGuardedTimeout()` under both allow and suppress guard conditions; `doStopTurtles()` delayed-timeout cleanup and debug logging; `runLogoCommands()` plugin execution and listener cleanup; `runFromBlockNow()`\'s `MAX_ITERATIONS` guard and `evalFlowDict` dispatch; and constructor/facade compatibility checks.\n* **Coverage Improvement (`logo.js`):**\n\n  | Metric | Before | After |\n  | :--- | :--- | :--- |\n  | Statements | 82.53% | 87.66% |\n  | Branches | 68.66% | 72.18% |\n  | Functions | 72.13% | 80.32% |\n  | Lines | 82.93% | 88.10% |\n\n* **Why First:** Landing this coverage before the scheduler and constructor PRs meant both extractions had a much stronger safety net to catch regressions during the split.\n\n### 6. Project Manager Extraction (PR #7754)\n\nThe largest item on the Week 04 roadmap, and the biggest single extraction so far: project loading, saving, import, session restore, and initialization logic moved out of `activity.js` into a new `js/project-manager.js` module.\n\n* **Changes:** Introduced `setupProjectManager(activity)`, which creates a `ProjectManager` instance wired to the activity via dependency injection — no new globals added.\n* **What Moved:** Loading-animation lifecycle (`doLoadAnimation`, `stopLoadAnimation`, `showContents`); load orchestration (`_loadStart`, `_loadProject`, `loadStartWrapper`, `justLoadStart`); UI-triggered load/new operations (`doLoad`, `doMergeLoad`, `_afterDelete`, `newProject`); save/export logic (`prepareExport`, `saveLocally`, `__saveLocally`); the runtime entry point `runProject`; the MIDI helper `getClosestStandardNoteValue`; the file-chooser change handler plus `__handleFileSelect` and `__handleDragOver` for drag-and-drop import; startup URL-parameter parsing and initial load, consolidated into `projectManager.start()`; and the `midiImportBlocks` modal.\n* **Compatibility:** All extracted functions in `activity.js` were replaced with thin delegate wrappers forwarding to `this.projectManager`, preserving the existing public API with no callers requiring modification. The trash handshake sequencing, session-restore behavior, merge logic, and planet integration were all preserved exactly.\n* **Tests:** `activity_startup_recovery.test.js` was updated to exercise `ProjectManager._loadStart`, `runProject`, and `_loadProject` directly from `project-manager.js`; `activity_toolbar_integration.test.js` was updated to mock `setupProjectManager` in the VM sandbox. All 5,902 existing tests passed, with a dedicated unit test suite added for `ProjectManager` and pubsub-based spy assertions later replaced with behavior tests per review feedback.\n* **Scale:** ~3,200 lines added, ~1,200 removed, across 6 files — by far the largest extraction of the project to date.\n\n---\n\n## Architectural Impact\n\nWeek 05 fully retires the `logo.js`-focused roadmap from Week 04 and kicks off the next phase of `activity.js` decomposition:\n\n| Initiative | Status After Week 05 |\n| :--- | :--- |\n| **`logo.js` Scheduler Extraction** | Complete — `EmbeddedGraphicsScheduler` owns all embedded graphics animation timing and dispatch. |\n| **`logo.js` Dependency Injection** | Complete — constructor now delegates entirely to `LogoDependencies.fromActivity()`, no duplicated wiring left. |\n| **`logo.js` Readability** | JSDoc added to every core interpreter method; opaque variable names and dead code removed. |\n| **`logo.js` Test Coverage** | Statement coverage up from 82.53% to 87.66%, providing a safety net for the scheduler split. |\n| **Grid UI Regression** | Fixed — initialization order restored, canvas refresh follow-up landed. |\n| **`activity.js` Decomposition** | `ProjectManager` is the largest extraction yet, establishing the pattern for the remaining `activity.js` responsibilities (selection, workspace layout, trash, help, and more) to follow next. |\n\nWith `logo.js` now meaningfully smaller, better documented, and better tested, and with `ProjectManager` proving the extraction pattern scales to the app\'s highest-risk flows (load/save/session-restore), the remaining `activity.js` decomposition work has a clear, validated template to follow.\n\n---\n\n## Key Learnings\n\n1. **Sequence Extractions Behind Test Coverage:** Landing `logo.js` test-coverage backfill (#7746) before the scheduler extraction (#7705) meant the riskiest refactor of the week had the strongest safety net underneath it — not the other way around.\n2. **High-Risk Extractions Need More Than Green CI:** For `ProjectManager`, the automated suite passing wasn\'t treated as sufficient sign-off on its own, given it touches load, save, and session-restore — the app\'s highest-risk flows. Preserving exact event sequencing (like the trash handshake) mattered as much as test coverage.\n3. **Regressions From Past Extractions Surface Late:** The Grid UI bug from the earlier `GridController` extraction ([#7566](https://github.com/sugarlabs/musicblocks/pull/7566)) only became visible weeks later, and review caught a *second* layer to the same regression (the missing canvas refresh) even after the initialization-order fix — a reminder to add regression tests immediately after any reordering-sensitive extraction, not just functional ones.\n\n---\n\n## Roadmap for Week 06\n\nWith `ProjectManager` proving the extraction pattern holds up even for the app\'s highest-risk flows, next week is about running that same pattern — extract into a dedicated controller, delegate from `activity.js`, cover with behavioral tests — across the remaining self-contained responsibilities still living in `activity.js`:\n\n* **Selection Controller:** Extract the 2D drag-selection workflow — selection rectangle rendering, block intersection detection, multi-block copy/delete, and selection mode state — into a dedicated `SelectionController`.\n* **Workspace Layout Controller:** Pull the workspace layout and Home button logic (`findBlocks`, `setHomeContainers`, `repositionBlocks`, resize handling) into a `WorkspaceLayoutController`.\n* **Trash Controller:** Move trash management — restoring the last deleted block, restoring by block ID, trash view rendering, and the trash preview popup — into a dedicated `TrashController`.\n* **Help Controller:** Extract the help/about UI, keyboard shortcuts dialog, JavaScript editor launcher, and statistics window launcher into a `HelpController`.\n* **Block Scale Controller:** Isolate larger/smaller block scaling, debounced scale updates, and toolbar button state syncing into a `BlockScaleController`.\n* **Context Menu Controller:** Extract context menu registration and helpful wheel rendering into a `ContextMenuController`, the last major chunk of UI orchestration left in `activity.js`.\n\nEach of these should land as its own PR, same as this week — small, independently reviewable, with a dedicated test suite and no intended behavior change.\n\n## Acknowledgements\n\nA special thank you to my mentor **Walter Bender** for reviewing and merging all six pull requests this week, and for catching the follow-up Grid UI rendering issue that would have otherwise shipped as a partial fix. I would also like to thank the rest of the Sugar Labs community for their continued support during reviews.\n',Ap=e({default:()=>jp}),jp=`---
+`,Ap=e({default:()=>jp}),jp='---\ntitle: "DMP \'26 Week 05 Update by Vanshika Pahal"\nexcerpt: "Week 05: Extracting the embedded graphics scheduler from Logo, simplifying the Logo constructor via LogoDependencies.fromActivity, an interpreter readability/JSDoc pass, a Grid UI regression fix, backfilling logo.js test coverage, and extracting ProjectManager from activity.js."\ncategory: "DEVELOPER NEWS"\ndate: "2026-07-14"\nslug: "2026-07-14-dmp-26-vanshika-week05"\nauthor: "@/constants/MarkdownFiles/authors/vanshika2720.md"\ntags: "dmp26,sugarlabs,musicblocks,refactoring,week05,modularization"\nimage: "assets/Images/dmp_c4gt_logo.png"\n---\n<!-- markdownlint-disable -->\n# Week 05 Progress Report by Vanshika Pahal\n\n**Project:** [Music Blocks v3 — Test Coverage, Refactoring & Dependency Updates](https://github.com/sugarlabs/musicblocks)  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  \n**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Week:** Clearing the `logo.js` Roadmap & Starting the ProjectManager Extraction  \n**Reporting Period:** 2026-07-02 – 2026-07-08\n\n---\n\n## Overview\n\nWeek 04 closed with a five-item roadmap almost entirely centered on `logo.js`: extract the embedded graphics scheduler, finish the constructor simplification, do a readability/JSDoc pass, fix a Grid UI regression, and backfill test coverage ahead of the scheduler split. Week 05 cleared every one of those items — and then went on to deliver the largest single extraction of the project so far, pulling project loading, saving, import, and session-restore logic out of `activity.js` into a new `ProjectManager` module.\n\nThis week I worked on **6 pull requests**, changing roughly **6,300 additions and 3,400 deletions**. The `logo.js` work followed a deliberate sequencing: land test coverage *before* the big extraction so the scheduler split had a safety net underneath it, then do the extraction, then simplify what was left. Every PR passed the full Jest suite, ESLint, and Prettier before merging.\n\n---\n\n## Week 05 at a Glance\n\n| Pull Request | Subsystem Extracted | Target File(s) | Impact & Code Changes | Status |\n| :--- | :--- | :--- | :--- | :---: |\n| **[PR #7705](https://github.com/sugarlabs/musicblocks/pull/7705)** | Embedded Graphics Scheduler | `js/embedded-graphics-scheduler.js`, `js/logo.js` | Extracted the ~700-line `dispatchTurtleSignals()` into a dedicated, independently testable scheduler module. | **Merged** |\n| **[PR #7709](https://github.com/sugarlabs/musicblocks/pull/7709)** | Logo Constructor Simplification | `js/logo.js` | Replaced duplicated manual dependency wiring with `LogoDependencies.fromActivity()`; fixed a latent `this`-binding bug along the way. | **Merged** |\n| **[PR #7712](https://github.com/sugarlabs/musicblocks/pull/7712)** | Interpreter Readability & JSDoc | `js/logo.js` | Added JSDoc to core interpreter methods, renamed opaque temp variables, simplified nested conditionals. | **Merged** |\n| **[PR #7718](https://github.com/sugarlabs/musicblocks/pull/7718)** | Grid UI Regression Fix | `js/activity.js`, `js/activity/grid-controller.js` | Fixed initialization-order bug from the `GridController` extraction that broke the Grid menu; added a canvas-refresh follow-up fix. | **Merged** |\n| **[PR #7746](https://github.com/sugarlabs/musicblocks/pull/7746)** | Logo Test Coverage | `js/tests/logo.test.js` | Backfilled coverage for `safePluginExecute()`, `parseArg()`, dispatch-factor thresholds, timer-manager guards, and more. | **Merged** |\n| **[PR #7754](https://github.com/sugarlabs/musicblocks/pull/7754)** | Project Manager Extraction | `js/project-manager.js`, `js/activity.js` | Extracted project load/save/import/session-restore/startup logic into a dedicated `ProjectManager` module. | **Merged** |\n\n*Total changes: **+6,259 additions** and **-3,389 deletions** across all six pull requests.*\n\n---\n\n## Detailed Breakdown of Extracted Subsystems\n\n### 1. Embedded Graphics Scheduler (PR #7705)\n\n`dispatchTurtleSignals()` had been the largest method in `logo.js` — roughly 700 lines responsible for scheduling and replaying embedded turtle-graphics commands during note playback, entangled with deeply nested helper closures like `__pen`, `__forward`, `__arc`, `__bezier`, and a dozen others.\n\n* **Changes:** Created `js/embedded-graphics-scheduler.js` housing `EmbeddedGraphicsScheduler`, which now owns embedded graphics scheduling, dispatch timing calculations, animation sequencing, timer callback scheduling, graphics replay during note execution, and embedded-graphics completion handling.\n* **Logo Integration:** `logo.js` now holds an `EmbeddedGraphicsScheduler` instance and delegates through a lightweight wrapper: `dispatchTurtleSignals()` simply calls `this._graphicsScheduler.schedule(...)`, so no external callers required modification.\n* **Tests Added:** `js/__tests__/embedded-graphics-scheduler.test.js`, covering graphics scheduling, dispatch ordering, timer scheduling, animation sequencing, embedded-graphics completion, helper method behavior, and async execution. Scheduler-related tests were migrated out of `logo.test.js` into the new dedicated suite.\n* **This is a pure refactor:** No intended functional changes — the module boundary was drawn around a distinct subsystem that was already conceptually separate from interpreter execution.\n\n### 2. Logo Constructor Simplification (PR #7709)\n\nThis closed out the dependency-injection work from Week 04. The `Logo` constructor still carried two separate code paths that manually mapped `Activity` methods into `this.deps`, duplicating logic that `LogoDependencies` already implemented.\n\n* **Changes:** Removed ~79 lines of duplicated dependency wiring and replaced it with `LogoDependencies.fromActivity()`, while preserving `this.activity = activityOrDeps` for backward-compatible reference equality.\n* **Improved Activity Detection:** Simplified constructor detection from multiple property checks down to a single distinguishing condition, `typeof activityOrDeps.errorHandler === "function"`, which more accurately differentiates an `Activity` instance from an explicit dependency object.\n* **Bug Fix:** The previous manual dependency builder had a latent bug where the `config` and `callbacks` getters referenced `this.activity` from inside plain object literals — inside that context `this` resolved to the object itself, not the `Logo` instance. Routing through `LogoDependencies.fromActivity()` eliminated the duplicated implementation and the bug with it.\n* **Tests:** Updated the minimal `mockActivity` in `logo.test.js` with the required `stage` mock for `LogoDependencies` validation. All 5,655 tests, ESLint, and Prettier passed on a branch rebased against the latest master.\n\n### 3. Interpreter Readability Pass (PR #7712)\n\n`logo.js` remains one of the most complex files in the project, so this PR focused purely on making it easier to read without touching behavior.\n\n* **JSDoc Added:** Comprehensive documentation for `parseArg()` (the 5-step argument resolution flow), `updateNotation()` (the measure-boundary splitting algorithm), `notationMIDI()` (per-turtle MIDI buffering), `runLogoCommands()` (initialization vs. dispatch phases), `runFromBlock()` (step mode vs. delayed scheduling), `runFromBlockNow()` (argument evaluation, block execution, queue continuation), and `safePluginExecute()` (function vs. string plugin handling, with context on the security fix from [#5449](https://github.com/sugarlabs/musicblocks/issues/5449)).\n* **Readability Cleanups:** Renamed opaque temporary variables in `updateNotation()` — `d` → `overflowTime`, `d2` → `partialTime`, `b` → `measureDuration` — and added inline comments explaining the backward-traversal logic in `runFromBlockNow()` (clamp-scope detection, traversal boundaries, fallback to normal execution).\n* **Local Simplifications:** Removed obsolete commented-out debugging statements and simplified several conditional branches by removing redundant nesting, eliminating empty `else` blocks, inverting guard conditions, and simplifying equivalent boolean checks.\n* **No functional changes:** All 168 test suites / 5,655 tests passed unchanged.\n\n### 4. Grid UI Regression Fix (PR #7718)\n\nA regression surfaced from the earlier `GridController` extraction ([#7566](https://github.com/sugarlabs/musicblocks/pull/7566)): the on-screen Grid menu stopped working, while the Print block continued to function normally.\n\n* **Root Cause:** `Turtles` was being constructed *before* `setupGridController()` ran. Since `TurtlesModel` captures `activity._doCartesianPolar` at construction time, `activity.turtles.doGrid` ended up `undefined` because the grid controller hadn\'t set that property yet.\n* **Fix:** Reordered initialization in `js/activity.js` so `setupGridController(this)` runs before `this.turtles = new Turtles(this)`, restoring the expected `activity.turtles.doGrid` wiring. Corrected the JSDoc in `js/activity/grid-controller.js` to document the required initialization order.\n* **Follow-Up:** Walter caught a secondary issue in review — the grid element didn\'t appear immediately after the fix, requiring a canvas refresh to display. A follow-up commit triggers a canvas refresh after the grid state changes, with a regression test covering the case.\n* **Tests Added:** `js/tests/turtles.test.js` covering `TurtlesModel` initialization and `doGrid` wiring, plus an `istanbul ignore` annotation on a browser-only line in the `Turtles` constructor that isn\'t reachable under Jest. All 168 suites / 5,658 tests passed.\n\n### 5. Logo Test Coverage (PR #7746)\n\nAhead of the scheduler extraction, this PR backfilled coverage for previously untested `logo.js` paths — pure test additions, no production code touched.\n\n* **Coverage Added:** `safePluginExecute()` (success, error recovery, unary/binary/constant math patterns, parameter plugin pattern, arbitrary-code-execution rejection); expanded `parseArg()` coverage (`dectofrac` with null/non-number children, hue block outside the status matrix, `returnValue` with empty/populated stacks, `evalArgDict` dispatch, unknown-block fallback); all `dispatchTurtleSignals()` dispatch-factor threshold branches (`>100`, `>50`, `>25`, `>12.5`, `≤12.5`) plus zero-step-time clamping; timer-manager getter behavior, `clearAll()`, `getStats()`, and `setGuardedTimeout()` under both allow and suppress guard conditions; `doStopTurtles()` delayed-timeout cleanup and debug logging; `runLogoCommands()` plugin execution and listener cleanup; `runFromBlockNow()`\'s `MAX_ITERATIONS` guard and `evalFlowDict` dispatch; and constructor/facade compatibility checks.\n* **Coverage Improvement (`logo.js`):**\n\n  | Metric | Before | After |\n  | :--- | :--- | :--- |\n  | Statements | 82.53% | 87.66% |\n  | Branches | 68.66% | 72.18% |\n  | Functions | 72.13% | 80.32% |\n  | Lines | 82.93% | 88.10% |\n\n* **Why First:** Landing this coverage before the scheduler and constructor PRs meant both extractions had a much stronger safety net to catch regressions during the split.\n\n### 6. Project Manager Extraction (PR #7754)\n\nThe largest item on the Week 04 roadmap, and the biggest single extraction so far: project loading, saving, import, session restore, and initialization logic moved out of `activity.js` into a new `js/project-manager.js` module.\n\n* **Changes:** Introduced `setupProjectManager(activity)`, which creates a `ProjectManager` instance wired to the activity via dependency injection — no new globals added.\n* **What Moved:** Loading-animation lifecycle (`doLoadAnimation`, `stopLoadAnimation`, `showContents`); load orchestration (`_loadStart`, `_loadProject`, `loadStartWrapper`, `justLoadStart`); UI-triggered load/new operations (`doLoad`, `doMergeLoad`, `_afterDelete`, `newProject`); save/export logic (`prepareExport`, `saveLocally`, `__saveLocally`); the runtime entry point `runProject`; the MIDI helper `getClosestStandardNoteValue`; the file-chooser change handler plus `__handleFileSelect` and `__handleDragOver` for drag-and-drop import; startup URL-parameter parsing and initial load, consolidated into `projectManager.start()`; and the `midiImportBlocks` modal.\n* **Compatibility:** All extracted functions in `activity.js` were replaced with thin delegate wrappers forwarding to `this.projectManager`, preserving the existing public API with no callers requiring modification. The trash handshake sequencing, session-restore behavior, merge logic, and planet integration were all preserved exactly.\n* **Tests:** `activity_startup_recovery.test.js` was updated to exercise `ProjectManager._loadStart`, `runProject`, and `_loadProject` directly from `project-manager.js`; `activity_toolbar_integration.test.js` was updated to mock `setupProjectManager` in the VM sandbox. All 5,902 existing tests passed, with a dedicated unit test suite added for `ProjectManager` and pubsub-based spy assertions later replaced with behavior tests per review feedback.\n* **Scale:** ~3,200 lines added, ~1,200 removed, across 6 files — by far the largest extraction of the project to date.\n\n---\n\n## Architectural Impact\n\nWeek 05 fully retires the `logo.js`-focused roadmap from Week 04 and kicks off the next phase of `activity.js` decomposition:\n\n| Initiative | Status After Week 05 |\n| :--- | :--- |\n| **`logo.js` Scheduler Extraction** | Complete — `EmbeddedGraphicsScheduler` owns all embedded graphics animation timing and dispatch. |\n| **`logo.js` Dependency Injection** | Complete — constructor now delegates entirely to `LogoDependencies.fromActivity()`, no duplicated wiring left. |\n| **`logo.js` Readability** | JSDoc added to every core interpreter method; opaque variable names and dead code removed. |\n| **`logo.js` Test Coverage** | Statement coverage up from 82.53% to 87.66%, providing a safety net for the scheduler split. |\n| **Grid UI Regression** | Fixed — initialization order restored, canvas refresh follow-up landed. |\n| **`activity.js` Decomposition** | `ProjectManager` is the largest extraction yet, establishing the pattern for the remaining `activity.js` responsibilities (selection, workspace layout, trash, help, and more) to follow next. |\n\nWith `logo.js` now meaningfully smaller, better documented, and better tested, and with `ProjectManager` proving the extraction pattern scales to the app\'s highest-risk flows (load/save/session-restore), the remaining `activity.js` decomposition work has a clear, validated template to follow.\n\n---\n\n## Key Learnings\n\n1. **Sequence Extractions Behind Test Coverage:** Landing `logo.js` test-coverage backfill (#7746) before the scheduler extraction (#7705) meant the riskiest refactor of the week had the strongest safety net underneath it — not the other way around.\n2. **High-Risk Extractions Need More Than Green CI:** For `ProjectManager`, the automated suite passing wasn\'t treated as sufficient sign-off on its own, given it touches load, save, and session-restore — the app\'s highest-risk flows. Preserving exact event sequencing (like the trash handshake) mattered as much as test coverage.\n3. **Regressions From Past Extractions Surface Late:** The Grid UI bug from the earlier `GridController` extraction ([#7566](https://github.com/sugarlabs/musicblocks/pull/7566)) only became visible weeks later, and review caught a *second* layer to the same regression (the missing canvas refresh) even after the initialization-order fix — a reminder to add regression tests immediately after any reordering-sensitive extraction, not just functional ones.\n\n---\n\n## Roadmap for Week 06\n\nWith `ProjectManager` proving the extraction pattern holds up even for the app\'s highest-risk flows, next week is about running that same pattern — extract into a dedicated controller, delegate from `activity.js`, cover with behavioral tests — across the remaining self-contained responsibilities still living in `activity.js`:\n\n* **Selection Controller:** Extract the 2D drag-selection workflow — selection rectangle rendering, block intersection detection, multi-block copy/delete, and selection mode state — into a dedicated `SelectionController`.\n* **Workspace Layout Controller:** Pull the workspace layout and Home button logic (`findBlocks`, `setHomeContainers`, `repositionBlocks`, resize handling) into a `WorkspaceLayoutController`.\n* **Trash Controller:** Move trash management — restoring the last deleted block, restoring by block ID, trash view rendering, and the trash preview popup — into a dedicated `TrashController`.\n* **Help Controller:** Extract the help/about UI, keyboard shortcuts dialog, JavaScript editor launcher, and statistics window launcher into a `HelpController`.\n* **Block Scale Controller:** Isolate larger/smaller block scaling, debounced scale updates, and toolbar button state syncing into a `BlockScaleController`.\n* **Context Menu Controller:** Extract context menu registration and helpful wheel rendering into a `ContextMenuController`, the last major chunk of UI orchestration left in `activity.js`.\n\nEach of these should land as its own PR, same as this week — small, independently reviewable, with a dedicated test suite and no intended behavior change.\n\n## Acknowledgements\n\nA special thank you to my mentor **Walter Bender** for reviewing and merging all six pull requests this week, and for catching the follow-up Grid UI rendering issue that would have otherwise shipped as a partial fix. I would also like to thank the rest of the Sugar Labs community for their continued support during reviews.\n',Mp=e({default:()=>Np}),Np=`---
 title: "GSoC '26 Week 7 Update by Harihara Vardhan"
 excerpt: "This week I finalized the Time Travel timeline UI after exploring three design directions, renamed Planet to Git Planet for clarity, and ran a round of frontend testing to catch data leaks and performance issues."
 category: "DEVELOPER NEWS"
@@ -34415,7 +34539,7 @@ Nothing critical came up. A few small things were tightened along the way.
 Next week I will start implementing the game-style timeline UI and keep testing more features end to end.
 
 See you next week!
-`,Mp=e({default:()=>Np}),Np=`---
+`,Pp=e({default:()=>Fp}),Fp=`---
 title: "GSoC '26 Week 7 Update by Shreya Saxena"
 excerpt: "Optimized rendering performance with viewport culling, improved Tone.Transport scheduling robustness, and fixed error message rendering."
 category: "DEVELOPER NEWS"
@@ -34559,7 +34683,7 @@ This isn't resolved yet , Firefox's DOM node growth in particular still needs ro
  
 ## Acknowledgments
  
-Thanks to Walter Bender for his guidance, valuable feedback, and for reviewing and testing my PRs throughout this week's work. Thanks also to the Sugar Labs community for their continued support.`,Pp=e({default:()=>Fp}),Fp=`---
+Thanks to Walter Bender for his guidance, valuable feedback, and for reviewing and testing my PRs throughout this week's work. Thanks also to the Sugar Labs community for their continued support.`,Ip=e({default:()=>Lp}),Lp=`---
 title: "DMP '26 Week 05 Update by Noaman Akhtar"
 excerpt: "Adding reasoning on/off to Sugar-AI so one model can serve fast direct answers and slower step-by-step reasoning, with no-think as the safe default."
 category: "DEVELOPER NEWS"
@@ -34651,7 +34775,7 @@ With the mechanism working, the next step is measurement. I plan to benchmark th
 ## Acknowledgments
 
 Thanks to my mentors and the Sugar Labs community. The choices that mattered most here, keeping reasoning off by default and making sure its trace never reaches a child, came directly from their guidance on building for young users.
-`,Ip=e({default:()=>Lp}),Lp=`---
+`,Rp=e({default:()=>zp}),zp=`---
 title: "DMP '26 Week 05 Update by NSA Raiyyan"
 excerpt: "Added word-level highlighting synced to speech, waveform-driven mouth animation, and streaming playback for Kokoro."
 category: "DEVELOPER NEWS"
@@ -34735,7 +34859,7 @@ The second one had been quietly affecting a good chunk of the multilingual work,
 ## Acknowledgments
 
 Thanks as always to Mebin and Ibiam. This week was less about adding capability and more about making Speak feel right. The synthesis was already working fine, but watching the face move out of sync with the voice made it obvious how much the presentation matters when the thing you are building is meant for kids. Driving both the mouth and the highlighting off real audio timing made a bigger difference than I expected it to.
-`,Rp=e({default:()=>zp}),zp=`---
+`,Bp=e({default:()=>Vp}),Vp=`---
 title: "DMP '26 Week 6 Update by Stuti Jain"
 excerpt: "Expanded the Explorer Journal with general notes and improved contextual guidance by redesigning the help system for optional exploration activities."
 category: "DEVELOPER NEWS"
@@ -34904,7 +35028,7 @@ Similarly, expanding the Explorer Journal beyond lesson reflections required mai
 
 Thanks to Walter Bender and Devin Ulibarri for their continued feedback on improving both the Explorer Journal and the contextual help experience.
 
-This week's discussions emphasized the importance of building upon existing Music Blocks infrastructure wherever possible, ensuring that new features remain consistent with the application while providing better support for young learners.`,Bp=e({default:()=>Vp}),Vp=`---
+This week's discussions emphasized the importance of building upon existing Music Blocks infrastructure wherever possible, ensuring that new features remain consistent with the application while providing better support for young learners.`,Hp=e({default:()=>Up}),Up=`---
 title: "GSoC '26 Week 8 Update by Parth Dagia"
 excerpt: "Started working through the six-week plan: taught the Brick path utility to hand back connector coordinates, then reworked it to return connector bounds instead of single points, and turned last week's plan into real tickets so the connection work moves steadily."
 category: "DEVELOPER NEWS"
@@ -34983,7 +35107,7 @@ With connectors now reporting where they are and how big they are, next up is st
 Thanks to Anindya Kundu for the review that turned connector points into connector bounds, and to Syed for planning the road ahead with me. Thanks also to Justin Charles and Safwan Sayeed for their continued guidance, and to Devin Ulibarri, Walter Bender, and the wider Sugar Labs community.
 
 ---
-`,Hp=e({default:()=>Up}),Up=`---
+`,Wp=e({default:()=>Gp}),Gp=`---
 title: "GSoC '26 Week 8 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented responsive design, back button optimization, new category addition, and Edit Features in the Number Mode of ConnectTheDots activity."
 category: "DEVELOPER NEWS"
@@ -35063,7 +35187,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance and patience, and 
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Wp=e({default:()=>Gp}),Gp=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Kp=e({default:()=>qp}),qp=`---
 title: "GSoC '26 Week 8 Update by Shreya Saxena"
 excerpt: "Landed natural-completion cleanup parity and the runtime/visual-reset separation fix, ruled out an explicit memory leak on Musical Tree and Hilbert Recursive, and kept iterating on the block-highlighting slowdown."
 category: "DEVELOPER NEWS"
@@ -35223,7 +35347,7 @@ Performance engineering is as much about validation as optimization. Systematica
 
 ## Acknowledgments
 
-Thanks to Walter Bender for testing my pull requests, providing direct feedback throughout the review process, and for his continued guidance this week. Thanks also to the entire Sugar Labs community for their continued support.`,Kp=e({default:()=>qp}),qp=`---
+Thanks to Walter Bender for testing my pull requests, providing direct feedback throughout the review process, and for his continued guidance this week. Thanks also to the entire Sugar Labs community for their continued support.`,Jp=e({default:()=>Yp}),Yp=`---
 title: "GSoC '26 Week 8 Update by Harihara Vardhan"
 excerpt: "This week the game-style Time Travel timeline is fully implemented and ready for review, I fixed the project renaming key bug, and added a proper 'Start of Project' anchor to the timeline."
 category: "DEVELOPER NEWS"
@@ -35274,7 +35398,7 @@ The first is **offline git**. The goal is to make the git features work even whe
 The second is a **git lesson plan**. I want to create something that actually teaches students how version control works using the features we have built. Not just "here is a button, press it," but an actual guided experience that helps students understand why saving your work matters, what a commit really is, and how going back in time can save a project.
 
 It has been a great journey watching all of these pieces fall into place. Eight weeks in, and the core git experience is looking really solid. See you next week!
-`,Jp=e({default:()=>Yp}),Yp=`---
+`,Xp=e({default:()=>Zp}),Zp=`---
 title: "DMP '26 Week 04 Update by Abhnish Kumar"
 excerpt: "Shared screen reader utility, widget open/close announcements, and mid-point evaluation prep for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -35393,7 +35517,7 @@ The 4 remaining violations are targeted for the end-point milestone.
 
 Thanks to Walter Bender for the detailed review feedback and for suggesting
 the shared helper refactor — it made the codebase significantly cleaner
-for all future accessibility work.`,Xp=e({default:()=>Zp}),Zp=`---
+for all future accessibility work.`,Qp=e({default:()=>$p}),$p=`---
 title: "DMP '26 Week 06 Update by Noaman Akhtar"
 excerpt: "Refactoring Sugar-AI's provider layer so the base provider itself speaks the OpenAI chat format, removing the separate OpenAI class, and cleaning up methods the other providers were duplicating."
 category: "DEVELOPER NEWS"
@@ -35490,7 +35614,7 @@ With the provider layer cleaned up, the next step is to continue the benchmarkin
 ## Acknowledgments
 
 Thanks to my mentors and the Sugar Labs community. This refactor came directly from their review of the provider code, and the guidance to keep the shared logic in the base and avoid a vendor-specific class shaped the final design.
-`,Qp=e({default:()=>$p}),$p=`---
+`,em=e({default:()=>tm}),tm=`---
 title: "DMP '26 Week 7 Update by Stuti Jain"
 excerpt: "Planned the next phase of lesson guidance by categorizing discovery actions into reusable help resources, prepared the DMP midpoint evaluation, and finalized the implementation roadmap for expanding lessons and classroom testing."
 category: "DEVELOPER NEWS"
@@ -35638,7 +35762,7 @@ Initially, several discovery activities appeared to require entirely new help pa
 
 Many thanks to Walter Bender for reviewing the help categorization strategy and providing valuable feedback on how the existing Music Blocks help infrastructure can be reused more effectively.
 
-I also thank Devin Ulibarri and the Sugar Labs community for their continued guidance in shaping the lesson framework and preparing for the next phase of classroom testing and lesson expansion.`,em=e({default:()=>tm}),tm=`---
+I also thank Devin Ulibarri and the Sugar Labs community for their continued guidance in shaping the lesson framework and preparing for the next phase of classroom testing and lesson expansion.`,nm=e({default:()=>rm}),rm=`---
 title: "GSoC '26 Week 9 Update by Parth Dagia"
 excerpt: "Snapping actually works now: Argument connector points live in a Collision space, Argument Bricks plug into slots, and Statement Bricks join into a single Tower - so you can build, break apart, and move a program around the Workspace."
 category: "DEVELOPER NEWS"
@@ -35718,7 +35842,7 @@ Connecting works, but it's still a bit of a guess for the user until the Workspa
 Thanks to Anindya Kundu for the reviews across all three PRs, and to Syed for building this alongside me. Thanks also to Justin Charles and Safwan Sayeed for their continued guidance, and to Devin Ulibarri, Walter Bender, and the wider Sugar Labs community.
 
 ---
-`,nm=e({default:()=>rm}),rm=`---
+`,im=e({default:()=>am}),am=`---
 title: "GSoC '26 Week 9 Update by Shreya Saxena"
 excerpt: "A lighter week due to travel and the start of college, a GSoC Alumni Camp lightning talk, and plans to tackle load time and a scheduling issue flagged by Devin."
 category: "DEVELOPER NEWS"
@@ -35788,7 +35912,7 @@ Separately, Devin flagged a couple of useful points that I want to dig into:
 Thanks to Walter Bender and Om Suneri for being so understanding about a slower week on my end, and for continuing to support and guide me despite it. I really appreciate the flexibility and mentorship, and I'm looking forward to picking up the pace again next week.
 
 ---
-`,im=e({default:()=>am}),am=`---
+`,om=e({default:()=>sm}),sm=`---
 title: "DMP '26 Week 07 Update by Noaman Akhtar"
 excerpt: "Adding think/no-think control to Sugar-AI so reasoning-capable Ollama models can be used selectively without changing existing clients."
 category: "DEVELOPER NEWS"
@@ -35941,7 +36065,7 @@ The next step is to measure that behavior clearly, propose a small concurrency f
 Thanks to my mentors and the Sugar Labs community for the feedback during the provider refactor and the midterm evaluation. The questions about usability, testing, and downstream projects helped connect the backend implementation to how Sugar-AI will actually be used.
 
 ---
-`,om=e({default:()=>sm}),sm=`---
+`,cm=e({default:()=>lm}),lm=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -36090,7 +36214,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,cm=e({default:()=>lm}),lm=`---
+`,um=e({default:()=>dm}),dm=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -36193,7 +36317,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,um=e({default:()=>dm}),dm=`---
+`,fm=e({default:()=>pm}),pm=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -36666,7 +36790,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,fm=e({default:()=>pm}),pm=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,mm=e({default:()=>hm}),hm=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -36753,7 +36877,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,mm=e({default:()=>hm}),hm=`---\r
+`,gm=e({default:()=>_m}),_m=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -36846,7 +36970,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,gm=e({default:()=>_m}),_m=`---\r
+`,vm=e({default:()=>ym}),ym=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -36940,7 +37064,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,vm=e({default:()=>ym}),ym=`---\r
+`,bm=e({default:()=>xm}),xm=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -37028,7 +37152,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,bm=e({default:()=>xm}),xm=`---\r
+`,Sm=e({default:()=>Cm}),Cm=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -37111,7 +37235,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Sm=e({default:()=>Cm}),Cm=`---\r
+`,wm=e({default:()=>Tm}),Tm=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -37177,7 +37301,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,wm=e({default:()=>Tm}),Tm=`---
+`,Em=e({default:()=>Dm}),Dm=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -37259,7 +37383,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Em=e({default:()=>Dm}),Dm=`---
+---`,Om=e({default:()=>km}),km=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -37352,7 +37476,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Om=e({default:()=>km}),km=`---
+`,Am=e({default:()=>jm}),jm=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -37441,7 +37565,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Am=e({default:()=>jm}),jm=`---
+--- `,Mm=e({default:()=>Nm}),Nm=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37586,7 +37710,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Mm=e({default:()=>Nm}),Nm=`---
+--- `,Pm=e({default:()=>Fm}),Fm=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37774,7 +37898,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Pm=e({default:()=>Fm}),Fm=`---
+--- `,Im=e({default:()=>Lm}),Lm=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37869,7 +37993,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Im=e({default:()=>Lm}),Lm=`---
+`,Rm=e({default:()=>zm}),zm=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37958,7 +38082,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Rm=e({default:()=>zm}),zm=`---
+`,Bm=e({default:()=>Vm}),Vm=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -38045,7 +38169,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Bm=e({default:()=>Vm}),Vm=`---
+---`,Hm=e({default:()=>Um}),Um=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -38128,7 +38252,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Hm=e({default:()=>Um}),Um=`---
+---`,Wm=e({default:()=>Gm}),Gm=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -38211,7 +38335,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Wm=e({default:()=>Gm}),Gm=`---
+---`,Km=e({default:()=>qm}),qm=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -38516,4 +38640,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Jf as $,Kn as $a,Ki as $i,qc as $n,Ge as $o,qo as $r,qu as $t,Bp as A,Rr as Aa,Ra as Ai,zl as An,Lt as Ao,zs as Ar,L as As,zd as At,bp as B,vr as Ba,va as Bi,yl as Bn,_t as Bo,ys as Br,_ as Bs,yd as Bt,em as C,Qr as Ca,Qa as Ci,$l as Cn,Zt as Co,$s as Cr,Z as Cs,$d as Ct,Kp as D,Wr as Da,Wa as Di,Gl as Dn,Ut as Do,Gs as Dr,U as Ds,Gd as Dt,Jp as E,Kr as Ea,Ka as Ei,ql as En,Gt as Eo,qs as Er,G as Es,qd as Et,Ap as F,Or as Fa,Oa as Fi,kl as Fn,Dt as Fo,ks as Fr,D as Fs,kd as Ft,up as G,cr as Ga,ca as Gi,ll as Gn,st as Go,ls as Gr,s as Gs,ld as Gt,gp as H,mr as Ha,ma as Hi,hl as Hn,pt as Ho,hs as Hr,p as Hs,hd as Ht,Op as I,Er as Ia,Ea as Ii,Dl as In,Tt as Io,Ds as Ir,T as Is,Dd as It,ip as J,nr as Ja,na as Ji,rl as Jn,tt as Jo,rs as Jr,t as Js,rd as Jt,cp as K,or as Ka,oa as Ki,sl as Kn,at as Ko,ss as Kr,a as Ks,sd as Kt,Ep as L,wr as La,wa as Li,Tl as Ln,Ct as Lo,Ts as Lr,C as Ls,Td as Lt,Ip as M,Pr as Ma,Pa as Mi,Fl as Mn,Nt as Mo,Fs as Mr,N as Ms,Fd as Mt,Pp as N,Mr as Na,Ma as Ni,Nl as Nn,jt as No,Ns as Nr,j as Ns,Nd as Nt,Wp as O,Hr as Oa,Ha as Oi,Ul as On,Vt as Oo,Us as Or,V as Os,Ud as Ot,Mp as P,Ar as Pa,Aa as Pi,jl as Pn,kt as Po,js as Pr,k as Ps,jd as Pt,Xf as Q,Jn as Qa,Ji as Qi,Yc as Qn,qe as Qo,Yo as Qr,Yu as Qt,wp as R,Sr as Ra,Sa as Ri,Cl as Rn,xt as Ro,Cs as Rr,x as Rs,Cd as Rt,nm as S,ei as Sa,eo as Si,tu as Sn,$t as So,tc as Sr,$ as Ss,tf as St,Xp as T,Jr as Ta,Ja as Ti,Yl as Tn,qt as To,Ys as Tr,q as Ts,Yd as Tt,mp as U,fr as Ua,fa as Ui,pl as Un,dt as Uo,ps as Ur,d as Us,pd as Ut,vp as V,gr as Va,ga as Vi,_l as Vn,ht as Vo,_s as Vr,h as Vs,_d as Vt,fp as W,ur as Wa,ua as Wi,dl as Wn,lt as Wo,ds as Wr,l as Ws,dd as Wt,ep as X,Qn as Xa,Qi as Xi,$c as Xn,Ze as Xo,$o as Xr,$u as Xt,np as Y,er as Ya,ea as Yi,tl as Yn,$e as Yo,ts as Yr,td as Yt,Qf as Z,Xn as Za,Xi as Zi,Zc as Zn,Ye as Zo,Zo as Zr,Zu as Zt,fm as _,ui as _a,uo as _i,du as _n,un as _o,dc as _r,le as _s,ff as _t,Im as a,Pi as aa,Fo as ai,Fu as an,Pn as ao,Fc as ar,Ne as as,If as at,om as b,ii as ba,io as bi,au as bn,rn as bo,ac as br,re as bs,of as bt,Am as c,Oi as ca,ko as ci,ku as cn,On as co,kc as cr,De as cs,Af as ct,wm as d,Si as da,Co as di,Cu as dn,Sn as do,Cc as dr,xe as ds,wf as dt,Wi as ea,Go as ei,Gu as en,Wn as eo,Gc as er,Ue as es,Kf as et,Sm as f,bi as fa,xo as fi,xu as fn,bn as fo,xc as fr,ye as fs,Sf as ft,mm as g,fi as ga,po as gi,pu as gn,fn as go,pc as gr,de as gs,mf as gt,gm as h,mi as ha,ho as hi,hu as hn,mn as ho,hc as hr,pe as hs,gf as ht,Rm as i,Ii as ia,Lo as ii,Lu as in,In as io,Lc as ir,Fe as is,Rf as it,Rp as j,Ir as ja,Ia as ji,Ll as jn,Ft as jo,Ls as jr,F as js,Ld as jt,Hp as k,Br as ka,Ba as ki,Vl as kn,zt as ko,Vs as kr,z as ks,Vd as kt,Om as l,Ei as la,Do as li,Du as ln,En as lo,Dc as lr,Te as ls,Of as lt,vm as m,gi as ma,_o as mi,_u as mn,gn as mo,_c as mr,he as ms,vf as mt,Hm as n,Bi as na,Vo as ni,Vu as nn,Bn as no,Vc as nr,ze as ns,Hf as nt,Pm as o,Mi as oa,No as oi,Nu as on,Mn as oo,Nc as or,je as os,Pf as ot,bm as p,vi as pa,yo as pi,yu as pn,vn as po,yc as pr,_e as ps,bf as pt,op as q,ir as qa,ia as qi,al as qn,rt as qo,as as qr,r as qs,ad as qt,Bm as r,Ri as ra,zo as ri,zu as rn,Rn as ro,zc as rr,Le as rs,Bf as rt,Mm as s,Ai as sa,jo as si,ju as sn,An as so,jc as sr,ke as ss,Mf as st,Wm as t,Hi as ta,Uo as ti,Uu as tn,Hn as to,Uc as tr,Ve as ts,Wf as tt,Em as u,wi as ua,To as ui,Tu as un,wn as uo,Tc as ur,Ce as us,Ef as ut,um as v,ci as va,co as vi,lu as vn,cn as vo,lc as vr,se as vs,uf as vt,Qp as w,Xr as wa,Xa as wi,Zl as wn,Yt as wo,Zs as wr,Y as ws,Zd as wt,im as x,ni as xa,no as xi,ru as xn,tn as xo,rc as xr,te as xs,rf as xt,cm as y,oi as ya,oo as yi,su as yn,on as yo,sc as yr,ae as ys,cf as yt,Sp as z,br as za,ba as zi,xl as zn,yt as zo,xs as zr,y as zs,xd as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Xf as $,Jn as $a,Ji as $i,Yc as $n,qe as $o,Yo as $r,Yu as $t,Hp as A,Br as Aa,Ba as Ai,Vl as An,zt as Ao,Vs as Ar,z as As,Vd as At,Sp as B,br as Ba,ba as Bi,xl as Bn,yt as Bo,xs as Br,y as Bs,xd as Bt,nm as C,ei as Ca,eo as Ci,tu as Cn,$t as Co,tc as Cr,$ as Cs,tf as Ct,Jp as D,Kr as Da,Ka as Di,ql as Dn,Gt as Do,qs as Dr,G as Ds,qd as Dt,Xp as E,Jr as Ea,Ja as Ei,Yl as En,qt as Eo,Ys as Er,q as Es,Yd as Et,Mp as F,Ar as Fa,Aa as Fi,jl as Fn,kt as Fo,js as Fr,k as Fs,jd as Ft,fp as G,ur as Ga,ua as Gi,dl as Gn,lt as Go,ds as Gr,l as Gs,dd as Gt,vp as H,gr as Ha,ga as Hi,_l as Hn,ht as Ho,_s as Hr,h as Hs,_d as Ht,Ap as I,Or as Ia,Oa as Ii,kl as In,Dt as Io,ks as Ir,D as Is,kd as It,op as J,ir as Ja,ia as Ji,al as Jn,rt as Jo,as as Jr,r as Js,ad as Jt,up as K,cr as Ka,ca as Ki,ll as Kn,st as Ko,ls as Kr,s as Ks,ld as Kt,Op as L,Er as La,Ea as Li,Dl as Ln,Tt as Lo,Ds as Lr,T as Ls,Dd as Lt,Rp as M,Ir as Ma,Ia as Mi,Ll as Mn,Ft as Mo,Ls as Mr,F as Ms,Ld as Mt,Ip as N,Pr as Na,Pa as Ni,Fl as Nn,Nt as No,Fs as Nr,N as Ns,Fd as Nt,Kp as O,Wr as Oa,Wa as Oi,Gl as On,Ut as Oo,Gs as Or,U as Os,Gd as Ot,Pp as P,Mr as Pa,Ma as Pi,Nl as Pn,jt as Po,Ns as Pr,j as Ps,Nd as Pt,Qf as Q,Xn as Qa,Xi as Qi,Zc as Qn,Ye as Qo,Zo as Qr,Zu as Qt,Ep as R,wr as Ra,wa as Ri,Tl as Rn,Ct as Ro,Ts as Rr,C as Rs,Td as Rt,im as S,ni as Sa,no as Si,ru as Sn,tn as So,rc as Sr,te as Ss,rf as St,Qp as T,Xr as Ta,Xa as Ti,Zl as Tn,Yt as To,Zs as Tr,Y as Ts,Zd as Tt,gp as U,mr as Ua,ma as Ui,hl as Un,pt as Uo,hs as Ur,p as Us,hd as Ut,bp as V,vr as Va,va as Vi,yl as Vn,_t as Vo,ys as Vr,_ as Vs,yd as Vt,mp as W,fr as Wa,fa as Wi,pl as Wn,dt as Wo,ps as Wr,d as Ws,pd as Wt,np as X,er as Xa,ea as Xi,tl as Xn,$e as Xo,ts as Xr,td as Xt,ip as Y,nr as Ya,na as Yi,rl as Yn,tt as Yo,rs as Yr,t as Ys,rd as Yt,ep as Z,Qn as Za,Qi as Zi,$c as Zn,Ze as Zo,$o as Zr,$u as Zt,mm as _,fi as _a,po as _i,pu as _n,fn as _o,pc as _r,de as _s,mf as _t,Rm as a,Ii as aa,Lo as ai,Lu as an,In as ao,Lc as ar,Fe as as,Rf as at,cm as b,oi as ba,oo as bi,su as bn,on as bo,sc as br,ae as bs,cf as bt,Mm as c,Ai as ca,jo as ci,ju as cn,An as co,jc as cr,ke as cs,Mf as ct,Em as d,wi as da,To as di,Tu as dn,wn as do,Tc as dr,Ce as ds,Ef as dt,Ki as ea,qo as ei,qu as en,Kn as eo,qc as er,Ge as es,Jf as et,wm as f,Si as fa,Co as fi,Cu as fn,Sn as fo,Cc as fr,xe as fs,wf as ft,gm as g,mi as ga,ho as gi,hu as gn,mn as go,hc as gr,pe as gs,gf as gt,vm as h,gi as ha,_o as hi,_u as hn,gn as ho,_c as hr,he as hs,vf as ht,Bm as i,Ri as ia,zo as ii,zu as in,Rn as io,zc as ir,Le as is,Bf as it,Bp as j,Rr as ja,Ra as ji,zl as jn,Lt as jo,zs as jr,L as js,zd as jt,Wp as k,Hr as ka,Ha as ki,Ul as kn,Vt as ko,Us as kr,V as ks,Ud as kt,Am as l,Oi as la,ko as li,ku as ln,On as lo,kc as lr,De as ls,Af as lt,bm as m,vi as ma,yo as mi,yu as mn,vn as mo,yc as mr,_e as ms,bf as mt,Wm as n,Hi as na,Uo as ni,Uu as nn,Hn as no,Uc as nr,Ve as ns,Wf as nt,Im as o,Pi as oa,Fo as oi,Fu as on,Pn as oo,Fc as or,Ne as os,If as ot,Sm as p,bi as pa,xo as pi,xu as pn,bn as po,xc as pr,ye as ps,Sf as pt,cp as q,or as qa,oa as qi,sl as qn,at as qo,ss as qr,a as qs,sd as qt,Hm as r,Bi as ra,Vo as ri,Vu as rn,Bn as ro,Vc as rr,ze as rs,Hf as rt,Pm as s,Mi as sa,No as si,Nu as sn,Mn as so,Nc as sr,je as ss,Pf as st,Km as t,Wi as ta,Go as ti,Gu as tn,Wn as to,Gc as tr,Ue as ts,Kf as tt,Om as u,Ei as ua,Do as ui,Du as un,En as uo,Dc as ur,Te as us,Of as ut,fm as v,ui as va,uo as vi,du as vn,un as vo,dc as vr,le as vs,ff as vt,em as w,Qr as wa,Qa as wi,$l as wn,Zt as wo,$s as wr,Z as ws,$d as wt,om as x,ii as xa,io as xi,au as xn,rn as xo,ac as xr,re as xs,of as xt,um as y,ci as ya,co as yi,lu as yn,cn as yo,lc as yr,se as ys,uf as yt,wp as z,Sr as za,Sa as zi,Cl as zn,xt as zo,Cs as zr,x as zs,Cd as zt};
