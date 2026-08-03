@@ -88,7 +88,7 @@ With the provider layer cleaned up, the next step is to continue the benchmarkin
 ## Resources and References
 
 - **Repository:** [sugarlabs/sugar-ai](https://github.com/sugarlabs/sugar-ai)
-- **Pull Request:** provider refactor on the multi-provider PR
+- **Pull Request:** [provider refactor on the multi-provider PR](https://github.com/sugarlabs/sugar-ai/pull/147)
 
 ---
 
