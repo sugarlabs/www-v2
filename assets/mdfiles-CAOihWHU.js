@@ -35670,6 +35670,159 @@ Thanks to Walter Bender and Om Suneri for being so understanding about a slower 
 
 ---
 `,nm=e({default:()=>rm}),rm=`---
+title: "DMP '26 Week 07 Update by Noaman Akhtar"
+excerpt: "Adding think/no-think control to Sugar-AI so reasoning-capable Ollama models can be used selectively without changing existing clients."
+category: "DEVELOPER NEWS"
+date: "2026-08-02"
+slug: "2026-08-02-dmp-26-noaman-week07"
+author: "@/constants/MarkdownFiles/authors/noaman-akhtar.md"
+description: "DMP'26 Contributor at SugarLabs working on AI Optimization"
+tags: "dmp26,sugarlabs,week07,noaman-akhtar,sugar-ai,ai-optimization,ollama,reasoning"
+image: "assets/Images/c4gt_DMP.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 07 Progress Report by Noaman Akhtar
+
+**Project:** [AI Optimization](https://github.com/sugarlabs/sugar-ai)  
+**Mentors:** [sum2it](https://github.com/sum2it), [mostlyk](https://github.com/MostlyKIGuess), [chimosky](https://github.com/chimosky)  
+**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa), [Mebin](https://github.com/mebinthattil)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-07-27 - 2026-08-02
+
+---
+
+## Goals for This Week
+
+- Complete the request-level reasoning control work for Sugar-AI through a \`think\` flag.
+- Keep no-think as the default so existing clients continue to behave as before.
+- Send Ollama's \`think\` parameter in the correct request shape.
+- Add fallback behavior for models that reject the \`think\` field.
+- Present the midterm status of the AI Optimization project and use the feedback to shape the next set of improvements.
+
+---
+
+## Midterm Evaluation
+
+On July 30, I presented the current state of the AI Optimization project in the DMP midterm evaluation. The presentation focused on the architecture work completed so far: moving Sugar-AI away from a tightly coupled \`RAGAgent -> HuggingFace pipeline\` design and toward a provider-based system.
+
+![Midterm status for Sugar-AI provider work](/assets/Images/dmp26-week07-midterm-status.png)
+
+The main idea I explained was that a provider is one class that talks to one model backend through a shared interface. \`RAGAgent\` no longer needs to know whether the model is running through Ollama, HuggingFace, Gemini, or an OpenAI-compatible API. It builds the prompt and calls \`generate()\` or \`chat()\`, while each provider owns the backend-specific request format.
+
+![Provider abstraction architecture](/assets/Images/dmp26-week07-midterm-architecture.png)
+
+The external evaluators asked an important product question: switching providers through \`.env\` works for developers, but how does this become usable for people with little or no technical knowledge? My answer was that the current implementation keeps provider selection configuration-driven and documents each provider setup clearly in \`.example.env\`. That is the right first step for a backend refactor. The longer-term direction is to expose provider selection through a frontend or admin UI, so a user can switch providers without manually editing environment variables.
+
+They also asked which Sugar projects could use this backend. The immediate candidates are [\`speak-ai\`](https://github.com/sugarlabs/speak-ai), Reflection, and [\`Sugar activity generation\`](https://github.com/sugarlabs/Sugar-activity-on-Demand). Each one needs a consistent LLM backend, but they may run in very different environments: a local classroom machine, a Sugar Labs cloud server, or a school-managed hosted model.
+
+The testing discussion was also useful. Since the provider work did not yet have a full automated test suite, I explained the three levels I used for verification: contract-level checks for request shapes, provider-level checks with real prompts across backends, and server-level checks through the FastAPI endpoints.
+
+![Midterm deliverables and testing levels](/assets/Images/dmp26-week07-midterm-deliverables.png)
+
+---
+
+## Why Think/No-Think Matters
+
+The provider work made Sugar-AI model-agnostic. The next question was how to use that flexibility well. Some modern Ollama models support an explicit reasoning mode, where the model spends extra tokens thinking through the problem before producing an answer. That can help with multi-step tasks, debugging, and explanations, but it also increases latency and token usage.
+
+For Sugar-AI, that tradeoff should not be forced globally. A simple question should stay fast and cheap. A harder debugging or reasoning task should be able to opt in. This is why I added a request-level \`think\` flag in [sugar-ai#151](https://github.com/sugarlabs/sugar-ai/pull/151).
+
+The goal was not to introduce a second model router or swap models in memory. The goal was smaller: expose the reasoning capability when the selected provider and model support it, while keeping the default path unchanged.
+
+---
+
+## API and Parameter Design
+
+The \`think\` flag is accepted on every generation endpoint:
+
+- \`/ask\`, \`/ask-llm\`, and \`/debug\` accept it as a query parameter.
+- \`/ask-llm-prompted\` accepts it in the JSON body, alongside the other generation parameters.
+- If the caller omits it, the default is \`false\`.
+
+Internally, the flag lives in the shared \`GenerationParams\` object. That keeps the API route layer from needing provider-specific conditions. The routes build generation parameters, pass them into \`RAGAgent\` or the provider, and the provider decides whether that field means anything for its backend.
+
+I also added a \`THINKING_HEADROOM\` setting. Reasoning consumes output tokens from the same budget as the final answer, so a request with \`think=true\` can otherwise spend its whole output budget on reasoning and leave little room for the actual answer. The headroom setting gives reasoning requests extra output space without changing the default budget for normal requests.
+
+---
+
+## Ollama Provider Behavior
+
+Ollama expects \`think\` as a top-level field in the request body, not inside the \`options\` dictionary. That detail mattered because generation parameters like \`temperature\`, \`top_p\`, and \`num_predict\` do belong inside \`options\`, but \`think\` does not.
+
+Only the Ollama provider sends this field. The base OpenAI-compatible provider, Gemini, and HuggingFace accept the same \`GenerationParams\` object but ignore \`think\`, because those backends do not currently use this flag in Sugar-AI.
+
+I also added a fallback for compatibility. Some models reject requests that contain a \`think\` field. When Ollama returns that error, Sugar-AI removes \`think\` and retries the request once. This means non-reasoning models can still return an answer instead of failing just because a caller included the flag.
+
+The important limitation is that model behavior is capability dependent. A hybrid reasoning model may honor both \`think=true\` and \`think=false\`. A non-reasoning model such as [\`llama3.2:1b\`](https://ollama.com/library/llama3.2) may reject the field and rely on the fallback. A reasoning-style model may still include reasoning text even when \`think=false\`, because the model itself may not support suppressing that behavior.
+
+---
+
+## RAG and Debug Pipeline Handling
+
+Two endpoints needed a little more care: \`/ask\` and \`/debug\`.
+
+Both are two-stage flows. \`/ask\` first generates an answer using retrieved documentation, then rewrites that answer into a child-friendly form. \`/debug\` first analyzes or explains the code, then rewrites the result for children.
+
+For these endpoints, \`think=true\` applies only to the first analysis stage. The child-friendly rewrite always runs no-think. That keeps the expensive reasoning where it is useful and keeps the final simplification stage lightweight.
+
+---
+
+## Verification
+
+I tested the behavior directly against Ollama and then through Sugar-AI's FastAPI endpoints.
+
+For hybrid reasoning behavior, I used [\`qwen3.5:0.8b\`](https://ollama.com/library/qwen3.5%3A0.8b), which reports thinking support through Ollama. For a non-reasoning model, I used [\`llama3.2:1b\`](https://ollama.com/library/llama3.2) to check that the retry path still returns an answer when the \`think\` field is not supported. I also tested a reasoning-style model, [\`deepseek-r1:1.5b\`](https://registry.ollama.com/library/deepseek-r1), to confirm the important edge case: Sugar-AI can request no-think, but it cannot force a model to suppress reasoning if the model itself does not support that behavior.
+
+The Sugar-AI endpoint checks covered:
+
+- \`/health\`, to confirm the active provider and model.
+- \`/ask-llm\`, for the simplest direct generation path.
+- \`/ask-llm-prompted\`, for JSON-body generation parameters and chat mode.
+- \`/debug\`, to confirm the flag passes into the analysis stage.
+
+I also ran compile and import checks after rebasing the work onto the updated provider refactor. That mattered because the provider layer had changed since the original think/no-think branch was started, and I wanted the final pull request to contain only the reasoning-control changes rather than old provider commits.
+
+---
+
+## Challenge and Key Learning
+
+The hard part was not passing one boolean through the API. The real challenge was making that boolean safe across different kinds of models.
+
+The same \`think\` interface has to work for hybrid reasoning models, non-reasoning models, and reasoning-style models. Those categories do not behave the same way. Some honor the flag, some reject it, and some accept it while still producing reasoning-heavy output. The implementation therefore treats \`think\` as a capability request, not as a guarantee that every model will behave identically.
+
+That was the main lesson this week: provider-level controls should be exposed without pretending that every backend has the same capabilities. Sugar-AI can make the request shape consistent, keep defaults safe, and avoid failures, but the final behavior still depends on the selected model.
+
+---
+
+## Plan for Next Week
+
+The midterm discussion and the think/no-think testing both pointed to the next area of work: concurrency and production hardening.
+
+Reasoning requests are slower, so they made an existing server behavior more visible. The FastAPI handlers currently perform blocking model calls, which means a slow generation can block other requests behind it. This issue existed before the think/no-think feature, so it should be handled in a separate pull request rather than mixed into [sugar-ai#151](https://github.com/sugarlabs/sugar-ai/pull/151).
+
+The next step is to measure that behavior clearly, propose a small concurrency fix, and keep moving toward the second-half milestones: benchmarking, content safety, the reasoning decision, and production hardening.
+
+![Second half milestones](/assets/Images/dmp26-week07-second-half-milestones.png)
+
+---
+
+## Resources and References
+
+- **Repository:** [sugarlabs/sugar-ai](https://github.com/sugarlabs/sugar-ai)
+- **Pull Request:** [sugar-ai#151](https://github.com/sugarlabs/sugar-ai/pull/151)
+- **Provider refactor PR:** [sugar-ai#147](https://github.com/sugarlabs/sugar-ai/pull/147)
+- **Ollama API reference:** [github.com/ollama/ollama](https://github.com/ollama/ollama/blob/main/docs/api.md)
+
+---
+
+## Acknowledgments
+
+Thanks to my mentors and the Sugar Labs community for the feedback during the provider refactor and the midterm evaluation. The questions about usability, testing, and downstream projects helped connect the backend implementation to how Sugar-AI will actually be used.
+
+---
+`,im=e({default:()=>am}),am=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -35818,7 +35971,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,im=e({default:()=>am}),am=`---
+`,om=e({default:()=>sm}),sm=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -35921,7 +36074,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,om=e({default:()=>sm}),sm=`---
+`,cm=e({default:()=>lm}),lm=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -36394,7 +36547,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,cm=e({default:()=>lm}),lm=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,um=e({default:()=>dm}),dm=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -36481,7 +36634,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,um=e({default:()=>dm}),dm=`---\r
+`,fm=e({default:()=>pm}),pm=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -36574,7 +36727,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,fm=e({default:()=>pm}),pm=`---\r
+`,mm=e({default:()=>hm}),hm=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -36668,7 +36821,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,mm=e({default:()=>hm}),hm=`---\r
+`,gm=e({default:()=>_m}),_m=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -36756,7 +36909,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,gm=e({default:()=>_m}),_m=`---\r
+`,vm=e({default:()=>ym}),ym=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -36839,7 +36992,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,vm=e({default:()=>ym}),ym=`---\r
+`,bm=e({default:()=>xm}),xm=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -36905,7 +37058,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,bm=e({default:()=>xm}),xm=`---
+`,Sm=e({default:()=>Cm}),Cm=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -36987,7 +37140,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Sm=e({default:()=>Cm}),Cm=`---
+---`,wm=e({default:()=>Tm}),Tm=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -37080,7 +37233,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,wm=e({default:()=>Tm}),Tm=`---
+`,Em=e({default:()=>Dm}),Dm=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -37169,7 +37322,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Em=e({default:()=>Dm}),Dm=`---
+--- `,Om=e({default:()=>km}),km=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37314,7 +37467,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Om=e({default:()=>km}),km=`---
+--- `,Am=e({default:()=>jm}),jm=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37502,7 +37655,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Am=e({default:()=>jm}),jm=`---
+--- `,Mm=e({default:()=>Nm}),Nm=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37597,7 +37750,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Mm=e({default:()=>Nm}),Nm=`---
+`,Pm=e({default:()=>Fm}),Fm=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37686,7 +37839,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Pm=e({default:()=>Fm}),Fm=`---
+`,Im=e({default:()=>Lm}),Lm=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37773,7 +37926,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Im=e({default:()=>Lm}),Lm=`---
+---`,Rm=e({default:()=>zm}),zm=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37856,7 +38009,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Rm=e({default:()=>zm}),zm=`---
+---`,Bm=e({default:()=>Vm}),Vm=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37939,7 +38092,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Bm=e({default:()=>Vm}),Vm=`---
+---`,Hm=e({default:()=>Um}),Um=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -38244,4 +38397,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Wf as $,Hn as $a,Hi as $i,Uc as $n,Ve as $o,Uo as $r,Uu as $t,Ip as A,Pr as Aa,Pa as Ai,Fl as An,Nt as Ao,Fs as Ar,N as As,Fd as At,gp as B,mr as Ba,ma as Bi,hl as Bn,pt as Bo,hs as Br,p as Bs,hd as Bt,Xp as C,Jr as Ca,Ja as Ci,Yl as Cn,qt as Co,Ys as Cr,q as Cs,Yd as Ct,Hp as D,Br as Da,Ba as Di,Vl as Dn,zt as Do,Vs as Dr,z as Ds,Vd as Dt,Wp as E,Hr as Ea,Ha as Ei,Ul as En,Vt as Eo,Us as Er,V as Es,Ud as Et,Ep as F,wr as Fa,wa as Fi,Tl as Fn,Ct as Fo,Ts as Fr,C as Fs,Td as Ft,op as G,ir as Ga,ia as Gi,al as Gn,rt as Go,as as Gr,r as Gs,ad as Gt,fp as H,ur as Ha,ua as Hi,dl as Hn,lt as Ho,ds as Hr,l as Hs,dd as Ht,wp as I,Sr as Ia,Sa as Ii,Cl as In,xt as Io,Cs as Ir,x as Is,Cd as It,ep as J,Qn as Ja,Qi as Ji,$c as Jn,Ze as Jo,$o as Jr,$u as Jt,ip as K,nr as Ka,na as Ki,rl as Kn,tt as Ko,rs as Kr,t as Ks,rd as Kt,Sp as L,br as La,ba as Li,xl as Ln,yt as Lo,xs as Lr,y as Ls,xd as Lt,Mp as M,Ar as Ma,Aa as Mi,jl as Mn,kt as Mo,js as Mr,k as Ms,jd as Mt,Ap as N,Or as Na,Oa as Ni,kl as Nn,Dt as No,ks as Nr,D as Ns,kd as Nt,Bp as O,Rr as Oa,Ra as Oi,zl as On,Lt as Oo,zs as Or,L as Os,zd as Ot,Op as P,Er as Pa,Ea as Pi,Dl as Pn,Tt as Po,Ds as Pr,T as Ps,Dd as Pt,Kf as Q,Wn as Qa,Wi as Qi,Gc as Qn,Ue as Qo,Go as Qr,Gu as Qt,bp as R,vr as Ra,va as Ri,yl as Rn,_t as Ro,ys as Rr,_ as Rs,yd as Rt,Qp as S,Xr as Sa,Xa as Si,Zl as Sn,Yt as So,Zs as Sr,Y as Ss,Zd as St,Kp as T,Wr as Ta,Wa as Ti,Gl as Tn,Ut as To,Gs as Tr,U as Ts,Gd as Tt,up as U,cr as Ua,ca as Ui,ll as Un,st as Uo,ls as Ur,s as Us,ld as Ut,mp as V,fr as Va,fa as Vi,pl as Vn,dt as Vo,ps as Vr,d as Vs,pd as Vt,cp as W,or as Wa,oa as Wi,sl as Wn,at as Wo,ss as Wr,a as Ws,sd as Wt,Xf as X,Jn as Xa,Ji as Xi,Yc as Xn,qe as Xo,Yo as Xr,Yu as Xt,Qf as Y,Xn as Ya,Xi as Yi,Zc as Yn,Ye as Yo,Zo as Yr,Zu as Yt,Jf as Z,Kn as Za,Ki as Zi,qc as Zn,Ge as Zo,qo as Zr,qu as Zt,cm as _,oi as _a,oo as _i,su as _n,on as _o,sc as _r,ae as _s,cf as _t,Mm as a,Ai as aa,jo as ai,ju as an,An as ao,jc as ar,ke as as,Mf as at,nm as b,ei as ba,eo as bi,tu as bn,$t as bo,tc as br,$ as bs,tf as bt,Em as c,wi as ca,To as ci,Tu as cn,wn as co,Tc as cr,Ce as cs,Ef as ct,bm as d,vi as da,yo as di,yu as dn,vn as do,yc as dr,_e as ds,bf as dt,Bi as ea,Vo as ei,Vu as en,Bn as eo,Vc as er,ze as es,Hf as et,vm as f,gi as fa,_o as fi,_u as fn,gn as fo,_c as fr,he as fs,vf as ft,um as g,ci as ga,co as gi,lu as gn,cn as go,lc as gr,se as gs,uf as gt,fm as h,ui as ha,uo as hi,du as hn,un as ho,dc as hr,le as hs,ff as ht,Pm as i,Mi as ia,No as ii,Nu as in,Mn as io,Nc as ir,je as is,Pf as it,Pp as j,Mr as ja,Ma as ji,Nl as jn,jt as jo,Ns as jr,j as js,Nd as jt,Rp as k,Ir as ka,Ia as ki,Ll as kn,Ft as ko,Ls as kr,F as ks,Ld as kt,wm as l,Si as la,Co as li,Cu as ln,Sn as lo,Cc as lr,xe as ls,wf as lt,mm as m,fi as ma,po as mi,pu as mn,fn as mo,pc as mr,de as ms,mf as mt,Rm as n,Ii as na,Lo as ni,Lu as nn,In as no,Lc as nr,Fe as ns,Rf as nt,Am as o,Oi as oa,ko as oi,ku as on,On as oo,kc as or,De as os,Af as ot,gm as p,mi as pa,ho as pi,hu as pn,mn as po,hc as pr,pe as ps,gf as pt,np as q,er as qa,ea as qi,tl as qn,$e as qo,ts as qr,td as qt,Im as r,Pi as ra,Fo as ri,Fu as rn,Pn as ro,Fc as rr,Ne as rs,If as rt,Om as s,Ei as sa,Do as si,Du as sn,En as so,Dc as sr,Te as ss,Of as st,Bm as t,Ri as ta,zo as ti,zu as tn,Rn as to,zc as tr,Le as ts,Bf as tt,Sm as u,bi as ua,xo as ui,xu as un,bn as uo,xc as ur,ye as us,Sf as ut,om as v,ii as va,io as vi,au as vn,rn as vo,ac as vr,re as vs,of as vt,Jp as w,Kr as wa,Ka as wi,ql as wn,Gt as wo,qs as wr,G as ws,qd as wt,em as x,Qr as xa,Qa as xi,$l as xn,Zt as xo,$s as xr,Z as xs,$d as xt,im as y,ni as ya,no as yi,ru as yn,tn as yo,rc as yr,te as ys,rf as yt,vp as z,gr as za,ga as zi,_l as zn,ht as zo,_s as zr,h as zs,_d as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Kf as $,Wn as $a,Wi as $i,Gc as $n,Ue as $o,Go as $r,Gu as $t,Rp as A,Ir as Aa,Ia as Ai,Ll as An,Ft as Ao,Ls as Ar,F as As,Ld as At,vp as B,gr as Ba,ga as Bi,_l as Bn,ht as Bo,_s as Br,h as Bs,_d as Bt,Qp as C,Xr as Ca,Xa as Ci,Zl as Cn,Yt as Co,Zs as Cr,Y as Cs,Zd as Ct,Wp as D,Hr as Da,Ha as Di,Ul as Dn,Vt as Do,Us as Dr,V as Ds,Ud as Dt,Kp as E,Wr as Ea,Wa as Ei,Gl as En,Ut as Eo,Gs as Er,U as Es,Gd as Et,Op as F,Er as Fa,Ea as Fi,Dl as Fn,Tt as Fo,Ds as Fr,T as Fs,Dd as Ft,cp as G,or as Ga,oa as Gi,sl as Gn,at as Go,ss as Gr,a as Gs,sd as Gt,mp as H,fr as Ha,fa as Hi,pl as Hn,dt as Ho,ps as Hr,d as Hs,pd as Ht,Ep as I,wr as Ia,wa as Ii,Tl as In,Ct as Io,Ts as Ir,C as Is,Td as It,np as J,er as Ja,ea as Ji,tl as Jn,$e as Jo,ts as Jr,td as Jt,op as K,ir as Ka,ia as Ki,al as Kn,rt as Ko,as as Kr,r as Ks,ad as Kt,wp as L,Sr as La,Sa as Li,Cl as Ln,xt as Lo,Cs as Lr,x as Ls,Cd as Lt,Pp as M,Mr as Ma,Ma as Mi,Nl as Mn,jt as Mo,Ns as Mr,j as Ms,Nd as Mt,Mp as N,Ar as Na,Aa as Ni,jl as Nn,kt as No,js as Nr,k as Ns,jd as Nt,Hp as O,Br as Oa,Ba as Oi,Vl as On,zt as Oo,Vs as Or,z as Os,Vd as Ot,Ap as P,Or as Pa,Oa as Pi,kl as Pn,Dt as Po,ks as Pr,D as Ps,kd as Pt,Jf as Q,Kn as Qa,Ki as Qi,qc as Qn,Ge as Qo,qo as Qr,qu as Qt,Sp as R,br as Ra,ba as Ri,xl as Rn,yt as Ro,xs as Rr,y as Rs,xd as Rt,em as S,Qr as Sa,Qa as Si,$l as Sn,Zt as So,$s as Sr,Z as Ss,$d as St,Jp as T,Kr as Ta,Ka as Ti,ql as Tn,Gt as To,qs as Tr,G as Ts,qd as Tt,fp as U,ur as Ua,ua as Ui,dl as Un,lt as Uo,ds as Ur,l as Us,dd as Ut,gp as V,mr as Va,ma as Vi,hl as Vn,pt as Vo,hs as Vr,p as Vs,hd as Vt,up as W,cr as Wa,ca as Wi,ll as Wn,st as Wo,ls as Wr,s as Ws,ld as Wt,Qf as X,Xn as Xa,Xi,Zc as Xn,Ye as Xo,Zo as Xr,Zu as Xt,ep as Y,Qn as Ya,Qi as Yi,$c as Yn,Ze as Yo,$o as Yr,$u as Yt,Xf as Z,Jn as Za,Ji as Zi,Yc as Zn,qe as Zo,Yo as Zr,Yu as Zt,um as _,ci as _a,co as _i,lu as _n,cn as _o,lc as _r,se as _s,uf as _t,Pm as a,Mi as aa,No as ai,Nu as an,Mn as ao,Nc as ar,je as as,Pf as at,im as b,ni as ba,no as bi,ru as bn,tn as bo,rc as br,te as bs,rf as bt,Om as c,Ei as ca,Do as ci,Du as cn,En as co,Dc as cr,Te as cs,Of as ct,Sm as d,bi as da,xo as di,xu as dn,bn as do,xc as dr,ye as ds,Sf as dt,Hi as ea,Uo as ei,Uu as en,Hn as eo,Uc as er,Ve as es,Wf as et,bm as f,vi as fa,yo as fi,yu as fn,vn as fo,yc as fr,_e as fs,bf as ft,fm as g,ui as ga,uo as gi,du as gn,un as go,dc as gr,le as gs,ff as gt,mm as h,fi as ha,po as hi,pu as hn,fn as ho,pc as hr,de as hs,mf as ht,Im as i,Pi as ia,Fo as ii,Fu as in,Pn as io,Fc as ir,Ne as is,If as it,Ip as j,Pr as ja,Pa as ji,Fl as jn,Nt as jo,Fs as jr,N as js,Fd as jt,Bp as k,Rr as ka,Ra as ki,zl as kn,Lt as ko,zs as kr,L as ks,zd as kt,Em as l,wi as la,To as li,Tu as ln,wn as lo,Tc as lr,Ce as ls,Ef as lt,gm as m,mi as ma,ho as mi,hu as mn,mn as mo,hc as mr,pe as ms,gf as mt,Bm as n,Ri as na,zo as ni,zu as nn,Rn as no,zc as nr,Le as ns,Bf as nt,Mm as o,Ai as oa,jo as oi,ju as on,An as oo,jc as or,ke as os,Mf as ot,vm as p,gi as pa,_o as pi,_u as pn,gn as po,_c as pr,he as ps,vf as pt,ip as q,nr as qa,na as qi,rl as qn,tt as qo,rs as qr,t as qs,rd as qt,Rm as r,Ii as ra,Lo as ri,Lu as rn,In as ro,Lc as rr,Fe as rs,Rf as rt,Am as s,Oi as sa,ko as si,ku as sn,On as so,kc as sr,De as ss,Af as st,Hm as t,Bi as ta,Vo as ti,Vu as tn,Bn as to,Vc as tr,ze as ts,Hf as tt,wm as u,Si as ua,Co as ui,Cu as un,Sn as uo,Cc as ur,xe as us,wf as ut,cm as v,oi as va,oo as vi,su as vn,on as vo,sc as vr,ae as vs,cf as vt,Xp as w,Jr as wa,Ja as wi,Yl as wn,qt as wo,Ys as wr,q as ws,Yd as wt,nm as x,ei as xa,eo as xi,tu as xn,$t as xo,tc as xr,$ as xs,tf as xt,om as y,ii as ya,io as yi,au as yn,rn as yo,ac as yr,re as ys,of as yt,bp as z,vr as za,va as zi,yl as zn,_t as zo,ys as zr,_ as zs,yd as zt};
