@@ -36497,6 +36497,120 @@ Thanks to my mentors and the Sugar Labs community for the feedback during the pr
 
 ---
 `,gm=e({default:()=>_m}),_m=`---
+title: "GSoC '26 Week 10 Report by Rejah Rabeeul Haque"
+excerpt: "Added a stop button for the host in number mode shared mode, added labels for figures, introduced new built in categories, and fixed bugs."
+category: "DEVELOPER NEWS"
+date: "2026-08-02"
+slug: "2026-08-02-gsoc-26-rejah-rabeeul-haque-week10"
+author: "@/constants/MarkdownFiles/authors/rejah-rabeeul-haque.md"
+description: "GSoC'26 Contributor at SugarLabs working on ConnectTheDots activity"
+tags: "gsoc26,sugarlabs,sugarizer,connectthedots,week10,rejah-rabeeul-haque"
+image: "assets/Images/sugarizer.webp"
+---
+
+<!-- markdownlint-disable -->
+
+## This Week's Progress
+
+Hello again. This week I focused on improving the ConnectTheDots activity. The work covered giving the host more control during a shared game, adding labels to figures, expanding the built in figure library with new categories, and fixing a couple of bugs.
+
+Here is a detailed breakdown:
+
+---
+
+## Stop Button for the Host
+
+I added a "Stop Game" button that only the host (the person who shared the activity) can see and use. Players who joined cannot see this button.
+
+Here is how it works step by step:
+
+1. When the host starts a shared challenge, the Stop button appears in the toolbar for the host only. The code checks whether the current user is the host before making the button visible.
+2. When the host clicks it, their computer sends a special "stop game" message across the network to all other players in the session.
+3. Every other player's computer is always listening for incoming messages. When it receives this message, it immediately stops the local timer and shows the final score screen.
+4. The host's own machine also stops the game at the same moment, so everything ends together for everyone.
+
+This was also a help during testing. Instead of waiting for the full timer to run out every single test run, I could just click Stop and jump straight to the end screen to verify the results.
+
+---
+
+## Labels for Figures
+
+Before this change, the figure gallery showed dot patterns as small thumbnail cards with no names. A player had to guess what the shape was just by looking at the dots.
+
+I added a text label below every figure card in the gallery. Each figure already had a name stored with it internally, and now that name is shown below the thumbnail so players always know exactly what they are picking. For the built in figures, these names also go through the localization system, so they can be translated to other languages.
+
+This label carries through to the figure editor too. When you click the button to add a new figure or edit an existing one, a form now appears asking you to type in the figure's name. The form does not let you confirm until you have actually typed something, so you cannot save a figure with no name.
+
+When you finish drawing the dots and click the Save/Back button, a form pops up asking you to enter a name for the figure. The user types the name and hits Confirm, and the figure gets saved with that label. So the naming step works the same way for both creating new figures and editing old ones.
+
+---
+
+## New Built in Categories
+
+Previously, the game only shipped with two built in categories: Basic Shapes and Objects. This week I added four more:
+
+- Numbers — figures shaped like the digits 1 through 9
+- Symbols / Signs — figures like Plus, Arrow, Cross, Checkmark, Heart, Crown, and more
+- Tools — figures like Wrench, Hammer, Axe, Key, Drill, and more
+- Home — figures like Lamp, Door, Chair, Mug, Sofa, and more
+
+Each figure is stored as a list of dot positions (grid column and row), plus a closed flag that tells the game to connect the last dot back to the first one to close the shape. For example, a simple Square looks like this:
+
+\`\`\`js
+{ name: 'Square', points: [[3,2],[11,2],[11,10],[3,10]], closed: true }
+\`\`\`
+
+These four dots are placed at the the grid, and closed means the game will draw the fourth line back to the start automatically.
+
+![New Categories](/assets/Developers/Rejah/connectthedots-week10-categories.webp)
+
+---
+
+## Bug Fixes
+
+- Fixed No Timer Mode
+
+The "No Timer" option was broken because the display was trying to show a countdown that never existed. The fix makes the display show just the score instead, and the game now runs indefinitely until the host presses Stop.
+
+- Removed the Back Button During Play
+
+When a player selected a figure from the gallery and was drawing it, there was a "Back" button on the canvas. Pressing it would clear the current drawing and return to the figure picker.
+
+During a challenge, this was a problem. A player who got a difficult figure could press Back, skip it, and load the next figure. This let them dodge hard shapes and keep their score going without actually completing them, which is cheating.
+
+I removed the back button from the play view during shared mode challenges. The button is now hidden whenever a player is inside a shared session. It still exists and works fine in solo mode, but it no longer appears when it could be used to gain an unfair advantage.
+
+---
+
+## Challenges Faced
+
+Adding the new built in categories and figures required careful design to ensure each shape was easily recognizable within the dot grid. I also implemented the label feature across both the create and edit flows, making sure the name input behaved consistently and appeared correctly in both scenarios.
+
+---
+
+## What's Next
+
+- Fix the remaining issues in the current implementation.
+- Start the implementation of Game Mode.
+
+---
+
+## Acknowledgments
+
+A big thank you to my mentor Lionel Laské for his continuous guidance, and to everyone at Sugar Labs for the support.
+
+---
+
+## Links
+
+- **Sugarizer Repository**: [https://github.com/llaske/sugarizer](https://github.com/llaske/sugarizer)
+- **Connect The Dots Pull Request**: [https://github.com/llaske/sugarizer/pull/2188](https://github.com/llaske/sugarizer/pull/2188)
+- **GitHub Profile**: [https://github.com/Rejah-Rabeeul](https://github.com/Rejah-Rabeeul)
+
+---
+
+*Thanks for reading Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*
+`,vm=e({default:()=>ym}),ym=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -36645,7 +36759,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,vm=e({default:()=>ym}),ym=`---
+`,bm=e({default:()=>xm}),xm=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -36748,7 +36862,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,bm=e({default:()=>xm}),xm=`---
+`,Sm=e({default:()=>Cm}),Cm=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -37221,7 +37335,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Sm=e({default:()=>Cm}),Cm=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,wm=e({default:()=>Tm}),Tm=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -37308,7 +37422,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,wm=e({default:()=>Tm}),Tm=`---\r
+`,Em=e({default:()=>Dm}),Dm=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -37401,7 +37515,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Em=e({default:()=>Dm}),Dm=`---\r
+`,Om=e({default:()=>km}),km=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -37495,7 +37609,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Om=e({default:()=>km}),km=`---\r
+`,Am=e({default:()=>jm}),jm=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -37583,7 +37697,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Am=e({default:()=>jm}),jm=`---\r
+`,Mm=e({default:()=>Nm}),Nm=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -37666,7 +37780,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Mm=e({default:()=>Nm}),Nm=`---\r
+`,Pm=e({default:()=>Fm}),Fm=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -37732,7 +37846,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Pm=e({default:()=>Fm}),Fm=`---
+`,Im=e({default:()=>Lm}),Lm=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -37814,7 +37928,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Im=e({default:()=>Lm}),Lm=`---
+---`,Rm=e({default:()=>zm}),zm=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -37907,7 +38021,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Rm=e({default:()=>zm}),zm=`---
+`,Bm=e({default:()=>Vm}),Vm=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -37996,7 +38110,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Bm=e({default:()=>Vm}),Vm=`---
+--- `,Hm=e({default:()=>Um}),Um=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -38141,7 +38255,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Hm=e({default:()=>Um}),Um=`---
+--- `,Wm=e({default:()=>Gm}),Gm=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -38329,7 +38443,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Wm=e({default:()=>Gm}),Gm=`---
+--- `,Km=e({default:()=>qm}),qm=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -38424,7 +38538,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Km=e({default:()=>qm}),qm=`---
+`,Jm=e({default:()=>Ym}),Ym=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -38513,7 +38627,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Jm=e({default:()=>Ym}),Ym=`---
+`,Xm=e({default:()=>Zm}),Zm=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -38600,7 +38714,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Xm=e({default:()=>Zm}),Zm=`---
+---`,Qm=e({default:()=>$m}),$m=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -38683,7 +38797,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Qm=e({default:()=>$m}),$m=`---
+---`,eh=e({default:()=>th}),th=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -38766,7 +38880,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,eh=e({default:()=>th}),th=`---
+---`,nh=e({default:()=>rh}),rh=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -39071,4 +39185,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{ip as $,nr as $a,na as $i,rl as $n,tt as $o,rs as $r,t as $s,rd as $t,Xp as A,Jr as Aa,Ja as Ai,Yl as An,qt as Ao,Ys as Ar,q as As,Yd as At,Ap as B,Or as Ba,Oa as Bi,kl as Bn,Dt as Bo,ks as Br,D as Bs,kd as Bt,um as C,ci as Ca,co as Ci,lu as Cn,cn as Co,lc as Cr,se as Cs,uf as Ct,nm as D,ei as Da,eo as Di,tu as Dn,$t as Do,tc as Dr,$ as Ds,tf as Dt,im as E,ni as Ea,no as Ei,ru as En,tn as Eo,rc as Er,te as Es,rf as Et,Bp as F,Rr as Fa,Ra as Fi,zl as Fn,Lt as Fo,zs as Fr,L as Fs,zd as Ft,bp as G,vr as Ga,va as Gi,yl as Gn,_t as Go,ys as Gr,_ as Gs,yd as Gt,Ep as H,wr as Ha,wa as Hi,Tl as Hn,Ct as Ho,Ts as Hr,C as Hs,Td as Ht,Rp as I,Ir as Ia,Ia as Ii,Ll as In,Ft as Io,Ls as Ir,F as Is,Ld as It,mp as J,fr as Ja,fa as Ji,pl as Jn,dt as Jo,ps as Jr,d as Js,pd as Jt,vp as K,gr as Ka,ga as Ki,_l as Kn,ht as Ko,_s as Kr,h as Ks,_d as Kt,Ip as L,Pr as La,Pa as Li,Fl as Ln,Nt as Lo,Fs as Lr,N as Ls,Fd as Lt,Kp as M,Wr as Ma,Wa as Mi,Gl as Mn,Ut as Mo,Gs as Mr,U as Ms,Gd as Mt,Wp as N,Hr as Na,Ha as Ni,Ul as Nn,Vt as No,Us as Nr,V as Ns,Ud as Nt,em as O,Qr as Oa,Qa as Oi,$l as On,Zt as Oo,$s as Or,Z as Os,$d as Ot,Hp as P,Br as Pa,Ba as Pi,Vl as Pn,zt as Po,Vs as Pr,z as Ps,Vd as Pt,op as Q,ir as Qa,ia as Qi,al as Qn,rt as Qo,as as Qr,r as Qs,ad as Qt,Pp as R,Mr as Ra,Ma as Ri,Nl as Rn,jt as Ro,Ns as Rr,j as Rs,Nd as Rt,fm as S,ui as Sa,uo as Si,du as Sn,un as So,dc as Sr,le as Ss,ff as St,om as T,ii as Ta,io as Ti,au as Tn,rn as To,ac as Tr,re as Ts,of as Tt,wp as U,Sr as Ua,Sa as Ui,Cl as Un,xt as Uo,Cs as Ur,x as Us,Cd as Ut,Op as V,Er as Va,Ea as Vi,Dl as Vn,Tt as Vo,Ds as Vr,T as Vs,Dd as Vt,Sp as W,br as Wa,ba as Wi,xl as Wn,yt as Wo,xs as Wr,y as Ws,xd as Wt,up as X,cr as Xa,ca as Xi,ll as Xn,st as Xo,ls as Xr,s as Xs,ld as Xt,fp as Y,ur as Ya,ua as Yi,dl as Yn,lt as Yo,ds as Yr,l as Ys,dd as Yt,cp as Z,or as Za,oa as Zi,sl as Zn,at as Zo,ss as Zr,a as Zs,sd as Zt,Sm as _,bi as _a,xo as _i,xu as _n,bn as _o,xc as _r,ye as _s,Sf as _t,Km as a,Wi as aa,Go as ai,Gu as an,Wn as ao,Gc as ar,Ue as as,Kf as at,gm as b,mi as ba,ho as bi,hu as bn,mn as bo,hc as br,pe as bs,gf as bt,Bm as c,Ri as ca,zo as ci,zu as cn,Rn as co,zc as cr,Le as cs,Bf as ct,Pm as d,Mi as da,No as di,Nu as dn,Mn as do,Nc as dr,je as ds,Pf as dt,ea,ts as ei,td as en,er as eo,tl as er,$e as es,np as et,Mm as f,Ai as fa,jo as fi,ju as fn,An as fo,jc as fr,ke as fs,Mf as ft,wm as g,Si as ga,Co as gi,Cu as gn,Sn as go,Cc as gr,xe as gs,wf as gt,Em as h,wi as ha,To as hi,Tu as hn,wn as ho,Tc as hr,Ce as hs,Ef as ht,Jm as i,Ki as ia,qo as ii,qu as in,Kn as io,qc as ir,Ge as is,Jf as it,Jp as j,Kr as ja,Ka as ji,ql as jn,Gt as jo,qs as jr,G as js,qd as jt,Qp as k,Xr as ka,Xa as ki,Zl as kn,Yt as ko,Zs as kr,Y as ks,Zd as kt,Rm as l,Ii as la,Lo as li,Lu as ln,In as lo,Lc as lr,Fe as ls,Rf as lt,Om as m,Ei as ma,Do as mi,Du as mn,En as mo,Dc as mr,Te as ms,Of as mt,Qm as n,Xi as na,Zo as ni,Zu as nn,Xn as no,Zc as nr,Ye as ns,Qf as nt,Wm as o,Hi as oa,Uo as oi,Uu as on,Hn as oo,Uc as or,Ve as os,Wf as ot,Am as p,Oi as pa,ko as pi,ku as pn,On as po,kc as pr,De as ps,Af as pt,gp as q,mr as qa,ma as qi,hl as qn,pt as qo,hs as qr,p as qs,hd as qt,Xm as r,Ji as ra,Yo as ri,Yu as rn,Jn as ro,Yc as rr,qe as rs,Xf as rt,Hm as s,Bi as sa,Vo as si,Vu as sn,Bn as so,Vc as sr,ze as ss,Hf as st,eh as t,Qi as ta,$o as ti,$u as tn,Qn as to,$c as tr,Ze as ts,ep as tt,Im as u,Pi as ua,Fo as ui,Fu as un,Pn as uo,Fc as ur,Ne as us,If as ut,bm as v,vi as va,yo as vi,yu as vn,vn as vo,yc as vr,_e as vs,bf as vt,cm as w,oi as wa,oo as wi,su as wn,on as wo,sc as wr,ae as ws,cf as wt,mm as x,fi as xa,po as xi,pu as xn,fn as xo,pc as xr,de as xs,mf as xt,vm as y,gi as ya,_o as yi,_u as yn,gn as yo,_c as yr,he as ys,vf as yt,Mp as z,Ar as za,Aa as zi,jl as zn,kt as zo,js as zr,k as zs,jd as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{op as $,ir as $a,ia as $i,al as $n,rt as $o,as as $r,r as $s,ad as $t,Qp as A,Xr as Aa,Xa as Ai,Zl as An,Yt as Ao,Zs as Ar,Y as As,Zd as At,Mp as B,Ar as Ba,Aa as Bi,jl as Bn,kt as Bo,js as Br,k as Bs,jd as Bt,fm as C,ui as Ca,uo as Ci,du as Cn,un as Co,dc as Cr,le as Cs,ff as Ct,im as D,ni as Da,no as Di,ru as Dn,tn as Do,rc as Dr,te as Ds,rf as Dt,om as E,ii as Ea,io as Ei,au as En,rn as Eo,ac as Er,re as Es,of as Et,Hp as F,Br as Fa,Ba as Fi,Vl as Fn,zt as Fo,Vs as Fr,z as Fs,Vd as Ft,Sp as G,br as Ga,ba as Gi,xl as Gn,yt as Go,xs as Gr,y as Gs,xd as Gt,Op as H,Er as Ha,Ea as Hi,Dl as Hn,Tt as Ho,Ds as Hr,T as Hs,Dd as Ht,Bp as I,Rr as Ia,Ra as Ii,zl as In,Lt as Io,zs as Ir,L as Is,zd as It,gp as J,mr as Ja,ma as Ji,hl as Jn,pt as Jo,hs as Jr,p as Js,hd as Jt,bp as K,vr as Ka,va as Ki,yl as Kn,_t as Ko,ys as Kr,_ as Ks,yd as Kt,Rp as L,Ir as La,Ia as Li,Ll as Ln,Ft as Lo,Ls as Lr,F as Ls,Ld as Lt,Jp as M,Kr as Ma,Ka as Mi,ql as Mn,Gt as Mo,qs as Mr,G as Ms,qd as Mt,Kp as N,Wr as Na,Wa as Ni,Gl as Nn,Ut as No,Gs as Nr,U as Ns,Gd as Nt,nm as O,ei as Oa,eo as Oi,tu as On,$t as Oo,tc as Or,$ as Os,tf as Ot,Wp as P,Hr as Pa,Ha as Pi,Ul as Pn,Vt as Po,Us as Pr,V as Ps,Ud as Pt,cp as Q,or as Qa,oa as Qi,sl as Qn,at as Qo,ss as Qr,a as Qs,sd as Qt,Ip as R,Pr as Ra,Pa as Ri,Fl as Rn,Nt as Ro,Fs as Rr,N as Rs,Fd as Rt,mm as S,fi as Sa,po as Si,pu as Sn,fn as So,pc as Sr,de as Ss,mf as St,cm as T,oi as Ta,oo as Ti,su as Tn,on as To,sc as Tr,ae as Ts,cf as Tt,Ep as U,wr as Ua,wa as Ui,Tl as Un,Ct as Uo,Ts as Ur,C as Us,Td as Ut,Ap as V,Or as Va,Oa as Vi,kl as Vn,Dt as Vo,ks as Vr,D as Vs,kd as Vt,wp as W,Sr as Wa,Sa as Wi,Cl as Wn,xt as Wo,Cs as Wr,x as Ws,Cd as Wt,fp as X,ur as Xa,ua as Xi,dl as Xn,lt as Xo,ds as Xr,l as Xs,dd as Xt,mp as Y,fr as Ya,fa as Yi,pl as Yn,dt as Yo,ps as Yr,d as Ys,pd as Yt,up as Z,cr as Za,ca as Zi,ll as Zn,st as Zo,ls as Zr,s as Zs,ld as Zt,wm as _,Si as _a,Co as _i,Cu as _n,Sn as _o,Cc as _r,xe as _s,wf as _t,Jm as a,Ki as aa,qo as ai,qu as an,Kn as ao,qc as ar,Ge as as,Jf as at,vm as b,gi as ba,_o as bi,_u as bn,gn as bo,_c as br,he as bs,vf as bt,Hm as c,Bi as ca,Vo as ci,Vu as cn,Bn as co,Vc as cr,ze as cs,Hf as ct,Im as d,Pi as da,Fo as di,Fu as dn,Pn as do,Fc as dr,Ne as ds,If as dt,na as ea,t as ec,rs as ei,rd as en,nr as eo,rl as er,tt as es,ip as et,Pm as f,Mi as fa,No as fi,Nu as fn,Mn as fo,Nc as fr,je as fs,Pf as ft,Em as g,wi as ga,To as gi,Tu as gn,wn as go,Tc as gr,Ce as gs,Ef as gt,Om as h,Ei as ha,Do as hi,Du as hn,En as ho,Dc as hr,Te as hs,Of as ht,Xm as i,Ji as ia,Yo as ii,Yu as in,Jn as io,Yc as ir,qe as is,Xf as it,Xp as j,Jr as ja,Ja as ji,Yl as jn,qt as jo,Ys as jr,q as js,Yd as jt,em as k,Qr as ka,Qa as ki,$l as kn,Zt as ko,$s as kr,Z as ks,$d as kt,Bm as l,Ri as la,zo as li,zu as ln,Rn as lo,zc as lr,Le as ls,Bf as lt,Am as m,Oi as ma,ko as mi,ku as mn,On as mo,kc as mr,De as ms,Af as mt,eh as n,Qi as na,$o as ni,$u as nn,Qn as no,$c as nr,Ze as ns,ep as nt,Km as o,Wi as oa,Go as oi,Gu as on,Wn as oo,Gc as or,Ue as os,Kf as ot,Mm as p,Ai as pa,jo as pi,ju as pn,An as po,jc as pr,ke as ps,Mf as pt,vp as q,gr as qa,ga as qi,_l as qn,ht as qo,_s as qr,h as qs,_d as qt,Qm as r,Xi as ra,Zo as ri,Zu as rn,Xn as ro,Zc as rr,Ye as rs,Qf as rt,Wm as s,Hi as sa,Uo as si,Uu as sn,Hn as so,Uc as sr,Ve as ss,Wf as st,nh as t,ea as ta,ts as ti,td as tn,er as to,tl as tr,$e as ts,np as tt,Rm as u,Ii as ua,Lo as ui,Lu as un,In as uo,Lc as ur,Fe as us,Rf as ut,Sm as v,bi as va,xo as vi,xu as vn,bn as vo,xc as vr,ye as vs,Sf as vt,um as w,ci as wa,co as wi,lu as wn,cn as wo,lc as wr,se as ws,uf as wt,gm as x,mi as xa,ho as xi,hu as xn,mn as xo,hc as xr,pe as xs,gf as xt,bm as y,vi as ya,yo as yi,yu as yn,vn as yo,yc as yr,_e as ys,bf as yt,Pp as z,Mr as za,Ma as zi,Nl as zn,jt as zo,Ns as zr,j as zs,Nd as zt};
