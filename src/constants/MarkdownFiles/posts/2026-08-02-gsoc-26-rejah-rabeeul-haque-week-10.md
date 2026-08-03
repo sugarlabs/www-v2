@@ -14,7 +14,7 @@ image: "assets/Images/sugarizer.webp"
 
 ## This Week's Progress
 
-Hello again This week I focused on improving the ConnectTheDots activity. The work covered giving the host more control during a shared game, adding labels to figures, expanding the built in figure library with new categories, and fixing a couple of bugs.
+Hello again. This week I focused on improving the ConnectTheDots activity. The work covered giving the host more control during a shared game, adding labels to figures, expanding the built in figure library with new categories, and fixing a couple of bugs.
 
 Here is a detailed breakdown:
 
