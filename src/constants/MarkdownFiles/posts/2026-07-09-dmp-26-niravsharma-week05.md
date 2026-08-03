@@ -14,9 +14,9 @@ image: "assets/Images/c4gt_DMP.webp"
 
 # DMP Week 5: Goal 2 , Goal 3 Fully Mapped,
 
-**Coding period:** June 10 – September 10, 2026
-**Project:** [Refactor Temperament — Issue #7171](https://github.com/sugarlabs/musicblocks/issues/7171)
-**Mentors:** Walter Bender, Devin Ulibarri
+**Coding period:** June 10 – September 10, 2026  
+**Project:** [Refactor Temperament — Issue #7171](https://github.com/sugarlabs/musicblocks/issues/7171)  
+**Mentors:** Walter Bender, Devin Ulibarri  
 
 ---
 
