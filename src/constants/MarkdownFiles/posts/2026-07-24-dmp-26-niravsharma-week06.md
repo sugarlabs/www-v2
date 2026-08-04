@@ -1,12 +1,12 @@
 ---
-title: "DMP Week 6: PR 2 Ready for Review — Dynamic EDO & Ratio Temperaments"
-excerpt: "PR 2 (#7942) makes temperaments work end-to-end: EDO-aware math in musicutils, dynamic mode wheels, and temperament threading through blocks, actions, and widgets"
+title: "DMP Week 5: fix: support non-12 EDO temperaments in audio engine and widgets"
+excerpt: "PR 5.2 fix: support non-12 EDO temperaments in audio engine and widgets; PR 6 fix: support non-12 EDO temperaments in audio engine and widgets"
 category: "DEVELOPER NEWS"
-date: "2026-07-24"
-slug: "2026-07-24-dmp-26-niravsharma-week06"
+date: "2026-07-18"
+slug: "2026-07-18-dmp-26-niravsharma-week05"
 author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
-description: "Week 6 of my C4GT DMP journey — PR 2 (#7942) ready for review with dynamic EDO and ratio-based temperament support across musicutils, piemenus, blocks, actions, and widgets."
-tags: "dmp26,sugarlabs,week06,niravsharma,musicblocks,temperament"
+description: "Week 5 of my C4GT DMP journey — PR 5.2 makes the audio engine EDO-aware and PR 6 fixes support non-12 EDO temperaments in audio engine and widgets"
+tags: "dmp26,sugarlabs,week05,niravsharma,musicblocks,temperament"
 image: "assets/Images/c4gt_DMP.webp"
 ---
 
@@ -15,67 +15,91 @@ image: "assets/Images/c4gt_DMP.webp"
 # Weekly Blog Post, 2026
 
 **Contributor:** Nirav Sharma
-**Project:** Refactor Temperament - Sugar Labs Music Blocks
+**Project:** Refactor Temperament — Sugar Labs Music Blocks
 **C4GT DMP 2026**
 
 ---
 
 ## What I worked on this week
 
-This week I got PR 2 ready for review. It's the big one — it makes non-12 temperaments work end-to-end across the pitch engine, the blocks, and the widgets, instead of patching one hardcoded assumption at a time.
+This week I completed the audio engine and widget EDO-awareness (PR 5.2) and fixed the D♯ bug with PitchActions and temperament widget playback (PR 6) for remaining Goal 1+2+3 bugs and temperament reset on run
 
-PR 2 is up: [#7942](https://github.com/sugarlabs/musicblocks/pull/7942)
+### PR 5.2 — fix: support non-12 EDO temperaments in audio engine and widgets
 
-### EDO-aware pitch math in musicutils.js
+The core problem: when a user selected a non-12 temperament (e.g., 5-EDO, 19-EDO), the audio engine silently fell back to 12-EDO behavior. Notes that should sound in the selected tuning were calculated using 12-equal-temperament formulas, producing wrong frequencies.
 
-The core of the PR is `musicutils.js`. The pitch utilities were written around a 12-semitone octave, and most of them silently assumed it. The refactor threads a `temperament` argument through the math and, wherever the octave length matters, computes it from the active temperament.
+**Fix 1: `getCachedPitchToFrequency` refactor (turtle-singer.js)**
 
-A few concrete fixes:
+The cache function never passed temperament to `pitchToFrequency`, and the cache key had no temperament dimension — so stale 12-EDO values were served for all temperaments. Added `temperament` parameter and included it in the cache key. Added `clearPitchToFrequencyCache()` static method to flush stale values on temperament change.
 
-- `calcOctave` now takes the temperament and uses an EDO-aware threshold: `Math.round(currentEDO / 4)` instead of a hardcoded cutoff. So 19-EDO uses a threshold of 5 while 5-EDO uses 1, instead of both being judged against a 12-EDO rule.
-- `numberToPitch` wraps against the temperament's actual pitch count instead of `intervalArray.length`, which isn't always the same thing.
-- `_getStepSize` no longer takes a shortcut (`return transposition`) for custom temperaments that define ratios — those need the real step computation. The shortcut is kept for custom temperaments without ratios.
-- `generateNoteNames(edo)` produces the right set of note names for any EDO, and the note-name lookups use it instead of the 12-name arrays.
+**Fix 2: `generateNoteNames(edo)` + `getEdoNoteNamePosition()` (musicutils.js)**
 
-There's also new support for ratio-based temperaments: a function that converts a ratio to cents (`1200 * log2(ratio)`), so a perfect fifth at 3:2 maps to ~702 cents rather than the equal-tempered 700.
+Added a note name table generator for any EDO. For EDO ≤ 12, uses standard sharp names. For EDO > 12, interleaves sharps and flats between naturals (e.g., 19-EDO gets 19 distinct note names). Results cached in `EDO_NOTE_NAMES`. This replaced hardcoded 12-element arrays throughout the codebase.
 
-### Blocks thread temperament through
+**Fix 3: `numberToPitch` EDO branch (musicutils.js)**
 
-`PitchActions.js` was a big one. Functions like `numToPitch`, `setPitchNumberOffset`, and `deltaPitch` now read the active temperament and use `pitchToNumber % getCurrentEDO()` so pitch numbers stay in the right range for non-12 EDOs. The pitch number → frequency path threads temperament into the conversion calls.
+The old formula used an A0-based offset that mixed EDO units with 12-EDO units. For example, `playPitchNumber(0)` in 5-EDO produced G9 (12.5 kHz, inaudible) instead of C4 (261 Hz, correct).
 
-`WidgetBlocks.js` now detects temperament changes: when the temperament widget changes the setting, it sets `changeInTemperament = true` and calls `temperamentChanged()` so the affected widgets rebuild with the new temperament.
+The fix: use `startPitch` as the reference point. Convert the pitch number to EDO steps relative to `startParsed` using `Math.round(pitchNumber / (12/currentEDO))`, then compute note/octave from that reference. This ensures pitch 0 always maps to the starting pitch (C4) regardless of EDO.
 
-### Widgets understand the octave length
+**Fix 4: `__getFrequency` EDO path (synthutils.js)**
 
-- **Mode Wheel (`piemenus.js`)** now builds its slice from `getCurrentEDO()` and `generateNoteNames()`, so a 19-EDO temperament shows 19 slots instead of 12.
-- **Pitch Slider** derives its semitone from the active EDO: `Math.pow(2, 1 / edo)` instead of a fixed 12-EDO value.
-- **Music Keyboard** generates note names per-octave from `generateNoteNames(currentEDO)` and computes octave boundaries with the current EDO.
+Added `isEDO` check that uses `pitchToFrequency` directly for EDO temperaments, bypassing the broken `noteFrequencies` lookup. Added `getOctaveRatio()` instead of hardcoded `2` for the power-of-2 fallback. Added `normalizeNoteAccidentals` to convert Unicode accidentals to ASCII before Tone.js parsing.
 
-### Tests
+**Fix 5: Widget EDO-awareness**
 
-Added coverage across the affected files — roughly 200 lines of new tests in `musicutils.test.js`, `PitchActions.test.js`, and `pitchslider.test.js`:
+Three widgets were updated:
 
-- `calcOctave` EDO-aware thresholds (12-EDO default 3, 19-EDO 5, 5-EDO 1, backward compat with numeric args)
-- `numToPitch` / `setPitchNumberOffset` / `deltaPitch` temperament awareness
-- `_getStepSize` freeze guard for non-12 EDOs and ratio-based custom temperaments
-- `pitchToNumber` A reference mapping to 440 Hz for all EDOs
-- EDO octave boundary resolution across the C4–C5 boundary
-- Pitch slider behavior for non-12 EDOs
+- **Pitch Slider (pitchslider.js):** Added `static stepRatio(edo)` returning `Math.pow(2, 1/edo)`.
+- **Tuner (tuner.js):** `frequencyToPitch(frequency, edo)` now accepts an optional `edo` parameter. Formula changed from `12 * Math.log2(...)` to `currentEDO * Math.log2(...)`, octave uses `currentEDO` as divisor.
+- **Sampler (sampler.js):** Added `_getCurrentEDO()` helper. Updated `_calculateFrequency`, `_playReferencePitch`, `frequencyToNote` to use `currentEDO` instead of hardcoded `12`.
+
+**Also in PR 5.2:** Expanded `EQUIVALENTNATURALS` with double sharps (`D𝄪→E`, `A𝄪→B`, etc.), added 17-EDO temperament, added JI `frequencyToPitch` with ratio-based lookup, fixed LiveWaveForm analyser disposal.
+
+PR 5.2 is open: [#7835](https://github.com/sugarlabs/musicblocks/pull/7835)
+
+---
+
+### PR 6 — fix: support non-12 EDO temperaments in audio engine and widgets
+
+EDO Temperament Note Representation + Widget Support
+This PR makes EDO temperaments (5-EDO, 7-EDO, 19-EDO, 31-EDO, etc.) actually work throughout the note representation and widget layers. For standard 12-EDO, everything behaves exactly the same.
+
+Pitch math (musicutils.js):
+pitchToNumber() now uses the actual EDO size for octave math instead of hardcoded 12.
+numberToPitch() has EDO-aware pitch class lookup for equal temperaments.
+getNote() uses EDO size for bounds checking – no more array overflow in non-12 EDO.
+_calculate_pitch_number() uses getCurrentEDO() for octave math.
+
+Audio engine (synthutils.js)
+temperamentChanged() now does EDO-aware pitch name lookup when building the frequency table.
+_getFrequency() auto-rebuilds temperament if it's stale and falls back to EDO-aware calculation.
+Added Singer.clearPitchToFrequencyCache() call on temperament change – no more stale frequencies.
+
+PR 6 is draft: [#7853](https://github.com/sugarlabs/musicblocks/pull/7853)
+
+---
+
+
+These two widgets have deep 12-note coupling — the modewidget has 34+ hardcoded `12` instances tied to mode definitions, piano keys, and wheel UI. The musickeyboard has 14+ instances tied to the PITCHES2 12-note array and keyboard layout. Both require a full redesign and will get their own PR.
 
 ---
 
 ## What's next
 
-1. Get PR 2 reviewed and merged
-2. Fold in review feedback once Walter and the maintainers have a look
-3. Continue with the next PR in the reorganized plan
+1. Address mentor feedback on PR 5.2 and PR 6, get reviwed and possibly gets merged
+2. Fix remaining `temperament.js` "Back to 2:1" division (uses `/ 12`)
+3. Tackle modewidget.js and musickeyboard.js EDO-awareness (separate PR)
+4. Begin PR 7 — Scale Builder in Temperament Widget (Goal 4)
 
 ---
 
 ## Lessons learned
 
-- **The `12` shows up in more places than you'd think.** Octave boundaries, threshold cutoffs, note-name arrays, mod operations, semitone ratios — every one of them is an octave-length assumption in disguise. The refactor isn't one function, it's an audit of the whole pipeline.
+- **The `(step / EDO) * 12` formula is everywhere.** It maps N EDO steps to 12 pitch class names, which works for 12-EDO but produces wrong note names and octave transitions for any other EDO. The fix is always proportional mapping: `Math.round(step * 12 / currentEDO)` to find the nearest 12-EDO name.
 
-- **Widgets and actions are where temperaments actually leak.** The math can be perfect, but if the mode wheel renders 12 slots or the slider steps by 2^(1/12), the temperament is broken from the user's perspective. Fixing the widgets was half the work.
+- **Tone.js mocks in tests make frequency assertions impossible.** The mock `Frequency().toFrequency()` returns the mock object itself, making all frequencies NaN. Tests must use `expect.any(Number)` or mock Tone properly.
 
-- **The `return transposition` shortcut hides bugs.** `_getStepSize` had an early return that skipped real computation for custom temperaments. With ratios in the mix, the shortcut was silently wrong — which is a reminder to check the fast paths, not just the main flow.
+- **Widget refactors are high-risk.** The modewidget and musickeyboard are tightly coupled to 12-note assumptions. A full redesign is needed, not just parameter swaps. Better to ship what works and defer the complex widgets.
+
+- **The `1200` in cents formulas is a constant.** It's the number of cents in an octave (logarithmic unit), not EDO-dependent. Don't change it when making things EDO-aware.
