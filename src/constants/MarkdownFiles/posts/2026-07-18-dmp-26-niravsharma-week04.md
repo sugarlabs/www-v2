@@ -64,5 +64,5 @@ Reviewing other people's PRs was unexpectedly useful too. It forced me to poke a
 - [PR 1 - Core EDO Math](https://github.com/sugarlabs/musicblocks/pull/7561) - merged
 - [PR 2 - Remaining musicutils.js](https://github.com/sugarlabs/musicblocks/pull/7659) - merged
 - [PR 3 - Block & Runtime Fixes](https://github.com/sugarlabs/musicblocks/pull/7710) - merged 
-- [PR 4 - Custom Pitch Blocks](https://github.com/sugarlabs/musicblocks/pull/7712) - in progress
+- [PR 4 - Custom Pitch Blocks](https://github.com/sugarlabs/musicblocks/pull/7770) - in progress
 - [Issue #7171: Refactor Temperament](https://github.com/sugarlabs/musicblocks/issues/7171)
