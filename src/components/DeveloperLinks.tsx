@@ -93,24 +93,31 @@ const DeveloperLinks = () => {
             </div>
 
             {/* Arrow */}
+
             <div
-              className="
-                  relative z-10 flex items-center justify-center w-8 h-8 rounded-full
-                  bg-red-100 dark:bg-[#FFFFFF]
-                  group-hover:bg-red-200 dark:group-hover:bg-orange-200 transition-colors
-                  ml-4 flex-shrink-0
-                "
+              className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full
+              bg-red-100 dark:bg-[#FFFFFF]
+              group-hover:bg-red-200 dark:group-hover:bg-orange-200 transition-colors
+                ml-4 flex-shrink-0"
             >
-              <span
-                className="
-                    text-gray-800 dark:text-gray-800
-                    group-hover:text-red-700 dark:group-hover:text-orange-600
-                    transform group-hover:translate-x-1
-                    transition-all
-                  "
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className=" text-gray-800 dark:text-gray-800
+                   group-hover:text-red-700 dark:group-hover:text-orange-600
+                     transition-all duration-200
+                     group-hover:translate-x-0.5 "
               >
-                →
-              </span>
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
             </div>
           </motion.a>
         ))}

@@ -1,7 +1,7 @@
 name: 📝 Content Update
 description: Suggest changes to website content or documentation
-title: "[Content]: "
-labels: ["content"]
+title: '[Content]: '
+labels: ['content']
 body:
   - type: markdown
     attributes:
