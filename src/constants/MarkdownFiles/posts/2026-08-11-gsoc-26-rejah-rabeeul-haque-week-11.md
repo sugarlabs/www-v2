@@ -52,11 +52,44 @@ To resolve this, the activity now supports visiting dots multiple times using a 
 
 ---
 
-## New Categories & Localization
+## New Categories
 
-I added some new built in categories - Numbers, Symbols/Signs, Tools, and Home, bringing more than 40 new figures to the activity. To design these shapes on the 15×13 grid, I used AI to generate the initial dot coordinate lists, which I then manually tested and adjusted on the canvas to ensure each figure was clear and recognizable.
+Last week I introduced four new built in categories — Numbers, Symbols/Signs, Tools, and Home adding more than 40 new figures to the activity. I used AI to generate the dot coordinates for each figure, and here is a detailed explanation of how I did it.
 
-Also, I completed full localization for all built in category and figure names across English (`en.json`), French (`fr.json`), and Spanish (`es.json`). The gallery automatically uses the correct translations for figure cards and headers, allowing the built in content to seamlessly adapt to the user's language.
+Each figure in ConnectTheDots is defined as a list of `[x, y]` dot coordinates on a 15×13 grid. Designing more than 40 figures by hand would have been very time consuming, so I used the help of AI tools such as Gemini and ChatGPT to generate the initial coordinate lists. Rather than describing each figure in free form text, I created a structured prompt template that gave the model specific rules to follow: the grid boundaries, the exact JavaScript object format, and the constraints. Here is the full prompt I used, with `Figure Name` as the placeholder:
+
+```
+I need to generate geometric coordinates for various figures drawn on a grid.
+For the figure name I provide below, please generate JavaScript code containing
+the shape's definition, formatted exactly like these examples:
+
+{ name: 'Square', points: [[3, 2], [11, 2], [11, 10], [3, 10]], closed: true },
+{ name: 'Rectangle', points: [[2, 3], [12, 3], [12, 9], [2, 9]], closed: true }
+
+Rules:
+The grid is 15x13 (X goes from 0 to 14, Y goes from 0 to 12), so keep
+coordinates within this range.
+All figures must be closed shapes, so always set closed: true.
+Do NOT repeat the first coordinate at the end of the array.
+
+Figure to generate: [Figure Name]
+```
+
+For example, substituting `Octagon` as the figure name, the model returned:
+
+```js
+{ name: 'Octagon', points: [[5, 1], [9, 1], [12, 4], [12, 8], [9, 11], [5, 11], [2, 8], [2, 4]], closed: true },
+```
+
+The 8 points form a symmetric octagon centered on the grid, and the generated coordinates produced a clean, recognizable shape without requiring any manual adjustments.
+
+Not every result was perfect. For some complex figures, the generated coordinates needed further refinement. Some shapes were too close to the grid edges, while others looked unclear or distorted when rendered on the canvas. In those cases I loaded the coordinates onto the canvas, visually inspected the result, and manually nudged individual points until the figure was clear and recognizable. The AI output gave me a solid starting point every time. It handled the tedious coordinate calculations while I focused on checking and refining the visual quality.
+
+---
+
+## Localization
+
+I completed full localization for all built in category and figure names across English (`en.json`), French (`fr.json`), and Spanish (`es.json`). The gallery automatically uses the correct translations for figure cards and headers, allowing the built in content to seamlessly adapt to the user's language.
 
 ---
 
