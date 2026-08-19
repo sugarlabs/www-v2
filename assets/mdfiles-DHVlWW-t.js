@@ -37594,6 +37594,197 @@ A big thank you to my mentor Lionel Laské for his continuous guidance, and to e
 
 *Thanks for reading Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*
 `,Hm=e({default:()=>Um}),Um=`---
+title: "GSoC '26 Week 10 Update by Shreya Saxena"
+excerpt: "A lighter week due to travel and the start of college, a GSoC Alumni Camp lightning talk, and plans to tackle load time and a scheduling issue flagged by Devin."
+category: "DEVELOPER NEWS"
+date: "2026-08-03"
+slug: "2026-08-28-gsoc-26-shreya-saxena-week10"
+author: "@/constants/MarkdownFiles/authors/shreya-saxena.md"
+tags: "gsoc26,sugarlabs,musicblocks,performance,week10,shreya-saxena"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 10 Progress Report by Shreya Saxena
+
+**Project:** [Music Blocks Performance](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#music-blocks-performance)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-07-27 – 2026-08-03
+
+---
+
+
+## Goals for This Week
+ 
+* Chase down Walter's suspicion that re-rendering was slowing down project load times with actual profiling data, not just a hunch.
+* If the suspicion held up, fix it without touching the interpreter, the playback pipeline, or how projects visually load in.
+* Get real before and after numbers on a genuinely large project, so the fix could be judged on evidence rather than feel.
+* Follow up on a separate rhythm bug Devin ran into with a drum polyrhythm project, and get a fix out to him to test.
+
+---
+ 
+## The Screen that nobody was watching
+
+Imagine you're a student who has spent hours building a music project in Music Blocks. Hundreds of notes, dozens of melodies, turtles moving across the canvas everything is finally ready. The next day, you excitedly open the project to keep working... and then you wait.
+
+Not because it's playing music.
+
+Not because it's doing any computation.
+
+Just because it's opening.
+
+<p align="center">
+  <img
+    src="assets/Developers/shreya-saxena/Loading-image.jpeg"
+    alt="Profiling project loading for Rainbow Connection."
+    width="700" 
+  />
+</p>
+
+That was exactly the experience with Rainbow Connection, one of the largest Music Blocks projects containing 5,716 blocks. Loading it meant staring at the loading overlay for an uncomfortably long time before the editor became usable again.
+
+The obvious question was: what was the application spending all that time doing?
+
+Walter had a suspicion. He thought the canvas might be redrawing itself repeatedly while the project was still being assembled even though the loading overlay completely covered the screen. If that was true, the application could be spending a significant amount of time rendering frames that nobody could actually see.
+
+Rainbow Connection had already become the go-to project whenever someone wanted to reproduce loading performance issues, so it was the perfect workload to investigate. Rather than guessing, I decided to measure exactly what happened during project loading.
+
+I instrumented the loading pipeline to record every call to \`stage.update()\` and then loaded Rainbow Connection while collecting the results.
+
+The profiler quickly painted a clear picture:
+
+| Metric | Before | After |
+|--------|:------:|:-----:|
+| Load time | 19.4 s | 9.5 s |
+| \`refreshCanvas()\` | 33,482 renders | 33,483 suppressed |
+| User-visible renders | No | Only final render |
+
+> ** Every one of the 314 \`stage.update()\` calls occurred while the loading overlay was still covering the canvas, meaning all of that rendering work was invisible to the user.
+
+The rendering pipeline was continuously repainting a screen that the user couldn't even see.
+
+
+<p align="center">
+  <img
+    src="assets/Developers/shreya-saxena/project-loading.jpeg"
+    alt="Render Pipeline During Project Loading."
+    width="400" 
+  />
+</p>
+
+Digging one level deeper revealed why.
+
+Every time a block finished generating its bitmap, it triggered a callback, and that callback immediately called \`refreshCanvas()\`. With thousands of blocks being created during project loading, thousands of tiny "please redraw" requests accumulated, each triggering a full \`stage.update()\` even though the canvas remained hidden behind the loading overlay.
+
+Walter's hypothesis turned out to match the profiler almost perfectly.
+
+## Turning the Diagnosis Into a Fix
+
+Once the cause was clear, the solution became surprisingly straightforward: if the canvas isn't visible, there's no reason to redraw it.
+
+I introduced a small flag named \`_suppressRefresh\` inside \`activity.js\`. Whenever this flag is enabled, \`refreshCanvas()\` simply returns immediately without scheduling another render.
+
+\`\`\`js
+this._suppressRefresh = false;
+
+this.refreshCanvas = () => {
+    if (this._suppressRefresh) return;
+    this.stageDirty = true;
+    this.update = true;
+    this._startRenderLoop();
+};
+\`\`\`
+
+The flag is enabled at the beginning of \`loadNewBlocks()\` and disabled inside \`cleanupAfterLoad()\`, immediately before the single render that actually matters—the one performed after every block has finished loading and just before the loading overlay disappears.
+
+<p align="center">
+  <img
+    src="assets/Developers/shreya-saxena/optimization.jpeg"
+    alt="Optimized loading pipeline with _suppressRefresh."
+    width="800" 
+  />
+</p>
+
+Instead of rendering hundreds of intermediate frames, project loading now performs exactly **one** render—the first frame the user can actually see.
+
+Of course, introducing a suppression flag raises an important safety question.
+
+What happens if loading fails halfway through?
+
+If \`_suppressRefresh\` were never reset, the application would stop rendering permanently. That's exactly the sort of failure reviewers worry about, so before considering the change complete, I made sure the flag was restored regardless of how loading exited.
+
+There are three independent reset paths:
+
+* normal completion through \`cleanupAfterLoad()\`
+* exception handling inside \`loadNewBlocks()\`
+* early exits such as circular connection detection
+
+<p align="center">
+  <img
+    src="assets/Developers/shreya-saxena/Reset_paths.jpeg"
+    alt="Rendering restoration flow"
+    width="600" 
+  />
+</p>
+
+No matter how loading finishes, rendering is always restored safely.
+
+ 
+## Meanwhile, a Different Kind of Timing Bug
+
+While the rendering optimization was under review, Devin reported a separate issue with drum-polyrhythm project. The rhythm didn't always sound correct when both voices used \`On every note do\` blocks. After sharing the project and explaining how to reproduce the behavior, I investigated the issue locally. Because the problem was intermittent, it appeared only once across several runs, making it more challenging to reproduce consistently.
+
+Tracing the execution revealed that the note clamp was being queued twice: once by \`Singer.RhythmActions.playNote()\` and again by the interpreter. Since note blocks already return the clamp for the interpreter to queue, the additional enqueue caused the entire note clamp including blocks inside \`On every note do\`, such as \`playdrum\`to execute twice. This resulted in duplicate drum hits and disrupted the intended rhythm.
+
+I removed the redundant queueing so that the interpreter remains the single place responsible for scheduling note execution. After verifying the behavior locally, I shared the fix with Devin and asked him to validate it using his original polyrhythm project to confirm that the rhythm now behaves consistently under real-world usage.
+
+---
+ 
+## Challenges
+ 
+The biggest challenge this week was identifying the root cause of the loading slowdown. Profiling the loading pipeline and analyzing the rendering behavior were essential to confirming that unnecessary rerendering was responsible for the performance issue.
+
+The polyrhythm issue presented a different challenge because it was intermittent, requiring repeated testing across multiple runs to confidently validate the fix.
+
+---
+ 
+## What I Learned
+ 
+Two key lessons stood out this week. First, experience and intuition are invaluable when working on a mature codebase, but profiling provides the evidence needed to understand the underlying cause and quantify its impact. Walter's observation that unnecessary re-rendering might be slowing down project loading proved to be correct, and profiling helped confirm the root cause and guided the optimization.
+
+The polyrhythm issue reinforced another important principle: intermittent bugs require thorough and repeated validation before they can be considered resolved. A fix that appears correct in an initial test may still conceal edge cases or infrequent failure modes, making comprehensive testing an essential part of the debugging process.
+ 
+---
+ 
+## Next Week
+
+With the load-time improvement now merged and validated, my focus shifts to following up on the drum polyrhythm fix based on real-world testing and addressing any remaining issues that surface.
+
+Alongside that, I'll be profiling the Save as LilyPond Export and MIDI Import workflows to identify performance bottlenecks, evaluate the feasibility of optimizations, and prioritize improvements based on the profiling results. 
+ 
+## Resources & References
+
+- **Investigation Report:** [Eliminating Unnecessary Canvas Renders During Project Loading](https://docs.google.com/document/d/1Xd-_R8TjtdILyWSM4baXhjNRlVk9zH_piLtBfU0zB0k/edit?usp=sharing)
+ 
+- **PRs This Week:**
+  - [PR #7923](https://github.com/sugarlabs/musicblocks/pull/7923) : suppress intermediate \`refreshCanvas()\` calls during project loading (merged)
+  - [PR #7946](https://github.com/sugarlabs/musicblocks/pull/7946) : fix for \`on every note do\` causing drum hits to double-trigger, awaiting testing
+- **Architecture References:**
+  - [activity.js](https://github.com/sugarlabs/musicblocks/blob/master/js/activity.js)
+  - [blocks.js](https://github.com/sugarlabs/musicblocks/blob/master/js/blocks.js)
+  - [RhythmActions.js](https://github.com/sugarlabs/musicblocks/blob/master/js/turtleactions/RhythmActions.js)
+- **Repository:** [Music Blocks](https://github.com/sugarlabs/musicblocks)
+- **Benchmark Workload:** [Rainbow Connection](https://github.com/ssz2605/musicblocks/blob/master/examples/RainbowConnection.html)
+
+---
+ 
+## Acknowledgments
+ 
+Thanks to my mentor, Walter Bender, for encouraging me to investigate the rerendering issue and for his valuable guidance throughout the debugging process. Thanks also to Devin Ulibarri for identifying the drum polyrhythm issue and helping validate the issue, and to the entire Sugar Labs community for their encouragement and feedback.
+
+`,Wm=e({default:()=>Gm}),Gm=`---
 title: "GSoC '26 Week 11 Update by Dev"
 excerpt: "Fixing GTK4 CSS scoping and GTK4 CSS parser warnings in sugar-toolkit-gtk4, updating activities list cell rendering and icon palette styling in sugar, and completing theme selected states in sugar-artwork."
 category: "DEVELOPER NEWS"
@@ -37681,7 +37872,7 @@ image: "assets/Images/GSOC.webp"
 ## Acknowledgments
 
 Thanks to Krish and Ibiam for their guidance and reviews.
-`,Wm=e({default:()=>Gm}),Gm=`---
+`,Km=e({default:()=>qm}),qm=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -37830,7 +38021,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Km=e({default:()=>qm}),qm=`---
+`,Jm=e({default:()=>Ym}),Ym=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -37933,7 +38124,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Jm=e({default:()=>Ym}),Ym=`---
+`,Xm=e({default:()=>Zm}),Zm=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -38406,7 +38597,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Xm=e({default:()=>Zm}),Zm=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Qm=e({default:()=>$m}),$m=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -38493,7 +38684,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Qm=e({default:()=>$m}),$m=`---\r
+`,eh=e({default:()=>th}),th=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -38586,7 +38777,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,eh=e({default:()=>th}),th=`---\r
+`,nh=e({default:()=>rh}),rh=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -38680,7 +38871,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,nh=e({default:()=>rh}),rh=`---\r
+`,ih=e({default:()=>ah}),ah=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -38768,7 +38959,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,ih=e({default:()=>ah}),ah=`---\r
+`,oh=e({default:()=>sh}),sh=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -38851,7 +39042,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,oh=e({default:()=>sh}),sh=`---\r
+`,ch=e({default:()=>lh}),lh=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -38917,7 +39108,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,ch=e({default:()=>lh}),lh=`---
+`,uh=e({default:()=>dh}),dh=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -38999,7 +39190,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,uh=e({default:()=>dh}),dh=`---
+---`,fh=e({default:()=>ph}),ph=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -39092,7 +39283,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,fh=e({default:()=>ph}),ph=`---
+`,mh=e({default:()=>hh}),hh=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -39181,7 +39372,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,mh=e({default:()=>hh}),hh=`---
+--- `,gh=e({default:()=>_h}),_h=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -39326,7 +39517,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,gh=e({default:()=>_h}),_h=`---
+--- `,vh=e({default:()=>yh}),yh=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -39514,7 +39705,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,vh=e({default:()=>yh}),yh=`---
+--- `,bh=e({default:()=>xh}),xh=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -39609,7 +39800,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,bh=e({default:()=>xh}),xh=`---
+`,Sh=e({default:()=>Ch}),Ch=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -39698,7 +39889,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Sh=e({default:()=>Ch}),Ch=`---
+`,wh=e({default:()=>Th}),Th=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -39785,7 +39976,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,wh=e({default:()=>Th}),Th=`---
+---`,Eh=e({default:()=>Dh}),Dh=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -39868,7 +40059,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Eh=e({default:()=>Dh}),Dh=`---
+---`,Oh=e({default:()=>kh}),kh=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -39951,7 +40142,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Oh=e({default:()=>kh}),kh=`---
+---`,Ah=e({default:()=>jh}),jh=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -40256,4 +40447,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Mp as $,Ar as $a,Aa as $i,jl as $n,kt as $o,js as $r,k as $s,jd as $t,wm as A,Si as Aa,Co as Ai,Cu as An,Sn as Ao,Cc as Ar,xe as As,wf as At,im as B,ni as Ba,no as Bi,ru as Bn,tn as Bo,rc as Br,te as Bs,rf as Bt,Rm as C,Ii as Ca,Lo as Ci,Lu as Cn,In as Co,Lc as Cr,Fe as Cs,Rf as Ct,Am as D,Oi as Da,ko as Di,ku as Dn,On as Do,kc as Dr,De as Ds,Af as Dt,Mm as E,Ai as Ea,jo as Ei,ju as En,An as Eo,jc as Er,ke as Es,Mf as Et,mm as F,fi as Fa,po as Fi,pu as Fn,fn as Fo,pc as Fr,de as Fs,mf as Ft,Jp as G,Kr as Ga,Ka as Gi,ql as Gn,Gt as Go,qs as Gr,G as Gs,qd as Gt,em as H,Qr as Ha,Qa as Hi,$l as Hn,Zt as Ho,$s as Hr,Z as Hs,$d as Ht,fm as I,ui as Ia,uo as Ii,du as In,un as Io,dc as Ir,le as Is,ff as It,Hp as J,Br as Ja,Ba as Ji,Vl as Jn,zt as Jo,Vs as Jr,z as Js,Vd as Jt,Kp as K,Wr as Ka,Wa as Ki,Gl as Kn,Ut as Ko,Gs as Kr,U as Ks,Gd as Kt,um as L,ci as La,co as Li,lu as Ln,cn as Lo,lc as Lr,se as Ls,uf as Lt,bm as M,vi as Ma,yo as Mi,yu as Mn,vn as Mo,yc as Mr,_e as Ms,bf as Mt,vm as N,gi as Na,_o as Ni,_u as Nn,gn as No,_c as Nr,he as Ns,vf as Nt,Om as O,Ei as Oa,Do as Oi,Du as On,En as Oo,Dc as Or,Te as Os,Of as Ot,gm as P,mi as Pa,ho as Pi,hu as Pn,mn as Po,hc as Pr,pe as Ps,gf as Pt,Pp as Q,Mr as Qa,Ma as Qi,Nl as Qn,jt as Qo,Ns as Qr,j as Qs,Nd as Qt,cm as R,oi as Ra,oo as Ri,su as Rn,on as Ro,sc as Rr,ae as Rs,cf as Rt,Bm as S,Ri as Sa,zo as Si,zu as Sn,Rn as So,zc as Sr,Le as Ss,Bf as St,Pm as T,Mi as Ta,No as Ti,Nu as Tn,Mn as To,Nc as Tr,je as Ts,Pf as Tt,Qp as U,Xr as Ua,Xa as Ui,Zl as Un,Yt as Uo,Zs as Ur,Y as Us,Zd as Ut,nm as V,ei as Va,eo as Vi,tu as Vn,$t as Vo,tc as Vr,$ as Vs,tf as Vt,Xp as W,Jr as Wa,Ja as Wi,Yl as Wn,qt as Wo,Ys as Wr,q as Ws,Yd as Wt,Rp as X,Ir as Xa,Ia as Xi,Ll as Xn,Ft as Xo,Ls as Xr,F as Xs,Ld as Xt,Bp as Y,Rr as Ya,Ra as Yi,zl as Yn,Lt as Yo,zs as Yr,L as Ys,zd as Yt,Ip as Z,Pr as Za,Pa as Zi,Fl as Zn,Nt as Zo,Fs as Zr,N as Zs,Fd as Zt,Xm as _,Ji as _a,Yo as _i,Yu as _n,Jn as _o,Yc as _r,qe as _s,Xf as _t,bh as a,va as aa,_ as ac,ys as ai,yd as an,vr as ao,yl as ar,_t as as,bp as at,Wm as b,Hi as ba,Uo as bi,Uu as bn,Hn as bo,Uc as br,Ve as bs,Wf as bt,mh as c,fa as ca,d as cc,ps as ci,pd as cn,fr as co,pl as cr,dt as cs,mp as ct,ch as d,oa as da,a as dc,ss as di,sd as dn,or as do,sl as dr,at as ds,cp as dt,Oa as ea,D as ec,ks as ei,kd as en,Or as eo,kl as er,Dt as es,Ap as et,oh as f,ia as fa,r as fc,as as fi,ad as fn,ir as fo,al as fr,rt as fs,op as ft,Qm as g,Xi as ga,Zo as gi,Zu as gn,Xn as go,Zc as gr,Ye as gs,Qf as gt,eh as h,Qi as ha,$o as hi,$u as hn,Qn as ho,$c as hr,Ze as hs,ep as ht,Sh as i,ba as ia,y as ic,xs as ii,xd as in,br as io,xl as ir,yt as is,Sp as it,Sm as j,bi as ja,xo as ji,xu as jn,bn as jo,xc as jr,ye as js,Sf as jt,Em as k,wi as ka,To as ki,Tu as kn,wn as ko,Tc as kr,Ce as ks,Ef as kt,fh as l,ua as la,l as lc,ds as li,dd as ln,ur as lo,dl as lr,lt as ls,fp as lt,nh as m,ea as ma,ts as mi,td as mn,er as mo,tl as mr,$e as ms,np as mt,Eh as n,wa as na,C as nc,Ts as ni,Td as nn,wr as no,Tl as nr,Ct as ns,Ep as nt,vh as o,ga as oa,h as oc,_s as oi,_d as on,gr as oo,_l as or,ht as os,vp as ot,ih as p,na as pa,t as pc,rs as pi,rd as pn,nr as po,rl as pr,tt as ps,ip as pt,Wp as q,Hr as qa,Ha as qi,Ul as qn,Vt as qo,Us as qr,V as qs,Ud as qt,wh as r,Sa as ra,x as rc,Cs as ri,Cd as rn,Sr as ro,Cl as rr,xt as rs,wp as rt,gh as s,ma as sa,p as sc,hs as si,hd as sn,mr as so,hl as sr,pt as ss,gp as st,Oh as t,Ea as ta,T as tc,Ds as ti,Dd as tn,Er as to,Dl as tr,Tt as ts,Op as tt,uh as u,ca as ua,s as uc,ls as ui,ld as un,cr as uo,ll as ur,st as us,up as ut,Jm as v,Ki as va,qo as vi,qu as vn,Kn as vo,qc as vr,Ge as vs,Jf as vt,Im as w,Pi as wa,Fo as wi,Fu as wn,Pn as wo,Fc as wr,Ne as ws,If as wt,Hm as x,Bi as xa,Vo as xi,Vu as xn,Bn as xo,Vc as xr,ze as xs,Hf as xt,Km as y,Wi as ya,Go as yi,Gu as yn,Wn as yo,Gc as yr,Ue as ys,Kf as yt,om as z,ii as za,io as zi,au as zn,rn as zo,ac as zr,re as zs,of as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Pp as $,Mr as $a,Ma as $i,Nl as $n,jt as $o,Ns as $r,j as $s,Nd as $t,Em as A,wi as Aa,To as Ai,Tu as An,wn as Ao,Tc as Ar,Ce as As,Ef as At,om as B,ii as Ba,io as Bi,au as Bn,rn as Bo,ac as Br,re as Bs,of as Bt,Bm as C,Ri as Ca,zo as Ci,zu as Cn,Rn as Co,zc as Cr,Le as Cs,Bf as Ct,Mm as D,Ai as Da,jo as Di,ju as Dn,An as Do,jc as Dr,ke as Ds,Mf as Dt,Pm as E,Mi as Ea,No as Ei,Nu as En,Mn as Eo,Nc as Er,je as Es,Pf as Et,gm as F,mi as Fa,ho as Fi,hu as Fn,mn as Fo,hc as Fr,pe as Fs,gf as Ft,Xp as G,Jr as Ga,Ja as Gi,Yl as Gn,qt as Go,Ys as Gr,q as Gs,Yd as Gt,nm as H,ei as Ha,eo as Hi,tu as Hn,$t as Ho,tc as Hr,$ as Hs,tf as Ht,mm as I,fi as Ia,po as Ii,pu as In,fn as Io,pc as Ir,de as Is,mf as It,Wp as J,Hr as Ja,Ha as Ji,Ul as Jn,Vt as Jo,Us as Jr,V as Js,Ud as Jt,Jp as K,Kr as Ka,Ka as Ki,ql as Kn,Gt as Ko,qs as Kr,G as Ks,qd as Kt,fm as L,ui as La,uo as Li,du as Ln,un as Lo,dc as Lr,le as Ls,ff as Lt,Sm as M,bi as Ma,xo as Mi,xu as Mn,bn as Mo,xc as Mr,ye as Ms,Sf as Mt,bm as N,vi as Na,yo as Ni,yu as Nn,vn as No,yc as Nr,_e as Ns,bf as Nt,Am as O,Oi as Oa,ko as Oi,ku as On,On as Oo,kc as Or,De as Os,Af as Ot,vm as P,gi as Pa,_o as Pi,_u as Pn,gn as Po,_c as Pr,he as Ps,vf as Pt,Ip as Q,Pr as Qa,Pa as Qi,Fl as Qn,Nt as Qo,Fs as Qr,N as Qs,Fd as Qt,um as R,ci as Ra,co as Ri,lu as Rn,cn as Ro,lc as Rr,se as Rs,uf as Rt,Hm as S,Bi as Sa,Vo as Si,Vu as Sn,Bn as So,Vc as Sr,ze as Ss,Hf as St,Im as T,Pi as Ta,Fo as Ti,Fu as Tn,Pn as To,Fc as Tr,Ne as Ts,If as Tt,em as U,Qr as Ua,Qa as Ui,$l as Un,Zt as Uo,$s as Ur,Z as Us,$d as Ut,im as V,ni as Va,no as Vi,ru as Vn,tn as Vo,rc as Vr,te as Vs,rf as Vt,Qp as W,Xr as Wa,Xa as Wi,Zl as Wn,Yt as Wo,Zs as Wr,Y as Ws,Zd as Wt,Bp as X,Rr as Xa,Ra as Xi,zl as Xn,Lt as Xo,zs as Xr,L as Xs,zd as Xt,Hp as Y,Br as Ya,Ba as Yi,Vl as Yn,zt as Yo,Vs as Yr,z as Ys,Vd as Yt,Rp as Z,Ir as Za,Ia as Zi,Ll as Zn,Ft as Zo,Ls as Zr,F as Zs,Ld as Zt,Qm as _,Xi as _a,Zo as _i,Zu as _n,Xn as _o,Zc as _r,Ye as _s,Qf as _t,Sh as a,ba as aa,y as ac,xs as ai,xd as an,br as ao,xl as ar,yt as as,Sp as at,Km as b,Wi as ba,Go as bi,Gu as bn,Wn as bo,Gc as br,Ue as bs,Kf as bt,gh as c,ma as ca,p as cc,hs as ci,hd as cn,mr as co,hl as cr,pt as cs,gp as ct,uh as d,ca as da,s as dc,ls as di,ld as dn,cr as do,ll as dr,st as ds,up as dt,Aa as ea,k as ec,js as ei,jd as en,Ar as eo,jl as er,kt as es,Mp as et,ch as f,oa as fa,a as fc,ss as fi,sd as fn,or as fo,sl as fr,at as fs,cp as ft,eh as g,Qi as ga,$o as gi,$u as gn,Qn as go,$c as gr,Ze as gs,ep as gt,nh as h,ea as ha,ts as hi,td as hn,er as ho,tl as hr,$e as hs,np as ht,wh as i,Sa as ia,x as ic,Cs as ii,Cd as in,Sr as io,Cl as ir,xt as is,wp as it,wm as j,Si as ja,Co as ji,Cu as jn,Sn as jo,Cc as jr,xe as js,wf as jt,Om as k,Ei as ka,Do as ki,Du as kn,En as ko,Dc as kr,Te as ks,Of as kt,mh as l,fa as la,d as lc,ps as li,pd as ln,fr as lo,pl as lr,dt as ls,mp as lt,ih as m,na as ma,t as mc,rs as mi,rd as mn,nr as mo,rl as mr,tt as ms,ip as mt,Oh as n,Ea as na,T as nc,Ds as ni,Dd as nn,Er as no,Dl as nr,Tt as ns,Op as nt,bh as o,va as oa,_ as oc,ys as oi,yd as on,vr as oo,yl as or,_t as os,bp as ot,oh as p,ia as pa,r as pc,as as pi,ad as pn,ir as po,al as pr,rt as ps,op as pt,Kp as q,Wr as qa,Wa as qi,Gl as qn,Ut as qo,Gs as qr,U as qs,Gd as qt,Eh as r,wa as ra,C as rc,Ts as ri,Td as rn,wr as ro,Tl as rr,Ct as rs,Ep as rt,vh as s,ga as sa,h as sc,_s as si,_d as sn,gr as so,_l as sr,ht as ss,vp as st,Ah as t,Oa as ta,D as tc,ks as ti,kd as tn,Or as to,kl as tr,Dt as ts,Ap as tt,fh as u,ua,l as uc,ds as ui,dd as un,ur as uo,dl as ur,lt as us,fp as ut,Xm as v,Ji as va,Yo as vi,Yu as vn,Jn as vo,Yc as vr,qe as vs,Xf as vt,Rm as w,Ii as wa,Lo as wi,Lu as wn,In as wo,Lc as wr,Fe as ws,Rf as wt,Wm as x,Hi as xa,Uo as xi,Uu as xn,Hn as xo,Uc as xr,Ve as xs,Wf as xt,Jm as y,Ki as ya,qo as yi,qu as yn,Kn as yo,qc as yr,Ge as ys,Jf as yt,cm as z,oi as za,oo as zi,su as zn,on as zo,sc as zr,ae as zs,cf as zt};
