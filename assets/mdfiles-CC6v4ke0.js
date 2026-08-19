@@ -37227,6 +37227,201 @@ Thanks to Walter Bender and Om Suneri for being so understanding about a slower 
 
 ---
 `,Pm=e({default:()=>Fm}),Fm=`---
+title: "GSoC '26 Week 09 Update by Shubham Sharma"
+excerpt: "Running two builds of the reflection feature on the actual Sugar codebase, rebuilding the fork's entry view against a finished design, working out where in-activity reflection can live, and finding a scoring update had partly learned the test cases used to check it"
+category: "DEVELOPER NEWS"
+date: "2026-07-27"
+slug: "2026-07-27-gsoc-26-vyagh-week09"
+author: "@/constants/MarkdownFiles/authors/shubham-sharma.md"
+description: "GSoC'26 Contributor at SugarLabs (AI Reflection in the Sugar Journal)"
+tags: "gsoc26,sugarlabs,week09,vyagh"
+image: "assets/Images/GSOCxJournal.webp"
+---
+
+<!-- markdownlint-disable -->
+
+**Project:** [AI Reflection in the Sugar Journal](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#ai-reflection-in-the-sugar-journal)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya](https://github.com/chimosky)  
+**Assisting Mentors:** [Diwangshu Kakoty](https://github.com/Commanderk3), [Mebin J Thattil](https://github.com/mebinthattil), [Harshit Verma](https://github.com/therealharshit), [Aman Naik](https://github.com/AmanNaik)  
+**Reporting Period:** 2026-07-20 - 2026-07-26  
+
+---
+
+## Goals for This Week
+
+- Run Devin's labels as an independent check as soon as they land
+- Keep building and testing the conversation-level judge
+- Move design and engine work onto the actual Sugar codebase, fork, simplest version first
+- Keep peer reflection queued
+
+---
+
+## This Week's Progress
+
+### 1. Two builds, one status for the mentors
+
+[Last week](news/all/2026-07-20-gsoc-26-vyagh-week08) I described Walter's steer to stop waiting on Sugar reviews and start building on a fork of the real codebase.
+
+This week that fork was one of two places the feature existed. To keep moving past slow review cycles, I'd also been keeping a second, separate build going all week on the same real Sugar source. This whole post covers both.
+
+#### The Sugar-fork build
+
+On the fork, I built the reflection panel itself, and this was the first time the whole feature worked end to end. The conversation is saved in the entry's own \`metadata['reflections']\` field. A notification invites reflection after an activity closes. And a live version talks to the AI, carrying the last answer forward as a banner on the next visit.
+
+I then kept matching it to the design file and building further screens from it: a foldable "Our talk" section with a thinking animation while the AI replies, a home-view nudge card, and a badge on each Journal row when Jo has a question waiting. Along the way I fixed a bug: a step reading an entry's colour failed silently, and that blanked the description, tags, comments, and conversation all at once.
+
+#### The second build
+
+The second build was further along in different ways. The engine there is its own package with a full test suite, reached through a small server. I'd tested the same kind of panel end to end in Sugar. And I'd run a first evaluation: thirty scripted conversations against a local model. No real children are involved anywhere in this yet; a written stand-in plays the child.
+
+#### A same-day design sweep
+
+The same morning, I ran a wide design sweep on that build. It covered fourteen directions for the panel and several ways to draw Jo. I also did states for waiting, being offline, and saying goodbye, plus rules for how any of it should move.
+
+The next day I picked a direction. The child's work sits big and front-and-centre, everything Sugar's entry view already has stays, and reflection becomes a thread hanging underneath it. Jo became a plain chrome XO shape with one ember, unpainted, no buddy colours.
+
+![The design spec for Jo's neutral XO identity: three states, available, thinking, and leaving, told apart by the amber centre's glow, plus how it sits next to a question in context.](/assets/Developers/vyagh/gsoc26-week9-jo-chrome.webp)
+
+#### What I found running the evaluation
+
+The small model went over the word-length limit fifty-one times, gave a few compliments it isn't supposed to give, and broke the one-question rule twice. I'd expected results like that from a model this small; real quality checks need a stronger one.
+
+I also turned that same check on the fork build's shipped interface. The alert inviting a child back to Jo was titled "Nice work!". Since Walter's marking [last week](news/all/2026-07-20-gsoc-26-vyagh-week08) I no longer score the AI down for plain praise. But Jo's own instructions still tell her to ask about the work, never grade it, and that title grades it. I fixed it and checked again the same day.
+
+#### What I brought to the mentors
+
+I brought both builds to Walter and Ibiam. Three questions came out of that:
+
+- Should reflection be on by default, or something a teacher switches on?
+- Does warm acknowledgment of an idea count as the judging Jo is meant to stay out of?
+- What should Jo say if a child discloses something like feeling sad?
+
+The last question needs an answer before any of this goes in front of a child.
+
+#### Keeping an answer
+
+The second build already had a small mechanic for a good answer. Press a star next to what a child wrote, and it's saved word for word into the entry's description. The saved line also shows under the entry's title in the Journal's list view, so a kept thought is visible without opening the entry.
+
+![The reflection panel on the second build's Journal entry, mid-conversation: a child's answer, "it did the sum in the wrong order but it still worked," is starred and kept word for word in the entry's description, while Jo asks how the child would explain it to a friend.](/assets/Developers/vyagh/gsoc26-week9-notification.webp)
+
+#### A stray bug fixed along the way
+
+In the Sugar source itself I fixed a bug unrelated to my work: pressing Enter or the Left arrow key inside a focused text field resumed or exited the whole activity instead of typing the character.
+
+### 2. Stepping back: the design itself needed to change
+
+#### What Walter and Ibiam said
+
+Walter and Ibiam both read the builds as still thin, and where in-activity reflection should live is open on their side too, though both leaned away from a change that would touch every activity's toolbar and toward keeping it inside Sugar's frame somehow. Ibiam added that whatever a redesign changes has to stay at least as clear and useful as it was before.
+
+#### Where the design file came from
+
+The design file the fork build had been built against was a wireframe sketching out the flow, never a finished visual design. It took me most of the week to go back and trace it to its source; until then I'd assumed the gap was in my own work, and polishing harder didn't help.
+
+On the fork, I went back to a more finished set of [mockups](https://gsoc-html-share.vercel.app/mockups/second-pass/standalone/journal) I'd built earlier and decided to build directly from those. They solve something I hadn't fully worked through: most Sugar activities don't produce one single visual thing to reflect on the way a painting does. That version treats a saved reflection as its own small unit, tagged with the activity's icon and colour, so a Turtle Blocks project or a piece of writing works the same way a painting does.
+
+#### Designing the whole journey on the second build
+
+On the second build I took the same realisation somewhere else: I stepped back to design the complete experience as one connected story. It runs across six moments: capturing a thought while still in the activity, a nudge to return to that same activity next time, and the conversation in the Journal. The other three are the moment a good answer gets kept, watching a replay of how the work was made, and how a reflected entry looks in the list.
+
+The entry-view screens on that build won't get touched again until that whole journey is designed and agreed on, screen by screen. The first of the six moments, reflecting inside the activity itself, is solid enough to build now, and that's where the rest of this build's work went this week.
+
+#### What Walter said about one piece of it
+
+One piece of that design went straight to Walter: a small "Reflect" tag in the corner of a running activity that a child could tap. He pushed back on it sitting there all the time as too intrusive; the Frame, where a child already goes to invoke things, made more sense to him. He also floated a keyboard shortcut, which I flagged as likely too hard for a young kid, and something that could pop up on leaving an activity, so long as it never takes up space inside the activity while it's running.
+
+#### A focus-stealing bug in fullscreen activities
+
+On the second build, I dug into where in-activity reflection could live at all. Typing into a window drawn over a running, fullscreen activity doesn't work, because Sugar keeps the keyboard on the activity underneath no matter what's on top. Taps get through fine, so an in-activity panel there has to give a child answers to tap.
+
+I also tried two places for its icon in Sugar's frame, one on each side of the screen; both opened the panel on the first tap, each with a small rendering glitch I need to fix before I can pick between them.
+
+![Jo's device icon live in Sugar's own Frame, next to the other device icons, on the actual Home screen.](/assets/Developers/vyagh/gsoc26-week9-frame-icon.webp)
+
+### 3. Rebuilding the fork's entry view, and a frame panel on the second build
+
+Since the target design had changed, I reset the fork back to stock Sugar and rebuilt the entry view against the new mockups. The storage, the notification, and the AI wiring the fork had earlier in the week aren't running on it right now. Adding them back on top of the rebuilt view is the next piece of work.
+
+I rebuilt Jo's reflection sidebar on the fork as a panel down the right side of the entry view, resizable and hideable, with a message area and a text box to reply in. I also merged the old separate back button into Sugar's toolbar, so it navigates through the same place as everything else in Sugar.
+
+#### Comparing it to the reference
+
+I looked at the rebuilt panel running on the actual VM, next to the reference design, and listed the gaps. The entry's title rendered as a big grey input box where the reference has a small identity line. The kind, date, and size details ran as three lines instead of one. The preview photo had a hard black border and square corners.
+
+Working through that list, the preview came first: I moved it into a centred band above the rest of the entry, with rounded corners and a soft border. Tags went from one freeform text box into small chips you add and remove one at a time. The title and the three-line kind, date, and size layout haven't been touched yet.
+
+I also found and fixed four rendering bugs in the same view, including a tag chip whose remove button looked fixed in a screenshot but silently did nothing; I only caught that one by clicking it myself.
+
+#### Reflecting inside the activity itself
+
+On the second build, I built a panel opened from a Frame icon, answered with the tap chips the focus finding had already pointed to. Whether opening on top of a running activity, even only on demand, still counts as taking up space by his standard is unresolved; I built it anyway so there'd be something to show him. It works live on the test device. A notification also offers to open it right after an activity closes.
+
+![The in-activity panel, polished: mood chips, a thumbnail of the current work, and starter chips for a first answer, layered over the running activity.](/assets/Developers/vyagh/gsoc26-week9-inactivity-panel.webp)
+
+### 4. Piloting a judge for whole conversations, and finding it tuned to its own test cases
+
+Last week I started building a second test that judges a whole conversation, not one line at a time. This week I finished piloting both halves. The half that reads the child's side came out consistent. Before I can trust it, a second person needs to hand-label a sample, so their reading can be compared against mine.
+
+#### Checking the question judge
+
+A rules update I'd made had partly learned the wording of the exact test cases I check it with, rather than the general pattern behind them. I went back and checked because the scores from that update looked too good when I piloted this half. It still tells a weak suggestion apart from a carefully asked question. A fresh test, on conversations it has never seen at all, is still ahead.
+
+I also compared it against a faster, cheaper way of scoring the same conversations. That one sometimes scored a question by which pile of examples it came from, and two nearly identical suggestions landed four points apart. It's useful as a rough first filter and I'm not relying on it for more than that.
+
+#### What to measure at all
+
+I'd been looking at whether one good question from Jo leads to a deeper next answer, one exchange at a time. In my example conversations the richest answers kept coming first, and the follow-ups were a coin flip. I reread the research this is built on, and it measures these effects across a whole conversation rather than at a single exchange. So that per-exchange measurement is now a note I keep rather than a score.
+
+What I need to score is a full three-step unit: Jo asks, the child answers, and what Jo does next. The third step is what shows whether Jo's next question does anything with the child's answer, or only repeats it back.
+
+### 5. Peer reflection stays queued
+
+Still queued behind the single-child engine and design work, same as the last few weeks.
+
+---
+
+## Key Learnings
+
+- **A design file I'd been matching pixel-for-pixel was only ever a wireframe.** Polishing harder didn't close the gap; I had to pick a finished design to build against.
+- **Turning my own evaluation on my own shipped UI caught a mistake my manual review had missed.** The invite alert praised a child's work in its title, something Jo's own instructions still rule out.
+- **I found that typing doesn't reach a window layered over a running activity, but tapping does.** So any in-activity panel has to lead with tap-first answers.
+- **I found that a scoring rule can improve on the exact examples it was tested against without the underlying pattern getting better.** I caught it by re-checking on the very same test items; a fresh, unseen set would be a stronger check.
+- **A fix can look right in a screenshot and still be broken.** I only caught the tag chip's dead remove button by clicking it myself.
+
+---
+
+## Next Week's Roadmap
+
+- Add the conversation storage, the post-exit notification, and the AI wiring back on top of the fork's rebuilt entry view; all three already work in the second build.
+- Finish matching the fork entry view to the reference (title styling, the kind, date, and size line); the list view's reference is a full card-grid layout, a separate task to scope.
+- In-activity reflection placement is still open on the mentors' side too; compare the second build's frame-panel approach against staying inside the fork's entry view before settling on one.
+- Finish designing the whole six-moment reflection journey on the second build, then decide whether the fork follows that or the mockups already in use.
+- Two outside checks on the evaluation: a second person hand-labels a sample of the child-side scores, and Devin's labels run as an independent check whenever they land.
+- Peer reflection stays queued.
+
+---
+
+## Resources & References
+
+- **Week 8 blog:** [GSoC '26 Week 08 Update](news/all/2026-07-20-gsoc-26-vyagh-week08)
+- **Week 7 blog:** [GSoC '26 Week 07 Update](news/all/2026-07-13-gsoc-26-vyagh-week07)
+- **Reference design mockups:** [second-pass Journal prototype](https://gsoc-html-share.vercel.app/mockups/second-pass/standalone/journal)
+
+---
+
+## Acknowledgments
+
+Thanks to Walter and Ibiam, who looked at both builds this week and gave feedback on where reflection should live and how much a redesign is allowed to change. Thanks to Diwangshu, Mebin, Harshit, and Aman for their continued input.
+
+---
+
+## Connect with Me
+
+- GitHub: [@vyagh](https://github.com/vyagh)
+- Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
+
+---
+`,Im=e({default:()=>Lm}),Lm=`---
 title: "GSoC '26 Week 9 Update by Harihara Vardhan"
 excerpt: "This week offline git landed in Git Planet. Students can now commit up to five times without internet, see pending syncs right on the timeline, and have everything pushed to GitHub automatically when they come back online."
 category: "DEVELOPER NEWS"
@@ -37279,7 +37474,7 @@ The core flow is working well, but there are still some edge cases to sort out. 
 Next week is about fixing those edge cases and getting the offline git feature into a finished state. After that, the focus shifts to deployment: a full end-to-end test pass, cleaning up any leftover rough edges in Git Planet, and getting everything ready to hand off.
 
 Nine weeks down. See you next week!
-`,Im=e({default:()=>Lm}),Lm=`---
+`,Rm=e({default:()=>zm}),zm=`---
 title: "GSoC '26 Week 09 Update by Ashutosh Singh"
 excerpt: "Putting the first release in front of real people, including Walter, and turning their feedback into fixes. Plus building an annotation flow so you can point at the activity and tell it what to change."
 category: "DEVELOPER NEWS"
@@ -37382,7 +37577,7 @@ Thanks to Walter Bender for actually building something with the release, the Pe
 - Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
 
 ---
-`,Rm=e({default:()=>zm}),zm=`---
+`,Bm=e({default:()=>Vm}),Vm=`---
 title: "DMP '26 Week 07 Update by Noaman Akhtar"
 excerpt: "Adding think/no-think control to Sugar-AI so reasoning-capable Ollama models can be used selectively without changing existing clients."
 category: "DEVELOPER NEWS"
@@ -37535,7 +37730,7 @@ The next step is to measure that behavior clearly, propose a small concurrency f
 Thanks to my mentors and the Sugar Labs community for the feedback during the provider refactor and the midterm evaluation. The questions about usability, testing, and downstream projects helped connect the backend implementation to how Sugar-AI will actually be used.
 
 ---
-`,Bm=e({default:()=>Vm}),Vm=`---
+`,Hm=e({default:()=>Um}),Um=`---
 title: "GSoC '26 Week 10 Update by Dev"
 excerpt: "Running end-to-end tests on the full GTK4 shell, recording a live walkthrough video under Casilda, cleaning up review feedback on widget methods in sugar, and fixing palette popover parenting in sugar-toolkit-gtk4."
 category: "DEVELOPER NEWS"
@@ -37626,7 +37821,7 @@ image: "assets/Images/GSOC.webp"
 ## Acknowledgments
 
 Thanks to Krish and Ibiam for their feedback and reviews during testing.
-`,Hm=e({default:()=>Um}),Um=`---
+`,Wm=e({default:()=>Gm}),Gm=`---
 title: "GSoC '26 Week 10 Report by Rejah Rabeeul Haque"
 excerpt: "Added a stop button for the host in number mode shared mode, added labels for figures, introduced new built in categories, and fixed bugs."
 category: "DEVELOPER NEWS"
@@ -37740,7 +37935,7 @@ A big thank you to my mentor Lionel Laské for his continuous guidance, and to e
 ---
 
 *Thanks for reading Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*
-`,Wm=e({default:()=>Gm}),Gm=`---
+`,Km=e({default:()=>qm}),qm=`---
 title: "GSoC '26 Week 10 Update by Shreya Saxena"
 excerpt: "A lighter week due to travel and the start of college, a GSoC Alumni Camp lightning talk, and plans to tackle load time and a scheduling issue flagged by Devin."
 category: "DEVELOPER NEWS"
@@ -37931,7 +38126,7 @@ Alongside that, I'll be profiling the Save as LilyPond Export and MIDI Import wo
  
 Thanks to my mentor, Walter Bender, for encouraging me to investigate the rerendering issue and for his valuable guidance throughout the debugging process. Thanks also to Devin Ulibarri for identifying the drum polyrhythm issue and helping validate the issue, and to the entire Sugar Labs community for their encouragement and feedback.
 
-`,Km=e({default:()=>qm}),qm=`---
+`,Jm=e({default:()=>Ym}),Ym=`---
 title: "GSoC '26 Week 11 Update by Dev"
 excerpt: "Fixing GTK4 CSS scoping and GTK4 CSS parser warnings in sugar-toolkit-gtk4, updating activities list cell rendering and icon palette styling in sugar, and completing theme selected states in sugar-artwork."
 category: "DEVELOPER NEWS"
@@ -38019,7 +38214,7 @@ image: "assets/Images/GSOC.webp"
 ## Acknowledgments
 
 Thanks to Krish and Ibiam for their guidance and reviews.
-`,Jm=e({default:()=>Ym}),Ym=`---
+`,Xm=e({default:()=>Zm}),Zm=`---
 title: "GSoC '26 Week 11 Update by Shreya Saxena"
 excerpt: "A ~23x speedup for headless notation exports, plus a fix for drum-polyrhythm project bug."
 category: "DEVELOPER NEWS"
@@ -38122,7 +38317,7 @@ With both fixes merged, I’ll clean up the now-unused \`_enqueue()\` and \`_cal
 
 ## Acknowledgments
 
-Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,Xm=e({default:()=>Zm}),Zm=`---
+Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,Qm=e({default:()=>$m}),$m=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -38271,7 +38466,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Qm=e({default:()=>$m}),$m=`---
+`,eh=e({default:()=>th}),th=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -38374,7 +38569,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,eh=e({default:()=>th}),th=`---
+`,nh=e({default:()=>rh}),rh=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -38847,7 +39042,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,nh=e({default:()=>rh}),rh=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,ih=e({default:()=>ah}),ah=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -38934,7 +39129,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,ih=e({default:()=>ah}),ah=`---\r
+`,oh=e({default:()=>sh}),sh=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -39027,7 +39222,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,oh=e({default:()=>sh}),sh=`---\r
+`,ch=e({default:()=>lh}),lh=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -39121,7 +39316,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,ch=e({default:()=>lh}),lh=`---\r
+`,uh=e({default:()=>dh}),dh=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -39209,7 +39404,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,uh=e({default:()=>dh}),dh=`---\r
+`,fh=e({default:()=>ph}),ph=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -39292,7 +39487,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,fh=e({default:()=>ph}),ph=`---\r
+`,mh=e({default:()=>hh}),hh=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -39358,7 +39553,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,mh=e({default:()=>hh}),hh=`---
+`,gh=e({default:()=>_h}),_h=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -39440,7 +39635,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,gh=e({default:()=>_h}),_h=`---
+---`,vh=e({default:()=>yh}),yh=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -39533,7 +39728,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,vh=e({default:()=>yh}),yh=`---
+`,bh=e({default:()=>xh}),xh=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -39622,7 +39817,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,bh=e({default:()=>xh}),xh=`---
+--- `,Sh=e({default:()=>Ch}),Ch=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -39767,7 +39962,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Sh=e({default:()=>Ch}),Ch=`---
+--- `,wh=e({default:()=>Th}),Th=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -39955,7 +40150,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,wh=e({default:()=>Th}),Th=`---
+--- `,Eh=e({default:()=>Dh}),Dh=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40050,7 +40245,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Eh=e({default:()=>Dh}),Dh=`---
+`,Oh=e({default:()=>kh}),kh=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40139,7 +40334,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Oh=e({default:()=>kh}),kh=`---
+`,Ah=e({default:()=>jh}),jh=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40226,7 +40421,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Ah=e({default:()=>jh}),jh=`---
+---`,Mh=e({default:()=>Nh}),Nh=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40309,7 +40504,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Mh=e({default:()=>Nh}),Nh=`---
+---`,Ph=e({default:()=>Fh}),Fh=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40392,7 +40587,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Ph=e({default:()=>Fh}),Fh=`---
+---`,Ih=e({default:()=>Lh}),Lh=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -40697,4 +40892,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Rp as $,Ir as $a,Ia as $i,Ll as $n,Ft as $o,Ls as $r,F as $s,Ld as $t,Am as A,Oi as Aa,ko as Ai,ku as An,On as Ao,kc as Ar,De as As,Af as At,um as B,ci as Ba,co as Bi,lu as Bn,cn as Bo,lc as Br,se as Bs,uf as Bt,Wm as C,Hi as Ca,Uo as Ci,Uu as Cn,Hn as Co,Uc as Cr,Ve as Cs,Wf as Ct,Im as D,Pi as Da,Fo as Di,Fu as Dn,Pn as Do,Fc as Dr,Ne as Ds,If as Dt,Rm as E,Ii as Ea,Lo as Ei,Lu as En,In as Eo,Lc as Er,Fe as Es,Rf as Et,bm as F,vi as Fa,yo as Fi,yu as Fn,vn as Fo,yc as Fr,_e as Fs,bf as Ft,em as G,Qr as Ga,Qa as Gi,$l as Gn,Zt as Go,$s as Gr,Z as Gs,$d as Gt,om as H,ii as Ha,io as Hi,au as Hn,rn as Ho,ac as Hr,re as Hs,of as Ht,vm as I,gi as Ia,_o as Ii,_u as In,gn as Io,_c as Ir,he as Is,vf as It,Jp as J,Kr as Ja,Ka as Ji,ql as Jn,Gt as Jo,qs as Jr,G as Js,qd as Jt,Qp as K,Xr as Ka,Xa as Ki,Zl as Kn,Yt as Ko,Zs as Kr,Y as Ks,Zd as Kt,gm as L,mi as La,ho as Li,hu as Ln,mn as Lo,hc as Lr,pe as Ls,gf as Lt,Em as M,wi as Ma,To as Mi,Tu as Mn,wn as Mo,Tc as Mr,Ce as Ms,Ef as Mt,wm as N,Si as Na,Co as Ni,Cu as Nn,Sn as No,Cc as Nr,xe as Ns,wf as Nt,Pm as O,Mi as Oa,No as Oi,Nu as On,Mn as Oo,Nc as Or,je as Os,Pf as Ot,Sm as P,bi as Pa,xo as Pi,xu as Pn,bn as Po,xc as Pr,ye as Ps,Sf as Pt,Bp as Q,Rr as Qa,Ra as Qi,zl as Qn,Lt as Qo,zs as Qr,L as Qs,zd as Qt,mm as R,fi as Ra,po as Ri,pu as Rn,fn as Ro,pc as Rr,de as Rs,mf as Rt,Km as S,Wi as Sa,Go as Si,Gu as Sn,Wn as So,Gc as Sr,Ue as Ss,Kf as St,Bm as T,Ri as Ta,zo as Ti,zu as Tn,Rn as To,zc as Tr,Le as Ts,Bf as Tt,im as U,ni as Ua,no as Ui,ru as Un,tn as Uo,rc as Ur,te as Us,rf as Ut,cm as V,oi as Va,oo as Vi,su as Vn,on as Vo,sc as Vr,ae as Vs,cf as Vt,nm as W,ei as Wa,eo as Wi,tu as Wn,$t as Wo,tc as Wr,$ as Ws,tf as Wt,Wp as X,Hr as Xa,Ha as Xi,Ul as Xn,Vt as Xo,Us as Xr,V as Xs,Ud as Xt,Kp as Y,Wr as Ya,Wa as Yi,Gl as Yn,Ut as Yo,Gs as Yr,U as Ys,Gd as Yt,Hp as Z,Br as Za,Ba as Zi,Vl as Zn,zt as Zo,Vs as Zr,z as Zs,Vd as Zt,nh as _,ea as _a,ts as _i,td as _n,er as _o,tl as _r,$e as _s,np as _t,Eh as a,wa as aa,C as ac,Ts as ai,Td as an,wr as ao,Tl as ar,Ct as as,Ep as at,Xm as b,Ji as ba,Yo as bi,Yu as bn,Jn as bo,Yc as br,qe as bs,Xf as bt,bh as c,va as ca,_ as cc,ys as ci,yd as cn,vr as co,yl as cr,_t as cs,bp as ct,mh as d,fa as da,d as dc,ps as di,pd as dn,fr as do,pl as dr,dt as ds,mp as dt,Pa as ea,N as ec,Fs as ei,Fd as en,Pr as eo,Fl as er,Nt as es,Ip as et,fh as f,ua as fa,l as fc,ds as fi,dd as fn,ur as fo,dl as fr,lt as fs,fp as ft,ih as g,na as ga,t as gc,rs as gi,rd as gn,nr as go,rl as gr,tt as gs,ip as gt,oh as h,ia as ha,r as hc,as as hi,ad as hn,ir as ho,al as hr,rt as hs,op as ht,Oh as i,Ea as ia,T as ic,Ds as ii,Dd as in,Er as io,Dl as ir,Tt as is,Op as it,Om as j,Ei as ja,Do as ji,Du as jn,En as jo,Dc as jr,Te as js,Of as jt,Mm as k,Ai as ka,jo as ki,ju as kn,An as ko,jc as kr,ke as ks,Mf as kt,vh as l,ga as la,h as lc,_s as li,_d as ln,gr as lo,_l as lr,ht as ls,vp as lt,ch as m,oa as ma,a as mc,ss as mi,sd as mn,or as mo,sl as mr,at as ms,cp as mt,Mh as n,Aa as na,k as nc,js as ni,jd as nn,Ar as no,jl as nr,kt as ns,Mp as nt,wh as o,Sa as oa,x as oc,Cs as oi,Cd as on,Sr as oo,Cl as or,xt as os,wp as ot,uh as p,ca as pa,s as pc,ls as pi,ld as pn,cr as po,ll as pr,st as ps,up as pt,Xp as q,Jr as qa,Ja as qi,Yl as qn,qt as qo,Ys as qr,q as qs,Yd as qt,Ah as r,Oa as ra,D as rc,ks as ri,kd as rn,Or as ro,kl as rr,Dt as rs,Ap as rt,Sh as s,ba as sa,y as sc,xs as si,xd as sn,br as so,xl as sr,yt as ss,Sp as st,Ph as t,Ma as ta,j as tc,Ns as ti,Nd as tn,Mr as to,Nl as tr,jt as ts,Pp as tt,gh as u,ma as ua,p as uc,hs as ui,hd as un,mr as uo,hl as ur,pt as us,gp as ut,eh as v,Qi as va,$o as vi,$u as vn,Qn as vo,$c as vr,Ze as vs,ep as vt,Hm as w,Bi as wa,Vo as wi,Vu as wn,Bn as wo,Vc as wr,ze as ws,Hf as wt,Jm as x,Ki as xa,qo as xi,qu as xn,Kn as xo,qc as xr,Ge as xs,Jf as xt,Qm as y,Xi as ya,Zo as yi,Zu as yn,Xn as yo,Zc as yr,Ye as ys,Qf as yt,fm as z,ui as za,uo as zi,du as zn,un as zo,dc as zr,le as zs,ff as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Bp as $,Rr as $a,Ra as $i,zl as $n,Lt as $o,zs as $r,L as $s,zd as $t,Mm as A,Ai as Aa,jo as Ai,ju as An,An as Ao,jc as Ar,ke as As,Mf as At,fm as B,ui as Ba,uo as Bi,du as Bn,un as Bo,dc as Br,le as Bs,ff as Bt,Km as C,Wi as Ca,Go as Ci,Gu as Cn,Wn as Co,Gc as Cr,Ue as Cs,Kf as Ct,Rm as D,Ii as Da,Lo as Di,Lu as Dn,In as Do,Lc as Dr,Fe as Ds,Rf as Dt,Bm as E,Ri as Ea,zo as Ei,zu as En,Rn as Eo,zc as Er,Le as Es,Bf as Et,Sm as F,bi as Fa,xo as Fi,xu as Fn,bn as Fo,xc as Fr,ye as Fs,Sf as Ft,nm as G,ei as Ga,eo as Gi,tu as Gn,$t as Go,tc as Gr,$ as Gs,tf as Gt,cm as H,oi as Ha,oo as Hi,su as Hn,on as Ho,sc as Hr,ae as Hs,cf as Ht,bm as I,vi as Ia,yo as Ii,yu as In,vn as Io,yc as Ir,_e as Is,bf as It,Xp as J,Jr as Ja,Ja as Ji,Yl as Jn,qt as Jo,Ys as Jr,q as Js,Yd as Jt,em as K,Qr as Ka,Qa as Ki,$l as Kn,Zt as Ko,$s as Kr,Z as Ks,$d as Kt,vm as L,gi as La,_o as Li,_u as Ln,gn as Lo,_c as Lr,he as Ls,vf as Lt,Om as M,Ei as Ma,Do as Mi,Du as Mn,En as Mo,Dc as Mr,Te as Ms,Of as Mt,Em as N,wi as Na,To as Ni,Tu as Nn,wn as No,Tc as Nr,Ce as Ns,Ef as Nt,Im as O,Pi as Oa,Fo as Oi,Fu as On,Pn as Oo,Fc as Or,Ne as Os,If as Ot,wm as P,Si as Pa,Co as Pi,Cu as Pn,Sn as Po,Cc as Pr,xe as Ps,wf as Pt,Hp as Q,Br as Qa,Ba as Qi,Vl as Qn,zt as Qo,Vs as Qr,z as Qs,Vd as Qt,gm as R,mi as Ra,ho as Ri,hu as Rn,mn as Ro,hc as Rr,pe as Rs,gf as Rt,Jm as S,Ki as Sa,qo as Si,qu as Sn,Kn as So,qc as Sr,Ge as Ss,Jf as St,Hm as T,Bi as Ta,Vo as Ti,Vu as Tn,Bn as To,Vc as Tr,ze as Ts,Hf as Tt,om as U,ii as Ua,io as Ui,au as Un,rn as Uo,ac as Ur,re as Us,of as Ut,um as V,ci as Va,co as Vi,lu as Vn,cn as Vo,lc as Vr,se as Vs,uf as Vt,im as W,ni as Wa,no as Wi,ru as Wn,tn as Wo,rc as Wr,te as Ws,rf as Wt,Kp as X,Wr as Xa,Wa as Xi,Gl as Xn,Ut as Xo,Gs as Xr,U as Xs,Gd as Xt,Jp as Y,Kr as Ya,Ka as Yi,ql as Yn,Gt as Yo,qs as Yr,G as Ys,qd as Yt,Wp as Z,Hr as Za,Ha as Zi,Ul as Zn,Vt as Zo,Us as Zr,V as Zs,Ud as Zt,ih as _,na as _a,t as _c,rs as _i,rd as _n,nr as _o,rl as _r,tt as _s,ip as _t,Oh as a,Ea as aa,T as ac,Ds as ai,Dd as an,Er as ao,Dl as ar,Tt as as,Op as at,Qm as b,Xi as ba,Zo as bi,Zu as bn,Xn as bo,Zc as br,Ye as bs,Qf as bt,Sh as c,ba as ca,y as cc,xs as ci,xd as cn,br as co,xl as cr,yt as cs,Sp as ct,gh as d,ma as da,p as dc,hs as di,hd as dn,mr as do,hl as dr,pt as ds,gp as dt,Ia as ea,F as ec,Ls as ei,Ld as en,Ir as eo,Ll as er,Ft as es,Rp as et,mh as f,fa,d as fc,ps as fi,pd as fn,fr as fo,pl as fr,dt as fs,mp as ft,oh as g,ia as ga,r as gc,as as gi,ad as gn,ir as go,al as gr,rt as gs,op as gt,ch as h,oa as ha,a as hc,ss as hi,sd as hn,or as ho,sl as hr,at as hs,cp as ht,Ah as i,Oa as ia,D as ic,ks as ii,kd as in,Or as io,kl as ir,Dt as is,Ap as it,Am as j,Oi as ja,ko as ji,ku as jn,On as jo,kc as jr,De as js,Af as jt,Pm as k,Mi as ka,No as ki,Nu as kn,Mn as ko,Nc as kr,je as ks,Pf as kt,bh as l,va as la,_ as lc,ys as li,yd as ln,vr as lo,yl as lr,_t as ls,bp as lt,uh as m,ca as ma,s as mc,ls as mi,ld as mn,cr as mo,ll as mr,st as ms,up as mt,Ph as n,Ma as na,j as nc,Ns as ni,Nd as nn,Mr as no,Nl as nr,jt as ns,Pp as nt,Eh as o,wa as oa,C as oc,Ts as oi,Td as on,wr as oo,Tl as or,Ct as os,Ep as ot,fh as p,ua as pa,l as pc,ds as pi,dd as pn,ur as po,dl as pr,lt as ps,fp as pt,Qp as q,Xr as qa,Xa as qi,Zl as qn,Yt as qo,Zs as qr,Y as qs,Zd as qt,Mh as r,Aa as ra,k as rc,js as ri,jd as rn,Ar as ro,jl as rr,kt as rs,Mp as rt,wh as s,Sa as sa,x as sc,Cs as si,Cd as sn,Sr as so,Cl as sr,xt as ss,wp as st,Ih as t,Pa as ta,N as tc,Fs as ti,Fd as tn,Pr as to,Fl as tr,Nt as ts,Ip as tt,vh as u,ga as ua,h as uc,_s as ui,_d as un,gr as uo,_l as ur,ht as us,vp as ut,nh as v,ea as va,ts as vi,td as vn,er as vo,tl as vr,$e as vs,np as vt,Wm as w,Hi as wa,Uo as wi,Uu as wn,Hn as wo,Uc as wr,Ve as ws,Wf as wt,Xm as x,Ji as xa,Yo as xi,Yu as xn,Jn as xo,Yc as xr,qe as xs,Xf as xt,eh as y,Qi as ya,$o as yi,$u as yn,Qn as yo,$c as yr,Ze as ys,ep as yt,mm as z,fi as za,po as zi,pu as zn,fn as zo,pc as zr,de as zs,mf as zt};
