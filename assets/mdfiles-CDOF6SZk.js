@@ -38445,6 +38445,210 @@ With both fixes merged, I’ll clean up the now-unused \`_enqueue()\` and \`_cal
 ## Acknowledgments
 
 Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,eh=e({default:()=>th}),th=`---
+title: "GSoC '26 Week 11 Update by Shubham Sharma"
+excerpt: "Fixing the Journal's sorting and rebuilding its drawing to match how Sugar itself draws, hardening what the Journal sends to the AI, dropping the live-sharing route for peer reflection in favour of one that works with no network at all, and checking last week's conversation test against real published data"
+category: "DEVELOPER NEWS"
+date: "2026-08-10"
+slug: "2026-08-10-gsoc-26-vyagh-week11"
+author: "@/constants/MarkdownFiles/authors/shubham-sharma.md"
+description: "GSoC'26 Contributor at SugarLabs (AI Reflection in the Sugar Journal)"
+tags: "gsoc26,sugarlabs,week11,vyagh"
+image: "assets/Images/GSOCxJournal.webp"
+---
+
+<!-- markdownlint-disable -->
+
+**Project:** [AI Reflection in the Sugar Journal](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#ai-reflection-in-the-sugar-journal)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya](https://github.com/chimosky)  
+**Assisting Mentors:** [Diwangshu Kakoty](https://github.com/Commanderk3), [Mebin J Thattil](https://github.com/mebinthattil), [Harshit Verma](https://github.com/therealharshit), [Aman Naik](https://github.com/AmanNaik)  
+**Reporting Period:** 2026-08-03 - 2026-08-09  
+
+---
+
+## Goals for This Week
+
+- Check whether the Journal's grid and list views behave correctly underneath what shows on screen
+- Go through what the Journal sends to the AI and bound it properly
+- Get peer reflection from a written brief to something that runs
+- Check last week's conversation-level AI test against real, already-published conversation data
+
+No real children are involved in any of this yet. Every conversation below is a test entry with replies I typed myself.
+
+---
+
+## This Week's Progress
+
+### 1. Journal grid and list views
+
+#### Making the Journal quick again
+
+The whole Journal had started feeling sluggish, so I measured it against a full datastore on the test machine.
+
+Every time the view settled, it built a complete row for each entry just to read three small facts off it. It was also rebuilding the view that wasn't on screen alongside the one that was.
+
+Now it reads only the facts it needs, and a hidden view does nothing until you switch to it. Filtering the list went from a visible stall to no measurable delay at all, and clearing a filter or changing the sort takes a fraction of what it did.
+
+The scrolling lag is not mine. Stock Sugar's own Journal scrolls at the same rate on this machine; the virtual machine's software rendering sets it, and the card and timeline drawing I added is a small slice of each frame.
+
+#### Folded stacks
+
+A run of entries from the same day folds into a single stack.
+
+A folded stack of thirty entries was reserving about a screen and a half of empty space below itself: the widget that slides it away collapses its width while keeping its height.
+
+Opening a stack indented every row after the first by a whole card width. And closing one made the top card vanish for a single frame.
+
+While fixing the empty-space bug I found a handler being reconnected without ever being disconnected, which was enough to crash the shell outright.
+
+I also tried five different ways to animate a stack that wraps onto multiple rows. None is both smooth and cheap enough to hold a frame rate, so those stacks now swap instantly.
+
+#### Drawing with Sugar's shared calls
+
+The grid and list views were painting their cards by hand with low-level drawing calls. The rest of Sugar's shell uses shared drawing functions for those same things: card backgrounds, borders, checkboxes, focus rings, the little arrow that expands a folded group. I converted the two views over to those shared calls. One hand-drawn border line was straddling two pixel columns at about half strength each, and the shared call puts it in one crisp column.
+
+The date spine and day headings also draw from one shared module now. They had drifted about thirty pixels apart between the two views, pushed by a nudge factor whose comment claimed it corrected the grid.
+
+#### Bug hunt
+
+Going through the surface for things that would break in day-to-day use turned up several genuine bugs, now fixed:
+
+- **All three sort orders only looked correct on screen.** The grid view was discarding the sort order right before drawing the page. Fixed, and the two views now agree on what "sort by date created" and "sort by date modified" each mean, and on how a size-based sort captions its cards.
+- **A corrupted timestamp on one entry could silently kill the entire list view**, with no error shown anywhere. An earlier fix had covered one kind of bad value; a second, differently-broken kind of value slipped past it and caused the same crash.
+- **Clicking near an entry could open the wrong one, or toggle the star on an entry you weren't pointing at**, because the area GTK was treating as clickable was larger than the card actually drawn on screen.
+- **A keyboard shortcut silently did nothing**, because the error it was hitting got swallowed.
+- **The clock on each card was being lowercased by hand.** That breaks languages where "AM" is a translated word, and in places that use a 24-hour clock the same code was rendering 13:45 as an ambiguous "1:45".
+
+#### Verified on a real Sugar system
+
+I deployed the whole thing to a real Sugar system and checked it by hand. Until now these views had mostly been exercised in a quick standalone tool that draws the same widgets in isolation; it is much faster, but it resolves Sugar's visual theme differently.
+
+Both views render correctly: cards, folded groups and their previews, day headings, keyboard and scroll navigation.
+
+[youtube: W1SIuY696nc]
+
+#### Getting ready for review
+
+The grid is a custom container I wrote, so I built a working version of the Journal page on Sugar's standard list widget and compared the two over the same entries. It loses on two counts: it cannot place entries under per-date headings, and crossing the page inside folded groups takes noticeably more keypresses. The custom container stays, and the comparison build goes into the review request as evidence.
+
+I went back through the branch to bring it closer to how Sugar's own files are written, trimming in-code explanation down to notes a reviewer can go and check. Two surfaces I had set aside earlier, the in-activity conversation panel and an ambient shelf, moved out of the working tree onto a parked branch.
+
+Auditing my own work against upstream's also turned up three problems in Sugar's own code, each verified line by line:
+
+- **Renaming an entry disables the Journal's keyboard shortcuts** for the rest of the session. The key handler is disconnected when the title edit starts and nothing ever reconnects it. That has been in Sugar since 2022.
+- **Entry titles are invisible to screen readers.** The title is published in a form the accessibility layer doesn't read, which is why dates get read out and titles don't.
+- **"Sort by date created" silently sorts by modification date on a USB stick.** No creation time is carried for entries on external drives, so the sort falls back without saying so.
+
+These are written up to pass to the maintainers, not yet sent.
+
+### 2. Hardening what the Journal sends to the AI
+
+The reflection panel has been talking to the AI service since a couple of weeks ago. This week I got it running against the real service properly, and then went through everything crossing that boundary and bounded it.
+
+Four things came out of that, all fixed:
+
+- **Nothing limited the size of a request.** A long description or a long conversation went out whole. There are now caps on the number of conversation turns, the length of each turn, and the title, description, and saved note.
+- **An empty reply from the AI reached the child as an empty question.** It now fails loudly at the boundary, so it can never surface as Jo saying nothing.
+- **Conversation text was reaching the logs.** Logging now records only which entry a request was for, truncated, with line breaks stripped. What a child wrote never lands in a log file.
+- **Nothing capped the model call itself**, so a runaway reply had no ceiling.
+
+None of this shows in the interface.
+
+### 3. Peer reflection
+
+Peer reflection, letting children reflect with each other, has been queued behind the single-child work for weeks. The obvious design is the networked one; I built a first version of it and dropped it. It needs live presence between two machines to be reliable, and it is not; a feature built on top of it would only work in the room I test it in.
+
+#### Handing a dry question bank to the room
+
+The version that survived needs no network and no AI at all.
+
+Jo carries a small built-in bank of questions for when there is no AI available, and that bank runs out. Previously that was the end of the conversation. Now Jo says so and points the child at the person next to them:
+
+> I'm out of questions about this one. What does someone near you notice when you show it to them?
+
+![Jo's rail on an entry made with a friend. After a few questions Jo says it has run out: "I'm out of questions about this one. Is there someone near you who could look at it with you? You could ask what they notice." The child answers "we talked about the sky picture", and Jo dims as the talk closes.](/assets/Developers/vyagh/gsoc26-week11-nearby-nudge.webp)
+
+On a later visit to the same entry, Jo picks the thread back up:
+
+> If you talked this one over with someone, what did you two figure out?
+
+There is also an opener for entries the Journal already knows were made with someone else, which asks what they worked out together, or whether it was all their own.
+
+![A Journal entry for a rocket drawing, tagged rockit, moon and space, with the moments kept along the way and their captions, and Jo's rail on the right returning to the entry on a later visit: "If you talked this one over with someone, what did you two figure out?", answered "we put a door on the side and i made the fire longer".](/assets/Developers/vyagh/gsoc26-week11-entry-moments-rail.webp)
+
+Before building it, I searched the constructionism literature the project leans on for anything resembling this. I could not find it, which also means there is no prior work saying it is a good idea.
+
+The honest limits: on a later visit Jo currently asks the follow-up with no sense of how much time has passed, and the case where the bank is already empty on a first visit needs more thought.
+
+#### Keeping other people's words out of storage
+
+What a child says about someone else stays out of the note saved for next time and out of the bookmark Jo uses to reopen a conversation. Private reflection data is kept off copies made to external drives.
+
+If a child answers with a shrug, a bare "yes" or "dunno", that no longer gets quoted back to them later. Jo asks again in plainer terms.
+
+![Jo asking a test entry's opener about working on something with someone. The child answers only "yes", and Jo replies "I can't see your conversation right now, but tell me about it. Who did you talk to?"](/assets/Developers/vyagh/gsoc26-week11-shrug-not-quoted.webp)
+
+### 4. Checking the conversation-level AI test against published data
+
+Last week I found a blind spot in the test I use to grade a whole reflection conversation end to end: it could be fooled by a question that echoes a child's own words back.
+
+This week I checked it against published research data: real classroom exchanges and tutoring conversations released by other researchers, none of it collected by this project.
+
+The weakness is real: a more targeted measure I had built specifically to catch this kind of hollow engagement rewarded the same echoing it was meant to flag. I've set that measure aside.
+
+I also cleared an earlier worry, that which AI service handled a given request was skewing the scores. Checked against the same data through two different services, the scores agree within normal noise.
+
+I'm not yet using the conversation-level test to shape what the AI says to a child, since it hasn't passed this check.
+
+### 5. Groundwork for the safety layer
+
+What should happen when a child writes something that needs a person, not a question? And what counts as personal information inside a reflection?
+
+This week was sourcing and reading, gathering the established patterns for how a system like this should behave and where it must step back. Nothing is built from it yet, and it needs settling before any of this goes near a real child.
+
+---
+
+## Key Learnings
+
+- **All three sort orders could pass a visual check while broken.** The grid was discarding the order right before drawing; I caught it in the code path, not on the screen.
+- **The peer-reflection version that survived is the one that needs no network.** The live-sharing route failed on presence reliability, a problem outside the feature itself, and most of the work that remained was deciding what not to store about another person.
+- **The conversation test passed careful reading of my own examples and still failed on real data.** Published classroom exchanges showed the echo-rewarding flaw my own examples could not.
+- **The quick standalone tool and a real Sugar system do not resolve the theme the same way.** The drawing conversion only counted as done once it held up on the real thing.
+
+---
+
+## Next Week's Roadmap
+
+- Turn the Journal's grid and list view work into a small number of clean, reviewable pull requests, and send the Sugar bugs found along the way to the maintainers
+- Decide how to split the largest of the changed files so it's reasonable for a volunteer reviewer to look at
+- Give the later-visit follow-up a sense of time passing, and handle a question bank that is empty on the first visit
+- Keep working on the conversation-level AI test, now that published data has confirmed its hollow-echoing weakness
+- Take the peer-reflection work to Walter and Ibiam now that there is something running to react to
+- Bring the reflection conversation, the notification, and the live AI connection onto the Journal branch, still waiting on the entry view to settle
+- Find a second person to hand-code the anchor sheet, still undecided who
+- Turn the safety-layer reading into something concrete
+
+---
+
+## Resources & References
+
+- **Week 10 blog:** [GSoC '26 Week 10 Update](news/all/2026-08-03-gsoc-26-vyagh-week10)
+- **Week 9 blog:** [GSoC '26 Week 09 Update](news/all/2026-07-27-gsoc-26-vyagh-week09)
+
+---
+
+## Acknowledgments
+
+Thanks to Walter and Ibiam for their continued guidance. Thanks to Diwangshu, Mebin, Harshit, and Aman for their continued input.
+
+---
+
+## Connect with Me
+
+- GitHub: [@vyagh](https://github.com/vyagh)
+- Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
+
+---
+`,nh=e({default:()=>rh}),rh=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -38593,7 +38797,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,nh=e({default:()=>rh}),rh=`---
+`,ih=e({default:()=>ah}),ah=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -38696,7 +38900,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,ih=e({default:()=>ah}),ah=`---
+`,oh=e({default:()=>sh}),sh=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -39169,7 +39373,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,oh=e({default:()=>sh}),sh=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,ch=e({default:()=>lh}),lh=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -39256,7 +39460,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,ch=e({default:()=>lh}),lh=`---\r
+`,uh=e({default:()=>dh}),dh=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -39349,7 +39553,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,uh=e({default:()=>dh}),dh=`---\r
+`,fh=e({default:()=>ph}),ph=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -39443,7 +39647,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,fh=e({default:()=>ph}),ph=`---\r
+`,mh=e({default:()=>hh}),hh=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -39531,7 +39735,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,mh=e({default:()=>hh}),hh=`---\r
+`,gh=e({default:()=>_h}),_h=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -39614,7 +39818,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,gh=e({default:()=>_h}),_h=`---\r
+`,vh=e({default:()=>yh}),yh=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -39680,7 +39884,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,vh=e({default:()=>yh}),yh=`---
+`,bh=e({default:()=>xh}),xh=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -39762,7 +39966,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,bh=e({default:()=>xh}),xh=`---
+---`,Sh=e({default:()=>Ch}),Ch=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -39855,7 +40059,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Sh=e({default:()=>Ch}),Ch=`---
+`,wh=e({default:()=>Th}),Th=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -39944,7 +40148,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,wh=e({default:()=>Th}),Th=`---
+--- `,Eh=e({default:()=>Dh}),Dh=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40089,7 +40293,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Eh=e({default:()=>Dh}),Dh=`---
+--- `,Oh=e({default:()=>kh}),kh=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40277,7 +40481,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Oh=e({default:()=>kh}),kh=`---
+--- `,Ah=e({default:()=>jh}),jh=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40372,7 +40576,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Ah=e({default:()=>jh}),jh=`---
+`,Mh=e({default:()=>Nh}),Nh=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40461,7 +40665,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Mh=e({default:()=>Nh}),Nh=`---
+`,Ph=e({default:()=>Fh}),Fh=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40548,7 +40752,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Ph=e({default:()=>Fh}),Fh=`---
+---`,Ih=e({default:()=>Lh}),Lh=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40631,7 +40835,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Ih=e({default:()=>Lh}),Lh=`---
+---`,Rh=e({default:()=>zh}),zh=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40714,7 +40918,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Rh=e({default:()=>zh}),zh=`---
+---`,Bh=e({default:()=>Vh}),Vh=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -41019,4 +41223,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Hp as $,Br as $a,Ba as $i,Vl as $n,zt as $o,Vs as $r,z as $s,Vd as $t,Pm as A,Mi as Aa,No as Ai,Nu as An,Mn as Ao,Nc as Ar,je as As,Pf as At,mm as B,fi as Ba,po as Bi,pu as Bn,fn as Bo,pc as Br,de as Bs,mf as Bt,Jm as C,Ki as Ca,qo as Ci,qu as Cn,Kn as Co,qc as Cr,Ge as Cs,Jf as Ct,Bm as D,Ri as Da,zo as Di,zu as Dn,Rn as Do,zc as Dr,Le as Ds,Bf as Dt,Hm as E,Bi as Ea,Vo as Ei,Vu as En,Bn as Eo,Vc as Er,ze as Es,Hf as Et,wm as F,Si as Fa,Co as Fi,Cu as Fn,Sn as Fo,Cc as Fr,xe as Fs,wf as Ft,im as G,ni as Ga,no as Gi,ru as Gn,tn as Go,rc as Gr,te as Gs,rf as Gt,um as H,ci as Ha,co as Hi,lu as Hn,cn as Ho,lc as Hr,se as Hs,uf as Ht,Sm as I,bi as Ia,xo as Ii,xu as In,bn as Io,xc as Ir,ye as Is,Sf as It,Qp as J,Xr as Ja,Xa as Ji,Zl as Jn,Yt as Jo,Zs as Jr,Y as Js,Zd as Jt,nm as K,ei as Ka,eo as Ki,tu as Kn,$t as Ko,tc as Kr,$ as Ks,tf as Kt,bm as L,vi as La,yo as Li,yu as Ln,vn as Lo,yc as Lr,_e as Ls,bf as Lt,Am as M,Oi as Ma,ko as Mi,ku as Mn,On as Mo,kc as Mr,De as Ms,Af as Mt,Om as N,Ei as Na,Do as Ni,Du as Nn,En as No,Dc as Nr,Te as Ns,Of as Nt,Rm as O,Ii as Oa,Lo as Oi,Lu as On,In as Oo,Lc as Or,Fe as Os,Rf as Ot,Em as P,wi as Pa,To as Pi,Tu as Pn,wn as Po,Tc as Pr,Ce as Ps,Ef as Pt,Wp as Q,Hr as Qa,Ha as Qi,Ul as Qn,Vt as Qo,Us as Qr,V as Qs,Ud as Qt,vm as R,gi as Ra,_o as Ri,_u as Rn,gn as Ro,_c as Rr,he as Rs,vf as Rt,Xm as S,Ji as Sa,Yo as Si,Yu as Sn,Jn as So,Yc as Sr,qe as Ss,Xf as St,Wm as T,Hi as Ta,Uo as Ti,Uu as Tn,Hn as To,Uc as Tr,Ve as Ts,Wf as Tt,cm as U,oi as Ua,oo as Ui,su as Un,on as Uo,sc as Ur,ae as Us,cf as Ut,fm as V,ui as Va,uo as Vi,du as Vn,un as Vo,dc as Vr,le as Vs,ff as Vt,om as W,ii as Wa,io as Wi,au as Wn,rn as Wo,ac as Wr,re as Ws,of as Wt,Jp as X,Kr as Xa,Ka as Xi,ql as Xn,Gt as Xo,qs as Xr,G as Xs,qd as Xt,Xp as Y,Jr as Ya,Ja as Yi,Yl as Yn,qt as Yo,Ys as Yr,q as Ys,Yd as Yt,Kp as Z,Wr as Za,Wa as Zi,Gl as Zn,Ut as Zo,Gs as Zr,U as Zs,Gd as Zt,oh as _,ia as _a,r as _c,as as _i,ad as _n,ir as _o,al as _r,rt as _s,op as _t,Ah as a,Oa as aa,D as ac,ks as ai,kd as an,Or as ao,kl as ar,Dt as as,Ap as at,eh as b,Qi as ba,$o as bi,$u as bn,Qn as bo,$c as br,Ze as bs,ep as bt,wh as c,Sa as ca,x as cc,Cs as ci,Cd as cn,Sr as co,Cl as cr,xt as cs,wp as ct,vh as d,ga as da,h as dc,_s as di,_d as dn,gr as do,_l as dr,ht as ds,vp as dt,Ra as ea,L as ec,zs as ei,zd as en,Rr as eo,zl as er,Lt as es,Bp as et,gh as f,ma as fa,p as fc,hs as fi,hd as fn,mr as fo,hl as fr,pt as fs,gp as ft,ch as g,oa as ga,a as gc,ss as gi,sd as gn,or as go,sl as gr,at as gs,cp as gt,uh as h,ca as ha,s as hc,ls as hi,ld as hn,cr as ho,ll as hr,st as hs,up as ht,Mh as i,Aa as ia,k as ic,js as ii,jd as in,Ar as io,jl as ir,kt as is,Mp as it,Mm as j,Ai as ja,jo as ji,ju as jn,An as jo,jc as jr,ke as js,Mf as jt,Im as k,Pi as ka,Fo as ki,Fu as kn,Pn as ko,Fc as kr,Ne as ks,If as kt,Sh as l,ba as la,y as lc,xs as li,xd as ln,br as lo,xl as lr,yt as ls,Sp as lt,fh as m,ua as ma,l as mc,ds as mi,dd as mn,ur as mo,dl as mr,lt as ms,fp as mt,Ih as n,Pa as na,N as nc,Fs as ni,Fd as nn,Pr as no,Fl as nr,Nt as ns,Ip as nt,Oh as o,Ea as oa,T as oc,Ds as oi,Dd as on,Er as oo,Dl as or,Tt as os,Op as ot,mh as p,fa as pa,d as pc,ps as pi,pd as pn,fr as po,pl as pr,dt as ps,mp as pt,em as q,Qr as qa,Qa as qi,$l as qn,Zt as qo,$s as qr,Z as qs,$d as qt,Ph as r,Ma as ra,j as rc,Ns as ri,Nd as rn,Mr as ro,Nl as rr,jt as rs,Pp as rt,Eh as s,wa as sa,C as sc,Ts as si,Td as sn,wr as so,Tl as sr,Ct as ss,Ep as st,Rh as t,Ia as ta,F as tc,Ls as ti,Ld as tn,Ir as to,Ll as tr,Ft as ts,Rp as tt,bh as u,va as ua,_ as uc,ys as ui,yd as un,vr as uo,yl as ur,_t as us,bp as ut,ih as v,na as va,t as vc,rs as vi,rd as vn,nr as vo,rl as vr,tt as vs,ip as vt,Km as w,Wi as wa,Go as wi,Gu as wn,Wn as wo,Gc as wr,Ue as ws,Kf as wt,Qm as x,Xi as xa,Zo as xi,Zu as xn,Xn as xo,Zc as xr,Ye as xs,Qf as xt,nh as y,ea as ya,ts as yi,td as yn,er as yo,tl as yr,$e as ys,np as yt,gm as z,mi as za,ho as zi,hu as zn,mn as zo,hc as zr,pe as zs,gf as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Wp as $,Hr as $a,Ha as $i,Ul as $n,Vt as $o,Us as $r,V as $s,Ud as $t,Im as A,Pi as Aa,Fo as Ai,Fu as An,Pn as Ao,Fc as Ar,Ne as As,If as At,gm as B,mi as Ba,ho as Bi,hu as Bn,mn as Bo,hc as Br,pe as Bs,gf as Bt,Xm as C,Ji as Ca,Yo as Ci,Yu as Cn,Jn as Co,Yc as Cr,qe as Cs,Xf as Ct,Hm as D,Bi as Da,Vo as Di,Vu as Dn,Bn as Do,Vc as Dr,ze as Ds,Hf as Dt,Wm as E,Hi as Ea,Uo as Ei,Uu as En,Hn as Eo,Uc as Er,Ve as Es,Wf as Et,Em as F,wi as Fa,To as Fi,Tu as Fn,wn as Fo,Tc as Fr,Ce as Fs,Ef as Ft,om as G,ii as Ga,io as Gi,au as Gn,rn as Go,ac as Gr,re as Gs,of as Gt,fm as H,ui as Ha,uo as Hi,du as Hn,un as Ho,dc as Hr,le as Hs,ff as Ht,wm as I,Si as Ia,Co as Ii,Cu as In,Sn as Io,Cc as Ir,xe as Is,wf as It,em as J,Qr as Ja,Qa as Ji,$l as Jn,Zt as Jo,$s as Jr,Z as Js,$d as Jt,im as K,ni as Ka,no as Ki,ru as Kn,tn as Ko,rc as Kr,te as Ks,rf as Kt,Sm as L,bi as La,xo as Li,xu as Ln,bn as Lo,xc as Lr,ye as Ls,Sf as Lt,Mm as M,Ai as Ma,jo as Mi,ju as Mn,An as Mo,jc as Mr,ke as Ms,Mf as Mt,Am as N,Oi as Na,ko as Ni,ku as Nn,On as No,kc as Nr,De as Ns,Af as Nt,Bm as O,Ri as Oa,zo as Oi,zu as On,Rn as Oo,zc as Or,Le as Os,Bf as Ot,Om as P,Ei as Pa,Do as Pi,Du as Pn,En as Po,Dc as Pr,Te as Ps,Of as Pt,Kp as Q,Wr as Qa,Wa as Qi,Gl as Qn,Ut as Qo,Gs as Qr,U as Qs,Gd as Qt,bm as R,vi as Ra,yo as Ri,yu as Rn,vn as Ro,yc as Rr,_e as Rs,bf as Rt,Qm as S,Xi as Sa,Zo as Si,Zu as Sn,Xn as So,Zc as Sr,Ye as Ss,Qf as St,Km as T,Wi as Ta,Go as Ti,Gu as Tn,Wn as To,Gc as Tr,Ue as Ts,Kf as Tt,um as U,ci as Ua,co as Ui,lu as Un,cn as Uo,lc as Ur,se as Us,uf as Ut,mm as V,fi as Va,po as Vi,pu as Vn,fn as Vo,pc as Vr,de as Vs,mf as Vt,cm as W,oi as Wa,oo as Wi,su as Wn,on as Wo,sc as Wr,ae as Ws,cf as Wt,Xp as X,Jr as Xa,Ja as Xi,Yl as Xn,qt as Xo,Ys as Xr,q as Xs,Yd as Xt,Qp as Y,Xr as Ya,Xa as Yi,Zl as Yn,Yt as Yo,Zs as Yr,Y as Ys,Zd as Yt,Jp as Z,Kr as Za,Ka as Zi,ql as Zn,Gt as Zo,qs as Zr,G as Zs,qd as Zt,ch as _,oa as _a,a as _c,ss as _i,sd as _n,or as _o,sl as _r,at as _s,cp as _t,Mh as a,Aa as aa,k as ac,js as ai,jd as an,Ar as ao,jl as ar,kt as as,Mp as at,nh as b,ea as ba,ts as bi,td as bn,er as bo,tl as br,$e as bs,np as bt,Eh as c,wa as ca,C as cc,Ts as ci,Td as cn,wr as co,Tl as cr,Ct as cs,Ep as ct,bh as d,va as da,_ as dc,ys as di,yd as dn,vr as do,yl as dr,_t as ds,bp as dt,Ba as ea,z as ec,Vs as ei,Vd as en,Br as eo,Vl as er,zt as es,Hp as et,vh as f,ga as fa,h as fc,_s as fi,_d as fn,gr as fo,_l as fr,ht as fs,vp as ft,uh as g,ca as ga,s as gc,ls as gi,ld as gn,cr as go,ll as gr,st as gs,up as gt,fh as h,ua as ha,l as hc,ds as hi,dd as hn,ur as ho,dl as hr,lt as hs,fp as ht,Ph as i,Ma as ia,j as ic,Ns as ii,Nd as in,Mr as io,Nl as ir,jt as is,Pp as it,Pm as j,Mi as ja,No as ji,Nu as jn,Mn as jo,Nc as jr,je as js,Pf as jt,Rm as k,Ii as ka,Lo as ki,Lu as kn,In as ko,Lc as kr,Fe as ks,Rf as kt,wh as l,Sa as la,x as lc,Cs as li,Cd as ln,Sr as lo,Cl as lr,xt as ls,wp as lt,mh as m,fa as ma,d as mc,ps as mi,pd as mn,fr as mo,pl as mr,dt as ms,mp as mt,Rh as n,Ia as na,F as nc,Ls as ni,Ld as nn,Ir as no,Ll as nr,Ft as ns,Rp as nt,Ah as o,Oa as oa,D as oc,ks as oi,kd as on,Or as oo,kl as or,Dt as os,Ap as ot,gh as p,ma as pa,p as pc,hs as pi,hd as pn,mr as po,hl as pr,pt as ps,gp as pt,nm as q,ei as qa,eo as qi,tu as qn,$t as qo,tc as qr,$ as qs,tf as qt,Ih as r,Pa as ra,N as rc,Fs as ri,Fd as rn,Pr as ro,Fl as rr,Nt as rs,Ip as rt,Oh as s,Ea as sa,T as sc,Ds as si,Dd as sn,Er as so,Dl as sr,Tt as ss,Op as st,Bh as t,Ra as ta,L as tc,zs as ti,zd as tn,Rr as to,zl as tr,Lt as ts,Bp as tt,Sh as u,ba as ua,y as uc,xs as ui,xd as un,br as uo,xl as ur,yt as us,Sp as ut,oh as v,ia as va,r as vc,as as vi,ad as vn,ir as vo,al as vr,rt as vs,op as vt,Jm as w,Ki as wa,qo as wi,qu as wn,Kn as wo,qc as wr,Ge as ws,Jf as wt,eh as x,Qi as xa,$o as xi,$u as xn,Qn as xo,$c as xr,Ze as xs,ep as xt,ih as y,na as ya,t as yc,rs as yi,rd as yn,nr as yo,rl as yr,tt as ys,ip as yt,vm as z,gi as za,_o as zi,_u as zn,gn as zo,_c as zr,he as zs,vf as zt};
