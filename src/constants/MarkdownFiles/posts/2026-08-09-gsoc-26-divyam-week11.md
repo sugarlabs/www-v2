@@ -19,7 +19,7 @@ image: "assets/Images/GSOC.webp"
 
 ![TurtleArt Config Wizard GTK4](/assets/post-assets/turtleart-config-wizard-gtk4.png "TurtleArt Config Wizard GTK4")
 
-With the Terminal GTK4 port wrapped up, I'm now starting on the final activity in my GSoC scope: **[TurtleArt](https://github.com/sugarlabs/turtleart-activity)**.
+With the [Terminal GTK4 port wrapped up](/news/all/2026-08-02-gsoc-26-divyam-week10), I'm now starting on the final activity in my GSoC scope: **[TurtleArt](https://github.com/sugarlabs/turtleart-activity)**.
 
 Since TurtleArt is much larger than Terminal, I started with the smaller utilities and plugins before getting into the main canvas code.
 
