@@ -23,7 +23,7 @@ After finishing Read and Jukebox, I moved on to Terminal this week. Terminal rel
 
 ### Overall Progress Update
 
-My GSoC project covers porting a specific set of activities to GTK4. Read and Jukebox are already ported and working, which I covered in my [Week 7](https://github.com/sugarlabs/www-v2/pull/978) and [Week 8](https://github.com/sugarlabs/www-v2/pull/983) weekly posts. [Terminal](https://github.com/sugarlabs/terminal-activity) was next on the schedule, so I started with the basic GTK4 and VTE changes this week. So far, there haven't been any major blockers. Once Terminal is finished, I only have [TurtleArt](https://github.com/sugarlabs/turtleart-activity) left to port to complete my project scope!
+My GSoC project covers porting a specific set of activities to GTK4. Read and Jukebox are already ported and working, which I covered in my [Week 7](news/all/2026-07-12-gsoc-26-divyam-week7) and [Week 8](news/all/2026-07-19-gsoc-26-divyam-week8) weekly posts. [Terminal](https://github.com/sugarlabs/terminal-activity) was next on the schedule, so I started with the basic GTK4 and VTE changes this week. So far, there haven't been any major blockers. Once Terminal is finished, I only have [TurtleArt](https://github.com/sugarlabs/turtleart-activity) left to port to complete my project scope!
 
 ---
 
