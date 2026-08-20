@@ -19,7 +19,7 @@ image: "assets/Images/GSOC.webp"
 
 ![Terminal Palette Fix](/assets/post-assets/terminal-palette-screenshot.png "Terminal Palette Fix")
 
-This week I wrapped up the Terminal port. The VTE 3.91 migration and the main UI changes were mostly done last week, so I spent most of the week fixing clipboard handling, checking the palettes, and hunting down a few remaining GTK3 assumptions.
+This week I wrapped up the Terminal port. The VTE 3.91 migration and the main UI changes were mostly done [last week](/news/all/2026-07-26-gsoc-26-divyam-week9), so I spent most of the week fixing clipboard handling, checking the palettes, and hunting down a few remaining GTK3 assumptions.
 
 I also opened the [pull request for the GTK4 port](https://github.com/sugarlabs/terminal-activity/pull/60). I split it up into four commits (UI layout, VTE backend, standalone test entrypoint, and clipboard/palette) to make it easier to review. Once this is merged, I just have [TurtleArt](https://github.com/sugarlabs/turtleart-activity) left!
 
