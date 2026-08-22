@@ -1,11 +1,11 @@
 ---
-title: "DMP '26 Week 07: PR 7a₁ Merged — Core Engine and Scale Builders"
+title: "DMP '26 Week 07: PR 8 Merged — Core Engine and Scale Builders"
 excerpt: "PR #7959 merged with scalePatternToEDO(), getModePattern(), and PITCH_COLLECTIONS_EDO_OVERRIDES. Backward compatible. Notation research: Sagittal vs. Kite's Ups and Downs. Walter's bug report proves the microtonal engine works."
 category: "DEVELOPER NEWS"
 date: "2026-07-31"
 slug: "2026-07-31-dmp-26-niravsharma-week07"
 author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
-description: "Week 7 — PR 7a₁ merged with core engine and scale builders. Notation research on Sagittal vs. Kite's Ups and Downs. Walter's bug report proves the microtonal engine works. Next: PR 7a₂, 7b, 7c."
+description: "Week 7 — PR 8 merged with core engine and scale builders. Notation research on Sagittal vs. Kite's Ups and Downs. Walter's bug report proves the microtonal engine works. Next: PR 9, 10, 11"
 tags: "dmp26,sugarlabs,week07,niravsharma,musicblocks,temperament,microtonality"
 image: "public/assets/Developers/Nirav/mermainDiagramGoal4.png"
 ---
@@ -21,9 +21,9 @@ image: "public/assets/Developers/Nirav/mermainDiagramGoal4.png"
 
 ---
 
-## PR 7a₁ merged: core engine and scale builders
+## PR 8 merged: core engine and scale builders
 
-PR #7959 (PR 7a₁) got merged into master this week. It's the math that lets Music Blocks generate non-12 EDO scales instead of being hardcoded to 12-EDO.
+PR #7959 (PR 8) got merged into master this week. It's the math that lets Music Blocks generate non-12 EDO scales instead of being hardcoded to 12-EDO.
 
 ### What's in it
 
@@ -74,9 +74,9 @@ The good part: this is the first real consumer hitting the microtonal note names
 
 | PR | Scope | Target |
 |---|---|---|
-| PR 7a₂ | Derived math: `_getStepSize()`, `getSolfege()`, `getNumber()`, EDO > 12 pitch-name mapping, integration tests | Week 8 |
-| PR 7b | LilyPond crash fix, plain-text cents markup, microtonal keys in `musickeyboard.js` | Week 8–9 |
-| PR 7c | UI scale builder widget | Week 9–10 |
+| PR 9 | Derived math: `_getStepSize()`, `getSolfege()`, `getNumber()`, EDO > 12 pitch-name mapping, integration tests | Week 8 |
+| PR 10 | LilyPond crash fix, plain-text cents markup, microtonal keys in `musickeyboard.js` | Week 8–9 |
+| PR 11 | UI scale builder widget | Week 9–10 |
 
 ---
 
@@ -84,4 +84,3 @@ The good part: this is the first real consumer hitting the microtonal note names
 
 - [PR #7959](https://github.com/sugarlabs/musicblocks/pull/7959) — merged
 - [Issue #7171](https://github.com/sugarlabs/musicblocks/issues/7171)
-- [Goal 4 Doc](https://github.com/noddy021/musicblocks/blob/main/C4GT/GoalPlan.md)
