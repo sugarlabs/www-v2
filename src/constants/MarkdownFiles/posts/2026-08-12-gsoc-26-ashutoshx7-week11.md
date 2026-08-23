@@ -1,6 +1,6 @@
 ---
 title: "GSoC '26 Week 11 Update by Ashutosh Singh"
-excerpt: "The project becomes a community effort: I review and merge a new Sugar Activity Studio identity and a contributor-built naming flow that closes the feedback loop from Week 9 testing."
+excerpt: "This week felt like a real open source project. I reviewed two community contributions that gave the studio its own identity and finally let people name an activity before installing or exporting it."
 category: "DEVELOPER NEWS"
 date: "2026-08-12"
 slug: "2026-08-12-gsoc-26-ashutoshx7-week11"
@@ -20,78 +20,92 @@ image: "assets/Images/GSOC.webp"
 
 ---
 
-## Goals for This Week
+## Plans for the Week
 
-- Turn the activity-naming feedback from Week 9 into a complete install and export flow
-- Give the studio its own recognizable Sugar-native identity
-- Review outside contributions carefully and help them reach the main branch
-- Keep contributor changes covered by the same tests and UX standards as my own work
-
----
-
-## This Week's Achievements
-
-This week looked different from most of the project. I wrote less of the visible feature code myself, and that is a good sign. Sugar Activity Studio received two substantial contributions from [Rakshit Yadav](https://github.com/rakshityadav1868), and my work shifted toward reviewing, testing, discussing revisions, and merging them.
-
-That change matters. A project becomes healthier when another person can understand it well enough to improve it. The best milestone of Week 11 was not simply two new features. It was seeing the repository start to behave like a shared open-source project.
-
-### 1. A Real Identity for Sugar Activity Studio
-
-Until this week the studio borrowed Sugar's generic computer icon, and some desktop surfaces showed a blank placeholder. Rakshit's [branding contribution](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/13) introduced a dedicated mark: the XO figure with a spark beside it.
-
-The icon now identifies the studio consistently in the launcher, window, toolbar, home ring, and empty state. There are two carefully matched forms: a Sugar activity SVG that supports Sugar's stroke and fill entities, and a literal-color desktop SVG for places where those entities are not substituted.
-
-The work also uncovered one of those wonderfully specific desktop problems: `gdk-pixbuf` only sniffs the beginning of the SVG when detecting its format. Keeping the SVG element early in the file prevents the launcher from rejecting a valid icon and drawing a blank one.
-
-### 2. Closing Walter's Naming Feedback Loop
-
-During Week 9 testing, Walter noticed that the generated activity name felt random and there was no obvious place to change it. Rakshit's second contribution, [the install and export naming flow](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/14), closes that loop.
-
-Before installing or exporting, the learner can now confirm or change the activity name. License selection remains its own deliberate step. Separating the two dialogs keeps two different decisions from being mixed together: what the activity is called, and how it may be shared.
-
-The contribution went through several review iterations. The first version introduced the naming prompt; later commits separated naming from licensing, added a clear difference view for name changes, adopted Sugar-native light styling, and expanded the test coverage. By the time I merged it, the feature addressed the original feedback without making the shipping flow harder to understand.
-
-### 3. Maintainer Work Is Product Work
-
-Reviewing these changes was not just checking whether the code ran. I traced the activity name through generation, install, and export; checked the dialog sequence; verified that the Sugar and regular desktop icons both render through their different paths; and made sure the new tests captured the behavior we wanted to keep.
-
-This is an important part of completing the project. If every feature depends on the original author holding the whole architecture in their head, the software is not ready to continue after GSoC. A contributor being able to enter through an issue, build a change, respond to review, and get it merged is evidence that the project can outlive the program.
+- Fix the activity naming problem Walter found during testing
+- Give Sugar Activity Studio an icon of its own
+- Review the first larger contributions from outside the project
+- Make sure the new work fits the existing flow and has good test coverage
 
 ---
 
-## Challenges & How I Overcame Them
+## A Different Kind of Week
 
-**Reviewing the experience, not only the diff.** The individual changes looked straightforward, but the order of naming and licensing dialogs determined whether the flow felt coherent. I reviewed the complete user journey and asked for iterations where the two decisions were still tangled.
+This week was a little different. I didn't write most of the visible feature code. Instead, I spent my time reviewing, testing, discussing changes, and helping two pull requests reach the main branch.
 
-**Supporting two SVG environments.** Sugar replaces entity colors in activity icons, while a normal Linux desktop expects literal colors. Keeping one canonical design in two compatible encodings gave the studio a consistent identity without sacrificing Sugar conventions.
+Both contributions came from [Rakshit Yadav](https://github.com/rakshityadav1868). One gave the studio its own visual identity. The other fixed the activity naming problem Walter noticed in Week 9.
 
-**Giving useful contributor feedback.** A review has to be precise enough to act on. Linking comments to the intended learner experience, then relying on tests for the mechanical guarantees, kept the review collaborative and moved both pull requests toward merge.
+It was honestly nice to step back and see someone else understand the project well enough to add to it. Until now, I had written nearly every part of the studio myself. This week it started to feel less like my GSoC code and more like a real Sugar Labs project.
+
+### The Studio Finally Has Its Own Icon
+
+Sugar Activity Studio had been borrowing Sugar's generic computer icon. It worked in some places, looked confusing in others, and occasionally appeared as a blank placeholder in the desktop launcher.
+
+Rakshit's [first pull request](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/13) added a proper studio icon. It uses the XO figure with a small spark beside it, which fits the idea of creating something new with Sugar.
+
+The same mark now appears in the launcher, window, toolbar, home ring, and empty state. There are two versions of the SVG because Sugar activity icons and regular Linux desktop icons handle colors differently. The Sugar version uses stroke and fill entities so the shell can recolor it. The desktop version contains its colors directly.
+
+We also ran into a very specific SVG bug. `gdk-pixbuf` only reads the beginning of the file when it tries to identify the image format. If the SVG tag appears too late, the launcher treats the file as invalid and shows nothing. Moving that tag near the start fixed the blank icon.
+
+This is the sort of bug that sounds tiny after it is solved and takes a surprising amount of time while you are staring at it.
+
+### Letting People Name Their Activity
+
+In Week 9, Walter made a Periodic Table Explorer with the studio. He liked the activity, but the generated name felt random and he couldn't find a place to change it.
+
+That comment stayed with me because he was completely right. We had spent so much time making the generated code reliable that I had missed a basic question: what does the learner want to call the thing they made?
+
+Rakshit's [second pull request](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/14) added a naming step before install and export. The learner can keep the suggested name or replace it with their own. After that, the studio asks about the license separately.
+
+The pull request changed quite a bit during review. At first, naming and licensing were mixed together. We separated them because they are different choices. We also added a clearer view of the name change, updated the dialogs to match Sugar's light theme, and added tests for the complete flow.
+
+By the time it was merged, the feature felt simple. That simplicity came from several rounds of small corrections.
+
+### Learning to Review the Whole Experience
+
+Reviewing these pull requests taught me to look beyond whether the diff was technically correct.
+
+For the naming feature, I followed the name through generation, install, and export. I clicked through the dialogs in order and checked what happened when the name changed. For the icon, I checked both Sugar's entity-colored SVG and the regular desktop file because one can work while the other fails.
+
+Tests caught the mechanical problems, but I still had to ask whether the result made sense to somebody using the studio for the first time.
+
+I also tried to make my review comments explain why I wanted a change. "Separate these dialogs because naming and licensing are different decisions" is much easier to respond to than "change this UI." That made the review process feel like working together instead of passing or failing somebody's code.
 
 ---
 
-## Key Learnings
+## What Was Tricky
 
-Open-source maintainership is a different kind of engineering. Writing a feature yourself can be faster in the moment, but helping another contributor land it leaves the project with both better code and another person who understands the system.
+**The dialog order mattered more than I expected.** Both steps worked on their own, but putting too much into one window made the final shipping flow feel crowded. Splitting the choices made everything calmer.
 
-This week also completed one of the cleanest feedback loops in the project: Walter used the release, found that the activity name felt random, the problem became a concrete issue, a community contributor implemented the fix, and review made it part of the main product. That is exactly how I hoped development at Sugar Labs would work.
+**Sugar and the desktop need different SVG handling.** The artwork looks the same, but the files have different jobs. Keeping both versions together and testing each one avoided fixing the launcher while breaking the activity ring.
 
-The new icon may look like polish, but identity matters for learners too. A tool that has a name, a recognizable place in the activity ring, and a consistent mark feels like something they can return to and make their own.
-
----
-
-## Next Week's Roadmap
-
-- Run a final reliability pass from the learner's request through runtime acceptance
-- Catch deterministic Sugar API mistakes before asking a model to debug them
-- Test delayed game states rather than accepting only a clean startup
-- Redesign the activity tools around reflection and guided modification
-- Make technical failures understandable to learners and teachers
+**Good reviews take real time.** It would have been faster to edit a few things myself, but that would miss the point of accepting a contribution. Clear comments and another review round helped the contributor understand the reason behind the changes.
 
 ---
 
-## Acknowledgments
+## What I Learned
 
-Thanks to [Rakshit Yadav](https://github.com/rakshityadav1868) for both Week 11 contributions and for responding thoughtfully to review. Thanks to Walter Bender for the activity-naming observation that started this work, and to Ibiam Chihurumnaya for continued guidance as the project moves toward its final release.
+This week reminded me that maintainership is part of building the product. Code is not truly ready for a community if only the original author can safely change it.
+
+I also liked seeing the whole naming feedback loop close. Walter tried the release and noticed a problem. We turned it into a concrete task. A community contributor built the fix, we refined it through review, and it landed in the project. That is open source working exactly as it should.
+
+The icon is a smaller change, but it still matters. A recognizable icon gives the studio a place in the activity ring and makes it feel like something learners can come back to, not just a temporary development tool.
+
+---
+
+## Next Week
+
+- Do one final reliability pass across the whole generation pipeline
+- Check delayed game behavior, not only whether the activity opens
+- Add direct fixes for common Sugar API mistakes
+- Improve the reflection and refinement sidebar
+- Make technical errors understandable to learners and teachers
+
+---
+
+## Thanks
+
+Thank you to [Rakshit Yadav](https://github.com/rakshityadav1868) for both contributions and for being patient with the review rounds. Thanks to Walter Bender for the naming feedback that started this work, and to Ibiam Chihurumnaya for continuing to guide the project as it gets close to the final release.
 
 ---
 
