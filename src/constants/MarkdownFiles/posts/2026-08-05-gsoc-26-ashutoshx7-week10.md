@@ -7,7 +7,7 @@ slug: "2026-08-05-gsoc-26-ashutoshx7-week10"
 author: "@/constants/MarkdownFiles/authors/ashutosh-singh.md"
 description: "GSoC'26 Contributor at SugarLabs working on Sugar Activity on Demand"
 tags: "gsoc26,sugarlabs,week10,ashutoshx7,visual-reference,multimodal,learning-areas,preview,release,ai,llm"
-image: "assets/Images/GSOC.webp"
+image: "assets/Images/gsoc26-ashutoshx7/aod-studio-versions.png"
 ---
 
 <!-- markdownlint-disable -->
