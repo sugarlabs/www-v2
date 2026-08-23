@@ -44,39 +44,49 @@ I spent this week chasing those cases. It was less glamorous than adding a brand
 
 A learner's request passes through several stages before it becomes code. The studio may clarify it, enhance it, retrieve examples, create a plan, and then generate the activity. Every stage is helpful, but every stage is also another place where the original idea can get watered down.
 
-I went through that path carefully. Clarification questions now pay more attention to the type of activity being made. Prompt enhancement keeps the learner's original request visible instead of replacing it with a nicer sounding alternative. Retrieval looks for Sugar examples with similar interactions, not just similar words. The generation prompt also gives more weight to mechanics the learner explicitly requested.
+I went through that path carefully. [Clarification questions](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/91c3fd2) now pay more attention to the type of activity being made. [Prompt enhancement](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/4963d92) keeps the learner's original request visible instead of replacing it with a nicer sounding alternative. [Retrieval](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/750f8f8) looks for Sugar examples with similar interactions, not just similar words. The [generation prompt](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/da6dc0b) also gives more weight to mechanics the learner explicitly requested.
 
-I added request checks to validation as well. The question is no longer only, "Is this valid Python and Sugar code?" The pipeline also asks, "Did we build the thing the learner described?"
+I added [request checks to validation](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/2fbe002) as well. The question is no longer only, "Is this valid Python and Sugar code?" The pipeline also asks, "Did we build the thing the learner described?"
 
 ### Testing More Than the First Screen
 
 The runtime checker from [Week 7](/news/all/2026-07-15-gsoc-26-ashutoshx7-week07) was good at catching activities that crashed while opening. It wasn't as good at catching a game that failed three seconds later.
 
-I extended the runtime harness so it keeps GTK events moving and exercises delayed states. This catches broken timers and callbacks that a simple startup check would miss. The critic also looks more closely at whether interactions and game states are reachable.
+I [extended the runtime harness](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/5dbe3df) so it keeps GTK events moving and exercises delayed states. This catches broken timers and callbacks that a simple startup check would miss. The [critic also looks more closely at behavior](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/1d0a66b), including whether interactions and game states are reachable.
 
-For mistakes that appear often in generated Sugar code, I added a set of known repairs. These are small, deterministic fixes for specific API problems. There is no reason to spend another model call rediscovering a fix we already understand. The repaired code still has to pass every check, and a bad patch is rolled back.
+For mistakes that appear often in generated Sugar code, I added a set of [known repairs](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/0c53418). These are small, deterministic fixes for specific API problems. There is no reason to spend another model call rediscovering a fix we already understand. The repaired code still has to pass every check, and a bad patch is rolled back.
 
-Refinement needed the same care. I fixed a case where stale preview timers could continue after a revision, kept diagnostics for each attempt, and made sure the repair loop starts from the learner's refined version. A repair should never "help" by quietly removing the change the learner just asked for.
+Refinement needed the same care. I [stopped stale preview timers](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/346bc1b), [kept diagnostics for each revision](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/b8853db), and made sure the [repair loop preserves the learner's refined version](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/e630e51). A repair should never "help" by quietly removing the change the learner just asked for.
+
+![The Versions view comparing two activity revisions and showing the saved history beside the code diff](assets/Images/gsoc26-ashutoshx7/aod-studio-versions.png)
+
+*The Versions view keeps every refinement visible. The learner can inspect the code diff and return to an earlier working revision.*
 
 ### Making the Activity Tools Friendlier
 
-I also redesigned the activity tools sidebar. The old version gave you an empty input and expected you to know what to ask. That works once you are comfortable with the studio, but it is not a great first experience.
+I also [redesigned the activity tools sidebar](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/242cf57). The old version gave you an empty input and expected you to know what to ask. That works once you are comfortable with the studio, but it is not a great first experience.
 
-The new flow uses short reflection prompts. It asks what you notice, what you would like to change, and what could make the activity clearer or more fun. These prompts act as conversation starters. They are optional, and the learner still decides what should change.
+The new flow uses [short reflection prompts presented as a guided quest](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/6a595ba). It asks what you notice, what you would like to change, and what could make the activity clearer or more fun. These prompts act as conversation starters. They are optional, and the learner still decides what should change.
 
 This part was especially important to me because Activity on Demand should not feel like a machine that produces a finished answer. It should help a learner look at what they made, think about it, and improve it.
 
 ![The studio review keeps the generated plan and code visible instead of hiding how the activity was made](assets/Images/gsoc26-ashutoshx7/aod-studio-review.png)
 
+*The Review view keeps the files and generated source open for inspection while the reflection prompts remain available on the right.*
+
 ### Community Improvements
 
-Rakshit Yadav continued contributing during the final week. He improved the error cards so generation and preview failures are easier to understand, and added API key validation with useful messages when a key does not work. I reviewed and merged both changes.
+[Rakshit Yadav](https://github.com/rakshityadav1868) continued contributing during the final week. In [PR #16](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/16), he improved the error cards so generation and preview failures are easier to understand. In [PR #17](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/17), he added API key validation with useful messages when a key does not work. I reviewed and merged both changes.
 
-Akshay Nazare also cleaned up unused studio code and added regression coverage. Seeing other people find their way around the repository and improve it has been one of the nicest parts of finishing this project.
+[Akshay Nazare](https://github.com/akkki007) also cleaned up unused studio code and added regression coverage in [PR #19](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/19). Seeing other people find their way around the repository and improve it has been one of the nicest parts of finishing this project.
 
 ### Releasing v1.4.0
 
 On August 20, I released [Sugar Activity Studio v1.4.0](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.4.0).
+
+[![Sugar Activity Studio project banner showing the create, preview, refine, and export workflow](https://raw.githubusercontent.com/sugarlabs/Sugar-activity-on-Demand/18d566e/docs/banner.png)](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.4.0)
+
+*The finished Sugar Activity Studio workflow. Click the banner to open the v1.4.0 release.*
 
 The studio can now take a plain language idea or an image, ask useful follow-up questions, generate a Sugar activity, validate and run it, repair problems, show it in a live preview, keep its revision history, and export or install it. More importantly, the learner can keep changing the result instead of being stuck with the first version.
 
@@ -96,7 +106,7 @@ That is the complete loop I described in my proposal, and it feels good to see i
 
 ## Looking Back at the Project
 
-Sugar Activity Studio started as work inside my Sugar shell fork. It is now its own project under Sugar Labs. It runs on a regular Linux desktop, can be added to the Sugar activity ring, can build a Sugar `.xo` bundle, and has a downloadable AppImage.
+[Sugar Activity Studio](https://github.com/sugarlabs/Sugar-activity-on-Demand) started as work inside my Sugar shell fork. It is now its own project under Sugar Labs. It runs on a regular Linux desktop, can be added to the Sugar activity ring, can build a Sugar `.xo` bundle, and has a downloadable AppImage.
 
 Over twelve weeks, I worked on:
 
