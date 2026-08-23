@@ -16,7 +16,8 @@ image: "assets/Images/GSOC.webp"
 
 **Project:** [Sugar Activity on Demand](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#sugar-activity-on-demand)<br />
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya](https://github.com/chimosky)<br />
-**Final Reporting Period:** August 11, 2026 to August 20, 2026
+**Final Reporting Period:** August 11, 2026 to August 20, 2026<br />
+**Previous Update:** [Week 11: Community contributions and activity naming](/news/all/2026-08-12-gsoc-26-ashutoshx7-week11)
 
 ---
 
@@ -33,7 +34,7 @@ image: "assets/Images/GSOC.webp"
 
 ## What I Worked On
 
-My final week was mostly about the small gaps that only become obvious when the entire project is running together.
+After the community contribution work in [Week 11](/news/all/2026-08-12-gsoc-26-ashutoshx7-week11), I used my final week to focus on the small gaps that only become obvious when the entire project is running together.
 
 By this point, the studio could generate an activity, validate it, open it in a preview, save revisions, and package it. That sounds complete, but I kept finding cases where each individual part worked and the final activity still missed the point. A game might open correctly but forget the timer the learner asked for. A repair might solve a crash but undo the latest refinement. Sometimes an activity failed only after a delayed callback, long after the first screen appeared.
 
@@ -49,7 +50,7 @@ I added request checks to validation as well. The question is no longer only, "I
 
 ### Testing More Than the First Screen
 
-The runtime checker from Week 7 was good at catching activities that crashed while opening. It wasn't as good at catching a game that failed three seconds later.
+The runtime checker from [Week 7](/news/all/2026-07-15-gsoc-26-ashutoshx7-week07) was good at catching activities that crashed while opening. It wasn't as good at catching a game that failed three seconds later.
 
 I extended the runtime harness so it keeps GTK events moving and exercises delayed states. This catches broken timers and callbacks that a simple startup check would miss. The critic also looks more closely at whether interactions and game states are reachable.
 
