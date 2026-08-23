@@ -16,7 +16,8 @@ image: "assets/Images/GSOC.webp"
 
 **Project:** [Sugar Activity on Demand](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#sugar-activity-on-demand)<br />
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya](https://github.com/chimosky)<br />
-**Reporting Period:** July 28, 2026 to August 3, 2026
+**Reporting Period:** July 28, 2026 to August 3, 2026<br />
+**Previous Update:** [Week 9: Testing the first release and building the annotation flow](/news/all/2026-07-29-gsoc-26-ashutoshx7-week09)
 
 ---
 
@@ -32,7 +33,7 @@ image: "assets/Images/GSOC.webp"
 
 ## What Happened This Week
 
-Week 9 was mostly about watching people use the first release. One thing I kept noticing was how often people pointed at something instead of trying to describe it perfectly. They would say, "something like this," or "change this part here." That made me think about the creation screen too.
+[Week 9](/news/all/2026-07-29-gsoc-26-ashutoshx7-week09) was mostly about watching people use the first release. One thing I kept noticing was how often people pointed at something instead of trying to describe it perfectly. They would say, "something like this," or "change this part here." That made me think about the creation screen too.
 
 Not every activity idea begins as a neat paragraph. Sometimes it begins as a sketch in a notebook, a worksheet from class, or a screenshot of an interface somebody wants to remix. This week I added a way to use those images as references.
 
