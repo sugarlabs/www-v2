@@ -44,9 +44,13 @@ Sugar Activity Studio had been borrowing Sugar's generic computer icon. It worke
 
 Rakshit's [first pull request](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/13) added a proper studio icon. It uses the XO figure with a small spark beside it, which fits the idea of creating something new with Sugar.
 
+[![The Sugar Activity Studio icon, an XO figure with a spark](https://raw.githubusercontent.com/sugarlabs/Sugar-activity-on-Demand/4ba8b31/data/sugar-aod-studio.svg)](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/13)
+
+*The new Sugar Activity Studio mark. Click the icon to open the branding pull request.*
+
 The same mark now appears in the launcher, window, toolbar, home ring, and empty state. There are two versions of the SVG because Sugar activity icons and regular Linux desktop icons handle colors differently. The Sugar version uses stroke and fill entities so the shell can recolor it. The desktop version contains its colors directly.
 
-We also ran into a very specific SVG bug. `gdk-pixbuf` only reads the beginning of the file when it tries to identify the image format. If the SVG tag appears too late, the launcher treats the file as invalid and shows nothing. Moving that tag near the start fixed the blank icon.
+We also ran into a very specific SVG bug. `gdk-pixbuf` only reads the beginning of the file when it tries to identify the image format. If the SVG tag appears too late, the launcher treats the file as invalid and shows nothing. The [final icon commit](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/4ba8b31) keeps the SVG element near the start of the file and fixes the blank launcher icon.
 
 This is the sort of bug that sounds tiny after it is solved and takes a surprising amount of time while you are staring at it.
 
@@ -56,9 +60,13 @@ During [Week 9 testing](/news/all/2026-07-29-gsoc-26-ashutoshx7-week09), Walter 
 
 That comment stayed with me because he was completely right. We had spent so much time making the generated code reliable that I had missed a basic question: what does the learner want to call the thing they made?
 
-Rakshit's [second pull request](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/14) added a naming step before install and export. The learner can keep the suggested name or replace it with their own. After that, the studio asks about the license separately.
+Rakshit's [second pull request](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/14) added a [naming step before install and export](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/5a7fc92). The learner can keep the suggested name or replace it with their own. After that, the studio asks about the license separately.
 
-The pull request changed quite a bit during review. At first, naming and licensing were mixed together. We separated them because they are different choices. We also added a clearer view of the name change, updated the dialogs to match Sugar's light theme, and added tests for the complete flow.
+![The Sugar Activity Studio license selector showing the available software licenses](assets/Images/gsoc26-ashutoshx7/aod-license-bsd3.png)
+
+*After confirming the activity name, the learner chooses the license in a separate step. Keeping these decisions apart made the flow easier to understand.*
+
+The pull request changed quite a bit during review. At first, naming and licensing were mixed together. We [separated the name from the license dialog](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/9068aca) because they are different choices. We also added a [clearer view of the name change](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/090bcd8), updated the dialogs to [match Sugar's light theme](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/1a82de8), and added tests for the complete flow.
 
 By the time it was merged, the feature felt simple. That simplicity came from several rounds of small corrections.
 
