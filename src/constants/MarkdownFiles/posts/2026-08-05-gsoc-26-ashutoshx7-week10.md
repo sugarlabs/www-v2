@@ -1,6 +1,6 @@
 ---
 title: "GSoC '26 Week 10 Update by Ashutosh Singh"
-excerpt: "Activity creation grows beyond a single text prompt: multiple learning areas now travel through the whole pipeline, previews and version review become clearer, and visual references arrive in the v1.3.0 release."
+excerpt: "This week I made it easier to describe an activity with more than a text prompt. The studio now understands multiple learning areas, has a clearer preview, and can use an image as a visual reference."
 category: "DEVELOPER NEWS"
 date: "2026-08-05"
 slug: "2026-08-05-gsoc-26-ashutoshx7-week10"
@@ -20,94 +20,93 @@ image: "assets/Images/GSOC.webp"
 
 ---
 
-## Goals for This Week
+## What I Planned to Do
 
-- Carry the reflection sidebar from a prototype into the main project
-- Make learning areas real generation context rather than a decorative UI choice
-- Improve preview and version review so learners can understand what changed
-- Let a learner begin with an image as well as words
-- Cut releases around stable, testable milestones
-
----
-
-## This Week's Achievements
-
-Week 9 ended with a lesson about pointing: when someone wants to change an activity, they naturally point at the part they mean. This week I followed that idea in the other direction. Sometimes the clearest way to explain what you want to create is not a longer paragraph. It is a sketch, a worksheet, a screenshot, or a photo of something you want to build from.
-
-That led to the biggest addition of the week: a complete visual-reference workflow. Alongside it, I tightened the existing preview and revision experience, carried multiple learning areas through every stage of generation, and released those improvements as [v1.2.0](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.2.0) and [v1.3.0](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.3.0).
-
-### 1. Learning Areas Became Part of the Specification
-
-The creation screen already let a learner describe an idea, but a single category was too restrictive. A project can be both science and drawing, or language and games. I changed the activity specification to support multiple learning areas and then followed that data all the way through the system.
-
-The selected areas are now:
-
-- Stored in saved project plans and restored when a project is reopened
-- Included in clarification questions, so the questions fit the learning goal
-- Passed into prompt enhancement without replacing the learner's original intent
-- Combined in the generation prompt and retained in the final plan
-
-This was a good example of a UI feature that is only real when the backend agrees with it. Multi-select chips on the screen would have meant nothing if the planner silently reduced them to one value later.
-
-### 2. Clearer Preview and Version Review
-
-The live preview and version history from Week 8 worked, but reviewing a generated activity still asked too much of the learner. I polished the preview states, made generation failures easier to distinguish from preview failures, and improved the review view so moving between revisions gives a clearer picture of what the studio produced.
-
-I also simplified the creation controls and their defaults. The aim was to keep the common path short while leaving the advanced controls available. A learner should be able to choose an area, describe an idea, and start; they should not have to understand provider routing or validation modes before making their first activity.
-
-### 3. Creating From a Visual Reference
-
-The new reference workflow lets a learner attach an image to the idea they type. The studio prepares a safe preview, sends the image only through a provider that supports visual input, and turns the analysis into context for clarification and generation.
-
-That opens several useful starting points:
-
-- A hand-drawn layout for a game
-- A classroom worksheet that could become interactive
-- A screenshot whose structure a learner wants to remix
-- A photograph that inspires a science, language, or storytelling activity
-
-Provider support was the difficult part. Not every model or API accepts images in the same format, and some do not accept them at all. I added explicit capability handling and a fallback analysis path rather than letting an image fail somewhere deep inside generation. The text prompt remains the source of intent; the image adds evidence instead of taking control away from the learner.
-
-### 4. Two Releases in One Week
-
-On July 30, I tagged **v1.2.0** around the improved activity preview and version-review experience. On August 3, the visual-reference workflow became **v1.3.0**.
-
-Keeping these as separate releases made the progression easy to review. v1.2.0 improved how learners inspect what they have made. v1.3.0 expanded what they can use to describe the thing they want to make.
+- Bring the reflection sidebar work into the main project
+- Make learning areas useful to the generator, not just visible on the screen
+- Clean up the preview and version review experience
+- Let people use an image when words are not enough
+- Release the improvements in small, stable versions
 
 ---
 
-## Challenges & How I Overcame Them
+## What Happened This Week
 
-**Keeping learning context consistent.** The selected learning areas cross project storage, clarification, enhancement, planning, and generation. I added coverage at each boundary so reopening a project or enhancing a prompt cannot quietly lose that context.
+Week 9 was mostly about watching people use the first release. One thing I kept noticing was how often people pointed at something instead of trying to describe it perfectly. They would say, "something like this," or "change this part here." That made me think about the creation screen too.
 
-**Normalizing image support across providers.** Multimodal APIs disagree about message shapes, MIME types, and supported models. I kept provider-specific conversion in the provider layer and exposed a simple capability to the rest of the studio. Unsupported paths now fall back cleanly instead of producing a mysterious generation error.
+Not every activity idea begins as a neat paragraph. Sometimes it begins as a sketch in a notebook, a worksheet from class, or a screenshot of an interface somebody wants to remix. This week I added a way to use those images as references.
 
-**Using images without overriding the learner.** A model can over-interpret a screenshot and invent a different activity. The reference analysis is treated as supporting context, while the learner's words and selected learning areas remain the main instruction.
+I also fixed several less visible issues around learning areas, saved plans, previews, and revisions. Those changes became two releases: [v1.2.0](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.2.0) and [v1.3.0](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.3.0).
+
+### Using More Than One Learning Area
+
+The creation screen originally treated an activity as if it belonged to one category. Real projects don't fit that neatly. A learner might want to draw a solar system, write a story-based game, or practice language through music.
+
+I updated the activity specification so it can hold multiple learning areas. The obvious part was letting the learner select more than one. The time-consuming part was making sure those choices survived the rest of the pipeline.
+
+The selected areas are now saved with the project, restored when it is opened again, used while asking clarification questions, included during prompt enhancement, and passed into the final generation prompt.
+
+I found this work surprisingly satisfying because it closed a quiet gap between the interface and the generator. Before this change, a selection could look important on screen and then lose its meaning later. Now the generator really uses it.
+
+### Cleaning Up Preview and Version Review
+
+The preview and revision history had grown quickly over the previous two weeks. They worked, but some states were confusing. It was not always clear whether generation had failed, the preview had failed, or an older revision was being shown.
+
+I cleaned up those transitions and made version review easier to follow. I also simplified some of the creation controls. The common path should be short: choose the learning areas, describe the idea, and start making. Provider and validation settings are still available, but they don't need to dominate the first screen.
+
+These improvements became the **v1.2.0** release on July 30.
+
+### Adding Visual References
+
+The biggest piece of work was the visual reference flow. A learner can now attach an image with their prompt. The studio shows a safe preview, checks whether the selected provider supports image input, and uses the image analysis as extra context while planning the activity.
+
+Some examples I had in mind were:
+
+- Turning a hand-drawn game layout into a first working version
+- Using a classroom worksheet as the starting point for an interactive activity
+- Recreating the structure of a screenshot with different content
+- Building a story or science activity from a photograph
+
+Making the button was easy. Making the feature work across providers was not. Every API handles images a little differently, and some text models cannot accept them at all. I kept those differences inside the provider layer and added a fallback path so an unsupported image does not cause a confusing failure halfway through generation.
+
+I was also careful not to let the image take over the prompt. The learner's words still describe what should be made. The image is supporting material, not permission for the model to invent a different idea.
+
+The completed visual reference flow became **v1.3.0** on August 3.
 
 ---
 
-## Key Learnings
+## Problems I Ran Into
 
-Input is not synonymous with text. A learner may know exactly what they mean and still find it difficult to turn that idea into a specification. Letting them combine words, learning areas, and a visual reference lowers that translation cost.
+**Learning areas were easy to lose.** The data passes through project storage, clarification, enhancement, planning, and generation. I added tests around those handoffs because checking only the screen would not catch a missing value later in the process.
 
-I also learned again that state has to survive the entire pipeline. A choice is not meaningful because the interface collected it. It is meaningful because saving, reopening, clarifying, enhancing, generating, and refining all continue to respect it.
+**Image APIs are inconsistent.** Providers use different message formats and model capabilities. Keeping that logic in one provider layer made the rest of the studio much easier to reason about.
 
-This fits Sugar's constructionist approach well. Children rarely begin a project from a perfect written brief. They begin with an example, a drawing, a half-formed idea, or something they want to remix. The studio should accept those beginnings and help turn them into something runnable.
-
----
-
-## Next Week's Roadmap
-
-- Give Sugar Activity Studio a recognizable identity of its own
-- Finish the activity-naming fix identified during Walter's Week 9 test
-- Make install and export choices clearer and more deliberate
-- Review and integrate the first substantial outside contributions to the repository
+**The model sometimes paid too much attention to the picture.** I changed the instructions so the typed request stays primary. A reference should help explain the idea, not rewrite it.
 
 ---
 
-## Acknowledgments
+## What I Learned
 
-Thanks to Walter Bender for continuing to push the project toward learner-controlled creation, and to Ibiam Chihurumnaya for the ongoing technical review. Thanks also to everyone testing the releases and showing me that a rough sketch can communicate an activity idea better than another paragraph.
+This week made me stop thinking of a prompt as only text. People explain ideas in mixed ways all the time. We talk, point, sketch, and show examples. A creation tool should be comfortable with that.
+
+I also learned that collecting a choice in the UI is only the first ten percent of a feature. If the learning areas disappear when a project is reopened or never reach the generator, the feature is only decoration.
+
+This fits nicely with how children already make things. They rarely begin with a complete specification. They begin with a rough drawing, something they saw, or half an idea they want to try. The studio should help them move forward from there.
+
+---
+
+## Next Week
+
+- Give Sugar Activity Studio an icon and identity of its own
+- Finish the activity naming fix from Walter's testing session
+- Make install and export decisions easier to understand
+- Review the first larger outside contributions to the repository
+
+---
+
+## Thanks
+
+Thanks to Walter Bender for continuing to push the project toward learner-controlled creation, and to Ibiam Chihurumnaya for the technical reviews. Thanks as well to everyone testing the releases and sharing the messy, unfinished ways that real activity ideas begin.
 
 ---
 
