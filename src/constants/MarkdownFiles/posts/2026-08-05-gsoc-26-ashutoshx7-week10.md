@@ -37,15 +37,19 @@ image: "assets/Images/GSOC.webp"
 
 Not every activity idea begins as a neat paragraph. Sometimes it begins as a sketch in a notebook, a worksheet from class, or a screenshot of an interface somebody wants to remix. This week I added a way to use those images as references.
 
-I also fixed several less visible issues around learning areas, saved plans, previews, and revisions. Those changes became two releases: [v1.2.0](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.2.0) and [v1.3.0](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.3.0).
+I also merged the [reflection sidebar work from PR #9](https://github.com/sugarlabs/Sugar-activity-on-Demand/pull/9) and fixed several less visible issues around learning areas, saved plans, previews, and revisions. Those changes became two releases: [v1.2.0](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.2.0) and [v1.3.0](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.3.0).
+
+![The Sugar Activity Studio prompt screen before the Week 10 input improvements](assets/Images/gsoc26-ashutoshx7/aod-prompt-screen.png)
+
+*The earlier Prompt Screen was centered on typed input. This week's work made the context behind that prompt richer and added a path for visual references.*
 
 ### Using More Than One Learning Area
 
 The creation screen originally treated an activity as if it belonged to one category. Real projects don't fit that neatly. A learner might want to draw a solar system, write a story-based game, or practice language through music.
 
-I updated the activity specification so it can hold multiple learning areas. The obvious part was letting the learner select more than one. The time-consuming part was making sure those choices survived the rest of the pipeline.
+I [updated the activity specification](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/f638c7f) so it can hold multiple learning areas. The obvious part was letting the learner select more than one. The time-consuming part was making sure those choices survived the rest of the pipeline.
 
-The selected areas are now saved with the project, restored when it is opened again, used while asking clarification questions, included during prompt enhancement, and passed into the final generation prompt.
+The selected areas are now [restored with saved projects](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/e968353), used while [asking clarification questions](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/156c2d8), included during [prompt enhancement](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/d7cc96f), and [combined in the final generation prompt](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/b0456eb).
 
 I found this work surprisingly satisfying because it closed a quiet gap between the interface and the generator. Before this change, a selection could look important on screen and then lose its meaning later. Now the generator really uses it.
 
@@ -53,13 +57,17 @@ I found this work surprisingly satisfying because it closed a quiet gap between 
 
 The preview and revision history had grown quickly over the previous two weeks. They worked, but some states were confusing. It was not always clear whether generation had failed, the preview had failed, or an older revision was being shown.
 
-I cleaned up those transitions and made version review easier to follow. I also simplified some of the creation controls. The common path should be short: choose the learning areas, describe the idea, and start making. Provider and validation settings are still available, but they don't need to dominate the first screen.
+I [cleaned up those transitions and made version review easier to follow](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/5225745). I also simplified some of the creation controls. The common path should be short: choose the learning areas, describe the idea, and start making. Provider and validation settings are still available, but they don't need to dominate the first screen.
+
+![The Versions view in Sugar Activity Studio showing revision cards and a source diff](assets/Images/gsoc26-ashutoshx7/aod-studio-versions.png)
+
+*The improved Versions view shows the saved revision history beside the exact source changes, so a learner can understand what changed before moving between versions.*
 
 These improvements became the **v1.2.0** release on July 30.
 
 ### Adding Visual References
 
-The biggest piece of work was the visual reference flow. A learner can now attach an image with their prompt. The studio shows a safe preview, checks whether the selected provider supports image input, and uses the image analysis as extra context while planning the activity.
+The biggest piece of work was the [visual reference flow](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/3febbc5). A learner can now attach an image with their prompt. The studio shows a safe preview, checks whether the selected provider supports image input, and uses the image analysis as extra context while planning the activity.
 
 Some examples I had in mind were:
 
@@ -72,7 +80,7 @@ Making the button was easy. Making the feature work across providers was not. Ev
 
 I was also careful not to let the image take over the prompt. The learner's words still describe what should be made. The image is supporting material, not permission for the model to invent a different idea.
 
-The completed visual reference flow became **v1.3.0** on August 3.
+The completed visual reference flow became [**v1.3.0**](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.3.0) on August 3.
 
 ---
 
