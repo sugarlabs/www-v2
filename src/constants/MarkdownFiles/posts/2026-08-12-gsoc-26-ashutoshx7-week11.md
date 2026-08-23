@@ -16,7 +16,8 @@ image: "assets/Images/GSOC.webp"
 
 **Project:** [Sugar Activity on Demand](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#sugar-activity-on-demand)<br />
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya](https://github.com/chimosky)<br />
-**Reporting Period:** August 4, 2026 to August 10, 2026
+**Reporting Period:** August 4, 2026 to August 10, 2026<br />
+**Previous Update:** [Week 10: Multiple learning areas and visual references](/news/all/2026-08-05-gsoc-26-ashutoshx7-week10)
 
 ---
 
@@ -31,7 +32,7 @@ image: "assets/Images/GSOC.webp"
 
 ## A Different Kind of Week
 
-This week was a little different. I didn't write most of the visible feature code. Instead, I spent my time reviewing, testing, discussing changes, and helping two pull requests reach the main branch.
+After finishing multiple learning areas and visual references in [Week 10](/news/all/2026-08-05-gsoc-26-ashutoshx7-week10), this week felt a little different. I didn't write most of the visible feature code. Instead, I spent my time reviewing, testing, discussing changes, and helping two pull requests reach the main branch.
 
 Both contributions came from [Rakshit Yadav](https://github.com/rakshityadav1868). One gave the studio its own visual identity. The other fixed the activity naming problem Walter noticed in Week 9.
 
@@ -51,7 +52,7 @@ This is the sort of bug that sounds tiny after it is solved and takes a surprisi
 
 ### Letting People Name Their Activity
 
-In Week 9, Walter made a Periodic Table Explorer with the studio. He liked the activity, but the generated name felt random and he couldn't find a place to change it.
+During [Week 9 testing](/news/all/2026-07-29-gsoc-26-ashutoshx7-week09), Walter made a Periodic Table Explorer with the studio. He liked the activity, but the generated name felt random and he couldn't find a place to change it.
 
 That comment stayed with me because he was completely right. We had spent so much time making the generated code reliable that I had missed a basic question: what does the learner want to call the thing they made?
 
