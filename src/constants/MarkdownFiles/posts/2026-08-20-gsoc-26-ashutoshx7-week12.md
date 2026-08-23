@@ -1,6 +1,6 @@
 ---
 title: "GSoC '26 Week 12 and Final Update by Ashutosh Singh"
-excerpt: "The final reliability pass makes generated activities preserve learner intent, survive deeper runtime checks, repair known Sugar mistakes, and support reflection-led refinement. Sugar Activity Studio reaches v1.4.0."
+excerpt: "I spent my final week making generated activities more dependable, improving the reflection flow, and wrapping up Sugar Activity Studio with the v1.4.0 release."
 category: "DEVELOPER NEWS"
 date: "2026-08-20"
 slug: "2026-08-20-gsoc-26-ashutoshx7-week12"
@@ -20,131 +20,124 @@ image: "assets/Images/GSOC.webp"
 
 ---
 
-## Goals for This Final Week
+## What I Wanted to Finish
 
-- Audit the complete path from a learner's idea to an accepted Sugar activity
-- Preserve requested mechanics through clarification, enhancement, generation, and repair
-- Exercise delayed behavior and state transitions, not just application startup
-- Repair common Sugar API mistakes deterministically before spending another model call
-- Make refinement a guided reflection process rather than a blank instruction box
-- Finish with a stable, tested release that the community can continue developing
+- Check the whole journey from a learner's prompt to a working activity
+- Make sure important details from the original idea don't disappear along the way
+- Test behavior that happens a few seconds after an activity starts
+- Fix common Sugar API mistakes without always needing another model call
+- Make the refinement sidebar easier and more inviting to use
+- Finish the program with a release that people can actually try
 
 ---
 
-## This Week's Achievements
+## What I Worked On
 
-The final week was not about adding one large headline feature. It was about making every promise from the previous eleven weeks hold at the same time.
+My final week was mostly about the small gaps that only become obvious when the entire project is running together.
 
-A generated activity could already parse, launch, save, preview, and accept refinements. But a successful launch is not the same as fulfilling the learner's idea. A game might open while ignoring the requested timer. A repair might fix a traceback while accidentally undoing the learner's last change. A delayed callback might fail several seconds after the runtime gate had already declared success.
+By this point, the studio could generate an activity, validate it, open it in a preview, save revisions, and package it. That sounds complete, but I kept finding cases where each individual part worked and the final activity still missed the point. A game might open correctly but forget the timer the learner asked for. A repair might solve a crash but undo the latest refinement. Sometimes an activity failed only after a delayed callback, long after the first screen appeared.
 
-I treated the full pipeline as one system and strengthened its weakest handoffs. The result is the most substantial reliability pass of the project and the final [Sugar Activity Studio v1.4.0 release](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.4.0).
+I spent this week chasing those cases. It was less glamorous than adding a brand new screen, but it made the studio much more trustworthy.
 
-### 1. Preserving the Learner's Intent End to End
+### Keeping the Original Idea Intact
 
-Intent can be lost a little at a time. Clarification can focus on the wrong detail, enhancement can rewrite the request too aggressively, retrieval can surface an irrelevant example, and generation can produce a polished activity that leaves out the mechanic the learner actually asked for.
+A learner's request passes through several stages before it becomes code. The studio may clarify it, enhance it, retrieve examples, create a plan, and then generate the activity. Every stage is helpful, but every stage is also another place where the original idea can get watered down.
 
-I tightened every one of those stages:
+I went through that path carefully. Clarification questions now pay more attention to the type of activity being made. Prompt enhancement keeps the learner's original request visible instead of replacing it with a nicer sounding alternative. Retrieval looks for Sugar examples with similar interactions, not just similar words. The generation prompt also gives more weight to mechanics the learner explicitly requested.
 
-- Activity specifications now carry richer metadata for the requested behavior
-- Clarification questions are aware of the activity's intent and avoid asking generic questions that do not move the design forward
-- Prompt enhancement preserves the original request instead of replacing it with a plausible alternative
-- RAG retrieves interaction-specific Sugar patterns, not merely activities with similar words
-- Generation prompts explicitly prioritize learner-requested mechanics
-- Validation checks request fidelity, including delayed APIs and interactive behavior
+I added request checks to validation as well. The question is no longer only, "Is this valid Python and Sugar code?" The pipeline also asks, "Did we build the thing the learner described?"
 
-The important shift is from asking "is this valid Sugar code?" to asking "is this valid Sugar code that does what the learner requested?"
+### Testing More Than the First Screen
 
-### 2. A Deeper Acceptance and Repair Pipeline
+The runtime checker from Week 7 was good at catching activities that crashed while opening. It wasn't as good at catching a game that failed three seconds later.
 
-Week 7 introduced the runtime gate. This week I made that gate much harder to fool.
+I extended the runtime harness so it keeps GTK events moving and exercises delayed states. This catches broken timers and callbacks that a simple startup check would miss. The critic also looks more closely at whether interactions and game states are reachable.
 
-The runtime harness now exercises delayed game states by pumping events and advancing through timed behavior, so code that crashes only after a callback can no longer pass simply because its first frame appeared. The critic reviews generated behavior, not only syntax and structure. The validator checks for request fidelity and unsafe or unsupported delayed calls.
+For mistakes that appear often in generated Sugar code, I added a set of known repairs. These are small, deterministic fixes for specific API problems. There is no reason to spend another model call rediscovering a fix we already understand. The repaired code still has to pass every check, and a bad patch is rolled back.
 
-I also added a deterministic repair layer for common Sugar API mistakes. When the system recognizes a known error, it can apply a precise repair immediately instead of asking the model to rediscover the same fix. Every repair remains transactional: it applies to the existing source, runs through the acceptance gates, and rolls back if it makes the activity worse.
+Refinement needed the same care. I fixed a case where stale preview timers could continue after a revision, kept diagnostics for each attempt, and made sure the repair loop starts from the learner's refined version. A repair should never "help" by quietly removing the change the learner just asked for.
 
-Refinement now follows the same discipline. Revision diagnostics are retained, stale preview timers are stopped, and the repair loop preserves the learner's requested change instead of silently restoring an older version. The pipeline generates the full file once and improves that candidate with focused patches, which makes both the code and the history easier to understand.
+### Making the Activity Tools Friendlier
 
-### 3. Better Generated Activities, Not Just Safer Ones
+I also redesigned the activity tools sidebar. The old version gave you an empty input and expected you to know what to ask. That works once you are comfortable with the studio, but it is not a great first experience.
 
-Reliability also includes the quality of the activity itself. I improved the composition used by the generator and local templates, added Sugar-native learning-area icons, and strengthened real-time activity generation. The generated interface now has clearer structure, while games and interactive tools are more likely to have reachable states, visible feedback, and mechanics that match the request.
+The new flow uses short reflection prompts. It asks what you notice, what you would like to change, and what could make the activity clearer or more fun. These prompts act as conversation starters. They are optional, and the learner still decides what should change.
 
-The provider layer received a similar hardening pass. Image-capable routing is explicit, reference-image analysis has a safer fallback, and failures return useful context to the studio instead of collapsing into a generic error.
-
-### 4. Reflection-Led Activity Tools
-
-The final UX change returns to the constructionist heart of the project. I redesigned the activity tools around reflection-led changes. Instead of facing an empty box and being expected to know how to improve the activity, a learner gets a guided quest through questions such as what they notice, what they want to change, and what would make the activity more useful or fun.
-
-The sidebar keeps the connection between the reflection and the code change visible. Guided refinement suggestions make it easier to take the next step without turning the model into an invisible author. The learner still decides what matters; the studio helps turn that decision into a small, reviewable revision.
+This part was especially important to me because Activity on Demand should not feel like a machine that produces a finished answer. It should help a learner look at what they made, think about it, and improve it.
 
 ![The studio review keeps the generated plan and code visible instead of hiding how the activity was made](assets/Images/gsoc26-ashutoshx7/aod-studio-review.png)
 
-### 5. Community Polish and v1.4.0
+### Community Improvements
 
-The community contribution cycle continued during the final stretch. Rakshit improved error cards so preview and generation failures are readable and actionable, then added API-key validation at save time with user-friendly messages. I reviewed and merged both contributions. Akshay Nazare also followed with dead-code cleanup and regression coverage immediately after the release work, another good sign that maintenance is already becoming shared.
+Rakshit Yadav continued contributing during the final week. He improved the error cards so generation and preview failures are easier to understand, and added API key validation with useful messages when a key does not work. I reviewed and merged both changes.
 
-On August 20, I tagged **v1.4.0** with guided refinement suggestions. The released studio can now take a plain-language idea or visual reference, clarify and enhance it, ground it in real Sugar patterns, generate and validate an activity, run it, repair it, preview it, preserve its revision history, guide reflection, and export or install the result.
+Akshay Nazare also cleaned up unused studio code and added regression coverage. Seeing other people find their way around the repository and improve it has been one of the nicest parts of finishing this project.
 
-That is the complete loop I proposed at the beginning of GSoC.
+### Releasing v1.4.0
 
----
+On August 20, I released [Sugar Activity Studio v1.4.0](https://github.com/sugarlabs/Sugar-activity-on-Demand/releases/tag/v1.4.0).
 
-## Challenges & How I Overcame Them
+The studio can now take a plain language idea or an image, ask useful follow-up questions, generate a Sugar activity, validate and run it, repair problems, show it in a live preview, keep its revision history, and export or install it. More importantly, the learner can keep changing the result instead of being stuck with the first version.
 
-**Distinguishing startup success from behavioral success.** A window that opens can still contain broken delayed logic or an unreachable game state. Extending the harness to exercise event-driven behavior, then feeding those results into validation and repair, made acceptance reflect real use more closely.
-
-**Fixing code without erasing a refinement.** A repair system naturally wants to return to the last known-good source. During refinement, that can throw away the exact change the learner requested. I made the refined revision the repair transaction's source of truth and retained diagnostics for every attempt, so rollback means "before the bad repair," not "before the learner's change."
-
-**Balancing guidance with agency.** Reflection prompts can become another form the learner has to satisfy. I kept the suggestions short, optional, and tied to visible parts of the activity. They are starting points for thought, not a required questionnaire.
-
-**Making a large final pass reviewable.** The reliability work crossed providers, prompting, retrieval, generation, validation, runtime checks, repair, service state, and UI. I split the work into focused commits and backed each boundary with tests so a future contributor can understand one guarantee at a time.
+That is the complete loop I described in my proposal, and it feels good to see it working as one project.
 
 ---
 
-## Final Project Status
+## Things That Were Hard
 
-Sugar Activity Studio is now a standalone Sugar Labs project rather than a patch inside the Sugar shell. It runs on a regular Linux desktop, can also be installed into the Sugar activity ring, and can be shared as source, packaged as a Sugar `.xo` bundle, or downloaded as a portable AppImage.
+**A window opening does not mean an activity works.** Some bugs only appear when a timer fires or the activity reaches another state. Running the event loop for longer and checking delayed behavior gave the runtime test a much more honest definition of success.
 
-Across the program, the project grew through these stages:
+**Repairs can accidentally erase good work.** The repair loop originally had cases where it could fall back too far and lose a refinement. I changed the transaction so the newest learner-approved revision is always the starting point.
 
-1. A learner-centered prompt screen and structured activity specification
-2. A Sugar-aware generation pipeline with provider abstraction, RAG, and validation
-3. Runtime checks, model-assisted critique, and transactional self-repair
-4. Live preview, click-to-refine, revision history, and generated Sugar icons
-5. Standalone packaging and public releases under the Sugar Labs organization
-6. Real-user feedback loops, visual references, multiple learning areas, and deliberate naming
-7. Reflection-led modification and a final end-to-end reliability pass
-
-The repository also moved beyond being a solo GSoC codebase. Contributors opened pull requests, iterated through review, added tests, and had their work merged. That shared ownership is one of the outcomes I value most because it gives the software a life beyond this final report.
+**Guidance can become annoying very quickly.** I wanted the reflection prompts to help without turning them into another form to complete. Keeping them short and optional made the sidebar feel more like an invitation than an instruction.
 
 ---
 
-## Key Learnings
+## Looking Back at the Project
 
-The biggest technical lesson is that generated code needs an acceptance system, not a confidence score. The studio does not trust code because a model says it is finished. It checks the structure, safety, requested behavior, runtime, saved state, delayed events, and the result of every repair.
+Sugar Activity Studio started as work inside my Sugar shell fork. It is now its own project under Sugar Labs. It runs on a regular Linux desktop, can be added to the Sugar activity ring, can build a Sugar `.xo` bundle, and has a downloadable AppImage.
 
-The biggest product lesson is that learner agency has to survive every convenience feature. Enhancement, image analysis, templates, RAG, repairs, and suggestions are useful only when they strengthen the learner's idea rather than quietly replacing it.
+Over twelve weeks, I worked on:
 
-And the biggest open-source lesson is that completion does not mean I stop being needed because every line is perfect. It means the project is documented, testable, releasable, and understandable enough for someone else to improve. The Week 11 and Week 12 contributions made that lesson concrete.
+1. A learner-friendly prompt screen and structured activity plans
+2. Sugar-aware generation with multiple model providers and local RAG
+3. Static validation, runtime checks, critique, and safe repair
+4. Live previews, focused refinement, and complete revision history
+5. Standalone packaging and public releases
+6. User testing, visual references, and multiple learning areas
+7. Reflection-led changes and a final reliability pass
 
-Sugar's "low floor, no ceiling" principle guided the whole project. The floor is now a short prompt and one click. The ceiling is the ability to inspect the plan, read the code, revisit every revision, refine the activity, package it, and keep building. That is the kind of AI-assisted creation tool I wanted to make: one that helps a learner become an author, not just a consumer of generated output.
-
----
-
-## What's Next
-
-- Continue testing with learners and teachers across different Sugar environments
-- Expand the local corpus of vetted Sugar interaction patterns
-- Improve accessibility and keyboard navigation throughout the studio
-- Track provider changes while keeping the offline template path dependable
-- Welcome community issues and pull requests as the project continues beyond GSoC
+The project also stopped being something only I worked on. Contributors opened pull requests, responded to reviews, wrote tests, and had their changes merged. That gives me confidence that the repository can keep growing after GSoC.
 
 ---
 
-## Acknowledgments
+## What I Learned
 
-Thank you to Walter Bender for keeping the project centered on learners, reflection, and making rather than on generation for its own sake. Thank you to Ibiam Chihurumnaya for technical guidance and steady review throughout the program.
+My biggest technical lesson is that generated code needs to prove itself. A confident answer from a model means very little if the activity crashes, ignores the prompt, or cannot save its state. Running and checking the code is what makes the system useful.
 
-Thank you to Rakshit Yadav and Akshay Nazare for contributing to the project during its final weeks, and to everyone in the Sugar Labs community who tested releases, reported confusing behavior, reviewed ideas, or shared an activity. The project is better because it became shared work.
+My biggest product lesson is to protect the learner's idea. Enhancement, RAG, image analysis, and suggestions should help express that idea. They should not quietly replace it.
+
+I also learned how much better open source becomes when you let other people into the work. Reviewing a contribution sometimes took longer than writing a quick fix myself, but it left the project with another person who understood that part of the code.
+
+Sugar's "low floor, no ceiling" idea stayed in my head throughout the project. The floor is now a short prompt and a few clicks. The ceiling is much higher. A learner can inspect the plan, read the code, revisit an older version, refine the activity, and package it for somebody else.
+
+---
+
+## What Comes Next
+
+- Keep testing the studio with learners and teachers
+- Add more trusted Sugar examples to the local retrieval collection
+- Improve keyboard navigation and accessibility
+- Keep the offline template path dependable as model providers change
+- Help new contributors work on issues and pull requests
+
+---
+
+## Thank You
+
+Thank you to Walter Bender for always bringing the conversation back to learners, reflection, and making. Thank you to Ibiam Chihurumnaya for the technical guidance and steady reviews throughout the program.
+
+Thank you to Rakshit Yadav, Akshay Nazare, everyone who tested a release, and everyone in the Sugar Labs community who shared feedback. This project is much better because it became shared work.
 
 ---
 
