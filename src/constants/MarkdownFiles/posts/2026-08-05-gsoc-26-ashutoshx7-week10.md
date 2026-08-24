@@ -1,13 +1,13 @@
 ---
 title: "GSoC '26 Week 10 Update by Ashutosh Singh"
-excerpt: "This week I made it easier to describe an activity with more than a text prompt. The studio now understands multiple learning areas, has a clearer preview, and can use an image as a visual reference."
+excerpt: "This week I added multiple learning areas, redesigned their icons after Walter's feedback so they feel native to Sugar, improved version review, and added visual references."
 category: "DEVELOPER NEWS"
 date: "2026-08-05"
 slug: "2026-08-05-gsoc-26-ashutoshx7-week10"
 author: "@/constants/MarkdownFiles/authors/ashutosh-singh.md"
 description: "GSoC'26 Contributor at SugarLabs working on Sugar Activity on Demand"
-tags: "gsoc26,sugarlabs,week10,ashutoshx7,visual-reference,multimodal,learning-areas,preview,release,ai,llm"
-image: "assets/Images/gsoc26-ashutoshx7/aod-studio-versions.png"
+tags: "gsoc26,sugarlabs,week10,ashutoshx7,visual-reference,learning-areas,sugar-artwork,icons,mentor-feedback,preview,release,ai,llm"
+image: "assets/Images/gsoc26-ashutoshx7/aod-sugar-native-learning-areas.png"
 ---
 
 <!-- markdownlint-disable -->
@@ -25,6 +25,7 @@ image: "assets/Images/gsoc26-ashutoshx7/aod-studio-versions.png"
 
 - Bring the reflection sidebar work into the main project
 - Make learning areas useful to the generator, not just visible on the screen
+- Redesign the learning-area icons after Walter's feedback
 - Clean up the preview and version review experience
 - Let people use an image when words are not enough
 - Release the improvements in small, stable versions
@@ -52,6 +53,20 @@ I [updated the activity specification](https://github.com/sugarlabs/Sugar-activi
 The selected areas are now [restored with saved projects](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/e968353), used while [asking clarification questions](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/156c2d8), included during [prompt enhancement](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/d7cc96f), and [combined in the final generation prompt](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/b0456eb).
 
 I found this work surprisingly satisfying because it closed a quiet gap between the interface and the generator. Before this change, a selection could look important on screen and then lose its meaning later. Now the generator really uses it.
+
+### Making the Learning Areas Look Like Sugar
+
+When [Walter](https://github.com/walterbender) reviewed the learning-area screen, he pointed out that the categories worked but the icons still felt too generic. They needed to look as if they belonged inside Sugar, not as if they had come from an unrelated desktop application.
+
+I went back to the official [Sugar artwork](https://github.com/sugarlabs/sugar-artwork) for visual direction and changed all six learning-area icons. Logic & Math now uses structured controls, Science uses a flask, Language uses a speech card, Tools uses crossed tools, Games uses a controller, and Creation uses a palette.
+
+The [Sugar-native learning-area icon set](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/f079378) follows the same simple silhouettes, rounded strokes, and strong outline style used across Sugar. I also made color variants for the prompt screen so the categories remain easy to distinguish on a regular Linux desktop.
+
+![The redesigned Sugar-native learning-area cards for Logic and Math, Science, Language, Tools, Games, and Creation](assets/Images/gsoc26-ashutoshx7/aod-sugar-native-learning-areas.png)
+
+*The updated learning-area selector after Walter's feedback. Games is selected here, while the six category icons share a consistent Sugar-inspired shape and color treatment.*
+
+This was a good reminder that visual consistency is not just decoration. Familiar shapes and styling help a learner understand that these choices belong to the same Sugar environment as the activities they are about to create.
 
 ### Cleaning Up Preview and Version Review
 
