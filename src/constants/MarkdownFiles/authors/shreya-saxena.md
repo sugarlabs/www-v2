@@ -11,9 +11,10 @@ avatar: "https://avatars.githubusercontent.com/u/204754569?v=4"
 
 # About Shreya Saxena
 
-I’m a second-year B.Tech student in Smart Manufacturing at the Indian Institute of Information Technology (IIIT), Jabalpur, with a strong interest in open-source development, performance engineering, and educational technology. I enjoy building systems that stay responsive, reliable, and accessible even under real-world complexity.
+Shreya Saxena is an open-source developer and contributor to Sugar Labs, where she has worked on Music Blocks with a focus on performance, responsiveness, and the systems behind interactive learning experiences.
 
-I’ve contributed to open-source projects including [Music Blocks](https://github.com/sugarlabs/musicblocks) under Sugar Labs, where I’m currently focusing on runtime performance, UI responsiveness, and execution flow as part of Google Summer of Code 2026. I’m particularly interested in building tools that empower learners to explore and create without technical barriers.
+Her interests span performance engineering, developer tooling, and educational technology. She enjoys digging into complex systems, understanding what happens beneath the interface, and turning those insights into improvements that make software faster, more reliable, and easier for learners to use.
+
 
 ## Experience
 
