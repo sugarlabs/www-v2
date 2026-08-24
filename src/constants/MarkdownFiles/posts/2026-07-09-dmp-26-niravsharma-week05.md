@@ -1,18 +1,18 @@
 ---
-title: "DMP Week 3: Goal 2, Goal 3 Fully Mapped,"
+title: "DMP Week 5: Goal 2, Goal 3 Fully Mapped,"
 excerpt: "PR 4 opened with cents forwarding, pie menu fix, and CENTSSYMBOL constant; D♯ investigation complete; Goal 3 expanded to 24 fixes across 6 categories"
 category: "DEVELOPER NEWS"
 date: "2026-07-09"
 slug: "2026-07-09-dmp-26-niravsharma-week05"
 author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
-description: "Week 3 of my C4GT DMP journey — PR 4 opened fixing custom pitch block cents forwarding and discoverability, pie menu cents preservation, D♯ bug investigation complete, and Goal 3 expanded to 24 fixes across 6 categories."
+description: "Week 5 of my C4GT DMP journey — PR 4 opened fixing custom pitch block cents forwarding and discoverability, pie menu cents preservation, D♯ bug investigation complete, and Goal 5 expanded to 24 fixes across 6 categories."
 tags: "dmp26,sugarlabs,week03,niravsharma,musicblocks,temperament"
 image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
 
-# DMP Week 3: Goal 2 , Goal 3 Fully Mapped,
+# DMP Week 5: Goal 2 , Goal 3 Fully Mapped,
 
 **Coding period:** June 10 – September 10, 2026  
 **Project:** [Refactor Temperament — Issue #7171](https://github.com/sugarlabs/musicblocks/issues/7171)  
