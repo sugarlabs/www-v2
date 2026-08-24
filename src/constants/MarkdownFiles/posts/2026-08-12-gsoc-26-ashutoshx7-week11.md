@@ -1,13 +1,13 @@
 ---
 title: "GSoC '26 Week 11 Update by Ashutosh Singh"
-excerpt: "This week felt like a real open source project. I reviewed two community contributions that gave the studio its own identity and finally let people name an activity before installing or exporting it."
+excerpt: "I tested the visual-reference workflow by taking a symmetry-garden mockup to a working Sugar activity, then reviewed community contributions for branding and activity naming."
 category: "DEVELOPER NEWS"
 date: "2026-08-12"
 slug: "2026-08-12-gsoc-26-ashutoshx7-week11"
 author: "@/constants/MarkdownFiles/authors/ashutosh-singh.md"
 description: "GSoC'26 Contributor at SugarLabs working on Sugar Activity on Demand"
-tags: "gsoc26,sugarlabs,week11,ashutoshx7,community,open-source,branding,activity-name,install,export,review"
-image: "assets/Images/gsoc26-ashutoshx7/aod-license-bsd3.png"
+tags: "gsoc26,sugarlabs,week11,ashutoshx7,mockup,visual-reference,symmetry,community,branding,activity-name,review"
+image: "assets/Images/gsoc26-ashutoshx7/aod-symmetry-garden-result.png"
 ---
 
 <!-- markdownlint-disable -->
@@ -24,6 +24,7 @@ image: "assets/Images/gsoc26-ashutoshx7/aod-license-bsd3.png"
 ## Plans for the Week
 
 - Fix the activity naming problem Walter found during testing
+- Test the visual-reference workflow with a detailed activity mockup
 - Give Sugar Activity Studio an icon of its own
 - Review the first larger contributions from outside the project
 - Make sure the new work fits the existing flow and has good test coverage
@@ -37,6 +38,24 @@ After finishing multiple learning areas and visual references in [Week 10](/news
 Both contributions came from [Rakshit Yadav](https://github.com/rakshityadav1868). One gave the studio its own visual identity. The other fixed the activity naming problem Walter noticed in Week 9.
 
 It was honestly nice to step back and see someone else understand the project well enough to add to it. Until now, I had written nearly every part of the studio myself. This week it started to feel less like my GSoC code and more like a real Sugar Labs project.
+
+### From a Mockup to a Working Sugar Activity
+
+In [Week 10](/news/all/2026-08-05-gsoc-26-ashutoshx7-week10), I added the [visual-reference workflow](https://github.com/sugarlabs/Sugar-activity-on-Demand/commit/3febbc5). This week I gave it a more concrete test using the symmetry-garden mockup we had prepared.
+
+The mockup described a drawing activity with vertical, horizontal, and radial symmetry modes. It also included brush and eraser tools, undo and redo, a color palette, a grid canvas, daily challenges, and a **Check My Garden** action.
+
+![The original wireframe mockup for the symmetry-garden activity](assets/Images/gsoc26-ashutoshx7/aod-symmetry-garden-mockup.png)
+
+*The mockup we started with. It lays out the drawing tools, symmetry controls, challenge checklist, canvas, and feedback area before any activity code is generated.*
+
+The generated result carried the main idea into a real Sugar activity. It kept the symmetry choices, drawing tools, brush sizes, color palette, challenge instructions, requirement tracking, and the **Check Garden** button. The layout is not a pixel-for-pixel copy of the mockup, and that was not the goal. What mattered was whether the studio could understand the intended interactions and turn them into something runnable.
+
+![The generated Sugar symmetry activity running with a butterfly-wings challenge](assets/Images/gsoc26-ashutoshx7/aod-symmetry-garden-result.png)
+
+*The generated result running as a Sugar activity. I used the butterfly-wings challenge to check the brush, colors, grid, requirements, and vertical mirroring together.*
+
+This was one of the clearest demonstrations of the project so far. A visual idea went in, the studio interpreted the important behavior, and a usable Sugar activity came out. It also showed me where refinement still matters. The generated layout is more compact and technical than the mockup, so the next step is not to call the first result finished. It is to use the studio's revision tools to keep improving it.
 
 ### The Studio Finally Has Its Own Icon
 
