@@ -5,7 +5,7 @@ category: "DEVELOPER NEWS"
 date: "2026-07-09"
 slug: "2026-07-09-dmp-26-niravsharma-week05"
 author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
-description: "Week 5 of my C4GT DMP journey — PR 4 opened fixing custom pitch block cents forwarding and discoverability, pie menu cents preservation, D♯ bug investigation complete, and Goal 5 expanded to 24 fixes across 6 categories."
+description: "Week 5 of my C4GT DMP journey — PR 4 opened fixing custom pitch block cents forwarding and discoverability, pie menu cents preservation, D♯ bug investigation complete, and Goal 3 expanded to 24 fixes across 6 categories."
 tags: "dmp26,sugarlabs,week05,niravsharma,musicblocks,temperament"
 image: "assets/Images/c4gt_DMP.webp"
 ---
