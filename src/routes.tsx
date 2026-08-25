@@ -1,31 +1,44 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import PageLoader from '@/components/shared/PageLoader';
 import { redirectRoutes } from '@/redirects';
-import MainPage from '@/pages/MainPage';
-import AboutUs from '@/pages/About/AboutUs';
-import Leadership from '@/pages/About/Leadership';
-import ContactUs from '@/pages/About/ContactUs';
-import FAQs from '@/pages/About/FAQs';
-import TrySugar from '@/pages/TrySugar';
-import JoinDevelopment from '@/pages/JoinDevelopment';
-import Volunteer from '@/pages/Volunteer';
-import Donate from '@/pages/Donate';
-import Products from '@/pages/Products';
-import NewsPage from '@/pages/News/NewsPage';
-import NewsDetailPage from '@/pages/News/NewsDetailPage';
-import AuthorPage from '@/pages/News/AuthorPage';
-import TagPage from '@/pages/News/TagPage';
-import MorePage from '@/pages/More';
-import TurtleBlocksPage from '@/pages/TryNow/TurtleBlocks';
-import SugarizerPage from '@/pages/TryNow/Sugarizer';
-import BootableSoasPage from '@/pages/TryNow/BootableSoas';
-import TrisquelPage from '@/pages/TryNow/Trisquel';
-import RaspberryPiPage from '@/pages/TryNow/Raspberry';
-import MusicBlocksPage from '@/pages/TryNow/MusicBlocks';
-import FlatHubPage from '@/pages/TryNow/FlatHub';
-import Matrix from '@/pages/Matrix';
-import NotFoundPage from '@/pages/NotFoundPage';
-import Contributors from '@/pages/Contributors';
-import AuthorsPage from '@/pages/News/AuthorsPage';
+
+// Helper function to handle lazy loading with our custom fallback
+const lazyLoad = (importFunc: () => Promise<{ default: React.ComponentType<unknown> }>) => {
+  const LazyComponent = lazy(importFunc);
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <LazyComponent />
+    </Suspense>
+  );
+};
+
+const MainPage = () => lazyLoad(() => import('@/pages/MainPage'));
+const AboutUs = () => lazyLoad(() => import('@/pages/About/AboutUs'));
+const Leadership = () => lazyLoad(() => import('@/pages/About/Leadership'));
+const ContactUs = () => lazyLoad(() => import('@/pages/About/ContactUs'));
+const FAQs = () => lazyLoad(() => import('@/pages/About/FAQs'));
+const TrySugar = () => lazyLoad(() => import('@/pages/TrySugar'));
+const JoinDevelopment = () => lazyLoad(() => import('@/pages/JoinDevelopment'));
+const Volunteer = () => lazyLoad(() => import('@/pages/Volunteer'));
+const Donate = () => lazyLoad(() => import('@/pages/Donate'));
+const Products = () => lazyLoad(() => import('@/pages/Products'));
+const NewsPage = () => lazyLoad(() => import('@/pages/News/NewsPage'));
+const NewsDetailPage = () => lazyLoad(() => import('@/pages/News/NewsDetailPage'));
+const AuthorPage = () => lazyLoad(() => import('@/pages/News/AuthorPage'));
+const TagPage = () => lazyLoad(() => import('@/pages/News/TagPage'));
+const MorePage = () => lazyLoad(() => import('@/pages/More'));
+const TurtleBlocksPage = () => lazyLoad(() => import('@/pages/TryNow/TurtleBlocks'));
+const SugarizerPage = () => lazyLoad(() => import('@/pages/TryNow/Sugarizer'));
+const BootableSoasPage = () => lazyLoad(() => import('@/pages/TryNow/BootableSoas'));
+const TrisquelPage = () => lazyLoad(() => import('@/pages/TryNow/Trisquel'));
+const RaspberryPiPage = () => lazyLoad(() => import('@/pages/TryNow/Raspberry'));
+const MusicBlocksPage = () => lazyLoad(() => import('@/pages/TryNow/MusicBlocks'));
+const FlatHubPage = () => lazyLoad(() => import('@/pages/TryNow/FlatHub'));
+const Matrix = () => lazyLoad(() => import('@/pages/Matrix'));
+const NotFoundPage = () => lazyLoad(() => import('@/pages/NotFoundPage'));
+const Contributors = () => lazyLoad(() => import('@/pages/Contributors'));
+const AuthorsPage = () => lazyLoad(() => import('@/pages/News/AuthorsPage'));
 
 const router = createBrowserRouter([
   ...redirectRoutes,
