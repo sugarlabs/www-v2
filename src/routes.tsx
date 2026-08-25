@@ -4,8 +4,8 @@ import PageLoader from '@/components/shared/PageLoader';
 import { redirectRoutes } from '@/redirects';
 
 // Helper function to handle lazy loading with our custom fallback
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const lazyLoad = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   importFunc: () => Promise<{ default: React.ComponentType<any> }>,
 ) => {
   const LazyComponent = lazy(importFunc);
