@@ -4,7 +4,10 @@ import PageLoader from '@/components/shared/PageLoader';
 import { redirectRoutes } from '@/redirects';
 
 // Helper function to handle lazy loading with our custom fallback
-const lazyLoad = (importFunc: () => Promise<{ default: React.ComponentType<unknown> }>) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const lazyLoad = (
+  importFunc: () => Promise<{ default: React.ComponentType<any> }>,
+) => {
   const LazyComponent = lazy(importFunc);
   return (
     <Suspense fallback={<PageLoader />}>
@@ -24,16 +27,21 @@ const Volunteer = () => lazyLoad(() => import('@/pages/Volunteer'));
 const Donate = () => lazyLoad(() => import('@/pages/Donate'));
 const Products = () => lazyLoad(() => import('@/pages/Products'));
 const NewsPage = () => lazyLoad(() => import('@/pages/News/NewsPage'));
-const NewsDetailPage = () => lazyLoad(() => import('@/pages/News/NewsDetailPage'));
+const NewsDetailPage = () =>
+  lazyLoad(() => import('@/pages/News/NewsDetailPage'));
 const AuthorPage = () => lazyLoad(() => import('@/pages/News/AuthorPage'));
 const TagPage = () => lazyLoad(() => import('@/pages/News/TagPage'));
 const MorePage = () => lazyLoad(() => import('@/pages/More'));
-const TurtleBlocksPage = () => lazyLoad(() => import('@/pages/TryNow/TurtleBlocks'));
+const TurtleBlocksPage = () =>
+  lazyLoad(() => import('@/pages/TryNow/TurtleBlocks'));
 const SugarizerPage = () => lazyLoad(() => import('@/pages/TryNow/Sugarizer'));
-const BootableSoasPage = () => lazyLoad(() => import('@/pages/TryNow/BootableSoas'));
+const BootableSoasPage = () =>
+  lazyLoad(() => import('@/pages/TryNow/BootableSoas'));
 const TrisquelPage = () => lazyLoad(() => import('@/pages/TryNow/Trisquel'));
-const RaspberryPiPage = () => lazyLoad(() => import('@/pages/TryNow/Raspberry'));
-const MusicBlocksPage = () => lazyLoad(() => import('@/pages/TryNow/MusicBlocks'));
+const RaspberryPiPage = () =>
+  lazyLoad(() => import('@/pages/TryNow/Raspberry'));
+const MusicBlocksPage = () =>
+  lazyLoad(() => import('@/pages/TryNow/MusicBlocks'));
 const FlatHubPage = () => lazyLoad(() => import('@/pages/TryNow/FlatHub'));
 const Matrix = () => lazyLoad(() => import('@/pages/Matrix'));
 const NotFoundPage = () => lazyLoad(() => import('@/pages/NotFoundPage'));
