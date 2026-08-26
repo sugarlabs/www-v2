@@ -163,7 +163,7 @@ The dependency metadata rollout turned out to be the foundation everything else 
 
 ## Roadmap for Week 09
 
-The next goals are to build out mutation testing infrastructure with Stryker and use it to improve mutation coverage across the turtle actions modules, ToneActions, PitchActions, RhythmActions, and IntervalsActions, and to extract piemenuBlockContext out into its own module.
+The next goals are to build out mutation testing infrastructure with Stryker, improve its scalability, and then use it to raise mutation coverage across the turtle actions modules in turn: IntervalsActions, RhythmActions, PitchActions, ToneActions, and DrumActions.
 
 ---
 
