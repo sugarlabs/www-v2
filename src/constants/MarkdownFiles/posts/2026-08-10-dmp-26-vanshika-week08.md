@@ -22,9 +22,9 @@ image: "assets/Images/dmp_c4gt_logo.png"
 
 ## Overview
 
-Week 07 closed by pointing at the widget layer: unifying widget loading, deferring widget DOM creation, and attaching dependency metadata to widget definitions. Week 08 carried out that whole plan. Dependency metadata went in first, then the widget loading path was unified on top of it, then two smaller widget lifecycle issues that turned up during that work got fixed, and the week closed with a Phrase Maker cleanup pass and an Electron packaging dependency fix.
+Week 07 closed by pointing at the widget layer: unifying widget loading, deferring widget DOM creation, and attaching dependency metadata to widget definitions. Week 08 carried out that whole plan. Dependency metadata went in first, then the widget loading path was unified on top of it, then two smaller widget lifecycle issues that turned up during that work got fixed, and the week closed with a Phrase Maker cleanup pass, an Electron packaging dependency fix, and a Lighthouse CI fix that kept fork pull requests checkable out at all.
 
-This week I merged **9 pull requests**, changing roughly **2,220 additions and 450 deletions**. Every extraction and fix shipped as its own PR, independently reviewable, with a dedicated test suite, and every PR passed the full Jest suite, ESLint, and Prettier before merging.
+This week I merged **10 pull requests**, changing roughly **2,230 additions and 452 deletions**. Every extraction and fix shipped as its own PR, independently reviewable, with a dedicated test suite, and every PR passed the full Jest suite, ESLint, and Prettier before merging.
 
 ---
 
@@ -41,8 +41,9 @@ This week I merged **9 pull requests**, changing roughly **2,220 additions and 4
 | **[PR #7971](https://github.com/sugarlabs/musicblocks/pull/7971)** | Phrase Maker Cleanup | js/widgets/phrasemaker.js | Fixed an isInitial typo, removed a dead field, and deduplicated a repeated helper inside _save(). | **Merged** |
 | **[PR #7973](https://github.com/sugarlabs/musicblocks/pull/7973)** | Electron Rebuild Node Engine Fix | package.json, package-lock.json | Pinned the electron rebuild dependency to a version compatible with Node 20. | **Merged** |
 | **[PR #8012](https://github.com/sugarlabs/musicblocks/pull/8012)** | Dependency Override Docs | Docs/DEPENDENCY_OVERRIDES.md | Documented why the electron rebuild override exists and when to revisit it. | **Merged** |
+| **[PR #7862](https://github.com/sugarlabs/musicblocks/pull/7862)** | Lighthouse Fork PR Checkout Fix | .github/workflows | Switched the Lighthouse CI job from pull_request_target to pull_request so fork PRs can be checked out again. | **Merged** |
 
-*Total changes: **+2,220 additions** and **-450 deletions** across all nine pull requests.*
+*Total changes: **+2,229 additions** and **-452 deletions** across all ten pull requests.*
 
 ---
 
@@ -109,7 +110,7 @@ A maintenance pass over phrasemaker.js turned up a real initialization bug along
 * **Deduplication:** The repeated lastConnection calculation inside _save() was extracted into a shared helper, eliminating six identical code blocks that differed only by connection offset, with no change in behavior.
 * **Tests Added:** Regression tests confirming _save() produces identical connection structures before and after the refactor for every affected block type, and confirming the onboarding message now shows only once.
 
-### Dependency and Build Fixes
+### Dependency, Build, and CI Fixes
 
 #### 8. Electron Rebuild Node Engine Fix (PR #7973)
 
@@ -124,6 +125,15 @@ A follow-up to document the reasoning behind the override so it does not look li
 
 * **Changes:** Added Docs/DEPENDENCY_OVERRIDES.md explaining why @electron/rebuild is pinned to 3.7.2, linking back to PR #7973, and stating explicitly when the override should be revisited: once Music Blocks intentionally raises its minimum supported Node.js version to 22.12.0 or newer.
 
+#### 10. Lighthouse Fork PR Checkout Fix (PR #7862)
+
+GitHub started refusing actions/checkout of fork PR code inside a pull_request_target workflow, so both Lighthouse jobs began failing at the first step with a checkout refusal before any audit could even run.
+
+* **Root Cause:** GitHub announced a safer pull_request_target checkout default with actions/checkout@v7 on June 18, 2026, and backported it to older tags still in wide use, including the floating @v4 tag this workflow tracks, on July 20. Since the workflow follows that floating tag, it picked up the restriction automatically the same day the checks started failing.
+* **Why Not Just Allow the Unsafe Checkout:** The workflow runs npm ci against the PR's own branch and then loads the resulting app for Lighthouse to audit, meaning it executes the fork's code. Enabling the unsafe-checkout override would keep doing that inside a context holding the base repository's write-scoped token, which is exactly the pwn-request pattern GitHub's new guard exists to prevent.
+* **Changes:** Switched both Lighthouse jobs to run as pull_request instead, which gives the job an unprivileged, read-only context with no secrets, all the audit actually needs. The Comment on PR step, which had been inert all along since it required an event type the workflow never fired, was restricted to same-repo pull requests so the event change would not newly activate a step that cannot succeed with a fork's read-only token. Lighthouse scores stay available to every PR through the uploaded .lighthouseci/ artifact regardless.
+* **Review Note:** Ashutosh reproduced the failure independently from the run logs, confirmed the fix runs the same audit in a read-only context with no secrets referenced, and confirmed it does not change any job configuration, permissions, or audit steps beyond the event trigger.
+
 ---
 
 ## Architectural Impact
@@ -135,6 +145,7 @@ A follow-up to document the reasoning behind the override so it does not look li
 | **Widget Lifecycle Cleanup** | Two issues fixed: duplicate initialization in Status and Reflection blocks, and eager DOM creation in TemperamentWidget's constructor. |
 | **Phrase Maker Correctness** | Two bugs fixed: stale matrix rows after canvas pie menu edits, and the isInitial typo that repeated the onboarding flow. |
 | **Build Dependency Health** | Electron rebuild Node engine mismatch resolved and documented for future maintainers. |
+| **CI Reliability** | Lighthouse audits restored for fork PRs after GitHub's checkout policy change, without reintroducing the unsafe-checkout pattern the change was meant to prevent. |
 
 The dependency metadata rollout turned out to be the foundation everything else in the week built on. Once widget definitions became the single source of truth for their own dependencies, unifying the loading path and auditing the initialization lifecycle for duplicate or misplaced work became a much smaller, safer step.
 
@@ -146,6 +157,7 @@ The dependency metadata rollout turned out to be the foundation everything else 
 2. **An Audit Finds More Than It Sets Out to Find:** The widget lifecycle audit was aimed at loading duplication, but it also caught two unrelated issues, the duplicate init() calls and TemperamentWidget's eager DOM creation, that were worth fixing while already in that code.
 3. **Scope Boundaries Are Worth Writing Down:** PR #7928 explicitly lists the six widgets it does not touch and why. That made it easy for reviewers to confirm the PR was not silently skipping something, rather than having to check for themselves.
 4. **A Dependency Override Needs a Reason Attached:** Pinning a package version without documentation just becomes a mystery the next person has to re-investigate. Writing down why the override exists and when to revisit it, in the same week it was added, keeps that knowledge from getting lost.
+5. **Not Every CI Fix Is a Workaround:** The instinct when a security guard breaks your workflow is to disable it. Here, the guard existed to stop exactly the pattern the workflow was using, executing fork code with a privileged token, so the correct fix was to run the audit in a genuinely unprivileged context instead of suppressing the warning.
 
 ---
 
@@ -157,4 +169,4 @@ The next goals are to build out mutation testing infrastructure with Stryker and
 
 ## Acknowledgements
 
-A special thank you to my mentor **Walter Bender** for reviewing and merging all nine pull requests this week. I would also like to thank the rest of the Sugar Labs community for their continued support during reviews.
+A special thank you to my mentor **Walter Bender** for reviewing and merging all ten pull requests this week, and to **Ashutosh Singh** for reviewing the Lighthouse CI fix and independently confirming the checkout failure and its root cause. I would also like to thank the rest of the Sugar Labs community for their continued support during reviews.
