@@ -2,8 +2,8 @@
 title: "DMP '26 Week 08 Update by Vanshika Pahal"
 excerpt: "Week 08: Building out the widget dependency metadata architecture and loading unification, fixing two Phrase Maker bugs, and resolving an Electron rebuild dependency mismatch."
 category: "DEVELOPER NEWS"
-date: "2026-08-10"
-slug: "2026-08-10-dmp-26-vanshika-week08"
+date: "2026-07-29"
+slug: "2026-07-29-dmp-26-vanshika-week08"
 author: "@/constants/MarkdownFiles/authors/vanshika2720.md"
 tags: "dmp26,sugarlabs,musicblocks,refactoring,week08,widgets,dependencies"
 image: "assets/Images/dmp_c4gt_logo.png"
@@ -16,7 +16,7 @@ image: "assets/Images/dmp_c4gt_logo.png"
 **Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)
 **Organization:** [Sugar Labs](https://sugarlabs.org)
 **Week:** Widget Dependency Metadata, Loading Unification, and Two Phrase Maker Fixes
-**Reporting Period:** 2026-07-23 to 2026-08-10
+**Reporting Period:** 2026-07-23 to 2026-07-29
 
 ---
 
