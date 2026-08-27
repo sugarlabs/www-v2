@@ -1,6 +1,6 @@
 ---
 title: "DMP Week 5: fix: support non-12 EDO temperaments in audio engine and widgets"
-excerpt: excerpt: "PR 5.2 makes the audio engine and widgets EDO-aware; PR 5.2b adds temperament persistence, foundational ratio data, and remaining goal fixes"
+excerpt: "PR 5.2 makes the audio engine and widgets EDO-aware; PR 5.2b adds temperament persistence, foundational ratio data, and remaining goal fixes"
 category: "DEVELOPER NEWS"
 date: "2026-07-18"
 slug: "2026-07-18-dmp-26-niravsharma-week05"
@@ -15,7 +15,7 @@ image: "assets/Images/c4gt_DMP.webp"
 # Weekly Blog Post, 2026
 
 **Contributor:** Nirav Sharma
-**Project:** Refactor Temperament — Sugar Labs Music Blocks
+**Project:** Refactor Temperament - Sugar Labs Music Blocks
 **C4GT DMP 2026**
 
 ---
@@ -24,7 +24,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 This week I completed the audio engine and widget EDO-awareness (PR 5.2) and PR 5.2b landed the remaining Goal 1+2+3 fixes: temperament persistence, temperament threading, and temperament reset on run
 
-### PR 5.2 — fix: support non-12 EDO temperaments in audio engine and widgets
+### PR 5.2 - fix: support non-12 EDO temperaments in audio engine and widgets
 
 The core problem: when a user selected a non-12 temperament (e.g., 5-EDO, 19-EDO), the audio engine silently fell back to 12-EDO behavior. Notes that should sound in the selected tuning were calculated using 12-equal-temperament formulas, producing wrong frequencies.
 
@@ -60,22 +60,22 @@ PR 5.2 is open: [#7835](https://github.com/sugarlabs/musicblocks/pull/7835)
 
 ---
 
-### PR 5.2b — feat(temperament): foundational ratio data, dynamic consonant stepping, and temperament length block
+### PR 5.2b - feat(temperament): foundational ratio data, dynamic consonant stepping, and temperament length block
 
 PR 5.2b (tracked as PR 5.2b, #7853) shipped the persistence and remaining goal fixes:
 
 - `_userTemperament` persistence: the chosen temperament survives across runs (`resetTemperament()` / `setUserTemperament()` in logo.js).
 - Temperament threading: `PitchActions` passes `inTemperament` to `pitchToFrequency`; harmonic partials use `parseNoteString` + temperament-aware `pitchToFrequency`.
 - `getNote` nameIndex fix: proportional 12-EDO mapping `Math.round(((n+k) / octaveLength) * 12) % 12` instead of `(n+k) % octaveLength`.
-- Cents display: `(+0)` → `(+0¢)` via `CENTSSYMBOL` (block.js / blocks.js).
-- CustomPitchBlock macro fix: `"pitch"` → `"custompitch"`.
-- `Singer.clearPitchToFrequencyCache()` on temperament change — no stale frequencies.
+- Cents display: `(+0)` -> `(+0¢)` via `CENTSSYMBOL` (block.js / blocks.js).
+- CustomPitchBlock macro fix: `"pitch"` -> `"custompitch"`.
+- `Singer.clearPitchToFrequencyCache()` on temperament change - no stale frequencies.
 
 PR 5.2b is merged: [#7853](https://github.com/sugarlabs/musicblocks/pull/7853)
 ---
 
 
-These two widgets have deep 12-note coupling — the modewidget has 34+ hardcoded `12` instances tied to mode definitions, piano keys, and wheel UI. The musickeyboard has 14+ instances tied to the PITCHES2 12-note array and keyboard layout. Both require a full redesign and will get their own PR.
+These two widgets have deep 12-note coupling - the modewidget has 34+ hardcoded `12` instances tied to mode definitions, piano keys, and wheel UI. The musickeyboard has 14+ instances tied to the PITCHES2 12-note array and keyboard layout. Both require a full redesign and will get their own PR.
 
 ---
 
