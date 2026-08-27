@@ -1,5 +1,5 @@
 ---
-title: "DMP Week 4: Squashing the 'Ting' Sound — Synth Pipeline & Pitch Fixes"
+title: "DMP Week 4: Squashing the 'Ting' Sound - Synth Pipeline & Pitch Fixes"
 excerpt: "PR #7807: normalizing Unicode accidentals in the synth pipeline, fixing numberToPitch out-of-bounds crashes, and making the pitch cache temperament-aware."
 category: "DEVELOPER NEWS"
 date: "2026-07-18"
@@ -16,8 +16,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 **Contributor:** Nirav Sharma  
 **Project:** Refactor Temperament — Sugar Labs Music Blocks (Issue #7171)  
-**C4GT DMP 2026 / GSoC 2026**  
-**Reporting Period:** July 7 – July 13, 2026
+**C4GT DMP 2026 
 
 ---
 
