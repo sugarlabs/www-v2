@@ -52,7 +52,7 @@ Devin and I looked at two notation systems for LilyPond export.
 
 ### What we decided
 
-Full visual notation rendering would pull in external fonts and blow up the scope. So for PR 7b we'll focus on two things: stop LilyPond from crashing on non-12 EDO scales (the hardcoded 12-slot arrays need to go), and optionally add plain-text cents markup above notes — something like `c4^\markup { "+15¢" }`. Full Sagittal or Kite rendering can wait for later.
+Full visual notation rendering would pull in external fonts and blow up the scope. So for PR 9 we'll focus on two things: stop LilyPond from crashing on non-12 EDO scales (the hardcoded 12-slot arrays need to go), and optionally add plain-text cents markup above notes — something like `c4^\markup { "+15¢" }`. Full Sagittal or Kite rendering can wait for later.
 
 ---
 
