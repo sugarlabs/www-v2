@@ -16,8 +16,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 **Contributor:** Nirav Sharma
 **Project:** Refactor Temperament — Sugar Labs Music Blocks (Issue #7171)
-**C4GT DMP 2026 / GSoC 2026**
-**Reporting Period:** August 23 – August 29, 2026
+**C4GT DMP 2026**
 
 ---
 
@@ -41,11 +40,11 @@ The other big merge this week. PR #8240 is the non-EDO temperament hardening —
 
 Three this week.
 
-**PR #7983** (inland-taipen) — a guard in `_saveCustomMode()` that refuses to save a mode with only the tonic selected. The destructive bug it originally targeted is already gone (fixed by #8059), so what's left is just hygiene. I asked the author to resolve the merge conflict.
+**PR #7983** (inland-taipen) - a guard in `_saveCustomMode()` that refuses to save a mode with only the tonic selected. The destructive bug it originally targeted is already gone (fixed by #8059), so what's left is just hygiene. I asked the author to resolve the merge conflict.
 
-**PR #7969** (lavjeetrai) — the pie menu interval visibility fix. I ran my test again: pick "perfect", expect only 1, 4, 5, 8 in the inner ring. Still got all 8. The author's fix keeps every tab on screen and just disables the clicks, but the intended UX is to hide the invalid degrees entirely. I asked what layout-shift problem they were actually seeing, because that's the part I don't understand yet. Still conflicts.
+**PR #7969** (lavjeetrai) - the pie menu interval visibility fix. I ran my test again: pick "perfect", expect only 1, 4, 5, 8 in the inner ring. Still got all 8. The author's fix keeps every tab on screen and just disables the clicks, but the intended UX is to hide the invalid degrees entirely. I asked what layout-shift problem they were actually seeing, because that's the part I don't understand yet. Still conflicts.
 
-**PR #8271** (Vanshika) — Cypress E2E for custom mode persistence across reload. Solid coverage. Two notes from me: the test checks the widget title, which is fragile (it's tied to rendering and i18n) — assert against `customModes` directly instead. And a comment says it "falls back to major", which isn't true. `_setMode()` returns early, so the custom name just never applies. No fallback happens.
+**PR #8271** (Vanshika) - Cypress E2E for custom mode persistence across reload. Solid coverage. Two notes from me: the test checks the widget title, which is fragile (it's tied to rendering and i18n) — assert against `customModes` directly instead. And a comment says it "falls back to major", which isn't true. `_setMode()` returns early, so the custom name just never applies. No fallback happens.
 
 ## What's next
 
