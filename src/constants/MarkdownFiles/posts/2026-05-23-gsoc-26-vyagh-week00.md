@@ -14,7 +14,7 @@ image: "assets/Images/GSOCxJournal.webp"
 
 **Project:** AI Reflection in the Sugar Journal  
 **Mentors:** [Walter Bender](https://github.com/walterbender), [Ibiam Chihurumnaya](https://github.com/chimosky)  
-**Assisting Mentors:** [Diwangshu Kakoty](https://github.com/diwangshu-kakoty), [Mebin J Thattil](https://github.com/mebinthattil), [Harshit Verma](https://github.com/therealharshit)
+**Assisting Mentors:** [Diwangshu Kakoty](https://github.com/Commanderk3), [Mebin J Thattil](https://github.com/mebinthattil), [Harshit Verma](https://github.com/therealharshit)
 
 ---
 
