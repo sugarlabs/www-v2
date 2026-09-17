@@ -39403,6 +39403,170 @@ Also, a heartfelt thank you to the entire Sugar Labs community for creating such
 
 Thank you to everyone who followed along with my weekly updates this summer. Stay tuned for the final evaluation report and the official launch!
 `,vh=e({default:()=>yh}),yh=`---
+
+title: "DMP '26 Week 10 Update by Stuti Jain"
+
+excerpt: "Improved Lesson Plans navigation with collapsible panels, expanded the story with Lessons 7 and 8, and explored the localization workflow for making Practice lessons available in multiple languages."
+
+category: "DEVELOPER NEWS"
+
+date: "2026-08-19"
+
+slug: "2026-08-19-dmp-26-stuti-jain-week10"
+
+author: "@/constants/MarkdownFiles/authors/stuti-jain.md"
+
+tags: "dmp26,sugarlabs,musicblocks,lessonplans,week10"
+
+image: "assets/Images/dmp_c4gt.logo.png"
+
+---
+
+<!-- markdownlint-disable -->
+
+# Week 10 Progress Report by Stuti Jain
+
+**Project:** [Adding Lesson Plans to Music Blocks](https://github.com/sugarlabs/musicblocks/issues/6607)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), Devin Ulibarri  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-08-13 – 2026-08-19
+
+---
+
+## Goals for This Week
+
+* Improve the interaction between Lesson Plans and the main Music Blocks workspace.
+* Make draggable panels easier to manage.
+* Continue expanding the story-driven lesson series.
+* Add Lessons 7 and 8.
+* Explore how Practice lessons can be translated into different languages.
+* Understand how the existing \`.po\` localization system can support lesson content.
+
+---
+
+## This Week's Achievements
+
+### Improving Lesson Plan Panel Navigation
+
+Last week, the Lesson Plans and Explorer Journal panels were made draggable so that learners could keep them open while interacting with other parts of Music Blocks.
+
+While this solved the problem of accessing the workspace alongside Lesson Plans, another usability issue became apparent.
+
+A learner may not always want the panel to occupy workspace space while working with Music Blocks.
+
+To address this, I added a **magnetic pull behaviour** to the panels.
+
+When a draggable panel is moved close to the right side of the workspace, it is automatically pulled toward that area. This provides a predictable location for the panel and makes it easier to organize the workspace.
+
+---
+
+### Adding a Minimize Option
+
+Along with the magnetic behaviour, I added a **minimize button** next to the close button of the Lesson Plans panel.
+
+The panel can now be minimized when the learner needs more space for the Music Blocks workspace.
+
+This follows the existing interaction pattern used for minimizing blocks and helps the Lesson Plans interface feel more consistent with the rest of Music Blocks.
+
+The combination of dragging, magnetic positioning, and minimizing gives learners more control over how the Lesson Plans interface occupies the workspace.
+
+---
+
+### Expanding the Story with Lessons 7 and 8
+
+The story-driven lesson series was also expanded with two additional lessons, bringing the adventure further into the Lost Melody Islands.
+
+The new lessons continue the same structure used by the earlier levels, combining:
+
+* Narrative-based lesson introductions.
+* Musical activities.
+* Visual story elements.
+* Additional exploration activities.
+* Contextual help for extra actions.
+* Discovery rewards.
+* Explorer Journal connections.
+
+**Lesson 7** continues the learners' journey through the islands with a new musical challenge, while **Lesson 8 — The Starlight Sky Song** introduces a new story setting and musical activity.
+
+![Lesson 8 — The Starlight Sky Song](/assets/Developers/Stuti-Jain/week10_lesson8.png)
+
+The continued expansion also helped test whether the data-driven lesson structure introduced earlier could support additional lessons without requiring major changes to the core Lesson Plans implementation.
+
+---
+
+### Midpoint Evaluation
+
+During this period, I also prepared and presented my **DMP Midpoint Evaluation**.
+
+The evaluation covered the project's progress from the initial narrative concept through the development of the Lesson Plans infrastructure, exploration and discovery system, contextual help, and Explorer Journal.
+
+The midpoint evaluation also provided an opportunity to demonstrate the working system and discuss the direction for the remaining project period.
+
+**Midpoint Evaluation Presentation:**  
+https://docs.google.com/presentation/d/1YD-m8j5cW2xzRD2ncZKJsHje23uMe3dr/edit?usp=sharing&ouid=116555257076685356332&rtpof=true&sd=true
+
+---
+
+### Exploring Localization for Practice Lessons
+
+Another focus this week was exploring how the Practice lessons could be made available in multiple languages.
+
+Since Music Blocks already uses \`.po\` files for localization, I studied the existing localization structure to understand how lesson-specific text could be integrated into the same system.
+
+The lesson content contains a significant amount of narrative text, instructions, hints, and other learner-facing content. Therefore, simply translating interface labels would not be sufficient for making the complete Practice experience multilingual.
+
+The exploration this week focused on understanding how lesson data can be connected with the existing localization workflow.
+
+This provides the foundation for creating language-specific lesson data and integrating translated Practice content in future work.
+
+---
+
+## Mentor Feedback & Key Takeaways
+
+This week's work highlighted two important areas for the next stage of the project.
+
+The first is **workspace flexibility**. Lesson Plans should remain available without taking control of the entire Music Blocks workspace. The magnetic and minimize behaviours provide an initial solution for managing this interaction.
+
+The second is **scalability**. As more lessons are added, both the lesson-data structure and the localization system need to remain easy to maintain.
+
+The addition of Lessons 7 and 8 also provided an opportunity to validate whether the existing lesson infrastructure can support continued expansion of the story.
+
+---
+
+## Challenge & Key Learning
+
+One of the main challenges this week was designing Lesson Plans so that they remain useful without becoming intrusive.
+
+A lesson panel needs to be visible enough to guide the learner, but learners should also be able to move it aside when they want to experiment directly in the Music Blocks workspace.
+
+The exploration of localization also showed that supporting multiple languages requires considering the lesson content structure from the beginning rather than treating translation as only a UI-level change.
+
+**Learning:** As an educational feature grows, usability and scalability become as important as the individual lesson content. The infrastructure needs to give learners freedom while also making it easy for contributors to add and maintain lessons.
+
+---
+
+## Next Week's Roadmap
+
+* Add a **collapse button** similar to the existing Music Blocks toolbar behaviour so that draggable windows can be completely collapsed.
+* Improve the relationship between the Lesson Plans and Explorer Journal panels.
+* Evaluate whether the magnetic positioning and minimize options are still required after introducing panel collapse.
+* Create separate \`.po\` files for Practice lesson translations in **Hindi, Spanish, and Japanese**.
+* Add common Practice lesson strings to the existing localization files for these languages.
+* Continue integrating translated lesson content into the existing localization workflow.
+
+---
+
+## Resources & References
+
+* **Project Issue:** https://github.com/sugarlabs/musicblocks/issues/6607
+* **Midpoint Evaluation Presentation:** https://docs.google.com/presentation/d/1YD-m8j5cW2xzRD2ncZKJsHje23uMe3dr/edit?usp=sharing&ouid=116555257076685356332&rtpof=true&sd=true
+* **Repository:** https://github.com/sugarlabs/musicblocks
+
+---
+
+## Acknowledgments
+
+Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,bh=e({default:()=>xh}),xh=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -39551,7 +39715,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,bh=e({default:()=>xh}),xh=`---
+`,Sh=e({default:()=>Ch}),Ch=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -39654,7 +39818,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Sh=e({default:()=>Ch}),Ch=`---
+`,wh=e({default:()=>Th}),Th=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -40127,7 +40291,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,wh=e({default:()=>Th}),Th=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Eh=e({default:()=>Dh}),Dh=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -40214,7 +40378,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Eh=e({default:()=>Dh}),Dh=`---\r
+`,Oh=e({default:()=>kh}),kh=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -40307,7 +40471,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Oh=e({default:()=>kh}),kh=`---\r
+`,Ah=e({default:()=>jh}),jh=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -40401,7 +40565,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Ah=e({default:()=>jh}),jh=`---\r
+`,Mh=e({default:()=>Nh}),Nh=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -40489,7 +40653,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Mh=e({default:()=>Nh}),Nh=`---\r
+`,Ph=e({default:()=>Fh}),Fh=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -40572,7 +40736,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Ph=e({default:()=>Fh}),Fh=`---\r
+`,Ih=e({default:()=>Lh}),Lh=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -40638,7 +40802,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Ih=e({default:()=>Lh}),Lh=`---
+`,Rh=e({default:()=>zh}),zh=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -40720,7 +40884,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Rh=e({default:()=>zh}),zh=`---
+---`,Bh=e({default:()=>Vh}),Vh=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -40813,7 +40977,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Bh=e({default:()=>Vh}),Vh=`---
+`,Hh=e({default:()=>Uh}),Uh=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -40902,7 +41066,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Hh=e({default:()=>Uh}),Uh=`---
+--- `,Wh=e({default:()=>Gh}),Gh=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -41047,7 +41211,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Wh=e({default:()=>Gh}),Gh=`---
+--- `,Kh=e({default:()=>qh}),qh=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -41235,7 +41399,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Kh=e({default:()=>qh}),qh=`---
+--- `,Jh=e({default:()=>Yh}),Yh=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -41330,7 +41494,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Jh=e({default:()=>Yh}),Yh=`---
+`,Xh=e({default:()=>Zh}),Zh=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -41419,7 +41583,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Xh=e({default:()=>Zh}),Zh=`---
+`,Qh=e({default:()=>$h}),$h=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -41506,7 +41670,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Qh=e({default:()=>$h}),$h=`---
+---`,eg=e({default:()=>tg}),tg=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -41589,7 +41753,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,eg=e({default:()=>tg}),tg=`---
+---`,ng=e({default:()=>rg}),rg=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -41672,7 +41836,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,ng=e({default:()=>rg}),rg=`---
+---`,ig=e({default:()=>ag}),ag=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -41977,4 +42141,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{om as $,ii as $a,io as $i,au as $n,rn as $o,ac as $r,re as $s,of as $t,Qm as A,Xi as Aa,Zo as Ai,Zu as An,Xn as Ao,Zc as Ar,Ye as As,Qf as At,Mm as B,Ai as Ba,jo as Bi,ju as Bn,An as Bo,jc as Br,ke as Bs,Mf as Bt,fh as C,ua as Ca,l as Cc,ds as Ci,dd as Cn,ur as Co,dl as Cr,lt as Cs,fp as Ct,ih as D,na as Da,t as Dc,rs as Di,rd as Dn,nr as Do,rl as Dr,tt as Ds,ip as Dt,oh as E,ia as Ea,r as Ec,as as Ei,ad as En,ir as Eo,al as Er,rt as Es,op as Et,Hm as F,Bi as Fa,Vo as Fi,Vu as Fn,Bn as Fo,Vc as Fr,ze as Fs,Hf as Ft,Sm as G,bi as Ga,xo as Gi,xu as Gn,bn as Go,xc as Gr,ye as Gs,Sf as Gt,Om as H,Ei as Ha,Do as Hi,Du as Hn,En as Ho,Dc as Hr,Te as Hs,Of as Ht,Bm as I,Ri as Ia,zo as Ii,zu as In,Rn as Io,zc as Ir,Le as Is,Bf as It,gm as J,mi as Ja,ho as Ji,hu as Jn,mn as Jo,hc as Jr,pe as Js,gf as Jt,bm as K,vi as Ka,yo as Ki,yu as Kn,vn as Ko,yc as Kr,_e as Ks,bf as Kt,Rm as L,Ii as La,Lo as Li,Lu as Ln,In as Lo,Lc as Lr,Fe as Ls,Rf as Lt,Jm as M,Ki as Ma,qo as Mi,qu as Mn,Kn as Mo,qc as Mr,Ge as Ms,Jf as Mt,Km as N,Wi as Na,Go as Ni,Gu as Nn,Wn as No,Gc as Nr,Ue as Ns,Kf as Nt,nh as O,ea as Oa,ts as Oi,td as On,er as Oo,tl as Or,$e as Os,np as Ot,Wm as P,Hi as Pa,Uo as Pi,Uu as Pn,Hn as Po,Uc as Pr,Ve as Ps,Wf as Pt,cm as Q,oi as Qa,oo as Qi,su as Qn,on as Qo,sc as Qr,ae as Qs,cf as Qt,Im as R,Pi as Ra,Fo as Ri,Fu as Rn,Pn as Ro,Fc as Rr,Ne as Rs,If as Rt,mh as S,fa as Sa,d as Sc,ps as Si,pd as Sn,fr as So,pl as Sr,dt as Ss,mp as St,ch as T,oa as Ta,a as Tc,ss as Ti,sd as Tn,or as To,sl as Tr,at as Ts,cp as Tt,Em as U,wi as Ua,To as Ui,Tu as Un,wn as Uo,Tc as Ur,Ce as Us,Ef as Ut,Am as V,Oi as Va,ko as Vi,ku as Vn,On as Vo,kc as Vr,De as Vs,Af as Vt,wm as W,Si as Wa,Co as Wi,Cu as Wn,Sn as Wo,Cc as Wr,xe as Ws,wf as Wt,fm as X,ui as Xa,uo as Xi,du as Xn,un as Xo,dc as Xr,le as Xs,ff as Xt,mm as Y,fi as Ya,po as Yi,pu as Yn,fn as Yo,pc as Yr,de as Ys,mf as Yt,um as Z,ci as Za,co as Zi,lu as Zn,cn as Zo,lc as Zr,se as Zs,uf as Zt,wh as _,Sa as _a,x as _c,Cs as _i,Cd as _n,Sr as _o,Cl as _r,xt as _s,wp as _t,Jh as a,Ka as aa,G as ac,qs as ai,qd as an,Kr as ao,ql as ar,Gt as as,Jp as at,vh as b,ga as ba,h as bc,_s as bi,_d as bn,gr as bo,_l as br,ht as bs,vp as bt,Hh as c,Ba as ca,z as cc,Vs as ci,Vd as cn,Br as co,Vl as cr,zt as cs,Hp as ct,Ih as d,Pa as da,N as dc,Fs as di,Fd as dn,Pr as do,Fl as dr,Nt as ds,Ip as dt,no as ea,te as ec,rc as ei,rf as en,ni as eo,ru as er,tn as es,im as et,Ph as f,Ma as fa,j as fc,Ns as fi,Nd as fn,Mr as fo,Nl as fr,jt as fs,Pp as ft,Eh as g,wa as ga,C as gc,Ts as gi,Td as gn,wr as go,Tl as gr,Ct as gs,Ep as gt,Oh as h,Ea as ha,T as hc,Ds as hi,Dd as hn,Er as ho,Dl as hr,Tt as hs,Op as ht,Xh as i,Ja as ia,q as ic,Ys as ii,Yd as in,Jr as io,Yl as ir,qt as is,Xp as it,Xm as j,Ji as ja,Yo as ji,Yu as jn,Jn as jo,Yc as jr,qe as js,Xf as jt,eh as k,Qi as ka,$o as ki,$u as kn,Qn as ko,$c as kr,Ze as ks,ep as kt,Bh as l,Ra as la,L as lc,zs as li,zd as ln,Rr as lo,zl as lr,Lt as ls,Bp as lt,Ah as m,Oa as ma,D as mc,ks as mi,kd as mn,Or as mo,kl as mr,Dt as ms,Ap as mt,eg as n,Qa as na,Z as nc,$s as ni,$d as nn,Qr as no,$l as nr,Zt as ns,em as nt,Kh as o,Wa as oa,U as oc,Gs as oi,Gd as on,Wr as oo,Gl as or,Ut as os,Kp as ot,Mh as p,Aa as pa,k as pc,js as pi,jd as pn,Ar as po,jl as pr,kt as ps,Mp as pt,vm as q,gi as qa,_o as qi,_u as qn,gn as qo,_c as qr,he as qs,vf as qt,Qh as r,Xa as ra,Y as rc,Zs as ri,Zd as rn,Xr as ro,Zl as rr,Yt as rs,Qp as rt,Wh as s,Ha as sa,V as sc,Us as si,Ud as sn,Hr as so,Ul as sr,Vt as ss,Wp as st,ng as t,eo as ta,$ as tc,tc as ti,tf as tn,ei as to,tu as tr,$t as ts,nm as tt,Rh as u,Ia as ua,F as uc,Ls as ui,Ld as un,Ir as uo,Ll as ur,Ft as us,Rp as ut,Sh as v,ba as va,y as vc,xs as vi,xd as vn,br as vo,xl as vr,yt as vs,Sp as vt,uh as w,ca as wa,s as wc,ls as wi,ld as wn,cr as wo,ll as wr,st as ws,up as wt,gh as x,ma as xa,p as xc,hs as xi,hd as xn,mr as xo,hl as xr,pt as xs,gp as xt,bh as y,va as ya,_ as yc,ys as yi,yd as yn,vr as yo,yl as yr,_t as ys,bp as yt,Pm as z,Mi as za,No as zi,Nu as zn,Mn as zo,Nc as zr,je as zs,Pf as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{cm as $,oi as $a,oo as $i,su as $n,on as $o,sc as $r,ae as $s,cf as $t,eh as A,Qi as Aa,$o as Ai,$u as An,Qn as Ao,$c as Ar,Ze as As,ep as At,Pm as B,Mi as Ba,No as Bi,Nu as Bn,Mn as Bo,Nc as Br,je as Bs,Pf as Bt,mh as C,fa as Ca,d as Cc,ps as Ci,pd as Cn,fr as Co,pl as Cr,dt as Cs,mp as Ct,oh as D,ia as Da,r as Dc,as as Di,ad as Dn,ir as Do,al as Dr,rt as Ds,op as Dt,ch as E,oa as Ea,a as Ec,ss as Ei,sd as En,or as Eo,sl as Er,at as Es,cp as Et,Wm as F,Hi as Fa,Uo as Fi,Uu as Fn,Hn as Fo,Uc as Fr,Ve as Fs,Wf as Ft,wm as G,Si as Ga,Co as Gi,Cu as Gn,Sn as Go,Cc as Gr,xe as Gs,wf as Gt,Am as H,Oi as Ha,ko as Hi,ku as Hn,On as Ho,kc as Hr,De as Hs,Af as Ht,Hm as I,Bi as Ia,Vo as Ii,Vu as In,Bn as Io,Vc as Ir,ze as Is,Hf as It,vm as J,gi as Ja,_o as Ji,_u as Jn,gn as Jo,_c as Jr,he as Js,vf as Jt,Sm as K,bi as Ka,xo as Ki,xu as Kn,bn as Ko,xc as Kr,ye as Ks,Sf as Kt,Bm as L,Ri as La,zo as Li,zu as Ln,Rn as Lo,zc as Lr,Le as Ls,Bf as Lt,Xm as M,Ji as Ma,Yo as Mi,Yu as Mn,Jn as Mo,Yc as Mr,qe as Ms,Xf as Mt,Jm as N,Ki as Na,qo as Ni,qu as Nn,Kn as No,qc as Nr,Ge as Ns,Jf as Nt,ih as O,na as Oa,t as Oc,rs as Oi,rd as On,nr as Oo,rl as Or,tt as Os,ip as Ot,Km as P,Wi as Pa,Go as Pi,Gu as Pn,Wn as Po,Gc as Pr,Ue as Ps,Kf as Pt,um as Q,ci as Qa,co as Qi,lu as Qn,cn as Qo,lc as Qr,se as Qs,uf as Qt,Rm as R,Ii as Ra,Lo as Ri,Lu as Rn,In as Ro,Lc as Rr,Fe as Rs,Rf as Rt,gh as S,ma as Sa,p as Sc,hs as Si,hd as Sn,mr as So,hl as Sr,pt as Ss,gp as St,uh as T,ca as Ta,s as Tc,ls as Ti,ld as Tn,cr as To,ll as Tr,st as Ts,up as Tt,Om as U,Ei as Ua,Do as Ui,Du as Un,En as Uo,Dc as Ur,Te as Us,Of as Ut,Mm as V,Ai as Va,jo as Vi,ju as Vn,An as Vo,jc as Vr,ke as Vs,Mf as Vt,Em as W,wi as Wa,To as Wi,Tu as Wn,wn as Wo,Tc as Wr,Ce as Ws,Ef as Wt,mm as X,fi as Xa,po as Xi,pu as Xn,fn as Xo,pc as Xr,de as Xs,mf as Xt,gm as Y,mi as Ya,ho as Yi,hu as Yn,mn as Yo,hc as Yr,pe as Ys,gf as Yt,fm as Z,ui as Za,uo as Zi,du as Zn,un as Zo,dc as Zr,le as Zs,ff as Zt,Eh as _,wa as _a,C as _c,Ts as _i,Td as _n,wr as _o,Tl as _r,Ct as _s,Ep as _t,Xh as a,Ja as aa,q as ac,Ys as ai,Yd as an,Jr as ao,Yl as ar,qt as as,Xp as at,bh as b,va as ba,_ as bc,ys as bi,yd as bn,vr as bo,yl as br,_t as bs,bp as bt,Wh as c,Ha as ca,V as cc,Us as ci,Ud as cn,Hr as co,Ul as cr,Vt as cs,Wp as ct,Rh as d,Ia as da,F as dc,Ls as di,Ld as dn,Ir as do,Ll as dr,Ft as ds,Rp as dt,io as ea,re as ec,ac as ei,of as en,ii as eo,au as er,rn as es,om as et,Ih as f,Pa as fa,N as fc,Fs as fi,Fd as fn,Pr as fo,Fl as fr,Nt as fs,Ip as ft,Oh as g,Ea as ga,T as gc,Ds as gi,Dd as gn,Er as go,Dl as gr,Tt as gs,Op as gt,Ah as h,Oa as ha,D as hc,ks as hi,kd as hn,Or as ho,kl as hr,Dt as hs,Ap as ht,Qh as i,Xa as ia,Y as ic,Zs as ii,Zd as in,Xr as io,Zl as ir,Yt as is,Qp as it,Qm as j,Xi as ja,Zo as ji,Zu as jn,Xn as jo,Zc as jr,Ye as js,Qf as jt,nh as k,ea as ka,ts as ki,td as kn,er as ko,tl as kr,$e as ks,np as kt,Hh as l,Ba as la,z as lc,Vs as li,Vd as ln,Br as lo,Vl as lr,zt as ls,Hp as lt,Mh as m,Aa as ma,k as mc,js as mi,jd as mn,Ar as mo,jl as mr,kt as ms,Mp as mt,ng as n,eo as na,$ as nc,tc as ni,tf as nn,ei as no,tu as nr,$t as ns,nm as nt,Jh as o,Ka as oa,G as oc,qs as oi,qd as on,Kr as oo,ql as or,Gt as os,Jp as ot,Ph as p,Ma as pa,j as pc,Ns as pi,Nd as pn,Mr as po,Nl as pr,jt as ps,Pp as pt,bm as q,vi as qa,yo as qi,yu as qn,vn as qo,yc as qr,_e as qs,bf as qt,eg as r,Qa as ra,Z as rc,$s as ri,$d as rn,Qr as ro,$l as rr,Zt as rs,em as rt,Kh as s,Wa as sa,U as sc,Gs as si,Gd as sn,Wr as so,Gl as sr,Ut as ss,Kp as st,ig as t,no as ta,te as tc,rc as ti,rf as tn,ni as to,ru as tr,tn as ts,im as tt,Bh as u,Ra as ua,L as uc,zs as ui,zd as un,Rr as uo,zl as ur,Lt as us,Bp as ut,wh as v,Sa as va,x as vc,Cs as vi,Cd as vn,Sr as vo,Cl as vr,xt as vs,wp as vt,fh as w,ua as wa,l as wc,ds as wi,dd as wn,ur as wo,dl as wr,lt as ws,fp as wt,vh as x,ga as xa,h as xc,_s as xi,_d as xn,gr as xo,_l as xr,ht as xs,vp as xt,Sh as y,ba as ya,y as yc,xs as yi,xd as yn,br as yo,xl as yr,yt as ys,Sp as yt,Im as z,Pi as za,Fo as zi,Fu as zn,Pn as zo,Fc as zr,Ne as zs,If as zt};
