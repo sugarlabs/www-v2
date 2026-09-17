@@ -14,7 +14,7 @@ image: "assets/Images/GSOC.webp"
 # Week 12 Progress Report by Syed Khubayb Ur Rahman
 
 **Project:** [Music Blocks 4 Program Builder](https://github.com/sugarlabs/musicblocks-v4)  
-**Mentors:** [Anindya Kundu](https://github.com/meganindya), [Safwan Sayeed](https://github.com/sa-fw-an)
+**Mentors:** [Anindya Kundu](https://github.com/meganindya), [Safwan Sayeed](https://github.com/sa-fw-an)  
 **Organization:** [Sugar Labs](https://sugarlabs.org)  
 **Reporting Period:** 2026-08-10 – 2026-08-16
 
