@@ -1,16 +1,16 @@
 ---
-title: "DMP Week 4: PR 3 Merged, Midpoint in Sight"
+title: "DMP Week 2: PR 3 Merged, Midpoint in Sight"
 excerpt: "Goal 1 complete with all three PRs merged; reviewed two PRs for Walter; midpoint evaluation approaching July 14"
 category: "DEVELOPER NEWS"
 date: "2026-07-03"
 slug: "2026-07-03-dmp-26-niravsharma-week04"
 author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
 description: "DMP'26 Contributor at SugarLabs (Music Blocks - Refactor Temperament)"
-tags: "dmp26,sugarlabs,week04,niravsharma,musicblocks,temperament"
+tags: "dmp26,sugarlabs,week02,niravsharma,musicblocks,temperament"
 image: "assets/Images/c4gt_DMP.webp"
 ---
 
-## Week 4 — June 30 – July 3, 2026
+## Week 2 — June 30 – July 3, 2026
 
 ### What I worked on this week
 
@@ -63,4 +63,4 @@ Reviewing other people's PRs was unexpectedly useful too. It forced me to poke a
 - [PR 2 - Remaining musicutils.js](https://github.com/sugarlabs/musicblocks/pull/7659) - merged
 - [PR 3 - Block & Runtime Fixes](https://github.com/sugarlabs/musicblocks/pull/7710) - merged 
 - [PR 4 - Custom Pitch Blocks](https://github.com/sugarlabs/musicblocks/pull/7712) - in progress
-- [Issue #7171: Refactor Temperament](https://github.com/sugarlabs/musicblocks/issues/7171)
+- [Issue 7171: Refactor Temperament](https://github.com/sugarlabs/musicblocks/issues/7171)
