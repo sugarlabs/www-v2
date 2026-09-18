@@ -1,5 +1,6 @@
 import { developerLinks } from '@/constants/VolunteerAndDev/Links';
 import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 
 const DeveloperLinks = () => {
   const container = {
@@ -101,16 +102,15 @@ const DeveloperLinks = () => {
                   ml-4 flex-shrink-0
                 "
             >
-              <span
+              <ArrowRight
+                size={18}
+                strokeWidth={3}
                 className="
                     text-gray-800 dark:text-gray-800
                     group-hover:text-red-700 dark:group-hover:text-orange-600
-                    transform group-hover:translate-x-1
-                    transition-all
+                    transition-colors
                   "
-              >
-                →
-              </span>
+              />
             </div>
           </motion.a>
         ))}
