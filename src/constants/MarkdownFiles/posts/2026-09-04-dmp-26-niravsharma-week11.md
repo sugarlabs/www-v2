@@ -12,15 +12,17 @@ image: "assets/Developers/Nirav/temperamentVisulizer.png"
 
 <!-- markdownlint-disable -->
 
-# Weekly Blog Post, 2026
+# Week 11 Progress Report by Nirav Sharma
 
-**Contributor:** Nirav Sharma
-**Project:** Refactor Temperament - Sugar Labs Music Blocks (Issue #7171)
-**C4GT DMP 2026**
+**Project:** [Refactor Temperament - Sugar Labs Music Blocks (Issue #7171)](https://github.com/sugarlabs/musicblocks/issues/7171)
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)
+**Reporting Period:** 2026-08-30 – 2026-09-05
 
 ---
 
-## Goal 5 is coming together
+## What I worked on this week
+
+### Goal 5 is coming together
 
 PR 8286 is the Temperament Visualizer - an interactive circular diagram that lets you compare any active temperament against 12-EDO (or another reference), see pitch deviations at a glance, and edit the scale by dragging notes around the circle.
 
@@ -32,7 +34,7 @@ This week the big fixes landed:
 
 Still open: rebasing and resolving merge conflicts. Walter and Devin both weighed in this week with design feedback that will reshape the widget before it merges.
 
-## Walter & Devin on the visualizer
+### Walter & Devin on the visualizer
 
 The mentor conversation this week was dense with decisions. Here's what stuck:
 
@@ -51,7 +53,7 @@ The mentor conversation this week was dense with decisions. Here's what stuck:
 - When creating a new temperament from the old interface and viewing it in the visualizer, the default 12-EDO was overriding the custom one - that's confusing and needs fixing.
 - On cents editing: Devin asked whether absolute cents (0-1200) in the input vs. cent deviation in the table would confuse users. Walter said if the numbers are confusing, the display is probably the problem.
 
-## PR reviews
+### PR reviews
 
 Four this week.
 
@@ -63,13 +65,13 @@ Four this week.
 
 **PR #8341** (merged) - `generateNoteNames(edo)` was returning seven natural letters for EDOs with fewer than 7 divisions, because the name-building loop pushed the letter before checking the step count. Fixed by skipping naturals with zero allotted steps so the table length always matches the EDO. The 5- and 7-EDO special cases now match the general path exactly. Contract tests added from 1 to 53 EDO.
 
-## What's next
+### What's coming next
 
 Finish the visualizer: merge the mentor feedback (eliminate redundant views, editable table with cross-column updates, "modified" badge, pitch count display, EDO cap at 57, light/dark/high-contrast colors), resolve conflicts, and land. Then Goal 6 (temperament import/export) is waiting in the wings.
 
 ---
 
-## Links
+### Links
 
 - [PR 8286 (Goal 5 - In Progress)](https://github.com/sugarlabs/musicblocks/pull/8286)
 - [PR 8406 (Reviewed)](https://github.com/sugarlabs/musicblocks/pull/8406)
