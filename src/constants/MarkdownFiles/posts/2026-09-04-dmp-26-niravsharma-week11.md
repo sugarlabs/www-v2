@@ -7,7 +7,7 @@ slug: "2026-09-04-dmp-26-niravsharma-week11"
 author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
 description: "Week 11: Goal 5 Temperament Visualizer progressing. 17-EDO fixed, reference comparisons accurate. Mentor feedback from Walter and Devin. Reviewed 8406, 8385, 7047, 8341."
 tags: "dmp26,sugarlabs,musicblocks,temperament,week11"
-image: "assets/Developers/Nirav/temperamentVisulizer.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
