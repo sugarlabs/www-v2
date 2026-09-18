@@ -7,7 +7,7 @@ slug: "2026-08-09-dmp-26-niravsharma-week07"
 author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
 description: "Week 7 — PR 8 merged with core engine and scale builders. Notation research on Sagittal vs. Kite's Ups and Downs. Walter's bug report proves the microtonal engine works. Next: PR 9, 10, 11"
 tags: "dmp26,sugarlabs,week07,niravsharma,musicblocks,temperament,microtonality"
-image: "public/assets/Developers/Nirav/mermainDiagramGoal4.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
