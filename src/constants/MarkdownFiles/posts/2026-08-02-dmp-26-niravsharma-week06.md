@@ -12,16 +12,17 @@ image: "public/assets/Developers/Nirav/mermainDiagramGoal4.png"
 
 <!-- markdownlint-disable -->
 
-# Weekly Blog Post, 2026
+# Week 06 Progress Report by Nirav Sharma
 
-**Contributor:** Nirav Sharma  
-**Project:** Refactor Temperament - Sugar Labs Music Blocks (Issue #7171)  
-**C4GT DMP 2026**  
-**Reporting Period:** July 27 – August 2, 2026
+**Project:** [Music Blocks - Refactor Temperament (Issue #7171)](https://github.com/sugarlabs/musicblocks/issues/7171)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  
+**Reporting Period:** 2026-07-27 – 2026-08-02
 
 ---
 
-## PR #7853 merged: Goals 1-3 wrapped up
+## What I worked on this week
+
+### PR #7853 merged: Goals 1-3 wrapped up
 
 PR #7853 got merged on July 30. This closes out Goals 1-3 - the pitch and interval fixes - and shifts focus to scale and mode decoupling.
 
@@ -31,11 +32,11 @@ The PR handled temperament persistence and a handful of stubborn edge-case bugs:
 - B14-B19: Console log analysis led me to `isTrueEDO()` logic fixes and `defineMode` bounds tightening
 - Tests: Suite went from 7,224 to 7,259 passing
 
-## The 12-EDO audit
+### The 12-EDO audit
 
 Before jumping into Goal 4 I wanted a map of what I was getting into. I wrote `AUDIT_REPORT.md` - 700+ lines cataloguing 60 hardcoded 12-EDO assumptions across 16 files. Having this documented means we won't surprise app consumers when we swap out the underlying scale math.
 
-## PR #7942 merged: dynamic EDO and ratio-based temperaments
+### PR #7942 merged: dynamic EDO and ratio-based temperaments
 
 With the audit done, I put up PR #7942 for review. It's the big one that makes non-12 EDO and ratio-based temperaments work across the engine, widgets, and pie menus.
 
@@ -58,11 +59,11 @@ Added ~140 lines across three suites: `musicutils.test.js` for `calcOctave` and 
 
 ---
 
-## What's next
+### What's coming next
 
 With PR #7942 merged, I'm starting Goal 4 (PR 8) - the foundational EDO scale core for decoupling scale and mode math from 12-EDO.
 
-## Links
+### Links
 
 - [PR #7853](https://github.com/sugarlabs/musicblocks/pull/7853) - merged
 - [PR #7942](https://github.com/sugarlabs/musicblocks/pull/7942) - merged
