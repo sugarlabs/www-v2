@@ -2,8 +2,8 @@
 title: "DMP '26 Week 07: PR 8 Merged — Core Engine and Scale Builders"
 excerpt: "PR #7959 merged with scalePatternToEDO(), getModePattern(), and PITCH_COLLECTIONS_EDO_OVERRIDES. Backward compatible. Notation research: Sagittal vs. Kite's Ups and Downs. Walter's bug report proves the microtonal engine works."
 category: "DEVELOPER NEWS"
-date: "2026-07-31"
-slug: "2026-07-31-dmp-26-niravsharma-week07"
+date: "2026-08-09"
+slug: "2026-08-09-dmp-26-niravsharma-week07"
 author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
 description: "Week 7 — PR 8 merged with core engine and scale builders. Notation research on Sagittal vs. Kite's Ups and Downs. Walter's bug report proves the microtonal engine works. Next: PR 9, 10, 11"
 tags: "dmp26,sugarlabs,week07,niravsharma,musicblocks,temperament,microtonality"
@@ -12,16 +12,17 @@ image: "public/assets/Developers/Nirav/mermainDiagramGoal4.png"
 
 <!-- markdownlint-disable -->
 
-# Weekly Blog Post, 2026
+# Week 07 Progress Report by Nirav Sharma
 
-**Contributor:** Nirav Sharma  
-**Project:** Refactor Temperament — Sugar Labs Music Blocks (Issue #7171)  
-**C4GT DMP 2026 / GSoC 2026**  
-**Reporting Period:** July 24–31, 2026
+**Project:** [Music Blocks - Refactor Temperament (Issue #7171)](https://github.com/sugarlabs/musicblocks/issues/7171)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  
+**Reporting Period:** 2026-08-03 – 2026-08-09
 
 ---
 
-## PR 8 merged: core engine and scale builders
+## What I worked on this week
+
+### PR 8 merged: core engine and scale builders
 
 PR #7959 (PR 8) got merged into master this week. It's the math that lets Music Blocks generate non-12 EDO scales instead of being hardcoded to 12-EDO.
 
@@ -41,7 +42,7 @@ Two tests in `musicutils.test.js` under `getStepSizeDown` failed during my pre-s
 
 ---
 
-## Notation research: Sagittal vs. Kite's Ups and Downs
+### Notation research: Sagittal vs. Kite's Ups and Downs
 
 Devin and I looked at two notation systems for LilyPond export.
 
@@ -56,7 +57,7 @@ Full visual notation rendering would pull in external fonts and blow up the scop
 
 ---
 
-## Walter's crash report is good news
+### Walter's crash report is good news
 
 Walter hit this when opening the Pitch/Solfege Pie Menus:
 
@@ -70,7 +71,7 @@ The good part: this is the first real consumer hitting the microtonal note names
 
 ---
 
-## What's next
+### What's coming next
 
 | PR | Scope | Target |
 |---|---|---|
@@ -80,7 +81,7 @@ The good part: this is the first real consumer hitting the microtonal note names
 
 ---
 
-## Links
+### Links
 
 - [PR #7959](https://github.com/sugarlabs/musicblocks/pull/7959) — merged
 - [Issue #7171](https://github.com/sugarlabs/musicblocks/issues/7171)
