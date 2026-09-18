@@ -38935,6 +38935,95 @@ Next week I'll be diving into the heart of \`TurtleArtActivity.py\` to work thro
 
 Thanks to my mentors for the reviews and to everyone in the Sugar Labs community for the feedback and help.
 `,fh=e({default:()=>ph}),ph=`---
+title: "GSoC '26 Week 11 Update by Parth Dagia"
+excerpt: "The Workspace can be zoomed now: a pair of magnifier buttons on the canvas step a scale level, and every Brick on the canvas resizes to it - which meant fixing a units mismatch that had been sitting in the Brick model since week 5."
+category: "DEVELOPER NEWS"
+date: "2026-08-09"
+slug: "2026-08-09-gsoc-26-parth-dagia-week11"
+author: "@/constants/MarkdownFiles/authors/parth-dagia.md"
+tags: "gsoc26,sugarlabs,musicblocks,week11,parth-dagia"
+image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 11 Progress Report by Parth Dagia
+
+**Project:** [Music Blocks 4 Program Builder](https://github.com/sugarlabs/musicblocks-v4)  
+**Mentors:** [Anindya Kundu](https://github.com/meganindya), [Justin Charles](https://github.com/justin212407), [Safwan Sayeed](https://github.com/sa-fw-an)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-08-03 – 2026-08-09  
+
+---
+
+## Goals for This Week
+
+- Put a scale control on the Workspace canvas and hold the selected level in a store.
+- Make the Bricks themselves respond to the level, so changing it resizes everything on the canvas and the layout follows.
+
+---
+
+## This Week's Achievements
+
+### A scale control on the canvas - [PR #756](https://github.com/sugarlabs/musicblocks-v4/pull/756)
+
+Brick models have carried a \`scaleLevel\` of 1, 2 or 3 since the shape work, each level selecting an entry from \`SCALE_LEVEL_CONFIG\`. Nothing had ever set it. This PR adds the control that does: a pair of magnifying glass buttons like the ones in v3, sitting to the left of the Trash so the corner stays clear for the drop target.
+
+The level is a single Workspace wide value rather than something per Tower or per Brick, because Bricks move between Towers and a Tower whose Bricks disagree on the level has connector geometry that doesn't line up. The store clamps instead of trusting its callers, so no reader can index \`SCALE_LEVEL_CONFIG\` with a level it doesn't define, and a clamped-away step doesn't notify at all - re-laying out every Tower is expensive, and a click on a disabled boundary shouldn't pay for it. The bounds are derived from the config rather than hard-coded, so adding a fourth level later doesn't mean hunting for literals.
+
+One small thing worth noting: unlike \`Trash\`, this control needs real pointer events, so it can't be \`pointer-events-none\`. That's safe here because the delegated selector \`useDragFromPalette\` listens on only ever matches a Palette slot, never a button.
+
+### Scaling the Bricks to the selected level - [PR #762](https://github.com/sugarlabs/musicblocks-v4/pull/762)
+
+This is the half that made the control do something, and it turned out to be the more interesting one.
+
+The \`scaleLevel\` setter on the model already rebuilds the outline generator and notifies its update callbacks, so the views re-render on their own. The layout doesn't: \`useTowerLayout\` only re-runs when a root changes, so the Bricks would have sat at their new sizes with their old positions still in \`useBrickLayoutStore\`. Writing the level and re-running the layout had to land together, which is what the new \`useWorkspaceScale\` hook does - it subscribes to the level, writes it onto every Brick model in every Tower, then asks the Workspace store to refresh the layouts. That refresh replaces each Tower's root reference and deliberately leaves \`position\` alone, so the layout's origin fast-path stays quiet and no Tower drifts when you zoom.
+
+The part I hadn't expected was a units mismatch in the model. The outline generator works in SVG units and the canvas works in pixels, related by the level's \`brickScale\`. Measurements were already going in through \`pxToSvg\`, but \`dims\`, \`bounds\` and the connector coordinates were coming straight back out in generator units. At level 2 that factor happens to be 1, so it was invisible for the whole of the snapping and removal work. At level 1 an Argument slot came out 1.33x too wide, and at level 3 it came out 0.8x too small - so a Brick would either rattle around in its slot or overflow it, and the notches would land in the wrong place. Adding the conversion on the way out fixed the sizes, the slots and the connector coordinates in one go, and the tests for it assert against every level in the config rather than a couple of literals, so this can't quietly regress.
+
+Two smaller pieces rounded it off. A Brick dropped in from the Palette now takes the Workspace's current level, read at drop time rather than closed over, since those listeners bind once on mount - the Palette itself keeps its own size. And the connector points did pick up their new coordinates on their own, because the layout ends by writing \`positioned\`, which \`Workspace\` already watches to re-sync both Collision spaces. That was the one thing in the ticket I wanted to confirm rather than assume, and it held.
+
+Here is what the same program looks like at each of the three levels.
+
+![The Music Blocks Workspace at the smallest scale level: a start Brick holding a set instrument Brick and three note Bricks, each with a value Brick and a pitch Brick in its Argument slots, the whole program compact enough to fit on the canvas at once.](/assets/Developers/parth-dagia/gsoc26-week11-scale-level-1.png "Scale level 1 - the whole program fits on the canvas.")
+
+![The same program at the default scale level, the Bricks noticeably larger and the program running most of the height of the canvas.](/assets/Developers/parth-dagia/gsoc26-week11-scale-level-2.png "Scale level 2 - the default the Workspace starts at.")
+
+![The same program at the largest scale level, the Bricks and their labels large enough that the program now runs past the bottom of the canvas.](/assets/Developers/parth-dagia/gsoc26-week11-scale-level-3.png "Scale level 3 - the largest level, with the program running past the canvas.")
+
+Same Towers, same origins, same connections - only the level changed between the three.
+
+---
+
+## Challenge
+
+The challenge this week wasn't the code. Both PRs were up early in the week, and then they sat. Anindya was busy with work, and with the scaling work being the last fundamental left in the Workspace, there wasn't much that could move ahead of it - the Bricks resizing correctly is the thing everything after it assumes. They were reviewed and merged later, on the 12th, which is why this report is going out describing work that was finished before it was in.
+
+What I'd take from it is that a blocked review isn't the same as a blocked week. Syed and I used the time to go back over what's actually left against the plan and split it between us properly, so that when the reviews landed we weren't starting from a blank page. I also spent some of it on the tests for the units conversion, which is the sort of thing that's easy to leave thin when you're moving fast and impossible to add convincingly after the fact. Waiting on someone else is going to happen on any project with one maintainer and two students pointed at the same module; the useful skill is having something worth doing while you wait.
+
+---
+
+## Next Week's Roadmap
+
+Week 12 is the last one. With scaling in, the Workspace has everything it needs, so what's left is tying it off - going back over the six-week plan to make sure nothing was left half-done, and getting the module into a state someone else can pick up after GSoC.
+
+---
+
+## Resources & References
+
+- **PR:** [#756 Add a scale control to the Workspace](https://github.com/sugarlabs/musicblocks-v4/pull/756)
+- **PR:** [#762 Scale the Bricks in the Workspace to the selected scale level](https://github.com/sugarlabs/musicblocks-v4/pull/762)
+- **Planning:** [Six-week plan and tickets](https://docs.google.com/document/d/1HvP4gbiqo-_rJ6ipnIoOJHkO0GlawaO6mVhU1YRzz8Q/edit?tab=t.rlueajs95u4n)
+- **Repository:** [musicblocks-v4](https://github.com/sugarlabs/musicblocks-v4)
+
+---
+
+## Acknowledgments
+
+Thanks to Anindya Kundu for the reviews on both PRs, and to Syed for building this alongside me. Thanks also to Justin Charles and Safwan Sayeed for their continued guidance, and to Devin Ulibarri, Walter Bender, and the wider Sugar Labs community.
+
+---
+`,mh=e({default:()=>hh}),hh=`---
 title: "GSoC '26 Week 11 Update by Syed Khubayb Ur Rahman"
 excerpt: "Defined Import/Export types and implemented the Export functionality for Workspace Programs and Projects."
 category: "DEVELOPER NEWS"
@@ -38999,7 +39088,7 @@ Following last week's discussion, the focus shifted from undo/redo functionality
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community.
 
 ---
-`,mh=e({default:()=>hh}),hh=`---
+`,gh=e({default:()=>_h}),_h=`---
 title: "GSoC '26 Week 11 Update by Shreya Saxena"
 excerpt: "A ~23x speedup for headless notation exports, plus a fix for drum-polyrhythm project bug."
 category: "DEVELOPER NEWS"
@@ -39102,7 +39191,7 @@ With both fixes merged, I’ll clean up the now-unused \`_enqueue()\` and \`_cal
 
 ## Acknowledgments
 
-Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,gh=e({default:()=>_h}),_h=`---
+Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,vh=e({default:()=>yh}),yh=`---
 title: "GSoC '26 Week 11 Update by Shubham Sharma"
 excerpt: "Fixing the Journal's sorting and rebuilding its drawing to match how Sugar itself draws, hardening what the Journal sends to the AI, dropping the live-sharing route for peer reflection in favour of one that works with no network at all, and checking last week's conversation test against real published data"
 category: "DEVELOPER NEWS"
@@ -39306,7 +39395,7 @@ Thanks to Walter and Ibiam for their continued guidance. Thanks to Diwangshu, Me
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,vh=e({default:()=>yh}),yh=`---
+`,bh=e({default:()=>xh}),xh=`---
 title: "GSoC '26 Week 11: Update by Harihara Vardhan"
 excerpt: "This week I implemented the full interactive Git Tutorial overlay in Music Blocks, complete with custom slide animations, smart video management, keyboard shortcuts, and native notification feedback."
 category: "DEVELOPER NEWS"
@@ -39385,7 +39474,7 @@ This guides students directly toward taking their first action in the workspace 
 We are approaching the final phase of GSoC! Next week, I am going to update the tutorial based on mentor feedback and testing with kids, deploy the backend server, and prepare the frontend integration for the final review.
 
 Thanks for reading, and see you next week!
-`,bh=e({default:()=>xh}),xh=`---
+`,Sh=e({default:()=>Ch}),Ch=`---
 title: "DMP '26 Week 9 Update by Stuti Jain"
 excerpt: "Improved the Lesson Plans infrastructure by separating lesson data from implementation and making Lesson Plans and the Explorer Journal work alongside the rest of the Music Blocks interface."
 category: "DEVELOPER NEWS"
@@ -39530,7 +39619,7 @@ Similarly, as the number of lessons grows, the implementation needs to remain ea
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the Lesson Plans framework. Their observations from learner testing have helped guide the project beyond the initial prototype and toward a more flexible, maintainable, and scalable learning experience within Music Blocks.`,Sh=e({default:()=>Ch}),Ch=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the Lesson Plans framework. Their observations from learner testing have helped guide the project beyond the initial prototype and toward a more flexible, maintainable, and scalable learning experience within Music Blocks.`,wh=e({default:()=>Th}),Th=`---
 title: "GSoC '26 Week 12 Update by Syed Khubayb Ur Rahman"
 excerpt: "Wrote detailed technical specification documentation and compiled the final GSoC report."
 category: "DEVELOPER NEWS"
@@ -39586,7 +39675,7 @@ I also compiled the final report for my GSoC project. This repository contains t
 As my GSoC period concludes, I want to give a massive thanks to my mentors Anindya Kundu and Safwan Sayeeds for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4. 
 
 ---
-`,wh=e({default:()=>Th}),Th=`---
+`,Eh=e({default:()=>Dh}),Dh=`---
 title: "GSoC '26 Week 12: Update by Harihara Vardhan"
 excerpt: "In the final week of GSoC 2026, I reworded all user-facing Git terminology for kids, wrote comprehensive test suites across all Git features, and prepped the codebase and database for production deployment."
 category: "DEVELOPER NEWS"
@@ -39682,7 +39771,7 @@ None of this would have been possible without the amazing guidance and support f
 Also, a heartfelt thank you to the entire Sugar Labs community for creating such a welcoming, collaborative space.
 
 Thank you to everyone who followed along with my weekly updates this summer. Stay tuned for the final evaluation report and the official launch!
-`,Eh=e({default:()=>Dh}),Dh=`---
+`,Oh=e({default:()=>kh}),kh=`---
 
 title: "DMP '26 Week 10 Update by Stuti Jain"
 
@@ -39846,7 +39935,7 @@ The exploration of localization also showed that supporting multiple languages r
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,Oh=e({default:()=>kh}),kh=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,Ah=e({default:()=>jh}),jh=`---
 
 title: "DMP '26 Week 11 Update by Stuti Jain"
 
@@ -40017,7 +40106,7 @@ Unlike individual toolbar labels, a lesson contains interconnected story content
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,Ah=e({default:()=>jh}),jh=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,Mh=e({default:()=>Nh}),Nh=`---
 title: "GSoC'26  Final Report by Syed Khubayb Ur Rahman"
 excerpt: "Final report summarizing the architecture and outcomes of the Music Blocks v4 Masonry project."
 category: "DEVELOPER NEWS"
@@ -40195,7 +40284,7 @@ To restore a program, the system reconstructs blank Brick instances based on the
 ## Acknowledgments
 
 Special thanks to my mentors Anindya Kundu  and Safwan Sayeed for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the entire Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4.
-`,Mh=e({default:()=>Nh}),Nh=`---
+`,Ph=e({default:()=>Fh}),Fh=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -40344,7 +40433,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Ph=e({default:()=>Fh}),Fh=`---
+`,Ih=e({default:()=>Lh}),Lh=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -40447,7 +40536,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Ih=e({default:()=>Lh}),Lh=`---
+`,Rh=e({default:()=>zh}),zh=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -40920,7 +41009,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Rh=e({default:()=>zh}),zh=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Bh=e({default:()=>Vh}),Vh=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -41007,7 +41096,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Bh=e({default:()=>Vh}),Vh=`---\r
+`,Hh=e({default:()=>Uh}),Uh=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -41100,7 +41189,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Hh=e({default:()=>Uh}),Uh=`---\r
+`,Wh=e({default:()=>Gh}),Gh=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -41194,7 +41283,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Wh=e({default:()=>Gh}),Gh=`---\r
+`,Kh=e({default:()=>qh}),qh=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -41282,7 +41371,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Kh=e({default:()=>qh}),qh=`---\r
+`,Jh=e({default:()=>Yh}),Yh=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -41365,7 +41454,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Jh=e({default:()=>Yh}),Yh=`---\r
+`,Xh=e({default:()=>Zh}),Zh=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -41431,7 +41520,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Xh=e({default:()=>Zh}),Zh=`---
+`,Qh=e({default:()=>$h}),$h=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -41513,7 +41602,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Qh=e({default:()=>$h}),$h=`---
+---`,eg=e({default:()=>tg}),tg=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -41606,7 +41695,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,eg=e({default:()=>tg}),tg=`---
+`,ng=e({default:()=>rg}),rg=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -41695,7 +41784,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,ng=e({default:()=>rg}),rg=`---
+--- `,ig=e({default:()=>ag}),ag=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -41840,7 +41929,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,ig=e({default:()=>ag}),ag=`---
+--- `,og=e({default:()=>sg}),sg=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42028,7 +42117,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,og=e({default:()=>sg}),sg=`---
+--- `,cg=e({default:()=>lg}),lg=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42123,7 +42212,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,cg=e({default:()=>lg}),lg=`---
+`,ug=e({default:()=>dg}),dg=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42212,7 +42301,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,ug=e({default:()=>dg}),dg=`---
+`,fg=e({default:()=>pg}),pg=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42299,7 +42388,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,fg=e({default:()=>pg}),pg=`---
+---`,mg=e({default:()=>hg}),hg=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42382,7 +42471,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,mg=e({default:()=>hg}),hg=`---
+---`,gg=e({default:()=>_g}),_g=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42465,7 +42554,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,gg=e({default:()=>_g}),_g=`---
+---`,vg=e({default:()=>yg}),yg=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -42770,4 +42859,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{bm as $,vi as $a,yo as $i,yu as $n,vn as $o,yc as $r,_e as $s,bf as $t,fh as A,ua as Aa,l as Ac,ds as Ai,dd as An,ur as Ao,dl as Ar,lt as As,fp as At,Km as B,Wi as Ba,Go as Bi,Gu as Bn,Wn as Bo,Gc as Br,Ue as Bs,Kf as Bt,Eh as C,wa as Ca,C as Cc,Ts as Ci,Td as Cn,wr as Co,Tl as Cr,Ct as Cs,Ep as Ct,vh as D,ga as Da,h as Dc,_s as Di,_d as Dn,gr as Do,_l as Dr,ht as Ds,vp as Dt,bh as E,va as Ea,_ as Ec,ys as Ei,yd as En,vr as Eo,yl as Er,_t as Es,bp as Et,nh as F,ea as Fa,ts as Fi,td as Fn,er as Fo,tl as Fr,$e as Fs,np as Ft,Im as G,Pi as Ga,Fo as Gi,Fu as Gn,Pn as Go,Fc as Gr,Ne as Gs,If as Gt,Hm as H,Bi as Ha,Vo as Hi,Vu as Hn,Bn as Ho,Vc as Hr,ze as Hs,Hf as Ht,eh as I,Qi as Ia,$o as Ii,$u as In,Qn as Io,$c as Ir,Ze as Is,ep as It,Am as J,Oi as Ja,ko as Ji,ku as Jn,On as Jo,kc as Jr,De as Js,Af as Jt,Pm as K,Mi as Ka,No as Ki,Nu as Kn,Mn as Ko,Nc as Kr,je as Ks,Pf as Kt,Qm as L,Xi as La,Zo as Li,Zu as Ln,Xn as Lo,Zc as Lr,Ye as Ls,Qf as Lt,ch as M,oa as Ma,a as Mc,ss as Mi,sd as Mn,or as Mo,sl as Mr,at as Ms,cp as Mt,oh as N,ia as Na,r as Nc,as as Ni,ad as Nn,ir as No,al as Nr,rt as Ns,op as Nt,gh as O,ma as Oa,p as Oc,hs as Oi,hd as On,mr as Oo,hl as Or,pt as Os,gp as Ot,ih as P,na as Pa,t as Pc,rs as Pi,rd as Pn,nr as Po,rl as Pr,tt as Ps,ip as Pt,Sm as Q,bi as Qa,xo as Qi,xu as Qn,bn as Qo,xc as Qr,ye as Qs,Sf as Qt,Xm as R,Ji as Ra,Yo as Ri,Yu as Rn,Jn as Ro,Yc as Rr,qe as Rs,Xf as Rt,Oh as S,Ea as Sa,T as Sc,Ds as Si,Dd as Sn,Er as So,Dl as Sr,Tt as Ss,Op as St,Sh as T,ba as Ta,y as Tc,xs as Ti,xd as Tn,br as To,xl as Tr,yt as Ts,Sp as Tt,Bm as U,Ri as Ua,zo as Ui,zu as Un,Rn as Uo,zc as Ur,Le as Us,Bf as Ut,Wm as V,Hi as Va,Uo as Vi,Uu as Vn,Hn as Vo,Uc as Vr,Ve as Vs,Wf as Vt,Rm as W,Ii as Wa,Lo as Wi,Lu as Wn,In as Wo,Lc as Wr,Fe as Ws,Rf as Wt,Em as X,wi as Xa,To as Xi,Tu as Xn,wn as Xo,Tc as Xr,Ce as Xs,Ef as Xt,Om as Y,Ei as Ya,Do as Yi,Du as Yn,En as Yo,Dc as Yr,Te as Ys,Of as Yt,wm as Z,Si as Za,Co as Zi,Cu as Zn,Sn as Zo,Cc as Zr,xe as Zs,wf as Zt,Rh as _,Ia as _a,F as _c,Ls as _i,Ld as _n,Ir as _o,Ll as _r,Ft as _s,Rp as _t,cg as a,oo as aa,ae as ac,sc as ai,cf as an,oi as ao,su as ar,on as as,cm as at,Mh as b,Aa as ba,k as bc,js as bi,jd as bn,Ar as bo,jl as br,kt as bs,Mp as bt,ng as c,eo as ca,$ as cc,tc as ci,tf as cn,ei as co,tu as cr,$t as cs,nm as ct,Xh as d,Ja as da,q as dc,Ys as di,Yd as dn,Jr as do,Yl as dr,qt as ds,Xp as dt,_o as ea,he as ec,_c as ei,vf as en,gi as eo,_u as er,gn as es,vm as et,Jh as f,Ka as fa,G as fc,qs as fi,qd as fn,Kr as fo,ql as fr,Gt as fs,Jp as ft,Bh as g,Ra as ga,L as gc,zs as gi,zd as gn,Rr as go,zl as gr,Lt as gs,Bp as gt,Hh as h,Ba as ha,z as hc,Vs as hi,Vd as hn,Br as ho,Vl as hr,zt as hs,Hp as ht,ug as i,co as ia,se as ic,lc as ii,uf as in,ci as io,lu as ir,cn as is,um as it,uh as j,ca as ja,s as jc,ls as ji,ld as jn,cr as jo,ll as jr,st as js,up as jt,mh as k,fa as ka,d as kc,ps as ki,pd as kn,fr as ko,pl as kr,dt as ks,mp as kt,eg as l,Qa as la,Z as lc,$s as li,$d as ln,Qr as lo,$l as lr,Zt as ls,em as lt,Wh as m,Ha as ma,V as mc,Us as mi,Ud as mn,Hr as mo,Ul as mr,Vt as ms,Wp as mt,mg as n,po as na,de as nc,pc as ni,mf as nn,fi as no,pu as nr,fn as ns,mm as nt,og as o,io as oa,re as oc,ac as oi,of as on,ii as oo,au as or,rn as os,om as ot,Kh as p,Wa as pa,U as pc,Gs as pi,Gd as pn,Wr as po,Gl as pr,Ut as ps,Kp as pt,Mm as q,Ai as qa,jo as qi,ju as qn,An as qo,jc as qr,ke as qs,Mf as qt,fg as r,uo as ra,le as rc,dc as ri,ff as rn,ui as ro,du as rr,un as rs,fm as rt,ig as s,no as sa,te as sc,rc as si,rf as sn,ni as so,ru as sr,tn as ss,im as st,gg as t,ho as ta,pe as tc,hc as ti,gf as tn,mi as to,hu as tr,mn as ts,gm as tt,Qh as u,Xa as ua,Y as uc,Zs as ui,Zd as un,Xr as uo,Zl as ur,Yt as us,Qp as ut,Ih as v,Pa as va,N as vc,Fs as vi,Fd as vn,Pr as vo,Fl as vr,Nt as vs,Ip as vt,wh as w,Sa as wa,x as wc,Cs as wi,Cd as wn,Sr as wo,Cl as wr,xt as ws,wp as wt,Ah as x,Oa as xa,D as xc,ks as xi,kd as xn,Or as xo,kl as xr,Dt as xs,Ap as xt,Ph as y,Ma as ya,j as yc,Ns as yi,Nd as yn,Mr as yo,Nl as yr,jt as ys,Pp as yt,Jm as z,Ki as za,qo as zi,qu as zn,Kn as zo,qc as zr,Ge as zs,Jf as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Sm as $,bi as $a,xo as $i,xu as $n,bn as $o,xc as $r,ye as $s,Sf as $t,mh as A,fa as Aa,d as Ac,ps as Ai,pd as An,fr as Ao,pl as Ar,dt as As,mp as At,Jm as B,Ki as Ba,qo as Bi,qu as Bn,Kn as Bo,qc as Br,Ge as Bs,Jf as Bt,Oh as C,Ea as Ca,T as Cc,Ds as Ci,Dd as Cn,Er as Co,Dl as Cr,Tt as Cs,Op as Ct,bh as D,va as Da,_ as Dc,ys as Di,yd as Dn,vr as Do,yl as Dr,_t as Ds,bp as Dt,Sh as E,ba as Ea,y as Ec,xs as Ei,xd as En,br as Eo,xl as Er,yt as Es,Sp as Et,ih as F,na as Fa,t as Fc,rs as Fi,rd as Fn,nr as Fo,rl as Fr,tt as Fs,ip as Ft,Rm as G,Ii as Ga,Lo as Gi,Lu as Gn,In as Go,Lc as Gr,Fe as Gs,Rf as Gt,Wm as H,Hi as Ha,Uo as Hi,Uu as Hn,Hn as Ho,Uc as Hr,Ve as Hs,Wf as Ht,nh as I,ea as Ia,ts as Ii,td as In,er as Io,tl as Ir,$e as Is,np as It,Mm as J,Ai as Ja,jo as Ji,ju as Jn,An as Jo,jc as Jr,ke as Js,Mf as Jt,Im as K,Pi as Ka,Fo as Ki,Fu as Kn,Pn as Ko,Fc as Kr,Ne as Ks,If as Kt,eh as L,Qi as La,$o as Li,$u as Ln,Qn as Lo,$c as Lr,Ze as Ls,ep as Lt,uh as M,ca as Ma,s as Mc,ls as Mi,ld as Mn,cr as Mo,ll as Mr,st as Ms,up as Mt,ch as N,oa as Na,a as Nc,ss as Ni,sd as Nn,or as No,sl as Nr,at as Ns,cp as Nt,vh as O,ga as Oa,h as Oc,_s as Oi,_d as On,gr as Oo,_l as Or,ht as Os,vp as Ot,oh as P,ia as Pa,r as Pc,as as Pi,ad as Pn,ir as Po,al as Pr,rt as Ps,op as Pt,wm as Q,Si as Qa,Co as Qi,Cu as Qn,Sn as Qo,Cc as Qr,xe as Qs,wf as Qt,Qm as R,Xi as Ra,Zo as Ri,Zu as Rn,Xn as Ro,Zc as Rr,Ye as Rs,Qf as Rt,Ah as S,Oa as Sa,D as Sc,ks as Si,kd as Sn,Or as So,kl as Sr,Dt as Ss,Ap as St,wh as T,Sa as Ta,x as Tc,Cs as Ti,Cd as Tn,Sr as To,Cl as Tr,xt as Ts,wp as Tt,Hm as U,Bi as Ua,Vo as Ui,Vu as Un,Bn as Uo,Vc as Ur,ze as Us,Hf as Ut,Km as V,Wi as Va,Go as Vi,Gu as Vn,Wn as Vo,Gc as Vr,Ue as Vs,Kf as Vt,Bm as W,Ri as Wa,zo as Wi,zu as Wn,Rn as Wo,zc as Wr,Le as Ws,Bf as Wt,Om as X,Ei as Xa,Do as Xi,Du as Xn,En as Xo,Dc as Xr,Te as Xs,Of as Xt,Am as Y,Oi as Ya,ko as Yi,ku as Yn,On as Yo,kc as Yr,De as Ys,Af as Yt,Em as Z,wi as Za,To as Zi,Tu as Zn,wn as Zo,Tc as Zr,Ce as Zs,Ef as Zt,Bh as _,Ra as _a,L as _c,zs as _i,zd as _n,Rr as _o,zl as _r,Lt as _s,Bp as _t,ug as a,co as aa,se as ac,lc as ai,uf as an,ci as ao,lu as ar,cn as as,um as at,Ph as b,Ma as ba,j as bc,Ns as bi,Nd as bn,Mr as bo,Nl as br,jt as bs,Pp as bt,ig as c,no as ca,te as cc,rc as ci,rf as cn,ni as co,ru as cr,tn as cs,im as ct,Qh as d,Xa as da,Y as dc,Zs as di,Zd as dn,Xr as do,Zl as dr,Yt as ds,Qp as dt,yo as ea,_e as ec,yc as ei,bf as en,vi as eo,yu as er,vn as es,bm as et,Xh as f,Ja as fa,q as fc,Ys as fi,Yd as fn,Jr as fo,Yl as fr,qt as fs,Xp as ft,Hh as g,Ba as ga,z as gc,Vs as gi,Vd as gn,Br as go,Vl as gr,zt as gs,Hp as gt,Wh as h,Ha as ha,V as hc,Us as hi,Ud as hn,Hr as ho,Ul as hr,Vt as hs,Wp as ht,fg as i,uo as ia,le as ic,dc as ii,ff as in,ui as io,du as ir,un as is,fm as it,fh as j,ua as ja,l as jc,ds as ji,dd as jn,ur as jo,dl as jr,lt as js,fp as jt,gh as k,ma as ka,p as kc,hs as ki,hd as kn,mr as ko,hl as kr,pt as ks,gp as kt,ng as l,eo as la,$ as lc,tc as li,tf as ln,ei as lo,tu as lr,$t as ls,nm as lt,Kh as m,Wa as ma,U as mc,Gs as mi,Gd as mn,Wr as mo,Gl as mr,Ut as ms,Kp as mt,gg as n,ho as na,pe as nc,hc as ni,gf as nn,mi as no,hu as nr,mn as ns,gm as nt,cg as o,oo as oa,ae as oc,sc as oi,cf as on,oi as oo,su as or,on as os,cm as ot,Jh as p,Ka as pa,G as pc,qs as pi,qd as pn,Kr as po,ql as pr,Gt as ps,Jp as pt,Pm as q,Mi as qa,No as qi,Nu as qn,Mn as qo,Nc as qr,je as qs,Pf as qt,mg as r,po as ra,de as rc,pc as ri,mf as rn,fi as ro,pu as rr,fn as rs,mm as rt,og as s,io as sa,re as sc,ac as si,of as sn,ii as so,au as sr,rn as ss,om as st,vg as t,_o as ta,he as tc,_c as ti,vf as tn,gi as to,_u as tr,gn as ts,vm as tt,eg as u,Qa as ua,Z as uc,$s as ui,$d as un,Qr as uo,$l as ur,Zt as us,em as ut,Rh as v,Ia as va,F as vc,Ls as vi,Ld as vn,Ir as vo,Ll as vr,Ft as vs,Rp as vt,Eh as w,wa,C as wc,Ts as wi,Td as wn,wr as wo,Tl as wr,Ct as ws,Ep as wt,Mh as x,Aa as xa,k as xc,js as xi,jd as xn,Ar as xo,jl as xr,kt as xs,Mp as xt,Ih as y,Pa as ya,N as yc,Fs as yi,Fd as yn,Pr as yo,Fl as yr,Nt as ys,Ip as yt,Xm as z,Ji as za,Yo as zi,Yu as zn,Jn as zo,Yc as zr,qe as zs,Xf as zt};
