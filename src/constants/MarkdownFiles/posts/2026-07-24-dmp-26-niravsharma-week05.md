@@ -1,5 +1,5 @@
 ---
-title: "DMP Week 5: fix: support non-12 EDO temperaments in audio engine and widgets"
+title: "DMP Week 5: fix: Support non-12 EDO temperaments in audio engine and widgets"
 excerpt: "PR 5.2 makes the audio engine and widgets EDO-aware; PR 5.2b adds temperament persistence, foundational ratio data, and remaining goal fixes"
 category: "DEVELOPER NEWS"
 date: "2026-07-24"
@@ -24,7 +24,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 This week I completed the audio engine and widget EDO-awareness (PR 5.2) and PR 5.2b landed the remaining Goal 1+2+3 fixes: temperament persistence, temperament threading, and temperament reset on run.
 
-### PR 5.2 - fix: support non-12 EDO temperaments in audio engine and widgets
+### PR 5.2 - fix: Support non-12 EDO temperaments in audio engine and widgets
 
 The core problem: when a user selected a non-12 temperament (e.g., 5-EDO, 19-EDO), the audio engine silently fell back to 12-EDO behavior. Notes that should sound in the selected tuning were calculated using 12-equal-temperament formulas, producing wrong frequencies.
 
@@ -58,7 +58,7 @@ Three widgets were updated:
 
 ---
 
-### PR 5.2b - feat(temperament): foundational ratio data, dynamic consonant stepping, and temperament length block
+### PR 5.2b - feat(temperament): Foundational ratio data, dynamic consonant stepping, and temperament length block
 
 PR 5.2b (#7853) shipped the persistence and remaining goal fixes:
 
