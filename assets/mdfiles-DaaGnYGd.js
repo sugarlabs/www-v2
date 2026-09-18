@@ -38987,6 +38987,192 @@ Now that the research and design phase for the Git tutorial is wrapped up, next 
 
 Thanks for reading, and see you next week!
 `,mh=e({default:()=>``}),hh=e({default:()=>gh}),gh=`---
+title: "DMP '26 Week 08 Update by Noaman Akhtar"
+excerpt: "Building the first offline provider test suite and removing the event-loop bottleneck that blocked concurrent Sugar-AI requests."
+category: "DEVELOPER NEWS"
+date: "2026-08-09"
+slug: "2026-08-09-dmp-26-noaman-week08"
+author: "@/constants/MarkdownFiles/authors/noaman-akhtar.md"
+description: "DMP'26 Contributor at SugarLabs working on AI Optimization"
+tags: "dmp26,sugarlabs,week08,noaman-akhtar,sugar-ai,ai-optimization,testing,pytest,concurrency,async"
+image: "assets/Images/c4gt_DMP.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 08 Progress Report by Noaman Akhtar
+
+**Project:** [AI Optimization](https://github.com/sugarlabs/sugar-ai)  
+**Mentors:** [sum2it](https://github.com/sum2it), [mostlyk](https://github.com/MostlyKIGuess), [chimosky](https://github.com/chimosky)  
+**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa), [Mebin](https://github.com/mebinthattil)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-08-03 - 2026-08-09
+
+---
+
+## Goals for This Week
+
+- Establish the first automated test foundation for Sugar-AI's provider layer.
+- Keep the initial tests fully offline, without model downloads, API keys, network access, Docker, or a running application server.
+- Verify the shared generation-parameter contract and the provider factory before testing live model execution.
+- Cover the differences between Hugging Face, Ollama, Gemini, and OpenAI-compatible provider request formats.
+- Keep FastAPI responsive while remote providers, local inference, or document retrieval are running.
+- Verify that concurrent requests overlap correctly without promising unlimited model capacity.
+
+---
+
+## Why Provider Tests Matter Now
+
+The provider refactor gave Sugar-AI a common interface for several different model backends. That flexibility also creates a new kind of regression risk. A small change to a shared parameter object, factory branch, or message conversion helper can affect every provider even when the change was intended for only one of them.
+
+Until this week, most verification was manual. Manual checks are useful for confirming that a real model responds, but they are slow, require a particular environment, and do not give the project a dependable check that can run on every change. The next phase therefore needed a small test suite that could validate the provider contract quickly and repeatably.
+
+I started this work in [sugar-ai#157](https://github.com/sugarlabs/sugar-ai/pull/157). The initial target was not end-to-end inference. It was a stable offline foundation that could catch configuration and translation errors before a test needed to load a model or call an external service.
+
+The week also included a concurrency pass on the running application. The provider tests protect the multi-provider contract, while the concurrency work makes sure that one slow model request does not hold the FastAPI event loop hostage.
+
+## Keeping Sugar-AI Responsive During Model Requests
+
+The Sugar-AI routes were declared with \`async def\`, but some of the work they called was still synchronous. A slow model generation or document retrieval operation could therefore block the single Uvicorn worker's event loop. The practical effect was that requests were handled one after another, even when the server could otherwise have accepted more work. Before the fix, a lightweight \`GET /openapi.json\` request took about 0.21 seconds while the server was idle, but about 29.65 seconds when sent during a roughly 31.9-second model request.
+
+The goal was to let the application continue serving unrelated requests while model work was in progress. The implementation uses two different strategies, depending on where the work runs.
+
+### Asynchronous Remote Providers
+
+Ollama, Gemini, and OpenAI-compatible providers wait for another process or server to generate the response. Their synchronous \`httpx.Client\` instances were replaced with \`httpx.AsyncClient\`, and their HTTP calls are now awaited. When Sugar-AI reaches that network wait, the event loop can process another request instead of remaining blocked until the model server responds.
+
+The provider contract was updated at the same time. \`generate\`, \`chat\`, \`health_check\`, and \`close\` are now asynchronous methods. The routes and \`RAGAgent\` were updated together so every provider call is awaited. This matters because an async method returns a coroutine until its caller awaits it. Updating only the provider would have returned coroutine objects instead of generated text.
+
+### Local Inference and Retrieval
+
+Local Hugging Face inference cannot become network-asynchronous because the Transformers pipeline runs inside the Sugar-AI process. Its blocking implementation remains in private synchronous helpers, while the public async methods call those helpers through FastAPI's threadpool. The same pattern is used for Hugging Face chat generation and health checks.
+
+FAISS and LangChain retrieval can also block the event loop, so retriever invocation was moved to the threadpool as well. This does not make local inference infinitely faster or guarantee that two local generations will run efficiently at the same time. Its purpose is narrower and important: the event-loop thread remains available to handle unrelated API requests while a worker performs local model or retrieval work.
+
+The resulting request flow is now:
+
+\`\`\`text
+Client
+  -> FastAPI route
+    -> RAG agent
+      -> FAISS retrieval in threadpool
+      -> async provider request
+        -> Ollama or remote model server
+\`\`\`
+
+### Cleanup and Capacity Limits
+
+Remote providers own asynchronous HTTP clients, so their \`close()\` methods await \`aclose()\`. The application closes the active provider during shutdown, and the previous provider is closed when a model is changed. The local Hugging Face provider keeps an async no-op close method because it does not own an HTTP client.
+
+The Python GIL does not make this a guarantee of unlimited local throughput. For remote providers, the main benefit comes from asynchronous network I/O. For local Hugging Face and FAISS work, the threadpool protects responsiveness, while actual throughput still depends on CPU cores, GPU memory, model behavior, and native library execution. The accurate claim is that Sugar-AI no longer imposes an avoidable one-request-at-a-time event-loop bottleneck.
+
+## Concurrency Verification
+
+I compiled the changed Python modules with \`py_compile\`, ran \`git diff --check\`, and audited the provider call chain to confirm that generation, chat, health checks, and cleanup are awaited correctly.
+
+For the runtime check, I used Ollama with the non-reasoning \`llama3.2:1b\` model and \`OLLAMA_NUM_PARALLEL=2\` on a local CPU. One direct Ollama request took 9.06 seconds and returned HTTP 200 with 660 characters. Two requests released together took 11.41 and 11.49 seconds, with a total wall-clock time of 11.49 seconds compared with 22.90 seconds summed across both clients. Both responses were complete.
+
+I repeated the test through Sugar-AI's \`POST /ask-llm-prompted\` endpoint. One request took 10.39 seconds and returned 652 characters. Two simultaneous requests took 12.14 and 12.82 seconds, with a total wall-clock time of 12.82 seconds compared with 24.96 seconds summed across both clients. Both returned HTTP 200 and non-empty answers.
+
+While those requests were running, \`GET /openapi.json\` returned HTTP 200 in approximately 0.006 seconds. This was the clearest before-and-after signal that the FastAPI event loop could respond to a lightweight request while generation was still in progress.
+
+## Establishing an Offline Test Foundation
+
+The first step was adding a dedicated \`pytest.ini\` configuration. Test discovery is limited to the \`tests/\` directory, and strict marker validation is enabled. Strict markers make an incorrectly named or unregistered marker fail early instead of silently changing how a test is collected.
+
+I also registered a \`live_provider\` marker for a later class of tests that will intentionally contact a configured provider. Those tests are meant to be opt-in. The initial suite does not use that marker because it should remain safe to run on a development laptop or in continuous integration without credentials, model files, or network access.
+
+To keep the dependency boundary clear, I added \`requirements-dev.txt\` with Pytest as a development-only dependency. Testing tools remain separate from Sugar-AI's production requirements, so adding the suite does not make the deployed service install another runtime dependency by accident.
+
+## Testing the Generation Contract
+
+The first behavioral tests cover \`GenerationParams\`, the shared object that carries generation settings from the API layer to a provider. It is a small object, but it is an important boundary because every backend receives the same internal representation before translating it into its own request format.
+
+The tests verify the defaults for maximum output length, temperature, top-p, top-k, repetition penalty, truncation, and sampling. They also cover the relationship between temperature and sampling:
+
+- At temperature zero, generation should be deterministic and sampling is disabled.
+- At a positive temperature, sampling is enabled even if a caller tries to disable it manually.
+
+Testing this rule directly protects behavior implemented in the provider base layer. It also prevents a future provider or route change from quietly producing different sampling behavior for the same request.
+
+## Checking Provider Factory Configuration
+
+The next group tests the \`create_provider()\` factory. The factory is responsible for selecting the correct implementation from configuration, so it is the point where a provider name becomes a concrete Hugging Face, Ollama, Gemini, or OpenAI-compatible provider.
+
+These tests use mocks instead of constructing real providers. That lets me inspect the arguments passed to each constructor without loading a model or creating an HTTP client. The suite checks that the factory forwards the right model name and provider-specific settings, including:
+
+- Hugging Face quantization and development-mode options;
+- Ollama's base URL;
+- Gemini credentials and endpoint configuration; and
+- OpenAI-compatible endpoint configuration and API credentials.
+
+The factory tests also cover every supported alias for the OpenAI-compatible provider, reject an unknown provider name, and verify that cloud providers fail early when the required API key is empty. Failing at configuration time is clearer and safer than allowing a request to travel to a provider and return a less useful authentication error later.
+
+## Verifying Provider-Specific Parameter Mappings
+
+Sugar-AI uses one \`GenerationParams\` format internally, but the backends do not use the same field names. The helper tests document and protect those translations.
+
+The OpenAI-compatible provider uses standard fields such as \`max_tokens\`. Ollama expects names such as \`num_predict\` and \`repeat_penalty\`. Gemini uses camelCase fields including \`maxOutputTokens\`, \`topP\`, and \`topK\`. The tests confirm that each provider receives the fields it understands and that the shared internal names do not leak into a backend request unchanged.
+
+This separation is one of the main benefits of the provider architecture. Routes and \`RAGAgent\` can work with one stable parameter object, while each provider owns the details of its external API. A test at this boundary makes that design visible and gives future provider changes a precise place to start.
+
+## Gemini Messages and Response Parsing
+
+Gemini needs additional tests because its chat format differs from the internal message format. The suite checks that system messages are separated into Gemini's system-instruction structure, user messages remain user messages, and assistant messages are converted to Gemini's \`model\` role.
+
+The response tests cover another small but important edge case. Gemini can return text in multiple response parts, so the provider must join those parts into one answer. If the response contains no candidates, the helper should return an empty string instead of raising an indexing error. These cases are easy to miss when testing only a successful one-part response, but they are exactly the sort of provider-specific behavior that belongs in a focused unit test.
+
+The initial helper coverage also protects the Hugging Face response and chat-normalization logic. That keeps the existing local provider behavior under the same test discipline as the newer HTTP providers.
+
+## Verification
+
+The first commits in [PR #157](https://github.com/sugarlabs/sugar-ai/pull/157) established nineteen offline test cases covering provider configuration, generation-parameter behavior, backend field mappings, message conversion, and response parsing.
+
+The suite is intended to run with:
+
+\`\`\`powershell
+.\\venv\\Scripts\\python.exe -m pytest tests -q -p no:cacheprovider
+\`\`\`
+
+The important property of this first layer is what it does not require. It does not download a model, read a provider API key, start Docker, contact Ollama or a cloud service, or launch the FastAPI application. Mocks and small helper inputs keep the feedback loop quick while still exercising the decisions that affect every provider.
+
+This is a contract-level test layer, not a claim that every provider can generate a good answer in production. Live-provider tests will be useful later, but they need separate setup, explicit opt-in behavior, and a configured service. Keeping that distinction clear prevents an offline unit test from becoming dependent on external availability.
+
+## Challenge and Key Learning
+
+The challenging part was deciding what to test first. It would have been tempting to begin with a real prompt and a running model, but that would have tested the environment as much as it tested Sugar-AI. The more useful first step was to test the boundaries where provider-specific behavior enters the shared architecture.
+
+The main lesson is that a provider abstraction needs tests for both sides of its contract. The shared side must preserve stable defaults and factory behavior. The backend side must translate those values into the exact field names, roles, and response shapes that each service expects. Testing only one side would leave the most error-prone part of the abstraction unprotected.
+
+The suite also gives the project a better way to handle future changes. When asynchronous provider execution and resource cleanup are ready for coverage, those tests can build on the same offline foundation instead of starting from an unstructured collection of live requests.
+
+The concurrency work reinforced a second lesson: declaring a route with \`async def\` is not enough if it immediately calls blocking code. Remote waits need real asynchronous I/O, while local inference and retrieval need a threadpool boundary. The benchmark also made the distinction between responsiveness and throughput explicit. The event loop can stay available without promising that one model can serve unlimited local generations at once.
+
+## Plan for Next Week
+
+The next stage is to extend the offline suite to the now-asynchronous provider execution methods: \`generate\`, \`chat\`, \`health_check\`, and resource cleanup. These tests should verify awaited results, failure paths, and client closure without requiring a live provider.
+
+I will keep the same separation between fast offline tests and explicitly marked live-provider tests. The offline suite should continue to validate request construction and provider helper behavior without external services, while live tests can verify real compatibility against a configured backend when that environment is available. A separate load test should cover the RAG path and measure deployment-specific Ollama settings, since \`OLLAMA_NUM_PARALLEL\` depends on available CPU, GPU, and memory.
+
+The provider design also leaves room for future inference servers such as vLLM, which can expose an OpenAI-compatible HTTP API. That work will require its own deployment and performance validation rather than being assumed from the current Ollama test.
+
+---
+
+## Resources and References
+
+- **Repository:** [sugarlabs/sugar-ai](https://github.com/sugarlabs/sugar-ai)
+- **Provider test suite:** [sugar-ai#157](https://github.com/sugarlabs/sugar-ai/pull/157)
+- **Pytest documentation:** [docs.pytest.org](https://docs.pytest.org/)
+- **Ollama API reference:** [github.com/ollama/ollama](https://github.com/ollama/ollama/blob/main/docs/api.md)
+
+---
+
+## Acknowledgments
+
+Thanks to my mentors and the Sugar Labs community for the guidance on making the provider layer testable and responsive as the architecture expands. Establishing a small, deterministic test foundation alongside measured concurrency work will make the next provider changes easier to review with confidence.
+
+---
+`,_h=e({default:()=>vh}),vh=`---
 title: "GSoC '26 Week 11 Update by Dev"
 excerpt: "Fixing GTK4 CSS scoping and GTK4 CSS parser warnings in sugar-toolkit-gtk4, updating activities list cell rendering and icon palette styling in sugar, and completing theme selected states in sugar-artwork."
 category: "DEVELOPER NEWS"
@@ -39074,7 +39260,7 @@ image: "assets/Images/GSOC.webp"
 ## Acknowledgments
 
 Thanks to Krish and Ibiam for their guidance and reviews.
-`,_h=e({default:()=>vh}),vh=`---
+`,yh=e({default:()=>bh}),bh=`---
 title: "GSoC '26 Week 11: Tackling the TurtleArt GTK4 Port Foundation"
 excerpt: "Starting the GTK4 port of TurtleArt, beginning with migrating the plugin system, updating basic layouts, and cleaning up legacy code."
 category: "DEVELOPER NEWS"
@@ -39126,7 +39312,7 @@ Next week I'll be diving into the heart of \`TurtleArtActivity.py\` to work thro
 ## Acknowledgments
 
 Thanks to my mentors for the reviews and to everyone in the Sugar Labs community for the feedback and help.
-`,yh=e({default:()=>bh}),bh=`---
+`,xh=e({default:()=>Sh}),Sh=`---
 title: "GSoC '26 Week 11 Update by Parth Dagia"
 excerpt: "The Workspace can be zoomed now: a pair of magnifier buttons on the canvas step a scale level, and every Brick on the canvas resizes to it - which meant fixing a units mismatch that had been sitting in the Brick model since week 5."
 category: "DEVELOPER NEWS"
@@ -39215,7 +39401,7 @@ Week 12 is the last one. With scaling in, the Workspace has everything it needs,
 Thanks to Anindya Kundu for the reviews on both PRs, and to Syed for building this alongside me. Thanks also to Justin Charles and Safwan Sayeed for their continued guidance, and to Devin Ulibarri, Walter Bender, and the wider Sugar Labs community.
 
 ---
-`,xh=e({default:()=>Sh}),Sh=`---
+`,Ch=e({default:()=>wh}),wh=`---
 title: "GSoC '26 Week 11 Update by Syed Khubayb Ur Rahman"
 excerpt: "Defined Import/Export types and implemented the Export functionality for Workspace Programs and Projects."
 category: "DEVELOPER NEWS"
@@ -39280,7 +39466,7 @@ Following last week's discussion, the focus shifted from undo/redo functionality
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community.
 
 ---
-`,Ch=e({default:()=>wh}),wh=`---
+`,Th=e({default:()=>Eh}),Eh=`---
 title: "GSoC '26 Week 11 Update by Shreya Saxena"
 excerpt: "A ~23x speedup for headless notation exports, plus a fix for drum-polyrhythm project bug."
 category: "DEVELOPER NEWS"
@@ -39383,7 +39569,7 @@ With both fixes merged, I’ll clean up the now-unused \`_enqueue()\` and \`_cal
 
 ## Acknowledgments
 
-Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,Th=e({default:()=>Eh}),Eh=`---
+Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,Dh=e({default:()=>Oh}),Oh=`---
 title: "GSoC '26 Week 11 Update by Shubham Sharma"
 excerpt: "Fixing the Journal's sorting and rebuilding its drawing to match how Sugar itself draws, hardening what the Journal sends to the AI, dropping the live-sharing route for peer reflection in favour of one that works with no network at all, and checking last week's conversation test against real published data"
 category: "DEVELOPER NEWS"
@@ -39587,7 +39773,7 @@ Thanks to Walter and Ibiam for their continued guidance. Thanks to Diwangshu, Me
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,Dh=e({default:()=>Oh}),Oh=`---
+`,kh=e({default:()=>Ah}),Ah=`---
 title: "GSoC '26 Week 11: Update by Harihara Vardhan"
 excerpt: "This week I implemented the full interactive Git Tutorial overlay in Music Blocks, complete with custom slide animations, smart video management, keyboard shortcuts, and native notification feedback."
 category: "DEVELOPER NEWS"
@@ -39666,7 +39852,7 @@ This guides students directly toward taking their first action in the workspace 
 We are approaching the final phase of GSoC! Next week, I am going to update the tutorial based on mentor feedback and testing with kids, deploy the backend server, and prepare the frontend integration for the final review.
 
 Thanks for reading, and see you next week!
-`,kh=e({default:()=>Ah}),Ah=`---
+`,jh=e({default:()=>Mh}),Mh=`---
 title: "GSoC '26 Week 11 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented game mode with territory capture, AI opponent, trail coloring, label positioning for overlapping dots, localization for all categories and figures, and used AI for adding new categories."
 category: "DEVELOPER NEWS"
@@ -39790,7 +39976,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance and patience, and 
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,jh=e({default:()=>Mh}),Mh=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Nh=e({default:()=>Ph}),Ph=`---
 title: "DMP '26 Week 9 Update by Stuti Jain"
 excerpt: "Improved the Lesson Plans infrastructure by separating lesson data from implementation and making Lesson Plans and the Explorer Journal work alongside the rest of the Music Blocks interface."
 category: "DEVELOPER NEWS"
@@ -39935,7 +40121,7 @@ Similarly, as the number of lessons grows, the implementation needs to remain ea
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the Lesson Plans framework. Their observations from learner testing have helped guide the project beyond the initial prototype and toward a more flexible, maintainable, and scalable learning experience within Music Blocks.`,Nh=e({default:()=>Ph}),Ph=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the Lesson Plans framework. Their observations from learner testing have helped guide the project beyond the initial prototype and toward a more flexible, maintainable, and scalable learning experience within Music Blocks.`,Fh=e({default:()=>Ih}),Ih=`---
 title: "DMP '26 Week 07 Update by Abhnish Kumar"
 excerpt: "Confirming the root cause of the touch drag bug, completing the touch support audit report, and sharing findings with the mentor team for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40057,7 +40243,7 @@ conclusion.
 
 Thanks to Devin Ulibarri for his patience while this investigation took
 a full week of back-and-forth debugging, and for being ready to jump in
-with real-device testing once the audit was complete.`,Fh=e({default:()=>Ih}),Ih=`---
+with real-device testing once the audit was complete.`,Lh=e({default:()=>Rh}),Rh=`---
 title: "GSoC '26 Week 12 Update by Dev"
 excerpt: "Final audit across all four repositories, fixing leftover GTK3 API calls in sugar-ext C controllers, palette and tooltip regressions in sugar-toolkit-gtk4, Wayland activity launch and frame animation bugs in sugar, and CSS cleanup in sugar-artwork."
 category: "DEVELOPER NEWS"
@@ -40184,7 +40370,7 @@ A big thanks to everyone at Sugar Labs for the support throughout the program!
 ## Acknowledgments
 
 Thanks to Krish Pandya, Ibiam Chihurumnaya, Walter Bender, and Juan Pablo Ugarte for their guidance and support throughout the project!
-`,Lh=e({default:()=>Rh}),Rh=`---
+`,zh=e({default:()=>Bh}),Bh=`---
 title: "GSoC '26 Week 12 Update by Syed Khubayb Ur Rahman"
 excerpt: "Wrote detailed technical specification documentation and compiled the final GSoC report."
 category: "DEVELOPER NEWS"
@@ -40240,7 +40426,7 @@ I also compiled the final report for my GSoC project. This repository contains t
 As my GSoC period concludes, I want to give a massive thanks to my mentors Anindya Kundu and Safwan Sayeeds for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4. 
 
 ---
-`,zh=e({default:()=>Bh}),Bh=`---
+`,Vh=e({default:()=>Hh}),Hh=`---
 title: "GSoC '26 Week 12: Update by Harihara Vardhan"
 excerpt: "In the final week of GSoC 2026, I reworded all user-facing Git terminology for kids, wrote comprehensive test suites across all Git features, and prepped the codebase and database for production deployment."
 category: "DEVELOPER NEWS"
@@ -40336,7 +40522,7 @@ None of this would have been possible without the amazing guidance and support f
 Also, a heartfelt thank you to the entire Sugar Labs community for creating such a welcoming, collaborative space.
 
 Thank you to everyone who followed along with my weekly updates this summer. Stay tuned for the final evaluation report and the official launch!
-`,Vh=e({default:()=>Hh}),Hh=`---
+`,Uh=e({default:()=>Wh}),Wh=`---
 
 title: "DMP '26 Week 10 Update by Stuti Jain"
 
@@ -40500,7 +40686,7 @@ The exploration of localization also showed that supporting multiple languages r
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,Uh=e({default:()=>Wh}),Wh=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,Gh=e({default:()=>Kh}),Kh=`---
 title: "GSoC '26 Week 12 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented multiplayer in Game Mode, enabling real time state synchronization, player spawning, network event handling, and shared territory capture through the Sugarizer shared activity network"
 category: "DEVELOPER NEWS"
@@ -40618,7 +40804,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance, and to the Sugar 
 
 ---
 
-*Thanks for reading! Stay tuned for next week’s update. Feel free to reach out if you have any questions or feedback.*`,Gh=e({default:()=>Kh}),Kh=`---
+*Thanks for reading! Stay tuned for next week’s update. Feel free to reach out if you have any questions or feedback.*`,qh=e({default:()=>Jh}),Jh=`---
 
 title: "DMP '26 Week 11 Update by Stuti Jain"
 
@@ -40789,7 +40975,7 @@ Unlike individual toolbar labels, a lesson contains interconnected story content
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,qh=e({default:()=>Jh}),Jh=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,Yh=e({default:()=>Xh}),Xh=`---
 title: "GSoC '26 Week 13 Report by Rejah Rabeeul Haque"
 excerpt: "Improved Game Mode with speed adjuster, XO buddy colors, spawn positioning, and 50% win condition, added localized tutorials for Draw and Number Mode, and added Journal save for Draw Mode."
 category: "DEVELOPER NEWS"
@@ -40876,7 +41062,7 @@ Thanks to my mentor Lionel Laske for the continuous guidance and patience, and t
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Yh=e({default:()=>Xh}),Xh=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Zh=e({default:()=>Qh}),Qh=`---
 title: "GSoC '26 Week 14 Report by Rejah Rabeeul Haque"
 excerpt: "Wrapping up GSoC '26 with AI difficulty levels in Game Mode and in-game event notifications to improve the player experience."
 category: "DEVELOPER NEWS"
@@ -40946,7 +41132,7 @@ A massive thank you to my mentor, Lionel Laske, for his continuous guidance, ins
 
 ---
 
-*Thanks for following my journey this summer! Feel free to reach out if you have any questions or feedback.*`,Zh=e({default:()=>Qh}),Qh=`---
+*Thanks for following my journey this summer! Feel free to reach out if you have any questions or feedback.*`,$h=e({default:()=>eg}),eg=`---
 title: "GSoC'26  Final Report by Syed Khubayb Ur Rahman"
 excerpt: "Final report summarizing the architecture and outcomes of the Music Blocks v4 Masonry project."
 category: "DEVELOPER NEWS"
@@ -41124,7 +41310,7 @@ To restore a program, the system reconstructs blank Brick instances based on the
 ## Acknowledgments
 
 Special thanks to my mentors Anindya Kundu  and Safwan Sayeed for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the entire Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4.
-`,$h=e({default:()=>eg}),eg=`---
+`,tg=e({default:()=>ng}),ng=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -41273,7 +41459,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,tg=e({default:()=>ng}),ng=`---
+`,rg=e({default:()=>ig}),ig=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -41376,7 +41562,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,rg=e({default:()=>ig}),ig=`---
+`,ag=e({default:()=>og}),og=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -41849,7 +42035,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,ag=e({default:()=>og}),og=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,sg=e({default:()=>cg}),cg=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -41936,7 +42122,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,sg=e({default:()=>cg}),cg=`---\r
+`,lg=e({default:()=>ug}),ug=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -42029,7 +42215,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,lg=e({default:()=>ug}),ug=`---\r
+`,dg=e({default:()=>fg}),fg=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -42123,7 +42309,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,dg=e({default:()=>fg}),fg=`---\r
+`,pg=e({default:()=>mg}),mg=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -42211,7 +42397,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,pg=e({default:()=>mg}),mg=`---\r
+`,hg=e({default:()=>gg}),gg=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -42294,7 +42480,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,hg=e({default:()=>gg}),gg=`---\r
+`,_g=e({default:()=>vg}),vg=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -42360,7 +42546,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,_g=e({default:()=>vg}),vg=`---
+`,yg=e({default:()=>bg}),bg=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -42442,7 +42628,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,yg=e({default:()=>bg}),bg=`---
+---`,xg=e({default:()=>Sg}),Sg=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -42535,7 +42721,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,xg=e({default:()=>Sg}),Sg=`---
+`,Cg=e({default:()=>wg}),wg=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -42624,7 +42810,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Cg=e({default:()=>wg}),wg=`---
+--- `,Tg=e({default:()=>Eg}),Eg=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42769,7 +42955,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Tg=e({default:()=>Eg}),Eg=`---
+--- `,Dg=e({default:()=>Og}),Og=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42957,7 +43143,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Dg=e({default:()=>Og}),Og=`---
+--- `,kg=e({default:()=>Ag}),Ag=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43052,7 +43238,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,kg=e({default:()=>Ag}),Ag=`---
+`,jg=e({default:()=>Mg}),Mg=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43141,7 +43327,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,jg=e({default:()=>Mg}),Mg=`---
+`,Ng=e({default:()=>Pg}),Pg=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43228,7 +43414,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Ng=e({default:()=>Pg}),Pg=`---
+---`,Fg=e({default:()=>Ig}),Ig=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43311,7 +43497,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Fg=e({default:()=>Ig}),Ig=`---
+---`,Lg=e({default:()=>Rg}),Rg=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43394,7 +43580,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Lg=e({default:()=>Rg}),Rg=`---
+---`,zg=e({default:()=>Bg}),Bg=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -43699,4 +43885,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Hm as $,Bi as $a,Vo as $i,Vu as $n,Bn as $o,Vc as $r,ze as $s,Hf as $t,Nh as A,Ma as Aa,j as Ac,Ns as Ai,Nd as An,Mr as Ao,Nl as Ar,jt as As,Pp as At,mh as B,fa as Ba,d as Bc,ps as Bi,pd as Bn,fr as Bo,pl as Br,dt as Bs,mp as Bt,qh as C,Ka as Ca,G as Cc,qs as Ci,qd as Cn,Kr as Co,ql as Cr,Gt as Cs,Jp as Ct,zh as D,Ra as Da,L as Dc,zs as Di,zd as Dn,Rr as Do,zl as Dr,Lt as Ds,Bp as Dt,Vh as E,Ba as Ea,z as Ec,Vs as Ei,Vd as En,Br as Eo,Vl as Er,zt as Es,Hp as Et,Ch as F,Sa as Fa,x as Fc,Cs as Fi,Cd as Fn,Sr as Fo,Cl as Fr,xt as Fs,wp as Ft,ih as G,na as Ga,t as Gc,rs as Gi,rd as Gn,nr as Go,rl as Gr,tt as Gs,ip as Gt,uh as H,ca as Ha,s as Hc,ls as Hi,ld as Hn,cr as Ho,ll as Hr,st as Hs,up as Ht,xh as I,ba as Ia,y as Ic,xs as Ii,xd as In,br as Io,xl as Ir,yt as Is,Sp as It,Qm as J,Xi as Ja,Zo as Ji,Zu as Jn,Xn as Jo,Zc as Jr,Ye as Js,Qf as Jt,nh as K,ea as Ka,ts as Ki,td as Kn,er as Ko,tl as Kr,$e as Ks,np as Kt,yh as L,va as La,_ as Lc,ys as Li,yd as Ln,vr as Lo,yl as Lr,_t as Ls,bp as Lt,kh as M,Oa as Ma,D as Mc,ks as Mi,kd as Mn,Or as Mo,kl as Mr,Dt as Ms,Ap as Mt,Dh as N,Ea as Na,T as Nc,Ds as Ni,Dd as Nn,Er as No,Dl as Nr,Tt as Ns,Op as Nt,Lh as O,Ia as Oa,F as Oc,Ls as Oi,Ld as On,Ir as Oo,Ll as Or,Ft as Os,Rp as Ot,Th as P,wa as Pa,C as Pc,Ts as Pi,Td as Pn,wr as Po,Tl as Pr,Ct as Ps,Ep as Pt,Wm as Q,Hi as Qa,Uo as Qi,Uu as Qn,Hn as Qo,Uc as Qr,Ve as Qs,Wf as Qt,_h as R,ga as Ra,h as Rc,_s as Ri,_d as Rn,gr as Ro,_l as Rr,ht as Rs,vp as Rt,Yh as S,Ja as Sa,q as Sc,Ys as Si,Yd as Sn,Jr as So,Yl as Sr,qt as Ss,Xp as St,Uh as T,Ha as Ta,V as Tc,Us as Ti,Ud as Tn,Hr as To,Ul as Tr,Vt as Ts,Wp as Tt,ch as U,oa as Ua,a as Uc,ss as Ui,sd as Un,or as Uo,sl as Ur,at as Us,cp as Ut,fh as V,ua as Va,l as Vc,ds as Vi,dd as Vn,ur as Vo,dl as Vr,lt as Vs,fp as Vt,oh as W,ia as Wa,r as Wc,as as Wi,ad as Wn,ir as Wo,al as Wr,rt as Ws,op as Wt,Jm as X,Ki as Xa,qo as Xi,qu as Xn,Kn as Xo,qc as Xr,Ge as Xs,Jf as Xt,Xm as Y,Ji as Ya,Yo as Yi,Yu as Yn,Jn as Yo,Yc as Yr,qe as Ys,Xf as Yt,Km as Z,Wi as Za,Go as Zi,Gu as Zn,Wn as Zo,Gc as Zr,Ue as Zs,Kf as Zt,ag as _,io as _a,re as _c,ac as _i,of as _n,ii as _o,au as _r,rn as _s,om as _t,kg as a,ko as aa,De as ac,kc as ai,Af as an,Oi as ao,ku as ar,On as as,Am as at,$h as b,Qa as ba,Z as bc,$s as bi,$d as bn,Qr as bo,$l as br,Zt as bs,em as bt,Cg as c,Co as ca,xe as cc,Cc as ci,wf as cn,Si as co,Cu as cr,Sn as cs,wm as ct,_g as d,_o as da,he as dc,_c as di,vf as dn,gi as do,_u as dr,gn as ds,vm as dt,zo as ea,Le as ec,zc as ei,Bf as en,Ri as eo,zu as er,Rn as es,Bm as et,hg as f,ho as fa,pe as fc,hc as fi,gf as fn,mi as fo,hu as fr,mn as fs,gm as ft,sg as g,oo as ga,ae as gc,sc as gi,cf as gn,oi as go,su as gr,on as gs,cm as gt,lg as h,co as ha,se as hc,lc as hi,uf as hn,ci as ho,lu as hr,cn as hs,um as ht,jg as i,jo as ia,ke as ic,jc as ii,Mf as in,Ai as io,ju as ir,An as is,Mm as it,jh as j,Aa as ja,k as jc,js as ji,jd as jn,Ar as jo,jl as jr,kt as js,Mp as jt,Fh as k,Pa as ka,N as kc,Fs as ki,Fd as kn,Pr as ko,Fl as kr,Nt as ks,Ip as kt,xg as l,xo as la,ye as lc,xc as li,Sf as ln,bi as lo,xu as lr,bn as ls,Sm as lt,dg as m,uo as ma,le as mc,dc as mi,ff as mn,ui as mo,du as mr,un as ms,fm as mt,Fg as n,Fo as na,Ne as nc,Fc as ni,If as nn,Pi as no,Fu as nr,Pn as ns,Im as nt,Dg as o,Do as oa,Te as oc,Dc as oi,Of as on,Ei as oo,Du as or,En as os,Om as ot,pg as p,po as pa,de as pc,pc as pi,mf as pn,fi as po,pu as pr,fn as ps,mm as pt,eh as q,Qi as qa,$o as qi,$u as qn,Qn as qo,$c as qr,Ze as qs,ep as qt,Ng as r,No as ra,je as rc,Nc as ri,Pf as rn,Mi as ro,Nu as rr,Mn as rs,Pm as rt,Tg as s,To as sa,Ce as sc,Tc as si,Ef as sn,wi as so,Tu as sr,wn as ss,Em as st,Lg as t,Lo as ta,Fe as tc,Lc as ti,Rf as tn,Ii as to,Lu as tr,In as ts,Rm as tt,yg as u,yo as ua,_e as uc,yc as ui,bf as un,vi as uo,yu as ur,vn as us,bm as ut,rg as v,no as va,te as vc,rc as vi,rf as vn,ni as vo,ru as vr,tn as vs,im as vt,Gh as w,Wa as wa,U as wc,Gs as wi,Gd as wn,Wr as wo,Gl as wr,Ut as ws,Kp as wt,Zh as x,Xa as xa,Y as xc,Zs as xi,Zd as xn,Xr as xo,Zl as xr,Yt as xs,Qp as xt,tg as y,eo as ya,$ as yc,tc as yi,tf as yn,ei as yo,tu as yr,$t as ys,nm as yt,hh as z,ma as za,p as zc,hs as zi,hd as zn,mr as zo,hl as zr,pt as zs,gp as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Wm as $,Hi as $a,Uo as $i,Uu as $n,Hn as $o,Uc as $r,Ve as $s,Wf as $t,Fh as A,Pa as Aa,N as Ac,Fs as Ai,Fd as An,Pr as Ao,Fl as Ar,Nt as As,Ip as At,hh as B,ma as Ba,p as Bc,hs as Bi,hd as Bn,mr as Bo,hl as Br,pt as Bs,gp as Bt,Yh as C,Ja as Ca,q as Cc,Ys as Ci,Yd as Cn,Jr as Co,Yl as Cr,qt as Cs,Xp as Ct,Vh as D,Ba as Da,z as Dc,Vs as Di,Vd as Dn,Br as Do,Vl as Dr,zt as Ds,Hp as Dt,Uh as E,Ha as Ea,V as Ec,Us as Ei,Ud as En,Hr as Eo,Ul as Er,Vt as Es,Wp as Et,Th as F,wa as Fa,C as Fc,Ts as Fi,Td as Fn,wr as Fo,Tl as Fr,Ct as Fs,Ep as Ft,oh as G,ia as Ga,r as Gc,as as Gi,ad as Gn,ir as Go,al as Gr,rt as Gs,op as Gt,fh as H,ua as Ha,l as Hc,ds as Hi,dd as Hn,ur as Ho,dl as Hr,lt as Hs,fp as Ht,Ch as I,Sa as Ia,x as Ic,Cs as Ii,Cd as In,Sr as Io,Cl as Ir,xt as Is,wp as It,eh as J,Qi as Ja,$o as Ji,$u as Jn,Qn as Jo,$c as Jr,Ze as Js,ep as Jt,ih as K,na as Ka,t as Kc,rs as Ki,rd as Kn,nr as Ko,rl as Kr,tt as Ks,ip as Kt,xh as L,ba as La,y as Lc,xs as Li,xd as Ln,br as Lo,xl as Lr,yt as Ls,Sp as Lt,jh as M,Aa as Ma,k as Mc,js as Mi,jd as Mn,Ar as Mo,jl as Mr,kt as Ms,Mp as Mt,kh as N,Oa as Na,D as Nc,ks as Ni,kd as Nn,Or as No,kl as Nr,Dt as Ns,Ap as Nt,zh as O,Ra as Oa,L as Oc,zs as Oi,zd as On,Rr as Oo,zl as Or,Lt as Os,Bp as Ot,Dh as P,Ea as Pa,T as Pc,Ds as Pi,Dd as Pn,Er as Po,Dl as Pr,Tt as Ps,Op as Pt,Km as Q,Wi as Qa,Go as Qi,Gu as Qn,Wn as Qo,Gc as Qr,Ue as Qs,Kf as Qt,yh as R,va as Ra,_ as Rc,ys as Ri,yd as Rn,vr as Ro,yl as Rr,_t as Rs,bp as Rt,Zh as S,Xa as Sa,Y as Sc,Zs as Si,Zd as Sn,Xr as So,Zl as Sr,Yt as Ss,Qp as St,Gh as T,Wa as Ta,U as Tc,Gs as Ti,Gd as Tn,Wr as To,Gl as Tr,Ut as Ts,Kp as Tt,uh as U,ca as Ua,s as Uc,ls as Ui,ld as Un,cr as Uo,ll as Ur,st as Us,up as Ut,mh as V,fa as Va,d as Vc,ps as Vi,pd as Vn,fr as Vo,pl as Vr,dt as Vs,mp as Vt,ch as W,oa as Wa,a as Wc,ss as Wi,sd as Wn,or as Wo,sl as Wr,at as Ws,cp as Wt,Xm as X,Ji as Xa,Yo as Xi,Yu as Xn,Jn as Xo,Yc as Xr,qe as Xs,Xf as Xt,Qm as Y,Xi as Ya,Zo as Yi,Zu as Yn,Xn as Yo,Zc as Yr,Ye as Ys,Qf as Yt,Jm as Z,Ki as Za,qo as Zi,qu as Zn,Kn as Zo,qc as Zr,Ge as Zs,Jf as Zt,sg as _,oo as _a,ae as _c,sc as _i,cf as _n,oi as _o,su as _r,on as _s,cm as _t,jg as a,jo as aa,ke as ac,jc as ai,Mf as an,Ai as ao,ju as ar,An as as,Mm as at,tg as b,eo as ba,$ as bc,tc as bi,tf as bn,ei as bo,tu as br,$t as bs,nm as bt,Tg as c,To as ca,Ce as cc,Tc as ci,Ef as cn,wi as co,Tu as cr,wn as cs,Em as ct,yg as d,yo as da,_e as dc,yc as di,bf as dn,vi as do,yu as dr,vn as ds,bm as dt,Vo as ea,ze as ec,Vc as ei,Hf as en,Bi as eo,Vu as er,Bn as es,Hm as et,_g as f,_o as fa,he as fc,_c as fi,vf as fn,gi as fo,_u as fr,gn as fs,vm as ft,lg as g,co as ga,se as gc,lc as gi,uf as gn,ci as go,lu as gr,cn as gs,um as gt,dg as h,uo as ha,le as hc,dc as hi,ff as hn,ui as ho,du as hr,un as hs,fm as ht,Ng as i,No as ia,je as ic,Nc as ii,Pf as in,Mi as io,Nu as ir,Mn as is,Pm as it,Nh as j,Ma as ja,j as jc,Ns as ji,Nd as jn,Mr as jo,Nl as jr,jt as js,Pp as jt,Lh as k,Ia as ka,F as kc,Ls as ki,Ld as kn,Ir as ko,Ll as kr,Ft as ks,Rp as kt,Cg as l,Co as la,xe as lc,Cc as li,wf as ln,Si as lo,Cu as lr,Sn as ls,wm as lt,pg as m,po as ma,de as mc,pc as mi,mf as mn,fi as mo,pu as mr,fn as ms,mm as mt,Lg as n,Lo as na,Fe as nc,Lc as ni,Rf as nn,Ii as no,Lu as nr,In as ns,Rm as nt,kg as o,ko as oa,De as oc,kc as oi,Af as on,Oi as oo,ku as or,On as os,Am as ot,hg as p,ho as pa,pe as pc,hc as pi,gf as pn,mi as po,hu as pr,mn as ps,gm as pt,nh as q,ea as qa,ts as qi,td as qn,er as qo,tl as qr,$e as qs,np as qt,Fg as r,Fo as ra,Ne as rc,Fc as ri,If as rn,Pi as ro,Fu as rr,Pn as rs,Im as rt,Dg as s,Do as sa,Te as sc,Dc as si,Of as sn,Ei as so,Du as sr,En as ss,Om as st,zg as t,zo as ta,Le as tc,zc as ti,Bf as tn,Ri as to,zu as tr,Rn as ts,Bm as tt,xg as u,xo as ua,ye as uc,xc as ui,Sf as un,bi as uo,xu as ur,bn as us,Sm as ut,ag as v,io as va,re as vc,ac as vi,of as vn,ii as vo,au as vr,rn as vs,om as vt,qh as w,Ka as wa,G as wc,qs as wi,qd as wn,Kr as wo,ql as wr,Gt as ws,Jp as wt,$h as x,Qa as xa,Z as xc,$s as xi,$d as xn,Qr as xo,$l as xr,Zt as xs,em as xt,rg as y,no as ya,te as yc,rc as yi,rf as yn,ni as yo,ru as yr,tn as ys,im as yt,_h as z,ga as za,h as zc,_s as zi,_d as zn,gr as zo,_l as zr,ht as zs,vp as zt};
