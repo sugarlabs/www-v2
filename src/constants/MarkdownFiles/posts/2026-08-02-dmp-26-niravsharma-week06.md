@@ -7,7 +7,7 @@ slug: "2026-08-02-dmp-26-niravsharma-week06"
 author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
 description: "Week 6: PR #7853 merged. Wrote comprehensive AUDIT_REPORT.md. PR #7942 merged - EDO-aware pitch math, temperament threading, and dynamic widgets. ~140 lines of new tests."
 tags: "dmp26,sugarlabs,week06,niravsharma,musicblocks,temperament,microtonality"
-image: "public/assets/Developers/Nirav/mermainDiagramGoal4.png"
+image: "assets/Images/c4gt_DMP.webp"
 ---
 
 <!-- markdownlint-disable -->
