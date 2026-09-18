@@ -38522,6 +38522,193 @@ A big thank you to my mentor Lionel Laské for his continuous guidance, and to e
 
 *Thanks for reading Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*
 `,ch=e({default:()=>lh}),lh=`---
+title: "GSoC '26 Week 10 Progress Report by Sonal Gaud"
+excerpt: "Adding a /healthz liveness endpoint, graceful shutdown, and a Docker HEALTHCHECK so the server can be observed and stopped cleanly"
+category: "DEVELOPER NEWS"
+date: "2026-08-02"
+slug: "2026-08-02-gsoc-26-sonal-gaud-week10"
+author: "@/constants/MarkdownFiles/authors/sonal-gaud.md"
+tags: "gsoc26,sugarlabs,musicblocks,ci-cd,release-automation,infrastructure"
+image: "assets/Images/GSOC.webp"
+---
+
+# Week 10 Progress Report by Sonal Gaud
+
+**Project:** Automated Release Pipeline for Music Blocks  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-07-27 - 2026-08-02  
+
+---
+
+## Overview
+
+[Week 9](/news/all/2026-07-26-gsoc-26-sonal-gaud-week9) landed release-please: a standing \`chore(release): vX.Y.Z\` pull request, a corrected version baseline, a seeded changelog anchored at the adoption commit, and a \`commit-search-depth\` raised from 500 to 3000 so a future release cannot silently truncate. That closed out the versioning half of the release pipeline. This week picked up exactly where that post's "Plans for Next Week" left off: the server side, specifically the \`/healthz\` liveness endpoint and graceful shutdown work that had been paused during the release-automation detour.
+
+The result is [sugarlabs/musicblocks#7962, "feat: add health endpoint and graceful shutdown"](https://github.com/sugarlabs/musicblocks/pull/7962), currently open, from branch \`sonalgaud12:healthz\`, with 204 additions and 13 deletions across 5 files. This post documents what it does and, more importantly, why the server needed this at all.
+
+---
+
+## The Problem: \`docker stop\` Cuts Requests Mid-Flight
+
+\`dockerfile\` runs \`node index.js\` as the production entrypoint. Node has a default handler for \`SIGTERM\`: it exits immediately, with exit code \`128 + signum\`, and does not drain anything first. Every time a container running this image is stopped or restarted, whatever request happened to be in flight at that instant is simply cut off.
+
+There is a second, related gap: nothing distinguishes "the container process is running" from "the server is actually serving requests." Docker and any orchestrator sitting in front of it (Kubernetes, ECS, a load balancer's health probe) need a positive signal for the second condition, not just the first. Without one, a container that has started but has not finished initializing, or one whose event loop has wedged, looks identical to a healthy one from the outside.
+
+\`\`\`mermaid
+sequenceDiagram
+    participant D as Docker / orchestrator
+    participant N as Node process
+    participant C as In-flight client request
+
+    Note over D,N: Before this PR
+    D->>N: SIGTERM (docker stop / restart)
+    N->>C: Connection cut immediately
+    N->>D: exit(128 + signum), no drain
+
+    Note over D,N: After this PR
+    D->>N: SIGTERM (docker stop / restart)
+    N->>N: server.closeIdleConnections()
+    N->>C: In-flight request allowed to finish
+    C->>N: Response completes
+    N->>D: exit(0), clean
+\`\`\`
+
+Both problems are solved by the same PR: graceful shutdown fixes the first, \`/healthz\` fixes the second.
+
+---
+
+## The Endpoint: \`GET /healthz\`
+
+The route returns HTTP 200 with a small JSON body:
+
+\`\`\`json
+{
+  "status": "ok",
+  "version": "3.7.1",
+  "env": "development",
+  "uptime": 42.118273
+}
+\`\`\`
+
+served with \`Cache-Control: no-store\`, so a health probe can never be answered from a stale cache. The version field reads from \`package.json\`, which means it automatically reflects whatever release-please last bumped it to. This ties directly back to last week: \`/healthz\` reporting a correct version depends on the manifest being a truthful number in the first place, and the entire point of Week 9's \`package.json\` fix (\`3.4.1 → 3.7.1\`) was to make that number trustworthy before anything downstream, including this endpoint, started reading it.
+
+**Route placement matters here in a way it did not for \`releaseconfig.js\`.** \`/healthz\` is registered before the \`compression\` middleware. If it were registered after, every probe response, tiny as it is, would go through gzip/deflate negotiation for no benefit, adding CPU work to a check that is supposed to be cheap and frequent by design (Docker's default probe interval is short, and orchestrators poll continuously). Registering it first means the health check is answered before compression ever gets involved.
+
+\`\`\`mermaid
+flowchart LR
+    A[Incoming request] --> B{Route match}
+    B -->|"/healthz"| C["200 OK, uncompressed<br/>Cache-Control: no-store"]
+    B -->|other routes| D[compression middleware]
+    D --> E[Rest of the app]
+\`\`\`
+
+---
+
+## Graceful Shutdown: Two Layers, One Guard
+
+The shutdown handler does three things, in order, when \`SIGTERM\` or \`SIGINT\` arrives:
+
+1. **\`server.closeIdleConnections()\`** — immediately closes any keep-alive connections that are not currently mid-request. There is no reason to wait on a connection that is not doing anything.
+2. **\`server.close()\`** — stops accepting new connections and waits for connections that *are* mid-request to finish naturally.
+3. **A 10-second \`unref()\`'d fallback timer** — if something is still open after 10 seconds (a stuck upstream, a hung request), the process exits anyway rather than waiting forever. \`unref()\` means this timer itself never keeps the process alive; it only acts as a ceiling.
+
+\`\`\`mermaid
+flowchart TD
+    A[SIGTERM or SIGINT received] --> B{Already shutting down?}
+    B -->|yes| Z[No-op, ignore duplicate signal]
+    B -->|no| C[Set shuttingDown flag]
+    C --> D["server.closeIdleConnections()"]
+    D --> E["server.close() — stop accepting new conns,<br/>wait for in-flight requests"]
+    E --> F["setTimeout(10s).unref() fallback armed"]
+    F --> G{In-flight requests<br/>finish first?}
+    G -->|yes| H["process.exit(0) — clean"]
+    G -->|10s elapses first| I["process.exit(0) — forced"]
+\`\`\`
+
+The \`B: already shutting down?\` guard exists because a person can send the shutdown signal twice, most commonly by pressing Ctrl+C a second time out of impatience while waiting for a clean exit. Without the guard, the second signal would re-enter the same close logic on a server object that is already mid-close, which is exactly the kind of double-invocation bug that is easy to write and annoying to debug later. A single module-level \`shuttingDown\` boolean, checked and set before anything else runs, makes the whole handler idempotent.
+
+---
+
+## Making \`index.js\` Testable Without Side Effects
+
+To test any of this, the test suite needs to start a real server on a real port and send it real signals and requests, rather than mocking Express. That requires \`index.js\` to export the app, but exporting it naively would mean every file that \`require()\`s \`index.js\`, directly or transitively, would immediately try to bind port 3000 and register a fresh pair of signal handlers.
+
+The fix, carried over from the same pattern used elsewhere in this project, is a \`require.main === module\` guard: the \`listen()\` call and the \`process.on("SIGTERM", ...)\` / \`process.on("SIGINT", ...)\` registrations only run when \`index.js\` is executed directly, not when it is imported. \`module.exports = app\` sits outside that guard, so tests can import the bare Express app and bind it to an OS-assigned ephemeral port (\`app.listen(0, ...)\`) with zero side effects on the real \`PORT\`, \`HOST\`, or the process's signal table.
+
+\`\`\`mermaid
+flowchart TD
+    A["node index.js<br/>(direct execution)"] --> B["require.main === module → true"]
+    B --> C[listen on PORT/HOST]
+    B --> D["register SIGTERM/SIGINT handlers"]
+
+    E["require('./index.js')<br/>(from a test file)"] --> F["require.main === module → false"]
+    F --> G["module.exports = app<br/>(no listen, no signal handlers)"]
+    G --> H["test calls app.listen(0, '127.0.0.1')<br/>OS assigns a free port"]
+\`\`\`
+
+---
+
+## The Docker \`HEALTHCHECK\`
+
+With \`/healthz\` in place, the \`dockerfile\` now declares a \`HEALTHCHECK\`:
+
+\`\`\`dockerfile
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \\
+  CMD node -e "require('http').get({host:'127.0.0.1',port:process.env.PORT||3000,path:'/healthz'},r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
+\`\`\`
+
+Two choices here are worth calling out because they are easy to get wrong:
+
+- **It probes \`127.0.0.1\`, not \`$HOST\`.** The server binds \`0.0.0.0\` inside the container (set via \`ENV HOST=0.0.0.0\`), but loopback is always the correct address to probe *from inside the same container*, regardless of what \`HOST\` happens to be configured to. Probing \`$HOST\` would be probing \`0.0.0.0\` as a destination, which is not a connectable address the way \`127.0.0.1\` is.
+- **It uses \`node -e\`, not \`curl\` or \`wget\`.** Many minimal or distroless-style base images do not ship either binary, but they already have to ship Node to run the app at all. Using Node's own built-in \`http\` module for the probe keeps the healthcheck portable across whatever base image the Dockerfile ends up using, without adding an image dependency purely for this check.
+
+\`\`\`mermaid
+flowchart LR
+    A[Docker HEALTHCHECK] -->|every 30s, 3s timeout| B["node -e ... GET 127.0.0.1:PORT/healthz"]
+    B -->|"200"| C[exit 0 → container marked healthy]
+    B -->|"non-200 or error"| D[exit 1 → container marked unhealthy]
+    D -->|3 consecutive failures| E[Orchestrator restarts / replaces container]
+\`\`\`
+
+---
+
+## A Test-Infrastructure Fix Along the Way
+
+Running the new \`js/__tests__/healthz.test.js\` under \`@jest-environment node\` surfaced a pre-existing fragility in \`jest.setup.js\`. The shared setup file unconditionally mocked \`HTMLCanvasElement.prototype.getContext\`, which assumes a DOM environment exists. Under the \`node\` test environment there is no \`HTMLCanvasElement\` global at all, so the mock setup would throw before the health tests could even run.
+
+The fix guards the mock behind a \`typeof HTMLCanvasElement !== "undefined"\` check, so it silently no-ops in a non-DOM environment instead of crashing. The same guard pattern was applied to \`test/setupTests.js\` for \`window\`/\`window.btoa\`. This is a small fix, but it matters for the pipeline: it is what makes it possible to have some test files run under \`jsdom\` (for canvas-heavy UI code) and others under plain \`node\` (for server code) in the same suite, which the release pipeline will lean on more as server-side coverage grows.
+
+---
+
+## Verification
+
+- \`js/__tests__/healthz.test.js\`: 5 tests, using Node's built-in \`http\` module to drive requests against an ephemeral-port server, no new devDependency added.
+- Full suite: **204 suites, 7153 tests**, all passing.
+- \`collectCoverageFrom\` globs \`js/**\` and \`planet/js/**\` only, so the root-level \`index.js\` intentionally does not enter the coverage report; this is existing project convention, not something this PR changes.
+
+---
+
+## PR Link
+
+PR: [sugarlabs/musicblocks#7962, "feat: add health endpoint and graceful shutdown"](https://github.com/sugarlabs/musicblocks/pull/7962)
+
+Status: open, awaiting review. Files touched: \`index.js\`, \`dockerfile\`, \`js/__tests__/healthz.test.js\` (new), \`jest.setup.js\` (new), \`test/setupTests.js\`.
+
+---
+
+## Plans for Next Week
+
+- Address any review feedback on #7962 and get it merged.
+- With \`/healthz\` live, resume work on the reusable \`post-deploy-verify.yml\` workflow that curls it against every deployed URL, one of the pieces this endpoint was always meant to unblock.
+- Continue lining up the containerization work now that both the version/changelog pipeline (Week 9) and the health/shutdown pipeline (this week) are in place under one repository.
+
+---
+
+## Acknowledgements
+
+Thank you to Walter Bender and Om Santosh Suneri for continued guidance as this server-side work came together.
+`,uh=e({default:()=>dh}),dh=`---
 title: "GSoC '26 Week 10 Update by Syed Khubayb Ur Rahman"
 excerpt: "Implemented real-time visual feedback for connecting and disconnecting Bricks in the Workspace."
 category: "DEVELOPER NEWS"
@@ -38601,7 +38788,7 @@ Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued fe
 
 
 ---
-`,uh=e({default:()=>dh}),dh=`---
+`,fh=e({default:()=>ph}),ph=`---
 title: "GSoC '26 Week 10 Update by Shreya Saxena"
 excerpt: "A lighter week due to travel and the start of college, a GSoC Alumni Camp lightning talk, and plans to tackle load time and a scheduling issue flagged by Devin."
 category: "DEVELOPER NEWS"
@@ -38792,7 +38979,7 @@ Alongside that, I'll be profiling the Save as LilyPond Export and MIDI Import wo
  
 Thanks to my mentor, Walter Bender, for encouraging me to investigate the rerendering issue and for his valuable guidance throughout the debugging process. Thanks also to Devin Ulibarri for identifying the drum polyrhythm issue and helping validate the issue, and to the entire Sugar Labs community for their encouragement and feedback.
 
-`,fh=e({default:()=>ph}),ph=`---
+`,mh=e({default:()=>hh}),hh=`---
 title: "GSoC '26 Week 10 Update by Shubham Sharma"
 excerpt: "Building the Journal's grid and list views, redesigning the entry view again, writing a first peer-reflection brief, and finding the conversation-level test isn't solid enough to build on yet"
 category: "DEVELOPER NEWS"
@@ -38919,7 +39106,7 @@ Thanks to Walter and Ibiam for their continued guidance. Thanks to Diwangshu, Me
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,mh=e({default:()=>hh}),hh=`---
+`,gh=e({default:()=>_h}),_h=`---
 title: "GSoC '26 Week 10: Update by Harihara Vardhan"
 excerpt: "This week I researched and designed an interactive tutorial overlay for Git features in Music Blocks, inspired by visual widget tutorials, and squashed project name sync and tooltip bugs."
 category: "DEVELOPER NEWS"
@@ -38986,7 +39173,7 @@ I fixed a bug where saving a spot while offline caused the project name to rever
 Now that the research and design phase for the Git tutorial is wrapped up, next week will be focused on building out the interactive tutorial component itself. I will be implementing the floating widget UI, adding step animations, and integrating it directly into the Music Blocks help menu.
 
 Thanks for reading, and see you next week!
-`,gh=e({default:()=>``}),_h=e({default:()=>vh}),vh=`---
+`,vh=e({default:()=>``}),yh=e({default:()=>bh}),bh=`---
 title: "DMP '26 Week 08 Update by Noaman Akhtar"
 excerpt: "Building the first offline provider test suite and removing the event-loop bottleneck that blocked concurrent Sugar-AI requests."
 category: "DEVELOPER NEWS"
@@ -39172,7 +39359,7 @@ The provider design also leaves room for future inference servers such as vLLM, 
 Thanks to my mentors and the Sugar Labs community for the guidance on making the provider layer testable and responsive as the architecture expands. Establishing a small, deterministic test foundation alongside measured concurrency work will make the next provider changes easier to review with confidence.
 
 ---
-`,yh=e({default:()=>bh}),bh=`---
+`,xh=e({default:()=>Sh}),Sh=`---
 title: "GSoC '26 Week 11 Update by Dev"
 excerpt: "Fixing GTK4 CSS scoping and GTK4 CSS parser warnings in sugar-toolkit-gtk4, updating activities list cell rendering and icon palette styling in sugar, and completing theme selected states in sugar-artwork."
 category: "DEVELOPER NEWS"
@@ -39260,7 +39447,7 @@ image: "assets/Images/GSOC.webp"
 ## Acknowledgments
 
 Thanks to Krish and Ibiam for their guidance and reviews.
-`,xh=e({default:()=>Sh}),Sh=`---
+`,Ch=e({default:()=>wh}),wh=`---
 title: "GSoC '26 Week 11: Tackling the TurtleArt GTK4 Port Foundation"
 excerpt: "Starting the GTK4 port of TurtleArt, beginning with migrating the plugin system, updating basic layouts, and cleaning up legacy code."
 category: "DEVELOPER NEWS"
@@ -39312,7 +39499,7 @@ Next week I'll be diving into the heart of \`TurtleArtActivity.py\` to work thro
 ## Acknowledgments
 
 Thanks to my mentors for the reviews and to everyone in the Sugar Labs community for the feedback and help.
-`,Ch=e({default:()=>wh}),wh=`---
+`,Th=e({default:()=>Eh}),Eh=`---
 title: "GSoC '26 Week 11 Update by Parth Dagia"
 excerpt: "The Workspace can be zoomed now: a pair of magnifier buttons on the canvas step a scale level, and every Brick on the canvas resizes to it - which meant fixing a units mismatch that had been sitting in the Brick model since week 5."
 category: "DEVELOPER NEWS"
@@ -39401,7 +39588,7 @@ Week 12 is the last one. With scaling in, the Workspace has everything it needs,
 Thanks to Anindya Kundu for the reviews on both PRs, and to Syed for building this alongside me. Thanks also to Justin Charles and Safwan Sayeed for their continued guidance, and to Devin Ulibarri, Walter Bender, and the wider Sugar Labs community.
 
 ---
-`,Th=e({default:()=>Eh}),Eh=`---
+`,Dh=e({default:()=>Oh}),Oh=`---
 title: "GSoC '26 Week 11 Update by Syed Khubayb Ur Rahman"
 excerpt: "Defined Import/Export types and implemented the Export functionality for Workspace Programs and Projects."
 category: "DEVELOPER NEWS"
@@ -39466,7 +39653,7 @@ Following last week's discussion, the focus shifted from undo/redo functionality
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community.
 
 ---
-`,Dh=e({default:()=>Oh}),Oh=`---
+`,kh=e({default:()=>Ah}),Ah=`---
 title: "GSoC '26 Week 11 Update by Shreya Saxena"
 excerpt: "A ~23x speedup for headless notation exports, plus a fix for drum-polyrhythm project bug."
 category: "DEVELOPER NEWS"
@@ -39569,7 +39756,7 @@ With both fixes merged, I’ll clean up the now-unused \`_enqueue()\` and \`_cal
 
 ## Acknowledgments
 
-Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,kh=e({default:()=>Ah}),Ah=`---
+Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,jh=e({default:()=>Mh}),Mh=`---
 title: "GSoC '26 Week 11 Update by Shubham Sharma"
 excerpt: "Fixing the Journal's sorting and rebuilding its drawing to match how Sugar itself draws, hardening what the Journal sends to the AI, dropping the live-sharing route for peer reflection in favour of one that works with no network at all, and checking last week's conversation test against real published data"
 category: "DEVELOPER NEWS"
@@ -39773,7 +39960,7 @@ Thanks to Walter and Ibiam for their continued guidance. Thanks to Diwangshu, Me
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,jh=e({default:()=>Mh}),Mh=`---
+`,Nh=e({default:()=>Ph}),Ph=`---
 title: "GSoC '26 Week 11: Update by Harihara Vardhan"
 excerpt: "This week I implemented the full interactive Git Tutorial overlay in Music Blocks, complete with custom slide animations, smart video management, keyboard shortcuts, and native notification feedback."
 category: "DEVELOPER NEWS"
@@ -39852,7 +40039,7 @@ This guides students directly toward taking their first action in the workspace 
 We are approaching the final phase of GSoC! Next week, I am going to update the tutorial based on mentor feedback and testing with kids, deploy the backend server, and prepare the frontend integration for the final review.
 
 Thanks for reading, and see you next week!
-`,Nh=e({default:()=>Ph}),Ph=`---
+`,Fh=e({default:()=>Ih}),Ih=`---
 title: "GSoC '26 Week 11 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented game mode with territory capture, AI opponent, trail coloring, label positioning for overlapping dots, localization for all categories and figures, and used AI for adding new categories."
 category: "DEVELOPER NEWS"
@@ -39976,7 +40163,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance and patience, and 
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Fh=e({default:()=>Ih}),Ih=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Lh=e({default:()=>Rh}),Rh=`---
 title: "DMP '26 Week 9 Update by Stuti Jain"
 excerpt: "Improved the Lesson Plans infrastructure by separating lesson data from implementation and making Lesson Plans and the Explorer Journal work alongside the rest of the Music Blocks interface."
 category: "DEVELOPER NEWS"
@@ -40121,7 +40308,7 @@ Similarly, as the number of lessons grows, the implementation needs to remain ea
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the Lesson Plans framework. Their observations from learner testing have helped guide the project beyond the initial prototype and toward a more flexible, maintainable, and scalable learning experience within Music Blocks.`,Lh=e({default:()=>Rh}),Rh=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the Lesson Plans framework. Their observations from learner testing have helped guide the project beyond the initial prototype and toward a more flexible, maintainable, and scalable learning experience within Music Blocks.`,zh=e({default:()=>Bh}),Bh=`---
 title: "DMP '26 Week 07 Update by Abhnish Kumar"
 excerpt: "Confirming the root cause of the touch drag bug, completing the touch support audit report, and sharing findings with the mentor team for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40243,7 +40430,7 @@ conclusion.
 
 Thanks to Devin Ulibarri for his patience while this investigation took
 a full week of back-and-forth debugging, and for being ready to jump in
-with real-device testing once the audit was complete.`,zh=e({default:()=>Bh}),Bh=`---
+with real-device testing once the audit was complete.`,Vh=e({default:()=>Hh}),Hh=`---
 title: "DMP '26 Week 09 Update by Noaman Akhtar"
 excerpt: "Making Sugar-AI easier to install across CPU and CUDA environments while expanding deterministic tests for provider helpers and prompted request validation."
 category: "DEVELOPER NEWS"
@@ -40385,7 +40572,7 @@ The strongest lesson from this week is that a reliable backend needs both a repr
 Thanks to my mentors and the Sugar Labs community for the guidance on making both local setup and provider behavior easier to verify. The combination of a documented installation path and focused offline tests gives the project a stronger foundation for the asynchronous provider and deployment work ahead.
 
 ---
-`,Vh=e({default:()=>Hh}),Hh=`---
+`,Uh=e({default:()=>Wh}),Wh=`---
 title: "GSoC '26 Week 12 Update by Dev"
 excerpt: "Final audit across all four repositories, fixing leftover GTK3 API calls in sugar-ext C controllers, palette and tooltip regressions in sugar-toolkit-gtk4, Wayland activity launch and frame animation bugs in sugar, and CSS cleanup in sugar-artwork."
 category: "DEVELOPER NEWS"
@@ -40512,7 +40699,7 @@ A big thanks to everyone at Sugar Labs for the support throughout the program!
 ## Acknowledgments
 
 Thanks to Krish Pandya, Ibiam Chihurumnaya, Walter Bender, and Juan Pablo Ugarte for their guidance and support throughout the project!
-`,Uh=e({default:()=>Wh}),Wh=`---
+`,Gh=e({default:()=>Kh}),Kh=`---
 title: "GSoC '26 Week 12 Update by Syed Khubayb Ur Rahman"
 excerpt: "Wrote detailed technical specification documentation and compiled the final GSoC report."
 category: "DEVELOPER NEWS"
@@ -40568,7 +40755,7 @@ I also compiled the final report for my GSoC project. This repository contains t
 As my GSoC period concludes, I want to give a massive thanks to my mentors Anindya Kundu and Safwan Sayeeds for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4. 
 
 ---
-`,Gh=e({default:()=>Kh}),Kh=`---
+`,qh=e({default:()=>Jh}),Jh=`---
 title: "GSoC '26 Week 12: Update by Harihara Vardhan"
 excerpt: "In the final week of GSoC 2026, I reworded all user-facing Git terminology for kids, wrote comprehensive test suites across all Git features, and prepped the codebase and database for production deployment."
 category: "DEVELOPER NEWS"
@@ -40664,7 +40851,7 @@ None of this would have been possible without the amazing guidance and support f
 Also, a heartfelt thank you to the entire Sugar Labs community for creating such a welcoming, collaborative space.
 
 Thank you to everyone who followed along with my weekly updates this summer. Stay tuned for the final evaluation report and the official launch!
-`,qh=e({default:()=>Jh}),Jh=`---
+`,Yh=e({default:()=>Xh}),Xh=`---
 
 title: "DMP '26 Week 10 Update by Stuti Jain"
 
@@ -40828,7 +41015,7 @@ The exploration of localization also showed that supporting multiple languages r
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,Yh=e({default:()=>Xh}),Xh=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,Zh=e({default:()=>Qh}),Qh=`---
 title: "GSoC '26 Week 12 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented multiplayer in Game Mode, enabling real time state synchronization, player spawning, network event handling, and shared territory capture through the Sugarizer shared activity network"
 category: "DEVELOPER NEWS"
@@ -40946,7 +41133,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance, and to the Sugar 
 
 ---
 
-*Thanks for reading! Stay tuned for next week’s update. Feel free to reach out if you have any questions or feedback.*`,Zh=e({default:()=>Qh}),Qh=`---
+*Thanks for reading! Stay tuned for next week’s update. Feel free to reach out if you have any questions or feedback.*`,$h=e({default:()=>eg}),eg=`---
 
 title: "DMP '26 Week 11 Update by Stuti Jain"
 
@@ -41117,7 +41304,7 @@ Unlike individual toolbar labels, a lesson contains interconnected story content
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,$h=e({default:()=>eg}),eg=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,tg=e({default:()=>ng}),ng=`---
 title: "GSoC '26 Week 13 Report by Rejah Rabeeul Haque"
 excerpt: "Improved Game Mode with speed adjuster, XO buddy colors, spawn positioning, and 50% win condition, added localized tutorials for Draw and Number Mode, and added Journal save for Draw Mode."
 category: "DEVELOPER NEWS"
@@ -41204,7 +41391,7 @@ Thanks to my mentor Lionel Laske for the continuous guidance and patience, and t
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,tg=e({default:()=>ng}),ng=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,rg=e({default:()=>ig}),ig=`---
 title: "GSoC '26 Week 14 Report by Rejah Rabeeul Haque"
 excerpt: "Wrapping up GSoC '26 with AI difficulty levels in Game Mode and in-game event notifications to improve the player experience."
 category: "DEVELOPER NEWS"
@@ -41274,7 +41461,7 @@ A massive thank you to my mentor, Lionel Laske, for his continuous guidance, ins
 
 ---
 
-*Thanks for following my journey this summer! Feel free to reach out if you have any questions or feedback.*`,rg=e({default:()=>ig}),ig=`---
+*Thanks for following my journey this summer! Feel free to reach out if you have any questions or feedback.*`,ag=e({default:()=>og}),og=`---
 title: "GSoC'26  Final Report by Syed Khubayb Ur Rahman"
 excerpt: "Final report summarizing the architecture and outcomes of the Music Blocks v4 Masonry project."
 category: "DEVELOPER NEWS"
@@ -41452,7 +41639,7 @@ To restore a program, the system reconstructs blank Brick instances based on the
 ## Acknowledgments
 
 Special thanks to my mentors Anindya Kundu  and Safwan Sayeed for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the entire Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4.
-`,ag=e({default:()=>og}),og=`---
+`,sg=e({default:()=>cg}),cg=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -41601,7 +41788,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,sg=e({default:()=>cg}),cg=`---
+`,lg=e({default:()=>ug}),ug=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -41704,7 +41891,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,lg=e({default:()=>ug}),ug=`---
+`,dg=e({default:()=>fg}),fg=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -42177,7 +42364,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,dg=e({default:()=>fg}),fg=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,pg=e({default:()=>mg}),mg=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -42264,7 +42451,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,pg=e({default:()=>mg}),mg=`---\r
+`,hg=e({default:()=>gg}),gg=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -42357,7 +42544,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,hg=e({default:()=>gg}),gg=`---\r
+`,_g=e({default:()=>vg}),vg=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -42451,7 +42638,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,_g=e({default:()=>vg}),vg=`---\r
+`,yg=e({default:()=>bg}),bg=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -42539,7 +42726,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,yg=e({default:()=>bg}),bg=`---\r
+`,xg=e({default:()=>Sg}),Sg=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -42622,7 +42809,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,xg=e({default:()=>Sg}),Sg=`---\r
+`,Cg=e({default:()=>wg}),wg=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -42688,7 +42875,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Cg=e({default:()=>wg}),wg=`---
+`,Tg=e({default:()=>Eg}),Eg=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -42770,7 +42957,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Tg=e({default:()=>Eg}),Eg=`---
+---`,Dg=e({default:()=>Og}),Og=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -42863,7 +43050,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Dg=e({default:()=>Og}),Og=`---
+`,kg=e({default:()=>Ag}),Ag=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -42952,7 +43139,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,kg=e({default:()=>Ag}),Ag=`---
+--- `,jg=e({default:()=>Mg}),Mg=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43097,7 +43284,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,jg=e({default:()=>Mg}),Mg=`---
+--- `,Ng=e({default:()=>Pg}),Pg=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43285,7 +43472,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Ng=e({default:()=>Pg}),Pg=`---
+--- `,Fg=e({default:()=>Ig}),Ig=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43380,7 +43567,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Fg=e({default:()=>Ig}),Ig=`---
+`,Lg=e({default:()=>Rg}),Rg=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43469,7 +43656,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Lg=e({default:()=>Rg}),Rg=`---
+`,zg=e({default:()=>Bg}),Bg=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43556,7 +43743,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,zg=e({default:()=>Bg}),Bg=`---
+---`,Vg=e({default:()=>Hg}),Hg=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43639,7 +43826,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Vg=e({default:()=>Hg}),Hg=`---
+---`,Ug=e({default:()=>Wg}),Wg=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43722,7 +43909,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Ug=e({default:()=>Wg}),Wg=`---
+---`,Gg=e({default:()=>Kg}),Kg=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -44027,4 +44214,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Jm as $,Ki as $a,qo as $i,qu as $n,Kn as $o,qc as $r,Ge as $s,Jf as $t,zh as A,Ra as Aa,L as Ac,zs as Ai,zd as An,Rr as Ao,zl as Ar,Lt as As,Bp as At,yh as B,va as Ba,_ as Bc,ys as Bi,yd as Bn,vr as Bo,yl as Br,_t as Bs,bp as Bt,$h as C,Qa as Ca,Z as Cc,$s as Ci,$d as Cn,Qr as Co,$l as Cr,Zt as Cs,em as Ct,Gh as D,Wa as Da,U as Dc,Gs as Di,Gd as Dn,Wr as Do,Gl as Dr,Ut as Ds,Kp as Dt,qh as E,Ka as Ea,G as Ec,qs as Ei,qd as En,Kr as Eo,ql as Er,Gt as Es,Jp as Et,kh as F,Oa as Fa,D as Fc,ks as Fi,kd as Fn,Or as Fo,kl as Fr,Dt as Fs,Ap as Ft,uh as G,ca as Ga,s as Gc,ls as Gi,ld as Gn,cr as Go,ll as Gr,st as Gs,up as Gt,gh as H,ma as Ha,p as Hc,hs as Hi,hd as Hn,mr as Ho,hl as Hr,pt as Hs,gp as Ht,Dh as I,Ea as Ia,T as Ic,Ds as Ii,Dd as In,Er as Io,Dl as Ir,Tt as Is,Op as It,ih as J,na as Ja,t as Jc,rs as Ji,rd as Jn,nr as Jo,rl as Jr,tt as Js,ip as Jt,ch as K,oa as Ka,a as Kc,ss as Ki,sd as Kn,or as Ko,sl as Kr,at as Ks,cp as Kt,Th as L,wa as La,C as Lc,Ts as Li,Td as Ln,wr as Lo,Tl as Lr,Ct as Ls,Ep as Lt,Fh as M,Pa as Ma,N as Mc,Fs as Mi,Fd as Mn,Pr as Mo,Fl as Mr,Nt as Ms,Ip as Mt,Nh as N,Ma as Na,j as Nc,Ns as Ni,Nd as Nn,Mr as No,Nl as Nr,jt as Ns,Pp as Nt,Uh as O,Ha as Oa,V as Oc,Us as Oi,Ud as On,Hr as Oo,Ul as Or,Vt as Os,Wp as Ot,jh as P,Aa as Pa,k as Pc,js as Pi,jd as Pn,Ar as Po,jl as Pr,kt as Ps,Mp as Pt,Xm as Q,Ji as Qa,Yo as Qi,Yu as Qn,Jn as Qo,Yc as Qr,qe as Qs,Xf as Qt,Ch as R,Sa as Ra,x as Rc,Cs as Ri,Cd as Rn,Sr as Ro,Cl as Rr,xt as Rs,wp as Rt,tg as S,eo as Sa,$ as Sc,tc as Si,tf as Sn,ei as So,tu as Sr,$t as Ss,nm as St,Yh as T,Ja as Ta,q as Tc,Ys as Ti,Yd as Tn,Jr as To,Yl as Tr,qt as Ts,Xp as Tt,mh as U,fa as Ua,d as Uc,ps as Ui,pd as Un,fr as Uo,pl as Ur,dt as Us,mp as Ut,_h as V,ga as Va,h as Vc,_s as Vi,_d as Vn,gr as Vo,_l as Vr,ht as Vs,vp as Vt,fh as W,ua as Wa,l as Wc,ds as Wi,dd as Wn,ur as Wo,dl as Wr,lt as Ws,fp as Wt,eh as X,Qi as Xa,$o as Xi,$u as Xn,Qn as Xo,$c as Xr,Ze as Xs,ep as Xt,nh as Y,ea as Ya,ts as Yi,td as Yn,er as Yo,tl as Yr,$e as Ys,np as Yt,Qm as Z,Xi as Za,Zo as Zi,Zu as Zn,Xn as Zo,Zc as Zr,Ye as Zs,Qf as Zt,dg as _,uo as _a,le as _c,dc as _i,ff as _n,ui as _o,du as _r,un as _s,fm as _t,Fg as a,Fo as aa,Ne as ac,Fc as ai,If as an,Pi as ao,Fu as ar,Pn as as,Im as at,ag as b,io as ba,re as bc,ac as bi,of as bn,ii as bo,au as br,rn as bs,om as bt,kg as c,ko as ca,De as cc,kc as ci,Af as cn,Oi as co,ku as cr,On as cs,Am as ct,Cg as d,Co as da,xe as dc,Cc as di,wf as dn,Si as do,Cu as dr,Sn as ds,wm as dt,Go as ea,Ue as ec,Gc as ei,Kf as en,Wi as eo,Gu as er,Wn as es,Km as et,xg as f,xo as fa,ye as fc,xc as fi,Sf as fn,bi as fo,xu as fr,bn as fs,Sm as ft,pg as g,po as ga,de as gc,pc as gi,mf as gn,fi as go,pu as gr,fn as gs,mm as gt,hg as h,ho as ha,pe as hc,hc as hi,gf as hn,mi as ho,hu as hr,mn as hs,gm as ht,Lg as i,Lo as ia,Fe as ic,Lc as ii,Rf as in,Ii as io,Lu as ir,In as is,Rm as it,Lh as j,Ia as ja,F as jc,Ls as ji,Ld as jn,Ir as jo,Ll as jr,Ft as js,Rp as jt,Vh as k,Ba as ka,z as kc,Vs as ki,Vd as kn,Br as ko,Vl as kr,zt as ks,Hp as kt,Dg as l,Do as la,Te as lc,Dc as li,Of as ln,Ei as lo,Du as lr,En as ls,Om as lt,_g as m,_o as ma,he as mc,_c as mi,vf as mn,gi as mo,_u as mr,gn as ms,vm as mt,Vg as n,Vo as na,ze as nc,Vc as ni,Hf as nn,Bi as no,Vu as nr,Bn as ns,Hm as nt,Ng as o,No as oa,je as oc,Nc as oi,Pf as on,Mi as oo,Nu as or,Mn as os,Pm as ot,yg as p,yo as pa,_e as pc,yc as pi,bf as pn,vi as po,yu as pr,vn as ps,bm as pt,oh as q,ia as qa,r as qc,as as qi,ad as qn,ir as qo,al as qr,rt as qs,op as qt,zg as r,zo as ra,Le as rc,zc as ri,Bf as rn,Ri as ro,zu as rr,Rn as rs,Bm as rt,jg as s,jo as sa,ke as sc,jc as si,Mf as sn,Ai as so,ju as sr,An as ss,Mm as st,Ug as t,Uo as ta,Ve as tc,Uc as ti,Wf as tn,Hi as to,Uu as tr,Hn as ts,Wm as tt,Tg as u,To as ua,Ce as uc,Tc as ui,Ef as un,wi as uo,Tu as ur,wn as us,Em as ut,lg as v,co as va,se as vc,lc as vi,uf as vn,ci as vo,lu as vr,cn as vs,um as vt,Zh as w,Xa as wa,Y as wc,Zs as wi,Zd as wn,Xr as wo,Zl as wr,Yt as ws,Qp as wt,rg as x,no as xa,te as xc,rc as xi,rf as xn,ni as xo,ru as xr,tn as xs,im as xt,sg as y,oo as ya,ae as yc,sc as yi,cf as yn,oi as yo,su as yr,on as ys,cm as yt,xh as z,ba as za,y as zc,xs as zi,xd as zn,br as zo,xl as zr,yt as zs,Sp as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Xm as $,Ji as $a,Yo as $i,Yu as $n,Jn as $o,Yc as $r,qe as $s,Xf as $t,Vh as A,Ba as Aa,z as Ac,Vs as Ai,Vd as An,Br as Ao,Vl as Ar,zt as As,Hp as At,xh as B,ba as Ba,y as Bc,xs as Bi,xd as Bn,br as Bo,xl as Br,yt as Bs,Sp as Bt,tg as C,eo as Ca,$ as Cc,tc as Ci,tf as Cn,ei as Co,tu as Cr,$t as Cs,nm as Ct,qh as D,Ka as Da,G as Dc,qs as Di,qd as Dn,Kr as Do,ql as Dr,Gt as Ds,Jp as Dt,Yh as E,Ja as Ea,q as Ec,Ys as Ei,Yd as En,Jr as Eo,Yl as Er,qt as Es,Xp as Et,jh as F,Aa as Fa,k as Fc,js as Fi,jd as Fn,Ar as Fo,jl as Fr,kt as Fs,Mp as Ft,fh as G,ua as Ga,l as Gc,ds as Gi,dd as Gn,ur as Go,dl as Gr,lt as Gs,fp as Gt,vh as H,ga as Ha,h as Hc,_s as Hi,_d as Hn,gr as Ho,_l as Hr,ht as Hs,vp as Ht,kh as I,Oa as Ia,D as Ic,ks as Ii,kd as In,Or as Io,kl as Ir,Dt as Is,Ap as It,oh as J,ia as Ja,r as Jc,as as Ji,ad as Jn,ir as Jo,al as Jr,rt as Js,op as Jt,uh as K,ca as Ka,s as Kc,ls as Ki,ld as Kn,cr as Ko,ll as Kr,st as Ks,up as Kt,Dh as L,Ea as La,T as Lc,Ds as Li,Dd as Ln,Er as Lo,Dl as Lr,Tt as Ls,Op as Lt,Lh as M,Ia as Ma,F as Mc,Ls as Mi,Ld as Mn,Ir as Mo,Ll as Mr,Ft as Ms,Rp as Mt,Fh as N,Pa as Na,N as Nc,Fs as Ni,Fd as Nn,Pr as No,Fl as Nr,Nt as Ns,Ip as Nt,Gh as O,Wa as Oa,U as Oc,Gs as Oi,Gd as On,Wr as Oo,Gl as Or,Ut as Os,Kp as Ot,Nh as P,Ma as Pa,j as Pc,Ns as Pi,Nd as Pn,Mr as Po,Nl as Pr,jt as Ps,Pp as Pt,Qm as Q,Xi as Qa,Zo as Qi,Zu as Qn,Xn as Qo,Zc as Qr,Ye as Qs,Qf as Qt,Th as R,wa as Ra,C as Rc,Ts as Ri,Td as Rn,wr as Ro,Tl as Rr,Ct as Rs,Ep as Rt,rg as S,no as Sa,te as Sc,rc as Si,rf as Sn,ni as So,ru as Sr,tn as Ss,im as St,Zh as T,Xa as Ta,Y as Tc,Zs as Ti,Zd as Tn,Xr as To,Zl as Tr,Yt as Ts,Qp as Tt,gh as U,ma as Ua,p as Uc,hs as Ui,hd as Un,mr as Uo,hl as Ur,pt as Us,gp as Ut,yh as V,va as Va,_ as Vc,ys as Vi,yd as Vn,vr as Vo,yl as Vr,_t as Vs,bp as Vt,mh as W,fa as Wa,d as Wc,ps as Wi,pd as Wn,fr as Wo,pl as Wr,dt as Ws,mp as Wt,nh as X,ea as Xa,ts as Xi,td as Xn,er as Xo,tl as Xr,$e as Xs,np as Xt,ih as Y,na as Ya,t as Yc,rs as Yi,rd as Yn,nr as Yo,rl as Yr,tt as Ys,ip as Yt,eh as Z,Qi as Za,$o as Zi,$u as Zn,Qn as Zo,$c as Zr,Ze as Zs,ep as Zt,pg as _,po as _a,de as _c,pc as _i,mf as _n,fi as _o,pu as _r,fn as _s,mm as _t,Lg as a,Lo as aa,Fe as ac,Lc as ai,Rf as an,Ii as ao,Lu as ar,In as as,Rm as at,sg as b,oo as ba,ae as bc,sc as bi,cf as bn,oi as bo,su as br,on as bs,cm as bt,jg as c,jo as ca,ke as cc,jc as ci,Mf as cn,Ai as co,ju as cr,An as cs,Mm as ct,Tg as d,To as da,Ce as dc,Tc as di,Ef as dn,wi as do,Tu as dr,wn as ds,Em as dt,qo as ea,Ge as ec,qc as ei,Jf as en,Ki as eo,qu as er,Kn as es,Jm as et,Cg as f,Co as fa,xe as fc,Cc as fi,wf as fn,Si as fo,Cu as fr,Sn as fs,wm as ft,hg as g,ho as ga,pe as gc,hc as gi,gf as gn,mi as go,hu as gr,mn as gs,gm as gt,_g as h,_o as ha,he as hc,_c as hi,vf as hn,gi as ho,_u as hr,gn as hs,vm as ht,zg as i,zo as ia,Le as ic,zc as ii,Bf as in,Ri as io,zu as ir,Rn as is,Bm as it,zh as j,Ra as ja,L as jc,zs as ji,zd as jn,Rr as jo,zl as jr,Lt as js,Bp as jt,Uh as k,Ha as ka,V as kc,Us as ki,Ud as kn,Hr as ko,Ul as kr,Vt as ks,Wp as kt,kg as l,ko as la,De as lc,kc as li,Af as ln,Oi as lo,ku as lr,On as ls,Am as lt,yg as m,yo as ma,_e as mc,yc as mi,bf as mn,vi as mo,yu as mr,vn as ms,bm as mt,Ug as n,Uo as na,Ve as nc,Uc as ni,Wf as nn,Hi as no,Uu as nr,Hn as ns,Wm as nt,Fg as o,Fo as oa,Ne as oc,Fc as oi,If as on,Pi as oo,Fu as or,Pn as os,Im as ot,xg as p,xo as pa,ye as pc,xc as pi,Sf as pn,bi as po,xu as pr,bn as ps,Sm as pt,ch as q,oa as qa,a as qc,ss as qi,sd as qn,or as qo,sl as qr,at as qs,cp as qt,Vg as r,Vo as ra,ze as rc,Vc as ri,Hf as rn,Bi as ro,Vu as rr,Bn as rs,Hm as rt,Ng as s,No as sa,je as sc,Nc as si,Pf as sn,Mi as so,Nu as sr,Mn as ss,Pm as st,Gg as t,Go as ta,Ue as tc,Gc as ti,Kf as tn,Wi as to,Gu as tr,Wn as ts,Km as tt,Dg as u,Do as ua,Te as uc,Dc as ui,Of as un,Ei as uo,Du as ur,En as us,Om as ut,dg as v,uo as va,le as vc,dc as vi,ff as vn,ui as vo,du as vr,un as vs,fm as vt,$h as w,Qa as wa,Z as wc,$s as wi,$d as wn,Qr as wo,$l as wr,Zt as ws,em as wt,ag as x,io as xa,re as xc,ac as xi,of as xn,ii as xo,au as xr,rn as xs,om as xt,lg as y,co as ya,se as yc,lc as yi,uf as yn,ci as yo,lu as yr,cn as ys,um as yt,Ch as z,Sa as za,x as zc,Cs as zi,Cd as zn,Sr as zo,Cl as zr,xt as zs,wp as zt};
