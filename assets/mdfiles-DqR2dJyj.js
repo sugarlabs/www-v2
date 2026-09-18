@@ -40301,6 +40301,124 @@ The exploration of localization also showed that supporting multiple languages r
 ## Acknowledgments
 
 Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,Lh=e({default:()=>Rh}),Rh=`---
+title: "GSoC '26 Week 12 Report by Rejah Rabeeul Haque"
+excerpt: "Implemented multiplayer in Game Mode, enabling real time state synchronization, player spawning, network event handling, and shared territory capture through the Sugarizer shared activity network"
+category: "DEVELOPER NEWS"
+date: "2026-08-21"
+slug: "2026-08-21-gsoc-26-rejah-rabeeul-haque-week12"
+author: "@/constants/MarkdownFiles/authors/rejah-rabeeul-haque.md"
+description: "GSoC'26 Contributor at SugarLabs working on ConnectTheDots activity"
+tags: "gsoc26,sugarlabs,sugarizer,connectthedots,week12,rejah-rabeeul-haque"
+image: "assets/Images/sugarizer.webp"
+---
+
+<!-- markdownlint-disable -->
+
+## This Week's Progress
+
+Hey everyone. This week, I worked on Collaborative Mode in Game Mode, allowing multiple users on different devices to play against each other in real time. Here’s a breakdown of everything I worked on.
+
+---
+
+## Shared Game Mode
+
+The territory capture game now works over the Sugarizer shared activity network. When a host shares the activity while in Game Mode, other users can join and everyone plays on the same dot grid simultaneously. Each player controls their own head, leaves their own trail, and captures their own territory, all visible on every device in real time.
+
+The game always requires at least two participants before it can begin. The Play button starts disabled and only becomes active once an opponent is present.
+
+- Solo mode: The player must toggle the robot button to enable the AI opponent. The Play button only becomes active once the AI is present.
+
+- Shared mode: The AI is disabled, and opponents are real users. The host's Play button becomes active once at least one network player joins. The game starts for everyone when the host presses Play.
+
+When the host presses Play, a start signal is sent across the network. Every connected device receives this message and begins the game at the exact same moment. Each player starts at their assigned spawn position with a single dot of territory.
+
+Only the host has the ability to restart the game, and the restart button is hidden for all other players. When the host restarts the match, a network message is broadcast, resetting every player to their original spawn position with fresh territory and an empty trail.
+
+### Player Controls
+
+The player can change direction using input methods. All follow the same rule: you cannot reverse direction (no 180° turns).
+
+- Keyboard (Arrow Keys / WASD): Pressing an arrow key or its WASD equivalent queues the new direction. The direction change is applied when the player reaches the next grid intersection. The player cannot reverse direction (no 180° turns).
+- Mouse Click / Tap: Clicking or tapping on the canvas selects a direction based on the clicked position relative to the player. The code compares the horizontal and vertical distances between the player's head and the click point. The larger distance determines whether the player turns horizontally or vertically.
+- Mouse Drag / Swipe: Clicking and dragging, or swiping on touch devices, changes the player’s direction based on the gesture. The code tracks the movement delta from the previous mouse position. Once the drag exceeds 5 pixels on either axis, the dominant axis determines the new direction. This makes touch controls feel more natural.
+
+### State Serialization and Synchronization
+
+Every player continuously broadcasts their current state to the network. This includes their position, movement direction, next queued direction, trail points, captured territory, and player colors, all packed into a single network message. To avoid flooding the network, these updates are sent roughly every 100 milliseconds.
+
+On the receiving end, the game takes this data and either creates a new opponent on the screen or updates an existing one. To keep movement looking smooth, the game locally predicts where opponents should be based on their last known direction and speed. When a new update arrives, it checks the distance: if the actual position is too far from the predicted position, it snaps the opponent to the correct coordinates. Otherwise, it simply updates their territory and queued direction without interrupting the smooth animation. 
+
+This hybrid approach local simulation combined with periodic network correction keeps the multiplayer experience smooth and responsive. With a maximum of eight players in a game, the update frequency provides enough synchronization while keeping network traffic manageable.
+
+### Network Events
+
+When a new user joins the shared session, the host sends them the current game state and assigns them a spawn point. The new player uses this information to set up their screen. At the same time, every existing player broadcasts their current state, ensuring the newcomer immediately sees everyone else on the grid.
+
+When a user disconnects, the game detects their absence and removes their territory from the grid, and updates the lobby status.
+
+Elimination works exactly the same way as in solo mode: hitting a wall, running into your own trail, or having your trail crossed by someone else. When a player is eliminated, they send one final broadcast so everyone's screen updates to show they are out. The match ends when only one player remains alive.
+
+---
+
+## Game Mode Architecture
+
+Game Mode is built as one self contained module. Every frame, it goes through a fixed sequence of steps to keep everything moving and in sync.
+
+- Setting up a player — When a new player joins (or the game restarts), the game creates a fresh player record. This stores where they start, which direction they are facing, what color they use, a set containing their single starting dot of territory, and an empty trail. The same setup logic is used for every player.
+
+- Moving players — Every frame, each player advances a tiny amount in their current direction. The speed is slow enough that the movement looks smooth, but the actual game logic only processes events at grid intersections. When a player snaps to a dot, the game checks whether they are inside or outside their own territory and updates the trail accordingly. If they have just returned home with a trail behind them, the territory capture runs immediately.
+
+- Capturing territory — When a player closes their loop by stepping back inside their own territory, the game calculates which grid cells are now enclosed and adds them all at once. Any cells that previously belonged to an opponent are taken away from that opponent at the same time.
+
+- Checking eliminations — After all players have moved for the current frame, the game checks every player against every other player for collisions: hitting a wall, crossing your own trail, an opponent crossing your trail, or two heads meeting. The outcome of each collision is resolved and dead players are removed.
+
+- Network sync — Each player's position, direction, trail, and territory are packaged into a compact snapshot and sent to all other devices. On arrival, each device either registers a new opponent or updates an existing one. Drawing is done separately in two passes: territory and trails are drawn first, then the player heads are drawn on top so they always appear above everything else.
+
+
+---
+
+## Territory Capture Algorithm
+
+When a player closes their trail by returning to their own territory, the game needs to figure out which grid cells are now enclosed. The approach is an inverse flood fill:
+
+1. Merge the player's existing territory and trail into a boundary set.
+2. Start a BFS from every cell on the grid's outer edges that is not part of the boundary.
+3. The BFS spreads inward, but cannot pass through boundary cells.
+4. After the BFS finishes, any cell that was never visited must be enclosed inside the loop.
+5. All unvisited cells are added to the player's territory, and if any of them belonged to an opponent, they are removed from the opponent's territory set.
+
+---
+
+## Challenges Faced
+
+- Getting the network sync to feel smooth was the biggest challenge. Sending full state every frame would flood the network, but sending too infrequently would cause players to teleport. The 100ms throttle with local prediction in between struck a good balance.
+- Handling joiners required careful coordination. The joiner needs to receive the host's state, set up their own spawn, and also see every other player's current position and territory. This meant every existing player had to broadcast their state when a new user appeared, not just the host.
+- Detecting eliminations across multiple players required checking every player against every other player. The collision system had to be generalized to support any number of players without missing possible interactions.
+
+---
+
+## What's Next
+
+- Improve the user experience in Game Mode and update the Game Mode icon to better represent the actual gameplay.
+- Create tutorials for both Draw Mode and Number Mode so that new users can quickly understand how each mode works.
+
+---
+
+## Acknowledgments
+
+Thanks to my mentor Lionel Laské for the continuous guidance, and to the Sugar Labs community for the support.
+
+---
+
+## Links
+
+- **Sugarizer Repository**: [https://github.com/llaske/sugarizer](https://github.com/llaske/sugarizer)
+- **Connect The Dots Pull Request**: [https://github.com/llaske/sugarizer/pull/2188](https://github.com/llaske/sugarizer/pull/2188)
+- **GitHub Profile**: [https://github.com/Rejah-Rabeeul](https://github.com/Rejah-Rabeeul)
+
+---
+
+*Thanks for reading! Stay tuned for next week’s update. Feel free to reach out if you have any questions or feedback.*`,zh=e({default:()=>Bh}),Bh=`---
 
 title: "DMP '26 Week 11 Update by Stuti Jain"
 
@@ -40471,7 +40589,7 @@ Unlike individual toolbar labels, a lesson contains interconnected story content
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,zh=e({default:()=>Bh}),Bh=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,Vh=e({default:()=>Hh}),Hh=`---
 title: "GSoC'26  Final Report by Syed Khubayb Ur Rahman"
 excerpt: "Final report summarizing the architecture and outcomes of the Music Blocks v4 Masonry project."
 category: "DEVELOPER NEWS"
@@ -40649,7 +40767,7 @@ To restore a program, the system reconstructs blank Brick instances based on the
 ## Acknowledgments
 
 Special thanks to my mentors Anindya Kundu  and Safwan Sayeed for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the entire Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4.
-`,Vh=e({default:()=>Hh}),Hh=`---
+`,Uh=e({default:()=>Wh}),Wh=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -40798,7 +40916,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Uh=e({default:()=>Wh}),Wh=`---
+`,Gh=e({default:()=>Kh}),Kh=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -40901,7 +41019,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Gh=e({default:()=>Kh}),Kh=`---
+`,qh=e({default:()=>Jh}),Jh=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -41374,7 +41492,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,qh=e({default:()=>Jh}),Jh=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Yh=e({default:()=>Xh}),Xh=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -41461,7 +41579,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Yh=e({default:()=>Xh}),Xh=`---\r
+`,Zh=e({default:()=>Qh}),Qh=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -41554,7 +41672,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Zh=e({default:()=>Qh}),Qh=`---\r
+`,$h=e({default:()=>eg}),eg=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -41648,7 +41766,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,$h=e({default:()=>eg}),eg=`---\r
+`,tg=e({default:()=>ng}),ng=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -41736,7 +41854,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,tg=e({default:()=>ng}),ng=`---\r
+`,rg=e({default:()=>ig}),ig=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -41819,7 +41937,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,rg=e({default:()=>ig}),ig=`---\r
+`,ag=e({default:()=>og}),og=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -41885,7 +42003,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,ag=e({default:()=>og}),og=`---
+`,sg=e({default:()=>cg}),cg=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -41967,7 +42085,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,sg=e({default:()=>cg}),cg=`---
+---`,lg=e({default:()=>ug}),ug=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -42060,7 +42178,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,lg=e({default:()=>ug}),ug=`---
+`,dg=e({default:()=>fg}),fg=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -42149,7 +42267,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,dg=e({default:()=>fg}),fg=`---
+--- `,pg=e({default:()=>mg}),mg=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42294,7 +42412,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,pg=e({default:()=>mg}),mg=`---
+--- `,hg=e({default:()=>gg}),gg=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42482,7 +42600,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,hg=e({default:()=>gg}),gg=`---
+--- `,_g=e({default:()=>vg}),vg=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42577,7 +42695,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,_g=e({default:()=>vg}),vg=`---
+`,yg=e({default:()=>bg}),bg=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42666,7 +42784,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,yg=e({default:()=>bg}),bg=`---
+`,xg=e({default:()=>Sg}),Sg=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42753,7 +42871,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,xg=e({default:()=>Sg}),Sg=`---
+---`,Cg=e({default:()=>wg}),wg=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42836,7 +42954,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Cg=e({default:()=>wg}),wg=`---
+---`,Tg=e({default:()=>Eg}),Eg=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -42919,7 +43037,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Tg=e({default:()=>Eg}),Eg=`---
+---`,Dg=e({default:()=>Og}),Og=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -43224,4 +43342,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Am as $,Oi as $a,ko as $i,ku as $n,On as $o,kc as $r,De as $s,Af as $t,xh as A,ba as Aa,y as Ac,xs as Ai,xd as An,br as Ao,xl as Ar,yt as As,Sp as At,nh as B,ea as Ba,ts as Bi,td as Bn,er as Bo,tl as Br,$e as Bs,np as Bt,Fh as C,Pa as Ca,N as Cc,Fs as Ci,Fd as Cn,Pr as Co,Fl as Cr,Nt as Cs,Ip as Ct,Dh as D,Ea as Da,T as Dc,Ds as Di,Dd as Dn,Er as Do,Dl as Dr,Tt as Ds,Op as Dt,kh as E,Oa as Ea,D as Ec,ks as Ei,kd as En,Or as Eo,kl as Er,Dt as Es,Ap as Et,dh as F,ua as Fa,l as Fc,ds as Fi,dd as Fn,ur as Fo,dl as Fr,lt as Fs,fp as Ft,Km as G,Wi as Ga,Go as Gi,Gu as Gn,Wn as Go,Gc as Gr,Ue as Gs,Kf as Gt,Qm as H,Xi as Ha,Zo as Hi,Zu as Hn,Xn as Ho,Zc as Hr,Ye as Hs,Qf as Ht,uh as I,ca as Ia,s as Ic,ls as Ii,ld as In,cr as Io,ll as Ir,st as Is,up as It,Bm as J,Ri as Ja,zo as Ji,zu as Jn,Rn as Jo,zc as Jr,Le as Js,Bf as Jt,Wm as K,Hi as Ka,Uo as Ki,Uu as Kn,Hn as Ko,Uc as Kr,Ve as Ks,Wf as Kt,ch as L,oa as La,a as Lc,ss as Li,sd as Ln,or as Lo,sl as Lr,at as Ls,cp as Lt,_h as M,ga as Ma,h as Mc,_s as Mi,_d as Mn,gr as Mo,_l as Mr,ht as Ms,vp as Mt,hh as N,ma as Na,p as Nc,hs as Ni,hd as Nn,mr as No,hl as Nr,pt as Ns,gp as Nt,Th as O,wa as Oa,C as Oc,Ts as Oi,Td as On,wr as Oo,Tl as Or,Ct as Os,Ep as Ot,ph as P,fa as Pa,d as Pc,ps as Pi,pd as Pn,fr as Po,pl as Pr,dt as Ps,mp as Pt,Mm as Q,Ai as Qa,jo as Qi,ju as Qn,An as Qo,jc as Qr,ke as Qs,Mf as Qt,oh as R,ia as Ra,r as Rc,as as Ri,ad as Rn,ir as Ro,al as Rr,rt as Rs,op as Rt,Lh as S,Ia as Sa,F as Sc,Ls as Si,Ld as Sn,Ir as So,Ll as Sr,Ft as Ss,Rp as St,jh as T,Aa as Ta,k as Tc,js as Ti,jd as Tn,Ar as To,jl as Tr,kt as Ts,Mp as Tt,Xm as U,Ji as Ua,Yo as Ui,Yu as Un,Jn as Uo,Yc as Ur,qe as Us,Xf as Ut,eh as V,Qi as Va,$o as Vi,$u as Vn,Qn as Vo,$c as Vr,Ze as Vs,ep as Vt,Jm as W,Ki as Wa,qo as Wi,qu as Wn,Kn as Wo,qc as Wr,Ge as Ws,Jf as Wt,Im as X,Pi as Xa,Fo as Xi,Fu as Xn,Pn as Xo,Fc as Xr,Ne as Xs,If as Xt,Rm as Y,Ii as Ya,Lo as Yi,Lu as Yn,In as Yo,Lc as Yr,Fe as Ys,Rf as Yt,Pm as Z,Mi as Za,No as Zi,Nu as Zn,Mn as Zo,Nc as Zr,je as Zs,Pf as Zt,qh as _,Ka as _a,G as _c,qs as _i,qd as _n,Kr as _o,ql as _r,Gt as _s,Jp as _t,_g as a,_o as aa,he as ac,_c as ai,vf as an,gi as ao,_u as ar,gn as as,vm as at,Vh as b,Ba as ba,z as bc,Vs as bi,Vd as bn,Br as bo,Vl as br,zt as bs,Hp as bt,dg as c,uo as ca,le as cc,dc as ci,ff as cn,ui as co,du as cr,un as cs,fm as ct,ag as d,io as da,re as dc,ac as di,of as dn,ii as do,au as dr,rn as ds,om as dt,Do as ea,Te as ec,Dc as ei,Of as en,Ei as eo,Du as er,En as es,Om as et,rg as f,no as fa,te as fc,rc as fi,rf as fn,ni as fo,ru as fr,tn as fs,im as ft,Yh as g,Ja as ga,q as gc,Ys as gi,Yd as gn,Jr as go,Yl as gr,qt as gs,Xp as gt,Zh as h,Xa as ha,Y as hc,Zs as hi,Zd as hn,Xr as ho,Zl as hr,Yt as hs,Qp as ht,yg as i,yo as ia,_e as ic,yc as ii,bf as in,vi as io,yu as ir,vn as is,bm as it,yh as j,va as ja,_ as jc,ys as ji,yd as jn,vr as jo,yl as jr,_t as js,bp as jt,Ch as k,Sa as ka,x as kc,Cs as ki,Cd as kn,Sr as ko,Cl as kr,xt as ks,wp as kt,lg as l,co as la,se as lc,lc as li,uf as ln,ci as lo,lu as lr,cn as ls,um as lt,$h as m,Qa as ma,Z as mc,$s as mi,$d as mn,Qr as mo,$l as mr,Zt as ms,em as mt,Cg as n,Co as na,xe as nc,Cc as ni,wf as nn,Si as no,Cu as nr,Sn as ns,wm as nt,hg as o,ho as oa,pe as oc,hc as oi,gf as on,mi as oo,hu as or,mn as os,gm as ot,tg as p,eo as pa,$ as pc,tc as pi,tf as pn,ei as po,tu as pr,$t as ps,nm as pt,Hm as q,Bi as qa,Vo as qi,Vu as qn,Bn as qo,Vc as qr,ze as qs,Hf as qt,xg as r,xo as ra,ye as rc,xc as ri,Sf as rn,bi as ro,xu as rr,bn as rs,Sm as rt,pg as s,po as sa,de as sc,pc as si,mf as sn,fi as so,pu as sr,fn as ss,mm as st,Tg as t,To as ta,Ce as tc,Tc as ti,Ef as tn,wi as to,Tu as tr,wn as ts,Em as tt,sg as u,oo as ua,ae as uc,sc as ui,cf as un,oi as uo,su as ur,on as us,cm as ut,Gh as v,Wa as va,U as vc,Gs as vi,Gd as vn,Wr as vo,Gl as vr,Ut as vs,Kp as vt,Nh as w,Ma as wa,j as wc,Ns as wi,Nd as wn,Mr as wo,Nl as wr,jt as ws,Pp as wt,zh as x,Ra as xa,L as xc,zs as xi,zd as xn,Rr as xo,zl as xr,Lt as xs,Bp as xt,Uh as y,Ha as ya,V as yc,Us as yi,Ud as yn,Hr as yo,Ul as yr,Vt as ys,Wp as yt,ih as z,na as za,t as zc,rs as zi,rd as zn,nr as zo,rl as zr,tt as zs,ip as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Mm as $,Ai as $a,jo as $i,ju as $n,An as $o,jc as $r,ke as $s,Mf as $t,Ch as A,Sa as Aa,x as Ac,Cs as Ai,Cd as An,Sr as Ao,Cl as Ar,xt as As,wp as At,ih as B,na as Ba,t as Bc,rs as Bi,rd as Bn,nr as Bo,rl as Br,tt as Bs,ip as Bt,Lh as C,Ia as Ca,F as Cc,Ls as Ci,Ld as Cn,Ir as Co,Ll as Cr,Ft as Cs,Rp as Ct,kh as D,Oa as Da,D as Dc,ks as Di,kd as Dn,Or as Do,kl as Dr,Dt as Ds,Ap as Dt,jh as E,Aa as Ea,k as Ec,js as Ei,jd as En,Ar as Eo,jl as Er,kt as Es,Mp as Et,ph as F,fa as Fa,d as Fc,ps as Fi,pd as Fn,fr as Fo,pl as Fr,dt as Fs,mp as Ft,Jm as G,Ki as Ga,qo as Gi,qu as Gn,Kn as Go,qc as Gr,Ge as Gs,Jf as Gt,eh as H,Qi as Ha,$o as Hi,$u as Hn,Qn as Ho,$c as Hr,Ze as Hs,ep as Ht,dh as I,ua as Ia,l as Ic,ds as Ii,dd as In,ur as Io,dl as Ir,lt as Is,fp as It,Hm as J,Bi as Ja,Vo as Ji,Vu as Jn,Bn as Jo,Vc as Jr,ze as Js,Hf as Jt,Km as K,Wi as Ka,Go as Ki,Gu as Kn,Wn as Ko,Gc as Kr,Ue as Ks,Kf as Kt,uh as L,ca as La,s as Lc,ls as Li,ld as Ln,cr as Lo,ll as Lr,st as Ls,up as Lt,yh as M,va as Ma,_ as Mc,ys as Mi,yd as Mn,vr as Mo,yl as Mr,_t as Ms,bp as Mt,_h as N,ga as Na,h as Nc,_s as Ni,_d as Nn,gr as No,_l as Nr,ht as Ns,vp as Nt,Dh as O,Ea as Oa,T as Oc,Ds as Oi,Dd as On,Er as Oo,Dl as Or,Tt as Os,Op as Ot,hh as P,ma as Pa,p as Pc,hs as Pi,hd as Pn,mr as Po,hl as Pr,pt as Ps,gp as Pt,Pm as Q,Mi as Qa,No as Qi,Nu as Qn,Mn as Qo,Nc as Qr,je as Qs,Pf as Qt,ch as R,oa as Ra,a as Rc,ss as Ri,sd as Rn,or as Ro,sl as Rr,at as Rs,cp as Rt,zh as S,Ra as Sa,L as Sc,zs as Si,zd as Sn,Rr as So,zl as Sr,Lt as Ss,Bp as St,Nh as T,Ma as Ta,j as Tc,Ns as Ti,Nd as Tn,Mr as To,Nl as Tr,jt as Ts,Pp as Tt,Qm as U,Xi as Ua,Zo as Ui,Zu as Un,Xn as Uo,Zc as Ur,Ye as Us,Qf as Ut,nh as V,ea as Va,ts as Vi,td as Vn,er as Vo,tl as Vr,$e as Vs,np as Vt,Xm as W,Ji as Wa,Yo as Wi,Yu as Wn,Jn as Wo,Yc as Wr,qe as Ws,Xf as Wt,Rm as X,Ii as Xa,Lo as Xi,Lu as Xn,In as Xo,Lc as Xr,Fe as Xs,Rf as Xt,Bm as Y,Ri as Ya,zo as Yi,zu as Yn,Rn as Yo,zc as Yr,Le as Ys,Bf as Yt,Im as Z,Pi as Za,Fo as Zi,Fu as Zn,Pn as Zo,Fc as Zr,Ne as Zs,If as Zt,Yh as _,Ja as _a,q as _c,Ys as _i,Yd as _n,Jr as _o,Yl as _r,qt as _s,Xp as _t,yg as a,yo as aa,_e as ac,yc as ai,bf as an,vi as ao,yu as ar,vn as as,bm as at,Uh as b,Ha as ba,V as bc,Us as bi,Ud as bn,Hr as bo,Ul as br,Vt as bs,Wp as bt,pg as c,po as ca,de as cc,pc as ci,mf as cn,fi as co,pu as cr,fn as cs,mm as ct,sg as d,oo as da,ae as dc,sc as di,cf as dn,oi as do,su as dr,on as ds,cm as dt,ko as ea,De as ec,kc as ei,Af as en,Oi as eo,ku as er,On as es,Am as et,ag as f,io as fa,re as fc,ac as fi,of as fn,ii as fo,au as fr,rn as fs,om as ft,Zh as g,Xa as ga,Y as gc,Zs as gi,Zd as gn,Xr as go,Zl as gr,Yt as gs,Qp as gt,$h as h,Qa as ha,Z as hc,$s as hi,$d as hn,Qr as ho,$l as hr,Zt as hs,em as ht,xg as i,xo as ia,ye as ic,xc as ii,Sf as in,bi as io,xu as ir,bn as is,Sm as it,xh as j,ba as ja,y as jc,xs as ji,xd as jn,br as jo,xl as jr,yt as js,Sp as jt,Th as k,wa as ka,C as kc,Ts as ki,Td as kn,wr as ko,Tl as kr,Ct as ks,Ep as kt,dg as l,uo as la,le as lc,dc as li,ff as ln,ui as lo,du as lr,un as ls,fm as lt,tg as m,eo as ma,$ as mc,tc as mi,tf as mn,ei as mo,tu as mr,$t as ms,nm as mt,Tg as n,To as na,Ce as nc,Tc as ni,Ef as nn,wi as no,Tu as nr,wn as ns,Em as nt,_g as o,_o as oa,he as oc,_c as oi,vf as on,gi as oo,_u as or,gn as os,vm as ot,rg as p,no as pa,te as pc,rc as pi,rf as pn,ni as po,ru as pr,tn as ps,im as pt,Wm as q,Hi as qa,Uo as qi,Uu as qn,Hn as qo,Uc as qr,Ve as qs,Wf as qt,Cg as r,Co as ra,xe as rc,Cc as ri,wf as rn,Si as ro,Cu as rr,Sn as rs,wm as rt,hg as s,ho as sa,pe as sc,hc as si,gf as sn,mi as so,hu as sr,mn as ss,gm as st,Dg as t,Do as ta,Te as tc,Dc as ti,Of as tn,Ei as to,Du as tr,En as ts,Om as tt,lg as u,co as ua,se as uc,lc as ui,uf as un,ci as uo,lu as ur,cn as us,um as ut,qh as v,Ka as va,G as vc,qs as vi,qd as vn,Kr as vo,ql as vr,Gt as vs,Jp as vt,Fh as w,Pa as wa,N as wc,Fs as wi,Fd as wn,Pr as wo,Fl as wr,Nt as ws,Ip as wt,Vh as x,Ba as xa,z as xc,Vs as xi,Vd as xn,Br as xo,Vl as xr,zt as xs,Hp as xt,Gh as y,Wa as ya,U as yc,Gs as yi,Gd as yn,Wr as yo,Gl as yr,Ut as ys,Kp as yt,oh as z,ia as za,r as zc,as as zi,ad as zn,ir as zo,al as zr,rt as zs,op as zt};
