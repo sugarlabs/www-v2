@@ -12,19 +12,21 @@ image: "assets/Images/c4gt_DMP.webp"
 
 <!-- markdownlint-disable -->
 
-# Weekly Blog Post, 2026
+# Week 10 Progress Report by Nirav Sharma
 
-**Contributor:** Nirav Sharma
-**Project:** Refactor Temperament — Sugar Labs Music Blocks (Issue #7171)
-**C4GT DMP 2026**
+**Project:** [Music Blocks - Refactor Temperament (Issue #7171)](https://github.com/sugarlabs/musicblocks/issues/7171)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  
+**Reporting Period:** 2026-08-23 – 2026-08-29
 
 ---
 
-## Goal 4 is done
+## What I worked on this week
+
+### Goal 4 is done
 
 PR #8059 merged on August 24. It took a while to get there — Devin and Walter both went through it, and they found real problems (the widget wouldn't open, SVG elements piled up on every switch, and the 12→5→12 EDO reset left the widget stuck). All fixed now. The Mode Widget overhaul is in: a control bar with tuning/EDO and saved modes, a name field, save/delete, and custom modes that export straight to workspace blocks.
 
-## PR #8240 landed too
+### PR #8240 landed too
 
 The other big merge this week. PR #8240 is the non-EDO temperament hardening — until now, custom temperaments rendered fine but didn't actually behave right when you played them. This is the fix.
 
@@ -36,7 +38,7 @@ The other big merge this week. PR #8240 is the non-EDO temperament hardening —
 - Storage got wrappers for restricted contexts — `_storeGet` / `_storeSet` use localStorage when they can and a plain object otherwise.
 - Test cleanup: dropped 83 trivial init tests from `turtle-singer.test.js`, removed duplicates, and updated 11 tests that were asserting the old broken behavior.
 
-## PR reviews
+### PR reviews
 
 Three this week.
 
@@ -46,13 +48,13 @@ Three this week.
 
 **PR #8271** (Vanshika) - Cypress E2E for custom mode persistence across reload. Solid coverage. Two notes from me: the test checks the widget title, which is fragile (it's tied to rendering and i18n) — assert against `customModes` directly instead. And a comment says it "falls back to major", which isn't true. `_setMode()` returns early, so the custom name just never applies. No fallback happens.
 
-## What's next
+### What's coming next
 
 Goal 5: the Temperament Visualizer. The part users actually see — interval structure, pitch layout, however it maps onto the circle of fifths or some other frame. Goal 4 is landed, so I'm starting on this now.
 
 ---
 
-## Links
+### Links
 
 - [PR #8059 (Merged)](https://github.com/sugarlabs/musicblocks/pull/8059)
 - [PR #8240 (Merged)](https://github.com/sugarlabs/musicblocks/pull/8240)
