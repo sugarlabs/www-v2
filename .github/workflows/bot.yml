@@ -1,169 +1,150 @@
 name: Status Bot
 
 on:
-  pull_request_target:
-    types:
-      - opened
-      - synchronize
+  workflow_run:
+    workflows: ['PR Checks']
+    types: [completed]
+
+permissions:
+  pull-requests: write
+  actions: read
 
 jobs:
-  check-pr-status:
-    name: Workflow Status Check
+  comment:
+    name: Post PR Comment
     runs-on: ubuntu-latest
-    permissions: 
-      pull-requests: write
-      contents: read
-      issues: write
-      actions: read
+
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion != 'cancelled' &&
+      github.event.workflow_run.conclusion != 'skipped'
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Download results
+        uses: actions/download-artifact@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          name: pr-check-results-${{ github.event.workflow_run.id }}
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Run Build Test (CI Check)
-        id: ci-check
+      - name: Resolve pull request
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
-          if npm run build; then
-            echo "CI_PASSED=true" >> $GITHUB_ENV
-            echo "CI_ERROR=" >> $GITHUB_ENV
-          else
-            echo "CI_PASSED=false" >> $GITHUB_ENV
-            echo "CI_ERROR=Build failed" >> $GITHUB_ENV
+          number=$(gh api --paginate \
+            "/repos/$GITHUB_REPOSITORY/pulls?state=open&per_page=100" \
+            --jq 'map(select(.head.sha == env.HEAD_SHA)) | .[0].number // empty' \
+            | head -n 1)
+
+          if ! printf '%s' "$number" | grep -qE '^[0-9]+$'; then
+            echo "::notice::No open pull request found for $HEAD_SHA"
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
-      - name: Run Linting Checks
-        id: lint-check
-        run: |
-          LINT_ERRORS=""
-          LINT_PASSED=true
-          
-          # Run TypeScript linting
-          if ! npm run lint:ts; then
-            LINT_PASSED=false
-            LINT_ERRORS="${LINT_ERRORS}• TypeScript linting failed\n"
-          fi
-          
-          # Run Markdown linting
-          if ! npm run lint:md; then
-            LINT_PASSED=false
-            LINT_ERRORS="${LINT_ERRORS}• Markdown linting failed\n"
-          fi
-          
-          # Check code formatting with Prettier
-          if ! npm run format:check; then
-            LINT_PASSED=false
-            LINT_ERRORS="${LINT_ERRORS}• Code formatting issues detected\n"
-          fi
-          
-          echo "LINT_PASSED=$LINT_PASSED" >> $GITHUB_ENV
-          echo "LINT_ERRORS<<EOF" >> $GITHUB_ENV
-          echo -e "$LINT_ERRORS" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          echo "Resolved pull request #$number for $HEAD_SHA"
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+          echo "found=true" >> "$GITHUB_OUTPUT"
 
-      - name: Generate PR Comment
-        id: generate-comment
+      - name: Generate comment
+        id: comment
+        if: steps.pr.outputs.found == 'true'
+        env:
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
         run: |
-          # Extract PR number
-          PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          
-          # Generate a temporary file for the comment
+          flag() {
+            jq -r --arg key "$1" \
+              'if (.[$key] // "") == "success" then "pass" else "fail" end' \
+              check-results.json
+          }
+
+          BUILD=$(flag build)
+          LINT_TS=$(flag lint_ts)
+          LINT_MD=$(flag lint_md)
+          FORMAT=$(flag format)
+
+          echo "build=$BUILD lint_ts=$LINT_TS lint_md=$LINT_MD format=$FORMAT"
+
           COMMENT_FILE=$(mktemp)
-          
-          # Save variables to GITHUB_OUTPUT
-          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
-          echo "COMMENT_FILE=$COMMENT_FILE" >> $GITHUB_OUTPUT
-          
-          # Generate content for the comment file
+          echo "file=$COMMENT_FILE" >> "$GITHUB_OUTPUT"
+
           {
-            if [ "$CI_PASSED" = "true" ] && [ "$LINT_PASSED" = "true" ]; then
+            if [ "$BUILD" = "pass" ] && [ "$LINT_TS" = "pass" ] \
+               && [ "$LINT_MD" = "pass" ] && [ "$FORMAT" = "pass" ]; then
               echo "## 🎉 All Checks Passed!"
               echo ""
-              echo "> **Status:** ✅ Ready to merge"
+              echo "Great work! Every automated check succeeded on this pull request."
               echo ""
-              echo "### ✅ Completed Workflows"
+              echo "| Check | Status |"
+              echo "| --- | --- |"
+              echo "| Build | ✅ Passed |"
+              echo "| TypeScript linting | ✅ Passed |"
+              echo "| Markdown linting | ✅ Passed |"
+              echo "| Code formatting | ✅ Passed |"
               echo ""
-              echo "| Workflow | Status | Details |"
-              echo "|----------|--------|---------|"
-              echo "| 🔨 **Continuous Integration** | ✅ Passed | Build completed successfully |"
-              echo "| 📝 **Code Linting** | ✅ Passed | All formatting and style checks passed |"
-              echo ""
-              echo "---"
-              echo ""
-              echo "🚀 **This PR is ready for review and can be safely merged to \`main\` branch!**"
-              echo ""
-              echo "*Great work! Your code meets all quality standards.* 👏"
+              echo "This pull request is ready for maintainer review. 🚀"
             else
-              echo "## ❌ Checks Failed"
+              status() { [ "$1" = "pass" ] && echo "✅ Passed" || echo "❌ Failed"; }
+
+              echo "## ⚠️ Some Checks Failed"
               echo ""
-              echo "> **Status:** 🚫 Not ready to merge"
+              echo "Please fix the issues below before this pull request can be merged."
               echo ""
-              echo "Please fix the following issues before merging:"
+              echo "| Check | Status | Fix with |"
+              echo "| --- | --- | --- |"
+              echo "| Build | $(status "$BUILD") | \`npm run build\` |"
+              echo "| TypeScript linting | $(status "$LINT_TS") | \`npm run lint:ts\` |"
+              echo "| Markdown linting | $(status "$LINT_MD") | \`npm run lint:md\` |"
+              echo "| Code formatting | $(status "$FORMAT") | \`npm run format\` |"
               echo ""
-              
-              if [ "$CI_PASSED" = "false" ]; then
-                echo "### 🔨 Continuous Integration Failed"
+
+              if [ "$BUILD" = "fail" ]; then
+                echo "### 🔨 Build failed"
                 echo ""
-                echo "**Issue:** The build process failed to complete."
+                echo "The project does not compile. Reproduce it locally with:"
                 echo ""
-                echo "**How to fix:**"
-                echo "1. Run \`npm run build\` locally to identify the issue"
-                echo "2. Fix any TypeScript compilation errors"
-                echo "3. Ensure all dependencies are properly installed"
-                echo "4. Test your changes before pushing"
-                echo ""
-                echo "---"
+                echo '```bash'
+                echo "npm ci"
+                echo "npm run build"
+                echo '```'
                 echo ""
               fi
-              
-              if [ "$LINT_PASSED" = "false" ]; then
-                echo "### 📝 Code Linting Failed"
+
+              if [ "$LINT_TS" = "fail" ] || [ "$LINT_MD" = "fail" ] || [ "$FORMAT" = "fail" ]; then
+                echo "### 📝 Linting or formatting failed"
                 echo ""
-                echo "**Issue:** Code formatting or style violations detected."
+                echo "Most formatting problems fix themselves:"
                 echo ""
-                if [ -n "$LINT_ERRORS" ]; then
-                  echo "**Specific problems:**"
-                  echo ""
-                  echo -e "$LINT_ERRORS"
-                  echo ""
-                fi
-                echo "**How to fix:**"
-                echo ""
-                echo "| Platform | Command | Description |"
-                echo "|----------|---------|-------------|"
-                echo "| 🐧 **Unix/macOS/Linux** | \`npm run format\` | Auto-fix all formatting issues |"
-                echo "| 🪟 **Windows** | \`npm run format:file <filename>\` | Fix specific files |"
-                echo "| 🔍 **Check Only** | \`npm run format:check\` | Check formatting without fixing |"
-                echo ""
-                echo "**Need help with linting?** Check out the [Linting Guide for Windows Users](https://github.com/sugarlabs/www-v2/pull/12) for detailed instructions."
-                echo ""
-                echo "---"
+                echo '```bash'
+                echo "npm run format"
+                echo '```'
                 echo ""
               fi
-              
-              echo "### 🛠️ Next Steps"
+
+              echo "### 🛠️ Next steps"
               echo ""
-              echo "1. **Fix the issues** mentioned above"
-              echo "2. **Test locally** to ensure everything works"
-              echo "3. **Push your fixes** to this branch"
-              echo "4. **Wait for re-check** - This bot will automatically run again"
+              echo "1. **Fix the issues** listed above."
+              echo "2. **Commit and push** to this branch."
+              echo "3. The checks re-run automatically and this comment updates."
               echo ""
-              echo "> 🤖 *This comment will be updated automatically when you push new commits*"
+              echo "Ask in the comments if you get stuck, we're happy to help. 💪"
             fi
+
+            echo ""
+            echo "---"
+            echo ""
+            echo "[View the full check logs]($RUN_URL)"
           } > "$COMMENT_FILE"
 
-      - name: Comment on PR
+          cat "$COMMENT_FILE"
+
+      - name: Comment on pull request
+        if: steps.pr.outputs.found == 'true'
         uses: thollander/actions-comment-pull-request@v3
         with:
-          file-path: ${{ steps.generate-comment.outputs.COMMENT_FILE }}
-          pr-number: ${{ steps.generate-comment.outputs.PR_NUMBER }}
+          file-path: ${{ steps.comment.outputs.file }}
+          pr-number: ${{ steps.pr.outputs.number }}
+          comment-tag: status-bot
           github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,100 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Build & Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the code base
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the project
+        id: build
+        run: npm run build
+        continue-on-error: true
+
+      - name: Run TypeScript linting
+        id: lint_ts
+        run: npm run lint:ts
+        continue-on-error: true
+
+      - name: Run Markdown linting
+        id: lint_md
+        run: npm run lint:md
+        continue-on-error: true
+
+      - name: Check code formatting with Prettier
+        id: format
+        run: npm run format:check
+        continue-on-error: true
+
+      - name: Record results
+        if: always() && github.event_name == 'pull_request'
+        env:
+          BUILD: ${{ steps.build.outcome }}
+          LINT_TS: ${{ steps.lint_ts.outcome }}
+          LINT_MD: ${{ steps.lint_md.outcome }}
+          FORMAT: ${{ steps.format.outcome }}
+        run: |
+          jq -n \
+            --arg build "$BUILD" \
+            --arg lint_ts "$LINT_TS" \
+            --arg lint_md "$LINT_MD" \
+            --arg format "$FORMAT" \
+            '{build: $build, lint_ts: $lint_ts, lint_md: $lint_md, format: $format}' \
+            > check-results.json
+          cat check-results.json
+
+      - name: Upload results
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-check-results-${{ github.run_id }}
+          path: check-results.json
+          retention-days: 1
+          if-no-files-found: error
+
+      - name: Enforce results
+        if: always()
+        env:
+          BUILD: ${{ steps.build.outcome }}
+          LINT_TS: ${{ steps.lint_ts.outcome }}
+          LINT_MD: ${{ steps.lint_md.outcome }}
+          FORMAT: ${{ steps.format.outcome }}
+        run: |
+          failed=0
+          for check in "build:$BUILD" "lint:ts:$LINT_TS" "lint:md:$LINT_MD" "format:check:$FORMAT"; do
+            name=${check%:*}
+            outcome=${check##*:}
+            if [ "$outcome" = "success" ]; then
+              echo "PASS  $name"
+            else
+              echo "FAIL  $name ($outcome)"
+              failed=1
+            fi
+          done
+          exit $failed
