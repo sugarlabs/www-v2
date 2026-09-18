@@ -2,8 +2,8 @@
 title: "DMP Week 5: fix: support non-12 EDO temperaments in audio engine and widgets"
 excerpt: "PR 5.2 makes the audio engine and widgets EDO-aware; PR 5.2b adds temperament persistence, foundational ratio data, and remaining goal fixes"
 category: "DEVELOPER NEWS"
-date: "2026-07-18"
-slug: "2026-07-18-dmp-26-niravsharma-week05"
+date: "2026-07-24"
+slug: "2026-07-24-dmp-26-niravsharma-week05"
 author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
 description: "Week 5 of my C4GT DMP journey — PR 5.2 makes the audio engine EDO-aware and PR 5.2b adds temperament persistence, ratio data, and the remaining goal fixes"
 tags: "dmp26,sugarlabs,week05,niravsharma,musicblocks,temperament"
@@ -12,17 +12,17 @@ image: "assets/Images/c4gt_DMP.webp"
 
 <!-- markdownlint-disable -->
 
-# Weekly Blog Post, 2026
+# Week 05 Progress Report by Nirav Sharma
 
-**Contributor:** Nirav Sharma
-**Project:** Refactor Temperament - Sugar Labs Music Blocks
-**C4GT DMP 2026**
+**Project:** [Music Blocks - Refactor Temperament (Issue #7171)](https://github.com/sugarlabs/musicblocks/issues/7171)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  
+**Reporting Period:** 2026-07-21 – 2026-07-25
 
 ---
 
 ## What I worked on this week
 
-This week I completed the audio engine and widget EDO-awareness (PR 5.2) and PR 5.2b landed the remaining Goal 1+2+3 fixes: temperament persistence, temperament threading, and temperament reset on run
+This week I completed the audio engine and widget EDO-awareness (PR 5.2) and PR 5.2b landed the remaining Goal 1+2+3 fixes: temperament persistence, temperament threading, and temperament reset on run.
 
 ### PR 5.2 - fix: support non-12 EDO temperaments in audio engine and widgets
 
@@ -56,13 +56,11 @@ Three widgets were updated:
 
 **Also in PR 5.2:** Expanded `EQUIVALENTNATURALS` with double sharps (`D𝄪→E`, `A𝄪→B`, etc.), added 17-EDO temperament, added JI `frequencyToPitch` with ratio-based lookup, fixed LiveWaveForm analyser disposal.
 
-PR 5.2 is open: [#7835](https://github.com/sugarlabs/musicblocks/pull/7835)
-
 ---
 
 ### PR 5.2b - feat(temperament): foundational ratio data, dynamic consonant stepping, and temperament length block
 
-PR 5.2b (tracked as PR 5.2b, #7853) shipped the persistence and remaining goal fixes:
+PR 5.2b (#7853) shipped the persistence and remaining goal fixes:
 
 - `_userTemperament` persistence: the chosen temperament survives across runs (`resetTemperament()` / `setUserTemperament()` in logo.js).
 - Temperament threading: `PitchActions` passes `inTemperament` to `pitchToFrequency`; harmonic partials use `parseNoteString` + temperament-aware `pitchToFrequency`.
@@ -71,24 +69,18 @@ PR 5.2b (tracked as PR 5.2b, #7853) shipped the persistence and remaining goal f
 - CustomPitchBlock macro fix: `"pitch"` -> `"custompitch"`.
 - `Singer.clearPitchToFrequencyCache()` on temperament change - no stale frequencies.
 
-PR 5.2b is merged: [#7853](https://github.com/sugarlabs/musicblocks/pull/7853)
 ---
-
 
 These two widgets have deep 12-note coupling - the modewidget has 34+ hardcoded `12` instances tied to mode definitions, piano keys, and wheel UI. The musickeyboard has 14+ instances tied to the PITCHES2 12-note array and keyboard layout. Both require a full redesign and will get their own PR.
 
----
+### What's coming next
 
-## What's next
-
-1. Address mentor feedback on PR 5.2 and PR 6, get reviwed and possibly gets merged
+1. Address mentor feedback on PR 5.2 and PR 6, get reviewed and possibly get merged
 2. Fix remaining `temperament.js` "Back to 2:1" division (uses `/ 12`)
 3. Tackle modewidget.js and musickeyboard.js EDO-awareness (separate PR)
 4. Begin PR 7 — Scale Builder in Temperament Widget (Goal 4)
 
----
-
-## Lessons learned
+### Reflection
 
 - **The `(step / EDO) * 12` formula is everywhere.** It maps N EDO steps to 12 pitch class names, which works for 12-EDO but produces wrong note names and octave transitions for any other EDO. The fix is always proportional mapping: `Math.round(step * 12 / currentEDO)` to find the nearest 12-EDO name.
 
@@ -97,3 +89,9 @@ These two widgets have deep 12-note coupling - the modewidget has 34+ hardcoded 
 - **Widget refactors are high-risk.** The modewidget and musickeyboard are tightly coupled to 12-note assumptions. A full redesign is needed, not just parameter swaps. Better to ship what works and defer the complex widgets.
 
 - **The `1200` in cents formulas is a constant.** It's the number of cents in an octave (logarithmic unit), not EDO-dependent. Don't change it when making things EDO-aware.
+
+### Links
+
+- [PR #7835 — support non-12 EDO temperaments in audio engine and widgets](https://github.com/sugarlabs/musicblocks/pull/7835)
+- [PR #7853 — foundational ratio data, dynamic consonant stepping, and temperament length block](https://github.com/sugarlabs/musicblocks/pull/7853)
+- [Issue #7171: Refactor Temperament](https://github.com/sugarlabs/musicblocks/issues/7171)
