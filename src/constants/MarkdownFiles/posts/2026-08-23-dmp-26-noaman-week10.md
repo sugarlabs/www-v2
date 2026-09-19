@@ -1,4 +1,4 @@
- ---
+---
 title: "DMP '26 Week 10 Update by Noaman Akhtar"
 excerpt: "Adding asynchronous provider tests with coverage measurement for the base and Ollama providers, and starting the design of a generic request contract so any Sugar activity can talk to Sugar-AI the same way."
 category: "DEVELOPER NEWS"
