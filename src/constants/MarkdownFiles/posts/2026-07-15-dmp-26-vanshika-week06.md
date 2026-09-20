@@ -11,12 +11,12 @@ image: "assets/Images/dmp_c4gt_logo.png"
 <!-- markdownlint-disable -->
 # Week 06 Progress Report by Vanshika Pahal
 
-**Project:** [Music Blocks v3 - Test Coverage, Refactoring & Dependency Updates](https://github.com/sugarlabs/musicblocks)
-**Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)
-**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)
-**Organization:** [Sugar Labs](https://sugarlabs.org)
-**Week:** Closing Out activity.js: Selection, Workspace Layout, Trash, Help, Block Scale & Context Menu
-**Reporting Period:** 2026-07-09 to 2026-07-15
+**Project:** [Music Blocks v3 - Test Coverage, Refactoring & Dependency Updates](https://github.com/sugarlabs/musicblocks)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  
+**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Week:** Closing Out activity.js: Selection, Workspace Layout, Trash, Help, Block Scale & Context Menu  
+**Reporting Period:** 2026-07-09 to 2026-07-15  
 
 ---
 
