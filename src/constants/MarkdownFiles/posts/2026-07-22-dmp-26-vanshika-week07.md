@@ -11,12 +11,12 @@ image: "assets/Images/dmp_c4gt_logo.png"
 <!-- markdownlint-disable -->
 # Week 07 Progress Report by Vanshika Pahal
 
-**Project:** [Music Blocks v3 - Test Coverage, Refactoring & Dependency Updates](https://github.com/sugarlabs/musicblocks)
-**Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)
-**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)
-**Organization:** [Sugar Labs](https://sugarlabs.org)
-**Week:** Beyond activity.js: blocks.js and the Shared Utility Layer
-**Reporting Period:** 2026-07-16 to 2026-07-22
+**Project:** [Music Blocks v3 - Test Coverage, Refactoring & Dependency Updates](https://github.com/sugarlabs/musicblocks)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  
+**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Week:** Beyond activity.js: blocks.js and the Shared Utility Layer  
+**Reporting Period:** 2026-07-16 to 2026-07-22  
 
 ---
 
