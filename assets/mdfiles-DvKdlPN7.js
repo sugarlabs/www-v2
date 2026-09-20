@@ -43226,6 +43226,165 @@ To restore a program, the system reconstructs blank Brick instances based on the
 
 Special thanks to my mentors Anindya Kundu  and Safwan Sayeed for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the entire Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4.
 `,Ng=e({default:()=>Pg}),Pg="---\ntitle: \"What I Learned Porting Sugar Activities to GTK4\"\nexcerpt: \"A look at the real-world problems and unusual cases I encountered while porting 9 core Sugar activities to GTK4 and Wayland.\"\ncategory: \"DEVELOPER NEWS\"\ndate: \"2026-08-31\"\nslug: \"2026-08-31-gtk4-porting-guide\"\nauthor: \"@/constants/MarkdownFiles/authors/divyam-agarwal.md\"\ntags: \"gsoc26,sugarlabs,gtk4,wayland,porting\"\nimage: \"assets/Images/GSOC.webp\"\n---\n\nThis summer during GSoC 2026, I worked on porting 9 of the core Fructose activities—Calculate, Log, Image Viewer, Chat, Browse, Read, Jukebox, Terminal, and TurtleArt—from GTK3 to GTK4.\n\nIf you are looking for the official API changes, the [GNOME GTK4 Migration Guide](https://docs.gtk.org/gtk4/migrating-3to4.html) is still the best place to start. But once I started porting the Sugar codebase, I kept running into weird problems and old code assumptions that aren't really covered in the documentation.\n\nI wrote down the main issues here, hoping it saves the next person some debugging time.\n\n## Quick Reference: GTK3 to GTK4 Replacements\n\n| GTK3 / Old API | GTK4 / New API | Notes |\n| :--- | :--- | :--- |\n| `Gtk.HBox` / `Gtk.VBox` | `Gtk.Box` | Set orientation explicitly. |\n| `Gtk.Table` | `Gtk.Grid` | |\n| `pack_start()` | `append()` / `prepend()` | |\n| `add()` | `set_child()` | Depends on the container. |\n| `Gtk.Toolbar` | `Gtk.Box` + `Gtk.Popover` | Toolbar was removed entirely. |\n| `Gtk.IconView` | `Gtk.FlowBox` | Useful with `Gtk.Picture` for scaling SVGs. |\n| `button-press-event` | `Gtk.GestureClick` | |\n| `key-press-event` | `Gtk.EventControllerKey` | |\n| EventBox | `Gtk.GestureClick` / `Gtk.GestureDrag` / `Gtk.GestureZoom` | Use the controller matching the interaction. |\n| `modify_bg()` | `Gtk.CssProvider` | Bind strictly to the needed widgets. |\n| `Gdk.cairo_set_source_pixbuf` | Convert pixbuf to a Cairo image surface | Convert pixbufs manually. |\n\n## Layouts broke everywhere\n\nThe first thing I noticed was that almost every activity layout was broken. The old codebase used `Gtk.HBox`, `Gtk.VBox`, `pack_start()`, and `add()` in many places. Since GTK4 removes those, I spent the first few weeks rewriting the UI code around `Gtk.Box` and `Gtk.Grid`.\n\nIn practice, this usually means replacing:\n\n* `Gtk.HBox` / `Gtk.VBox` with `Gtk.Box` (and setting orientation)\n* `Gtk.Table` with `Gtk.Grid`\n* `pack_start()` with `append()` or `prepend()`\n* `add()` with `set_child()` or the appropriate container API\n\nBrowse ([PR #141](https://github.com/sugarlabs/browse-activity/pull/141)) was probably the hardest case here. GTK4 removed `Gtk.Toolbar`, which Browse used for most of its navigation. I couldn't just swap in a GTK4 replacement, so I had to rebuild the toolbars using a mix of `Gtk.Box` and `Gtk.Popover`.\n\nI had a similar problem with `Gtk.IconView`, which was also removed. In TurtleArt's sample project picker, I moved to a `Gtk.FlowBox` with `Gtk.Picture` for scaling the SVGs. In Chat's emoji picker, I used a `Gtk.Grid` with `Gtk.Picture` instead.\n\n## Sugar's startup arguments vs. GTK4\n\nEarly on, I ran into crashes before my activity code even got to run. It turned out GTK4's `Gtk.Application` automatically tries to parse command-line arguments on startup. Sugar always launches activities with specific internal flags (like `-s` and `-b`), which confused GTK4 so much that it just failed and crashed the process.\n\nI realized I couldn't fix this inside the activities themselves. I had to go into the toolkit ([sugar-toolkit-gtk4 PR #35](https://github.com/sugarlabs/sugar-toolkit-gtk4/pull/35)) and patch the application startup to tell GTK to ignore Sugar's arguments.\n\n## CSS bleeding into Jarabe\n\nIn GTK3, changing colors while running was usually done with methods like `modify_bg()`. With GTK4, I had to move everything to `Gtk.CssProvider`.\n\nInitially, I just injected the CSS globally for my custom widgets. But because activities run in the same environment as the shell, I quickly realized my styles were affecting other widgets. A global CSS rule for a button in Calculate would suddenly alter the appearance of buttons in Jarabe.\n\nTo stop this, I started limiting each CSS provider to the widgets that needed it. For the toolkit's `ToolbarBox`, I created one provider per page, made sure to clean it up when the page was destroyed, and used `sugar4.graphics.style.apply_css_to_widget` to bind it only to the specific widgets that needed it.\n\n## Wayland problems and input handling\n\nInput handling was a problem at first. I removed all the old `button-press-event` and `key-press-event` connections and replaced them with GTK4 event controllers. For GTK4 ports, the usual replacements are `Gtk.GestureClick` for mouse/button events and `Gtk.EventControllerKey` for keyboard input.\n\nIn the Image Viewer, I removed the old `EventBox` and `SugarGestures` wrappers and moved to `Gtk.GestureZoom` and `Gtk.GestureDrag` controllers.\n\nWayland also messed with dialogs. While porting TurtleArt and Read, my popups would either render behind the main window, lose focus, or just fail to appear at all. After debugging it for a while, I realized they needed `.set_transient_for()` and `.set_modal(True)` calls to behave correctly under the Wayland window system.\n\nWhile testing the UI, I noticed that dragging pages around in `ToolbarBox` left the related `Gtk.Popover` broken. I finally fixed it by clearing the page content (`set_child(None)`) before moving the widget to another parent, rather than destroying the popover itself.\n\n## The DBus null-byte nightmare\n\nThis was one of the most unusual bugs I found. When sending preview data over DBus, the binary data kept getting cut off, throwing a random `GLib.Error`. I stared at it for a while before realizing the binary stream contained null bytes inside the data, which DBus was interpreting as string terminators. I had to patch the toolkit to handle binary data properly so the preview wouldn't get chopped off at the first null byte.\n\n## Custom rendering was harder than I thought\n\nRendering was probably the part I underestimated most. GTK4 removed the old `draw` path, which made the Cairo-based rendering code much harder to fit into the new pipeline.\n\nThis wasn't too bad for some of the simpler widgets. In Chat, moving the speech bubbles to `do_snapshot` using `Gtk.Snapshot` and Graphene bounds was fairly simple compared with the old GTK3 drawing code.\n\nBut TurtleArt was a completely different story. Its entire architecture is heavily tied to Cairo for drawing the complex block shapes and the canvas itself. I found during debugging that functions like `Gdk.cairo_set_source_pixbuf()` simply don't exist anymore. You can't just use a pixbuf directly with a Cairo context. I had to manually convert the pixbufs to Cairo image surfaces so the old rendering code could work with GTK4. It required touching almost every sprite and block rendering class in the activity.\n\nI had another rendering problem with GStreamer in Jukebox ([PR #35](https://github.com/sugarlabs/jukebox-activity/pull/35)). The old method of grabbing an X11 window handle (`xid`) and passing it to the sink doesn't work on Wayland. I rewrote the video pipeline to use `gtk4paintablesink` connected to a `Gtk.Picture` widget instead.\n\n## Papers and WebKit6 in Read\n\nFor the Read activity ([PR #50](https://github.com/sugarlabs/read-activity/pull/50)), the GTK4 port meant dealing with two completely different rendering backends.\n\nFirst, the old `Evince` backend was no longer usable for GTK4, so I had to move the PDF viewer to its modern successor, `Papers`. The API migration from `EvinceDocument 3.0` to `PapersDocument 4.0` required updating the document adapters (for Comic, Image, and Text) and loading custom Papers CSS locally to ensure it rendered correctly in the Sugar environment.\n\n*A quick warning if you touch this code:* the Table of Contents (TOC) is currently disabled. Papers moved the outline from `GtkTreeModel` to `GListModel`, and `has_document_links()` segfaults on `GListModel` input. It needs a full rewrite of the outline parser.\n\nSecond, Read also supports EPUB files, which meant I couldn't just stop at Papers. I had to simultaneously port the EPUB viewer from WebKit2 to WebKit6. Juggling these two massive rendering engines in the same activity made this port significantly more complex.\n\n## Testing (and why I started ignoring Jarabe)\n\nBecause the Sugar shell (Jarabe) was undergoing its own massive porting effort at the exact same time, testing my activities inside the shell was incredibly unstable. I'd get a crash and have no idea if my activity caused it or if the shell just broke again.\n\nTo make debugging easier, I wrote a `local_run.py` script for almost every activity I ported. This created a minimal `Gtk.Application`, bypassing DBus and Datastore dependencies. If it crashed in `local_run.py`, the bug was on me. If it ran perfectly standalone but crashed in Sugar, I knew I was looking at an issue between the activity and Sugar. Even now that the shell is mostly ported, testing with a local wrapper is just so much faster.\n\nThe development environment mattered too. While the Fedora Sugar Live ISO is a great out-of-the-box testing environment, I found Debian 13 (Trixie) much easier for development since it had newer GTK4 packages, including `Papers`, that were missing or outdated in Fedora.\n\n## What I would do differently\n\nLooking back at the 12 weeks, there are a few things I'd change about my approach if I were starting over:\n\n* **Start with a standalone wrapper immediately:** Early on, I wasted so much time trying to debug activities inside the broken shell. Writing `local_run.py` should have been step one.\n* **Fix the toolkit first:** Sometimes I tried to hack around toolkit bugs inside the activity itself, only to realize later that the proper fix belonged in the toolkit (`sugar-toolkit-gtk4`).\n* **Test Wayland behavior earlier:** I initially did a lot of testing in an X11 environment, which masked the dialog window and popup positioning bugs. Wayland has to be tested as early as possible.\n* **Audit dependencies upfront:** I didn't realize Evince was dead in GTK4 until I was already deep into porting Read. Looking closely at dependencies like Evince/Papers or VTE before touching the UI code would have made planning much smoother.\n* **Document recurring patterns:** I should have kept a running list of GTK3 → GTK4 replacements (like `modify_bg` → CSS, or `pack_start` → `append`) from week one, rather than finding them again.\n\nAfter doing all of this, the biggest thing I took away is that the GTK4 port wasn't really about replacing old APIs. A lot of the work was figuring out which assumptions in the old code were tied to X11, GTK3, or the old Sugar shell.\n",Fg=e({default:()=>Ig}),Ig=`---
+title: "DMP '26 Week 12 Update by Noaman Akhtar"
+excerpt: "Addressing mentor reviews on three open pull requests: bounded reasoning settings and a narrower Ollama fallback verified against a real model, a provider lease so model changes stop breaking in-flight requests, a pytest CI workflow, and phase 1 of the contract carried through to image and audio support across three providers."
+category: "DEVELOPER NEWS"
+date: "2026-09-06"
+slug: "2026-09-06-dmp-26-noaman-week12"
+author: "@/constants/MarkdownFiles/authors/noaman-akhtar.md"
+description: "DMP'26 Contributor at SugarLabs working on AI Optimization"
+tags: "dmp26,sugarlabs,week12,noaman-akhtar,sugar-ai,ai-optimization,ollama,reasoning,concurrency,asyncio,github-actions,ci,contracts,multimodal,gemini,ollama-vision"
+image: "assets/Images/c4gt_DMP.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 12 Progress Report by Noaman Akhtar
+
+**Project:** [AI Optimization](https://github.com/sugarlabs/sugar-ai)  
+**Mentors:** [sum2it](https://github.com/sum2it), [mostlyk](https://github.com/MostlyKIGuess), [chimosky](https://github.com/chimosky)  
+**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa), [Mebin](https://github.com/mebinthattil)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Reporting Period:** 2026-08-31 - 2026-09-06
+
+---
+
+## Goals for This Week
+
+- Resolve both review comments on the think/no-think pull request and its merge conflicts.
+- Confirm the Ollama fallback behavior against a real model before relying on it.
+- Fix the model-change race on the concurrency pull request so an admin swapping models does not break requests that are still generating.
+- Add the CI workflow requested on the test-suite pull request.
+- Decide where the contract should live, then carry phase 1 through to the providers.
+- Settle open design questions about provider authentication and where the generic contract should live.
+
+---
+
+## Think/No-Think: Bounded Settings and a Narrower Fallback
+
+Mebin's review of [sugar-ai#151](https://github.com/sugarlabs/sugar-ai/pull/151) raised two points.
+
+The first was that \`THINKING_HEADROOM\`, the number of extra output tokens reserved for reasoning when \`think\` is on, had no bounds. Any integer was accepted, including a negative one. I changed it to a Pydantic \`Field\` with \`ge=0\` and \`le=8192\`, matching the pattern already used for \`max_length\` and the other generation limits, so a bad \`.env\` value fails at startup rather than producing a confusing token budget at request time.
+
+The second point was about the fallback for models that do not support thinking. The original code caught every \`httpx.HTTPStatusError\`, dropped \`think\` from the payload, and retried. As Mebin pointed out, that also catches ordinary 4xx and 5xx failures, so when Ollama is simply down the request is sent twice and the caller waits twice as long for the same error. The fix narrows the condition. \`OllamaProvider\` now sends the request once, and only if the response is \`400 Bad Request\` and Ollama's JSON error message contains \`does not support thinking\` does it strip \`think\` and retry. Any other failure goes straight to \`raise_for_status()\`.
+
+### Verifying Against a Real Model
+
+The narrower check depends on what Ollama actually returns, so I did not want to rely on the mocked tests alone. I sent \`think: true\` directly to a local Ollama instance for \`llama3.2\`, which does not support reasoning, on both \`/api/generate\` and \`/api/chat\`. Both returned HTTP 400 with an error stating the model does not support thinking. That confirmed the status code and message the new check looks for.
+
+I then ran the same case through Sugar-AI. A call to \`/ask-llm-prompted\` with \`think=true\` on \`llama3.2:latest\` logged the 400 from Ollama, then the warning \`Model llama3.2:latest does not support thinking; retrying without it.\`, and returned a normal answer. The chat-mode call went through Ollama's \`/api/chat\` the same way. \`THINKING_HEADROOM\` was set explicitly in \`.env\` for the run to confirm the bounded field loads correctly.
+
+### Merge Conflicts
+
+While #151 was open, upstream merged a change that added \`Field\` bounds to the \`PromptedLLMRequest\` model in \`app/routes/api.py\`. My branch touched the same lines to add the \`think\` option, so the pull request could no longer merge cleanly. I resolved the conflict by keeping upstream's validation for \`max_length\`, temperature, and the sampling parameters, and keeping \`think\` alongside it. Invalid generation values are now rejected before they reach a provider, which is the behavior both changes wanted. The branch was rebased, pushed, and the review responses posted.
+
+## Concurrency: A Lease on the Active Provider
+
+On [sugar-ai#156](https://github.com/sugarlabs/sugar-ai/pull/156), Mebin identified an edge case introduced by the fix itself. Once model generation no longer blocks the event loop, \`/change-model\` can run while \`/ask-llm\` is still generating. \`set_model()\` closed the old provider's HTTP client immediately, so the in-flight request would fail.
+
+### Choosing the Behavior
+
+There were two reasonable designs. One marks a model change as pending, rejects new AI requests until the current ones finish, then closes the old provider and loads the new one. The other swaps immediately for new requests but keeps the old provider open until every request that started on it has finished. I chose the second. The first would force the admin to either wait or be told to retry, and it turns a model change into a brief outage for everyone. Keeping the old provider alive until it is unused costs nothing for HTTP-backed providers.
+
+The exception is local Hugging Face models, where the old and new pipelines would both sit in memory during the swap. That risk already exists in the current code, because the new provider is constructed before the old one is released. It is a separate policy question for local models.
+
+### Implementation
+
+The first step is knowing which requests are using which provider. \`RAGAgent\` now has an \`asyncio.Condition\` and an active-request counter, exposed through an asynchronous context manager:
+
+\`\`\`python
+async with agent.use_provider() as provider:
+    answer = await provider.generate(prompt, params)
+\`\`\`
+
+Entering the block captures the current provider and increments the counter; leaving it decrements the counter and notifies waiters when it reaches zero. Every AI operation in \`RAGAgent\` (\`run\`, \`generate\`, \`debug\`, and the prompted chat path) and the health route in \`app/routes/api.py\` now hold a lease for their whole duration, so a request keeps the provider it started with even if \`self.provider\` changes underneath it. While making that change I also fixed an existing bug where a duplicate \`settings\` import inside the \`/change-model\` handler made every model-change request return HTTP 500.
+
+### Verification
+
+I tested a real switch with Ollama. With \`llama3.2:1b\` active, I started a debug-style request that makes two model calls, confirmed the lease count read one, and changed the model to \`qwen3.5:0.8b\` while it was running. \`set_model()\` returned immediately, the lease count returned to zero after the request ended, and the new provider reported healthy. The in-flight request still failed with a read error, because at this checkpoint \`set_model()\` does not yet wait for the counter before closing the old client. That result was expected: it confirms the lease tracking is correct and isolates the remaining work to the swap itself, which is the next commit on the branch.
+
+A full application start for an end-to-end check stalled during FAISS index building, which rebuilds document embeddings on the CPU at every startup with no progress logging. I verified the route-level behavior with a lightweight FastAPI request instead and noted the startup cost as something to look at separately.
+
+## CI for the Test Suite
+
+Mebin's comment on [sugar-ai#157](https://github.com/sugarlabs/sugar-ai/pull/157) was that, since this is the repository's first test suite, it should run automatically. I added \`.github/workflows/ci.yml\`. It triggers on pull requests targeting \`main\`, checks out the repository, sets up Python 3.10 with pip caching keyed on \`requirements.txt\` and \`requirements-dev.txt\`, installs both, and runs \`python -m pytest -q\`. The job has read-only \`contents\` permission. Because the suite is fully offline, the workflow needs no secrets, no model downloads, and no service containers, which is exactly why the tests were designed that way.
+
+## Carrying the Contract Through to the Providers
+
+Last week ended with typed content parts that every endpoint would accept and no provider could yet send. This week connected the two, which meant answering a question the contract had deferred: what happens when a caller sends a picture to a model that cannot see.
+
+### Asking Rather Than Assuming
+
+A provider now declares what it accepts. \`GeminiProvider\` declares text, image and audio, because \`generateContent\` takes all three inline on the current multimodal models. \`OllamaProvider\` declares text and image. \`BaseProvider\`, which speaks the OpenAI-compatible API, declares text only, and that one deserves explaining: whether such an endpoint accepts images depends entirely on the model sitting behind it, and the same base URL can serve both. Guessing generously there would produce confident failures, so the default stays narrow and a deployment widens it through a new \`AI_SUPPORTED_MODALITIES\` setting.
+
+Ollama can do better than a declaration, because it will simply tell you. \`detect_modalities()\` asks \`/api/show\` for the model and reads its capability list, mapping \`vision\` to image input and \`audio\` to audio. A model that reports vision gets image support switched on for exactly as long as it stays the active model. If the server cannot be reached the provider keeps its default and logs a warning saying which assumption it fell back to, because a silent assumption is the thing I was trying to remove.
+
+This is the part of the design I would defend hardest. The alternative, which I had in an early draft, was to quietly drop parts a provider could not handle and answer with the rest. That answers a question nobody asked. If a child sends a photo and a text-only model is configured, replying to the text while ignoring the photo is worse than saying plainly that this model does not accept images.
+
+So the gate is explicit. A request whose modalities exceed the provider's returns \`422\` with the code \`modality_not_supported\`, and the message names the model, what it was sent, and what it does accept:
+
+\`\`\`
+llama3.2:latest does not accept image input; it accepts text
+\`\`\`
+
+### Three Wire Formats, One Contract
+
+Each provider translates the same parts into its own shape, and the differences turned out to be more than cosmetic.
+
+OpenAI-compatible endpoints take an image as a \`data:\` URL inside an \`image_url\` block, and audio as \`input_audio\`, where the field wants a format name like \`wav\` rather than a mime type, so the adapter maps between them. Gemini puts both images and audio in \`inline_data\` with the mime type intact, and its system instruction is text only, so media in a system message belongs in a turn instead. Ollama is the odd one: it does not interleave media with text at all, keeping the text in \`content\` and the images in a sibling \`images\` list, so the adapter has to split a single message into two fields.
+
+None of that reaches an activity. That separation was the whole argument for having a contract, and this is the week it stopped being theoretical.
+
+### Proving Nothing Broke
+
+The risk in touching every endpoint is that something regresses quietly, so the last commit was an end-to-end test that drives real requests through the real stack with only the network faked, and asserts on the payload the provider would actually have received. It covers an attachment arriving as inline data, audio arriving the same way, parts surviving chat mode, the prompted-mode system instruction, and generation parameters reaching the model.
+
+The test I care most about is the dullest one: a text-only request produces a provider payload byte-for-byte identical to what the old code sent. Every existing caller, Speak-AI included, is on that path. It is now checked on every run rather than assumed.
+
+Fifty-three tests were added this week across gating, the three translations, Ollama's capability detection, and the end-to-end path, bringing the branch to ninety-nine. The repository had none before this work started.
+
+## Design Discussions
+
+Two design threads ran alongside the code.
+
+Ibiam asked whether Sugar-AI should also integrate authentication for the OpenAI and Gemini providers. I separated two cases: a school that already has an API key from a provider, which Sugar-AI supports today by reading the key from configuration; and a school with a subscription or free account but no key, which would need an account-linking flow that Sugar-AI does not have. Ibiam confirmed the second case is the one he meant. I wrote up the current flow so we can agree on what such a feature would add before designing it.
+
+The second thread was where the generic contract from the last two weeks should live, and this week it was settled. One option was a new versioned endpoint accepting typed content parts, leaving the existing text endpoints untouched. The other was to move the existing endpoints onto the contract, so that validation, error shape and media support lived in one place instead of being bolted onto each route.
+
+I prototyped enough of the first to judge it, then chose the second. A versioned endpoint is the easier thing to ship, but it leaves the old routes exactly as they are: unvalidated query parameters, hand-built response dicts, bare-string errors. Sugar-AI would then have two contracts, a good one nobody uses yet and a bad one everybody uses, and the good one would have to be kept in step with the bad one indefinitely. Very few activities call Sugar-AI today, so this is the cheapest this migration will ever be, and every month it gets more expensive.
+
+What made the choice comfortable was that migrating did not have to mean breaking. String content stays legal beside the new part list, the old query-parameter call style still works and is merely marked deprecated, and the byte-identical payload test proves a text-only request reaches the provider unchanged. The prototype of the versioned endpoint stays on its own branch as a record of what was compared.
+
+## Challenge and Key Learning
+
+The lesson this week came from the think/no-think retry. The original code worked in every manual check I had done, because the only failure I had ever provoked was the 400 from a model without reasoning support. It took a reviewer to ask what happens on a 503. Verifying the exact error Ollama returns, rather than assuming any HTTP error meant "unsupported", made the fix both smaller and correct. The general version: a fallback should match the specific failure it exists for, and nothing else.
+
+## Plan for Next Week
+
+- Finish the provider swap on #156 so \`set_model()\` waits for the lease count before closing the old provider, then cover it with tests.
+- Bring the contract branch up to date with upstream \`main\`, confirm it against a live Gemini key, and open the pull request.
+- Push the asynchronous provider tests as a follow-up to #157 once the CI workflow is reviewed.
+
+---
+
+## Resources and References
+
+- **Repository:** [sugarlabs/sugar-ai](https://github.com/sugarlabs/sugar-ai)
+- **Think/no-think pull request:** [sugar-ai#151](https://github.com/sugarlabs/sugar-ai/pull/151)
+- **Concurrency pull request:** [sugar-ai#156](https://github.com/sugarlabs/sugar-ai/pull/156)
+- **Provider test suite and CI workflow:** [sugar-ai#157](https://github.com/sugarlabs/sugar-ai/pull/157)
+- **Ollama API reference:** [ollama/docs/api.md](https://github.com/ollama/ollama/blob/main/docs/api.md)
+- **asyncio synchronization primitives:** [docs.python.org](https://docs.python.org/3/library/asyncio-sync.html)
+- **GitHub Actions documentation:** [docs.github.com/actions](https://docs.github.com/en/actions)
+
+---
+
+## Acknowledgments
+
+Thanks to Mebin for reviews that each pointed at a concrete failure case, and to Ibiam for pushing on the provider authentication question until the two cases were clearly separated.
+
+---
+`,Lg=e({default:()=>Rg}),Rg=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -43374,7 +43533,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Lg=e({default:()=>Rg}),Rg=`---
+`,zg=e({default:()=>Bg}),Bg=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -43477,7 +43636,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,zg=e({default:()=>Bg}),Bg=`---
+`,Vg=e({default:()=>Hg}),Hg=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -43950,7 +44109,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Vg=e({default:()=>Hg}),Hg=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,Ug=e({default:()=>Wg}),Wg=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -44037,7 +44196,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,Ug=e({default:()=>Wg}),Wg=`---\r
+`,Gg=e({default:()=>Kg}),Kg=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -44130,7 +44289,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Gg=e({default:()=>Kg}),Kg=`---\r
+`,qg=e({default:()=>Jg}),Jg=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -44224,7 +44383,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,qg=e({default:()=>Jg}),Jg=`---\r
+`,Yg=e({default:()=>Xg}),Xg=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -44312,7 +44471,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Yg=e({default:()=>Xg}),Xg=`---\r
+`,Zg=e({default:()=>Qg}),Qg=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -44395,7 +44554,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,Zg=e({default:()=>Qg}),Qg=`---\r
+`,$g=e({default:()=>e_}),e_=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -44461,7 +44620,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,$g=e({default:()=>e_}),e_=`---
+`,t_=e({default:()=>n_}),n_=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -44543,7 +44702,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,t_=e({default:()=>n_}),n_=`---
+---`,r_=e({default:()=>i_}),i_=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -44636,7 +44795,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,r_=e({default:()=>i_}),i_=`---
+`,a_=e({default:()=>o_}),o_=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -44725,7 +44884,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,a_=e({default:()=>o_}),o_=`---
+--- `,s_=e({default:()=>c_}),c_=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -44870,7 +45029,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,s_=e({default:()=>c_}),c_=`---
+--- `,l_=e({default:()=>u_}),u_=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -45058,7 +45217,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,l_=e({default:()=>u_}),u_=`---
+--- `,d_=e({default:()=>f_}),f_=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -45153,7 +45312,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,d_=e({default:()=>f_}),f_=`---
+`,p_=e({default:()=>m_}),m_=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -45242,7 +45401,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,p_=e({default:()=>m_}),m_=`---
+`,h_=e({default:()=>g_}),g_=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -45329,7 +45488,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,h_=e({default:()=>g_}),g_=`---
+---`,__=e({default:()=>v_}),v_=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -45412,7 +45571,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,__=e({default:()=>v_}),v_=`---
+---`,y_=e({default:()=>b_}),b_=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -45495,7 +45654,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,y_=e({default:()=>b_}),b_=`---
+---`,x_=e({default:()=>S_}),S_=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -45800,4 +45959,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{wh as $,Sa as $a,x as $c,Cs as $i,Cd as $n,Sr as $o,Cl as $r,xt as $s,wp as $t,hg as A,ho as Aa,pe as Ac,hc as Ai,gf as An,mi as Ao,hu as Ar,mn as As,gm as At,Yh as B,Ja as Ba,q as Bc,Ys as Bi,Yd as Bn,Jr as Bo,Yl as Br,qt as Bs,Xp as Bt,kg as C,ko as Ca,De as Cc,kc as Ci,Af as Cn,Oi as Co,ku as Cr,On as Cs,Am as Ct,xg as D,xo as Da,ye as Dc,xc as Di,Sf as Dn,bi as Do,xu as Dr,bn as Ds,Sm as Dt,Cg as E,Co as Ea,xe as Ec,Cc as Ei,wf as En,Si as Eo,Cu as Er,Sn as Es,wm as Et,ag as F,io as Fa,re as Fc,ac as Fi,of as Fn,ii as Fo,au as Fr,rn as Fs,om as Ft,zh as G,Ra as Ga,L as Gc,zs as Gi,zd as Gn,Rr as Go,zl as Gr,Lt as Gs,Bp as Gt,Gh as H,Wa as Ha,U as Hc,Gs as Hi,Gd as Hn,Wr as Ho,Gl as Hr,Ut as Hs,Kp as Ht,rg as I,no as Ia,te as Ic,rc as Ii,rf as In,ni as Io,ru as Ir,tn as Is,im as It,Nh as J,Ma as Ja,j as Jc,Ns as Ji,Nd as Jn,Mr as Jo,Nl as Jr,jt as Js,Pp as Jt,Lh as K,Ia as Ka,F as Kc,Ls as Ki,Ld as Kn,Ir as Ko,Ll as Kr,Ft as Ks,Rp as Kt,tg as L,eo as La,$ as Lc,tc as Li,tf as Ln,ei as Lo,tu as Lr,$t as Ls,nm as Lt,dg as M,uo as Ma,le as Mc,dc as Mi,ff as Mn,ui as Mo,du as Mr,un as Ms,fm as Mt,lg as N,co as Na,se as Nc,lc as Ni,uf as Nn,ci as No,lu as Nr,cn as Ns,um as Nt,yg as O,yo as Oa,_e as Oc,yc as Oi,bf as On,vi as Oo,yu as Or,vn as Os,bm as Ot,sg as P,oo as Pa,ae as Pc,sc as Pi,cf as Pn,oi as Po,su as Pr,on as Ps,cm as Pt,Eh as Q,wa as Qa,C as Qc,Ts as Qi,Td as Qn,wr as Qo,Tl as Qr,Ct as Qs,Ep as Qt,$h as R,Qa as Ra,Z as Rc,$s as Ri,$d as Rn,Qr as Ro,$l as Rr,Zt as Rs,em as Rt,jg as S,jo as Sa,ke as Sc,jc as Si,Mf as Sn,Ai as So,ju as Sr,An as Ss,Mm as St,Tg as T,To as Ta,Ce as Tc,Tc as Ti,Ef as Tn,wi as To,Tu as Tr,wn as Ts,Em as Tt,Uh as U,Ha as Ua,V as Uc,Us as Ui,Ud as Un,Hr as Uo,Ul as Ur,Vt as Us,Wp as Ut,qh as V,Ka as Va,G as Vc,qs as Vi,qd as Vn,Kr as Vo,ql as Vr,Gt as Vs,Jp as Vt,Vh as W,Ba as Wa,z as Wc,Vs as Wi,Vd as Wn,Br as Wo,Vl as Wr,zt as Ws,Hp as Wt,Ah as X,Oa as Xa,D as Xc,ks as Xi,kd as Xn,Or as Xo,kl as Xr,Dt as Xs,Ap as Xt,jh as Y,Aa as Ya,k as Yc,js as Yi,jd as Yn,Ar as Yo,jl as Yr,kt as Ys,Mp as Yt,Oh as Z,Ea as Za,T as Zc,Ds as Zi,Dd as Zn,Er as Zo,Dl as Zr,Tt as Zs,Op as Zt,Vg as _,Vo as _a,ze as _c,Vc as _i,Hf as _n,Bi as _o,Vu as _r,Bn as _s,Hm as _t,d_ as a,ds as aa,lt as ac,dl as ai,l as al,fp as an,ua as ao,dd as ar,ur as as,fh as at,Fg as b,Fo as ba,Ne as bc,Fc as bi,If as bn,Pi as bo,Fu as br,Pn as bs,Im as bt,a_ as c,as as ca,rt as cc,al as ci,r as cl,op as cn,ia as co,ad as cr,ir as cs,oh as ct,$g as d,$o as da,Ze as dc,$c as di,ep as dn,Qi as do,$u as dr,Qn as ds,eh as dt,xs as ea,yt as ec,xl as ei,y as el,Sp as en,ba as eo,xd as er,br as es,Sh as et,Zg as f,Zo as fa,Ye as fc,Zc as fi,Qf as fn,Xi as fo,Zu as fr,Xn as fs,Qm as ft,Ug as g,Uo as ga,Ve as gc,Uc as gi,Wf as gn,Hi as go,Uu as gr,Hn as gs,Wm as gt,Gg as h,Go as ha,Ue as hc,Gc as hi,Kf as hn,Wi as ho,Gu as hr,Wn as hs,Km as ht,p_ as i,ps as ia,dt as ic,pl as ii,d as il,mp as in,fa as io,pd as ir,fr as is,mh as it,pg as j,po as ja,de as jc,pc as ji,mf as jn,fi as jo,pu as jr,fn as js,mm as jt,_g as k,_o as ka,he as kc,_c as ki,vf as kn,gi as ko,_u as kr,gn as ks,vm as kt,r_ as l,rs as la,tt as lc,rl as li,t as ll,ip as ln,na as lo,rd as lr,nr as ls,ih as lt,qg as m,qo as ma,Ge as mc,qc as mi,Jf as mn,Ki as mo,qu as mr,Kn as ms,Jm as mt,__ as n,_s as na,ht as nc,_l as ni,h as nl,vp as nn,ga as no,_d as nr,gr as ns,vh as nt,l_ as o,ls as oa,st as oc,ll as oi,s as ol,up as on,ca as oo,ld as or,cr as os,uh as ot,Yg as p,Yo as pa,qe as pc,Yc as pi,Xf as pn,Ji as po,Yu as pr,Jn as ps,Xm as pt,Fh as q,Pa as qa,N as qc,Fs as qi,Fd as qn,Pr as qo,Fl as qr,Nt as qs,Ip as qt,h_ as r,hs as ra,pt as rc,hl as ri,p as rl,gp as rn,ma as ro,hd as rr,mr as rs,gh as rt,s_ as s,ss as sa,at as sc,sl as si,a as sl,cp as sn,oa as so,sd as sr,or as ss,ch as st,y_ as t,ys as ta,_t as tc,yl as ti,_ as tl,bp as tn,va as to,yd as tr,vr as ts,bh as tt,t_ as u,ts as ua,$e as uc,tl as ui,np as un,ea as uo,td as ur,er as us,nh as ut,zg as v,zo as va,Le as vc,zc as vi,Bf as vn,Ri as vo,zu as vr,Rn as vs,Bm as vt,Dg as w,Do as wa,Te as wc,Dc as wi,Of as wn,Ei as wo,Du as wr,En as ws,Om as wt,Ng as x,No as xa,je as xc,Nc as xi,Pf as xn,Mi as xo,Nu as xr,Mn as xs,Pm as xt,Lg as y,Lo as ya,Fe as yc,Lc as yi,Rf as yn,Ii as yo,Lu as yr,In as ys,Rm as yt,Zh as z,Xa as za,Y as zc,Zs as zi,Zd as zn,Xr as zo,Zl as zr,Yt as zs,Qp as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Eh as $,wa as $a,C as $c,Ts as $i,Td as $n,wr as $o,Tl as $r,Ct as $s,Ep as $t,_g as A,_o as Aa,he as Ac,_c as Ai,vf as An,gi as Ao,_u as Ar,gn as As,vm as At,Zh as B,Xa as Ba,Y as Bc,Zs as Bi,Zd as Bn,Xr as Bo,Zl as Br,Yt as Bs,Qp as Bt,jg as C,jo as Ca,ke as Cc,jc as Ci,Mf as Cn,Ai as Co,ju as Cr,An as Cs,Mm as Ct,Cg as D,Co as Da,xe as Dc,Cc as Di,wf as Dn,Si as Do,Cu as Dr,Sn as Ds,wm as Dt,Tg as E,To as Ea,Ce as Ec,Tc as Ei,Ef as En,wi as Eo,Tu as Er,wn as Es,Em as Et,sg as F,oo as Fa,ae as Fc,sc as Fi,cf as Fn,oi as Fo,su as Fr,on as Fs,cm as Ft,Vh as G,Ba as Ga,z as Gc,Vs as Gi,Vd as Gn,Br as Go,Vl as Gr,zt as Gs,Hp as Gt,qh as H,Ka as Ha,G as Hc,qs as Hi,qd as Hn,Kr as Ho,ql as Hr,Gt as Hs,Jp as Ht,ag as I,io as Ia,re as Ic,ac as Ii,of as In,ii as Io,au as Ir,rn as Is,om as It,Fh as J,Pa as Ja,N as Jc,Fs as Ji,Fd as Jn,Pr as Jo,Fl as Jr,Nt as Js,Ip as Jt,zh as K,Ra as Ka,L as Kc,zs as Ki,zd as Kn,Rr as Ko,zl as Kr,Lt as Ks,Bp as Kt,rg as L,no as La,te as Lc,rc as Li,rf as Ln,ni as Lo,ru as Lr,tn as Ls,im as Lt,pg as M,po as Ma,de as Mc,pc as Mi,mf as Mn,fi as Mo,pu as Mr,fn as Ms,mm as Mt,dg as N,uo as Na,le as Nc,dc as Ni,ff as Nn,ui as No,du as Nr,un as Ns,fm as Nt,xg as O,xo as Oa,ye as Oc,xc as Oi,Sf as On,bi as Oo,xu as Or,bn as Os,Sm as Ot,lg as P,co as Pa,se as Pc,lc as Pi,uf as Pn,ci as Po,lu as Pr,cn as Ps,um as Pt,Oh as Q,Ea as Qa,T as Qc,Ds as Qi,Dd as Qn,Er as Qo,Dl as Qr,Tt as Qs,Op as Qt,tg as R,eo as Ra,$ as Rc,tc as Ri,tf as Rn,ei as Ro,tu as Rr,$t as Rs,nm as Rt,Ng as S,No as Sa,je as Sc,Nc as Si,Pf as Sn,Mi as So,Nu as Sr,Mn as Ss,Pm as St,Dg as T,Do as Ta,Te as Tc,Dc as Ti,Of as Tn,Ei as To,Du as Tr,En as Ts,Om as Tt,Gh as U,Wa as Ua,U as Uc,Gs as Ui,Gd as Un,Wr as Uo,Gl as Ur,Ut as Us,Kp as Ut,Yh as V,Ja as Va,q as Vc,Ys as Vi,Yd as Vn,Jr as Vo,Yl as Vr,qt as Vs,Xp as Vt,Uh as W,Ha as Wa,V as Wc,Us as Wi,Ud as Wn,Hr as Wo,Ul as Wr,Vt as Ws,Wp as Wt,jh as X,Aa as Xa,k as Xc,js as Xi,jd as Xn,Ar as Xo,jl as Xr,kt as Xs,Mp as Xt,Nh as Y,Ma as Ya,j as Yc,Ns as Yi,Nd as Yn,Mr as Yo,Nl as Yr,jt as Ys,Pp as Yt,Ah as Z,Oa as Za,D as Zc,ks as Zi,kd as Zn,Or as Zo,kl as Zr,Dt as Zs,Ap as Zt,Ug as _,Uo as _a,Ve as _c,Uc as _i,Wf as _n,Hi as _o,Uu as _r,Hn as _s,Wm as _t,p_ as a,ps as aa,dt as ac,pl as ai,d as al,mp as an,fa as ao,pd as ar,fr as as,mh as at,Lg as b,Lo as ba,Fe as bc,Lc as bi,Rf as bn,Ii as bo,Lu as br,In as bs,Rm as bt,s_ as c,ss as ca,at as cc,sl as ci,a as cl,cp as cn,oa as co,sd as cr,or as cs,ch as ct,t_ as d,ts as da,$e as dc,tl as di,np as dn,ea as do,td as dr,er as ds,nh as dt,Cs as ea,xt as ec,Cl as ei,x as el,wp as en,Sa as eo,Cd as er,Sr as es,wh as et,$g as f,$o as fa,Ze as fc,$c as fi,ep as fn,Qi as fo,$u as fr,Qn as fs,eh as ft,Gg as g,Go as ga,Ue as gc,Gc as gi,Kf as gn,Wi as go,Gu as gr,Wn as gs,Km as gt,qg as h,qo as ha,Ge as hc,qc as hi,Jf as hn,Ki as ho,qu as hr,Kn as hs,Jm as ht,h_ as i,hs as ia,pt as ic,hl as ii,p as il,gp as in,ma as io,hd as ir,mr as is,gh as it,hg as j,ho as ja,pe as jc,hc as ji,gf as jn,mi as jo,hu as jr,mn as js,gm as jt,yg as k,yo as ka,_e as kc,yc as ki,bf as kn,vi as ko,yu as kr,vn as ks,bm as kt,a_ as l,as as la,rt as lc,al as li,r as ll,op as ln,ia as lo,ad as lr,ir as ls,oh as lt,Yg as m,Yo as ma,qe as mc,Yc as mi,Xf as mn,Ji as mo,Yu as mr,Jn as ms,Xm as mt,y_ as n,ys as na,_t as nc,yl as ni,_ as nl,bp as nn,va as no,yd as nr,vr as ns,bh as nt,d_ as o,ds as oa,lt as oc,dl as oi,l as ol,fp as on,ua as oo,dd as or,ur as os,fh as ot,Zg as p,Zo as pa,Ye as pc,Zc as pi,Qf as pn,Xi as po,Zu as pr,Xn as ps,Qm as pt,Lh as q,Ia as qa,F as qc,Ls as qi,Ld as qn,Ir as qo,Ll as qr,Ft as qs,Rp as qt,__ as r,_s as ra,ht as rc,_l as ri,h as rl,vp as rn,ga as ro,_d as rr,gr as rs,vh as rt,l_ as s,ls as sa,st as sc,ll as si,s as sl,up as sn,ca as so,ld as sr,cr as ss,uh as st,x_ as t,xs as ta,yt as tc,xl as ti,y as tl,Sp as tn,ba as to,xd as tr,br as ts,Sh as tt,r_ as u,rs as ua,tt as uc,rl as ui,t as ul,ip as un,na as uo,rd as ur,nr as us,ih as ut,Vg as v,Vo as va,ze as vc,Vc as vi,Hf as vn,Bi as vo,Vu as vr,Bn as vs,Hm as vt,kg as w,ko as wa,De as wc,kc as wi,Af as wn,Oi as wo,ku as wr,On as ws,Am as wt,Fg as x,Fo as xa,Ne as xc,Fc as xi,If as xn,Pi as xo,Fu as xr,Pn as xs,Im as xt,zg as y,zo as ya,Le as yc,zc as yi,Bf as yn,Ri as yo,zu as yr,Rn as ys,Bm as yt,$h as z,Qa as za,Z as zc,$s as zi,$d as zn,Qr as zo,$l as zr,Zt as zs,em as zt};
