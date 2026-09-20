@@ -8,6 +8,9 @@ slug: "2026-08-16-gsoc-26-sonal-gaud-week12"
 author: "@/constants/MarkdownFiles/authors/sonal-gaud.md"
 tags: "gsoc26,sugarlabs,musicblocks,ci-cd,release-automation,infrastructure,documentation"
 image: "assets/Images/GSOC.webp"
+---
+
+<!-- markdownlint-disable -->
 
 # Week 12 Progress Report by Sonal Gaud
 
