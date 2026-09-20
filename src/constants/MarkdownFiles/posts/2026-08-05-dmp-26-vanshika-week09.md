@@ -11,12 +11,12 @@ image: "assets/Images/dmp_c4gt_logo.png"
 <!-- markdownlint-disable -->
 # Week 09 Progress Report by Vanshika Pahal
 
-**Project:** [Music Blocks v3 - Test Coverage, Refactoring & Dependency Updates](https://github.com/sugarlabs/musicblocks)
-**Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)
-**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)
-**Organization:** [Sugar Labs](https://sugarlabs.org)
-**Week:** Building Stryker Mutation Testing Infrastructure and Raising turtleactions Mutation Coverage
-**Reporting Period:** 2026-07-30 to 2026-08-05
+**Project:** [Music Blocks v3 - Test Coverage, Refactoring & Dependency Updates](https://github.com/sugarlabs/musicblocks)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  
+**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Week:** Building Stryker Mutation Testing Infrastructure and Raising turtleactions Mutation Coverage  
+**Reporting Period:** 2026-07-30 to 2026-08-05  
 
 ---
 
