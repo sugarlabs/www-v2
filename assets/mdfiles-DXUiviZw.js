@@ -35086,6 +35086,143 @@ This isn't resolved yet , Firefox's DOM node growth in particular still needs ro
 ## Acknowledgments
  
 Thanks to Walter Bender for his guidance, valuable feedback, and for reviewing and testing my PRs throughout this week's work. Thanks also to the Sugar Labs community for their continued support.`,Wp=e({default:()=>Gp}),Gp=`---
+title: "DMP '26 Week 06 Update by Vanshika Pahal"
+excerpt: "Week 06: Closing out the activity.js decomposition by extracting the selection, workspace layout, trash, help, block scale, and context menu controllers, plus a look at the C4GT midpoint presentation."
+category: "DEVELOPER NEWS"
+date: "2026-07-15"
+slug: "2026-07-15-dmp-26-vanshika-week06"
+author: "@/constants/MarkdownFiles/authors/vanshika2720.md"
+tags: "dmp26,sugarlabs,musicblocks,refactoring,week06,modularization,midpoint"
+image: "assets/Images/dmp_c4gt_logo.png"
+---
+<!-- markdownlint-disable -->
+# Week 06 Progress Report by Vanshika Pahal
+
+**Project:** [Music Blocks v3 - Test Coverage, Refactoring & Dependency Updates](https://github.com/sugarlabs/musicblocks)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Sumit Srivastava](https://github.com/sum2it)  
+**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa), [Om Santosh Suneri](https://github.com/omsuneri)  
+**Organization:** [Sugar Labs](https://sugarlabs.org)  
+**Week:** Closing Out activity.js: Selection, Workspace Layout, Trash, Help, Block Scale & Context Menu  
+**Reporting Period:** 2026-07-09 to 2026-07-15  
+
+---
+
+## Overview
+
+Week 05 closed with six self-contained responsibilities still left inside activity.js: selection, workspace layout, trash, help, block scale, and context menu. Week 06 worked through every one of them, following the same extract, delegate, and cover-with-tests pattern that ProjectManager had already proven at scale the week before.
+
+This week I merged **6 pull requests**, changing roughly **5,900 additions and 2,100 deletions**. Every extraction shipped as its own PR, independently reviewable, with a dedicated test suite and no intended behavior change, and every PR passed the full Jest suite, ESLint, and Prettier before merging.
+
+---
+
+## Week 06 at a Glance
+
+| Pull Request | Subsystem Extracted | Target File(s) | Impact & Code Changes | Status |
+| :--- | :--- | :--- | :--- | :---: |
+| **[PR #7765](https://github.com/sugarlabs/musicblocks/pull/7765)** | Selection Controller | js/activity/selection-controller.js | Extracted the 2D drag-selection workflow, including selection rectangle rendering, block intersection detection, multi-block copy/delete, and selection mode state. | **Merged** |
+| **[PR #7768](https://github.com/sugarlabs/musicblocks/pull/7768)** | Workspace Layout Controller | js/activity/workspace-layout-controller.js | Extracted workspace layout and Home button logic, including responsive block repositioning and resize handling. | **Merged** |
+| **[PR #7818](https://github.com/sugarlabs/musicblocks/pull/7818)** | Trash Controller | js/trash-controller.js | Extracted trash management: restore last/by-ID, trash view rendering, and the trash preview popup. | **Merged** |
+| **[PR #7819](https://github.com/sugarlabs/musicblocks/pull/7819)** | Help Controller | js/help-controller.js | Extracted the help/about UI, keyboard shortcuts dialog, JS editor launcher, and statistics window launcher. | **Merged** |
+| **[PR #7820](https://github.com/sugarlabs/musicblocks/pull/7820)** | Block Scale Controller | js/block-scale-controller.js | Extracted larger/smaller block scaling, debounced scale updates, and toolbar button state syncing. | **Merged** |
+| **[PR #7821](https://github.com/sugarlabs/musicblocks/pull/7821)** | Context Menu Controller | js/context-menu-controller.js | Extracted context menu registration, helpful wheel rendering, and auxiliary toolbar management, the last major chunk of UI orchestration in activity.js. | **Merged** |
+
+*Total changes: **+5,914 additions** and **-2,119 deletions** across all six pull requests.*
+
+---
+
+## Detailed Breakdown of Extracted Subsystems
+
+### 1. Selection Controller (PR #7765)
+
+The 2D drag-selection workflow, draw a rectangle, highlight the blocks inside it, then copy or delete them as a group, was implemented directly inside activity.js, mixing mouse event wiring with rectangle geometry and block-intersection logic.
+
+* **Changes:** Created js/activity/selection-controller.js housing SelectionController, which now owns _create2Ddrag, setupMouseEvents, drawSelectionArea, selectBlocksInDragArea, rectanglesOverlap, setSelectionMode, deselectSelectedBlocks, deleteMultipleBlocks, copyMultipleBlocks, and related state.
+* **Behavior Preserved:** The existing delayed selection activation during the first rAF-throttled mousemove was kept exactly as is, a subtle timing detail that was easy to lose during extraction.
+* **Tests Added:** js/activity/__tests__/selection-controller.test.js, covering selection mode toggling, drag rectangle creation and rendering, overlap detection, multi-block delete/copy, and requestAnimationFrame throttling behavior.
+
+### 2. Workspace Layout Controller (PR #7768)
+
+Workspace layout and the Home button, including findBlocks, setHomeContainers, repositionBlocks, and resize handling, followed the same controller pattern established by earlier extractions.
+
+* **Changes:** Created js/activity/workspace-layout-controller.js housing WorkspaceLayoutController, moving row/column layout logic, responsive block repositioning, and the _isFirstHomeClick state used to toggle Home button behavior.
+* **Regression Caught in Review:** Master was carrying two pre-existing Jest regressions from earlier, unrelated test-coverage PRs (pitchstaircase.test.js and musickeyboard.test.js). Walter flagged the failing CI and I confirmed both were pre-existing and unrelated before the fix ([#7766](https://github.com/sugarlabs/musicblocks/pull/7766)) landed.
+* **Tests Added:** js/activity/__tests__/workspace-layout-controller.test.js, covering Home button toggling, row/column layout, responsive repositioning, resize handling, and turtle-home reset with pen-state preservation.
+
+### 3. Trash Controller (PR #7818)
+
+Trash management, restoring the last deleted block, restoring a specific block by ID, trash view rendering, and the trash preview popup, moved into a dedicated controller, delegating from activity.js through thin wrapper methods so every existing call site kept working unmodified.
+
+* **Changes:** Created js/trash-controller.js with setupTrashController(activity), moving restoreTrash(), restoreLastFromTrash(), _restoreTrashById(), _renderTrashView(), popup handling, and click-outside handling.
+* **Behavior Preserved:** Restore ordering, companion turtle restoration, action block re-registration/renaming, artwork regeneration, palette updates, and Helpful Wheel integration were all kept exactly as before.
+* **Scale:** About 360 lines removed from activity.js, about 438 lines in the new module.
+
+### 4. Help Controller (PR #7819)
+
+The help/about UI, keyboard shortcuts dialog, JavaScript editor launcher, statistics window launcher, and the developer help-block export utility (Alt+H) moved into js/help-controller.js, with the existing public API (showHelp(), showAboutPage(), showKeyboardShortcuts(), toggleJSWindow(), doAnalytics(), _saveHelpBlocks()) preserved on Activity so no callers needed changes.
+
+### 5. Block Scale Controller (PR #7820)
+
+Larger/smaller block scaling, debounced scale updates, scale-limit handling, and toolbar button state syncing moved into js/block-scale-controller.js, with doLargerBlocks(), doSmallerBlocks(), and setSmallerLargerStatus() kept as delegation methods so pinch-zoom and Ctrl+wheel integrations required no changes. 26 dedicated unit tests cover debounce timing, scale limits, and toolbar icon state.
+
+### 6. Context Menu Controller (PR #7821)
+
+The largest extraction of the week: context menu registration, helpful wheel rendering and positioning, palette menu construction, and auxiliary toolbar management moved into js/context-menu-controller.js, the last major chunk of UI orchestration still living in activity.js.
+
+* **Changes:** About 589 lines removed from activity.js. _showHideAuxMenu was intentionally kept accessible on Activity because project-manager.js references it externally. A few local helper callbacks (changeBlockVisibility, setScroller) were promoted to Activity methods so the controller could reuse them without changing behavior.
+* **Tests Added:** js/__tests__/context-menu-controller.test.js, covering menu registration, helpful wheel rendering and deduplication, palette menu creation, auxiliary menu open/close, and helpful search delegation. 192/192 suites and 6,797/6,797 tests passing.
+
+---
+
+## Architectural Impact
+
+All six items on the list left after Week 05 are now done:
+
+| Initiative | Status After Week 06 |
+| :--- | :--- |
+| **Selection Workflow** | Complete: SelectionController owns drag-selection, rectangle rendering, and multi-block operations. |
+| **Workspace Layout** | Complete: WorkspaceLayoutController owns layout, Home button behavior, and resize handling. |
+| **Trash Management** | Complete: TrashController owns restore, trash view, and preview popup logic. |
+| **Help/About UI** | Complete: HelpController owns help, about, shortcuts, and the JS editor/statistics launchers. |
+| **Block Scaling** | Complete: BlockScaleController owns larger/smaller scaling and toolbar sync. |
+| **Context Menus** | Complete: ContextMenuController owns menu registration and helpful wheel rendering. |
+
+With all six done, activity.js has now been decomposed into 20+ focused, independently testable modules using the same controller/UI pattern throughout. The monolith that started the program at 9,400+ lines is now a coordination layer over dedicated subsystems.
+
+---
+
+## C4GT Midpoint Presentation
+
+This week also marked the **midpoint of the DMP program**, so alongside the controller extractions I put together a midpoint presentation for the C4GT/Sugar Labs review, walking through progress against the three milestones the maintainers set at the start: **activity.js refactored**, **logo.js refactored**, and **global state reduction**. All three are done: activity.js decomposed into 20+ modules, logo.js restructured around LogoDependencies injection with the 700-line embedded graphics scheduler extracted, and a PubSub layer shipped to start replacing scattered document.dispatchEvent calls.
+
+Two slides from that deck:
+
+![Midpoint milestones slide showing activity.js Refactored, logo.js Refactored, and CI Hardened all marked complete, plus Dependencies Modernized and Global State Reduction](/assets/post-assets/dmp26-vanshika/week06-midpoint-milestones.png)
+
+![Final milestone confidence slide listing six reasons: proven pattern, regression protection, hardest risks solved, stable delivery pace, known approach ahead, and mentor-confirmed roadmap, plus remaining work: test coverage, Cypress E2E, Logo edge cases, and build optimization](/assets/post-assets/dmp26-vanshika/week06-final-confidence.png)
+
+The remaining program work is now about breadth rather than structure: pushing test coverage toward 80% statements, adding Cypress E2E scenarios, backfilling Logo interpreter edge cases, and production build optimization. No new architectural unknowns are left to resolve.
+
+---
+
+## Key Learnings
+
+1. **A Finished List Is a Good Checkpoint:** Closing all six remaining activity.js responsibilities in one week, rather than letting extractions trickle across weeks, made it easy to state progress cleanly against the maintainer's original milestones going into the midpoint review.
+2. **Different Subsystems, Same Pattern:** Selection (interaction-heavy), workspace layout (resize/geometry-heavy), trash (lifecycle/state-heavy), help (UI-heavy), block scale (debounce/state-heavy), and context menus (rendering-heavy) are structurally very different, but the same extract, delegate, and cover-with-tests recipe worked cleanly on all six. That is good evidence the pattern generalizes rather than being a fit for one kind of code.
+3. **Pre-Existing CI Failures Need to Be Named, Not Just Worked Around:** The pitchstaircase/musickeyboard regressions on master were not introduced by this week's work, but leaving them unexplained in a PR would have looked like a new break. Calling them out explicitly, linking the root-cause PRs, and pointing to the fix kept review fast.
+4. **Delegation Wrappers Are Cheap Insurance:** Every controller this week kept a thin delegation method on Activity for its old public entry points. That one convention is what let six separate extractions land with zero required changes at any external call site.
+
+---
+
+## Roadmap for Week 07
+
+With the activity.js decomposition complete, the focus shifts toward the shared layers underneath it: pulling constants and small self-contained utilities out of the remaining large files, and continuing to widen test coverage ahead of the final program push.
+
+---
+
+## Acknowledgements
+
+A special thank you to my mentor **Walter Bender** for reviewing and merging all six pull requests this week, and for the detailed midpoint review of the roadmap. I would also like to thank the rest of the Sugar Labs community for their continued support during reviews.
+`,Kp=e({default:()=>qp}),qp=`---
 title: "GSoC '26 Week 07 Update by Ashutosh Singh"
 excerpt: "Static checks say the code is fine and it still crashes on open. Building a debugging layer for generated activities: a runtime gate that actually runs the code, a self-healing retry loop, and a self-review critic. With an architecture diagram of where it all sits."
 category: "DEVELOPER NEWS"
@@ -35229,7 +35366,7 @@ Thanks to the Phase 2 tester whose beautifully broken activity made the case for
 - Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
 
 ---
-`,Kp=e({default:()=>qp}),qp=`---
+`,Jp=e({default:()=>Yp}),Yp=`---
 title: "DMP Week 4: Squashing the 'Ting' Sound - Synth Pipeline & Pitch Fixes"
 excerpt: "PR #7807: normalizing Unicode accidentals in the synth pipeline, fixing numberToPitch out-of-bounds crashes, and making the pitch cache temperament-aware."
 category: "DEVELOPER NEWS"
@@ -35302,7 +35439,7 @@ PR #7807 is merged. A few call sites are now threaded with the temperament but s
 
 - [PR #7807 — wire active temperament through synthesis pipeline](https://github.com/sugarlabs/musicblocks/pull/7807)
 - [Issue #7171: Refactor Temperament](https://github.com/sugarlabs/musicblocks/issues/7171)
-`,Jp=e({default:()=>Yp}),Yp=`---
+`,Xp=e({default:()=>Zp}),Zp=`---
 title: "DMP '26 Week 05 Update by Noaman Akhtar"
 excerpt: "Adding reasoning on/off to Sugar-AI so one model can serve fast direct answers and slower step-by-step reasoning, with no-think as the safe default."
 category: "DEVELOPER NEWS"
@@ -35394,7 +35531,7 @@ With the mechanism working, the next step is measurement. I plan to benchmark th
 ## Acknowledgments
 
 Thanks to my mentors and the Sugar Labs community. The choices that mattered most here, keeping reasoning off by default and making sure its trace never reaches a child, came directly from their guidance on building for young users.
-`,Xp=e({default:()=>Zp}),Zp=`---
+`,Qp=e({default:()=>$p}),$p=`---
 title: "DMP '26 Week 05 Update by NSA Raiyyan"
 excerpt: "Added word-level highlighting synced to speech, waveform-driven mouth animation, and streaming playback for Kokoro."
 category: "DEVELOPER NEWS"
@@ -35478,7 +35615,7 @@ The second one had been quietly affecting a good chunk of the multilingual work,
 ## Acknowledgments
 
 Thanks as always to Mebin and Ibiam. This week was less about adding capability and more about making Speak feel right. The synthesis was already working fine, but watching the face move out of sync with the voice made it obvious how much the presentation matters when the thing you are building is meant for kids. Driving both the mouth and the highlighting off real audio timing made a bigger difference than I expected it to.
-`,Qp=e({default:()=>$p}),$p=`---
+`,em=e({default:()=>tm}),tm=`---
 title: "DMP '26 Week 6 Update by Stuti Jain"
 excerpt: "Expanded the Explorer Journal with general notes and improved contextual guidance by redesigning the help system for optional exploration activities."
 category: "DEVELOPER NEWS"
@@ -35647,7 +35784,7 @@ Similarly, expanding the Explorer Journal beyond lesson reflections required mai
 
 Thanks to Walter Bender and Devin Ulibarri for their continued feedback on improving both the Explorer Journal and the contextual help experience.
 
-This week's discussions emphasized the importance of building upon existing Music Blocks infrastructure wherever possible, ensuring that new features remain consistent with the application while providing better support for young learners.`,em=e({default:()=>tm}),tm=`---
+This week's discussions emphasized the importance of building upon existing Music Blocks infrastructure wherever possible, ensuring that new features remain consistent with the application while providing better support for young learners.`,nm=e({default:()=>rm}),rm=`---
 title: "GSoC '26 Week 08 Update by Dev"
 excerpt: "Submitting sugar-ext GTK4 migration PR, conducting deep API audit across Sugar shell and toolkit, and replacing legacy container removal calls with unparent."
 category: "DEVELOPER NEWS"
@@ -35744,7 +35881,7 @@ This week focused on submitting the finalized \`sugar-ext\` pull request and per
 ## Acknowledgments
 
 Special thanks to my mentors Krish Pandya, Ibiam Chihurumnaya, Walter Bender, and Juan Pablo Ugarte for their guidance and support!
-`,nm=e({default:()=>rm}),rm=`---
+`,im=e({default:()=>am}),am=`---
 title: "GSoC '26 Week 8: Completing the Jukebox Activity GTK4 Port"
 excerpt: "Finishing the Jukebox activity GTK4 migration by replacing legacy X11 video embedding with Wayland-compatible paintable sinks, and hardening the playlist architecture."
 category: "DEVELOPER NEWS"
@@ -35823,7 +35960,7 @@ Next week I'll start porting the Terminal activity. It uses Vte and still relies
 ## Acknowledgments
 
 Thanks to Sugar Labs and the GSoC program for the opportunity to work on this, and to everyone in the community keeping Sugar moving forward.
-`,im=e({default:()=>am}),am=`---
+`,om=e({default:()=>sm}),sm=`---
 title: "GSoC '26 Week 8 Update by Parth Dagia"
 excerpt: "Started working through the six-week plan: taught the Brick path utility to hand back connector coordinates, then reworked it to return connector bounds instead of single points, and turned last week's plan into real tickets so the connection work moves steadily."
 category: "DEVELOPER NEWS"
@@ -35902,7 +36039,7 @@ With connectors now reporting where they are and how big they are, next up is st
 Thanks to Anindya Kundu for the review that turned connector points into connector bounds, and to Syed for planning the road ahead with me. Thanks also to Justin Charles and Safwan Sayeed for their continued guidance, and to Devin Ulibarri, Walter Bender, and the wider Sugar Labs community.
 
 ---
-`,om=e({default:()=>sm}),sm=`---
+`,cm=e({default:()=>lm}),lm=`---
 title: "GSoC '26 Week 8 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented responsive design, back button optimization, new category addition, and Edit Features in the Number Mode of ConnectTheDots activity."
 category: "DEVELOPER NEWS"
@@ -35982,7 +36119,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance and patience, and 
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,cm=e({default:()=>lm}),lm=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,um=e({default:()=>dm}),dm=`---
 title: "GSoC '26 Week 8 Progress Report by Sonal Gaud"
 excerpt: "Fixing the bare-flag URL parsing bug, verifying full Turtle mode switching, and completing the Turtle Blocks unification into the Music Blocks repository"
 category: "DEVELOPER NEWS"
@@ -36099,7 +36236,7 @@ PR: [sugarlabs/musicblocks#7908, refactor: centralize Turtle/Music release confi
 ## Acknowledgements
 
 Thank you to Walter Bender and Om Santosh Suneri for the thorough hands-on testing that caught the bare-flag bug early, for pushing on the "how do I test this" question that made the flag behavior get documented properly, and for their continued guidance throughout this unification milestone.
-`,um=e({default:()=>dm}),dm=`---
+`,fm=e({default:()=>pm}),pm=`---
 title: "GSoC '26 Week 8 Update by Syed Khubayb Ur Rahman"
 excerpt: "Implementing advanced drag-and-drop mechanics, including moving Brick Towers, managing collision spaces, and disconnecting Statement Bricks."
 category: "DEVELOPER NEWS"
@@ -36177,7 +36314,7 @@ This week was packed with major functional improvements to the workspace interac
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the Sugar Labs community.
 
 ---
-`,fm=e({default:()=>pm}),pm=`---
+`,mm=e({default:()=>hm}),hm=`---
 title: "GSoC '26 Week 8 Update by Shreya Saxena"
 excerpt: "Landed natural-completion cleanup parity and the runtime/visual-reset separation fix, ruled out an explicit memory leak on Musical Tree and Hilbert Recursive, and kept iterating on the block-highlighting slowdown."
 category: "DEVELOPER NEWS"
@@ -36337,7 +36474,7 @@ Performance engineering is as much about validation as optimization. Systematica
 
 ## Acknowledgments
 
-Thanks to Walter Bender for testing my pull requests, providing direct feedback throughout the review process, and for his continued guidance this week. Thanks also to the entire Sugar Labs community for their continued support.`,mm=e({default:()=>hm}),hm=`---
+Thanks to Walter Bender for testing my pull requests, providing direct feedback throughout the review process, and for his continued guidance this week. Thanks also to the entire Sugar Labs community for their continued support.`,gm=e({default:()=>_m}),_m=`---
 title: "GSoC '26 Week 08 Update by Shubham Sharma"
 excerpt: "Walter's steer to stop waiting on review and build directly on the actual Sugar codebase, settling scoring rules and starting to judge whole conversations, narrowing six design directions down to one, and giving the engine a shared way to describe a child's work"
 category: "DEVELOPER NEWS"
@@ -36484,7 +36621,7 @@ Thanks to Walter, who went through the test sheet again on Element and settled t
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,gm=e({default:()=>_m}),_m=`---
+`,vm=e({default:()=>ym}),ym=`---
 title: "GSoC '26 Week 8 Update by Harihara Vardhan"
 excerpt: "This week the game-style Time Travel timeline is fully implemented and ready for review, I fixed the project renaming key bug, and added a proper 'Start of Project' anchor to the timeline."
 category: "DEVELOPER NEWS"
@@ -36535,7 +36672,7 @@ The first is **offline git**. The goal is to make the git features work even whe
 The second is a **git lesson plan**. I want to create something that actually teaches students how version control works using the features we have built. Not just "here is a button, press it," but an actual guided experience that helps students understand why saving your work matters, what a commit really is, and how going back in time can save a project.
 
 It has been a great journey watching all of these pieces fall into place. Eight weeks in, and the core git experience is looking really solid. See you next week!
-`,vm=e({default:()=>ym}),ym=`---
+`,bm=e({default:()=>xm}),xm=`---
 title: "GSoC '26 Week 08 Update by Ashutosh Singh"
 excerpt: "A real pass on the UI and UX with live click-to-refine, version history, and model-drawn icons, then proper packaging and an AppImage, and cutting the first real release: v1.1.0."
 category: "DEVELOPER NEWS"
@@ -36638,7 +36775,7 @@ Thanks to Walter Bender for steadily pushing AOD toward something people can act
 - Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
 
 ---
-`,bm=e({default:()=>xm}),xm=`---
+`,Sm=e({default:()=>Cm}),Cm=`---
 title: "DMP '26 Week 04 Update by Abhnish Kumar"
 excerpt: "Shared screen reader utility, widget open/close announcements, and mid-point evaluation prep for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -36757,7 +36894,7 @@ The 4 remaining violations are targeted for the end-point milestone.
 
 Thanks to Walter Bender for the detailed review feedback and for suggesting
 the shared helper refactor — it made the codebase significantly cleaner
-for all future accessibility work.`,Sm=e({default:()=>Cm}),Cm='---\ntitle: "DMP Week 5: fix: Support non-12 EDO temperaments in audio engine and widgets"\nexcerpt: "PR 5.2 makes the audio engine and widgets EDO-aware; PR 5.2b adds temperament persistence, foundational ratio data, and remaining goal fixes"\ncategory: "DEVELOPER NEWS"\ndate: "2026-07-24"\nslug: "2026-07-24-dmp-26-niravsharma-week05"\nauthor: "@/constants/MarkdownFiles/authors/nirav-sharma.md"\ndescription: "Week 5 of my C4GT DMP journey — PR 5.2 makes the audio engine EDO-aware and PR 5.2b adds temperament persistence, ratio data, and the remaining goal fixes"\ntags: "dmp26,sugarlabs,week05,niravsharma,musicblocks,temperament"\nimage: "assets/Images/c4gt_DMP.webp"\n---\n\n<!-- markdownlint-disable -->\n\n# Week 05 Progress Report by Nirav Sharma\n\n**Project:** [Music Blocks - Refactor Temperament (Issue #7171)](https://github.com/sugarlabs/musicblocks/issues/7171)  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  \n**Reporting Period:** 2026-07-21 – 2026-07-25\n\n---\n\n## What I worked on this week\n\nThis week I completed the audio engine and widget EDO-awareness (PR 5.2) and PR 5.2b landed the remaining Goal 1+2+3 fixes: temperament persistence, temperament threading, and temperament reset on run.\n\n### PR 5.2 - fix: Support non-12 EDO temperaments in audio engine and widgets\n\nThe core problem: when a user selected a non-12 temperament (e.g., 5-EDO, 19-EDO), the audio engine silently fell back to 12-EDO behavior. Notes that should sound in the selected tuning were calculated using 12-equal-temperament formulas, producing wrong frequencies.\n\n**Fix 1: `getCachedPitchToFrequency` refactor (turtle-singer.js)**\n\nThe cache function never passed temperament to `pitchToFrequency`, and the cache key had no temperament dimension — so stale 12-EDO values were served for all temperaments. Added `temperament` parameter and included it in the cache key. Added `clearPitchToFrequencyCache()` static method to flush stale values on temperament change.\n\n**Fix 2: `generateNoteNames(edo)` + `getEdoNoteNamePosition()` (musicutils.js)**\n\nAdded a note name table generator for any EDO. For EDO ≤ 12, uses standard sharp names. For EDO > 12, interleaves sharps and flats between naturals (e.g., 19-EDO gets 19 distinct note names). Results cached in `EDO_NOTE_NAMES`. This replaced hardcoded 12-element arrays throughout the codebase.\n\n**Fix 3: `numberToPitch` EDO branch (musicutils.js)**\n\nThe old formula used an A0-based offset that mixed EDO units with 12-EDO units. For example, `playPitchNumber(0)` in 5-EDO produced G9 (12.5 kHz, inaudible) instead of C4 (261 Hz, correct).\n\nThe fix: use `startPitch` as the reference point. Convert the pitch number to EDO steps relative to `startParsed` using `Math.round(pitchNumber / (12/currentEDO))`, then compute note/octave from that reference. This ensures pitch 0 always maps to the starting pitch (C4) regardless of EDO.\n\n**Fix 4: `__getFrequency` EDO path (synthutils.js)**\n\nAdded `isEDO` check that uses `pitchToFrequency` directly for EDO temperaments, bypassing the broken `noteFrequencies` lookup. Added `getOctaveRatio()` instead of hardcoded `2` for the power-of-2 fallback. Added `normalizeNoteAccidentals` to convert Unicode accidentals to ASCII before Tone.js parsing.\n\n**Fix 5: Widget EDO-awareness**\n\nThree widgets were updated:\n\n- **Pitch Slider (pitchslider.js):** Added `static stepRatio(edo)` returning `Math.pow(2, 1/edo)`.\n- **Tuner (tuner.js):** `frequencyToPitch(frequency, edo)` now accepts an optional `edo` parameter. Formula changed from `12 * Math.log2(...)` to `currentEDO * Math.log2(...)`, octave uses `currentEDO` as divisor.\n- **Sampler (sampler.js):** Added `_getCurrentEDO()` helper. Updated `_calculateFrequency`, `_playReferencePitch`, `frequencyToNote` to use `currentEDO` instead of hardcoded `12`.\n\n**Also in PR 5.2:** Expanded `EQUIVALENTNATURALS` with double sharps (`D𝄪→E`, `A𝄪→B`, etc.), added 17-EDO temperament, added JI `frequencyToPitch` with ratio-based lookup, fixed LiveWaveForm analyser disposal.\n\n---\n\n### PR 5.2b - feat(temperament): Foundational ratio data, dynamic consonant stepping, and temperament length block\n\nPR 5.2b (#7853) shipped the persistence and remaining goal fixes:\n\n- `_userTemperament` persistence: the chosen temperament survives across runs (`resetTemperament()` / `setUserTemperament()` in logo.js).\n- Temperament threading: `PitchActions` passes `inTemperament` to `pitchToFrequency`; harmonic partials use `parseNoteString` + temperament-aware `pitchToFrequency`.\n- `getNote` nameIndex fix: proportional 12-EDO mapping `Math.round(((n+k) / octaveLength) * 12) % 12` instead of `(n+k) % octaveLength`.\n- Cents display: `(+0)` -> `(+0¢)` via `CENTSSYMBOL` (block.js / blocks.js).\n- CustomPitchBlock macro fix: `"pitch"` -> `"custompitch"`.\n- `Singer.clearPitchToFrequencyCache()` on temperament change - no stale frequencies.\n\n---\n\nThese two widgets have deep 12-note coupling - the modewidget has 34+ hardcoded `12` instances tied to mode definitions, piano keys, and wheel UI. The musickeyboard has 14+ instances tied to the PITCHES2 12-note array and keyboard layout. Both require a full redesign and will get their own PR.\n\n### What\'s coming next\n\n1. Address mentor feedback on PR 5.2 and PR 6, get reviewed and possibly get merged\n2. Fix remaining `temperament.js` "Back to 2:1" division (uses `/ 12`)\n3. Tackle modewidget.js and musickeyboard.js EDO-awareness (separate PR)\n4. Begin PR 7 — Scale Builder in Temperament Widget (Goal 4)\n\n### Reflection\n\n- **The `(step / EDO) * 12` formula is everywhere.** It maps N EDO steps to 12 pitch class names, which works for 12-EDO but produces wrong note names and octave transitions for any other EDO. The fix is always proportional mapping: `Math.round(step * 12 / currentEDO)` to find the nearest 12-EDO name.\n\n- **Tone.js mocks in tests make frequency assertions impossible.** The mock `Frequency().toFrequency()` returns the mock object itself, making all frequencies NaN. Tests must use `expect.any(Number)` or mock Tone properly.\n\n- **Widget refactors are high-risk.** The modewidget and musickeyboard are tightly coupled to 12-note assumptions. A full redesign is needed, not just parameter swaps. Better to ship what works and defer the complex widgets.\n\n- **The `1200` in cents formulas is a constant.** It\'s the number of cents in an octave (logarithmic unit), not EDO-dependent. Don\'t change it when making things EDO-aware.\n\n### Links\n\n- [PR #7835 — support non-12 EDO temperaments in audio engine and widgets](https://github.com/sugarlabs/musicblocks/pull/7835)\n- [PR #7853 — foundational ratio data, dynamic consonant stepping, and temperament length block](https://github.com/sugarlabs/musicblocks/pull/7853)\n- [Issue #7171: Refactor Temperament](https://github.com/sugarlabs/musicblocks/issues/7171)\n',wm=e({default:()=>Tm}),Tm=`---
+for all future accessibility work.`,wm=e({default:()=>Tm}),Tm='---\ntitle: "DMP Week 5: fix: Support non-12 EDO temperaments in audio engine and widgets"\nexcerpt: "PR 5.2 makes the audio engine and widgets EDO-aware; PR 5.2b adds temperament persistence, foundational ratio data, and remaining goal fixes"\ncategory: "DEVELOPER NEWS"\ndate: "2026-07-24"\nslug: "2026-07-24-dmp-26-niravsharma-week05"\nauthor: "@/constants/MarkdownFiles/authors/nirav-sharma.md"\ndescription: "Week 5 of my C4GT DMP journey — PR 5.2 makes the audio engine EDO-aware and PR 5.2b adds temperament persistence, ratio data, and the remaining goal fixes"\ntags: "dmp26,sugarlabs,week05,niravsharma,musicblocks,temperament"\nimage: "assets/Images/c4gt_DMP.webp"\n---\n\n<!-- markdownlint-disable -->\n\n# Week 05 Progress Report by Nirav Sharma\n\n**Project:** [Music Blocks - Refactor Temperament (Issue #7171)](https://github.com/sugarlabs/musicblocks/issues/7171)  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  \n**Reporting Period:** 2026-07-21 – 2026-07-25\n\n---\n\n## What I worked on this week\n\nThis week I completed the audio engine and widget EDO-awareness (PR 5.2) and PR 5.2b landed the remaining Goal 1+2+3 fixes: temperament persistence, temperament threading, and temperament reset on run.\n\n### PR 5.2 - fix: Support non-12 EDO temperaments in audio engine and widgets\n\nThe core problem: when a user selected a non-12 temperament (e.g., 5-EDO, 19-EDO), the audio engine silently fell back to 12-EDO behavior. Notes that should sound in the selected tuning were calculated using 12-equal-temperament formulas, producing wrong frequencies.\n\n**Fix 1: `getCachedPitchToFrequency` refactor (turtle-singer.js)**\n\nThe cache function never passed temperament to `pitchToFrequency`, and the cache key had no temperament dimension — so stale 12-EDO values were served for all temperaments. Added `temperament` parameter and included it in the cache key. Added `clearPitchToFrequencyCache()` static method to flush stale values on temperament change.\n\n**Fix 2: `generateNoteNames(edo)` + `getEdoNoteNamePosition()` (musicutils.js)**\n\nAdded a note name table generator for any EDO. For EDO ≤ 12, uses standard sharp names. For EDO > 12, interleaves sharps and flats between naturals (e.g., 19-EDO gets 19 distinct note names). Results cached in `EDO_NOTE_NAMES`. This replaced hardcoded 12-element arrays throughout the codebase.\n\n**Fix 3: `numberToPitch` EDO branch (musicutils.js)**\n\nThe old formula used an A0-based offset that mixed EDO units with 12-EDO units. For example, `playPitchNumber(0)` in 5-EDO produced G9 (12.5 kHz, inaudible) instead of C4 (261 Hz, correct).\n\nThe fix: use `startPitch` as the reference point. Convert the pitch number to EDO steps relative to `startParsed` using `Math.round(pitchNumber / (12/currentEDO))`, then compute note/octave from that reference. This ensures pitch 0 always maps to the starting pitch (C4) regardless of EDO.\n\n**Fix 4: `__getFrequency` EDO path (synthutils.js)**\n\nAdded `isEDO` check that uses `pitchToFrequency` directly for EDO temperaments, bypassing the broken `noteFrequencies` lookup. Added `getOctaveRatio()` instead of hardcoded `2` for the power-of-2 fallback. Added `normalizeNoteAccidentals` to convert Unicode accidentals to ASCII before Tone.js parsing.\n\n**Fix 5: Widget EDO-awareness**\n\nThree widgets were updated:\n\n- **Pitch Slider (pitchslider.js):** Added `static stepRatio(edo)` returning `Math.pow(2, 1/edo)`.\n- **Tuner (tuner.js):** `frequencyToPitch(frequency, edo)` now accepts an optional `edo` parameter. Formula changed from `12 * Math.log2(...)` to `currentEDO * Math.log2(...)`, octave uses `currentEDO` as divisor.\n- **Sampler (sampler.js):** Added `_getCurrentEDO()` helper. Updated `_calculateFrequency`, `_playReferencePitch`, `frequencyToNote` to use `currentEDO` instead of hardcoded `12`.\n\n**Also in PR 5.2:** Expanded `EQUIVALENTNATURALS` with double sharps (`D𝄪→E`, `A𝄪→B`, etc.), added 17-EDO temperament, added JI `frequencyToPitch` with ratio-based lookup, fixed LiveWaveForm analyser disposal.\n\n---\n\n### PR 5.2b - feat(temperament): Foundational ratio data, dynamic consonant stepping, and temperament length block\n\nPR 5.2b (#7853) shipped the persistence and remaining goal fixes:\n\n- `_userTemperament` persistence: the chosen temperament survives across runs (`resetTemperament()` / `setUserTemperament()` in logo.js).\n- Temperament threading: `PitchActions` passes `inTemperament` to `pitchToFrequency`; harmonic partials use `parseNoteString` + temperament-aware `pitchToFrequency`.\n- `getNote` nameIndex fix: proportional 12-EDO mapping `Math.round(((n+k) / octaveLength) * 12) % 12` instead of `(n+k) % octaveLength`.\n- Cents display: `(+0)` -> `(+0¢)` via `CENTSSYMBOL` (block.js / blocks.js).\n- CustomPitchBlock macro fix: `"pitch"` -> `"custompitch"`.\n- `Singer.clearPitchToFrequencyCache()` on temperament change - no stale frequencies.\n\n---\n\nThese two widgets have deep 12-note coupling - the modewidget has 34+ hardcoded `12` instances tied to mode definitions, piano keys, and wheel UI. The musickeyboard has 14+ instances tied to the PITCHES2 12-note array and keyboard layout. Both require a full redesign and will get their own PR.\n\n### What\'s coming next\n\n1. Address mentor feedback on PR 5.2 and PR 6, get reviewed and possibly get merged\n2. Fix remaining `temperament.js` "Back to 2:1" division (uses `/ 12`)\n3. Tackle modewidget.js and musickeyboard.js EDO-awareness (separate PR)\n4. Begin PR 7 — Scale Builder in Temperament Widget (Goal 4)\n\n### Reflection\n\n- **The `(step / EDO) * 12` formula is everywhere.** It maps N EDO steps to 12 pitch class names, which works for 12-EDO but produces wrong note names and octave transitions for any other EDO. The fix is always proportional mapping: `Math.round(step * 12 / currentEDO)` to find the nearest 12-EDO name.\n\n- **Tone.js mocks in tests make frequency assertions impossible.** The mock `Frequency().toFrequency()` returns the mock object itself, making all frequencies NaN. Tests must use `expect.any(Number)` or mock Tone properly.\n\n- **Widget refactors are high-risk.** The modewidget and musickeyboard are tightly coupled to 12-note assumptions. A full redesign is needed, not just parameter swaps. Better to ship what works and defer the complex widgets.\n\n- **The `1200` in cents formulas is a constant.** It\'s the number of cents in an octave (logarithmic unit), not EDO-dependent. Don\'t change it when making things EDO-aware.\n\n### Links\n\n- [PR #7835 — support non-12 EDO temperaments in audio engine and widgets](https://github.com/sugarlabs/musicblocks/pull/7835)\n- [PR #7853 — foundational ratio data, dynamic consonant stepping, and temperament length block](https://github.com/sugarlabs/musicblocks/pull/7853)\n- [Issue #7171: Refactor Temperament](https://github.com/sugarlabs/musicblocks/issues/7171)\n',Em=e({default:()=>Dm}),Dm=`---
 title: "DMP '26 Week 06 Update by Noaman Akhtar"
 excerpt: "Refactoring Sugar-AI's provider layer so the base provider itself speaks the OpenAI chat format, removing the separate OpenAI class, and cleaning up methods the other providers were duplicating."
 category: "DEVELOPER NEWS"
@@ -36854,7 +36991,7 @@ With the provider layer cleaned up, the next step is to continue the benchmarkin
 ## Acknowledgments
 
 Thanks to my mentors and the Sugar Labs community. This refactor came directly from their review of the provider code, and the guidance to keep the shared logic in the base and avoid a vendor-specific class shaped the final design.
-`,Em=e({default:()=>Dm}),Dm=`---
+`,Om=e({default:()=>km}),km=`---
 title: "DMP '26 Week 7 Update by Stuti Jain"
 excerpt: "Planned the next phase of lesson guidance by categorizing discovery actions into reusable help resources, prepared the DMP midpoint evaluation, and finalized the implementation roadmap for expanding lessons and classroom testing."
 category: "DEVELOPER NEWS"
@@ -37002,7 +37139,7 @@ Initially, several discovery activities appeared to require entirely new help pa
 
 Many thanks to Walter Bender for reviewing the help categorization strategy and providing valuable feedback on how the existing Music Blocks help infrastructure can be reused more effectively.
 
-I also thank Devin Ulibarri and the Sugar Labs community for their continued guidance in shaping the lesson framework and preparing for the next phase of classroom testing and lesson expansion.`,Om=e({default:()=>km}),km='---\ntitle: "GSoC \'26 Week 09 Update by Dev"\nexcerpt: "Running a deep post-migration API audit across all three repositories, fixing GTK4 window destruction patterns and popover lifecycle issues, and pushing theme contrast improvements in sugar-artwork."\ncategory: "DEVELOPER NEWS"\ndate: "2026-07-26"\nslug: "2026-07-26-gsoc-26-dev-week09"\nauthor: "@/constants/MarkdownFiles/authors/dev.md"\ntags: "gsoc26,sugarlabs,week09,dev,gtk4-port,Sugar shell"\nimage: "assets/Images/GSOC.webp"\n---\n\n<!-- markdownlint-disable -->\n\n# Week 09 Progress Report by Dev\n\n**Project:** [GTK4 Transition Part 2: Sugar Shell](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#gtk4-transition-part-2-sugar-shell)  \n**Mentors:** [Krish Pandya](https://github.com/MostlyKIGuess), [Ibiam Chihurumnaya](https://github.com/chimosky)  \n**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Juan Pablo Ugarte](https://github.com/xjuan)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-07-19 - 2026-07-25  \n\n---\n\n## Goals for This Week\n\n- **Goal 1:** Perform a comprehensive post-migration audit across `sugar` and `sugar-toolkit-gtk4` to catch any remaining GTK3 API violations.\n- **Goal 2:** Fix all identified window destruction patterns and popover lifecycle regressions across the Sugar shell.\n- **Goal 3:** Push GTK4 theme contrast and dropdown color improvements in `sugar-artwork`.\n\n---\n\n## This Week\'s Achievements\n\nWith the main PR bodies in reasonable shape from last week\'s audit round, I spent this week doing a thorough second pass across all three repositories to catch any patterns that slipped through.\n\n1. **Deep API Audit and Window Destruction Fixes (`sugar`)**  \n   - I scanned every Python file under `src/jarabe` for GTK3 patterns that would crash silently or raise `AttributeError` at runtime on GTK4. The main findings were around `Gtk.Window.destroy()` which was removed in GTK4.\n   - Replaced `self.destroy()` calls in `ActivityChooser` and `ViewHelp` with `self.close()`. Fixed the `close_window()` helper inside `shell.py` to always call `close()` before falling back to `unparent()` so the priority is correct.\n   - Cleaned up redundant comment blocks in `favoritesview.py` around palette teardown logic, setting `self.palette = None` directly after `popdown()`.\n   - Verified that all `unparent()` calls introduced in Week 08 are working correctly and there are no leftover `container.remove()` calls in the journal or frame modules.\n   - Commit: [gtk4: resolve Wayland runtime behavior, window destruction, and UI styling](https://github.com/sugarlabs/sugar/pull/1106/commits/88d70d96)\n\n2. **Popover Lifecycle and Layout Allocation Fixes (`sugar-toolkit-gtk4`)**  \n   - After the Week 08 popover work, there were still some edge cases around widget layout measurement and memory cleanup that I addressed.\n   - Replaced remaining `destroy()` calls in `PaletteWindow.detach()` with `popdown()` followed by `unparent()`. This prevents widget hierarchy crashes when a popover is torn down while still attached.\n   - Replaced all deprecated `get_allocation()` calls in `Tray`, `ToolbarBox`, and `PaletteWindow` with GTK4 native `measure()`, `get_width()`, and `translate_coordinates()`.\n   - Replaced `Gdk.cairo_set_source_pixbuf` usage inside `Icon` and `IconEntry` with `Gdk.MemoryTexture` and `GdkPixbuf` stream decoding since the old function was removed in GTK4.\n   - Fixed a property setter in `Alert` that was constructing a new pixbuf icon on every property update without releasing the old reference.\n   - Fixed a disposal order issue in `HTray` and `VTray` where buttons were being removed from the layout after the tray itself was already detached, causing `Gtk.Widget.unparent()` to be called on an already-freed widget.\n   - Commit: [graphics: fix widget lifecycle, layout allocation, and popover management](https://github.com/sugarlabs/sugar-toolkit-gtk4/pull/33/commits/05f06778)\n\n3. **GTK4 Theme Contrast and Dropdown Styles (`sugar-artwork`)**  \n   - I worked on the GTK4 CSS stylesheet inside the `gtk4/theme` directory to fix visual issues that were visible during local testing.\n   - Added explicit background and text color rules for GTK4 `GtkDropDown` and `GtkComboBox` popover menus. Without these, the popover menu text was inheriting a dark-on-dark color combination that made items unreadable after clicking.\n   - Updated row selection background and text colors in `GtkTreeView` to match the Sugar color palette properly under GTK4 since the old GTK3 selector names no longer apply.\n   - Tuned button state padding for the Control Panel section tiles so hover and pressed states render with consistent spacing.\n   - PR: [sugar-artwork #131](https://github.com/sugarlabs/sugar-artwork/pull/131) · Commit: [gtk4/theme: update dropdown menu contrast and treeview selection styles](https://github.com/sugarlabs/sugar-artwork/pull/131/commits/3667413)\n\n---\n\n## Challenges & How I Overcame Them\n\n- **Challenge:** Tracking down `Gtk.Window.destroy()` calls that failed silently without throwing immediate errors.  \n  **Solution:** In GTK4, calling `destroy()` on a window doesn\'t raise an exception immediately in all code paths—it either crashes on the next frame render or silently corrupts the widget tree. I ran a full text scan across all Python files and cross-referenced the class hierarchy for every call site to confirm whether the receiver was a `Gtk.Window` subclass or a data object.\n\n- **Challenge:** Adapting to GTK4 CSS node name changes for dropdown menus and popovers.  \n  **Solution:** GTK4 renamed many internal CSS node names. The `GtkComboBox` drop-down list used to be styled with `.combo .popup`, but in GTK4 it renders as a `GtkPopover` with `popover.menu` node hierarchy. I used the GTK Inspector during local runs to inspect the exact node names applied by the runtime and wrote target rules accordingly.\n\n---\n\n## Key Learnings\n\n- GTK4 removed `Gtk.Window.destroy()` entirely. The correct replacement is `Gtk.Window.close()` which sends the delete event through the normal lifecycle and allows the window to clean up.\n- `GtkDropDown` in GTK4 does not share CSS node names with `GtkComboBox` from GTK3. Both require separate selector rules in a GTK4 theme stylesheet.\n\n---\n\n## Next Week\'s Roadmap\n\n- Run extensive end-to-end testing across all shell views (Home Screen, Journal, Control Panel, Frame) under Casilda to find any remaining regressions.\n- Prepare a video walkthrough of the new GTK4 shell running natively on Wayland to share progress with the community.\n\n---\n\n## Resources & References\n\n- Sugar Shell Repository - [sugar](https://github.com/sugarlabs/sugar)\n- GTK4 Toolkit Library - [sugar-toolkit-gtk4](https://github.com/sugarlabs/sugar-toolkit-gtk4)\n- Documentation - [Read the Docs](https://sugar-toolkit-gtk4.readthedocs.io/en/latest/)\n- GTK4 Migration Guide - [GNOME Docs](https://docs.gtk.org/gtk4/migrating-3to4.html)\n- PyPI Package - [sugar-toolkit-gtk4](https://pypi.org/project/sugar-toolkit-gtk4/)\n- Sugar Ext Repository - [sugar-ext](https://github.com/sugarlabs/sugar-ext)\n- Casilda Compositor - [Casilda](https://gitlab.gnome.org/jpu/casilda/-/tree/main?ref_type=heads)\n- Sugar Artwork Repository - [sugar-artwork](https://github.com/sugarlabs/sugar-artwork)\n\n---\n\n## Acknowledgments\n\nSpecial thanks to my mentors Krish Pandya, Ibiam Chihurumnaya, Walter Bender, and Juan Pablo Ugarte for their continued guidance and support!\n',Am=e({default:()=>jm}),jm=`---
+I also thank Devin Ulibarri and the Sugar Labs community for their continued guidance in shaping the lesson framework and preparing for the next phase of classroom testing and lesson expansion.`,Am=e({default:()=>jm}),jm='---\ntitle: "GSoC \'26 Week 09 Update by Dev"\nexcerpt: "Running a deep post-migration API audit across all three repositories, fixing GTK4 window destruction patterns and popover lifecycle issues, and pushing theme contrast improvements in sugar-artwork."\ncategory: "DEVELOPER NEWS"\ndate: "2026-07-26"\nslug: "2026-07-26-gsoc-26-dev-week09"\nauthor: "@/constants/MarkdownFiles/authors/dev.md"\ntags: "gsoc26,sugarlabs,week09,dev,gtk4-port,Sugar shell"\nimage: "assets/Images/GSOC.webp"\n---\n\n<!-- markdownlint-disable -->\n\n# Week 09 Progress Report by Dev\n\n**Project:** [GTK4 Transition Part 2: Sugar Shell](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md#gtk4-transition-part-2-sugar-shell)  \n**Mentors:** [Krish Pandya](https://github.com/MostlyKIGuess), [Ibiam Chihurumnaya](https://github.com/chimosky)  \n**Assisting Mentors:** [Walter Bender](https://github.com/walterbender), [Juan Pablo Ugarte](https://github.com/xjuan)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-07-19 - 2026-07-25  \n\n---\n\n## Goals for This Week\n\n- **Goal 1:** Perform a comprehensive post-migration audit across `sugar` and `sugar-toolkit-gtk4` to catch any remaining GTK3 API violations.\n- **Goal 2:** Fix all identified window destruction patterns and popover lifecycle regressions across the Sugar shell.\n- **Goal 3:** Push GTK4 theme contrast and dropdown color improvements in `sugar-artwork`.\n\n---\n\n## This Week\'s Achievements\n\nWith the main PR bodies in reasonable shape from last week\'s audit round, I spent this week doing a thorough second pass across all three repositories to catch any patterns that slipped through.\n\n1. **Deep API Audit and Window Destruction Fixes (`sugar`)**  \n   - I scanned every Python file under `src/jarabe` for GTK3 patterns that would crash silently or raise `AttributeError` at runtime on GTK4. The main findings were around `Gtk.Window.destroy()` which was removed in GTK4.\n   - Replaced `self.destroy()` calls in `ActivityChooser` and `ViewHelp` with `self.close()`. Fixed the `close_window()` helper inside `shell.py` to always call `close()` before falling back to `unparent()` so the priority is correct.\n   - Cleaned up redundant comment blocks in `favoritesview.py` around palette teardown logic, setting `self.palette = None` directly after `popdown()`.\n   - Verified that all `unparent()` calls introduced in Week 08 are working correctly and there are no leftover `container.remove()` calls in the journal or frame modules.\n   - Commit: [gtk4: resolve Wayland runtime behavior, window destruction, and UI styling](https://github.com/sugarlabs/sugar/pull/1106/commits/88d70d96)\n\n2. **Popover Lifecycle and Layout Allocation Fixes (`sugar-toolkit-gtk4`)**  \n   - After the Week 08 popover work, there were still some edge cases around widget layout measurement and memory cleanup that I addressed.\n   - Replaced remaining `destroy()` calls in `PaletteWindow.detach()` with `popdown()` followed by `unparent()`. This prevents widget hierarchy crashes when a popover is torn down while still attached.\n   - Replaced all deprecated `get_allocation()` calls in `Tray`, `ToolbarBox`, and `PaletteWindow` with GTK4 native `measure()`, `get_width()`, and `translate_coordinates()`.\n   - Replaced `Gdk.cairo_set_source_pixbuf` usage inside `Icon` and `IconEntry` with `Gdk.MemoryTexture` and `GdkPixbuf` stream decoding since the old function was removed in GTK4.\n   - Fixed a property setter in `Alert` that was constructing a new pixbuf icon on every property update without releasing the old reference.\n   - Fixed a disposal order issue in `HTray` and `VTray` where buttons were being removed from the layout after the tray itself was already detached, causing `Gtk.Widget.unparent()` to be called on an already-freed widget.\n   - Commit: [graphics: fix widget lifecycle, layout allocation, and popover management](https://github.com/sugarlabs/sugar-toolkit-gtk4/pull/33/commits/05f06778)\n\n3. **GTK4 Theme Contrast and Dropdown Styles (`sugar-artwork`)**  \n   - I worked on the GTK4 CSS stylesheet inside the `gtk4/theme` directory to fix visual issues that were visible during local testing.\n   - Added explicit background and text color rules for GTK4 `GtkDropDown` and `GtkComboBox` popover menus. Without these, the popover menu text was inheriting a dark-on-dark color combination that made items unreadable after clicking.\n   - Updated row selection background and text colors in `GtkTreeView` to match the Sugar color palette properly under GTK4 since the old GTK3 selector names no longer apply.\n   - Tuned button state padding for the Control Panel section tiles so hover and pressed states render with consistent spacing.\n   - PR: [sugar-artwork #131](https://github.com/sugarlabs/sugar-artwork/pull/131) · Commit: [gtk4/theme: update dropdown menu contrast and treeview selection styles](https://github.com/sugarlabs/sugar-artwork/pull/131/commits/3667413)\n\n---\n\n## Challenges & How I Overcame Them\n\n- **Challenge:** Tracking down `Gtk.Window.destroy()` calls that failed silently without throwing immediate errors.  \n  **Solution:** In GTK4, calling `destroy()` on a window doesn\'t raise an exception immediately in all code paths—it either crashes on the next frame render or silently corrupts the widget tree. I ran a full text scan across all Python files and cross-referenced the class hierarchy for every call site to confirm whether the receiver was a `Gtk.Window` subclass or a data object.\n\n- **Challenge:** Adapting to GTK4 CSS node name changes for dropdown menus and popovers.  \n  **Solution:** GTK4 renamed many internal CSS node names. The `GtkComboBox` drop-down list used to be styled with `.combo .popup`, but in GTK4 it renders as a `GtkPopover` with `popover.menu` node hierarchy. I used the GTK Inspector during local runs to inspect the exact node names applied by the runtime and wrote target rules accordingly.\n\n---\n\n## Key Learnings\n\n- GTK4 removed `Gtk.Window.destroy()` entirely. The correct replacement is `Gtk.Window.close()` which sends the delete event through the normal lifecycle and allows the window to clean up.\n- `GtkDropDown` in GTK4 does not share CSS node names with `GtkComboBox` from GTK3. Both require separate selector rules in a GTK4 theme stylesheet.\n\n---\n\n## Next Week\'s Roadmap\n\n- Run extensive end-to-end testing across all shell views (Home Screen, Journal, Control Panel, Frame) under Casilda to find any remaining regressions.\n- Prepare a video walkthrough of the new GTK4 shell running natively on Wayland to share progress with the community.\n\n---\n\n## Resources & References\n\n- Sugar Shell Repository - [sugar](https://github.com/sugarlabs/sugar)\n- GTK4 Toolkit Library - [sugar-toolkit-gtk4](https://github.com/sugarlabs/sugar-toolkit-gtk4)\n- Documentation - [Read the Docs](https://sugar-toolkit-gtk4.readthedocs.io/en/latest/)\n- GTK4 Migration Guide - [GNOME Docs](https://docs.gtk.org/gtk4/migrating-3to4.html)\n- PyPI Package - [sugar-toolkit-gtk4](https://pypi.org/project/sugar-toolkit-gtk4/)\n- Sugar Ext Repository - [sugar-ext](https://github.com/sugarlabs/sugar-ext)\n- Casilda Compositor - [Casilda](https://gitlab.gnome.org/jpu/casilda/-/tree/main?ref_type=heads)\n- Sugar Artwork Repository - [sugar-artwork](https://github.com/sugarlabs/sugar-artwork)\n\n---\n\n## Acknowledgments\n\nSpecial thanks to my mentors Krish Pandya, Ibiam Chihurumnaya, Walter Bender, and Juan Pablo Ugarte for their continued guidance and support!\n',Mm=e({default:()=>Nm}),Nm=`---
 title: "GSoC '26 Week 9: Starting the Terminal Activity GTK4 Port"
 excerpt: "Beginning the Terminal activity GTK4 migration by adopting VTE 3.91, modernizing layouts, and cleaning up legacy dependencies."
 category: "DEVELOPER NEWS"
@@ -37074,7 +37211,7 @@ Next week: replacing the old signal connections with GTK4's Event Controllers, a
 ## Acknowledgments
 
 Thanks to Sugar Labs and the GSoC program for the opportunity to work on this!
-`,Mm=e({default:()=>Nm}),Nm=`---
+`,Pm=e({default:()=>Fm}),Fm=`---
 title: "GSoC '26 Week 9 Update by Parth Dagia"
 excerpt: "Snapping actually works now: Argument connector points live in a Collision space, Argument Bricks plug into slots, and Statement Bricks join into a single Tower - so you can build, break apart, and move a program around the Workspace."
 category: "DEVELOPER NEWS"
@@ -37154,7 +37291,7 @@ Connecting works, but it's still a bit of a guess for the user until the Workspa
 Thanks to Anindya Kundu for the reviews across all three PRs, and to Syed for building this alongside me. Thanks also to Justin Charles and Safwan Sayeed for their continued guidance, and to Devin Ulibarri, Walter Bender, and the wider Sugar Labs community.
 
 ---
-`,Pm=e({default:()=>Fm}),Fm=`---
+`,Im=e({default:()=>Lm}),Lm=`---
 title: "GSoC '26 Week 9 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented shared mode and fixed various issues including saving to the journal and editable categories in the ConnectTheDots activity."
 category: "DEVELOPER NEWS"
@@ -37235,7 +37372,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance, and the Sugar Lab
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Im=e({default:()=>Lm}),Lm='---\ntitle: "GSoC \'26 Week 9 Progress Report by Sonal Gaud"\nexcerpt: "Automating CHANGELOG.md and versioning with release-please: a Conventional-Commits pipeline for Music Blocks releases"\ncategory: "DEVELOPER NEWS"\ndate: "2026-07-26"\nslug: "2026-07-26-gsoc-26-sonal-gaud-week9"\nauthor: "@/constants/MarkdownFiles/authors/sonal-gaud.md"\ntags: "gsoc26,sugarlabs,musicblocks,ci-cd,release-automation,infrastructure"\nimage: "assets/Images/GSOC.webp"\n---\n\n# Week 9 Progress Report by Sonal Gaud\n\n**Project:** Automated Release Pipeline for Music Blocks  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-07-20 - 2026-07-26  \n\n---\n\n## Overview\n\n[Week 8](/news/all/2026-07-19-gsoc-26-sonal-gaud-week8) closed out the Turtle/Music unification: one repository, runtime mode detection, `js/releaseconfig.js` verified end to end, palettes and title and splash all switching together off the one resolved flag. With the codebase unified, the next gap in the pipeline stood out clearly: Music Blocks had no automated way to produce a changelog or bump its own version. Ten tags had been cut by hand without the manifest being bumped alongside them, and the version in `package.json` had drifted well behind what was actually tagged.\n\nThis week\'s PR, [sugarlabs/musicblocks#7964, "ci: automate CHANGELOG and versioning with release-please"](https://github.com/sugarlabs/musicblocks/pull/7964), closes that gap. It was merged by Walter Bender, touching 9 files with 365 additions and 3 deletions. This post is written to double as reference documentation for the release pipeline: what each new file does, why the work is split the way it is, what changed in files that already existed, and what open questions were carried into review rather than decided alone.\n\n---\n\n## Why release-please, and Why Now\n\nAn automated release pipeline needs three things to exist before it can build, test, and deploy anything meaningfully versioned: a real version number, a changelog that reflects what actually shipped, and a trigger that fires reliably when a release happens. Music Blocks had none of these as automated properties. [release-please](https://github.com/googleapis/release-please) (the tool Google uses across its own open source projects) was adopted to provide all three, driven entirely by [Conventional Commits](https://www.conventionalcommits.org/), the same commit format already enforced by the `commitlint` job in `ci.yml`.\n\nThe mechanism is a standing pull request, not a one-shot script:\n\n```mermaid\nflowchart TD\n    A[Push to master] --> B[release-please scans commits since last release]\n    B --> C{Any visible-type commit found?}\n    C -->|no| D[No release PR opened, or existing one left as-is]\n    C -->|yes| E["Open or update \'chore(release): vX.Y.Z\' PR"]\n    E --> F[PR contains: CHANGELOG.md entries, bumped package.json, updated manifest.json]\n    F --> G{Maintainer merges the release PR?}\n    G -->|not yet| E\n    G -->|yes| H[Tag vX.Y.Z created]\n    H --> I[GitHub release created]\n    I --> J[on-release job fires, gated on release_created]\n```\n\nEvery push to `master` re-scans and updates the same PR rather than opening a new one. Nothing is released while it sits open; it just accumulates entries. The moment a maintainer merges it, the workflow tags the commit and cuts the GitHub release in the same run.\n\n---\n\n## The Three New Workflow-Adjacent Files\n\nBeyond the two workflow files (covered in detail below), the PR adds three small files that give release-please a starting state to work from, rather than letting it invent one:\n\n- **`release-please-config.json`** — the tool\'s configuration: which commit types are visible in the changelog, the PR title pattern, the changelog path, and the two tuning values covered later in this post.\n- **`.release-please-manifest.json`** — a one-line file, `{ ".": "3.7.1" }`, that tells release-please what version the repository is *currently* at, so it knows what to bump from on the next run.\n- **`CHANGELOG.md`** — seeded with a baseline section rather than left empty, for a reason covered in its own section below.\n\nNone of these three files are workflows themselves; they are the state release-please reads and writes on every run, and getting their starting values right was most of the actual review discussion on this PR.\n\n---\n\n## Two Workflows, Split Deliberately\n\nThe PR adds two new workflow files rather than folding everything into `ci.yml`, and the split is load-bearing, not stylistic.\n\n### `pr-title-check.yml`: why the title needs its own linter\n\n`ci.yml` already lints commits with `commitlint`. That is not sufficient on its own. Music Blocks squash-merges PRs, and on a squash merge the single commit that lands on `master` is the **PR title**, not any of the commits that were linted inside the PR. release-please builds `CHANGELOG.md` from `master`\'s commit messages, so an unconventional PR title would silently drop the change from the changelog even though every individual commit inside the PR passed linting.\n\n```mermaid\nflowchart LR\n    A[PR opened, edited, reopened, or head synchronized] --> B[pr-title-check.yml]\n    B --> C[Checkout PR head SHA]\n    C --> D["npm ci --ignore-scripts"]\n    D --> E["commitlint against github.event.pull_request.title"]\n    E -->|pass| F[Check green]\n    E -->|fail| G[Check red, title must be renamed to pass]\n\n    H[Squash merge] --> I[PR title becomes the single commit on master]\n    I --> J[release-please reads master commit messages]\n    J --> K[CHANGELOG.md entry]\n```\n\nThis workflow is deliberately separate from `ci.yml` for a second reason beyond correctness: catching a title that gets renamed after checks already went green requires the `edited` activity type on the `pull_request` trigger. Adding `edited` to `ci.yml` would re-run the entire pipeline (the build matrix, Jest, Cypress, the security audit) every time anyone edits a PR title or body. Body edits are routine here: `pr-category-check.yml` already tells contributors to edit their description to tick category checkboxes, and that alone would retrigger a full Cypress run under the old trigger set. So the noisy trigger goes on the cheap title check, and the expensive pipeline stays on its narrower trigger set.\n\n`synchronize` is kept in the trigger list too, even though a plain push does not change the title, because a required status check needs a run against the *current* head SHA, and every push creates a new one. Without `synchronize`, the check would sit "expected" forever after any push, once this is added to branch protection.\n\nThe workflow also deliberately uses `pull_request`, not `pull_request_target`: the title comes from the event payload either way, but this job checks out and runs `npm` against the PR head, so it has to stay in the unprivileged context rather than the elevated one `pull_request_target` grants.\n\nThe dependency install step in this job uses `npm ci --ignore-scripts`, which is worth explaining since it looks like an odd flag to add just to run `commitlint`. This job only needs `commitlint`, which is pure JS with no native build step. `--ignore-scripts` skips install hooks from a fork PR\'s dependency tree (a safety property on top of a speed one) and skips whatever Electron and Cypress binary downloads the full install would otherwise trigger, which are pure waste for a job that only lints a string.\n\n### `release-please.yml`: why post-release steps live inside it\n\nThe second new workflow runs release-please itself, and its structure is shaped by one GitHub platform restriction: **a `GITHUB_TOKEN`-driven event cannot trigger further workflow runs.** The tag and release this workflow creates use the default `GITHUB_TOKEN`, which means a separate workflow keyed on `release: [published]` or `push: tags: [\'v*\']` would simply never fire for these releases.\n\n```mermaid\nflowchart TD\n    A[release-please job] -->|creates| B[Tag vX.Y.Z]\n    A -->|creates| C[GitHub Release]\n    B -.->|GITHUB_TOKEN event, cannot trigger workflows| D["release: published listener, would never fire"]\n    C -.->|same restriction| D\n    A -->|outputs: release_created, tag_name, version| E["on-release job, same workflow file"]\n    E -->|if release_created == \'true\'| F[Downstream steps: build, publish, deploy, notify]\n```\n\nThe consequence: anything that must happen on a release (build, publish, deploy, notify) has to be a downstream job inside this same workflow file, gated on the `release_created` output from the release-please step. That is exactly what the PR adds: an `on-release` job that today only echoes the released version and a note that deployment stays manual, but exists as a gated seam future automation attaches to rather than a placeholder that has to be restructured later. The alternative, a GitHub App token or PAT, would let a normal `release: [published]` trigger work, but trades away least-privilege for that convenience.\n\nTwo smaller design choices in this workflow are worth recording:\n\n- **`concurrency: cancel-in-progress: false`.** Every other workflow in this project cancels in-progress runs on a new trigger. This one deliberately does not, because two release-please passes running against the same release PR would fight over it. The right behavior on a rapid sequence of pushes is to queue and let each run complete in order, not to cancel a run that might already be mid-update to the release PR.\n- **`if: github.repository == \'sugarlabs/musicblocks\'`.** The action needs write access to the repository to open and update the release PR. On a fork, that write access does not exist, so the job is skipped outright rather than failing loudly on every fork\'s CI.\n\nThe same `GITHUB_TOKEN` restriction has a second consequence worth documenting: CI does not run on the release PR itself, since it too is opened by `GITHUB_TOKEN`. That is acceptable in isolation, because every commit inside it already passed CI on `master` before being merged individually. It becomes a real problem only if `master` has required status checks, covered in the review-questions section below.\n\n---\n\n## Changed Files: Correcting the Version Baseline\n\nTwo files that already existed needed a fix rather than an addition.\n\n**`package.json` and `package-lock.json`** were still declaring `3.4.1` while the tag history had already reached `v3.7.1`. This is corrected as `3.4.1 → 3.7.1` in both files (the root `version` field and the matching `packages[""].version` in the lockfile). It is explicitly **not a release** in itself; it is a restatement of the version that had already actually shipped back in February 2026, so that release-please starts computing every future bump from a truthful number instead of compounding an existing three-minor-version drift on top of whatever it calculates next.\n\n**`ci.yml`** gets a comment-only change, five lines, pointing at `pr-title-check.yml` and explaining in-line why that check exists separately. No logic in `ci.yml` itself changes; the point is that a future reader of the existing commitlint step understands why there is a second, separate title check elsewhere in the repository rather than assuming it is redundant.\n\n**`CONTRIBUTING.md`** gains a new "Releases and the Changelog" section, which is effectively the human-readable version of everything in this blog post: what a contributor needs to know about writing commits that produce good changelog lines, and what a maintainer needs to know about the standing release PR and its two review caveats.\n\n---\n\n## Seeding the Changelog Without Fabricating History\n\n`CHANGELOG.md` could not simply start empty. release-please needs a version header to anchor its generated entries under; without one, it prepends its own header and demotes every existing H1 in the file. So the PR seeds a baseline `## 3.7.1 (2026-02-15)` section describing the state at adoption, explicitly marked as a baseline rather than a generated entry, with a pointer to the GitHub releases page for history before it and to `git log v3.7.1..` for the gap between that tag and the adoption commit.\n\nThat gap is a deliberate, documented trade-off, not an oversight:\n\n```mermaid\nflowchart LR\n    A["v3.7.1 tag, commit c78b31ffb"] -->|1,193 commits| B["Adoption commit, 971b63fad"]\n    B -->|first automated release PR scans from here| C[Future releases]\n    A -.->|appears in neither old GitHub releases nor CHANGELOG.md| B\n```\n\n`last-release-sha` in `release-please-config.json` is pinned at the adoption commit, not at the `v3.7.1` tag. Pointing it at the tag would pull roughly 487 commits into the very first generated release PR, 405 of them `fix` commits, all written before anyone knew their subject lines would become release notes rather than internal history. It would also not have worked mechanically: release-please walks back from `master` looking for the pinned SHA, bounded by `commit-search-depth`, and the tag sits 1,193 commits back, well past reach at the tool\'s default search depth of 500.\n\nThe PR description flags this explicitly as **temporary**: those pre-adoption subjects predate Conventional Commit enforcement in this repository and are easy to misinterpret as an oversight rather than a deliberate floor. Once the first automated release lands and its own tag exists, release-please will find the previous release from that tag instead of from `last-release-sha`, and the key becomes dead weight that should be removed rather than left as a stale, unused floor.\n\n---\n\n## Which Commit Types Reach the Changelog\n\nNot every Conventional Commit type is meant to be read by someone checking "what changed in this release." The PR configures a visible/hidden split in `release-please-config.json`:\n\n| Visible (printed in CHANGELOG) | Hidden (linted, versioned, not printed) |\n|---|---|\n| `feat` | `refactor` |\n| `fix` | `build` |\n| `perf` | `chore` |\n| `revert` | `ci` |\n| `docs` | `style` |\n| | `test` |\n\nThis is a deliberate editorial choice, not a default left untouched. Added or changed tests, and pure refactors, are policy decisions to exclude: a refactor changes no observable behavior by definition, so it has nothing to tell a changelog reader, and test changes matter to reviewers of the diff rather than to someone reading what shipped in a release. Both are still required to pass commit linting; they are simply excluded from the rendered notes.\n\nHiding a type is not purely cosmetic, either; it changes tool behavior. release-please skips opening a release PR entirely when every commit since the last release is a hidden type, treating empty rendered notes as "no user-facing changes." A stretch of pure refactor or test work will not, by itself, produce a release PR, which is intentional but worth knowing so nobody is confused when one does not appear right after a refactor-heavy stretch merges.\n\nVersion bumping is a separate, independent mechanism from visibility, and this is the detail most likely to surprise a contributor:\n\n```mermaid\nflowchart TD\n    A[Commit type] --> B{feat?}\n    B -->|yes| C[Minor bump]\n    B -->|no| D{BREAKING CHANGE footer or ! suffix?}\n    D -->|yes| E[Major bump]\n    D -->|no| F["Every other type: fix, perf, revert, docs, refactor, build, chore, ci, style, test"]\n    F --> G[Patch bump]\n```\n\n`docs`, `refactor`, `chore`, and `test` are hidden from the printed changelog but still bump the patch version. A release cut mostly for a `feat` can quietly also carry version-number weight from `test` and `chore` commits that never appear in the notes for it. A `BREAKING CHANGE:` footer, or a `!` suffix on the type such as `feat!:`, triggers a major bump and its own dedicated changelog section regardless of the type it is attached to.\n\n---\n\n## Open Questions Flagged for Review\n\nThe PR description was explicit about what still needed a maintainer\'s call rather than being decided unilaterally:\n\n- **Does `master` require status checks?** If it does, the release PR cannot be merged normally, since CI never runs on `GITHUB_TOKEN`-authored PRs. The two real remedies are a GitHub App token or PAT (so the release PR gets a real CI run like any other PR), or an admin bypass performed by hand on each release. Given the observed release cadence, roughly two to three tags a year, an admin bypass costs at most a handful of manual merges annually, which does not obviously justify holding a long-lived PAT purely to avoid it.\n- **Is `pr-title-check` itself in the required-checks set?** If `master` has required checks at all, this one should join them, otherwise a bad PR title is advisory only and a squash merge with a non-conventional title can still land, which is the exact failure this whole setup exists to prevent.\n- **Is squash-merge enabled on the repo?** The entire "PR title becomes the commit" mechanism assumes it is the merge strategy actually in use for this repository.\n\nWalter\'s review resolved the practical half of this: hand and admin merging of the release PR is fine, so no App token or PAT is needed, and he confirmed monthly release cadence is not realistic for Sugar Labs, since translation teams need a longer runway than that between releases. The historically observed two-to-three-per-year cadence stands as the working assumption for the pipeline going forward.\n\n---\n\n## A Follow-Up Found After Merge: Search Depth\n\nOne issue was not caught until after this PR merged, during closer review of release-please\'s own matching logic. The tool locates the previous release by walking back from `master`, fetching commits up to a bound called `commit-search-depth`. The default is 500. If the walk reaches that limit before finding the pinned SHA, release-please does not warn or fail; it silently returns whatever it managed to fetch and proceeds as if that were the complete set:\n\n```js\nconst index = commits.findIndex(commit => commit.sha === lastReleaseSha);\nif (index === -1) {\n    return commits; // every commit it managed to fetch\n}\n```\n\nAt Music Blocks\' current pace, roughly 210 commits a month, a six-month release cycle is on the order of 1,250 commits, well past the default 500. Historically the gaps between tags here (`v3.5.3` to `v3.7.1`, for instance) ran anywhere from 16 to 369 commits, so the default had been adequate purely by chance of past cadence, not by design. Left unaddressed, a future release PR could silently truncate and present a partial changelog with several hundred commits misattributed to the wrong release window, and nothing in the logs to flag it. `commit-search-depth` was raised to 3000, comfortably covering more than a year at current velocity, and documented in `CONTRIBUTING.md` as a value that needs to stay raised rather than be quietly reset by a future config cleanup that does not know why it was set that high.\n\n---\n\n## PR Link\n\nPR: [sugarlabs/musicblocks#7964, "ci: automate CHANGELOG and versioning with release-please"](https://github.com/sugarlabs/musicblocks/pull/7964)\n\nMerged by Walter Bender. Files touched: `.github/workflows/ci.yml` (comment only), `.github/workflows/pr-title-check.yml` (new), `.github/workflows/release-please.yml` (new), `.release-please-manifest.json` (new), `CHANGELOG.md` (new), `CONTRIBUTING.md` (new "Releases and the Changelog" section), `package.json`, `package-lock.json`, `release-please-config.json` (new).\n\nMerging this PR releases nothing by itself. It only starts the machinery that will maintain a release PR going forward.\n\n---\n\n## Plans for Next Week\n\n- Watch the first release-please PR appear on `master` and confirm the generated changelog and version bump match expectations.\n- Resolve the branch-protection question definitively once repo-admin visibility is available, and add `pr-title-check` to the required set if `master` uses one.\n- Return to the server-side track: the `/healthz` liveness endpoint and graceful shutdown work that this release-automation detour paused, now that versioning has a stable and truthful foundation under it.\n\n---\n\n## Acknowledgements\n\nThank you to Walter Bender for merging the PR and for the direct answers on merge strategy and release cadence that resolved the open branch-protection questions, and to Om Santosh Suneri for continued guidance throughout this release-automation work.\n',Rm=e({default:()=>zm}),zm=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Rm=e({default:()=>zm}),zm='---\ntitle: "GSoC \'26 Week 9 Progress Report by Sonal Gaud"\nexcerpt: "Automating CHANGELOG.md and versioning with release-please: a Conventional-Commits pipeline for Music Blocks releases"\ncategory: "DEVELOPER NEWS"\ndate: "2026-07-26"\nslug: "2026-07-26-gsoc-26-sonal-gaud-week9"\nauthor: "@/constants/MarkdownFiles/authors/sonal-gaud.md"\ntags: "gsoc26,sugarlabs,musicblocks,ci-cd,release-automation,infrastructure"\nimage: "assets/Images/GSOC.webp"\n---\n\n# Week 9 Progress Report by Sonal Gaud\n\n**Project:** Automated Release Pipeline for Music Blocks  \n**Mentors:** [Walter Bender](https://github.com/walterbender), [Om Santosh Suneri](https://github.com/omsuneri)  \n**Organization:** [Sugar Labs](https://sugarlabs.org)  \n**Reporting Period:** 2026-07-20 - 2026-07-26  \n\n---\n\n## Overview\n\n[Week 8](/news/all/2026-07-19-gsoc-26-sonal-gaud-week8) closed out the Turtle/Music unification: one repository, runtime mode detection, `js/releaseconfig.js` verified end to end, palettes and title and splash all switching together off the one resolved flag. With the codebase unified, the next gap in the pipeline stood out clearly: Music Blocks had no automated way to produce a changelog or bump its own version. Ten tags had been cut by hand without the manifest being bumped alongside them, and the version in `package.json` had drifted well behind what was actually tagged.\n\nThis week\'s PR, [sugarlabs/musicblocks#7964, "ci: automate CHANGELOG and versioning with release-please"](https://github.com/sugarlabs/musicblocks/pull/7964), closes that gap. It was merged by Walter Bender, touching 9 files with 365 additions and 3 deletions. This post is written to double as reference documentation for the release pipeline: what each new file does, why the work is split the way it is, what changed in files that already existed, and what open questions were carried into review rather than decided alone.\n\n---\n\n## Why release-please, and Why Now\n\nAn automated release pipeline needs three things to exist before it can build, test, and deploy anything meaningfully versioned: a real version number, a changelog that reflects what actually shipped, and a trigger that fires reliably when a release happens. Music Blocks had none of these as automated properties. [release-please](https://github.com/googleapis/release-please) (the tool Google uses across its own open source projects) was adopted to provide all three, driven entirely by [Conventional Commits](https://www.conventionalcommits.org/), the same commit format already enforced by the `commitlint` job in `ci.yml`.\n\nThe mechanism is a standing pull request, not a one-shot script:\n\n```mermaid\nflowchart TD\n    A[Push to master] --> B[release-please scans commits since last release]\n    B --> C{Any visible-type commit found?}\n    C -->|no| D[No release PR opened, or existing one left as-is]\n    C -->|yes| E["Open or update \'chore(release): vX.Y.Z\' PR"]\n    E --> F[PR contains: CHANGELOG.md entries, bumped package.json, updated manifest.json]\n    F --> G{Maintainer merges the release PR?}\n    G -->|not yet| E\n    G -->|yes| H[Tag vX.Y.Z created]\n    H --> I[GitHub release created]\n    I --> J[on-release job fires, gated on release_created]\n```\n\nEvery push to `master` re-scans and updates the same PR rather than opening a new one. Nothing is released while it sits open; it just accumulates entries. The moment a maintainer merges it, the workflow tags the commit and cuts the GitHub release in the same run.\n\n---\n\n## The Three New Workflow-Adjacent Files\n\nBeyond the two workflow files (covered in detail below), the PR adds three small files that give release-please a starting state to work from, rather than letting it invent one:\n\n- **`release-please-config.json`** — the tool\'s configuration: which commit types are visible in the changelog, the PR title pattern, the changelog path, and the two tuning values covered later in this post.\n- **`.release-please-manifest.json`** — a one-line file, `{ ".": "3.7.1" }`, that tells release-please what version the repository is *currently* at, so it knows what to bump from on the next run.\n- **`CHANGELOG.md`** — seeded with a baseline section rather than left empty, for a reason covered in its own section below.\n\nNone of these three files are workflows themselves; they are the state release-please reads and writes on every run, and getting their starting values right was most of the actual review discussion on this PR.\n\n---\n\n## Two Workflows, Split Deliberately\n\nThe PR adds two new workflow files rather than folding everything into `ci.yml`, and the split is load-bearing, not stylistic.\n\n### `pr-title-check.yml`: why the title needs its own linter\n\n`ci.yml` already lints commits with `commitlint`. That is not sufficient on its own. Music Blocks squash-merges PRs, and on a squash merge the single commit that lands on `master` is the **PR title**, not any of the commits that were linted inside the PR. release-please builds `CHANGELOG.md` from `master`\'s commit messages, so an unconventional PR title would silently drop the change from the changelog even though every individual commit inside the PR passed linting.\n\n```mermaid\nflowchart LR\n    A[PR opened, edited, reopened, or head synchronized] --> B[pr-title-check.yml]\n    B --> C[Checkout PR head SHA]\n    C --> D["npm ci --ignore-scripts"]\n    D --> E["commitlint against github.event.pull_request.title"]\n    E -->|pass| F[Check green]\n    E -->|fail| G[Check red, title must be renamed to pass]\n\n    H[Squash merge] --> I[PR title becomes the single commit on master]\n    I --> J[release-please reads master commit messages]\n    J --> K[CHANGELOG.md entry]\n```\n\nThis workflow is deliberately separate from `ci.yml` for a second reason beyond correctness: catching a title that gets renamed after checks already went green requires the `edited` activity type on the `pull_request` trigger. Adding `edited` to `ci.yml` would re-run the entire pipeline (the build matrix, Jest, Cypress, the security audit) every time anyone edits a PR title or body. Body edits are routine here: `pr-category-check.yml` already tells contributors to edit their description to tick category checkboxes, and that alone would retrigger a full Cypress run under the old trigger set. So the noisy trigger goes on the cheap title check, and the expensive pipeline stays on its narrower trigger set.\n\n`synchronize` is kept in the trigger list too, even though a plain push does not change the title, because a required status check needs a run against the *current* head SHA, and every push creates a new one. Without `synchronize`, the check would sit "expected" forever after any push, once this is added to branch protection.\n\nThe workflow also deliberately uses `pull_request`, not `pull_request_target`: the title comes from the event payload either way, but this job checks out and runs `npm` against the PR head, so it has to stay in the unprivileged context rather than the elevated one `pull_request_target` grants.\n\nThe dependency install step in this job uses `npm ci --ignore-scripts`, which is worth explaining since it looks like an odd flag to add just to run `commitlint`. This job only needs `commitlint`, which is pure JS with no native build step. `--ignore-scripts` skips install hooks from a fork PR\'s dependency tree (a safety property on top of a speed one) and skips whatever Electron and Cypress binary downloads the full install would otherwise trigger, which are pure waste for a job that only lints a string.\n\n### `release-please.yml`: why post-release steps live inside it\n\nThe second new workflow runs release-please itself, and its structure is shaped by one GitHub platform restriction: **a `GITHUB_TOKEN`-driven event cannot trigger further workflow runs.** The tag and release this workflow creates use the default `GITHUB_TOKEN`, which means a separate workflow keyed on `release: [published]` or `push: tags: [\'v*\']` would simply never fire for these releases.\n\n```mermaid\nflowchart TD\n    A[release-please job] -->|creates| B[Tag vX.Y.Z]\n    A -->|creates| C[GitHub Release]\n    B -.->|GITHUB_TOKEN event, cannot trigger workflows| D["release: published listener, would never fire"]\n    C -.->|same restriction| D\n    A -->|outputs: release_created, tag_name, version| E["on-release job, same workflow file"]\n    E -->|if release_created == \'true\'| F[Downstream steps: build, publish, deploy, notify]\n```\n\nThe consequence: anything that must happen on a release (build, publish, deploy, notify) has to be a downstream job inside this same workflow file, gated on the `release_created` output from the release-please step. That is exactly what the PR adds: an `on-release` job that today only echoes the released version and a note that deployment stays manual, but exists as a gated seam future automation attaches to rather than a placeholder that has to be restructured later. The alternative, a GitHub App token or PAT, would let a normal `release: [published]` trigger work, but trades away least-privilege for that convenience.\n\nTwo smaller design choices in this workflow are worth recording:\n\n- **`concurrency: cancel-in-progress: false`.** Every other workflow in this project cancels in-progress runs on a new trigger. This one deliberately does not, because two release-please passes running against the same release PR would fight over it. The right behavior on a rapid sequence of pushes is to queue and let each run complete in order, not to cancel a run that might already be mid-update to the release PR.\n- **`if: github.repository == \'sugarlabs/musicblocks\'`.** The action needs write access to the repository to open and update the release PR. On a fork, that write access does not exist, so the job is skipped outright rather than failing loudly on every fork\'s CI.\n\nThe same `GITHUB_TOKEN` restriction has a second consequence worth documenting: CI does not run on the release PR itself, since it too is opened by `GITHUB_TOKEN`. That is acceptable in isolation, because every commit inside it already passed CI on `master` before being merged individually. It becomes a real problem only if `master` has required status checks, covered in the review-questions section below.\n\n---\n\n## Changed Files: Correcting the Version Baseline\n\nTwo files that already existed needed a fix rather than an addition.\n\n**`package.json` and `package-lock.json`** were still declaring `3.4.1` while the tag history had already reached `v3.7.1`. This is corrected as `3.4.1 → 3.7.1` in both files (the root `version` field and the matching `packages[""].version` in the lockfile). It is explicitly **not a release** in itself; it is a restatement of the version that had already actually shipped back in February 2026, so that release-please starts computing every future bump from a truthful number instead of compounding an existing three-minor-version drift on top of whatever it calculates next.\n\n**`ci.yml`** gets a comment-only change, five lines, pointing at `pr-title-check.yml` and explaining in-line why that check exists separately. No logic in `ci.yml` itself changes; the point is that a future reader of the existing commitlint step understands why there is a second, separate title check elsewhere in the repository rather than assuming it is redundant.\n\n**`CONTRIBUTING.md`** gains a new "Releases and the Changelog" section, which is effectively the human-readable version of everything in this blog post: what a contributor needs to know about writing commits that produce good changelog lines, and what a maintainer needs to know about the standing release PR and its two review caveats.\n\n---\n\n## Seeding the Changelog Without Fabricating History\n\n`CHANGELOG.md` could not simply start empty. release-please needs a version header to anchor its generated entries under; without one, it prepends its own header and demotes every existing H1 in the file. So the PR seeds a baseline `## 3.7.1 (2026-02-15)` section describing the state at adoption, explicitly marked as a baseline rather than a generated entry, with a pointer to the GitHub releases page for history before it and to `git log v3.7.1..` for the gap between that tag and the adoption commit.\n\nThat gap is a deliberate, documented trade-off, not an oversight:\n\n```mermaid\nflowchart LR\n    A["v3.7.1 tag, commit c78b31ffb"] -->|1,193 commits| B["Adoption commit, 971b63fad"]\n    B -->|first automated release PR scans from here| C[Future releases]\n    A -.->|appears in neither old GitHub releases nor CHANGELOG.md| B\n```\n\n`last-release-sha` in `release-please-config.json` is pinned at the adoption commit, not at the `v3.7.1` tag. Pointing it at the tag would pull roughly 487 commits into the very first generated release PR, 405 of them `fix` commits, all written before anyone knew their subject lines would become release notes rather than internal history. It would also not have worked mechanically: release-please walks back from `master` looking for the pinned SHA, bounded by `commit-search-depth`, and the tag sits 1,193 commits back, well past reach at the tool\'s default search depth of 500.\n\nThe PR description flags this explicitly as **temporary**: those pre-adoption subjects predate Conventional Commit enforcement in this repository and are easy to misinterpret as an oversight rather than a deliberate floor. Once the first automated release lands and its own tag exists, release-please will find the previous release from that tag instead of from `last-release-sha`, and the key becomes dead weight that should be removed rather than left as a stale, unused floor.\n\n---\n\n## Which Commit Types Reach the Changelog\n\nNot every Conventional Commit type is meant to be read by someone checking "what changed in this release." The PR configures a visible/hidden split in `release-please-config.json`:\n\n| Visible (printed in CHANGELOG) | Hidden (linted, versioned, not printed) |\n|---|---|\n| `feat` | `refactor` |\n| `fix` | `build` |\n| `perf` | `chore` |\n| `revert` | `ci` |\n| `docs` | `style` |\n| | `test` |\n\nThis is a deliberate editorial choice, not a default left untouched. Added or changed tests, and pure refactors, are policy decisions to exclude: a refactor changes no observable behavior by definition, so it has nothing to tell a changelog reader, and test changes matter to reviewers of the diff rather than to someone reading what shipped in a release. Both are still required to pass commit linting; they are simply excluded from the rendered notes.\n\nHiding a type is not purely cosmetic, either; it changes tool behavior. release-please skips opening a release PR entirely when every commit since the last release is a hidden type, treating empty rendered notes as "no user-facing changes." A stretch of pure refactor or test work will not, by itself, produce a release PR, which is intentional but worth knowing so nobody is confused when one does not appear right after a refactor-heavy stretch merges.\n\nVersion bumping is a separate, independent mechanism from visibility, and this is the detail most likely to surprise a contributor:\n\n```mermaid\nflowchart TD\n    A[Commit type] --> B{feat?}\n    B -->|yes| C[Minor bump]\n    B -->|no| D{BREAKING CHANGE footer or ! suffix?}\n    D -->|yes| E[Major bump]\n    D -->|no| F["Every other type: fix, perf, revert, docs, refactor, build, chore, ci, style, test"]\n    F --> G[Patch bump]\n```\n\n`docs`, `refactor`, `chore`, and `test` are hidden from the printed changelog but still bump the patch version. A release cut mostly for a `feat` can quietly also carry version-number weight from `test` and `chore` commits that never appear in the notes for it. A `BREAKING CHANGE:` footer, or a `!` suffix on the type such as `feat!:`, triggers a major bump and its own dedicated changelog section regardless of the type it is attached to.\n\n---\n\n## Open Questions Flagged for Review\n\nThe PR description was explicit about what still needed a maintainer\'s call rather than being decided unilaterally:\n\n- **Does `master` require status checks?** If it does, the release PR cannot be merged normally, since CI never runs on `GITHUB_TOKEN`-authored PRs. The two real remedies are a GitHub App token or PAT (so the release PR gets a real CI run like any other PR), or an admin bypass performed by hand on each release. Given the observed release cadence, roughly two to three tags a year, an admin bypass costs at most a handful of manual merges annually, which does not obviously justify holding a long-lived PAT purely to avoid it.\n- **Is `pr-title-check` itself in the required-checks set?** If `master` has required checks at all, this one should join them, otherwise a bad PR title is advisory only and a squash merge with a non-conventional title can still land, which is the exact failure this whole setup exists to prevent.\n- **Is squash-merge enabled on the repo?** The entire "PR title becomes the commit" mechanism assumes it is the merge strategy actually in use for this repository.\n\nWalter\'s review resolved the practical half of this: hand and admin merging of the release PR is fine, so no App token or PAT is needed, and he confirmed monthly release cadence is not realistic for Sugar Labs, since translation teams need a longer runway than that between releases. The historically observed two-to-three-per-year cadence stands as the working assumption for the pipeline going forward.\n\n---\n\n## A Follow-Up Found After Merge: Search Depth\n\nOne issue was not caught until after this PR merged, during closer review of release-please\'s own matching logic. The tool locates the previous release by walking back from `master`, fetching commits up to a bound called `commit-search-depth`. The default is 500. If the walk reaches that limit before finding the pinned SHA, release-please does not warn or fail; it silently returns whatever it managed to fetch and proceeds as if that were the complete set:\n\n```js\nconst index = commits.findIndex(commit => commit.sha === lastReleaseSha);\nif (index === -1) {\n    return commits; // every commit it managed to fetch\n}\n```\n\nAt Music Blocks\' current pace, roughly 210 commits a month, a six-month release cycle is on the order of 1,250 commits, well past the default 500. Historically the gaps between tags here (`v3.5.3` to `v3.7.1`, for instance) ran anywhere from 16 to 369 commits, so the default had been adequate purely by chance of past cadence, not by design. Left unaddressed, a future release PR could silently truncate and present a partial changelog with several hundred commits misattributed to the wrong release window, and nothing in the logs to flag it. `commit-search-depth` was raised to 3000, comfortably covering more than a year at current velocity, and documented in `CONTRIBUTING.md` as a value that needs to stay raised rather than be quietly reset by a future config cleanup that does not know why it was set that high.\n\n---\n\n## PR Link\n\nPR: [sugarlabs/musicblocks#7964, "ci: automate CHANGELOG and versioning with release-please"](https://github.com/sugarlabs/musicblocks/pull/7964)\n\nMerged by Walter Bender. Files touched: `.github/workflows/ci.yml` (comment only), `.github/workflows/pr-title-check.yml` (new), `.github/workflows/release-please.yml` (new), `.release-please-manifest.json` (new), `CHANGELOG.md` (new), `CONTRIBUTING.md` (new "Releases and the Changelog" section), `package.json`, `package-lock.json`, `release-please-config.json` (new).\n\nMerging this PR releases nothing by itself. It only starts the machinery that will maintain a release PR going forward.\n\n---\n\n## Plans for Next Week\n\n- Watch the first release-please PR appear on `master` and confirm the generated changelog and version bump match expectations.\n- Resolve the branch-protection question definitively once repo-admin visibility is available, and add `pr-title-check` to the required set if `master` uses one.\n- Return to the server-side track: the `/healthz` liveness endpoint and graceful shutdown work that this release-automation detour paused, now that versioning has a stable and truthful foundation under it.\n\n---\n\n## Acknowledgements\n\nThank you to Walter Bender for merging the PR and for the direct answers on merge strategy and release cadence that resolved the open branch-protection questions, and to Om Santosh Suneri for continued guidance throughout this release-automation work.\n',Bm=e({default:()=>Vm}),Vm=`---
 title: "GSoC '26 Week 9 Update by Syed Khubayb Ur Rahman"
 excerpt: "Added support for disconnecting Argument Bricks and created a mock tower in the Workspace."
 category: "DEVELOPER NEWS"
@@ -37302,7 +37439,7 @@ This week I continued refining the drag-and-drop mechanics and block interaction
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community.
 
 ---
-`,Bm=e({default:()=>Vm}),Vm=`---
+`,Hm=e({default:()=>Um}),Um=`---
 title: "GSoC '26 Week 9 Update by Shreya Saxena"
 excerpt: "A lighter week due to travel and the start of college, a GSoC Alumni Camp lightning talk, and plans to tackle load time and a scheduling issue flagged by Devin."
 category: "DEVELOPER NEWS"
@@ -37372,7 +37509,7 @@ Separately, Devin flagged a couple of useful points that I want to dig into:
 Thanks to Walter Bender and Om Suneri for being so understanding about a slower week on my end, and for continuing to support and guide me despite it. I really appreciate the flexibility and mentorship, and I'm looking forward to picking up the pace again next week.
 
 ---
-`,Hm=e({default:()=>Um}),Um=`---
+`,Wm=e({default:()=>Gm}),Gm=`---
 title: "GSoC '26 Week 09 Update by Shubham Sharma"
 excerpt: "Running two builds of the reflection feature on the actual Sugar codebase, rebuilding the fork's entry view against a finished design, working out where in-activity reflection can live, and finding a scoring update had partly learned the test cases used to check it"
 category: "DEVELOPER NEWS"
@@ -37567,7 +37704,7 @@ Thanks to Walter and Ibiam, who looked at both builds this week and gave feedbac
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,Wm=e({default:()=>Gm}),Gm=`---
+`,Km=e({default:()=>qm}),qm=`---
 title: "GSoC '26 Week 9 Update by Harihara Vardhan"
 excerpt: "This week offline git landed in Git Planet. Students can now commit up to five times without internet, see pending syncs right on the timeline, and have everything pushed to GitHub automatically when they come back online."
 category: "DEVELOPER NEWS"
@@ -37620,7 +37757,7 @@ The core flow is working well, but there are still some edge cases to sort out. 
 Next week is about fixing those edge cases and getting the offline git feature into a finished state. After that, the focus shifts to deployment: a full end-to-end test pass, cleaning up any leftover rough edges in Git Planet, and getting everything ready to hand off.
 
 Nine weeks down. See you next week!
-`,Km=e({default:()=>qm}),qm=`---
+`,Jm=e({default:()=>Ym}),Ym=`---
 title: "GSoC '26 Week 09 Update by Ashutosh Singh"
 excerpt: "Putting the first release in front of real people, including Walter, and turning their feedback into fixes. Plus building an annotation flow so you can point at the activity and tell it what to change."
 category: "DEVELOPER NEWS"
@@ -37723,7 +37860,7 @@ Thanks to Walter Bender for actually building something with the release, the Pe
 - Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
 
 ---
-`,Jm=e({default:()=>Ym}),Ym=`---
+`,Xm=e({default:()=>Zm}),Zm=`---
 title: "DMP '26 Week 05 Update by Abhnish Kumar"
 excerpt: "Closing out the remaining axe violations and rebase troubleshooting on a fast-moving master for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -37842,7 +37979,7 @@ further investigation.
 
 Thanks to Walter Bender and Devin Ulibarri for their continued guidance,
 and to the broader Sugar Labs community for the existing dependency-fix
-PR (#7989) that saved me from duplicating unrelated security work.`,Xm=e({default:()=>Zm}),Zm=`---
+PR (#7989) that saved me from duplicating unrelated security work.`,Qm=e({default:()=>$m}),$m=`---
 title: "DMP '26 Week 06: Wrapping Goals 1-3 and Starting Goal 4"
 excerpt: "PR #7853 merged (temperament persistence, B20/B21 fixes). Wrote the 12-EDO AUDIT_REPORT.md. PR #7942 merged - dynamic EDO and ratio-based temperament support across the engine, widgets, and pie menus."
 category: "DEVELOPER NEWS"
@@ -37912,7 +38049,7 @@ With PR #7942 merged, I'm starting Goal 4 (PR 8) - the foundational EDO scale co
 - [PR #7853](https://github.com/sugarlabs/musicblocks/pull/7853) - merged
 - [PR #7942](https://github.com/sugarlabs/musicblocks/pull/7942) - merged
 - [Issue #7171](https://github.com/sugarlabs/musicblocks/issues/7171)
-`,Qm=e({default:()=>$m}),$m=`---
+`,eh=e({default:()=>th}),th=`---
 title: "DMP '26 Week 07 Update by Noaman Akhtar"
 excerpt: "Adding think/no-think control to Sugar-AI so reasoning-capable Ollama models can be used selectively without changing existing clients."
 category: "DEVELOPER NEWS"
@@ -38065,7 +38202,7 @@ The next step is to measure that behavior clearly, propose a small concurrency f
 Thanks to my mentors and the Sugar Labs community for the feedback during the provider refactor and the midterm evaluation. The questions about usability, testing, and downstream projects helped connect the backend implementation to how Sugar-AI will actually be used.
 
 ---
-`,eh=e({default:()=>th}),th=`---
+`,nh=e({default:()=>rh}),rh=`---
 title: "DMP '26 Week 8 Update by Stuti Jain"
 excerpt: "Expanded the lesson framework with new lessons for Chapters 3 and 4, introduced reusable and custom discovery help cards, and tested the updated first two lessons with children."
 category: "DEVELOPER NEWS"
@@ -38256,7 +38393,7 @@ Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the l
 
 The addition of Lessons 3 and 4 and the testing of the earlier lessons are helping validate whether the infrastructure can scale beyond the initial prototype while remaining accessible and engaging for young Music Blocks learners.
 
-I also appreciate the Sugar Labs community for its continued support throughout the development of the project.`,nh=e({default:()=>rh}),rh=`---
+I also appreciate the Sugar Labs community for its continued support throughout the development of the project.`,ih=e({default:()=>ah}),ah=`---
 title: "GSoC '26 Week 10 Update by Dev"
 excerpt: "Running end-to-end tests on the full GTK4 shell, recording a live walkthrough video under Casilda, cleaning up review feedback on widget methods in sugar, and fixing palette popover parenting in sugar-toolkit-gtk4."
 category: "DEVELOPER NEWS"
@@ -38347,7 +38484,7 @@ image: "assets/Images/GSOC.webp"
 ## Acknowledgments
 
 Thanks to Krish and Ibiam for their feedback and reviews during testing.
-`,ih=e({default:()=>ah}),ah=`---
+`,oh=e({default:()=>sh}),sh=`---
 title: "GSoC '26 Week 10: Finishing the Terminal GTK4 Port"
 excerpt: "Finishing the Terminal GTK4 port with clipboard fixes, palette workarounds, and event controllers, plus getting ready for TurtleArt."
 category: "DEVELOPER NEWS"
@@ -38399,7 +38536,7 @@ Next week I'm starting on **[TurtleArt](https://github.com/sugarlabs/turtleart-a
 ## Acknowledgments
 
 Thanks to my mentors for the reviews and to everyone in the Sugar Labs community for the feedback and help.
-`,oh=e({default:()=>sh}),sh=`---
+`,ch=e({default:()=>lh}),lh=`---
 title: "GSoC '26 Week 10 Update by Parth Dagia"
 excerpt: "Bricks can leave the Workspace now: a Trash drop target sits in the corner of the canvas, and dropping a Tower on it takes the Tower out along with its connector points and its layout entries."
 category: "DEVELOPER NEWS"
@@ -38478,7 +38615,7 @@ Next up is scaling the Workspace. A scale control goes on the canvas first, and 
 Thanks to Anindya Kundu for the reviews on both PRs, and to Syed for building this alongside me. Thanks also to Justin Charles and Safwan Sayeed for their continued guidance, and to Devin Ulibarri, Walter Bender, and the wider Sugar Labs community.
 
 ---
-`,ch=e({default:()=>lh}),lh=`---
+`,uh=e({default:()=>dh}),dh=`---
 title: "GSoC '26 Week 10 Report by Rejah Rabeeul Haque"
 excerpt: "Added a stop button for the host in number mode shared mode, added labels for figures, introduced new built in categories, and fixed bugs."
 category: "DEVELOPER NEWS"
@@ -38592,7 +38729,7 @@ A big thank you to my mentor Lionel Laské for his continuous guidance, and to e
 ---
 
 *Thanks for reading Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*
-`,uh=e({default:()=>dh}),dh=`---
+`,fh=e({default:()=>ph}),ph=`---
 title: "GSoC '26 Week 10 Progress Report by Sonal Gaud"
 excerpt: "Adding a /healthz liveness endpoint, graceful shutdown, and a Docker HEALTHCHECK so the server can be observed and stopped cleanly"
 category: "DEVELOPER NEWS"
@@ -38779,7 +38916,7 @@ Status: open, awaiting review. Files touched: \`index.js\`, \`dockerfile\`, \`js
 ## Acknowledgements
 
 Thank you to Walter Bender and Om Santosh Suneri for continued guidance as this server-side work came together.
-`,fh=e({default:()=>ph}),ph=`---
+`,mh=e({default:()=>hh}),hh=`---
 title: "GSoC '26 Week 10 Update by Syed Khubayb Ur Rahman"
 excerpt: "Implemented real-time visual feedback for connecting and disconnecting Bricks in the Workspace."
 category: "DEVELOPER NEWS"
@@ -38859,7 +38996,7 @@ Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued fe
 
 
 ---
-`,mh=e({default:()=>hh}),hh=`---
+`,gh=e({default:()=>_h}),_h=`---
 title: "GSoC '26 Week 10 Update by Shreya Saxena"
 excerpt: "Profiling uncovered unnecessary canvas rendering during project loading, leading to a major performance improvement and a fix for an intermittent drum polyrhythm bug."
 category: "DEVELOPER NEWS"
@@ -39050,7 +39187,7 @@ Alongside that, I'll be profiling the Save as LilyPond Export and MIDI Import wo
  
 Thanks to my mentor, Walter Bender, for encouraging me to investigate the rerendering issue and for his valuable guidance throughout the debugging process. Thanks also to Devin Ulibarri for identifying the drum polyrhythm issue and helping validate the issue, and to the entire Sugar Labs community for their encouragement and feedback.
 
-`,gh=e({default:()=>_h}),_h=`---
+`,vh=e({default:()=>yh}),yh=`---
 title: "GSoC '26 Week 10 Update by Shubham Sharma"
 excerpt: "Building the Journal's grid and list views, redesigning the entry view again, writing a first peer-reflection brief, and finding the conversation-level test isn't solid enough to build on yet"
 category: "DEVELOPER NEWS"
@@ -39177,7 +39314,7 @@ Thanks to Walter and Ibiam for their continued guidance. Thanks to Diwangshu, Me
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,vh=e({default:()=>yh}),yh=`---
+`,bh=e({default:()=>xh}),xh=`---
 title: "GSoC '26 Week 10: Update by Harihara Vardhan"
 excerpt: "This week I researched and designed an interactive tutorial overlay for Git features in Music Blocks, inspired by visual widget tutorials, and squashed project name sync and tooltip bugs."
 category: "DEVELOPER NEWS"
@@ -39244,7 +39381,7 @@ I fixed a bug where saving a spot while offline caused the project name to rever
 Now that the research and design phase for the Git tutorial is wrapped up, next week will be focused on building out the interactive tutorial component itself. I will be implementing the floating widget UI, adding step animations, and integrating it directly into the Music Blocks help menu.
 
 Thanks for reading, and see you next week!
-`,bh=e({default:()=>xh}),xh=`---
+`,Sh=e({default:()=>Ch}),Ch=`---
 title: "GSoC '26 Week 10 Update by Ashutosh Singh"
 excerpt: "This week I added multiple learning areas, redesigned their icons after Walter's feedback so they feel native to Sugar, improved version review, and added visual references."
 category: "DEVELOPER NEWS"
@@ -39387,7 +39524,7 @@ Thanks to Walter Bender for continuing to push the project toward learner-contro
 - Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
 
 ---
-`,Sh=e({default:()=>``}),Ch=e({default:()=>wh}),wh=`---
+`,wh=e({default:()=>``}),Th=e({default:()=>Eh}),Eh=`---
 title: "DMP '26 Week 08 Update by Noaman Akhtar"
 excerpt: "Building the first offline provider test suite and removing the event-loop bottleneck that blocked concurrent Sugar-AI requests."
 category: "DEVELOPER NEWS"
@@ -39573,7 +39710,7 @@ The provider design also leaves room for future inference servers such as vLLM, 
 Thanks to my mentors and the Sugar Labs community for the guidance on making the provider layer testable and responsive as the architecture expands. Establishing a small, deterministic test foundation alongside measured concurrency work will make the next provider changes easier to review with confidence.
 
 ---
-`,Th=e({default:()=>Eh}),Eh=`---
+`,Dh=e({default:()=>Oh}),Oh=`---
 title: "GSoC '26 Week 11 Update by Dev"
 excerpt: "Fixing GTK4 CSS scoping and GTK4 CSS parser warnings in sugar-toolkit-gtk4, updating activities list cell rendering and icon palette styling in sugar, and completing theme selected states in sugar-artwork."
 category: "DEVELOPER NEWS"
@@ -39661,7 +39798,7 @@ image: "assets/Images/GSOC.webp"
 ## Acknowledgments
 
 Thanks to Krish and Ibiam for their guidance and reviews.
-`,Dh=e({default:()=>Oh}),Oh=`---
+`,kh=e({default:()=>Ah}),Ah=`---
 title: "GSoC '26 Week 11: Tackling the TurtleArt GTK4 Port Foundation"
 excerpt: "Starting the GTK4 port of TurtleArt, beginning with migrating the plugin system, updating basic layouts, and cleaning up legacy code."
 category: "DEVELOPER NEWS"
@@ -39713,7 +39850,7 @@ Next week I'll be diving into the heart of \`TurtleArtActivity.py\` to work thro
 ## Acknowledgments
 
 Thanks to my mentors for the reviews and to everyone in the Sugar Labs community for the feedback and help.
-`,kh=e({default:()=>Ah}),Ah=`---
+`,jh=e({default:()=>Mh}),Mh=`---
 title: "GSoC '26 Week 11 Update by Parth Dagia"
 excerpt: "The Workspace can be zoomed now: a pair of magnifier buttons on the canvas step a scale level, and every Brick on the canvas resizes to it - which meant fixing a units mismatch that had been sitting in the Brick model since week 5."
 category: "DEVELOPER NEWS"
@@ -39802,7 +39939,7 @@ Week 12 is the last one. With scaling in, the Workspace has everything it needs,
 Thanks to Anindya Kundu for the reviews on both PRs, and to Syed for building this alongside me. Thanks also to Justin Charles and Safwan Sayeed for their continued guidance, and to Devin Ulibarri, Walter Bender, and the wider Sugar Labs community.
 
 ---
-`,jh=e({default:()=>Mh}),Mh=`---
+`,Nh=e({default:()=>Ph}),Ph=`---
 title: "GSoC '26 Week 11 Progress Report by Sonal Gaud"
 excerpt: "Adding a /healthz liveness endpoint, graceful shutdown, and a Docker HEALTHCHECK so the server can be observed and stopped cleanly"
 category: "DEVELOPER NEWS"
@@ -39989,7 +40126,7 @@ Status: open, awaiting review. Files touched: \`index.js\`, \`dockerfile\`, \`js
 ## Acknowledgements
 
 Thank you to Walter Bender and Om Santosh Suneri for continued guidance as this server-side work came together, and for the review feedback carried forward from Week 10 into this write-up.
-`,Nh=e({default:()=>Ph}),Ph=`---
+`,Fh=e({default:()=>Ih}),Ih=`---
 title: "GSoC '26 Week 11 Update by Syed Khubayb Ur Rahman"
 excerpt: "Defined Import/Export types and implemented the Export functionality for Workspace Programs and Projects."
 category: "DEVELOPER NEWS"
@@ -40054,7 +40191,7 @@ Following last week's discussion, the focus shifted from undo/redo functionality
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community.
 
 ---
-`,Fh=e({default:()=>Ih}),Ih=`---
+`,Lh=e({default:()=>Rh}),Rh=`---
 title: "GSoC '26 Week 11 Update by Shreya Saxena"
 excerpt: "A ~23x speedup for headless notation exports, plus a fix for drum-polyrhythm project bug."
 category: "DEVELOPER NEWS"
@@ -40157,7 +40294,7 @@ With both fixes merged, I’ll clean up the now-unused \`_enqueue()\` and \`_cal
 
 ## Acknowledgments
 
-Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,Lh=e({default:()=>Rh}),Rh=`---
+Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,zh=e({default:()=>Bh}),Bh=`---
 title: "GSoC '26 Week 11 Update by Shubham Sharma"
 excerpt: "Fixing the Journal's sorting and rebuilding its drawing to match how Sugar itself draws, hardening what the Journal sends to the AI, dropping the live-sharing route for peer reflection in favour of one that works with no network at all, and checking last week's conversation test against real published data"
 category: "DEVELOPER NEWS"
@@ -40361,7 +40498,7 @@ Thanks to Walter and Ibiam for their continued guidance. Thanks to Diwangshu, Me
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,zh=e({default:()=>Bh}),Bh=`---
+`,Vh=e({default:()=>Hh}),Hh=`---
 title: "GSoC '26 Week 11: Update by Harihara Vardhan"
 excerpt: "This week I implemented the full interactive Git Tutorial overlay in Music Blocks, complete with custom slide animations, smart video management, keyboard shortcuts, and native notification feedback."
 category: "DEVELOPER NEWS"
@@ -40440,7 +40577,7 @@ This guides students directly toward taking their first action in the workspace 
 We are approaching the final phase of GSoC! Next week, I am going to update the tutorial based on mentor feedback and testing with kids, deploy the backend server, and prepare the frontend integration for the final review.
 
 Thanks for reading, and see you next week!
-`,Vh=e({default:()=>Hh}),Hh=`---
+`,Uh=e({default:()=>Wh}),Wh=`---
 title: "GSoC '26 Week 11 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented game mode with territory capture, AI opponent, trail coloring, label positioning for overlapping dots, localization for all categories and figures, and used AI for adding new categories."
 category: "DEVELOPER NEWS"
@@ -40564,7 +40701,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance and patience, and 
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Uh=e({default:()=>Wh}),Wh=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Gh=e({default:()=>Kh}),Kh=`---
 title: "DMP '26 Week 9 Update by Stuti Jain"
 excerpt: "Improved the Lesson Plans infrastructure by separating lesson data from implementation and making Lesson Plans and the Explorer Journal work alongside the rest of the Music Blocks interface."
 category: "DEVELOPER NEWS"
@@ -40709,7 +40846,7 @@ Similarly, as the number of lessons grows, the implementation needs to remain ea
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the Lesson Plans framework. Their observations from learner testing have helped guide the project beyond the initial prototype and toward a more flexible, maintainable, and scalable learning experience within Music Blocks.`,Gh=e({default:()=>Kh}),Kh=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the Lesson Plans framework. Their observations from learner testing have helped guide the project beyond the initial prototype and toward a more flexible, maintainable, and scalable learning experience within Music Blocks.`,qh=e({default:()=>Jh}),Jh=`---
 title: "GSoC '26 Week 11 Update by Ashutosh Singh"
 excerpt: "I tested the visual-reference workflow by taking a symmetry-garden mockup to a working Sugar activity, then reviewed community contributions for branding and activity naming."
 category: "DEVELOPER NEWS"
@@ -40855,7 +40992,7 @@ Thank you to [Rakshit Yadav](https://github.com/rakshityadav1868) for both contr
 - Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
 
 ---
-`,qh=e({default:()=>Jh}),Jh=`---
+`,Yh=e({default:()=>Xh}),Xh=`---
 title: "DMP '26 Week 07 Update by Abhnish Kumar"
 excerpt: "Confirming the root cause of the touch drag bug, completing the touch support audit report, and sharing findings with the mentor team for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40977,7 +41114,7 @@ conclusion.
 
 Thanks to Devin Ulibarri for his patience while this investigation took
 a full week of back-and-forth debugging, and for being ready to jump in
-with real-device testing once the audit was complete.`,Yh=e({default:()=>Xh}),Xh=`---
+with real-device testing once the audit was complete.`,Zh=e({default:()=>Qh}),Qh=`---
 title: "DMP '26 Week 09 Update by Noaman Akhtar"
 excerpt: "Making Sugar-AI easier to install across CPU and CUDA environments while expanding deterministic tests for provider helpers and prompted request validation."
 category: "DEVELOPER NEWS"
@@ -41119,7 +41256,7 @@ The strongest lesson from this week is that a reliable backend needs both a repr
 Thanks to my mentors and the Sugar Labs community for the guidance on making both local setup and provider behavior easier to verify. The combination of a documented installation path and focused offline tests gives the project a stronger foundation for the asynchronous provider and deployment work ahead.
 
 ---
-`,Zh=e({default:()=>Qh}),Qh=`---
+`,$h=e({default:()=>eg}),eg=`---
 title: "GSoC '26 Week 12 Update by Dev"
 excerpt: "Final audit across all four repositories, fixing leftover GTK3 API calls in sugar-ext C controllers, palette and tooltip regressions in sugar-toolkit-gtk4, Wayland activity launch and frame animation bugs in sugar, and CSS cleanup in sugar-artwork."
 category: "DEVELOPER NEWS"
@@ -41246,7 +41383,7 @@ A big thanks to everyone at Sugar Labs for the support throughout the program!
 ## Acknowledgments
 
 Thanks to Krish Pandya, Ibiam Chihurumnaya, Walter Bender, and Juan Pablo Ugarte for their guidance and support throughout the project!
-`,$h=e({default:()=>eg}),eg=`---
+`,tg=e({default:()=>ng}),ng=`---
 title: "GSoC '26 Week 12: Wrapping Up the TurtleArt Port & Splitting the PR"
 excerpt: "Wrapping up the TurtleArt GTK4 migration, fixing a bunch of pre-existing bugs, and splitting the work into two PRs based on mentor feedback."
 category: "DEVELOPER NEWS"
@@ -41312,7 +41449,7 @@ During review, Ibiam pointed out that my tutorial GIF path handling could break 
 ## Acknowledgments
 
 Thanks to my core mentors MostlyK, Ibiam, and Walter for the direct reviews and guidance this week, and to Juan Pablo Ugarte for his overall mentorship. Thanks also to quozl for creating the upstream \`gtk4\` branch.
-`,tg=e({default:()=>ng}),ng=`---
+`,rg=e({default:()=>ig}),ig=`---
 title: "GSoC '26 Week 12 Update by Syed Khubayb Ur Rahman"
 excerpt: "Wrote detailed technical specification documentation and compiled the final GSoC report."
 category: "DEVELOPER NEWS"
@@ -41368,7 +41505,7 @@ I also compiled the final report for my GSoC project. This repository contains t
 As my GSoC period concludes, I want to give a massive thanks to my mentors Anindya Kundu and Safwan Sayeeds for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4. 
 
 ---
-`,rg=e({default:()=>ig}),ig=`---
+`,ag=e({default:()=>og}),og=`---
 title: "GSoC '26 Week 12: Update by Harihara Vardhan"
 excerpt: "In the final week of GSoC 2026, I reworded all user-facing Git terminology for kids, wrote comprehensive test suites across all Git features, and prepped the codebase and database for production deployment."
 category: "DEVELOPER NEWS"
@@ -41464,7 +41601,7 @@ None of this would have been possible without the amazing guidance and support f
 Also, a heartfelt thank you to the entire Sugar Labs community for creating such a welcoming, collaborative space.
 
 Thank you to everyone who followed along with my weekly updates this summer. Stay tuned for the final evaluation report and the official launch!
-`,ag=e({default:()=>og}),og=`---
+`,sg=e({default:()=>cg}),cg=`---
 
 title: "DMP '26 Week 10 Update by Stuti Jain"
 
@@ -41628,7 +41765,7 @@ The exploration of localization also showed that supporting multiple languages r
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,sg=e({default:()=>cg}),cg=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,lg=e({default:()=>ug}),ug=`---
 title: "GSoC '26 Week 12 and Final Update by Ashutosh Singh"
 excerpt: "I spent my final week making generated activities more dependable, improving the reflection flow, and wrapping up Sugar Activity Studio with the v1.4.0 release."
 category: "DEVELOPER NEWS"
@@ -41789,7 +41926,7 @@ Thank you to Rakshit Yadav, Akshay Nazare, everyone who tested a release, and ev
 - Matrix: [@Ashutoshx7:matrix.org](https://matrix.to/#/@Ashutoshx7:matrix.org)
 
 ---
-`,lg=e({default:()=>ug}),ug=`---
+`,dg=e({default:()=>fg}),fg=`---
 title: "GSoC '26 Week 12 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented multiplayer in Game Mode, enabling real time state synchronization, player spawning, network event handling, and shared territory capture through the Sugarizer shared activity network"
 category: "DEVELOPER NEWS"
@@ -41907,7 +42044,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance, and to the Sugar 
 
 ---
 
-*Thanks for reading! Stay tuned for next week’s update. Feel free to reach out if you have any questions or feedback.*`,dg=e({default:()=>fg}),fg=`---
+*Thanks for reading! Stay tuned for next week’s update. Feel free to reach out if you have any questions or feedback.*`,pg=e({default:()=>mg}),mg=`---
 title: "GSoC '26 Week 12 Update by Shreya Saxena"
 excerpt: "A week spent compiling the final GSoC 2026 report, along with a look at PerfSense, the planned performance intelligence layer for Music Blocks."
 category: "DEVELOPER NEWS"
@@ -42035,7 +42172,7 @@ This summer with Music Blocks and Sugar Labs has meant a lot to me. It's been a 
 *Signing off for now, with a lot of gratitude for everything this program gave me. 💛*
 
 ---
- `,pg=e({default:()=>mg}),mg=`---
+ `,hg=e({default:()=>gg}),gg=`---
 
 title: "DMP '26 Week 11 Update by Stuti Jain"
 
@@ -42206,7 +42343,7 @@ Unlike individual toolbar labels, a lesson contains interconnected story content
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,hg=e({default:()=>gg}),gg=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,_g=e({default:()=>vg}),vg=`---
 title: "GSoC '26 Week 13 Report by Rejah Rabeeul Haque"
 excerpt: "Improved Game Mode with speed adjuster, XO buddy colors, spawn positioning, and 50% win condition, added localized tutorials for Draw and Number Mode, and added Journal save for Draw Mode."
 category: "DEVELOPER NEWS"
@@ -42293,7 +42430,7 @@ Thanks to my mentor Lionel Laske for the continuous guidance and patience, and t
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,_g=e({default:()=>vg}),vg=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,yg=e({default:()=>bg}),bg=`---
 title: "GSoC '26 Week 14 Report by Rejah Rabeeul Haque"
 excerpt: "Wrapping up GSoC '26 with AI difficulty levels in Game Mode and in-game event notifications to improve the player experience."
 category: "DEVELOPER NEWS"
@@ -42363,7 +42500,7 @@ A massive thank you to my mentor, Lionel Laske, for his continuous guidance, ins
 
 ---
 
-*Thanks for following my journey this summer! Feel free to reach out if you have any questions or feedback.*`,yg=e({default:()=>bg}),bg=`---
+*Thanks for following my journey this summer! Feel free to reach out if you have any questions or feedback.*`,xg=e({default:()=>Sg}),Sg=`---
 title: "GSoC'26  Final Report by Syed Khubayb Ur Rahman"
 excerpt: "Final report summarizing the architecture and outcomes of the Music Blocks v4 Masonry project."
 category: "DEVELOPER NEWS"
@@ -42541,7 +42678,7 @@ To restore a program, the system reconstructs blank Brick instances based on the
 ## Acknowledgments
 
 Special thanks to my mentors Anindya Kundu  and Safwan Sayeed for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the entire Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4.
-`,xg=e({default:()=>Sg}),Sg="---\ntitle: \"What I Learned Porting Sugar Activities to GTK4\"\nexcerpt: \"A look at the real-world problems and unusual cases I encountered while porting 9 core Sugar activities to GTK4 and Wayland.\"\ncategory: \"DEVELOPER NEWS\"\ndate: \"2026-08-31\"\nslug: \"2026-08-31-gtk4-porting-guide\"\nauthor: \"@/constants/MarkdownFiles/authors/divyam-agarwal.md\"\ntags: \"gsoc26,sugarlabs,gtk4,wayland,porting\"\nimage: \"assets/Images/GSOC.webp\"\n---\n\nThis summer during GSoC 2026, I worked on porting 9 of the core Fructose activities—Calculate, Log, Image Viewer, Chat, Browse, Read, Jukebox, Terminal, and TurtleArt—from GTK3 to GTK4.\n\nIf you are looking for the official API changes, the [GNOME GTK4 Migration Guide](https://docs.gtk.org/gtk4/migrating-3to4.html) is still the best place to start. But once I started porting the Sugar codebase, I kept running into weird problems and old code assumptions that aren't really covered in the documentation.\n\nI wrote down the main issues here, hoping it saves the next person some debugging time.\n\n## Quick Reference: GTK3 to GTK4 Replacements\n\n| GTK3 / Old API | GTK4 / New API | Notes |\n| :--- | :--- | :--- |\n| `Gtk.HBox` / `Gtk.VBox` | `Gtk.Box` | Set orientation explicitly. |\n| `Gtk.Table` | `Gtk.Grid` | |\n| `pack_start()` | `append()` / `prepend()` | |\n| `add()` | `set_child()` | Depends on the container. |\n| `Gtk.Toolbar` | `Gtk.Box` + `Gtk.Popover` | Toolbar was removed entirely. |\n| `Gtk.IconView` | `Gtk.FlowBox` | Useful with `Gtk.Picture` for scaling SVGs. |\n| `button-press-event` | `Gtk.GestureClick` | |\n| `key-press-event` | `Gtk.EventControllerKey` | |\n| EventBox | `Gtk.GestureClick` / `Gtk.GestureDrag` / `Gtk.GestureZoom` | Use the controller matching the interaction. |\n| `modify_bg()` | `Gtk.CssProvider` | Bind strictly to the needed widgets. |\n| `Gdk.cairo_set_source_pixbuf` | Convert pixbuf to a Cairo image surface | Convert pixbufs manually. |\n\n## Layouts broke everywhere\n\nThe first thing I noticed was that almost every activity layout was broken. The old codebase used `Gtk.HBox`, `Gtk.VBox`, `pack_start()`, and `add()` in many places. Since GTK4 removes those, I spent the first few weeks rewriting the UI code around `Gtk.Box` and `Gtk.Grid`.\n\nIn practice, this usually means replacing:\n\n* `Gtk.HBox` / `Gtk.VBox` with `Gtk.Box` (and setting orientation)\n* `Gtk.Table` with `Gtk.Grid`\n* `pack_start()` with `append()` or `prepend()`\n* `add()` with `set_child()` or the appropriate container API\n\nBrowse ([PR #141](https://github.com/sugarlabs/browse-activity/pull/141)) was probably the hardest case here. GTK4 removed `Gtk.Toolbar`, which Browse used for most of its navigation. I couldn't just swap in a GTK4 replacement, so I had to rebuild the toolbars using a mix of `Gtk.Box` and `Gtk.Popover`.\n\nI had a similar problem with `Gtk.IconView`, which was also removed. In TurtleArt's sample project picker, I moved to a `Gtk.FlowBox` with `Gtk.Picture` for scaling the SVGs. In Chat's emoji picker, I used a `Gtk.Grid` with `Gtk.Picture` instead.\n\n## Sugar's startup arguments vs. GTK4\n\nEarly on, I ran into crashes before my activity code even got to run. It turned out GTK4's `Gtk.Application` automatically tries to parse command-line arguments on startup. Sugar always launches activities with specific internal flags (like `-s` and `-b`), which confused GTK4 so much that it just failed and crashed the process.\n\nI realized I couldn't fix this inside the activities themselves. I had to go into the toolkit ([sugar-toolkit-gtk4 PR #35](https://github.com/sugarlabs/sugar-toolkit-gtk4/pull/35)) and patch the application startup to tell GTK to ignore Sugar's arguments.\n\n## CSS bleeding into Jarabe\n\nIn GTK3, changing colors while running was usually done with methods like `modify_bg()`. With GTK4, I had to move everything to `Gtk.CssProvider`.\n\nInitially, I just injected the CSS globally for my custom widgets. But because activities run in the same environment as the shell, I quickly realized my styles were affecting other widgets. A global CSS rule for a button in Calculate would suddenly alter the appearance of buttons in Jarabe.\n\nTo stop this, I started limiting each CSS provider to the widgets that needed it. For the toolkit's `ToolbarBox`, I created one provider per page, made sure to clean it up when the page was destroyed, and used `sugar4.graphics.style.apply_css_to_widget` to bind it only to the specific widgets that needed it.\n\n## Wayland problems and input handling\n\nInput handling was a problem at first. I removed all the old `button-press-event` and `key-press-event` connections and replaced them with GTK4 event controllers. For GTK4 ports, the usual replacements are `Gtk.GestureClick` for mouse/button events and `Gtk.EventControllerKey` for keyboard input.\n\nIn the Image Viewer, I removed the old `EventBox` and `SugarGestures` wrappers and moved to `Gtk.GestureZoom` and `Gtk.GestureDrag` controllers.\n\nWayland also messed with dialogs. While porting TurtleArt and Read, my popups would either render behind the main window, lose focus, or just fail to appear at all. After debugging it for a while, I realized they needed `.set_transient_for()` and `.set_modal(True)` calls to behave correctly under the Wayland window system.\n\nWhile testing the UI, I noticed that dragging pages around in `ToolbarBox` left the related `Gtk.Popover` broken. I finally fixed it by clearing the page content (`set_child(None)`) before moving the widget to another parent, rather than destroying the popover itself.\n\n## The DBus null-byte nightmare\n\nThis was one of the most unusual bugs I found. When sending preview data over DBus, the binary data kept getting cut off, throwing a random `GLib.Error`. I stared at it for a while before realizing the binary stream contained null bytes inside the data, which DBus was interpreting as string terminators. I had to patch the toolkit to handle binary data properly so the preview wouldn't get chopped off at the first null byte.\n\n## Custom rendering was harder than I thought\n\nRendering was probably the part I underestimated most. GTK4 removed the old `draw` path, which made the Cairo-based rendering code much harder to fit into the new pipeline.\n\nThis wasn't too bad for some of the simpler widgets. In Chat, moving the speech bubbles to `do_snapshot` using `Gtk.Snapshot` and Graphene bounds was fairly simple compared with the old GTK3 drawing code.\n\nBut TurtleArt was a completely different story. Its entire architecture is heavily tied to Cairo for drawing the complex block shapes and the canvas itself. I found during debugging that functions like `Gdk.cairo_set_source_pixbuf()` simply don't exist anymore. You can't just use a pixbuf directly with a Cairo context. I had to manually convert the pixbufs to Cairo image surfaces so the old rendering code could work with GTK4. It required touching almost every sprite and block rendering class in the activity.\n\nI had another rendering problem with GStreamer in Jukebox ([PR #35](https://github.com/sugarlabs/jukebox-activity/pull/35)). The old method of grabbing an X11 window handle (`xid`) and passing it to the sink doesn't work on Wayland. I rewrote the video pipeline to use `gtk4paintablesink` connected to a `Gtk.Picture` widget instead.\n\n## Papers and WebKit6 in Read\n\nFor the Read activity ([PR #50](https://github.com/sugarlabs/read-activity/pull/50)), the GTK4 port meant dealing with two completely different rendering backends.\n\nFirst, the old `Evince` backend was no longer usable for GTK4, so I had to move the PDF viewer to its modern successor, `Papers`. The API migration from `EvinceDocument 3.0` to `PapersDocument 4.0` required updating the document adapters (for Comic, Image, and Text) and loading custom Papers CSS locally to ensure it rendered correctly in the Sugar environment.\n\n*A quick warning if you touch this code:* the Table of Contents (TOC) is currently disabled. Papers moved the outline from `GtkTreeModel` to `GListModel`, and `has_document_links()` segfaults on `GListModel` input. It needs a full rewrite of the outline parser.\n\nSecond, Read also supports EPUB files, which meant I couldn't just stop at Papers. I had to simultaneously port the EPUB viewer from WebKit2 to WebKit6. Juggling these two massive rendering engines in the same activity made this port significantly more complex.\n\n## Testing (and why I started ignoring Jarabe)\n\nBecause the Sugar shell (Jarabe) was undergoing its own massive porting effort at the exact same time, testing my activities inside the shell was incredibly unstable. I'd get a crash and have no idea if my activity caused it or if the shell just broke again.\n\nTo make debugging easier, I wrote a `local_run.py` script for almost every activity I ported. This created a minimal `Gtk.Application`, bypassing DBus and Datastore dependencies. If it crashed in `local_run.py`, the bug was on me. If it ran perfectly standalone but crashed in Sugar, I knew I was looking at an issue between the activity and Sugar. Even now that the shell is mostly ported, testing with a local wrapper is just so much faster.\n\nThe development environment mattered too. While the Fedora Sugar Live ISO is a great out-of-the-box testing environment, I found Debian 13 (Trixie) much easier for development since it had newer GTK4 packages, including `Papers`, that were missing or outdated in Fedora.\n\n## What I would do differently\n\nLooking back at the 12 weeks, there are a few things I'd change about my approach if I were starting over:\n\n* **Start with a standalone wrapper immediately:** Early on, I wasted so much time trying to debug activities inside the broken shell. Writing `local_run.py` should have been step one.\n* **Fix the toolkit first:** Sometimes I tried to hack around toolkit bugs inside the activity itself, only to realize later that the proper fix belonged in the toolkit (`sugar-toolkit-gtk4`).\n* **Test Wayland behavior earlier:** I initially did a lot of testing in an X11 environment, which masked the dialog window and popup positioning bugs. Wayland has to be tested as early as possible.\n* **Audit dependencies upfront:** I didn't realize Evince was dead in GTK4 until I was already deep into porting Read. Looking closely at dependencies like Evince/Papers or VTE before touching the UI code would have made planning much smoother.\n* **Document recurring patterns:** I should have kept a running list of GTK3 → GTK4 replacements (like `modify_bg` → CSS, or `pack_start` → `append`) from week one, rather than finding them again.\n\nAfter doing all of this, the biggest thing I took away is that the GTK4 port wasn't really about replacing old APIs. A lot of the work was figuring out which assumptions in the old code were tied to X11, GTK3, or the old Sugar shell.\n",Cg=e({default:()=>wg}),wg=`---
+`,Cg=e({default:()=>wg}),wg="---\ntitle: \"What I Learned Porting Sugar Activities to GTK4\"\nexcerpt: \"A look at the real-world problems and unusual cases I encountered while porting 9 core Sugar activities to GTK4 and Wayland.\"\ncategory: \"DEVELOPER NEWS\"\ndate: \"2026-08-31\"\nslug: \"2026-08-31-gtk4-porting-guide\"\nauthor: \"@/constants/MarkdownFiles/authors/divyam-agarwal.md\"\ntags: \"gsoc26,sugarlabs,gtk4,wayland,porting\"\nimage: \"assets/Images/GSOC.webp\"\n---\n\nThis summer during GSoC 2026, I worked on porting 9 of the core Fructose activities—Calculate, Log, Image Viewer, Chat, Browse, Read, Jukebox, Terminal, and TurtleArt—from GTK3 to GTK4.\n\nIf you are looking for the official API changes, the [GNOME GTK4 Migration Guide](https://docs.gtk.org/gtk4/migrating-3to4.html) is still the best place to start. But once I started porting the Sugar codebase, I kept running into weird problems and old code assumptions that aren't really covered in the documentation.\n\nI wrote down the main issues here, hoping it saves the next person some debugging time.\n\n## Quick Reference: GTK3 to GTK4 Replacements\n\n| GTK3 / Old API | GTK4 / New API | Notes |\n| :--- | :--- | :--- |\n| `Gtk.HBox` / `Gtk.VBox` | `Gtk.Box` | Set orientation explicitly. |\n| `Gtk.Table` | `Gtk.Grid` | |\n| `pack_start()` | `append()` / `prepend()` | |\n| `add()` | `set_child()` | Depends on the container. |\n| `Gtk.Toolbar` | `Gtk.Box` + `Gtk.Popover` | Toolbar was removed entirely. |\n| `Gtk.IconView` | `Gtk.FlowBox` | Useful with `Gtk.Picture` for scaling SVGs. |\n| `button-press-event` | `Gtk.GestureClick` | |\n| `key-press-event` | `Gtk.EventControllerKey` | |\n| EventBox | `Gtk.GestureClick` / `Gtk.GestureDrag` / `Gtk.GestureZoom` | Use the controller matching the interaction. |\n| `modify_bg()` | `Gtk.CssProvider` | Bind strictly to the needed widgets. |\n| `Gdk.cairo_set_source_pixbuf` | Convert pixbuf to a Cairo image surface | Convert pixbufs manually. |\n\n## Layouts broke everywhere\n\nThe first thing I noticed was that almost every activity layout was broken. The old codebase used `Gtk.HBox`, `Gtk.VBox`, `pack_start()`, and `add()` in many places. Since GTK4 removes those, I spent the first few weeks rewriting the UI code around `Gtk.Box` and `Gtk.Grid`.\n\nIn practice, this usually means replacing:\n\n* `Gtk.HBox` / `Gtk.VBox` with `Gtk.Box` (and setting orientation)\n* `Gtk.Table` with `Gtk.Grid`\n* `pack_start()` with `append()` or `prepend()`\n* `add()` with `set_child()` or the appropriate container API\n\nBrowse ([PR #141](https://github.com/sugarlabs/browse-activity/pull/141)) was probably the hardest case here. GTK4 removed `Gtk.Toolbar`, which Browse used for most of its navigation. I couldn't just swap in a GTK4 replacement, so I had to rebuild the toolbars using a mix of `Gtk.Box` and `Gtk.Popover`.\n\nI had a similar problem with `Gtk.IconView`, which was also removed. In TurtleArt's sample project picker, I moved to a `Gtk.FlowBox` with `Gtk.Picture` for scaling the SVGs. In Chat's emoji picker, I used a `Gtk.Grid` with `Gtk.Picture` instead.\n\n## Sugar's startup arguments vs. GTK4\n\nEarly on, I ran into crashes before my activity code even got to run. It turned out GTK4's `Gtk.Application` automatically tries to parse command-line arguments on startup. Sugar always launches activities with specific internal flags (like `-s` and `-b`), which confused GTK4 so much that it just failed and crashed the process.\n\nI realized I couldn't fix this inside the activities themselves. I had to go into the toolkit ([sugar-toolkit-gtk4 PR #35](https://github.com/sugarlabs/sugar-toolkit-gtk4/pull/35)) and patch the application startup to tell GTK to ignore Sugar's arguments.\n\n## CSS bleeding into Jarabe\n\nIn GTK3, changing colors while running was usually done with methods like `modify_bg()`. With GTK4, I had to move everything to `Gtk.CssProvider`.\n\nInitially, I just injected the CSS globally for my custom widgets. But because activities run in the same environment as the shell, I quickly realized my styles were affecting other widgets. A global CSS rule for a button in Calculate would suddenly alter the appearance of buttons in Jarabe.\n\nTo stop this, I started limiting each CSS provider to the widgets that needed it. For the toolkit's `ToolbarBox`, I created one provider per page, made sure to clean it up when the page was destroyed, and used `sugar4.graphics.style.apply_css_to_widget` to bind it only to the specific widgets that needed it.\n\n## Wayland problems and input handling\n\nInput handling was a problem at first. I removed all the old `button-press-event` and `key-press-event` connections and replaced them with GTK4 event controllers. For GTK4 ports, the usual replacements are `Gtk.GestureClick` for mouse/button events and `Gtk.EventControllerKey` for keyboard input.\n\nIn the Image Viewer, I removed the old `EventBox` and `SugarGestures` wrappers and moved to `Gtk.GestureZoom` and `Gtk.GestureDrag` controllers.\n\nWayland also messed with dialogs. While porting TurtleArt and Read, my popups would either render behind the main window, lose focus, or just fail to appear at all. After debugging it for a while, I realized they needed `.set_transient_for()` and `.set_modal(True)` calls to behave correctly under the Wayland window system.\n\nWhile testing the UI, I noticed that dragging pages around in `ToolbarBox` left the related `Gtk.Popover` broken. I finally fixed it by clearing the page content (`set_child(None)`) before moving the widget to another parent, rather than destroying the popover itself.\n\n## The DBus null-byte nightmare\n\nThis was one of the most unusual bugs I found. When sending preview data over DBus, the binary data kept getting cut off, throwing a random `GLib.Error`. I stared at it for a while before realizing the binary stream contained null bytes inside the data, which DBus was interpreting as string terminators. I had to patch the toolkit to handle binary data properly so the preview wouldn't get chopped off at the first null byte.\n\n## Custom rendering was harder than I thought\n\nRendering was probably the part I underestimated most. GTK4 removed the old `draw` path, which made the Cairo-based rendering code much harder to fit into the new pipeline.\n\nThis wasn't too bad for some of the simpler widgets. In Chat, moving the speech bubbles to `do_snapshot` using `Gtk.Snapshot` and Graphene bounds was fairly simple compared with the old GTK3 drawing code.\n\nBut TurtleArt was a completely different story. Its entire architecture is heavily tied to Cairo for drawing the complex block shapes and the canvas itself. I found during debugging that functions like `Gdk.cairo_set_source_pixbuf()` simply don't exist anymore. You can't just use a pixbuf directly with a Cairo context. I had to manually convert the pixbufs to Cairo image surfaces so the old rendering code could work with GTK4. It required touching almost every sprite and block rendering class in the activity.\n\nI had another rendering problem with GStreamer in Jukebox ([PR #35](https://github.com/sugarlabs/jukebox-activity/pull/35)). The old method of grabbing an X11 window handle (`xid`) and passing it to the sink doesn't work on Wayland. I rewrote the video pipeline to use `gtk4paintablesink` connected to a `Gtk.Picture` widget instead.\n\n## Papers and WebKit6 in Read\n\nFor the Read activity ([PR #50](https://github.com/sugarlabs/read-activity/pull/50)), the GTK4 port meant dealing with two completely different rendering backends.\n\nFirst, the old `Evince` backend was no longer usable for GTK4, so I had to move the PDF viewer to its modern successor, `Papers`. The API migration from `EvinceDocument 3.0` to `PapersDocument 4.0` required updating the document adapters (for Comic, Image, and Text) and loading custom Papers CSS locally to ensure it rendered correctly in the Sugar environment.\n\n*A quick warning if you touch this code:* the Table of Contents (TOC) is currently disabled. Papers moved the outline from `GtkTreeModel` to `GListModel`, and `has_document_links()` segfaults on `GListModel` input. It needs a full rewrite of the outline parser.\n\nSecond, Read also supports EPUB files, which meant I couldn't just stop at Papers. I had to simultaneously port the EPUB viewer from WebKit2 to WebKit6. Juggling these two massive rendering engines in the same activity made this port significantly more complex.\n\n## Testing (and why I started ignoring Jarabe)\n\nBecause the Sugar shell (Jarabe) was undergoing its own massive porting effort at the exact same time, testing my activities inside the shell was incredibly unstable. I'd get a crash and have no idea if my activity caused it or if the shell just broke again.\n\nTo make debugging easier, I wrote a `local_run.py` script for almost every activity I ported. This created a minimal `Gtk.Application`, bypassing DBus and Datastore dependencies. If it crashed in `local_run.py`, the bug was on me. If it ran perfectly standalone but crashed in Sugar, I knew I was looking at an issue between the activity and Sugar. Even now that the shell is mostly ported, testing with a local wrapper is just so much faster.\n\nThe development environment mattered too. While the Fedora Sugar Live ISO is a great out-of-the-box testing environment, I found Debian 13 (Trixie) much easier for development since it had newer GTK4 packages, including `Papers`, that were missing or outdated in Fedora.\n\n## What I would do differently\n\nLooking back at the 12 weeks, there are a few things I'd change about my approach if I were starting over:\n\n* **Start with a standalone wrapper immediately:** Early on, I wasted so much time trying to debug activities inside the broken shell. Writing `local_run.py` should have been step one.\n* **Fix the toolkit first:** Sometimes I tried to hack around toolkit bugs inside the activity itself, only to realize later that the proper fix belonged in the toolkit (`sugar-toolkit-gtk4`).\n* **Test Wayland behavior earlier:** I initially did a lot of testing in an X11 environment, which masked the dialog window and popup positioning bugs. Wayland has to be tested as early as possible.\n* **Audit dependencies upfront:** I didn't realize Evince was dead in GTK4 until I was already deep into porting Read. Looking closely at dependencies like Evince/Papers or VTE before touching the UI code would have made planning much smoother.\n* **Document recurring patterns:** I should have kept a running list of GTK3 → GTK4 replacements (like `modify_bg` → CSS, or `pack_start` → `append`) from week one, rather than finding them again.\n\nAfter doing all of this, the biggest thing I took away is that the GTK4 port wasn't really about replacing old APIs. A lot of the work was figuring out which assumptions in the old code were tied to X11, GTK3, or the old Sugar shell.\n",Tg=e({default:()=>Eg}),Eg=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -42690,7 +42827,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,Tg=e({default:()=>Eg}),Eg=`---
+`,Dg=e({default:()=>Og}),Og=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -42793,7 +42930,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,Dg=e({default:()=>Og}),Og=`---
+`,kg=e({default:()=>Ag}),Ag=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -43266,7 +43403,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,kg=e({default:()=>Ag}),Ag=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,jg=e({default:()=>Mg}),Mg=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -43353,7 +43490,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,jg=e({default:()=>Mg}),Mg=`---\r
+`,Ng=e({default:()=>Pg}),Pg=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -43446,7 +43583,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Ng=e({default:()=>Pg}),Pg=`---\r
+`,Fg=e({default:()=>Ig}),Ig=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -43540,7 +43677,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Fg=e({default:()=>Ig}),Ig=`---\r
+`,Lg=e({default:()=>Rg}),Rg=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -43628,7 +43765,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Lg=e({default:()=>Rg}),Rg=`---\r
+`,zg=e({default:()=>Bg}),Bg=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -43711,7 +43848,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,zg=e({default:()=>Bg}),Bg=`---\r
+`,Vg=e({default:()=>Hg}),Hg=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -43777,7 +43914,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,Vg=e({default:()=>Hg}),Hg=`---
+`,Ug=e({default:()=>Wg}),Wg=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -43859,7 +43996,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Ug=e({default:()=>Wg}),Wg=`---
+---`,Gg=e({default:()=>Kg}),Kg=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -43952,7 +44089,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Gg=e({default:()=>Kg}),Kg=`---
+`,qg=e({default:()=>Jg}),Jg=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -44041,7 +44178,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,qg=e({default:()=>Jg}),Jg=`---
+--- `,Yg=e({default:()=>Xg}),Xg=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -44186,7 +44323,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Yg=e({default:()=>Xg}),Xg=`---
+--- `,Zg=e({default:()=>Qg}),Qg=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -44374,7 +44511,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Zg=e({default:()=>Qg}),Qg=`---
+--- `,$g=e({default:()=>e_}),e_=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -44469,7 +44606,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,$g=e({default:()=>e_}),e_=`---
+`,t_=e({default:()=>n_}),n_=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -44558,7 +44695,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,t_=e({default:()=>n_}),n_=`---
+`,r_=e({default:()=>i_}),i_=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -44645,7 +44782,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,r_=e({default:()=>i_}),i_=`---
+---`,a_=e({default:()=>o_}),o_=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -44728,7 +44865,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,a_=e({default:()=>o_}),o_=`---
+---`,s_=e({default:()=>c_}),c_=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -44811,7 +44948,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,s_=e({default:()=>c_}),c_=`---
+---`,l_=e({default:()=>u_}),u_=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -45116,4 +45253,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{fh as $,ua as $a,l as $c,ds as $i,dd as $n,ur as $o,dl as $r,lt as $s,fp as $t,rg as A,no as Aa,te as Ac,rc as Ai,rf as An,ni as Ao,ru as Ar,tn as As,im as At,Lh as B,Ia as Ba,F as Bc,Ls as Bi,Ld as Bn,Ir as Bo,Ll as Br,Ft as Bs,Rp as Bt,_g as C,_o as Ca,he as Cc,_c as Ci,vf as Cn,gi as Co,_u as Cr,gn as Cs,vm as Ct,lg as D,co as Da,se as Dc,lc as Di,uf as Dn,ci as Do,lu as Dr,cn as Ds,um as Dt,dg as E,uo as Ea,le as Ec,dc as Ei,ff as En,ui as Eo,du as Er,un as Es,fm as Et,qh as F,Ka as Fa,G as Fc,qs as Fi,qd as Fn,Kr as Fo,ql as Fr,Gt as Fs,Jp as Ft,Dh as G,Ea as Ga,T as Gc,Ds as Gi,Dd as Gn,Er as Go,Dl as Gr,Tt as Gs,Op as Gt,Nh as H,Ma as Ha,j as Hc,Ns as Hi,Nd as Hn,Mr as Ho,Nl as Hr,jt as Hs,Pp as Ht,Gh as I,Wa as Ia,U as Ic,Gs as Ii,Gd as In,Wr as Io,Gl as Ir,Ut as Is,Kp as It,Sh as J,ba as Ja,y as Jc,xs as Ji,xd as Jn,br as Jo,xl as Jr,yt as Js,Sp as Jt,Th as K,wa as Ka,C as Kc,Ts as Ki,Td as Kn,wr as Ko,Tl as Kr,Ct as Ks,Ep as Kt,Uh as L,Ha as La,V as Lc,Us as Li,Ud as Ln,Hr as Lo,Ul as Lr,Vt as Ls,Wp as Lt,$h as M,Qa as Ma,Z as Mc,$s as Mi,$d as Mn,Qr as Mo,$l as Mr,Zt as Ms,em as Mt,Zh as N,Xa as Na,Y as Nc,Zs as Ni,Zd as Nn,Xr as No,Zl as Nr,Yt as Ns,Qp as Nt,sg as O,oo as Oa,ae as Oc,sc as Oi,cf as On,oi as Oo,su as Or,on as Os,cm as Ot,Yh as P,Ja as Pa,q as Pc,Ys as Pi,Yd as Pn,Jr as Po,Yl as Pr,qt as Ps,Xp as Pt,mh as Q,fa as Qa,d as Qc,ps as Qi,pd as Qn,fr as Qo,pl as Qr,dt as Qs,mp as Qt,Vh as R,Ba as Ra,z as Rc,Vs as Ri,Vd as Rn,Br as Ro,Vl as Rr,zt as Rs,Hp as Rt,yg as S,yo as Sa,_e as Sc,yc as Si,bf as Sn,vi as So,yu as Sr,vn as Ss,bm as St,pg as T,po as Ta,de as Tc,pc as Ti,mf as Tn,fi as To,pu as Tr,fn as Ts,mm as Tt,jh as U,Aa as Ua,k as Uc,js as Ui,jd as Un,Ar as Uo,jl as Ur,kt as Us,Mp as Ut,Fh as V,Pa as Va,N as Vc,Fs as Vi,Fd as Vn,Pr as Vo,Fl as Vr,Nt as Vs,Ip as Vt,kh as W,Oa as Wa,D as Wc,ks as Wi,kd as Wn,Or as Wo,kl as Wr,Dt as Ws,Ap as Wt,vh as X,ga as Xa,h as Xc,_s as Xi,_d as Xn,gr as Xo,_l as Xr,ht as Xs,vp as Xt,bh as Y,va as Ya,_ as Yc,ys as Yi,yd as Yn,vr as Yo,yl as Yr,_t as Ys,bp as Yt,gh as Z,ma as Za,p as Zc,hs as Zi,hd as Zn,mr as Zo,hl as Zr,pt as Zs,gp as Zt,kg as _,ko as _a,De as _c,kc as _i,Af as _n,Oi as _o,ku as _r,On as _s,Am as _t,$g as a,$o as aa,Ze as ac,$c as ai,ep as an,Qi as ao,$u as ar,Qn as as,eh as at,Cg as b,Co as ba,xe as bc,Cc as bi,wf as bn,Si as bo,Cu as br,Sn as bs,wm as bt,qg as c,qo as ca,Ge as cc,qc as ci,Jf as cn,Ki as co,qu as cr,Kn as cs,Jm as ct,Vg as d,Vo as da,ze as dc,Vc as di,Hf as dn,Bi as do,Vu as dr,Bn as ds,Hm as dt,ls as ea,st as ec,ll as ei,s as el,up as en,ca as eo,ld as er,cr as es,uh as et,zg as f,zo as fa,Le as fc,zc as fi,Bf as fn,Ri as fo,zu as fr,Rn as fs,Bm as ft,jg as g,jo as ga,ke as gc,jc as gi,Mf as gn,Ai as go,ju as gr,An as gs,Mm as gt,Ng as h,No as ha,je as hc,Nc as hi,Pf as hn,Mi as ho,Nu as hr,Mn as hs,Pm as ht,t_ as i,ts as ia,$e as ic,tl as ii,np as in,ea as io,td as ir,er as is,nh as it,tg as j,eo as ja,$ as jc,tc as ji,tf as jn,ei as jo,tu as jr,$t as js,nm as jt,ag as k,io as ka,re as kc,ac as ki,of as kn,ii as ko,au as kr,rn as ks,om as kt,Gg as l,Go as la,Ue as lc,Gc as li,Kf as ln,Wi as lo,Gu as lr,Wn as ls,Km as lt,Fg as m,Fo as ma,Ne as mc,Fc as mi,If as mn,Pi as mo,Fu as mr,Pn as ms,Im as mt,a_ as n,as as na,rt as nc,al as ni,r as nl,op as nn,ia as no,ad as nr,ir as ns,oh as nt,Zg as o,Zo as oa,Ye as oc,Zc as oi,Qf as on,Xi as oo,Zu as or,Xn as os,Qm as ot,Lg as p,Lo as pa,Fe as pc,Lc as pi,Rf as pn,Ii as po,Lu as pr,In as ps,Rm as pt,Ch as q,Sa as qa,x as qc,Cs as qi,Cd as qn,Sr as qo,Cl as qr,xt as qs,wp as qt,r_ as r,rs as ra,tt as rc,rl as ri,t as rl,ip as rn,na as ro,rd as rr,nr as rs,ih as rt,Yg as s,Yo as sa,qe as sc,Yc as si,Xf as sn,Ji as so,Yu as sr,Jn as ss,Xm as st,s_ as t,ss as ta,at as tc,sl as ti,a as tl,cp as tn,oa as to,sd as tr,or as ts,ch as tt,Ug as u,Uo as ua,Ve as uc,Uc as ui,Wf as un,Hi as uo,Uu as ur,Hn as us,Wm as ut,Dg as v,Do as va,Te as vc,Dc as vi,Of as vn,Ei as vo,Du as vr,En as vs,Om as vt,hg as w,ho as wa,pe as wc,hc as wi,gf as wn,mi as wo,hu as wr,mn as ws,gm as wt,xg as x,xo as xa,ye as xc,xc as xi,Sf as xn,bi as xo,xu as xr,bn as xs,Sm as xt,Tg as y,To as ya,Ce as yc,Tc as yi,Ef as yn,wi as yo,Tu as yr,wn as ys,Em as yt,zh as z,Ra as za,L as zc,zs as zi,zd as zn,Rr as zo,zl as zr,Lt as zs,Bp as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{mh as $,fa as $a,d as $c,ps as $i,pd as $n,fr as $o,pl as $r,dt as $s,mp as $t,ag as A,io as Aa,re as Ac,ac as Ai,of as An,ii as Ao,au as Ar,rn as As,om as At,zh as B,Ra as Ba,L as Bc,zs as Bi,zd as Bn,Rr as Bo,zl as Br,Lt as Bs,Bp as Bt,yg as C,yo as Ca,_e as Cc,yc as Ci,bf as Cn,vi as Co,yu as Cr,vn as Cs,bm as Ct,dg as D,uo as Da,le as Dc,dc as Di,ff as Dn,ui as Do,du as Dr,un as Ds,fm as Dt,pg as E,po as Ea,de as Ec,pc as Ei,mf as En,fi as Eo,pu as Er,fn as Es,mm as Et,Yh as F,Ja as Fa,q as Fc,Ys as Fi,Yd as Fn,Jr as Fo,Yl as Fr,qt as Fs,Xp as Ft,kh as G,Oa as Ga,D as Gc,ks as Gi,kd as Gn,Or as Go,kl as Gr,Dt as Gs,Ap as Gt,Fh as H,Pa as Ha,N as Hc,Fs as Hi,Fd as Hn,Pr as Ho,Fl as Hr,Nt as Hs,Ip as Ht,qh as I,Ka as Ia,G as Ic,qs as Ii,qd as In,Kr as Io,ql as Ir,Gt as Is,Jp as It,wh as J,Sa as Ja,x as Jc,Cs as Ji,Cd as Jn,Sr as Jo,Cl as Jr,xt as Js,wp as Jt,Dh as K,Ea as Ka,T as Kc,Ds as Ki,Dd as Kn,Er as Ko,Dl as Kr,Tt as Ks,Op as Kt,Gh as L,Wa as La,U as Lc,Gs as Li,Gd as Ln,Wr as Lo,Gl as Lr,Ut as Ls,Kp as Lt,tg as M,eo as Ma,$ as Mc,tc as Mi,tf as Mn,ei as Mo,tu as Mr,$t as Ms,nm as Mt,$h as N,Qa as Na,Z as Nc,$s as Ni,$d as Nn,Qr as No,$l as Nr,Zt as Ns,em as Nt,lg as O,co as Oa,se as Oc,lc as Oi,uf as On,ci as Oo,lu as Or,cn as Os,um as Ot,Zh as P,Xa as Pa,Y as Pc,Zs as Pi,Zd as Pn,Xr as Po,Zl as Pr,Yt as Ps,Qp as Pt,gh as Q,ma as Qa,p as Qc,hs as Qi,hd as Qn,mr as Qo,hl as Qr,pt as Qs,gp as Qt,Uh as R,Ha as Ra,V as Rc,Us as Ri,Ud as Rn,Hr as Ro,Ul as Rr,Vt as Rs,Wp as Rt,xg as S,xo as Sa,ye as Sc,xc as Si,Sf as Sn,bi as So,xu as Sr,bn as Ss,Sm as St,hg as T,ho as Ta,pe as Tc,hc as Ti,gf as Tn,mi as To,hu as Tr,mn as Ts,gm as Tt,Nh as U,Ma as Ua,j as Uc,Ns as Ui,Nd as Un,Mr as Uo,Nl as Ur,jt as Us,Pp as Ut,Lh as V,Ia as Va,F as Vc,Ls as Vi,Ld as Vn,Ir as Vo,Ll as Vr,Ft as Vs,Rp as Vt,jh as W,Aa as Wa,k as Wc,js as Wi,jd as Wn,Ar as Wo,jl as Wr,kt as Ws,Mp as Wt,bh as X,va as Xa,_ as Xc,ys as Xi,yd as Xn,vr as Xo,yl as Xr,_t as Xs,bp as Xt,Sh as Y,ba as Ya,y as Yc,xs as Yi,xd as Yn,br as Yo,xl as Yr,yt as Ys,Sp as Yt,vh as Z,ga as Za,h as Zc,_s as Zi,_d as Zn,gr as Zo,_l as Zr,ht as Zs,vp as Zt,jg as _,jo as _a,ke as _c,jc as _i,Mf as _n,Ai as _o,ju as _r,An as _s,Mm as _t,t_ as a,ts as aa,$e as ac,tl as ai,np as an,ea as ao,td as ar,er as as,nh as at,Tg as b,To as ba,Ce as bc,Tc as bi,Ef as bn,wi as bo,Tu as br,wn as bs,Em as bt,Yg as c,Yo as ca,qe as cc,Yc as ci,Xf as cn,Ji as co,Yu as cr,Jn as cs,Xm as ct,Ug as d,Uo as da,Ve as dc,Uc as di,Wf as dn,Hi as do,Uu as dr,Hn as ds,Wm as dt,ds as ea,lt as ec,dl as ei,l as el,fp as en,ua as eo,dd as er,ur as es,fh as et,Vg as f,Vo as fa,ze as fc,Vc as fi,Hf as fn,Bi as fo,Vu as fr,Bn as fs,Hm as ft,Ng as g,No as ga,je as gc,Nc as gi,Pf as gn,Mi as go,Nu as gr,Mn as gs,Pm as gt,Fg as h,Fo as ha,Ne as hc,Fc as hi,If as hn,Pi as ho,Fu as hr,Pn as hs,Im as ht,r_ as i,rs as ia,tt as ic,rl as ii,t as il,ip as in,na as io,rd as ir,nr as is,ih as it,rg as j,no as ja,te as jc,rc as ji,rf as jn,ni as jo,ru as jr,tn as js,im as jt,sg as k,oo as ka,ae as kc,sc as ki,cf as kn,oi as ko,su as kr,on as ks,cm as kt,qg as l,qo as la,Ge as lc,qc as li,Jf as ln,Ki as lo,qu as lr,Kn as ls,Jm as lt,Lg as m,Lo as ma,Fe as mc,Lc as mi,Rf as mn,Ii as mo,Lu as mr,In as ms,Rm as mt,s_ as n,ss as na,at as nc,sl as ni,a as nl,cp as nn,oa as no,sd as nr,or as ns,ch as nt,$g as o,$o as oa,Ze as oc,$c as oi,ep as on,Qi as oo,$u as or,Qn as os,eh as ot,zg as p,zo as pa,Le as pc,zc as pi,Bf as pn,Ri as po,zu as pr,Rn as ps,Bm as pt,Th as q,wa as qa,C as qc,Ts as qi,Td as qn,wr as qo,Tl as qr,Ct as qs,Ep as qt,a_ as r,as as ra,rt as rc,al as ri,r as rl,op as rn,ia as ro,ad as rr,ir as rs,oh as rt,Zg as s,Zo as sa,Ye as sc,Zc as si,Qf as sn,Xi as so,Zu as sr,Xn as ss,Qm as st,l_ as t,ls as ta,st as tc,ll as ti,s as tl,up as tn,ca as to,ld as tr,cr as ts,uh as tt,Gg as u,Go as ua,Ue as uc,Gc as ui,Kf as un,Wi as uo,Gu as ur,Wn as us,Km as ut,kg as v,ko as va,De as vc,kc as vi,Af as vn,Oi as vo,ku as vr,On as vs,Am as vt,_g as w,_o as wa,he as wc,_c as wi,vf as wn,gi as wo,_u as wr,gn as ws,vm as wt,Cg as x,Co as xa,xe as xc,Cc as xi,wf as xn,Si as xo,Cu as xr,Sn as xs,wm as xt,Dg as y,Do as ya,Te as yc,Dc as yi,Of as yn,Ei as yo,Du as yr,En as ys,Om as yt,Vh as z,Ba as za,z as zc,Vs as zi,Vd as zn,Br as zo,Vl as zr,zt as zs,Hp as zt};
