@@ -38,7 +38,7 @@ All three are backward compatible. 11 new unit tests pass, and I didn't break an
 
 ### Test failures that weren't failures
 
-Two tests in `musicutils.test.js` under `getStepSizeDown` failed during my pre-submission check. I checked out a clean `HEAD` and traced them: the failures were from uncommitted local code calling `_getStepSize`, which early-returns 0 for custom temperaments without ratios. That's a known limitation — it's queued for PR 7a₂. PR 7a₁ doesn't touch that code path. So I left it alone and kept 7a₁ scoped to what it needed to do.
+Two tests in `musicutils.test.js` under `getStepSizeDown` failed during my pre-submission check. I checked out a clean `HEAD` and traced them: the failures were from uncommitted local code calling `_getStepSize`, which early-returns 0 for custom temperaments without ratios. That's a known limitation — it's queued for PR 9. PR 8 doesn't touch that code path. So I left it alone and kept 8 scoped to what it needed to do.
 
 ---
 
