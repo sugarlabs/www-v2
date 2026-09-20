@@ -37842,6 +37842,76 @@ further investigation.
 Thanks to Walter Bender and Devin Ulibarri for their continued guidance,
 and to the broader Sugar Labs community for the existing dependency-fix
 PR (#7989) that saved me from duplicating unrelated security work.`,Xm=e({default:()=>Zm}),Zm=`---
+title: "DMP '26 Week 06: Wrapping Goals 1-3 and Starting Goal 4"
+excerpt: "PR #7853 merged (temperament persistence, B20/B21 fixes). Wrote the 12-EDO AUDIT_REPORT.md. PR #7942 merged - dynamic EDO and ratio-based temperament support across the engine, widgets, and pie menus."
+category: "DEVELOPER NEWS"
+date: "2026-08-02"
+slug: "2026-08-02-dmp-26-niravsharma-week06"
+author: "@/constants/MarkdownFiles/authors/nirav-sharma.md"
+description: "Week 6: PR #7853 merged. Wrote comprehensive AUDIT_REPORT.md. PR #7942 merged - EDO-aware pitch math, temperament threading, and dynamic widgets. ~140 lines of new tests."
+tags: "dmp26,sugarlabs,week06,niravsharma,musicblocks,temperament,microtonality"
+image: "assets/Images/c4gt_DMP.webp"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 06 Progress Report by Nirav Sharma
+
+**Project:** [Music Blocks - Refactor Temperament (Issue #7171)](https://github.com/sugarlabs/musicblocks/issues/7171)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  
+**Reporting Period:** 2026-07-27 – 2026-08-02
+
+---
+
+## What I worked on this week
+
+### PR #7853 merged: Goals 1-3 wrapped up
+
+PR #7853 got merged on July 30. This closes out Goals 1-3 - the pitch and interval fixes - and shifts focus to scale and mode decoupling.
+
+The PR handled temperament persistence and a handful of stubborn edge-case bugs:
+
+- B20/B21: Non-equal temperament scalar transposition and the 31-EDO C / D-flat-flat loop that's been biting us
+- B14-B19: Console log analysis led me to \`isTrueEDO()\` logic fixes and \`defineMode\` bounds tightening
+- Tests: Suite went from 7,224 to 7,259 passing
+
+### The 12-EDO audit
+
+Before jumping into Goal 4 I wanted a map of what I was getting into. I wrote \`AUDIT_REPORT.md\` - 700+ lines cataloguing 60 hardcoded 12-EDO assumptions across 16 files. Having this documented means we won't surprise app consumers when we swap out the underlying scale math.
+
+### PR #7942 merged: dynamic EDO and ratio-based temperaments
+
+With the audit done, I put up PR #7942 for review. It's the big one that makes non-12 EDO and ratio-based temperaments work across the engine, widgets, and pie menus.
+
+### Engine changes (musicutils.js, PitchActions.js)
+
+- \`calcOctave\` takes a \`temperament\` parameter and calculates octave shifts dynamically using \`Math.round(currentEDO / 4)\` instead of a hardcoded 5
+- \`_getStepSize\` no longer bails out early on custom temperaments that define ratios - it falls through to the ratio-based step calculation
+- \`numToPitch\`, \`setPitchNumberOffset\`, and \`deltaPitch\` in \`PitchActions.js\` all read \`inTemperament\` and use \`pitchToNumber % getCurrentEDO()\` so pitch numbers land in the right range for non-12 EDOs
+
+### Widget and pie menu changes
+
+- Mode Wheel (\`piemenus.js\`) builds its slices from \`currentEDO\` and \`generateNoteNames()\` instead of a hardcoded 12
+- Pitch Slider derives its semitone from the active EDO instead of a static constant
+- Music Keyboard generates note names per-octave from \`generateNoteNames(currentEDO)\`
+- When a widget's temperament changes, we set \`changeInTemperament = true\` and fire \`temperamentChanged()\` so the affected widgets rebuild
+
+### Tests
+
+Added ~140 lines across three suites: \`musicutils.test.js\` for \`calcOctave\` and \`_getStepSize\`, \`PitchActions.test.js\` for \`inTemperament\` threading, and \`pitchslider.test.js\` for the dynamic constant removal.
+
+---
+
+### What's coming next
+
+With PR #7942 merged, I'm starting Goal 4 (PR 8) - the foundational EDO scale core for decoupling scale and mode math from 12-EDO.
+
+### Links
+
+- [PR #7853](https://github.com/sugarlabs/musicblocks/pull/7853) - merged
+- [PR #7942](https://github.com/sugarlabs/musicblocks/pull/7942) - merged
+- [Issue #7171](https://github.com/sugarlabs/musicblocks/issues/7171)
+`,Qm=e({default:()=>$m}),$m=`---
 title: "DMP '26 Week 07 Update by Noaman Akhtar"
 excerpt: "Adding think/no-think control to Sugar-AI so reasoning-capable Ollama models can be used selectively without changing existing clients."
 category: "DEVELOPER NEWS"
@@ -37994,7 +38064,7 @@ The next step is to measure that behavior clearly, propose a small concurrency f
 Thanks to my mentors and the Sugar Labs community for the feedback during the provider refactor and the midterm evaluation. The questions about usability, testing, and downstream projects helped connect the backend implementation to how Sugar-AI will actually be used.
 
 ---
-`,Qm=e({default:()=>$m}),$m=`---
+`,eh=e({default:()=>th}),th=`---
 title: "DMP '26 Week 8 Update by Stuti Jain"
 excerpt: "Expanded the lesson framework with new lessons for Chapters 3 and 4, introduced reusable and custom discovery help cards, and tested the updated first two lessons with children."
 category: "DEVELOPER NEWS"
@@ -38185,7 +38255,7 @@ Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the l
 
 The addition of Lessons 3 and 4 and the testing of the earlier lessons are helping validate whether the infrastructure can scale beyond the initial prototype while remaining accessible and engaging for young Music Blocks learners.
 
-I also appreciate the Sugar Labs community for its continued support throughout the development of the project.`,eh=e({default:()=>th}),th=`---
+I also appreciate the Sugar Labs community for its continued support throughout the development of the project.`,nh=e({default:()=>rh}),rh=`---
 title: "GSoC '26 Week 10 Update by Dev"
 excerpt: "Running end-to-end tests on the full GTK4 shell, recording a live walkthrough video under Casilda, cleaning up review feedback on widget methods in sugar, and fixing palette popover parenting in sugar-toolkit-gtk4."
 category: "DEVELOPER NEWS"
@@ -38276,7 +38346,7 @@ image: "assets/Images/GSOC.webp"
 ## Acknowledgments
 
 Thanks to Krish and Ibiam for their feedback and reviews during testing.
-`,nh=e({default:()=>rh}),rh=`---
+`,ih=e({default:()=>ah}),ah=`---
 title: "GSoC '26 Week 10: Finishing the Terminal GTK4 Port"
 excerpt: "Finishing the Terminal GTK4 port with clipboard fixes, palette workarounds, and event controllers, plus getting ready for TurtleArt."
 category: "DEVELOPER NEWS"
@@ -38328,7 +38398,7 @@ Next week I'm starting on **[TurtleArt](https://github.com/sugarlabs/turtleart-a
 ## Acknowledgments
 
 Thanks to my mentors for the reviews and to everyone in the Sugar Labs community for the feedback and help.
-`,ih=e({default:()=>ah}),ah=`---
+`,oh=e({default:()=>sh}),sh=`---
 title: "GSoC '26 Week 10 Update by Parth Dagia"
 excerpt: "Bricks can leave the Workspace now: a Trash drop target sits in the corner of the canvas, and dropping a Tower on it takes the Tower out along with its connector points and its layout entries."
 category: "DEVELOPER NEWS"
@@ -38407,7 +38477,7 @@ Next up is scaling the Workspace. A scale control goes on the canvas first, and 
 Thanks to Anindya Kundu for the reviews on both PRs, and to Syed for building this alongside me. Thanks also to Justin Charles and Safwan Sayeed for their continued guidance, and to Devin Ulibarri, Walter Bender, and the wider Sugar Labs community.
 
 ---
-`,oh=e({default:()=>sh}),sh=`---
+`,ch=e({default:()=>lh}),lh=`---
 title: "GSoC '26 Week 10 Report by Rejah Rabeeul Haque"
 excerpt: "Added a stop button for the host in number mode shared mode, added labels for figures, introduced new built in categories, and fixed bugs."
 category: "DEVELOPER NEWS"
@@ -38521,7 +38591,7 @@ A big thank you to my mentor Lionel Laské for his continuous guidance, and to e
 ---
 
 *Thanks for reading Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*
-`,ch=e({default:()=>lh}),lh=`---
+`,uh=e({default:()=>dh}),dh=`---
 title: "GSoC '26 Week 10 Progress Report by Sonal Gaud"
 excerpt: "Adding a /healthz liveness endpoint, graceful shutdown, and a Docker HEALTHCHECK so the server can be observed and stopped cleanly"
 category: "DEVELOPER NEWS"
@@ -38708,7 +38778,7 @@ Status: open, awaiting review. Files touched: \`index.js\`, \`dockerfile\`, \`js
 ## Acknowledgements
 
 Thank you to Walter Bender and Om Santosh Suneri for continued guidance as this server-side work came together.
-`,uh=e({default:()=>dh}),dh=`---
+`,fh=e({default:()=>ph}),ph=`---
 title: "GSoC '26 Week 10 Update by Syed Khubayb Ur Rahman"
 excerpt: "Implemented real-time visual feedback for connecting and disconnecting Bricks in the Workspace."
 category: "DEVELOPER NEWS"
@@ -38788,7 +38858,7 @@ Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued fe
 
 
 ---
-`,fh=e({default:()=>ph}),ph=`---
+`,mh=e({default:()=>hh}),hh=`---
 title: "GSoC '26 Week 10 Update by Shreya Saxena"
 excerpt: "A lighter week due to travel and the start of college, a GSoC Alumni Camp lightning talk, and plans to tackle load time and a scheduling issue flagged by Devin."
 category: "DEVELOPER NEWS"
@@ -38979,7 +39049,7 @@ Alongside that, I'll be profiling the Save as LilyPond Export and MIDI Import wo
  
 Thanks to my mentor, Walter Bender, for encouraging me to investigate the rerendering issue and for his valuable guidance throughout the debugging process. Thanks also to Devin Ulibarri for identifying the drum polyrhythm issue and helping validate the issue, and to the entire Sugar Labs community for their encouragement and feedback.
 
-`,mh=e({default:()=>hh}),hh=`---
+`,gh=e({default:()=>_h}),_h=`---
 title: "GSoC '26 Week 10 Update by Shubham Sharma"
 excerpt: "Building the Journal's grid and list views, redesigning the entry view again, writing a first peer-reflection brief, and finding the conversation-level test isn't solid enough to build on yet"
 category: "DEVELOPER NEWS"
@@ -39106,7 +39176,7 @@ Thanks to Walter and Ibiam for their continued guidance. Thanks to Diwangshu, Me
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,gh=e({default:()=>_h}),_h=`---
+`,vh=e({default:()=>yh}),yh=`---
 title: "GSoC '26 Week 10: Update by Harihara Vardhan"
 excerpt: "This week I researched and designed an interactive tutorial overlay for Git features in Music Blocks, inspired by visual widget tutorials, and squashed project name sync and tooltip bugs."
 category: "DEVELOPER NEWS"
@@ -39173,7 +39243,7 @@ I fixed a bug where saving a spot while offline caused the project name to rever
 Now that the research and design phase for the Git tutorial is wrapped up, next week will be focused on building out the interactive tutorial component itself. I will be implementing the floating widget UI, adding step animations, and integrating it directly into the Music Blocks help menu.
 
 Thanks for reading, and see you next week!
-`,vh=e({default:()=>``}),yh=e({default:()=>bh}),bh=`---
+`,bh=e({default:()=>``}),xh=e({default:()=>Sh}),Sh=`---
 title: "DMP '26 Week 08 Update by Noaman Akhtar"
 excerpt: "Building the first offline provider test suite and removing the event-loop bottleneck that blocked concurrent Sugar-AI requests."
 category: "DEVELOPER NEWS"
@@ -39359,7 +39429,7 @@ The provider design also leaves room for future inference servers such as vLLM, 
 Thanks to my mentors and the Sugar Labs community for the guidance on making the provider layer testable and responsive as the architecture expands. Establishing a small, deterministic test foundation alongside measured concurrency work will make the next provider changes easier to review with confidence.
 
 ---
-`,xh=e({default:()=>Sh}),Sh=`---
+`,Ch=e({default:()=>wh}),wh=`---
 title: "GSoC '26 Week 11 Update by Dev"
 excerpt: "Fixing GTK4 CSS scoping and GTK4 CSS parser warnings in sugar-toolkit-gtk4, updating activities list cell rendering and icon palette styling in sugar, and completing theme selected states in sugar-artwork."
 category: "DEVELOPER NEWS"
@@ -39447,7 +39517,7 @@ image: "assets/Images/GSOC.webp"
 ## Acknowledgments
 
 Thanks to Krish and Ibiam for their guidance and reviews.
-`,Ch=e({default:()=>wh}),wh=`---
+`,Th=e({default:()=>Eh}),Eh=`---
 title: "GSoC '26 Week 11: Tackling the TurtleArt GTK4 Port Foundation"
 excerpt: "Starting the GTK4 port of TurtleArt, beginning with migrating the plugin system, updating basic layouts, and cleaning up legacy code."
 category: "DEVELOPER NEWS"
@@ -39499,7 +39569,7 @@ Next week I'll be diving into the heart of \`TurtleArtActivity.py\` to work thro
 ## Acknowledgments
 
 Thanks to my mentors for the reviews and to everyone in the Sugar Labs community for the feedback and help.
-`,Th=e({default:()=>Eh}),Eh=`---
+`,Dh=e({default:()=>Oh}),Oh=`---
 title: "GSoC '26 Week 11 Update by Parth Dagia"
 excerpt: "The Workspace can be zoomed now: a pair of magnifier buttons on the canvas step a scale level, and every Brick on the canvas resizes to it - which meant fixing a units mismatch that had been sitting in the Brick model since week 5."
 category: "DEVELOPER NEWS"
@@ -39588,7 +39658,7 @@ Week 12 is the last one. With scaling in, the Workspace has everything it needs,
 Thanks to Anindya Kundu for the reviews on both PRs, and to Syed for building this alongside me. Thanks also to Justin Charles and Safwan Sayeed for their continued guidance, and to Devin Ulibarri, Walter Bender, and the wider Sugar Labs community.
 
 ---
-`,Dh=e({default:()=>Oh}),Oh=`---
+`,kh=e({default:()=>Ah}),Ah=`---
 title: "GSoC '26 Week 11 Progress Report by Sonal Gaud"
 excerpt: "Adding a /healthz liveness endpoint, graceful shutdown, and a Docker HEALTHCHECK so the server can be observed and stopped cleanly"
 category: "DEVELOPER NEWS"
@@ -39775,7 +39845,7 @@ Status: open, awaiting review. Files touched: \`index.js\`, \`dockerfile\`, \`js
 ## Acknowledgements
 
 Thank you to Walter Bender and Om Santosh Suneri for continued guidance as this server-side work came together, and for the review feedback carried forward from Week 10 into this write-up.
-`,kh=e({default:()=>Ah}),Ah=`---
+`,jh=e({default:()=>Mh}),Mh=`---
 title: "GSoC '26 Week 11 Update by Syed Khubayb Ur Rahman"
 excerpt: "Defined Import/Export types and implemented the Export functionality for Workspace Programs and Projects."
 category: "DEVELOPER NEWS"
@@ -39840,7 +39910,7 @@ Following last week's discussion, the focus shifted from undo/redo functionality
 Thanks to Anindya Kundu, Safwan Sayeed and Justin Charles for their continued feedback and guidance. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community.
 
 ---
-`,jh=e({default:()=>Mh}),Mh=`---
+`,Nh=e({default:()=>Ph}),Ph=`---
 title: "GSoC '26 Week 11 Update by Shreya Saxena"
 excerpt: "A ~23x speedup for headless notation exports, plus a fix for drum-polyrhythm project bug."
 category: "DEVELOPER NEWS"
@@ -39943,7 +40013,7 @@ With both fixes merged, I’ll clean up the now-unused \`_enqueue()\` and \`_cal
 
 ## Acknowledgments
 
-Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,Nh=e({default:()=>Ph}),Ph=`---
+Thanks to my mentor Walter Bender for his guidance and emphasis on concrete testing, Devin Ulibarri for sharing the real polyrhythm case, and the Sugar Labs community for the support.`,Fh=e({default:()=>Ih}),Ih=`---
 title: "GSoC '26 Week 11 Update by Shubham Sharma"
 excerpt: "Fixing the Journal's sorting and rebuilding its drawing to match how Sugar itself draws, hardening what the Journal sends to the AI, dropping the live-sharing route for peer reflection in favour of one that works with no network at all, and checking last week's conversation test against real published data"
 category: "DEVELOPER NEWS"
@@ -40147,7 +40217,7 @@ Thanks to Walter and Ibiam for their continued guidance. Thanks to Diwangshu, Me
 - Email: [vyagh.vy@gmail.com](mailto:vyagh.vy@gmail.com)
 
 ---
-`,Fh=e({default:()=>Ih}),Ih=`---
+`,Lh=e({default:()=>Rh}),Rh=`---
 title: "GSoC '26 Week 11: Update by Harihara Vardhan"
 excerpt: "This week I implemented the full interactive Git Tutorial overlay in Music Blocks, complete with custom slide animations, smart video management, keyboard shortcuts, and native notification feedback."
 category: "DEVELOPER NEWS"
@@ -40226,7 +40296,7 @@ This guides students directly toward taking their first action in the workspace 
 We are approaching the final phase of GSoC! Next week, I am going to update the tutorial based on mentor feedback and testing with kids, deploy the backend server, and prepare the frontend integration for the final review.
 
 Thanks for reading, and see you next week!
-`,Lh=e({default:()=>Rh}),Rh=`---
+`,zh=e({default:()=>Bh}),Bh=`---
 title: "GSoC '26 Week 11 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented game mode with territory capture, AI opponent, trail coloring, label positioning for overlapping dots, localization for all categories and figures, and used AI for adding new categories."
 category: "DEVELOPER NEWS"
@@ -40350,7 +40420,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance and patience, and 
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,zh=e({default:()=>Bh}),Bh=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,Vh=e({default:()=>Hh}),Hh=`---
 title: "DMP '26 Week 9 Update by Stuti Jain"
 excerpt: "Improved the Lesson Plans infrastructure by separating lesson data from implementation and making Lesson Plans and the Explorer Journal work alongside the rest of the Music Blocks interface."
 category: "DEVELOPER NEWS"
@@ -40495,7 +40565,7 @@ Similarly, as the number of lessons grows, the implementation needs to remain ea
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the Lesson Plans framework. Their observations from learner testing have helped guide the project beyond the initial prototype and toward a more flexible, maintainable, and scalable learning experience within Music Blocks.`,Vh=e({default:()=>Hh}),Hh=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued feedback on the Lesson Plans framework. Their observations from learner testing have helped guide the project beyond the initial prototype and toward a more flexible, maintainable, and scalable learning experience within Music Blocks.`,Uh=e({default:()=>Wh}),Wh=`---
 title: "DMP '26 Week 07 Update by Abhnish Kumar"
 excerpt: "Confirming the root cause of the touch drag bug, completing the touch support audit report, and sharing findings with the mentor team for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -40617,7 +40687,7 @@ conclusion.
 
 Thanks to Devin Ulibarri for his patience while this investigation took
 a full week of back-and-forth debugging, and for being ready to jump in
-with real-device testing once the audit was complete.`,Uh=e({default:()=>Wh}),Wh=`---
+with real-device testing once the audit was complete.`,Gh=e({default:()=>Kh}),Kh=`---
 title: "DMP '26 Week 09 Update by Noaman Akhtar"
 excerpt: "Making Sugar-AI easier to install across CPU and CUDA environments while expanding deterministic tests for provider helpers and prompted request validation."
 category: "DEVELOPER NEWS"
@@ -40759,7 +40829,7 @@ The strongest lesson from this week is that a reliable backend needs both a repr
 Thanks to my mentors and the Sugar Labs community for the guidance on making both local setup and provider behavior easier to verify. The combination of a documented installation path and focused offline tests gives the project a stronger foundation for the asynchronous provider and deployment work ahead.
 
 ---
-`,Gh=e({default:()=>Kh}),Kh=`---
+`,qh=e({default:()=>Jh}),Jh=`---
 title: "GSoC '26 Week 12 Update by Dev"
 excerpt: "Final audit across all four repositories, fixing leftover GTK3 API calls in sugar-ext C controllers, palette and tooltip regressions in sugar-toolkit-gtk4, Wayland activity launch and frame animation bugs in sugar, and CSS cleanup in sugar-artwork."
 category: "DEVELOPER NEWS"
@@ -40886,7 +40956,7 @@ A big thanks to everyone at Sugar Labs for the support throughout the program!
 ## Acknowledgments
 
 Thanks to Krish Pandya, Ibiam Chihurumnaya, Walter Bender, and Juan Pablo Ugarte for their guidance and support throughout the project!
-`,qh=e({default:()=>Jh}),Jh=`---
+`,Yh=e({default:()=>Xh}),Xh=`---
 title: "GSoC '26 Week 12: Wrapping Up the TurtleArt Port & Splitting the PR"
 excerpt: "Wrapping up the TurtleArt GTK4 migration, fixing a bunch of pre-existing bugs, and splitting the work into two PRs based on mentor feedback."
 category: "DEVELOPER NEWS"
@@ -40952,7 +41022,7 @@ During review, Ibiam pointed out that my tutorial GIF path handling could break 
 ## Acknowledgments
 
 Thanks to my core mentors MostlyK, Ibiam, and Walter for the direct reviews and guidance this week, and to Juan Pablo Ugarte for his overall mentorship. Thanks also to quozl for creating the upstream \`gtk4\` branch.
-`,Yh=e({default:()=>Xh}),Xh=`---
+`,Zh=e({default:()=>Qh}),Qh=`---
 title: "GSoC '26 Week 12 Update by Syed Khubayb Ur Rahman"
 excerpt: "Wrote detailed technical specification documentation and compiled the final GSoC report."
 category: "DEVELOPER NEWS"
@@ -41008,7 +41078,7 @@ I also compiled the final report for my GSoC project. This repository contains t
 As my GSoC period concludes, I want to give a massive thanks to my mentors Anindya Kundu and Safwan Sayeeds for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the rest of the Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4. 
 
 ---
-`,Zh=e({default:()=>Qh}),Qh=`---
+`,$h=e({default:()=>eg}),eg=`---
 title: "GSoC '26 Week 12: Update by Harihara Vardhan"
 excerpt: "In the final week of GSoC 2026, I reworded all user-facing Git terminology for kids, wrote comprehensive test suites across all Git features, and prepped the codebase and database for production deployment."
 category: "DEVELOPER NEWS"
@@ -41104,7 +41174,7 @@ None of this would have been possible without the amazing guidance and support f
 Also, a heartfelt thank you to the entire Sugar Labs community for creating such a welcoming, collaborative space.
 
 Thank you to everyone who followed along with my weekly updates this summer. Stay tuned for the final evaluation report and the official launch!
-`,$h=e({default:()=>eg}),eg=`---
+`,tg=e({default:()=>ng}),ng=`---
 
 title: "DMP '26 Week 10 Update by Stuti Jain"
 
@@ -41268,7 +41338,7 @@ The exploration of localization also showed that supporting multiple languages r
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,tg=e({default:()=>ng}),ng=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued feedback throughout the development of the Lesson Plans framework. Their suggestions have helped guide the project toward a more flexible interface, a scalable lesson structure, and a learning experience that can eventually be made accessible to learners in multiple languages.`,rg=e({default:()=>ig}),ig=`---
 title: "GSoC '26 Week 12 Report by Rejah Rabeeul Haque"
 excerpt: "Implemented multiplayer in Game Mode, enabling real time state synchronization, player spawning, network event handling, and shared territory capture through the Sugarizer shared activity network"
 category: "DEVELOPER NEWS"
@@ -41386,7 +41456,7 @@ Thanks to my mentor Lionel Laské for the continuous guidance, and to the Sugar 
 
 ---
 
-*Thanks for reading! Stay tuned for next week’s update. Feel free to reach out if you have any questions or feedback.*`,rg=e({default:()=>ig}),ig=`---
+*Thanks for reading! Stay tuned for next week’s update. Feel free to reach out if you have any questions or feedback.*`,ag=e({default:()=>og}),og=`---
 
 title: "DMP '26 Week 11 Update by Stuti Jain"
 
@@ -41557,7 +41627,7 @@ Unlike individual toolbar labels, a lesson contains interconnected story content
 
 ## Acknowledgments
 
-Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,ag=e({default:()=>og}),og=`---
+Thanks to Walter Bender and Devin Ulibarri for their continued guidance throughout the development of the Lesson Plans framework. Their feedback has helped shape the project from an initial story-driven prototype into a more flexible learning system with scalable lesson infrastructure, reflection tools, contextual guidance, and support for multilingual learning experiences.`,sg=e({default:()=>cg}),cg=`---
 title: "GSoC '26 Week 13 Report by Rejah Rabeeul Haque"
 excerpt: "Improved Game Mode with speed adjuster, XO buddy colors, spawn positioning, and 50% win condition, added localized tutorials for Draw and Number Mode, and added Journal save for Draw Mode."
 category: "DEVELOPER NEWS"
@@ -41644,7 +41714,7 @@ Thanks to my mentor Lionel Laske for the continuous guidance and patience, and t
 
 ---
 
-*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,sg=e({default:()=>cg}),cg=`---
+*Thanks for reading! Stay tuned for next week's update. Feel free to reach out if you have any questions or feedback.*`,lg=e({default:()=>ug}),ug=`---
 title: "GSoC '26 Week 14 Report by Rejah Rabeeul Haque"
 excerpt: "Wrapping up GSoC '26 with AI difficulty levels in Game Mode and in-game event notifications to improve the player experience."
 category: "DEVELOPER NEWS"
@@ -41714,7 +41784,7 @@ A massive thank you to my mentor, Lionel Laske, for his continuous guidance, ins
 
 ---
 
-*Thanks for following my journey this summer! Feel free to reach out if you have any questions or feedback.*`,lg=e({default:()=>ug}),ug=`---
+*Thanks for following my journey this summer! Feel free to reach out if you have any questions or feedback.*`,dg=e({default:()=>fg}),fg=`---
 title: "GSoC'26  Final Report by Syed Khubayb Ur Rahman"
 excerpt: "Final report summarizing the architecture and outcomes of the Music Blocks v4 Masonry project."
 category: "DEVELOPER NEWS"
@@ -41892,7 +41962,7 @@ To restore a program, the system reconstructs blank Brick instances based on the
 ## Acknowledgments
 
 Special thanks to my mentors Anindya Kundu  and Safwan Sayeed for their continued feedback, architecture reviews, and guidance throughout the summer. Thanks also to Devin Ulibarri, Walter Bender, and the entire Sugar Labs community for this incredible opportunity to contribute to Music Blocks v4.
-`,dg=e({default:()=>fg}),fg="---\ntitle: \"What I Learned Porting Sugar Activities to GTK4\"\nexcerpt: \"A look at the real-world problems and unusual cases I encountered while porting 9 core Sugar activities to GTK4 and Wayland.\"\ncategory: \"DEVELOPER NEWS\"\ndate: \"2026-08-31\"\nslug: \"2026-08-31-gtk4-porting-guide\"\nauthor: \"@/constants/MarkdownFiles/authors/divyam-agarwal.md\"\ntags: \"gsoc26,sugarlabs,gtk4,wayland,porting\"\nimage: \"assets/Images/GSOC.webp\"\n---\n\nThis summer during GSoC 2026, I worked on porting 9 of the core Fructose activities—Calculate, Log, Image Viewer, Chat, Browse, Read, Jukebox, Terminal, and TurtleArt—from GTK3 to GTK4.\n\nIf you are looking for the official API changes, the [GNOME GTK4 Migration Guide](https://docs.gtk.org/gtk4/migrating-3to4.html) is still the best place to start. But once I started porting the Sugar codebase, I kept running into weird problems and old code assumptions that aren't really covered in the documentation.\n\nI wrote down the main issues here, hoping it saves the next person some debugging time.\n\n## Quick Reference: GTK3 to GTK4 Replacements\n\n| GTK3 / Old API | GTK4 / New API | Notes |\n| :--- | :--- | :--- |\n| `Gtk.HBox` / `Gtk.VBox` | `Gtk.Box` | Set orientation explicitly. |\n| `Gtk.Table` | `Gtk.Grid` | |\n| `pack_start()` | `append()` / `prepend()` | |\n| `add()` | `set_child()` | Depends on the container. |\n| `Gtk.Toolbar` | `Gtk.Box` + `Gtk.Popover` | Toolbar was removed entirely. |\n| `Gtk.IconView` | `Gtk.FlowBox` | Useful with `Gtk.Picture` for scaling SVGs. |\n| `button-press-event` | `Gtk.GestureClick` | |\n| `key-press-event` | `Gtk.EventControllerKey` | |\n| EventBox | `Gtk.GestureClick` / `Gtk.GestureDrag` / `Gtk.GestureZoom` | Use the controller matching the interaction. |\n| `modify_bg()` | `Gtk.CssProvider` | Bind strictly to the needed widgets. |\n| `Gdk.cairo_set_source_pixbuf` | Convert pixbuf to a Cairo image surface | Convert pixbufs manually. |\n\n## Layouts broke everywhere\n\nThe first thing I noticed was that almost every activity layout was broken. The old codebase used `Gtk.HBox`, `Gtk.VBox`, `pack_start()`, and `add()` in many places. Since GTK4 removes those, I spent the first few weeks rewriting the UI code around `Gtk.Box` and `Gtk.Grid`.\n\nIn practice, this usually means replacing:\n\n* `Gtk.HBox` / `Gtk.VBox` with `Gtk.Box` (and setting orientation)\n* `Gtk.Table` with `Gtk.Grid`\n* `pack_start()` with `append()` or `prepend()`\n* `add()` with `set_child()` or the appropriate container API\n\nBrowse ([PR #141](https://github.com/sugarlabs/browse-activity/pull/141)) was probably the hardest case here. GTK4 removed `Gtk.Toolbar`, which Browse used for most of its navigation. I couldn't just swap in a GTK4 replacement, so I had to rebuild the toolbars using a mix of `Gtk.Box` and `Gtk.Popover`.\n\nI had a similar problem with `Gtk.IconView`, which was also removed. In TurtleArt's sample project picker, I moved to a `Gtk.FlowBox` with `Gtk.Picture` for scaling the SVGs. In Chat's emoji picker, I used a `Gtk.Grid` with `Gtk.Picture` instead.\n\n## Sugar's startup arguments vs. GTK4\n\nEarly on, I ran into crashes before my activity code even got to run. It turned out GTK4's `Gtk.Application` automatically tries to parse command-line arguments on startup. Sugar always launches activities with specific internal flags (like `-s` and `-b`), which confused GTK4 so much that it just failed and crashed the process.\n\nI realized I couldn't fix this inside the activities themselves. I had to go into the toolkit ([sugar-toolkit-gtk4 PR #35](https://github.com/sugarlabs/sugar-toolkit-gtk4/pull/35)) and patch the application startup to tell GTK to ignore Sugar's arguments.\n\n## CSS bleeding into Jarabe\n\nIn GTK3, changing colors while running was usually done with methods like `modify_bg()`. With GTK4, I had to move everything to `Gtk.CssProvider`.\n\nInitially, I just injected the CSS globally for my custom widgets. But because activities run in the same environment as the shell, I quickly realized my styles were affecting other widgets. A global CSS rule for a button in Calculate would suddenly alter the appearance of buttons in Jarabe.\n\nTo stop this, I started limiting each CSS provider to the widgets that needed it. For the toolkit's `ToolbarBox`, I created one provider per page, made sure to clean it up when the page was destroyed, and used `sugar4.graphics.style.apply_css_to_widget` to bind it only to the specific widgets that needed it.\n\n## Wayland problems and input handling\n\nInput handling was a problem at first. I removed all the old `button-press-event` and `key-press-event` connections and replaced them with GTK4 event controllers. For GTK4 ports, the usual replacements are `Gtk.GestureClick` for mouse/button events and `Gtk.EventControllerKey` for keyboard input.\n\nIn the Image Viewer, I removed the old `EventBox` and `SugarGestures` wrappers and moved to `Gtk.GestureZoom` and `Gtk.GestureDrag` controllers.\n\nWayland also messed with dialogs. While porting TurtleArt and Read, my popups would either render behind the main window, lose focus, or just fail to appear at all. After debugging it for a while, I realized they needed `.set_transient_for()` and `.set_modal(True)` calls to behave correctly under the Wayland window system.\n\nWhile testing the UI, I noticed that dragging pages around in `ToolbarBox` left the related `Gtk.Popover` broken. I finally fixed it by clearing the page content (`set_child(None)`) before moving the widget to another parent, rather than destroying the popover itself.\n\n## The DBus null-byte nightmare\n\nThis was one of the most unusual bugs I found. When sending preview data over DBus, the binary data kept getting cut off, throwing a random `GLib.Error`. I stared at it for a while before realizing the binary stream contained null bytes inside the data, which DBus was interpreting as string terminators. I had to patch the toolkit to handle binary data properly so the preview wouldn't get chopped off at the first null byte.\n\n## Custom rendering was harder than I thought\n\nRendering was probably the part I underestimated most. GTK4 removed the old `draw` path, which made the Cairo-based rendering code much harder to fit into the new pipeline.\n\nThis wasn't too bad for some of the simpler widgets. In Chat, moving the speech bubbles to `do_snapshot` using `Gtk.Snapshot` and Graphene bounds was fairly simple compared with the old GTK3 drawing code.\n\nBut TurtleArt was a completely different story. Its entire architecture is heavily tied to Cairo for drawing the complex block shapes and the canvas itself. I found during debugging that functions like `Gdk.cairo_set_source_pixbuf()` simply don't exist anymore. You can't just use a pixbuf directly with a Cairo context. I had to manually convert the pixbufs to Cairo image surfaces so the old rendering code could work with GTK4. It required touching almost every sprite and block rendering class in the activity.\n\nI had another rendering problem with GStreamer in Jukebox ([PR #35](https://github.com/sugarlabs/jukebox-activity/pull/35)). The old method of grabbing an X11 window handle (`xid`) and passing it to the sink doesn't work on Wayland. I rewrote the video pipeline to use `gtk4paintablesink` connected to a `Gtk.Picture` widget instead.\n\n## Papers and WebKit6 in Read\n\nFor the Read activity ([PR #50](https://github.com/sugarlabs/read-activity/pull/50)), the GTK4 port meant dealing with two completely different rendering backends.\n\nFirst, the old `Evince` backend was no longer usable for GTK4, so I had to move the PDF viewer to its modern successor, `Papers`. The API migration from `EvinceDocument 3.0` to `PapersDocument 4.0` required updating the document adapters (for Comic, Image, and Text) and loading custom Papers CSS locally to ensure it rendered correctly in the Sugar environment.\n\n*A quick warning if you touch this code:* the Table of Contents (TOC) is currently disabled. Papers moved the outline from `GtkTreeModel` to `GListModel`, and `has_document_links()` segfaults on `GListModel` input. It needs a full rewrite of the outline parser.\n\nSecond, Read also supports EPUB files, which meant I couldn't just stop at Papers. I had to simultaneously port the EPUB viewer from WebKit2 to WebKit6. Juggling these two massive rendering engines in the same activity made this port significantly more complex.\n\n## Testing (and why I started ignoring Jarabe)\n\nBecause the Sugar shell (Jarabe) was undergoing its own massive porting effort at the exact same time, testing my activities inside the shell was incredibly unstable. I'd get a crash and have no idea if my activity caused it or if the shell just broke again.\n\nTo make debugging easier, I wrote a `local_run.py` script for almost every activity I ported. This created a minimal `Gtk.Application`, bypassing DBus and Datastore dependencies. If it crashed in `local_run.py`, the bug was on me. If it ran perfectly standalone but crashed in Sugar, I knew I was looking at an issue between the activity and Sugar. Even now that the shell is mostly ported, testing with a local wrapper is just so much faster.\n\nThe development environment mattered too. While the Fedora Sugar Live ISO is a great out-of-the-box testing environment, I found Debian 13 (Trixie) much easier for development since it had newer GTK4 packages, including `Papers`, that were missing or outdated in Fedora.\n\n## What I would do differently\n\nLooking back at the 12 weeks, there are a few things I'd change about my approach if I were starting over:\n\n* **Start with a standalone wrapper immediately:** Early on, I wasted so much time trying to debug activities inside the broken shell. Writing `local_run.py` should have been step one.\n* **Fix the toolkit first:** Sometimes I tried to hack around toolkit bugs inside the activity itself, only to realize later that the proper fix belonged in the toolkit (`sugar-toolkit-gtk4`).\n* **Test Wayland behavior earlier:** I initially did a lot of testing in an X11 environment, which masked the dialog window and popup positioning bugs. Wayland has to be tested as early as possible.\n* **Audit dependencies upfront:** I didn't realize Evince was dead in GTK4 until I was already deep into porting Read. Looking closely at dependencies like Evince/Papers or VTE before touching the UI code would have made planning much smoother.\n* **Document recurring patterns:** I should have kept a running list of GTK3 → GTK4 replacements (like `modify_bg` → CSS, or `pack_start` → `append`) from week one, rather than finding them again.\n\nAfter doing all of this, the biggest thing I took away is that the GTK4 port wasn't really about replacing old APIs. A lot of the work was figuring out which assumptions in the old code were tied to X11, GTK3, or the old Sugar shell.\n",pg=e({default:()=>mg}),mg=`---
+`,pg=e({default:()=>mg}),mg="---\ntitle: \"What I Learned Porting Sugar Activities to GTK4\"\nexcerpt: \"A look at the real-world problems and unusual cases I encountered while porting 9 core Sugar activities to GTK4 and Wayland.\"\ncategory: \"DEVELOPER NEWS\"\ndate: \"2026-08-31\"\nslug: \"2026-08-31-gtk4-porting-guide\"\nauthor: \"@/constants/MarkdownFiles/authors/divyam-agarwal.md\"\ntags: \"gsoc26,sugarlabs,gtk4,wayland,porting\"\nimage: \"assets/Images/GSOC.webp\"\n---\n\nThis summer during GSoC 2026, I worked on porting 9 of the core Fructose activities—Calculate, Log, Image Viewer, Chat, Browse, Read, Jukebox, Terminal, and TurtleArt—from GTK3 to GTK4.\n\nIf you are looking for the official API changes, the [GNOME GTK4 Migration Guide](https://docs.gtk.org/gtk4/migrating-3to4.html) is still the best place to start. But once I started porting the Sugar codebase, I kept running into weird problems and old code assumptions that aren't really covered in the documentation.\n\nI wrote down the main issues here, hoping it saves the next person some debugging time.\n\n## Quick Reference: GTK3 to GTK4 Replacements\n\n| GTK3 / Old API | GTK4 / New API | Notes |\n| :--- | :--- | :--- |\n| `Gtk.HBox` / `Gtk.VBox` | `Gtk.Box` | Set orientation explicitly. |\n| `Gtk.Table` | `Gtk.Grid` | |\n| `pack_start()` | `append()` / `prepend()` | |\n| `add()` | `set_child()` | Depends on the container. |\n| `Gtk.Toolbar` | `Gtk.Box` + `Gtk.Popover` | Toolbar was removed entirely. |\n| `Gtk.IconView` | `Gtk.FlowBox` | Useful with `Gtk.Picture` for scaling SVGs. |\n| `button-press-event` | `Gtk.GestureClick` | |\n| `key-press-event` | `Gtk.EventControllerKey` | |\n| EventBox | `Gtk.GestureClick` / `Gtk.GestureDrag` / `Gtk.GestureZoom` | Use the controller matching the interaction. |\n| `modify_bg()` | `Gtk.CssProvider` | Bind strictly to the needed widgets. |\n| `Gdk.cairo_set_source_pixbuf` | Convert pixbuf to a Cairo image surface | Convert pixbufs manually. |\n\n## Layouts broke everywhere\n\nThe first thing I noticed was that almost every activity layout was broken. The old codebase used `Gtk.HBox`, `Gtk.VBox`, `pack_start()`, and `add()` in many places. Since GTK4 removes those, I spent the first few weeks rewriting the UI code around `Gtk.Box` and `Gtk.Grid`.\n\nIn practice, this usually means replacing:\n\n* `Gtk.HBox` / `Gtk.VBox` with `Gtk.Box` (and setting orientation)\n* `Gtk.Table` with `Gtk.Grid`\n* `pack_start()` with `append()` or `prepend()`\n* `add()` with `set_child()` or the appropriate container API\n\nBrowse ([PR #141](https://github.com/sugarlabs/browse-activity/pull/141)) was probably the hardest case here. GTK4 removed `Gtk.Toolbar`, which Browse used for most of its navigation. I couldn't just swap in a GTK4 replacement, so I had to rebuild the toolbars using a mix of `Gtk.Box` and `Gtk.Popover`.\n\nI had a similar problem with `Gtk.IconView`, which was also removed. In TurtleArt's sample project picker, I moved to a `Gtk.FlowBox` with `Gtk.Picture` for scaling the SVGs. In Chat's emoji picker, I used a `Gtk.Grid` with `Gtk.Picture` instead.\n\n## Sugar's startup arguments vs. GTK4\n\nEarly on, I ran into crashes before my activity code even got to run. It turned out GTK4's `Gtk.Application` automatically tries to parse command-line arguments on startup. Sugar always launches activities with specific internal flags (like `-s` and `-b`), which confused GTK4 so much that it just failed and crashed the process.\n\nI realized I couldn't fix this inside the activities themselves. I had to go into the toolkit ([sugar-toolkit-gtk4 PR #35](https://github.com/sugarlabs/sugar-toolkit-gtk4/pull/35)) and patch the application startup to tell GTK to ignore Sugar's arguments.\n\n## CSS bleeding into Jarabe\n\nIn GTK3, changing colors while running was usually done with methods like `modify_bg()`. With GTK4, I had to move everything to `Gtk.CssProvider`.\n\nInitially, I just injected the CSS globally for my custom widgets. But because activities run in the same environment as the shell, I quickly realized my styles were affecting other widgets. A global CSS rule for a button in Calculate would suddenly alter the appearance of buttons in Jarabe.\n\nTo stop this, I started limiting each CSS provider to the widgets that needed it. For the toolkit's `ToolbarBox`, I created one provider per page, made sure to clean it up when the page was destroyed, and used `sugar4.graphics.style.apply_css_to_widget` to bind it only to the specific widgets that needed it.\n\n## Wayland problems and input handling\n\nInput handling was a problem at first. I removed all the old `button-press-event` and `key-press-event` connections and replaced them with GTK4 event controllers. For GTK4 ports, the usual replacements are `Gtk.GestureClick` for mouse/button events and `Gtk.EventControllerKey` for keyboard input.\n\nIn the Image Viewer, I removed the old `EventBox` and `SugarGestures` wrappers and moved to `Gtk.GestureZoom` and `Gtk.GestureDrag` controllers.\n\nWayland also messed with dialogs. While porting TurtleArt and Read, my popups would either render behind the main window, lose focus, or just fail to appear at all. After debugging it for a while, I realized they needed `.set_transient_for()` and `.set_modal(True)` calls to behave correctly under the Wayland window system.\n\nWhile testing the UI, I noticed that dragging pages around in `ToolbarBox` left the related `Gtk.Popover` broken. I finally fixed it by clearing the page content (`set_child(None)`) before moving the widget to another parent, rather than destroying the popover itself.\n\n## The DBus null-byte nightmare\n\nThis was one of the most unusual bugs I found. When sending preview data over DBus, the binary data kept getting cut off, throwing a random `GLib.Error`. I stared at it for a while before realizing the binary stream contained null bytes inside the data, which DBus was interpreting as string terminators. I had to patch the toolkit to handle binary data properly so the preview wouldn't get chopped off at the first null byte.\n\n## Custom rendering was harder than I thought\n\nRendering was probably the part I underestimated most. GTK4 removed the old `draw` path, which made the Cairo-based rendering code much harder to fit into the new pipeline.\n\nThis wasn't too bad for some of the simpler widgets. In Chat, moving the speech bubbles to `do_snapshot` using `Gtk.Snapshot` and Graphene bounds was fairly simple compared with the old GTK3 drawing code.\n\nBut TurtleArt was a completely different story. Its entire architecture is heavily tied to Cairo for drawing the complex block shapes and the canvas itself. I found during debugging that functions like `Gdk.cairo_set_source_pixbuf()` simply don't exist anymore. You can't just use a pixbuf directly with a Cairo context. I had to manually convert the pixbufs to Cairo image surfaces so the old rendering code could work with GTK4. It required touching almost every sprite and block rendering class in the activity.\n\nI had another rendering problem with GStreamer in Jukebox ([PR #35](https://github.com/sugarlabs/jukebox-activity/pull/35)). The old method of grabbing an X11 window handle (`xid`) and passing it to the sink doesn't work on Wayland. I rewrote the video pipeline to use `gtk4paintablesink` connected to a `Gtk.Picture` widget instead.\n\n## Papers and WebKit6 in Read\n\nFor the Read activity ([PR #50](https://github.com/sugarlabs/read-activity/pull/50)), the GTK4 port meant dealing with two completely different rendering backends.\n\nFirst, the old `Evince` backend was no longer usable for GTK4, so I had to move the PDF viewer to its modern successor, `Papers`. The API migration from `EvinceDocument 3.0` to `PapersDocument 4.0` required updating the document adapters (for Comic, Image, and Text) and loading custom Papers CSS locally to ensure it rendered correctly in the Sugar environment.\n\n*A quick warning if you touch this code:* the Table of Contents (TOC) is currently disabled. Papers moved the outline from `GtkTreeModel` to `GListModel`, and `has_document_links()` segfaults on `GListModel` input. It needs a full rewrite of the outline parser.\n\nSecond, Read also supports EPUB files, which meant I couldn't just stop at Papers. I had to simultaneously port the EPUB viewer from WebKit2 to WebKit6. Juggling these two massive rendering engines in the same activity made this port significantly more complex.\n\n## Testing (and why I started ignoring Jarabe)\n\nBecause the Sugar shell (Jarabe) was undergoing its own massive porting effort at the exact same time, testing my activities inside the shell was incredibly unstable. I'd get a crash and have no idea if my activity caused it or if the shell just broke again.\n\nTo make debugging easier, I wrote a `local_run.py` script for almost every activity I ported. This created a minimal `Gtk.Application`, bypassing DBus and Datastore dependencies. If it crashed in `local_run.py`, the bug was on me. If it ran perfectly standalone but crashed in Sugar, I knew I was looking at an issue between the activity and Sugar. Even now that the shell is mostly ported, testing with a local wrapper is just so much faster.\n\nThe development environment mattered too. While the Fedora Sugar Live ISO is a great out-of-the-box testing environment, I found Debian 13 (Trixie) much easier for development since it had newer GTK4 packages, including `Papers`, that were missing or outdated in Fedora.\n\n## What I would do differently\n\nLooking back at the 12 weeks, there are a few things I'd change about my approach if I were starting over:\n\n* **Start with a standalone wrapper immediately:** Early on, I wasted so much time trying to debug activities inside the broken shell. Writing `local_run.py` should have been step one.\n* **Fix the toolkit first:** Sometimes I tried to hack around toolkit bugs inside the activity itself, only to realize later that the proper fix belonged in the toolkit (`sugar-toolkit-gtk4`).\n* **Test Wayland behavior earlier:** I initially did a lot of testing in an X11 environment, which masked the dialog window and popup positioning bugs. Wayland has to be tested as early as possible.\n* **Audit dependencies upfront:** I didn't realize Evince was dead in GTK4 until I was already deep into porting Read. Looking closely at dependencies like Evince/Papers or VTE before touching the UI code would have made planning much smoother.\n* **Document recurring patterns:** I should have kept a running list of GTK3 → GTK4 replacements (like `modify_bg` → CSS, or `pack_start` → `append`) from week one, rather than finding them again.\n\nAfter doing all of this, the biggest thing I took away is that the GTK4 port wasn't really about replacing old APIs. A lot of the work was figuring out which assumptions in the old code were tied to X11, GTK3, or the old Sugar shell.\n",hg=e({default:()=>gg}),gg=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -42041,7 +42111,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,hg=e({default:()=>gg}),gg=`---
+`,_g=e({default:()=>vg}),vg=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -42144,7 +42214,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,_g=e({default:()=>vg}),vg=`---
+`,yg=e({default:()=>bg}),bg=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -42617,7 +42687,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,yg=e({default:()=>bg}),bg=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,xg=e({default:()=>Sg}),Sg=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -42704,7 +42774,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,xg=e({default:()=>Sg}),Sg=`---\r
+`,Cg=e({default:()=>wg}),wg=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -42797,7 +42867,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Cg=e({default:()=>wg}),wg=`---\r
+`,Tg=e({default:()=>Eg}),Eg=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -42891,7 +42961,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,Tg=e({default:()=>Eg}),Eg=`---\r
+`,Dg=e({default:()=>Og}),Og=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -42979,7 +43049,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,Dg=e({default:()=>Og}),Og=`---\r
+`,kg=e({default:()=>Ag}),Ag=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -43062,7 +43132,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,kg=e({default:()=>Ag}),Ag=`---\r
+`,jg=e({default:()=>Mg}),Mg=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -43128,7 +43198,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,jg=e({default:()=>Mg}),Mg=`---
+`,Ng=e({default:()=>Pg}),Pg=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -43210,7 +43280,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Ng=e({default:()=>Pg}),Pg=`---
+---`,Fg=e({default:()=>Ig}),Ig=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -43303,7 +43373,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Fg=e({default:()=>Ig}),Ig=`---
+`,Lg=e({default:()=>Rg}),Rg=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -43392,7 +43462,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Lg=e({default:()=>Rg}),Rg=`---
+--- `,zg=e({default:()=>Bg}),Bg=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43537,7 +43607,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,zg=e({default:()=>Bg}),Bg=`---
+--- `,Vg=e({default:()=>Hg}),Hg=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43725,7 +43795,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,Vg=e({default:()=>Hg}),Hg=`---
+--- `,Ug=e({default:()=>Wg}),Wg=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43820,7 +43890,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Ug=e({default:()=>Wg}),Wg=`---
+`,Gg=e({default:()=>Kg}),Kg=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43909,7 +43979,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,Gg=e({default:()=>Kg}),Kg=`---
+`,qg=e({default:()=>Jg}),Jg=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -43996,7 +44066,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,qg=e({default:()=>Jg}),Jg=`---
+---`,Yg=e({default:()=>Xg}),Xg=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -44079,7 +44149,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Yg=e({default:()=>Xg}),Xg=`---
+---`,Zg=e({default:()=>Qg}),Qg=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -44162,7 +44232,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,Zg=e({default:()=>Qg}),Qg=`---
+---`,$g=e({default:()=>e_}),e_=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -44467,4 +44537,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{nh as $,ea as $a,ts as $i,td as $n,er as $o,tl as $r,$e as $s,np as $t,qh as A,Ka as Aa,G as Ac,qs as Ai,qd as An,Kr as Ao,ql as Ar,Gt as As,Jp as At,Dh as B,Ea as Ba,T as Bc,Ds as Bi,Dd as Bn,Er as Bo,Dl as Br,Tt as Bs,Op as Bt,sg as C,oo as Ca,ae as Cc,sc as Ci,cf as Cn,oi as Co,su as Cr,on as Cs,cm as Ct,$h as D,Qa as Da,Z as Dc,$s as Di,$d as Dn,Qr as Do,$l as Dr,Zt as Ds,em as Dt,tg as E,eo as Ea,$ as Ec,tc as Ei,tf as En,ei as Eo,tu as Er,$t as Es,nm as Et,Lh as F,Ia as Fa,F as Fc,Ls as Fi,Ld as Fn,Ir as Fo,Ll as Fr,Ft as Fs,Rp as Ft,vh as G,ga as Ga,h as Gc,_s as Gi,_d as Gn,gr as Go,_l as Gr,ht as Gs,vp as Gt,Ch as H,Sa as Ha,x as Hc,Cs as Hi,Cd as Hn,Sr as Ho,Cl as Hr,xt as Hs,wp as Ht,Fh as I,Pa as Ia,N as Ic,Fs as Ii,Fd as In,Pr as Io,Fl as Ir,Nt as Is,Ip as It,fh as J,ua as Ja,l as Jc,ds as Ji,dd as Jn,ur as Jo,dl as Jr,lt as Js,fp as Jt,gh as K,ma as Ka,p as Kc,hs as Ki,hd as Kn,mr as Ko,hl as Kr,pt as Ks,gp as Kt,Nh as L,Ma as La,j as Lc,Ns as Li,Nd as Ln,Mr as Lo,Nl as Lr,jt as Ls,Pp as Lt,Uh as M,Ha as Ma,V as Mc,Us as Mi,Ud as Mn,Hr as Mo,Ul as Mr,Vt as Ms,Wp as Mt,Vh as N,Ba as Na,z as Nc,Vs as Ni,Vd as Nn,Br as No,Vl as Nr,zt as Ns,Hp as Nt,Zh as O,Xa as Oa,Y as Oc,Zs as Oi,Zd as On,Xr as Oo,Zl as Or,Yt as Os,Qp as Ot,zh as P,Ra as Pa,L as Pc,zs as Pi,zd as Pn,Rr as Po,zl as Pr,Lt as Ps,Bp as Pt,ih as Q,na as Qa,t as Qc,rs as Qi,rd as Qn,nr as Qo,rl as Qr,tt as Qs,ip as Qt,jh as R,Aa as Ra,k as Rc,js as Ri,jd as Rn,Ar as Ro,jl as Rr,kt as Rs,Mp as Rt,lg as S,co as Sa,se as Sc,lc as Si,uf as Sn,ci as So,lu as Sr,cn as Ss,um as St,rg as T,no as Ta,te as Tc,rc as Ti,rf as Tn,ni as To,ru as Tr,tn as Ts,im as Tt,xh as U,ba as Ua,y as Uc,xs as Ui,xd as Un,br as Uo,xl as Ur,yt as Us,Sp as Ut,Th as V,wa as Va,C as Vc,Ts as Vi,Td as Vn,wr as Vo,Tl as Vr,Ct as Vs,Ep as Vt,yh as W,va as Wa,_ as Wc,ys as Wi,yd as Wn,vr as Wo,yl as Wr,_t as Ws,bp as Wt,ch as X,oa as Xa,a as Xc,ss as Xi,sd as Xn,or as Xo,sl as Xr,at as Xs,cp as Xt,uh as Y,ca as Ya,s as Yc,ls as Yi,ld as Yn,cr as Yo,ll as Yr,st as Ys,up as Yt,oh as Z,ia as Za,r as Zc,as as Zi,ad as Zn,ir as Zo,al as Zr,rt as Zs,op as Zt,yg as _,yo as _a,_e as _c,yc as _i,bf as _n,vi as _o,yu as _r,vn as _s,bm as _t,Ug as a,Uo as aa,Ve as ac,Uc as ai,Wf as an,Hi as ao,Uu as ar,Hn as as,Wm as at,pg as b,po as ba,de as bc,pc as bi,mf as bn,fi as bo,pu as br,fn as bs,mm as bt,Lg as c,Lo as ca,Fe as cc,Lc as ci,Rf as cn,Ii as co,Lu as cr,In as cs,Rm as ct,jg as d,jo as da,ke as dc,jc as di,Mf as dn,Ai as do,ju as dr,An as ds,Mm as dt,$o as ea,Ze as ec,$c as ei,ep as en,Qi as eo,$u as er,Qn as es,eh as et,kg as f,ko as fa,De as fc,kc as fi,Af as fn,Oi as fo,ku as fr,On as fs,Am as ft,xg as g,xo as ga,ye as gc,xc as gi,Sf as gn,bi as go,xu as gr,bn as gs,Sm as gt,Cg as h,Co as ha,xe as hc,Cc as hi,wf as hn,Si as ho,Cu as hr,Sn as hs,wm as ht,Gg as i,Go as ia,Ue as ic,Gc as ii,Kf as in,Wi as io,Gu as ir,Wn as is,Km as it,Gh as j,Wa as ja,U as jc,Gs as ji,Gd as jn,Wr as jo,Gl as jr,Ut as js,Kp as jt,Yh as k,Ja as ka,q as kc,Ys as ki,Yd as kn,Jr as ko,Yl as kr,qt as ks,Xp as kt,Fg as l,Fo as la,Ne as lc,Fc as li,If as ln,Pi as lo,Fu as lr,Pn as ls,Im as lt,Tg as m,To as ma,Ce as mc,Tc as mi,Ef as mn,wi as mo,Tu as mr,wn as ms,Em as mt,Yg as n,Yo as na,qe as nc,Yc as ni,Xf as nn,Ji as no,Yu as nr,Jn as ns,Xm as nt,Vg as o,Vo as oa,ze as oc,Vc as oi,Hf as on,Bi as oo,Vu as or,Bn as os,Hm as ot,Dg as p,Do as pa,Te as pc,Dc as pi,Of as pn,Ei as po,Du as pr,En as ps,Om as pt,mh as q,fa as qa,d as qc,ps as qi,pd as qn,fr as qo,pl as qr,dt as qs,mp as qt,qg as r,qo as ra,Ge as rc,qc as ri,Jf as rn,Ki as ro,qu as rr,Kn as rs,Jm as rt,zg as s,zo as sa,Le as sc,zc as si,Bf as sn,Ri as so,zu as sr,Rn as ss,Bm as st,Zg as t,Zo as ta,Ye as tc,Zc as ti,Qf as tn,Xi as to,Zu as tr,Xn as ts,Qm as tt,Ng as u,No as ua,je as uc,Nc as ui,Pf as un,Mi as uo,Nu as ur,Mn as us,Pm as ut,_g as v,_o as va,he as vc,_c as vi,vf as vn,gi as vo,_u as vr,gn as vs,vm as vt,ag as w,io as wa,re as wc,ac as wi,of as wn,ii as wo,au as wr,rn as ws,om as wt,dg as x,uo as xa,le as xc,dc as xi,ff as xn,ui as xo,du as xr,un as xs,fm as xt,hg as y,ho as ya,pe as yc,hc as yi,gf as yn,mi as yo,hu as yr,mn as ys,gm as yt,kh as z,Oa as za,D as zc,ks as zi,kd as zn,Or as zo,kl as zr,Dt as zs,Ap as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{ih as $,na as $a,t as $c,rs as $i,rd as $n,nr as $o,rl as $r,tt as $s,ip as $t,Yh as A,Ja as Aa,q as Ac,Ys as Ai,Yd as An,Jr as Ao,Yl as Ar,qt as As,Xp as At,kh as B,Oa as Ba,D as Bc,ks as Bi,kd as Bn,Or as Bo,kl as Br,Dt as Bs,Ap as Bt,lg as C,co as Ca,se as Cc,lc as Ci,uf as Cn,ci as Co,lu as Cr,cn as Cs,um as Ct,tg as D,eo as Da,$ as Dc,tc as Di,tf as Dn,ei as Do,tu as Dr,$t as Ds,nm as Dt,rg as E,no as Ea,te as Ec,rc as Ei,rf as En,ni as Eo,ru as Er,tn as Es,im as Et,zh as F,Ra as Fa,L as Fc,zs as Fi,zd as Fn,Rr as Fo,zl as Fr,Lt as Fs,Bp as Ft,bh as G,va as Ga,_ as Gc,ys as Gi,yd as Gn,vr as Go,yl as Gr,_t as Gs,bp as Gt,Th as H,wa as Ha,C as Hc,Ts as Hi,Td as Hn,wr as Ho,Tl as Hr,Ct as Hs,Ep as Ht,Lh as I,Ia,F as Ic,Ls as Ii,Ld as In,Ir as Io,Ll as Ir,Ft as Is,Rp as It,mh as J,fa as Ja,d as Jc,ps as Ji,pd as Jn,fr as Jo,pl as Jr,dt as Js,mp as Jt,vh as K,ga as Ka,h as Kc,_s as Ki,_d as Kn,gr as Ko,_l as Kr,ht as Ks,vp as Kt,Fh as L,Pa as La,N as Lc,Fs as Li,Fd as Ln,Pr as Lo,Fl as Lr,Nt as Ls,Ip as Lt,Gh as M,Wa as Ma,U as Mc,Gs as Mi,Gd as Mn,Wr as Mo,Gl as Mr,Ut as Ms,Kp as Mt,Uh as N,Ha as Na,V as Nc,Us as Ni,Ud as Nn,Hr as No,Ul as Nr,Vt as Ns,Wp as Nt,$h as O,Qa as Oa,Z as Oc,$s as Oi,$d as On,Qr as Oo,$l as Or,Zt as Os,em as Ot,Vh as P,Ba as Pa,z as Pc,Vs as Pi,Vd as Pn,Br as Po,Vl as Pr,zt as Ps,Hp as Pt,oh as Q,ia as Qa,r as Qc,as as Qi,ad as Qn,ir as Qo,al as Qr,rt as Qs,op as Qt,Nh as R,Ma as Ra,j as Rc,Ns as Ri,Nd as Rn,Mr as Ro,Nl as Rr,jt as Rs,Pp as Rt,dg as S,uo as Sa,le as Sc,dc as Si,ff as Sn,ui as So,du as Sr,un as Ss,fm as St,ag as T,io as Ta,re as Tc,ac as Ti,of as Tn,ii as To,au as Tr,rn as Ts,om as Tt,Ch as U,Sa as Ua,x as Uc,Cs as Ui,Cd as Un,Sr as Uo,Cl as Ur,xt as Us,wp as Ut,Dh as V,Ea as Va,T as Vc,Ds as Vi,Dd as Vn,Er as Vo,Dl as Vr,Tt as Vs,Op as Vt,xh as W,ba as Wa,y as Wc,xs as Wi,xd as Wn,br as Wo,xl as Wr,yt as Ws,Sp as Wt,uh as X,ca as Xa,s as Xc,ls as Xi,ld as Xn,cr as Xo,ll as Xr,st as Xs,up as Xt,fh as Y,ua as Ya,l as Yc,ds as Yi,dd as Yn,ur as Yo,dl as Yr,lt as Ys,fp as Yt,ch as Z,oa as Za,a as Zc,ss as Zi,sd as Zn,or as Zo,sl as Zr,at as Zs,cp as Zt,xg as _,xo as _a,ye as _c,xc as _i,Sf as _n,bi as _o,xu as _r,bn as _s,Sm as _t,Gg as a,Go as aa,Ue as ac,Gc as ai,Kf as an,Wi as ao,Gu as ar,Wn as as,Km as at,hg as b,ho as ba,pe as bc,hc as bi,gf as bn,mi as bo,hu as br,mn as bs,gm as bt,zg as c,zo as ca,Le as cc,zc as ci,Bf as cn,Ri as co,zu as cr,Rn as cs,Bm as ct,Ng as d,No as da,je as dc,Nc as di,Pf as dn,Mi as do,Nu as dr,Mn as ds,Pm as dt,ts as ea,$e as ec,tl as ei,np as en,ea as eo,td as er,er as es,nh as et,jg as f,jo as fa,ke as fc,jc as fi,Mf as fn,Ai as fo,ju as fr,An as fs,Mm as ft,Cg as g,Co as ga,xe as gc,Cc as gi,wf as gn,Si as go,Cu as gr,Sn as gs,wm as gt,Tg as h,To as ha,Ce as hc,Tc as hi,Ef as hn,wi as ho,Tu as hr,wn as hs,Em as ht,qg as i,qo as ia,Ge as ic,qc as ii,Jf as in,Ki as io,qu as ir,Kn as is,Jm as it,qh as j,Ka as ja,G as jc,qs as ji,qd as jn,Kr as jo,ql as jr,Gt as js,Jp as jt,Zh as k,Xa as ka,Y as kc,Zs as ki,Zd as kn,Xr as ko,Zl as kr,Yt as ks,Qp as kt,Lg as l,Lo as la,Fe as lc,Lc as li,Rf as ln,Ii as lo,Lu as lr,In as ls,Rm as lt,Dg as m,Do as ma,Te as mc,Dc as mi,Of as mn,Ei as mo,Du as mr,En as ms,Om as mt,Zg as n,Zo as na,Ye as nc,Zc as ni,Qf as nn,Xi as no,Zu as nr,Xn as ns,Qm as nt,Ug as o,Uo as oa,Ve as oc,Uc as oi,Wf as on,Hi as oo,Uu as or,Hn as os,Wm as ot,kg as p,ko as pa,De as pc,kc as pi,Af as pn,Oi as po,ku as pr,On as ps,Am as pt,gh as q,ma as qa,p as qc,hs as qi,hd as qn,mr as qo,hl as qr,pt as qs,gp as qt,Yg as r,Yo as ra,qe as rc,Yc as ri,Xf as rn,Ji as ro,Yu as rr,Jn as rs,Xm as rt,Vg as s,Vo as sa,ze as sc,Vc as si,Hf as sn,Bi as so,Vu as sr,Bn as ss,Hm as st,$g as t,$o as ta,Ze as tc,$c as ti,ep as tn,Qi as to,$u as tr,Qn as ts,eh as tt,Fg as u,Fo as ua,Ne as uc,Fc as ui,If as un,Pi as uo,Fu as ur,Pn as us,Im as ut,yg as v,yo as va,_e as vc,yc as vi,bf as vn,vi as vo,yu as vr,vn as vs,bm as vt,sg as w,oo as wa,ae as wc,sc as wi,cf as wn,oi as wo,su as wr,on as ws,cm as wt,pg as x,po as xa,de as xc,pc as xi,mf as xn,fi as xo,pu as xr,fn as xs,mm as xt,_g as y,_o as ya,he as yc,_c as yi,vf as yn,gi as yo,_u as yr,gn as ys,vm as yt,jh as z,Aa as za,k as zc,js as zi,jd as zn,Ar as zo,jl as zr,kt as zs,Mp as zt};
