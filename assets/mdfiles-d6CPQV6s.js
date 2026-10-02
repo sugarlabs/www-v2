@@ -44231,6 +44231,121 @@ Thanks to Mebin for reviews that each pointed at a concrete failure case, and to
 
 ---
 `,Zg=e({default:()=>Qg}),Qg=`---
+title: "DMP '26 Week 11 Update by Abhnish Kumar"
+excerpt: "Scoping the value-bar hotkey guard, fixing unbounded Stairs growth and the Alt+S conflict, and correcting dark-mode popup contrast for Music Blocks"
+category: "DEVELOPER NEWS"
+date: "2026-09-11"
+slug: "2026-09-11-dmp-26-abhnish-week11"
+author: "@/constants/MarkdownFiles/authors/abhnish-kumar.md"
+tags: "dmp26,sugarlabs,week11,abhnish-kumar,accessibility,keyboard-shortcuts"
+image: "assets/Images/c4gt-official-logo.png"
+---
+
+<!-- markdownlint-disable -->
+
+# Week 11 Progress Report by Abhnish Kumar
+
+**Project:** [Music Blocks - WCAG 2.1 AA Accessibility & Touch Support](https://github.com/sugarlabs/musicblocks/issues/6608)  
+**Mentors:** [Walter Bender](https://github.com/walterbender)  
+**Assisting Mentors:** [Devin Ulibarri](https://github.com/pikurasa)  
+**Reporting Period:** 2026-09-05 - 2026-09-11  
+
+---
+
+## Goals for This Week
+
+- **Goal 1:** Scope the value-bar hotkey guard so it stops swallowing every other keyboard shortcut
+- **Goal 2:** Track down and fix unbounded Stairs growth on re-init, plus a conflicting Alt+S binding while the program is running
+- **Goal 3:** Correct a dark-mode popup contrast violation to meet WCAG AA
+
+---
+
+## This Week's Achievements
+
+1. **Scoped the value-bar hotkey guard instead of blocking all shortcuts (#8546)**  
+   - The value-bar's keyboard guard was written broadly enough that it
+     was silently swallowing shortcuts that had nothing to do with the
+     value bar, instead of only intercepting the keys it actually
+     needed. Narrowed the guard so it only fires for its own relevant
+     keys, restoring every other shortcut that was getting blocked.  
+   - While fixing this, found a raw \`setTimeout()\` in the same code
+     path that bypassed the project's \`logo._timerManager\` pattern —
+     flagged by CodeRabbit during review. Routed it through
+     \`_timerManager\` instead, so it gets cleared along with every other
+     pending timer on stop/restart instead of becoming a zombie
+     callback.
+
+2. **Fixed unbounded Stairs growth on re-init and the Alt+S conflict (#8268)**  
+   - The \`Stairs\` array was growing without bound every time the
+     staircase block re-initialized, instead of resetting cleanly —
+     tracked down where re-init was appending instead of replacing and
+     fixed the growth.  
+   - Also fixed Alt+S being intercepted while a program was actively
+     running, which meant the shortcut silently did nothing at the
+     moment a user most wanted it. This PR went through the most
+     back-and-forth of anything this week, including a rebase to keep
+     it in sync with ongoing changes on \`master\`.
+
+3. **Corrected dark-mode popup message contrast to meet WCAG AA (#8544)**  
+   - Fixed a color-contrast violation on the dark-mode popup message,
+     routed through a CSS custom property in \`css/tokens.css\` rather
+     than a one-off hex value, consistent with how every other
+     contrast fix in this project has been handled.
+
+---
+
+## Challenges & How I Overcame Them
+
+- **Challenge:** #8268 needed more rounds of review and a rebase
+  against \`master\` before it could land, since it touched code that
+  kept moving underneath it.  
+  **Solution:** Kept re-fetching and rebasing against \`upstream/master\`
+  rather than letting the branch drift, and re-verified the fix still
+  held after each rebase instead of assuming it carried over cleanly.
+
+- **Challenge:** The raw \`setTimeout()\` CodeRabbit caught in #8546
+  wasn't something I was looking for — I was focused on the guard-order
+  bug, not timer cleanup.  
+  **Solution:** Took the review comment seriously instead of dismissing
+  it as unrelated noise, traced it back to the \`logo._timerManager\`
+  convention, and fixed it in the same PR rather than deferring it.
+
+---
+
+## Key Learnings
+
+- A keyboard guard that's supposed to protect one feature can end up
+  silently breaking every other shortcut in the app if it's not scoped
+  tightly — "does my guard let everything else through" is worth
+  checking explicitly, not just "does my own shortcut work."  
+- AI review feedback is worth verifying independently rather than
+  taking at face value or dismissing outright — the raw \`setTimeout()\`
+  catch in #8546 was real and would have shipped otherwise.
+
+---
+
+## Next Week's Roadmap
+
+- Continue chasing down remaining axe-flagged accessible-name gaps.  
+- Follow up on review threads still open from this week's PRs.
+
+---
+
+## Resources & References
+
+- **Tracking Issue:** [#6608](https://github.com/sugarlabs/musicblocks/issues/6608)  
+- **PR #8546:** [fix: scope the value-bar hotkey guard instead of blocking all shortcuts](https://github.com/sugarlabs/musicblocks/pull/8546)  
+- **PR #8268:** [fix: stop unbounded Stairs growth on re-init, fix Alt+S while running](https://github.com/sugarlabs/musicblocks/pull/8268)  
+- **PR #8544:** [fix(a11y): correct dark-mode popup message contrast to meet WCAG AA](https://github.com/sugarlabs/musicblocks/pull/8544)  
+- **Repository:** [sugarlabs/musicblocks](https://github.com/sugarlabs/musicblocks)  
+
+---
+
+## Acknowledgments
+
+Thanks to Walter for review on the Stairs/Alt+S fix through its
+several rounds, and to CodeRabbit for catching the timer-cleanup bug
+in #8546 before it shipped.`,$g=e({default:()=>e_}),e_=`---
 title: "How to GTK4: A Contributor's Guide to Modernizing Sugar"
 excerpt: "Why Sugar must move to GTK4, and how contributors can help port activities, the shell, and unlock Wayland"
 category: "DEVELOPER NEWS"
@@ -44379,7 +44494,7 @@ Until next time,
 
 Krish (mostlyk)
 
-`,$g=e({default:()=>e_}),e_=`---
+`,t_=e({default:()=>n_}),n_=`---
 title: "GNOME Asia Summit and GTK4 Porting"
 excerpt: "Reflections on presenting at GNOME Asia Summit and progress on porting Sugar's core activities"
 category: "DEVELOPER NEWS"
@@ -44482,7 +44597,7 @@ I am very grateful for the overall experience and when I wrote my final blog, I 
 
 
 *(If you're interested in porting an activity or contributing to the toolkit, reach out!)*
-`,t_=e({default:()=>n_}),n_=`---
+`,r_=e({default:()=>i_}),i_=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -44955,7 +45070,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,r_=e({default:()=>i_}),i_=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,a_=e({default:()=>o_}),o_=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -45042,7 +45157,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,a_=e({default:()=>o_}),o_=`---\r
+`,s_=e({default:()=>c_}),c_=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -45135,7 +45250,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,s_=e({default:()=>c_}),c_=`---\r
+`,l_=e({default:()=>u_}),u_=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -45229,7 +45344,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,l_=e({default:()=>u_}),u_=`---\r
+`,d_=e({default:()=>f_}),f_=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -45317,7 +45432,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,d_=e({default:()=>f_}),f_=`---\r
+`,p_=e({default:()=>m_}),m_=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -45400,7 +45515,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,p_=e({default:()=>m_}),m_=`---\r
+`,h_=e({default:()=>g_}),g_=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -45466,7 +45581,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,h_=e({default:()=>g_}),g_=`---
+`,__=e({default:()=>v_}),v_=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -45548,7 +45663,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,__=e({default:()=>v_}),v_=`---
+---`,y_=e({default:()=>b_}),b_=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -45641,7 +45756,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,y_=e({default:()=>b_}),b_=`---
+`,x_=e({default:()=>S_}),S_=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -45730,7 +45845,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,x_=e({default:()=>S_}),S_=`---
+--- `,C_=e({default:()=>w_}),w_=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -45875,7 +45990,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,C_=e({default:()=>w_}),w_=`---
+--- `,T_=e({default:()=>E_}),E_=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -46063,7 +46178,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,T_=e({default:()=>E_}),E_=`---
+--- `,D_=e({default:()=>O_}),O_=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -46158,7 +46273,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,D_=e({default:()=>O_}),O_=`---
+`,k_=e({default:()=>A_}),A_=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -46247,7 +46362,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,k_=e({default:()=>A_}),A_=`---
+`,j_=e({default:()=>M_}),M_=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -46334,7 +46449,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,j_=e({default:()=>M_}),M_=`---
+---`,N_=e({default:()=>P_}),P_=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -46417,7 +46532,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,N_=e({default:()=>P_}),P_=`---
+---`,F_=e({default:()=>I_}),I_=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -46500,7 +46615,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,F_=e({default:()=>I_}),I_=`---
+---`,L_=e({default:()=>R_}),R_=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -46805,4 +46920,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{zh as $,Ra as $a,L as $c,zs as $i,zd as $n,Rr as $o,zl as $r,Lt as $s,Bp as $t,jg as A,jo as Aa,ke as Ac,jc as Ai,Mf as An,Ai as Ao,ju as Ar,An as As,Mm as At,dg as B,uo as Ba,le as Bc,dc as Bi,ff as Bn,ui as Bo,du as Br,un as Bs,fm as Bt,Gg as C,Go as Ca,Ue as Cc,Gc as Ci,Kf as Cn,Wi as Co,Gu as Cr,Wn as Cs,Km as Ct,Lg as D,Lo as Da,Fe as Dc,Lc as Di,Rf as Dn,Ii as Do,Lu as Dr,In as Ds,Rm as Dt,zg as E,zo as Ea,Le as Ec,zc as Ei,Bf as En,Ri as Eo,zu as Er,Rn as Es,Bm as Et,xg as F,xo as Fa,ye as Fc,xc as Fi,Sf as Fn,bi as Fo,xu as Fr,bn as Fs,Sm as Ft,tg as G,eo as Ga,$ as Gc,tc as Gi,tf as Gn,ei as Go,tu as Gr,$t as Gs,nm as Gt,sg as H,oo as Ha,ae as Hc,sc as Hi,cf as Hn,oi as Ho,su as Hr,on as Hs,cm as Ht,yg as I,yo as Ia,_e as Ic,yc as Ii,bf as In,vi as Io,yu as Ir,vn as Is,bm as It,Yh as J,Ja,q as Jc,Ys as Ji,Yd as Jn,Jr as Jo,Yl as Jr,qt as Js,Xp as Jt,$h as K,Qa as Ka,Z as Kc,$s as Ki,$d as Kn,Qr as Ko,$l as Kr,Zt as Ks,em as Kt,_g as L,_o as La,he as Lc,_c as Li,vf as Ln,gi as Lo,_u as Lr,gn as Ls,vm as Lt,Dg as M,Do as Ma,Te as Mc,Dc as Mi,Of as Mn,Ei as Mo,Du as Mr,En as Ms,Om as Mt,Tg as N,To as Na,Ce as Nc,Tc as Ni,Ef as Nn,wi as No,Tu as Nr,wn as Ns,Em as Nt,Fg as O,Fo as Oa,Ne as Oc,Fc as Oi,If as On,Pi as Oo,Fu as Or,Pn as Os,Im as Ot,Cg as P,Co as Pa,xe as Pc,Cc as Pi,wf as Pn,Si as Po,Cu as Pr,Sn as Ps,wm as Pt,Vh as Q,Ba as Qa,z as Qc,Vs as Qi,Vd as Qn,Br as Qo,Vl as Qr,zt as Qs,Hp as Qt,hg as R,ho as Ra,pe as Rc,hc as Ri,gf as Rn,mi as Ro,hu as Rr,mn as Rs,gm as Rt,qg as S,qo as Sa,Ge as Sc,qc as Si,Jf as Sn,Ki as So,qu as Sr,Kn as Ss,Jm as St,Vg as T,Vo as Ta,ze as Tc,Vc as Ti,Hf as Tn,Bi as To,Vu as Tr,Bn as Ts,Hm as Tt,ag as U,io as Ua,re as Uc,ac as Ui,of as Un,ii as Uo,au as Ur,rn as Us,om as Ut,lg as V,co as Va,se as Vc,lc as Vi,uf as Vn,ci as Vo,lu as Vr,cn as Vs,um as Vt,rg as W,no as Wa,te as Wc,rc as Wi,rf as Wn,ni as Wo,ru as Wr,tn as Ws,im as Wt,Gh as X,Wa as Xa,U as Xc,Gs as Xi,Gd as Xn,Wr as Xo,Gl as Xr,Ut as Xs,Kp as Xt,qh as Y,Ka as Ya,G as Yc,qs as Yi,qd as Yn,Kr as Yo,ql as Yr,Gt as Ys,Jp as Yt,Uh as Z,Ha as Za,V as Zc,Us as Zi,Ud as Zn,Hr as Zo,Ul as Zr,Vt as Zs,Wp as Zt,r_ as _,rs as _a,tt as _c,rl as _i,t as _l,ip as _n,na as _o,rd as _r,nr as _s,ih as _t,D_ as a,Ds as aa,Tt as ac,Dl as ai,T as al,Op as an,Ea as ao,Dd as ar,Er as as,Oh as at,Zg as b,Zo as ba,Ye as bc,Zc as bi,Qf as bn,Xi as bo,Zu as br,Xn as bs,Qm as bt,x_ as c,xs as ca,yt as cc,xl as ci,y as cl,Sp as cn,ba as co,xd as cr,br as cs,Sh as ct,h_ as d,hs as da,pt as dc,hl as di,p as dl,gp as dn,ma as do,hd as dr,mr as ds,gh as dt,Ls as ea,Ft as ec,Ll as ei,F as el,Rp as en,Ia as eo,Ld as er,Ir as es,Lh as et,p_ as f,ps as fa,dt as fc,pl as fi,d as fl,mp as fn,fa as fo,pd as fr,fr as fs,mh as ft,a_ as g,as as ga,rt as gc,al as gi,r as gl,op as gn,ia as go,ad as gr,ir as gs,oh as gt,s_ as h,ss as ha,at as hc,sl as hi,a as hl,cp as hn,oa as ho,sd as hr,or as hs,ch as ht,k_ as i,ks as ia,Dt as ic,kl as ii,D as il,Ap as in,Oa as io,kd as ir,Or as is,Ah as it,kg as j,ko as ja,De as jc,kc as ji,Af as jn,Oi as jo,ku as jr,On as js,Am as jt,Ng as k,No as ka,je as kc,Nc as ki,Pf as kn,Mi as ko,Nu as kr,Mn as ks,Pm as kt,y_ as l,ys as la,_t as lc,yl as li,_ as ll,bp as ln,va as lo,yd as lr,vr as ls,bh as lt,l_ as m,ls as ma,st as mc,ll as mi,s as ml,up as mn,ca as mo,ld as mr,cr as ms,uh as mt,N_ as n,Ns as na,jt as nc,Nl as ni,j as nl,Pp as nn,Ma as no,Nd as nr,Mr as ns,Nh as nt,T_ as o,Ts as oa,Ct as oc,Tl as oi,C as ol,Ep as on,wa as oo,Td as or,wr as os,Eh as ot,d_ as p,ds as pa,lt as pc,dl as pi,l as pl,fp as pn,ua as po,dd as pr,ur as ps,fh as pt,Zh as q,Xa as qa,Y as qc,Zs as qi,Zd as qn,Xr as qo,Zl as qr,Yt as qs,Qp as qt,j_ as r,js as ra,kt as rc,jl as ri,k as rl,Mp as rn,Aa as ro,jd as rr,Ar as rs,jh as rt,C_ as s,Cs as sa,xt as sc,Cl as si,x as sl,wp as sn,Sa as so,Cd as sr,Sr as ss,wh as st,F_ as t,Fs as ta,Nt as tc,Fl as ti,N as tl,Ip as tn,Pa as to,Fd as tr,Pr as ts,Fh as tt,__ as u,_s as ua,ht as uc,_l as ui,h as ul,vp as un,ga as uo,_d as ur,gr as us,vh as ut,t_ as v,ts as va,$e as vc,tl as vi,np as vn,ea as vo,td as vr,er as vs,nh as vt,Ug as w,Uo as wa,Ve as wc,Uc as wi,Wf as wn,Hi as wo,Uu as wr,Hn as ws,Wm as wt,Yg as x,Yo as xa,qe as xc,Yc as xi,Xf as xn,Ji as xo,Yu as xr,Jn as xs,Xm as xt,$g as y,$o as ya,Ze as yc,$c as yi,ep as yn,Qi as yo,$u as yr,Qn as ys,eh as yt,pg as z,po as za,de as zc,pc as zi,mf as zn,fi as zo,pu as zr,fn as zs,mm as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{Vh as $,Ba as $a,z as $c,Vs as $i,Vd as $n,Br as $o,Vl as $r,zt as $s,Hp as $t,Ng as A,No as Aa,je as Ac,Nc as Ai,Pf as An,Mi as Ao,Nu as Ar,Mn as As,Pm as At,pg as B,po as Ba,de as Bc,pc as Bi,mf as Bn,fi as Bo,pu as Br,fn as Bs,mm as Bt,qg as C,qo as Ca,Ge as Cc,qc as Ci,Jf as Cn,Ki as Co,qu as Cr,Kn as Cs,Jm as Ct,zg as D,zo as Da,Le as Dc,zc as Di,Bf as Dn,Ri as Do,zu as Dr,Rn as Ds,Bm as Dt,Vg as E,Vo as Ea,ze as Ec,Vc as Ei,Hf as En,Bi as Eo,Vu as Er,Bn as Es,Hm as Et,Cg as F,Co as Fa,xe as Fc,Cc as Fi,wf as Fn,Si as Fo,Cu as Fr,Sn as Fs,wm as Ft,rg as G,no as Ga,te as Gc,rc as Gi,rf as Gn,ni as Go,ru as Gr,tn as Gs,im as Gt,lg as H,co as Ha,se as Hc,lc as Hi,uf as Hn,ci as Ho,lu as Hr,cn as Hs,um as Ht,xg as I,xo as Ia,ye as Ic,xc as Ii,Sf as In,bi as Io,xu as Ir,bn as Is,Sm as It,Zh as J,Xa as Ja,Y as Jc,Zs as Ji,Zd as Jn,Xr as Jo,Zl as Jr,Yt as Js,Qp as Jt,tg as K,eo as Ka,$ as Kc,tc as Ki,tf as Kn,ei as Ko,tu as Kr,$t as Ks,nm as Kt,yg as L,yo as La,_e as Lc,yc as Li,bf as Ln,vi as Lo,yu as Lr,vn as Ls,bm as Lt,kg as M,ko as Ma,De as Mc,kc as Mi,Af as Mn,Oi as Mo,ku as Mr,On as Ms,Am as Mt,Dg as N,Do as Na,Te as Nc,Dc as Ni,Of as Nn,Ei as No,Du as Nr,En as Ns,Om as Nt,Lg as O,Lo as Oa,Fe as Oc,Lc as Oi,Rf as On,Ii as Oo,Lu as Or,In as Os,Rm as Ot,Tg as P,To as Pa,Ce as Pc,Tc as Pi,Ef as Pn,wi as Po,Tu as Pr,wn as Ps,Em as Pt,Uh as Q,Ha as Qa,V as Qc,Us as Qi,Ud as Qn,Hr as Qo,Ul as Qr,Vt as Qs,Wp as Qt,_g as R,_o as Ra,he as Rc,_c as Ri,vf as Rn,gi as Ro,_u as Rr,gn as Rs,vm as Rt,Yg as S,Yo as Sa,qe as Sc,Yc as Si,Xf as Sn,Ji as So,Yu as Sr,Jn as Ss,Xm as St,Ug as T,Uo as Ta,Ve as Tc,Uc as Ti,Wf as Tn,Hi as To,Uu as Tr,Hn as Ts,Wm as Tt,sg as U,oo as Ua,ae as Uc,sc as Ui,cf as Un,oi as Uo,su as Ur,on as Us,cm as Ut,dg as V,uo as Va,le as Vc,dc as Vi,ff as Vn,ui as Vo,du as Vr,un as Vs,fm as Vt,ag as W,io as Wa,re as Wc,ac as Wi,of as Wn,ii as Wo,au as Wr,rn as Ws,om as Wt,qh as X,Ka as Xa,G as Xc,qs as Xi,qd as Xn,Kr as Xo,ql as Xr,Gt as Xs,Jp as Xt,Yh as Y,Ja as Ya,q as Yc,Ys as Yi,Yd as Yn,Jr as Yo,Yl as Yr,qt as Ys,Xp as Yt,Gh as Z,Wa as Za,U as Zc,Gs as Zi,Gd as Zn,Wr as Zo,Gl as Zr,Ut as Zs,Kp as Zt,a_ as _,as as _a,rt as _c,al as _i,r as _l,op as _n,ia as _o,ad as _r,ir as _s,oh as _t,k_ as a,ks as aa,Dt as ac,kl as ai,D as al,Ap as an,Oa as ao,kd as ar,Or as as,Ah as at,$g as b,$o as ba,Ze as bc,$c as bi,ep as bn,Qi as bo,$u as br,Qn as bs,eh as bt,C_ as c,Cs as ca,xt as cc,Cl as ci,x as cl,wp as cn,Sa as co,Cd as cr,Sr as cs,wh as ct,__ as d,_s as da,ht as dc,_l as di,h as dl,vp as dn,ga as do,_d as dr,gr as ds,vh as dt,zs as ea,Lt as ec,zl as ei,L as el,Bp as en,Ra as eo,zd as er,Rr as es,zh as et,h_ as f,hs as fa,pt as fc,hl as fi,p as fl,gp as fn,ma as fo,hd as fr,mr as fs,gh as ft,s_ as g,ss as ga,at as gc,sl as gi,a as gl,cp as gn,oa as go,sd as gr,or as gs,ch as gt,l_ as h,ls as ha,st as hc,ll as hi,s as hl,up as hn,ca as ho,ld as hr,cr as hs,uh as ht,j_ as i,js as ia,kt as ic,jl as ii,k as il,Mp as in,Aa as io,jd as ir,Ar as is,jh as it,jg as j,jo as ja,ke as jc,jc as ji,Mf as jn,Ai as jo,ju as jr,An as js,Mm as jt,Fg as k,Fo as ka,Ne as kc,Fc as ki,If as kn,Pi as ko,Fu as kr,Pn as ks,Im as kt,x_ as l,xs as la,yt as lc,xl as li,y as ll,Sp as ln,ba as lo,xd as lr,br as ls,Sh as lt,d_ as m,ds as ma,lt as mc,dl as mi,l as ml,fp as mn,ua as mo,dd as mr,ur as ms,fh as mt,F_ as n,Fs as na,Nt as nc,Fl as ni,N as nl,Ip as nn,Pa as no,Fd as nr,Pr as ns,Fh as nt,D_ as o,Ds as oa,Tt as oc,Dl as oi,T as ol,Op as on,Ea as oo,Dd as or,Er as os,Oh as ot,p_ as p,ps as pa,dt as pc,pl as pi,d as pl,mp as pn,fa as po,pd as pr,fr as ps,mh as pt,$h as q,Qa as qa,Z as qc,$s as qi,$d as qn,Qr as qo,$l as qr,Zt as qs,em as qt,N_ as r,Ns as ra,jt as rc,Nl as ri,j as rl,Pp as rn,Ma as ro,Nd as rr,Mr as rs,Nh as rt,T_ as s,Ts as sa,Ct as sc,Tl as si,C as sl,Ep as sn,wa as so,Td as sr,wr as ss,Eh as st,L_ as t,Ls as ta,Ft as tc,Ll as ti,F as tl,Rp as tn,Ia as to,Ld as tr,Ir as ts,Lh as tt,y_ as u,ys as ua,_t as uc,yl as ui,_ as ul,bp as un,va as uo,yd as ur,vr as us,bh as ut,r_ as v,rs as va,tt as vc,rl as vi,t as vl,ip as vn,na as vo,rd as vr,nr as vs,ih as vt,Gg as w,Go as wa,Ue as wc,Gc as wi,Kf as wn,Wi as wo,Gu as wr,Wn as ws,Km as wt,Zg as x,Zo as xa,Ye as xc,Zc as xi,Qf as xn,Xi as xo,Zu as xr,Xn as xs,Qm as xt,t_ as y,ts as ya,$e as yc,tl as yi,np as yn,ea as yo,td as yr,er as ys,nh as yt,hg as z,ho as za,pe as zc,hc as zi,gf as zn,mi as zo,hu as zr,mn as zs,gm as zt};
