@@ -26,7 +26,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 This week was mostly PR iteration, and a chunk of it was me cleaning up after myself.
 
-I closed **PR #8038**. It started out focused, but unrelated changes kept sneaking into the diff and the approach got more convoluted than the problem needed. Rather than keep fighting it, I folded the useful parts into **PR #8059**, which Walter is reviewing now.
+I closed [PR #8038](https://github.com/sugarlabs/musicblocks/pull/8038). It started out focused, but unrelated changes kept sneaking into the diff and the approach got more convoluted than the problem needed. Rather than keep fighting it, I folded the useful parts into [PR #8059](https://github.com/sugarlabs/musicblocks/pull/8059), which Walter is reviewing now.
 
 ### The 19-EDO playback bug
 
@@ -36,13 +36,13 @@ The cause was 12-EDO assumptions still hiding in the audio engine. Mode patterns
 
 The fix was to decouple `getModePattern()` from the frequency hot path. Instead of static 12-tone offsets, the frequency is computed directly from the scale step and the EDO degree count:
 
-$$f(k) = f_0 \cdot 2^{\frac{k}{N}}$$
+`f(k) = f_0 * 2^(k / N)`
 
-where $k$ is the scale step and $N$ is the number of EDO degrees. The hot path got simpler, and it's now mathematically correct for 19-EDO, 31-EDO, and whatever else someone throws at it.
+where `k` is the scale step and `N` is the number of EDO degrees. The hot path got simpler, and it's now mathematically correct for 19-EDO, 31-EDO, and whatever else someone throws at it.
 
 ### Walter's review feedback
 
-Reviewing **PR #8059** surfaced a few edge cases I would not have found on my own:
+Reviewing PR #8059 surfaced a few edge cases I would not have found on my own:
 
 1. **The 12→5→12 EDO reset bug.** Switching from 12-EDO down to 5-EDO and back left the widget stuck on 5 notes instead of restoring the original 7-note configuration.
 2. **SVG accumulation.** Toggling temperaments repeatedly kept stale wheel elements around. The old ones weren't being cleared, so the browser slowed down and duplicate note indicators piled up on screen.
@@ -59,17 +59,15 @@ Reviewing **PR #8059** surfaced a few edge cases I would not have found on my ow
 
 Reviewed a couple of temperament PRs from other contributors this week.
 
-- **PR #7965** (Vanshika) — extracted the copy-pasted logic scattered across `TemperamentWidget` into small helpers (`ratioToWheelAngle`, `ratioToCents`, `computeFrequencies`, `setNavItemColor`, and friends). The interesting part was the back-and-forth on where `ratioToWheelAngle` should live; it ended up in `musicutils.js` next to the other temperament math rather than as a widget method, which made the test story much cleaner.
-- **PR #8036** (Ayush Raj) — added null guards for the `pitchNumber_` DOM elements in `__playLoop` and deduplicated the edit click listener in `showNoteInfo` so repeated calls don't stack handlers. Both came with unit test coverage.
+- [PR #7965](https://github.com/sugarlabs/musicblocks/pull/7965) (Vanshika) — extracted the copy-pasted logic scattered across `TemperamentWidget` into small helpers (`ratioToWheelAngle`, `ratioToCents`, `computeFrequencies`, `setNavItemColor`, and friends). The interesting part was the back-and-forth on where `ratioToWheelAngle` should live; it ended up in `musicutils.js` next to the other temperament math rather than as a widget method, which made the test story much cleaner.
+- [PR #8036](https://github.com/sugarlabs/musicblocks/pull/8036) (Ayush Raj) — added null guards for the `pitchNumber_` DOM elements in `__playLoop` and deduplicated the edit click listener in `showNoteInfo` so repeated calls don't stack handlers. Both came with unit test coverage.
 
 ### What's coming next
 
-A few things left before #8059 can land: finish the SVG cleanup so elements stop accumulating, rework mode selection based on Walter's feedback, then merge and get on with the rest of Goal 4.
+A few things left before PR #8059 can land: finish the SVG cleanup so elements stop accumulating, rework mode selection based on Walter's feedback, then merge and get on with the rest of Goal 4.
 
 ---
 
 ### Links
 
-- [PR #8059 (Under Review)](https://github.com/sugarlabs/musicblocks/pull/8059)
-- [PR #8038 (Closed)](https://github.com/sugarlabs/musicblocks/pull/8038)
 - [Issue #7171: Refactor Temperament](https://github.com/sugarlabs/musicblocks/issues/7171)
