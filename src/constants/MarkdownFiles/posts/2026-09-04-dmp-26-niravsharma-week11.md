@@ -14,9 +14,9 @@ image: "assets/Images/c4gt_DMP.webp"
 
 # Week 11 Progress Report by Nirav Sharma
 
-**Project:** [Refactor Temperament - Sugar Labs Music Blocks (Issue #7171)](https://github.com/sugarlabs/musicblocks/issues/7171)
-**Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)
-**Reporting Period:** 2026-08-30 – 2026-09-05
+**Project:** [Refactor Temperament - Sugar Labs Music Blocks (Issue #7171)](https://github.com/sugarlabs/musicblocks/issues/7171)  
+**Mentors:** [Walter Bender](https://github.com/walterbender), [Devin Ulibarri](https://github.com/pikurasa)  
+**Reporting Period:** 2026-08-30 – 2026-09-05  
 
 ---
 
