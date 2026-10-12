@@ -106,7 +106,8 @@ export const TryCardData: CardDataType[] = [
   },
   {
     title: 'Convenient installation via Flatpak',
-    description: 'Install Sugar Labs educational activities on Linux using Flatpak.',
+    description:
+      'Install Sugar Labs educational activities on Linux using Flatpak.',
     tryNowText: 'Try Flatpak now!',
     tryNowHref: 'https://flathub.org/apps/search?q=sugar%20labs',
     learnMoreText: 'Learn more about Flatpak',
