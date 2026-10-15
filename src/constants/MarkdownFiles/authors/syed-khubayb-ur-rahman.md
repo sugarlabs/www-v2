@@ -28,4 +28,4 @@ Khubayb is a passionate open-source contributor and a Google Summer of Code 2026
 - **GitHub**: [@kh-ub-ayb](https://github.com/kh-ub-ayb) 
 - **Email**: [khubayb05@gmail.com](mailto:khubayb05@gmail.com) 
 - **LinkedIn**: [Syed Khubayb Ur Rahman](https://www.linkedin.com/in/syed-khubayb-ur-rahman-a0b34a2a5/) 
-- **Website**: [website](https://kh-ub-ayb.github.io/khubayb-portfolio/)
+- **Website**: [website](https://kh-ub-ayb.github.io/portfolio2/)

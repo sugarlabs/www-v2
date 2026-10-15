@@ -1,6 +1,6 @@
 ---
 title: "GSoC '26 Week 10 Update by Shreya Saxena"
-excerpt: "A lighter week due to travel and the start of college, a GSoC Alumni Camp lightning talk, and plans to tackle load time and a scheduling issue flagged by Devin."
+excerpt: "Profiling uncovered unnecessary canvas rendering during project loading, leading to a major performance improvement and a fix for an intermittent drum polyrhythm bug."
 category: "DEVELOPER NEWS"
 date: "2026-08-03"
 slug: "2026-08-28-gsoc-26-shreya-saxena-week10"
