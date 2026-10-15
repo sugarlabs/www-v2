@@ -6,6 +6,7 @@ export const redirectMap: Record<string, string> = {
   '/booting-soas': '/bootablesoas',
   '/community-news': '/news/community-news',
   '/volunteering': '/volunteer',
+  '/music-blocks': '/musicblocks',
 
   // Example redirects:
   // '/old-path-1': '/new-path-1',
