@@ -297,7 +297,16 @@ const NotFoundPage: React.FC = () => {
                     title: 'Go Back',
                     description:
                       'Return to the previous page you were viewing.',
-                    action: () => window.history.back(),
+                    action: () => {
+                      const previousPageIsInternal =
+                        document.referrer.startsWith(window.location.origin);
+
+                      if (window.history.length > 1 && previousPageIsInternal) {
+                        window.history.back();
+                      } else {
+                        window.location.assign('/');
+                      }
+                    },
                     actionText: 'Previous Page',
                   },
                   {
