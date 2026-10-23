@@ -147,11 +147,16 @@ const NewsPage: React.FC = () => {
 
     // Filter by search term
     if (searchTerm) {
+      const normalizedSearchTerm = searchTerm.toLowerCase();
+
       posts = posts.filter(
         (post) =>
-          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          post.excerpt?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          post.category?.toLowerCase().includes(searchTerm.toLowerCase()),
+          post.title.toLowerCase().includes(normalizedSearchTerm) ||
+          post.excerpt?.toLowerCase().includes(normalizedSearchTerm) ||
+          post.category?.toLowerCase().includes(normalizedSearchTerm) ||
+          post.tags.some((tag) =>
+            tag.toLowerCase().includes(normalizedSearchTerm),
+          ),
       );
     }
 
@@ -168,6 +173,13 @@ const NewsPage: React.FC = () => {
   const handleCategoryClick = (cat: string) => {
     setActiveCategory(cat);
     setCurrentPage(1);
+  };
+
+  const handleNewsletterFilter = () => {
+    setActiveCategory('All');
+    setCurrentPage(1);
+    setSearchTerm('newsletter');
+    navigate('/news/all?q=newsletter', { replace: true });
   };
 
   const handlePageChange = (page: number) => {
@@ -336,6 +348,16 @@ const NewsPage: React.FC = () => {
                     )}
                   </div>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={handleNewsletterFilter}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 px-4 py-3 font-medium text-blue-700 transition-colors hover:bg-blue-50 dark:border-blue-700 dark:text-blue-300 dark:hover:bg-blue-900/30"
+                  aria-label="Filter news by newsletter tag"
+                >
+                  <Tag size={18} />
+                  Newsletter
+                </button>
 
                 {/* View Mode Toggle */}
                 <div className="flex items-center gap-4">
