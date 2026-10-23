@@ -12,7 +12,7 @@ tags: "community,election,announcement,sugarlabs,board"
 
 **Sugar Labs will be running an election this fall for three seats on its board of directors for the 2027–2028 term. Sugar Labs community members are encouraged to participate.**
 
-This fall, Sugar Labs is running an election for three of the six seats on the Sugar Labs, Inc. [board of directors](https://www.sugarlabs.org/leadership/). [Devin Ulibarri](https://wiki.sugarlabs.org/go/User:Pikurasa), [Sebastian Silva](https://wiki.sugarlabs.org/go/User:Sebastian), and [Sumit Srivastava](https://wiki.sugarlabs.org/go/User:Sum2it) have terms expiring at the end of 2026. Walter Bender, Kirsh Pandya, and Samson Goddy have terms expiring at the end of 2027.
+This fall, Sugar Labs is running an election for three of the six seats on the Sugar Labs, Inc. [board of directors](https://www.sugarlabs.org/leadership/). [Devin Ulibarri](https://wiki.sugarlabs.org/go/User:Pikurasa), [Sebastian Silva](https://wiki.sugarlabs.org/go/User:Sebastian), and [Sumit Srivastava](https://wiki.sugarlabs.org/go/User:Sum2it) have terms expiring at the end of 2026. Walter Bender, Krish Pandya, and Samson Goddy have terms expiring at the end of 2027.
 
 ### Receive your ballot
 
