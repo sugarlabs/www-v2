@@ -1,7 +1,7 @@
 ---
 title: "The Sweet Spot – Issue 001"
 excerpt: "The inaugural issue of Sugar Labs' newsletter covering recent updates, GSoC projects, ways to get involved, and community news."
-category: "COMMUNITY NEWS"
+category: "SWEET SPOT"
 date: "2024-09-20"
 slug: "the-sweet-spot-issue-001"
 author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
