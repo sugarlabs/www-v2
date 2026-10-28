@@ -137,9 +137,10 @@ const NewsPage: React.FC = () => {
 
   const sortedCategories = useMemo(() => {
     const others = categories
-      .filter((c) => c !== 'All')
+      .filter((c) => c !== 'All' && c !== 'SWEET SPOT')
       .sort((a, b) => a.localeCompare(b));
-    return ['All', ...others];
+    const sweetSpot = categories.includes('SWEET SPOT') ? ['SWEET SPOT'] : [];
+    return ['All', ...sweetSpot, ...others];
   }, [categories]);
 
   const filteredPosts = useMemo(() => {
@@ -377,27 +378,35 @@ const NewsPage: React.FC = () => {
                     Categories
                   </h3>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {sortedCategories.map((cat) => (
-                    <motion.button
-                      key={cat}
-                      onClick={() => handleCategoryClick(cat)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                        activeCategory === cat
-                          ? 'bg-[#144EEC] text-white shadow-lg'
-                          : 'bg-gray-100 dark:bg-gray-700 dark:text-gray-300 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                      }`}
-                      whileHover={{ scale: 1.05, cursor: 'pointer' }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {cat}
-                      {activeCategory === cat && (
-                        <span className="ml-2 text-xs bg-white text-black bg-opacity-30 rounded-full px-2 py-1">
-                          {(postsByCategory[cat] || []).length}
-                        </span>
-                      )}
-                    </motion.button>
-                  ))}
+                <div className="flex flex-wrap items-center gap-2 pt-2">
+                  {sortedCategories.map((cat) => {
+                    const isSweetSpot = cat === 'SWEET SPOT';
+                    return (
+                      <motion.button
+                        key={cat}
+                        onClick={() => handleCategoryClick(cat)}
+                        className={`relative inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                          activeCategory === cat
+                            ? 'bg-[#144EEC] text-white shadow-lg'
+                            : 'bg-gray-100 dark:bg-gray-700 dark:text-gray-300 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                        }`}
+                        whileHover={{ scale: 1.05, cursor: 'pointer' }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {isSweetSpot && (
+                          <span className="pointer-events-none absolute -top-2 -right-2 z-10 rounded-full bg-red-600 px-1.5 py-0.5 text-[9px] font-bold leading-none tracking-wide text-white shadow-sm whitespace-nowrap">
+                            OUR NEWSLETTER
+                          </span>
+                        )}
+                        {cat}
+                        {activeCategory === cat && (
+                          <span className="ml-2 text-xs bg-white text-black bg-opacity-30 rounded-full px-2 py-1">
+                            {(postsByCategory[cat] || []).length}
+                          </span>
+                        )}
+                      </motion.button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -435,7 +444,7 @@ const NewsPage: React.FC = () => {
               <h2 className="text-5xl font-Caveat text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-green-600 mb-2">
                 {activeCategory} {searchTerm && `· "${searchTerm}"`}
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
+              <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2 flex-wrap">
                 <span>{filteredPosts.length} articles found</span>
                 {searchTerm && (
                   <button
@@ -450,6 +459,21 @@ const NewsPage: React.FC = () => {
                     className="text-blue-600 hover:text-blue-700 underline text-sm"
                   >
                     Clear search
+                  </button>
+                )}
+                {activeCategory !== 'All' && (
+                  <button
+                    onClick={() => {
+                      setActiveCategory('All');
+                      setCurrentPage(1);
+                      const query = searchTerm
+                        ? `?q=${encodeURIComponent(searchTerm)}`
+                        : '';
+                      navigate(`/news/all${query}`, { replace: true });
+                    }}
+                    className="text-blue-600 hover:text-blue-700 underline text-sm"
+                  >
+                    Remove filters
                   </button>
                 )}
               </p>
@@ -492,14 +516,40 @@ const NewsPage: React.FC = () => {
                           ? `No articles match "${searchTerm}" in this category.`
                           : 'There are no articles in this category yet.'}
                       </p>
-                      {searchTerm && (
-                        <button
-                          onClick={() => setSearchTerm('')}
-                          className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
-                        >
-                          Clear Search
-                        </button>
-                      )}
+                      <div className="flex flex-wrap items-center justify-center gap-3">
+                        {searchTerm && (
+                          <button
+                            onClick={() => {
+                              setSearchTerm('');
+                              const catPath =
+                                activeCategory === 'All'
+                                  ? 'all'
+                                  : activeCategory
+                                      .toLowerCase()
+                                      .replace(/\s+/g, '-');
+                              navigate(`/news/${catPath}`, { replace: true });
+                            }}
+                            className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                          >
+                            Clear Search
+                          </button>
+                        )}
+                        {activeCategory !== 'All' && (
+                          <button
+                            onClick={() => {
+                              setActiveCategory('All');
+                              setCurrentPage(1);
+                              const query = searchTerm
+                                ? `?q=${encodeURIComponent(searchTerm)}`
+                                : '';
+                              navigate(`/news/all${query}`, { replace: true });
+                            }}
+                            className="px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                          >
+                            Remove filters
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </motion.div>
                 ) : (
