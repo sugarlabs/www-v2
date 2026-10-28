@@ -2932,7 +2932,7 @@ My personal involvement in Sugar Labs did not require any direct work with child
 It's nice to have the [Sugar environment](https://wiki.sugarlabs.org/go/What_is_Sugar) as an option for kids, as well as ways for the community to participate in the creation of new Activities.`,mn=e({default:()=>hn}),hn=`---
 title: "The Sweet Spot – Issue 001"
 excerpt: "The inaugural issue of Sugar Labs' newsletter covering recent updates, GSoC projects, ways to get involved, and community news."
-category: "COMMUNITY NEWS"
+category: "SWEET SPOT"
 date: "2024-09-20"
 slug: "the-sweet-spot-issue-001"
 author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
@@ -3423,7 +3423,7 @@ As I alluded to earlier, I have sometimes heard criticism of the Sugar Learning 
 I'm more proud than I ever have been to be a part of the Sugar community, and my decades' long experience with youth from ages five through college, only gives me stronger conviction that we're creating something of unique value for education.`,En=e({default:()=>Dn}),Dn=`---
 title: "The Sweet Spot – Issue 002"
 excerpt: "The second issue of Sugar Labs' newsletter covering recent updates, events, volunteer opportunities, and community news from December 2024."
-category: "COMMUNITY NEWS"
+category: "SWEET SPOT"
 date: "2024-12-29"
 slug: "the-sweet-spot-issue-002"
 author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
@@ -4105,7 +4105,7 @@ Learn more about the process and outcomes here:
 In 2024, [Devin Ulibarri was appointed Executive Director](https://www.sugarlabs.org/press/2024/05/08/Sugar-Labs-announces-nonprofit-status-new-executive-director/). Alongside his leadership, our membership also voted in three new board members, as noted in the section above, including one seat that had been previously vacant.`,Mn=e({default:()=>Nn}),Nn=`---
 title: "The Sweet Spot – Issue 003"
 excerpt: "Recent news from Sugar Labs including Sugarizer v1.9 release, annual report for 2024, contributor stories, and more community updates."
-category: "COMMUNITY NEWS"
+category: "SWEET SPOT"
 date: "2025-03-31"
 author: "@/constants/MarkdownFiles/authors/devin-ulibarri.md"
 tags: "newsletter,community,updates,elections,social-media,volunteer,outreach,education"
@@ -23488,7 +23488,7 @@ Again, you are encouraged to take the first step and apply for a ballot via our 
 `,Fl=e({default:()=>Il}),Il=`---
 title: "The Sweet Spot – Issue 004"
 excerpt: "Recent news from Sugar Labs, including GSoC '25 Final Reports, elections, and more community updates."
-category: "COMMUNITY NEWS"
+category: "SWEET SPOT"
 date: "2025-12-16"
 author: "Devin Ulibarri"
 tags: "education,post,newsletter"
