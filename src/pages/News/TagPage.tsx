@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft,
@@ -24,6 +24,7 @@ import TagPageSkeleton from '@/components/skeletons/TagPageSkeleton';
 const TagPage: React.FC = () => {
   const { tag } = useParams<{ tag: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [posts, setPosts] = useState<PostMetaData[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<PostMetaData[]>([]);
@@ -111,7 +112,9 @@ const TagPage: React.FC = () => {
 
   const handlePostClick = (post: PostMetaData) => {
     const categoryPath = post.category.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/news/${categoryPath}/${post.slug}`);
+    navigate(`/news/${categoryPath}/${post.slug}`, {
+      state: { from: `${location.pathname}${location.search}` },
+    });
   };
 
   const handleTagClick = (clickedTag: string) => {

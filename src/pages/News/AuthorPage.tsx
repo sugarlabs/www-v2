@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar,
@@ -30,6 +30,7 @@ import { Dropdown } from '@/components/shared/Dropdown';
 const AuthorPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [author, setAuthor] = useState<Author | null>(null);
   const [posts, setPosts] = useState<PostMetaData[]>([]);
@@ -119,7 +120,9 @@ const AuthorPage: React.FC = () => {
 
   const handlePostClick = (post: PostMetaData) => {
     const categoryPath = post.category.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/news/${categoryPath}/${post.slug}`);
+    navigate(`/news/${categoryPath}/${post.slug}`, {
+      state: { from: `${location.pathname}${location.search}` },
+    });
   };
 
   const handlePageChange = (page: number) => {
