@@ -100,6 +100,7 @@ const NewsPage: React.FC = () => {
       const match = categories.find((cat) => cat.toLowerCase() === formatted);
       if (match) {
         setActiveCategory(match);
+        setCurrentPage(1);
         return;
       }
     }
@@ -167,8 +168,11 @@ const NewsPage: React.FC = () => {
   }, [filteredPosts, currentPage]);
 
   const handleCategoryClick = (cat: string) => {
-    setActiveCategory(cat);
     setCurrentPage(1);
+    const catPath =
+      cat === 'All' ? 'all' : cat.toLowerCase().replace(/\s+/g, '-');
+    const query = searchTerm ? `?q=${encodeURIComponent(searchTerm)}` : '';
+    navigate(`/news/${catPath}${query}`);
   };
 
   const handlePageChange = (page: number) => {
@@ -187,7 +191,9 @@ const NewsPage: React.FC = () => {
         ? 'all'
         : activeCategory.toLowerCase().replace(/\s+/g, '-');
     const query = searchTerm ? `?q=${encodeURIComponent(searchTerm)}` : '';
-    navigate(`/news/${catPath}/${slug}${query}`);
+    navigate(`/news/${catPath}/${slug}${query}`, {
+      state: { from: `${location.pathname}${location.search}` },
+    });
   };
 
   const handleShareClick = (post: PostMetaData, e: React.MouseEvent) => {
