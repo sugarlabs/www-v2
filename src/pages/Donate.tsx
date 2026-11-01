@@ -148,13 +148,13 @@ const Donate: React.FC = () => {
                   <div id="mission-panel-0" className="mt-4">
                     <p className="mb-4">
                       Despite the fact that computers, and the software on those
-                      computers, run the way much of the world works, there still
-                      remains very little support in education, especially at the
-                      levels of primary and secondary schooling, to cultivate a
-                      computationally literate society. Despite initiatives, a mere
-                      "day of code," sometimes as little as "an hour of code," is
-                      woefully insufficient to instill computational literacy in a
-                      generation of young learners.
+                      computers, run the way much of the world works, there
+                      still remains very little support in education, especially
+                      at the levels of primary and secondary schooling, to
+                      cultivate a computationally literate society. Despite
+                      initiatives, a mere "day of code," sometimes as little as
+                      "an hour of code," is woefully insufficient to instill
+                      computational literacy in a generation of young learners.
                     </p>
                   </div>
                 )}
@@ -176,10 +176,10 @@ const Donate: React.FC = () => {
                   <div id="mission-panel-1" className="mt-4">
                     <p className="mb-4">
                       Sugar Labs, as an organization, and the suite of apps,
-                      curriculum, rubrics, and mentoring, is well poised to bridge the
-                      gap for many learners in the US and around the world - the gap
-                      between educational services provided and what youth need
-                      developmentally to succeed.
+                      curriculum, rubrics, and mentoring, is well poised to
+                      bridge the gap for many learners in the US and around the
+                      world - the gap between educational services provided and
+                      what youth need developmentally to succeed.
                     </p>
                   </div>
                 )}
@@ -212,7 +212,7 @@ const Donate: React.FC = () => {
                       setOpenImpactCards((prev) =>
                         prev.includes(index)
                           ? prev.filter((i) => i !== index)
-                          : [...prev, index]
+                          : [...prev, index],
                       );
                     }}
                     aria-expanded={openImpactCards.includes(index)}
@@ -230,7 +230,9 @@ const Donate: React.FC = () => {
                       </div>
 
                       <motion.span
-                        animate={{ rotate: openImpactCards.includes(index) ? 180 : 0 }}
+                        animate={{
+                          rotate: openImpactCards.includes(index) ? 180 : 0,
+                        }}
                         transition={{ duration: 0.3 }}
                         className="text-green-600 text-2xl"
                       >
@@ -249,33 +251,33 @@ const Donate: React.FC = () => {
                         transition={{ duration: 0.35, ease: 'easeInOut' }}
                         className="overflow-hidden"
                       >
-                      <div className="px-5 sm:px-6 pb-5 sm:pb-6">
-                        <p className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">
-                          {stat.description}
-                        </p>
+                        <div className="px-5 sm:px-6 pb-5 sm:pb-6">
+                          <p className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">
+                            {stat.description}
+                          </p>
 
-                        {stat.title === 'Mentorship Hours' && (
-                          <img
-                            src="/assets/Images/teach1.webp"
-                            alt="Student using Sugar Labs educational software"
-                            className="w-full h-48 object-cover rounded-lg mt-4"
-                          />
-                        )}
-                        {stat.title === 'Educational Tools' && (
-                          <img
-                            src="/assets/Images/image.png"
-                            alt="Student using Sugar Labs educational software"
-                            className="w-full h-48 object-cover rounded-lg mt-4"
-                          />
-                        )}
-                        {stat.title === 'Educational Impact' && (
-                          <img
-                            src="/assets/Images/volunteer-group.webp"
-                            alt="Sugar Labs community educational initiative"
-                            className="w-full h-48 object-cover rounded-lg mt-4"
-                          />
-                        )}
-                      </div>
+                          {stat.title === 'Mentorship Hours' && (
+                            <img
+                              src="/assets/Images/teach1.webp"
+                              alt="Student using Sugar Labs educational software"
+                              className="w-full h-48 object-cover rounded-lg mt-4"
+                            />
+                          )}
+                          {stat.title === 'Educational Tools' && (
+                            <img
+                              src="/assets/Images/image.png"
+                              alt="Student using Sugar Labs educational software"
+                              className="w-full h-48 object-cover rounded-lg mt-4"
+                            />
+                          )}
+                          {stat.title === 'Educational Impact' && (
+                            <img
+                              src="/assets/Images/volunteer-group.webp"
+                              alt="Sugar Labs community educational initiative"
+                              className="w-full h-48 object-cover rounded-lg mt-4"
+                            />
+                          )}
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
