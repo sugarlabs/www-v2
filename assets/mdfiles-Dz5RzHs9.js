@@ -45181,6 +45181,172 @@ This election is being run by [Safwan Sayeed](https://www.sugarlabs.org/authors/
 We encourage you to take the first step and apply for a ballot via our [application form](https://forms.gle/dqErq4xGSyPj1r6o7), and we look forward to your involvement.
 
 **P.S.** If you are interested in volunteering to assist with the next election in 2027, please contact [volunteering@sugarlabs.org](mailto:volunteering@sugarlabs.org) with your interest.`,g_=e({default:()=>__}),__=`---
+title: "The Sweet Spot – Issue 005"
+excerpt: "Recent news from Sugar Labs, including GSoC '26 Final Reports, elections, and new features."
+category: "SWEET SPOT"
+date: "2026-11-02"
+author: "Devin Ulibarri"
+tags: "education,post,newsletter"
+---
+<!-- markdownlint-disable -->
+
+# The Sweet Spot – Issue 005
+
+*Recent news for November 2, 2026*
+
+Welcome to the fifth issue of *The Sweet Spot*, a newsletter for Sugar Labs-related news in development, student and teacher work, events, how to get involved, and other related news and information.
+
+### Help Sugar Labs continue to make a positive difference in the world with a year-end donation
+
+As we close out the year, we want to express our heartfelt gratitude for your support of Sugar Labs. Your contributions have enabled us to continue developing and improving the free/libre and open-source learning platform that has empowered millions of students worldwide.
+
+As we approach the new year, we're counting on the generosity of folks like you to help us achieve more in 2027\\. Our community relies on donations to fund our operations, support new initiatives, and maintain our commitment to creating and promoting Constructionist learning tools for students, parents, and teachers.
+
+There are many ways to make a [financial contribution](https://www.sugarlabs.org/donate). Here are some of the recommended ways to give to Sugar Labs:
+
+* <https://www.every.org/sugar-labs>  
+* <https://github.com/sponsors/sugarlabs>   
+* <https://www.paypal.com/paypalme/sugarlabsinc>   
+* <https://causes.benevity.org/causes/840-843289298>   
+* Send a check: 2028 E Ben White Blvd STE 240 PMB 1271, AUSTIN, TX 78741, USA
+
+And if you're not in a position to give financially, we understand that too. Please consider liking us on Every.org and sharing the link to our landing page.
+
+## Contents of this issue
+
+* Fall board elections: How to participate  
+* Demonstration of Debugger feature for GSoC and DMP prospects and other new contributors  
+* Two new student-made lessons for Music Blocks: Jhananana & Swara and Sonata form  
+* Summer finale 2026: GSoC & DMP contributors  
+* 2026 summer coding: GSoC/DMP/SSoC contributor reports   
+* GSoC '26 Introductory Blog by Shubham Sharma  
+* Sugar Labs participates at NextGen STEMFest  
+* GNOME Asia Summit and GTK4 Porting  
+* (Volunteer) Help wanted  
+* Upcoming events and meetings  
+* About Sugar Labs  
+* Social and communication links  
+* Back issues of *The Sweet Spot*  
+
+## Updates
+
+### Fall board elections: How to participate
+
+*October 23, 2026 by Safwan Sayeed*
+
+We recently announced that Sugar Labs will be running an election this fall for three seats on its board of directors. This is your chance to have a say in our organization's direction and future plans. The eligibility requirements are simple. The only step you need to take is to submit a ballot application using the link below. If you've made contributions to Sugar Labs within the past year, you're likely eligible to be a member and therefore eligible to vote in this election. Those eligible and interested in running for a seat on the board are encouraged to add their name **before the November 13 deadline** to follow the instructions to become a candidate. We encourage all members to participate and make their voice heard. Stay tuned for more information and details on how to get involved.
+
+* <https://www.sugarlabs.org/news/all/fall-board-elections-2026-how-to-participate>   
+* Apply for your ballot: <https://forms.gle/dqErq4xGSyPj1r6o7>   
+* Become a candidate: <https://wiki.sugarlabs.org/go/Oversight_Board/2027-2028-candidates> (Note: Must become a Sugar Labs member first!)  
+
+### Demonstration of Debugger feature for GSoC and DMP prospects and other new contributors
+
+*November 1, 2026 by Devin Ulibarri*
+
+Currently available in the main branch, a few generative AI features have recently been debuted. Building on the work of GSoC contributors Om Santosh Suneri, Krish Pandya, Diwangshu Kakoty, and others, these features offer users was to explore how generative AI works, create new projects using the tooling, and -- in the case of Music Blocks specifically -- learn more about music, math, and computation. Music Blocks co-maintainer has been publishing various videos on the Sugar Labs YouTube Channel to demonstrate the new features, starting with the Debugger. You're encouraged to watch the video and try the Debugger Widget on the main branch (link below).
+
+* <https://www.youtube.com/watch?v=okhmEHsZGZE>   
+* <https://sugarlabs.github.io/musicblocks/index.html>   
+
+### Two new student-made lessons for Music Blocks: Jhananana & Swara and Sonata form
+
+*August 13 & October 17, 2026 by Nathan Nie*
+
+Nathan Nie, a Music+Code student at partner program MAP Family Learning Center and budding contributor, created a handful of lesson plans this summer, two of which were recently published on the Music Blocks user blog. Take a moment to read his work, play the music, and try the projects.
+
+* [https://musicblocks.net/2026/08/13/sonata-form/](https://musicblocks.net/2026/08/13/sonata-form/)  
+* [https://musicblocks.net/2026/10/17/jhananana-and-swara/](https://musicblocks.net/2026/10/17/jhananana-and-swara/)   
+
+### Summer finale 2026: GSoC & DMP contributors
+
+*September 26, 2026*
+
+Final presentations by Google Summer of Code (GSoC) and Dedicated Mentorship Program (DMP) 2026 contributors at Sugar Labs, accompanied by their mentors Lionel Laské, Walter Bender, Anindya Kundu, Chihurumnaya Ibiam, Safwan Sayeed, Nikhil Bhatt, Om Santosh Suneri, Krish Pandya, and Devin Ulibarri. Also take time to read some of the final reports for DMP and GSoC projects, as authored by student contributors.
+
+* <https://www.youtube.com/watch?v=YzohZgQiYTA>   
+* [Blogposts tagged "Final Report"](https://www.sugarlabs.org/tags/final-report)   
+* [Blogposts tagged "GSoC 2026"](https://www.sugarlabs.org/tags/gsoc26)   
+* [Official final reports (GSoC only)](https://github.com/sugarlabs/GSoC/tree/master/archives/2026/student-reports)   
+
+### GSoC '26 Introductory Blog by Shubham Sharma
+
+*May 23, 2026 by Shubham Sharma*
+
+Before GSoC officially began, new contributor Shubham Sharma wrote a blogpost introducing himself, his interests, and his current work. In his introductory blog post for GSoC '26, he outlines his project aimed at enhancing the Sugar Journal by integrating AI-powered reflection. We encourage you to check out Shubham's introductory article, and we continue to welcome contributors, both new and old, to share their experience contributing to Sugar Labs as a Sugar Story.
+
+* <https://www.sugarlabs.org/news/developer-news/2026-05-23-gsoc-26-vyagh-week00>  
+
+### Sugar Labs participates at NextGen STEMFest
+
+*May 30, 2026 by Walter Bender*
+
+On Saturday, May 30, Sugar Labs participated as an exhibitor at NextGen STEMFest, an event aimed at inspiring passion for Science, Technology, Engineering, and Mathematics (STEM) among students across all grade levels. Hosted at the Charles River Museum of Industry and Innovation in Waltham, MA, the festival featured a comprehensive lineup of exhibitors. Sharing the venue alongside organizations such as Autodesk, Boston Dynamics, MathWorks, and Thermo Fisher Scientific, our booth generated significant interest in both Sugar and Music Blocks.
+
+* <https://nextgenstemfest.org/about-nextgen-stemfest/2026-exhibitors/>
+
+### GNOME Asia Summit and GTK4 Porting
+
+*January 7, 2026 by Krish Pandya*
+
+At the end of last year, Sugar Labs contributor and board member Krish Pandya ('26-'27) spoke at GNOME Asia 2025 in Tokyo about porting the Sugar Toolkit from GTK3 to GTK4. The old toolkit relied on C code that GTK4 and Wayland no longer supported. For his GSoC 2025 project, together with his mentors Walter, Ibiam and Juan Pablo, Krish rebuilt the code as a Python toolkit on GTK4's own controllers, with a small C library only for low-level system code. For the conference, Krish showed how he rebuilt different components to work on Wayland, the first PyPI release, and the next steps toward a GTK4 Sugar Shell!
+
+* <https://www.sugarlabs.org/news/all/gnome-asia-and-gtk4-port>
+* Recording: <https://www.youtube.com/live/WZ63lQ-DsOA?t=14743>  
+* Final project report (for additional context): <https://www.sugarlabs.org/news/all/2025-09-01-gsoc-25-mostlyk-final>  
+
+## (Volunteer) Help wanted
+
+Sugar Labs is seeking volunteer assistance in the following ways. Sustained, committed help in any of the following areas will help us grow as an organization. If you are passionate or curious to learn more about any of these roles, and are able to commit the time necessary, then we encourage you to apply. Send a notification of your interest to info@sugarlabs.org, including some information about yourself, what interests you about the volunteer role, and what experience/qualities make you a good candidate for the position.
+
+Sugar Labs is a growing organization. We don't currently have the resources to hire people to fulfill these roles. Our hope is that we one day will be able to, but, for now, we are looking for volunteers who can work with the executive director and the board to work diligently to improve our operations. What we can provide, in return, for your help, is assistance in conducting your role and mentorship (especially in the case of technical roles). Plus, you'll gain the experience and satisfaction of working with an organization that aims to do good in society.
+
+Please see: <https://www.sugarlabs.org/volunteering>
+
+## Upcoming events and meetings
+
+Sugar Labs hosts events and meetings for the community. The current list of scheduled events and meetings are as follows:
+
+### Special events
+
+The date and location of next year's Constructionism conference has been announced. For those interested in submitting qualifying research, we encourage you to submit when Call For Abstracts opens (details TBA).
+
+* Constructionism 2027, Limassol, Cyprus, November 10-13, 2027: <https://cyprusconferences.org/constructionism2027/> and <https://constructionism.oapublishing.ch/index.php/con>  
+
+### Regular meetings
+
+* Music Blocks meetings – Every Sunday at 7:00 EST (12:00 UTC) via <https://meet.jit.si/ResponsibleMasksForecastHastily>   
+* Sugar Labs Board of Directors meetings – Every other Wednesday at 12:00 EST (17:00 UTC) via <https://matrix.to/#/#sugar:matrix.org>   
+
+## About Sugar Labs
+
+Sugar Labs® is a US-based 501(c)(3) nonprofit organization with a global mission to create educational opportunities in technology to youth around the world. Volunteer mentors and contributors work together to develop activity-focused software for children. All software is developed with learning as the primary goal, necessitating the need for source code to be published publicly for study, licensed under a Free/Libre license for explicit permission to share and remix, and openly worked upon within a community where students are invited to make contributions, under guidance of experienced mentors. Donations to support the work of Sugar Labs can be made at .
+
+## Social and communication links
+
+Below is a complete list of all the official social media and other communication channels for Sugar Labs. If you are on any of the social media platforms, such as Bluesky, Facebook, Instagram, YouTube, or X/Twitter, we encourage you to show your support for Sugar Labs by following us. If you are interested in testing and development, GitHub and Matrix are where you can report issues and ask questions.
+
+Communications on our official channels must abide by our [Code of Conduct](https://github.com/sugarlabs/docs/blob/master/src/CODE_OF_CONDUCT.md).
+
+* Bluesky – <https://bsky.app/profile/sugarlabs.bsky.social>  
+* Facebook – <https://www.facebook.com/SugarLabsforall/>  
+* GitHub – <https://github.com/sugarlabs>   
+* Instagram – <https://www.instagram.com/sugarlabsforall/>   
+* LinkedIn – <https://www.linkedin.com/company/sugar-labs>   
+* Mailing lists – <https://wiki.sugarlabs.org/go/Mailing_Lists>   
+* Mastodon – <https://mastodon.social/@sugar_labs>  
+* Matrix – <https://matrix.to/#/#sugar:matrix.org>  
+* Medium – <https://medium.com/@sugarlabs>  
+* Snail mail and phone – <https://www.sugarlabs.org/contact-us/>   
+* Twitter/X – <https://twitter.com/sugar_labs>   
+* Wiki – <https://wiki.sugarlabs.org>   
+* WhatsApp – <https://wa.me/16177024088>   
+* YouTube – <https://www.youtube.com/@SugarlabsOrg-EN>  
+
+## Back issues of *The Sweet Spot*
+
+You can find this issue and past issues of *The Sweet Spot* at <https://www.sugarlabs.org/tags/newsletter>   
+`,v_=e({default:()=>y_}),y_=`---
 title: "Comprehensive Markdown Syntax Guide"
 excerpt: "A complete reference template showcasing all common markdown features and formatting options"
 category: "TEMPLATE"
@@ -45653,7 +45819,7 @@ Remember to use the copy button on code blocks to quickly copy examples! :sparkl
 
 ---
 
-*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,v_=e({default:()=>y_}),y_=`---
+*Last updated: 2025-06-13 | Version 2.0 | Contributors: Safwan Sayeed*`,b_=e({default:()=>x_}),x_=`---
 title: "GSoC ’25 Week XX Update by Safwan Sayeed"
 excerpt: "This is a Template to write Blog Posts for weekly updates"
 category: "TEMPLATE"
@@ -45740,7 +45906,7 @@ Thank you to my mentors, the Sugar Labs community, and fellow GSoC contributors 
 
 ---
 
-`,b_=e({default:()=>x_}),x_=`---\r
+`,S_=e({default:()=>C_}),C_=`---\r
 title: "DMP ’25 Week 01 Update by Aman Chadha"\r
 excerpt: "Working on a RAG model for Music Blocks core files to enhance context-aware retrieval"\r
 category: "DEVELOPER NEWS"\r
@@ -45833,7 +45999,7 @@ Thanks to my mentors and the DMP community for their guidance and support throug
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,S_=e({default:()=>C_}),C_=`---\r
+`,w_=e({default:()=>T_}),T_=`---\r
 title: "DMP '25 Week 02 Update by Aman Chadha"\r
 excerpt: "Enhanced RAG output format with POS tagging and optimized code chunking for Music Blocks"\r
 category: "DEVELOPER NEWS"\r
@@ -45927,7 +46093,7 @@ Thanks to my mentor Walter Bender for his guidance on optimizing chunking strate
 - Gmail: [aman.chadha.mmi@gmail.com](mailto:aman.chadha.mmi@gmail.com)  \r
 \r
 ---\r
-`,w_=e({default:()=>T_}),T_=`---\r
+`,E_=e({default:()=>D_}),D_=`---\r
 title: "DMP '25 Week 03 Update by Aman Chadha"\r
 excerpt: "Translated RAG-generated context strings, initiated batch processing, and planned for automated context regeneration"\r
 category: "DEVELOPER NEWS"\r
@@ -46015,7 +46181,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their ongoing guidance, especially on translation validation and workflow design.\r
 \r
 ---\r
-`,E_=e({default:()=>D_}),D_=`---\r
+`,O_=e({default:()=>k_}),k_=`---\r
 title: "DMP '25 Week 04 Update by Aman Chadha"\r
 excerpt: "Completed context generation for all UI strings and submitted Turkish translations using DeepL with RAG-generated context"\r
 category: "DEVELOPER NEWS"\r
@@ -46098,7 +46264,7 @@ image: "assets/Images/c4gt_DMP.webp"\r
 Thanks to mentors Walter Bender and Devin Ulibarri for their feedback, review assistance, and continued support in improving translation workflows.\r
 \r
 ---\r
-`,O_=e({default:()=>k_}),k_=`---\r
+`,A_=e({default:()=>j_}),j_=`---\r
 title: "DMP '25 Week-13 Update: Japanese & Hindi Translations and GPT Validation System"\r
 excerpt: "This week: Completed Japanese and Hindi translations, and built a GPT-assisted Selenium system to validate translations for review."\r
 category: "DEVELOPER NEWS"\r
@@ -46164,7 +46330,7 @@ This system allows us to:  \r
 \r
 This week marked a major milestone: expanding Music Blocks's localization coverage and creating a robust validation pipeline. By combining AI translations with automated validation and human review, we ensure learners can access Music Blocks in multiple languages with confidence in translation accuracy and clarity.\r
 \r
-`,A_=e({default:()=>j_}),j_=`---
+`,M_=e({default:()=>N_}),N_=`---
 title: "DMP '25 Week 01 Update by Anvita Prasad"
 excerpt: "Initial research and implementation of Music Blocks tuner feature"
 category: "DEVELOPER NEWS"
@@ -46246,7 +46412,7 @@ image: "assets/Images/c4gt_DMP.webp"
 
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,M_=e({default:()=>N_}),N_=`---
+---`,P_=e({default:()=>F_}),F_=`---
 title: "DMP '25 Week 02 Update by Anvita Prasad"
 excerpt: "Research and design of tuner visualization system and cents adjustment UI"
 category: "DEVELOPER NEWS"
@@ -46339,7 +46505,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,P_=e({default:()=>F_}),F_=`---
+`,I_=e({default:()=>L_}),L_=`---
 title: "DMP '25 Week 05 Update by Anvita Prasad"
 excerpt: "Implementation of manual cent adjustment interface and mode-specific icons for the tuner system"
 category: "DEVELOPER NEWS"
@@ -46428,7 +46594,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,I_=e({default:()=>L_}),L_=`---
+--- `,R_=e({default:()=>z_}),z_=`---
 title: "DMP '25 Week 06 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -46573,7 +46739,7 @@ The first half of this project has established a solid foundation for Music Bloc
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,R_=e({default:()=>z_}),z_=`---
+--- `,B_=e({default:()=>V_}),V_=`---
 title: "DMP '25 Week 07 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -46761,7 +46927,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
---- `,B_=e({default:()=>V_}),V_=`---
+--- `,H_=e({default:()=>U_}),U_=`---
 title: "DMP '25 Week 08 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -46856,7 +47022,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,H_=e({default:()=>U_}),U_=`---
+`,W_=e({default:()=>G_}),G_=`---
 title: "DMP '25 Week 09 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -46945,7 +47111,7 @@ image: "assets/Images/c4gt_DMP.webp"
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
 ---
-`,W_=e({default:()=>G_}),G_=`---
+`,K_=e({default:()=>q_}),q_=`---
 title: "DMP '25 Week 10 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -47032,7 +47198,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,K_=e({default:()=>q_}),q_=`---
+---`,J_=e({default:()=>Y_}),Y_=`---
 title: "DMP '25 Week 11 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -47115,7 +47281,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,J_=e({default:()=>Y_}),Y_=`---
+---`,X_=e({default:()=>Z_}),Z_=`---
 title: "DMP '25 Week 12 Update by Anvita Prasad"
 excerpt: "Improve Synth and Sample Feature for Music Blocks"
 category: "DEVELOPER NEWS"
@@ -47198,7 +47364,7 @@ image: "assets/Images/c4gt_DMP.webp"
 ## Acknowledgments
 Thank you to my mentors, the Sugar Labs community, and fellow contributors for ongoing support.
 
----`,X_=e({default:()=>Z_}),Z_=`---
+---`,Q_=e({default:()=>$_}),$_=`---
 title: "DMP'25 Final Report by Justin Charles"
 excerpt: "MusicBlock-v4 Masonry Module"
 category: "DEVELOPER NEWS"
@@ -47503,4 +47669,4 @@ I would like to extend my heartfelt thanks to:
 
 - **Open Source Tools & Libraries**: React, TypeScript, Storybook, Jest, and other open-source resources that made development efficient.
 
-Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{eg as $,Qa as $a,Z as $c,$s as $i,$d as $n,Qr as $o,$l as $r,Zt as $s,em as $t,Kg as A,Go as Aa,Ue as Ac,Gc as Ai,Kf as An,Wi as Ao,Gu as Ar,Wn as As,Km as At,Eg as B,To as Ba,Ce as Bc,Tc as Bi,Ef as Bn,wi as Bo,Tu as Br,wn as Bs,Em as Bt,o_ as C,as as Ca,rt as Cc,al as Ci,r as Cl,op as Cn,ia as Co,ad as Cr,ir as Cs,oh as Ct,Qg as D,Zo as Da,Ye as Dc,Zc as Di,Qf as Dn,Xi as Do,Zu as Dr,Xn as Ds,Qm as Dt,e_ as E,$o as Ea,Ze as Ec,$c as Ei,ep as En,Qi as Eo,$u as Er,Qn as Es,eh as Et,Ig as F,Fo as Fa,Ne as Fc,Fc as Fi,If as Fn,Pi as Fo,Fu as Fr,Pn as Fs,Im as Ft,gg as G,ho as Ga,pe as Gc,hc as Gi,gf as Gn,mi as Go,hu as Gr,mn as Gs,gm as Gt,Sg as H,xo as Ha,ye as Hc,xc as Hi,Sf as Hn,bi as Ho,xu as Hr,bn as Hs,Sm as Ht,Pg as I,No as Ia,je as Ic,Nc as Ii,Pf as In,Mi as Io,Nu as Ir,Mn as Is,Pm as It,ug as J,co as Ja,se as Jc,lc as Ji,uf as Jn,ci as Jo,lu as Jr,cn as Js,um as Jt,mg as K,po as Ka,de as Kc,pc as Ki,mf as Kn,fi as Ko,pu as Kr,fn as Ks,mm as Kt,Mg as L,jo as La,ke as Lc,jc as Li,Mf as Ln,Ai as Lo,ju as Lr,An as Ls,Mm as Lt,Hg as M,Vo as Ma,ze as Mc,Vc as Mi,Hf as Mn,Bi as Mo,Vu as Mr,Bn as Ms,Hm as Mt,Bg as N,zo as Na,Le as Nc,zc as Ni,Bf as Nn,Ri as No,zu as Nr,Rn as Ns,Bm as Nt,Xg as O,Yo as Oa,qe as Oc,Yc as Oi,Xf as On,Ji as Oo,Yu as Or,Jn as Os,Xm as Ot,Rg as P,Lo as Pa,Fe as Pc,Lc as Pi,Rf as Pn,Ii as Po,Lu as Pr,In as Ps,Rm as Pt,ng as Q,eo as Qa,$ as Qc,tc as Qi,tf as Qn,ei as Qo,tu as Qr,$t as Qs,nm as Qt,Ag as R,ko as Ra,De as Rc,kc as Ri,Af as Rn,Oi as Ro,ku as Rr,On as Rs,Am as Rt,c_ as S,ss as Sa,at as Sc,sl as Si,a as Sl,cp as Sn,oa as So,sd as Sr,or as Ss,ch as St,n_ as T,ts as Ta,$e as Tc,tl as Ti,np as Tn,ea as To,td as Tr,er as Ts,nh as Tt,bg as U,yo as Ua,_e as Uc,yc as Ui,bf as Un,vi as Uo,yu as Ur,vn as Us,bm as Ut,wg as V,Co as Va,xe as Vc,Cc as Vi,wf as Vn,Si as Vo,Cu as Vr,Sn as Vs,wm as Vt,vg as W,_o as Wa,he as Wc,_c as Wi,vf as Wn,gi as Wo,_u as Wr,gn as Ws,vm as Wt,og as X,io as Xa,re as Xc,ac as Xi,of as Xn,ii as Xo,au as Xr,rn as Xs,om as Xt,cg as Y,oo as Ya,ae as Yc,sc as Yi,cf as Yn,oi as Yo,su as Yr,on as Ys,cm as Yt,ig as Z,no as Za,te as Zc,rc as Zi,rf as Zn,ni as Zo,ru as Zr,tn as Zs,im as Zt,v_ as _,_s as _a,ht as _c,_l as _i,h as _l,vp as _n,ga as _o,_d as _r,gr as _s,vh as _t,H_ as a,Vs as aa,zt as ac,Vl as ai,z as al,Hp as an,Ba as ao,Vd as ar,Br as as,Hh as at,f_ as b,ds as ba,lt as bc,dl as bi,l as bl,fp as bn,ua as bo,dd as br,ur as bs,fh as bt,I_ as c,Fs as ca,Nt as cc,Fl as ci,N as cl,Ip as cn,Pa as co,Fd as cr,Pr as cs,Ih as ct,A_ as d,ks as da,Dt as dc,kl as di,D as dl,Ap as dn,Oa as do,kd as dr,Or as ds,Ah as dt,Zs as ea,Yt as ec,Zl as ei,Y as el,Qp as en,Xa as eo,Zd as er,Xr as es,Qh as et,O_ as f,Ds as fa,Tt as fc,Dl as fi,T as fl,Op as fn,Ea as fo,Dd as fr,Er as fs,Oh as ft,b_ as g,ys as ga,_t as gc,yl as gi,_ as gl,bp as gn,va as go,yd as gr,vr as gs,bh as gt,S_ as h,xs as ha,yt as hc,xl as hi,y as hl,Sp as hn,ba as ho,xd as hr,br as hs,Sh as ht,W_ as i,Us as ia,Vt as ic,Ul as ii,V as il,Wp as in,Ha as io,Ud as ir,Hr as is,Wh as it,Wg as j,Uo as ja,Ve as jc,Uc as ji,Wf as jn,Hi as jo,Uu as jr,Hn as js,Wm as jt,Jg as k,qo as ka,Ge as kc,qc as ki,Jf as kn,Ki as ko,qu as kr,Kn as ks,Jm as kt,P_ as l,Ns as la,jt as lc,Nl as li,j as ll,Pp as ln,Ma as lo,Nd as lr,Mr as ls,Ph as lt,w_ as m,Cs as ma,xt as mc,Cl as mi,x as ml,wp as mn,Sa as mo,Cd as mr,Sr as ms,wh as mt,J_ as n,qs as na,Gt as nc,ql as ni,G as nl,Jp as nn,Ka as no,qd as nr,Kr as ns,Jh as nt,B_ as o,zs as oa,Lt as oc,zl as oi,L as ol,Bp as on,Ra as oo,zd as or,Rr as os,Bh as ot,E_ as p,Ts as pa,Ct as pc,Tl as pi,C as pl,Ep as pn,wa as po,Td as pr,wr as ps,Eh as pt,fg as q,uo as qa,le as qc,dc as qi,ff as qn,ui as qo,du as qr,un as qs,fm as qt,K_ as r,Gs as ra,Ut as rc,Gl as ri,U as rl,Kp as rn,Wa as ro,Gd as rr,Wr as rs,Kh as rt,R_ as s,Ls as sa,Ft as sc,Ll as si,F as sl,Rp as sn,Ia as so,Ld as sr,Ir as ss,Rh as st,X_ as t,Ys as ta,qt as tc,Yl as ti,q as tl,Xp as tn,Ja as to,Yd as tr,Jr as ts,Xh as tt,M_ as u,js as ua,kt as uc,jl as ui,k as ul,Mp as un,Aa as uo,jd as ur,Ar as us,Mh as ut,g_ as v,hs as va,pt as vc,hl as vi,p as vl,gp as vn,ma as vo,hd as vr,mr as vs,gh as vt,i_ as w,rs as wa,tt as wc,rl as wi,t as wl,ip as wn,na as wo,rd as wr,nr as ws,ih as wt,u_ as x,ls as xa,st as xc,ll as xi,s as xl,up as xn,ca as xo,ld as xr,cr as xs,uh as xt,m_ as y,ps as ya,dt as yc,pl as yi,d as yl,mp as yn,fa as yo,pd as yr,fr as ys,mh as yt,Og as z,Do as za,Te as zc,Dc as zi,Of as zn,Ei as zo,Du as zr,En as zs,Om as zt};
+Their support was invaluable in making the Masonry module for Music Blocks v4 a successful and educational experience. Overall, Code 4 GovTech DMP 2025 was a great learning experience for me.`;export{ng as $,eo as $a,$ as $c,tc as $i,tf as $n,ei as $o,tu as $r,$t as $s,nm as $t,Jg as A,qo as Aa,Ge as Ac,qc as Ai,Jf as An,Ki as Ao,qu as Ar,Kn as As,Jm as At,Og as B,Do as Ba,Te as Bc,Dc as Bi,Of as Bn,Ei as Bo,Du as Br,En as Bs,Om as Bt,c_ as C,ss as Ca,at as Cc,sl as Ci,a as Cl,cp as Cn,oa as Co,sd as Cr,or as Cs,ch as Ct,e_ as D,$o as Da,Ze as Dc,$c as Di,ep as Dn,Qi as Do,$u as Dr,Qn as Ds,eh as Dt,n_ as E,ts as Ea,$e as Ec,tl as Ei,np as En,ea as Eo,td as Er,er as Es,nh as Et,Rg as F,Lo as Fa,Fe as Fc,Lc as Fi,Rf as Fn,Ii as Fo,Lu as Fr,In as Fs,Rm as Ft,vg as G,_o as Ga,he as Gc,_c as Gi,vf as Gn,gi as Go,_u as Gr,gn as Gs,vm as Gt,wg as H,Co as Ha,xe as Hc,Cc as Hi,wf as Hn,Si as Ho,Cu as Hr,Sn as Hs,wm as Ht,Ig as I,Fo as Ia,Ne as Ic,Fc as Ii,If as In,Pi as Io,Fu as Ir,Pn as Is,Im as It,fg as J,uo as Ja,le as Jc,dc as Ji,ff as Jn,ui as Jo,du as Jr,un as Js,fm as Jt,gg as K,ho as Ka,pe as Kc,hc as Ki,gf as Kn,mi as Ko,hu as Kr,mn as Ks,gm as Kt,Pg as L,No as La,je as Lc,Nc as Li,Pf as Ln,Mi as Lo,Nu as Lr,Mn as Ls,Pm as Lt,Wg as M,Uo as Ma,Ve as Mc,Uc as Mi,Wf as Mn,Hi as Mo,Uu as Mr,Hn as Ms,Wm as Mt,Hg as N,Vo as Na,ze as Nc,Vc as Ni,Hf as Nn,Bi as No,Vu as Nr,Bn as Ns,Hm as Nt,Qg as O,Zo as Oa,Ye as Oc,Zc as Oi,Qf as On,Xi as Oo,Zu as Or,Xn as Os,Qm as Ot,Bg as P,zo as Pa,Le as Pc,zc as Pi,Bf as Pn,Ri as Po,zu as Pr,Rn as Ps,Bm as Pt,ig as Q,no as Qa,te as Qc,rc as Qi,rf as Qn,ni as Qo,ru as Qr,tn as Qs,im as Qt,Mg as R,jo as Ra,ke as Rc,jc as Ri,Mf as Rn,Ai as Ro,ju as Rr,An as Rs,Mm as Rt,u_ as S,ls as Sa,st as Sc,ll as Si,s as Sl,up as Sn,ca as So,ld as Sr,cr as Ss,uh as St,i_ as T,rs as Ta,tt as Tc,rl as Ti,t as Tl,ip as Tn,na as To,rd as Tr,nr as Ts,ih as Tt,Sg as U,xo as Ua,ye as Uc,xc as Ui,Sf as Un,bi as Uo,xu as Ur,bn as Us,Sm as Ut,Eg as V,To as Va,Ce as Vc,Tc as Vi,Ef as Vn,wi as Vo,Tu as Vr,wn as Vs,Em as Vt,bg as W,yo as Wa,_e as Wc,yc as Wi,bf as Wn,vi as Wo,yu as Wr,vn as Ws,bm as Wt,cg as X,oo as Xa,ae as Xc,sc as Xi,cf as Xn,oi as Xo,su as Xr,on as Xs,cm as Xt,ug as Y,co as Ya,se as Yc,lc as Yi,uf as Yn,ci as Yo,lu as Yr,cn as Ys,um as Yt,og as Z,io as Za,re as Zc,ac as Zi,of as Zn,ii as Zo,au as Zr,rn as Zs,om as Zt,b_ as _,ys as _a,_t as _c,yl as _i,_ as _l,bp as _n,va as _o,yd as _r,vr as _s,bh as _t,W_ as a,Us as aa,Vt as ac,Ul as ai,V as al,Wp as an,Ha as ao,Ud as ar,Hr as as,Wh as at,m_ as b,ps as ba,dt as bc,pl as bi,d as bl,mp as bn,fa as bo,pd as br,fr as bs,mh as bt,R_ as c,Ls as ca,Ft as cc,Ll as ci,F as cl,Rp as cn,Ia as co,Ld as cr,Ir as cs,Rh as ct,M_ as d,js as da,kt as dc,jl as di,k as dl,Mp as dn,Aa as do,jd as dr,Ar as ds,Mh as dt,$s as ea,Zt as ec,$l as ei,Z as el,em as en,Qa as eo,$d as er,Qr as es,eg as et,A_ as f,ks as fa,Dt as fc,kl as fi,D as fl,Ap as fn,Oa as fo,kd as fr,Or as fs,Ah as ft,S_ as g,xs as ga,yt as gc,xl as gi,y as gl,Sp as gn,ba as go,xd as gr,br as gs,Sh as gt,w_ as h,Cs as ha,xt as hc,Cl as hi,x as hl,wp as hn,Sa as ho,Cd as hr,Sr as hs,wh as ht,K_ as i,Gs as ia,Ut as ic,Gl as ii,U as il,Kp as in,Wa as io,Gd as ir,Wr as is,Kh as it,Kg as j,Go as ja,Ue as jc,Gc as ji,Kf as jn,Wi as jo,Gu as jr,Wn as js,Km as jt,Xg as k,Yo as ka,qe as kc,Yc as ki,Xf as kn,Ji as ko,Yu as kr,Jn as ks,Xm as kt,I_ as l,Fs as la,Nt as lc,Fl as li,N as ll,Ip as ln,Pa as lo,Fd as lr,Pr as ls,Ih as lt,E_ as m,Ts as ma,Ct as mc,Tl as mi,C as ml,Ep as mn,wa as mo,Td as mr,wr as ms,Eh as mt,X_ as n,Ys as na,qt as nc,Yl as ni,q as nl,Xp as nn,Ja as no,Yd as nr,Jr as ns,Xh as nt,H_ as o,Vs as oa,zt as oc,Vl as oi,z as ol,Hp as on,Ba as oo,Vd as or,Br as os,Hh as ot,O_ as p,Ds as pa,Tt as pc,Dl as pi,T as pl,Op as pn,Ea as po,Dd as pr,Er as ps,Oh as pt,mg as q,po as qa,de as qc,pc as qi,mf as qn,fi as qo,pu as qr,fn as qs,mm as qt,J_ as r,qs as ra,Gt as rc,ql as ri,G as rl,Jp as rn,Ka as ro,qd as rr,Kr as rs,Jh as rt,B_ as s,zs as sa,Lt as sc,zl as si,L as sl,Bp as sn,Ra as so,zd as sr,Rr as ss,Bh as st,Q_ as t,Zs as ta,Yt as tc,Zl as ti,Y as tl,Qp as tn,Xa as to,Zd as tr,Xr as ts,Qh as tt,P_ as u,Ns as ua,jt as uc,Nl as ui,j as ul,Pp as un,Ma as uo,Nd as ur,Mr as us,Ph as ut,v_ as v,_s as va,ht as vc,_l as vi,h as vl,vp as vn,ga as vo,_d as vr,gr as vs,vh as vt,o_ as w,as as wa,rt as wc,al as wi,r as wl,op as wn,ia as wo,ad as wr,ir as ws,oh as wt,f_ as x,ds as xa,lt as xc,dl as xi,l as xl,fp as xn,ua as xo,dd as xr,ur as xs,fh as xt,g_ as y,hs as ya,pt as yc,hl as yi,p as yl,gp as yn,ma as yo,hd as yr,mr as ys,gh as yt,Ag as z,ko as za,De as zc,kc as zi,Af as zn,Oi as zo,ku as zr,On as zs,Am as zt};
