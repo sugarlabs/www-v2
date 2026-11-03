@@ -11,11 +11,11 @@
     "preview": "vite preview --host",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "lint:ts": "eslint 'src/**/*.{ts,tsx}'",
-    "lint:md": "markdownlint '**/*.md' --ignore-path .prettierignore",
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,md}'",
+    "lint:ts": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint:md": "markdownlint \"**/*.md\" --ignore-path .prettierignore",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "format:file": "prettier --write",
-    "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,md}'"
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
