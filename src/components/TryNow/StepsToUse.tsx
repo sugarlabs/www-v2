@@ -56,6 +56,11 @@ const StepsToUse = ({ heading, StepData }: steps) => {
                 <div className="overflow-x-auto overflow-y-hidden commands-scroll w-full mt-4">
                   <div className="relative group inline-flex min-w-max items-center gap-3 px-4 py-2 rounded-lg border border-gray-200/5 bg-slate-800 text-white dark:bg-slate-800 dark:text-white">
                     <button
+                      aria-label={
+                        copied
+                          ? 'Copied to clipboard'
+                          : 'Copy command to clipboard'
+                      }
                       onClick={() => {
                         clicktocopy(step.commands || '');
                       }}
