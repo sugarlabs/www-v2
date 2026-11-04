@@ -87,6 +87,12 @@ const NewsDetailPage: React.FC = () => {
   });
 
   const handleGoBack = useCallback(() => {
+    const from = (location.state as { from?: string } | null)?.from;
+    if (from) {
+      navigate(from);
+      return;
+    }
+
     const search = location.search || '';
     // Prefer the category in the URL. If absent, derive from the post's category; fallback to 'all'.
     const derivedCategory = category
@@ -95,7 +101,7 @@ const NewsDetailPage: React.FC = () => {
         ? post.category.toLowerCase().replace(/\s+/g, '-')
         : 'all';
     navigate(`/news/${derivedCategory}${search}`);
-  }, [navigate, category, location.search, post?.category]);
+  }, [navigate, category, location.search, location.state, post?.category]);
 
   const closeImageModal = useCallback(() => {
     setModalImage(null);
