@@ -2,7 +2,7 @@
 title: "Writing new Activities and sharing sugar with Youth"
 excerpt: "James Simmons shares his journey of contributing to Sugar Labs since 2007, including developing Activities for reading e-texts and creating resources to help others build their own Sugar Activities."
 category: "SUGAR STORIES"
-date: "2024-9-13"
+date: "2024-09-13"
 slug: "writing-new-activities-sharing-sugar-with-youth"
 author: "James Simmons"
 description: "Sugar Labs Contributor"

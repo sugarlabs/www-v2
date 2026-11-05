@@ -5,11 +5,7 @@ category: "DEVELOPER NEWS"
 date: "2025-07-21"
 slug: "2025-07-21-gsoc-25-firepheonix-week07"
 author: "@/constants/MarkdownFiles/authors/shubham-singh.md"
-tags:   
-  - gsoc25
-  - sugarlabs
-  - week07
-  - firepheonix
+tags: "gsoc25,sugarlabs,week07,FirePheonix"
 image: "assets/Images/GSOC.webp"
 ---
 
