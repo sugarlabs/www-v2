@@ -110,7 +110,9 @@ const NewsDetailPage: React.FC = () => {
   );
 
   const handleAuthorClick = useCallback(() => {
-    if (post?.author?.slug) {
+    if (post?.author?.slug === 'sugar-labs') {
+      navigate('/about-us');
+    } else if (post?.author?.slug) {
       navigate(`/authors/${post.author.slug}`);
     }
   }, [navigate, post]);
