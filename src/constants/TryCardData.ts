@@ -64,7 +64,7 @@ export const TryCardData: CardDataType[] = [
   {
     title: 'Desktop/laptop bootable drive',
     description:
-      'With Sugar a Stick (SOAS), you can experience the full Sugar Learning Platform on any computer at any time from a bootable thumb drive',
+      'With Sugar on a Stick (SoaS), you can experience the full Sugar Learning Platform on any computer at any time from a bootable thumb drive',
     tryNowText: 'Try Bootable drive now!',
     tryNowHref: 'https://fedoraproject.org/spins/soas/download/',
     learnMoreText: 'Learn more about Bootable Drive',
@@ -86,7 +86,7 @@ export const TryCardData: CardDataType[] = [
   {
     title: 'Try Trisquel for full freedom',
     description:
-      'Get all the benefits of a bootable/installation frive on the fully free and well maintained Trisquel distro.',
+      'Get all the benefits of a bootable/installation drive on the fully free and well maintained Trisquel distro.',
     tryNowText: 'Try Trisquel now!',
     tryNowHref: 'https://trisquel.info/en/download',
     learnMoreText: 'Learn more about Trisquel',
@@ -96,7 +96,7 @@ export const TryCardData: CardDataType[] = [
   },
   {
     title: 'Try Sugar on Raspberry Pi',
-    description: 'The full Sugar environment on a Raspberry P.(RPk)',
+    description: 'The full Sugar environment on a Raspberry Pi (RPi).',
     tryNowText: 'Try Raspberry Pi now!',
     tryNowHref: 'https://wiki.sugarlabs.org/go/Raspbian',
     learnMoreText: 'Learn more about Raspberry Pi',
@@ -107,7 +107,7 @@ export const TryCardData: CardDataType[] = [
   {
     title: 'Convenient installation via Flatpak',
     description:
-      'Create musical code with the browser based visual programming language Music Blocks',
+      'Install Sugar Labs educational activities on Linux using Flatpak.',
     tryNowText: 'Try Flatpak now!',
     tryNowHref: 'https://flathub.org/apps/search?q=sugar%20labs',
     learnMoreText: 'Learn more about Flatpak',
