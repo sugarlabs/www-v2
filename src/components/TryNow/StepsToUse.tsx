@@ -1,18 +1,24 @@
 import 'react-responsive-carousel';
 import { Carousel } from 'react-responsive-carousel';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import DOMPurify from 'dompurify';
 import { renderContentWithLinks } from '@/utils/renderlinks-utils';
 import { steps } from '@/constants/TryNowData/bootableSoasData';
 
 const StepsToUse = ({ heading, StepData }: steps) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [copied, setCopied] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  function clicktocopy(command: string) {
+  function clicktocopy(command: string, index: number) {
     navigator.clipboard.writeText(command).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      if (copyTimeoutRef.current) {
+        clearTimeout(copyTimeoutRef.current);
+      }
+      setCopiedIndex(index);
+      copyTimeoutRef.current = setTimeout(() => {
+        setCopiedIndex(null);
+      }, 1500);
     });
   }
 
@@ -57,11 +63,11 @@ const StepsToUse = ({ heading, StepData }: steps) => {
                   <div className="relative group inline-flex min-w-max items-center gap-3 px-4 py-2 rounded-lg border border-gray-200/5 bg-slate-800 text-white dark:bg-slate-800 dark:text-white">
                     <button
                       onClick={() => {
-                        clicktocopy(step.commands || '');
+                        clicktocopy(step.commands || '', index);
                       }}
                       className="absolute top-1 right-1 text-gray-400 hover:text-white transition"
                     >
-                      {copied ? (
+                      {copiedIndex === index ? (
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-4 w-4 text-green-400"
@@ -94,7 +100,7 @@ const StepsToUse = ({ heading, StepData }: steps) => {
                       )}
                     </button>
                     <button
-                      onClick={() => clicktocopy(step.commands || '')}
+                      onClick={() => clicktocopy(step.commands || '', index)}
                       className="p-2 text-white rounded cursor-pointer whitespace-nowrap font-mono text-sm text-gray-200 truncate"
                     >
                       {`$ ${step.commands}`}
