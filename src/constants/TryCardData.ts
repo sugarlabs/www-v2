@@ -86,7 +86,7 @@ export const TryCardData: CardDataType[] = [
   {
     title: 'Try Trisquel for full freedom',
     description:
-      'Get all the benefits of a bootable/installation frive on the fully free and well maintained Trisquel distro.',
+      'Get all the benefits of a bootable/installation drive on the fully free and well maintained Trisquel distro.',
     tryNowText: 'Try Trisquel now!',
     tryNowHref: 'https://trisquel.info/en/download',
     learnMoreText: 'Learn more about Trisquel',
